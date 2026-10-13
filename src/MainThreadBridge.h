@@ -27,6 +27,10 @@ void run_renderer_on_main(MainTask task,void *context);
 void suspend_renderer(bool suspended);
 MainScheduler sdl_main_thread_scheduler();
 MainScheduler apple_main_thread_scheduler();
+// Yield without putting the iOS main dispatch queue behind an SDL sleep.
+void wait_for_main_work();
+struct RendererTiming {uint64_t calls=0,queue_ns=0,execution_ns=0;};
+RendererTiming take_renderer_timing();
 template<class F> int32_t renderer_operation(F operation){
     check_worker_stop();
     struct Request {F &operation;int32_t result=0;} request{operation};

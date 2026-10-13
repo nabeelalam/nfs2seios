@@ -13,5 +13,6 @@ static void schedule(MainTask task,void *context){
     if(!SDL_RunOnMainThread(task,context,true))throw std::runtime_error(SDL_GetError());
 }
 MainScheduler sdl_main_thread_scheduler(){return schedule;}
+void wait_for_main_work(){SDL_WaitEventTimeout(nullptr,1);}
 #endif
 }

@@ -70,3 +70,21 @@ reached displayed speed 105 in third gear, and calibrated steering returned
 to neutral after release. The session exited cleanly and generated non-silent
 game PCM. This does not establish physical iPad input, audible output or stable
 complete laps. Brake, shifts and remaining actions need their own checks.
+
+## Physical game feedback and main-thread wait correction
+
+The first optimized iPad game package launches and accepts controller input.
+The tester reports original audio works, with occasional stutter, but both
+menus and races run at an estimated 1-2 FPS. This establishes game execution
+on the device, not playable performance or sustained stability.
+
+All Glide calls currently wait synchronously for main-thread execution. On
+iOS, those calls use GCD, whereas SDL event waiting falls back to a sleep
+that GCD submissions cannot wake. The app now services the main CFRunLoop
+while idle on iOS, retaining SDL event waiting elsewhere. SDL event polling
+and lifecycle processing remain in the app loop. Five-second aggregate logs
+report renderer call counts, time awaiting the owner and time executing on
+it; counters are approximate concurrent aggregates, not GPU timer queries
+or an FPS measurement. This removes a source-confirmed per-call sleep, but
+physical speedup and any remaining bottleneck require another device test.
+The Apple host transport test uses the same new idle function.

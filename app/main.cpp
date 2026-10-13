@@ -4,6 +4,7 @@
 #include "AssetSelection.h"
 #include "GameSession.h"
 #include "RunLog.h"
+#include "MainThreadBridge.h"
 #include <cstdio>
 #include <memory>
 #include <exception>
@@ -34,14 +35,19 @@ int main(int argc,char **argv){
             // No host process exit inside the engine. Retain the root context
             // and continue pumping SDL until renderer/worker cleanup finishes.
             auto session=std::unique_ptr<nfs::GameSession>(new nfs::GameSession(root,present));
-            session->start();std::string app_error;
+            session->start();std::string app_error;Uint64 timing_start=SDL_GetTicks();
             while(!session->result().finished){
                 try{session->poll();}
                 catch(const std::exception &error){if(app_error.empty())app_error=error.what();session->request_stop();SDL_PumpEvents();}
-                // SDL's queued main-thread renderer calls wake an event wait.
-                // A fixed sleep adds latency to every synchronous draw call.
-                // Leave queued input for session->poll() to consume next time.
-                SDL_WaitEventTimeout(nullptr,1);
+                const auto now=SDL_GetTicks();
+                if(now-timing_start>=5000){
+                    const auto timing=nfs::take_renderer_timing();
+                    nfs::app_log("Renderer timing","interval_ms="+std::to_string(now-timing_start)+
+                        " calls="+std::to_string(timing.calls)+" queue_ms="+std::to_string(timing.queue_ns/1000000)+
+                        " execution_ms="+std::to_string(timing.execution_ns/1000000));
+                    timing_start=now;
+                }
+                nfs::wait_for_main_work();
             }
             const auto result=session->result();
             nfs::app_log("Native game app stopped","exit="+std::to_string(result.exit_code)+" error="+result.error);

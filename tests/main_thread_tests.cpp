@@ -49,5 +49,9 @@ int main(){
     std::promise<bool> rejected;std::atomic<bool> ran{false};
     std::thread wrong([&]{try{invalid.execute([](void *p){*static_cast<std::atomic<bool> *>(p)=true;},&ran);rejected.set_value(false);}catch(const std::logic_error &){rejected.set_value(true);}});
     CHECK(rejected.get_future().get());wrong.join();CHECK(!ran);
+    const auto timing=nfs::take_renderer_timing();
+    CHECK(timing.calls>=100 && timing.queue_ns>0 && timing.execution_ns>0);
+    const auto cleared=nfs::take_renderer_timing();
+    CHECK(cleared.calls==0 && cleared.queue_ns==0 && cleared.execution_ns==0);
     std::puts("PASS: render owner, synchronous results, nested calls, exception transport, borrowed storage cancellation, suspended/queued render deferral, live lifecycle dispatch, cancellation wake and wrong-thread rejection");
 }

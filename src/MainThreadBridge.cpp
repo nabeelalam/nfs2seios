@@ -2,7 +2,23 @@
 #include "MainThreadBridge.h"
 #include <exception>
 #include <stdexcept>
+#include <atomic>
+#include <chrono>
 namespace nfs {
+namespace {
+using Clock=std::chrono::steady_clock;
+std::atomic<uint64_t> render_calls{0},render_queue_ns{0},render_execution_ns{0};
+uint64_t elapsed_ns(Clock::time_point start,Clock::time_point end){
+    return uint64_t(std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
+}
+}
+RendererTiming take_renderer_timing(){
+    RendererTiming result;
+    result.calls=render_calls.exchange(0,std::memory_order_relaxed);
+    result.queue_ns=render_queue_ns.exchange(0,std::memory_order_relaxed);
+    result.execution_ns=render_execution_ns.exchange(0,std::memory_order_relaxed);
+    return result;
+}
 void MainThreadBridge::execute(MainTask task,void *context){
     if(!task)throw std::invalid_argument("Missing main-thread operation");
     struct Request {MainTask task;void *context;std::thread::id owner;bool completed=false;std::exception_ptr failure;};
@@ -36,11 +52,16 @@ void MainThreadBridge::execute_renderer(MainTask task,void *context){
             renderer_changed.wait(lock,[&]{return !renderer_suspended || worker_stop_ready();});
         }
         check_worker_stop();
-        struct Pending {MainThreadBridge *bridge;MainTask task;void *context;bool ran=false;} pending{this,task,context};
+        struct Pending {MainThreadBridge *bridge;MainTask task;void *context;bool ran=false;Clock::time_point submitted=Clock::now();} pending{this,task,context};
         execute([](void *value){
             auto &p=*static_cast<Pending *>(value);
             {std::lock_guard<std::mutex> lock(p.bridge->renderer_mutex);if(p.bridge->renderer_suspended)return;}
+            const auto started=Clock::now();
             p.ran=true;p.task(p.context);
+            const auto finished=Clock::now();
+            render_queue_ns.fetch_add(elapsed_ns(p.submitted,started),std::memory_order_relaxed);
+            render_execution_ns.fetch_add(elapsed_ns(started,finished),std::memory_order_relaxed);
+            render_calls.fetch_add(1,std::memory_order_relaxed);
         },&pending);
         if(pending.ran)return;
     }
