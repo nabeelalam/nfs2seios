@@ -3,9 +3,9 @@
 Read [CI_POLICY.md](CI_POLICY.md) before requesting a cloud run. The workflow
 uses standard Ubuntu and macOS runners only, with manual dispatch, sequential
 validation and bounded timeouts. No automatic push/PR builds or caches are enabled.
-The reviewed template is `ci/ipados.yml`; it is currently inactive because the
-publishing login lacks workflow-write permission. Activate it only after that
-permission is granted and a specific Apple build is needed.
+The reviewed workflow is `.github/workflows/ipados.yml`. It runs only on manual
+dispatch for a specific validation question after local checks pass. Source
+publication does not trigger builds. See CI_POLICY.md before dispatch.
 
 ## Source preparation
 

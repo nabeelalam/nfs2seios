@@ -27,6 +27,5 @@ Source dependencies are fetched at reviewed upstream revisions into ignored
 directories. The project fetches pinned port support files with their upstream
 license; the main GAMEDATA/FEDATA assets are never supplied by this repository.
 Publication does not establish Apple SDK compilation or iPad gameplay for the
-current revision. The reviewed workflow is provided as an inactive template in
-`ci/ipados.yml`. Activation requires workflow-write permission; no cloud builds
-are currently enabled. Once activated, it runs only on deliberate manual dispatch.
+current revision. The reviewed workflow is in
+`.github/workflows/ipados.yml` and runs only on deliberate manual dispatch.

@@ -2,10 +2,9 @@
 
 Reviewed against official GitHub documentation on 13 October 2026. This is the
 operating plan for standard hosted machines, not a claim that the native iPad
-game is finished. No cloud workflow has been dispatched under this new policy.
-The workflow is an inactive reviewed template in ci/ipados.yml. Activation awaits
-workflow-write permission and a specific build requirement; publishing source
-does not activate or start cloud jobs.
+game is finished. The workflow in `.github/workflows/ipados.yml` accepts manual
+dispatch only. Publishing source does not start cloud jobs. Every dispatch must
+identify the revision and specific unresolved Apple SDK or packaging question.
 
 ## Verified limits and our bounds
 
