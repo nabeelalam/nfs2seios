@@ -54,8 +54,14 @@ void SDLGamepadInput::update(bool active){
         // Full-range pedals: SDL's standardized trigger axes are 0..32767.
         state.axes[6]=(int32_t(SDL_GetGamepadAxis(pad,SDL_GAMEPAD_AXIS_LEFT_TRIGGER))*65535)/32767;
         state.axes[7]=(int32_t(SDL_GetGamepadAxis(pad,SDL_GAMEPAD_AXIS_RIGHT_TRIGGER))*65535)/32767;
-        for(unsigned button=0;button<32 && button<unsigned(SDL_GAMEPAD_BUTTON_COUNT);++button)
-            state.buttons[button]=SDL_GetGamepadButton(pad,SDL_GamepadButton(button))?0x80:0;
+        for(unsigned button=0;button<32 && button<unsigned(SDL_GAMEPAD_BUTTON_COUNT);++button){
+            // A native joystick hat is not also a face/action button. The
+            // original frontend activates a choice for any button press;
+            // duplicating standardized D-pad buttons here also activated the
+            // choice reached by MenuInput's arrow message. Preserve POV below.
+            const bool direction=button>=unsigned(SDL_GAMEPAD_BUTTON_DPAD_UP) && button<=unsigned(SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
+            state.buttons[button]=!direction && SDL_GetGamepadButton(pad,SDL_GamepadButton(button))?0x80:0;
+        }
         const bool up=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_UP),down=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_DOWN);
         const bool left=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_LEFT),right=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
         if(up && right)state.pov[0]=4500;else if(down && right)state.pov[0]=13500;else if(down && left)state.pov[0]=22500;else if(up && left)state.pov[0]=31500;

@@ -108,3 +108,35 @@ a roughly 1.9 MiB artifact. Independent downloaded-package checks confirm
 source/configuration identity, iOS-device ARM64 architecture, pinned support
 hashes and the expected twelve bundle files. Owned assets and signing material
 are absent. Physical performance of the new idle wait remains unverified.
+
+Physical follow-up reports improved menus, successful controller remapping and
+perceptually 10-19 race FPS, still below enjoyable driving. These estimates are
+not instrumented measurements. Build 2 adds a small presentation-FPS overlay
+and includes its sampled value in the existing aggregate timing log. It counts
+successful swap submissions, including front-buffer updates; it is not a GPU
+timer or a physical display scanout measurement. Counters reset across graphics
+suspension and restoration.
+
+The candidate queues up to 128 owned drawing commands, copying vertices and
+scalar arguments. Results, readbacks, guest palettes/buffers, presentation and
+context changes remain ordered barriers. Tests cover four concurrent producers,
+4000 ordered commands, exception transport, borrowed-buffer cancellation and
+actual GLES surfaces through suspension. D-pad navigation retains POV and menu
+arrow messages while excluding duplicate native action-button bits; the original
+frontend local reproduction stays on the selected menu instead of opening it.
+
+Repeated heap allocation-span checks use four thread-local copied spans validated
+against an allocation-table revision and arena lifetime identity. Allocation/free
+invalidates the spans; cache misses retain locked bounds checks, and shared game
+value-copy serialization remains. Sanitizers check cross-thread frees, smaller
+same-address allocations, exact arena-object address reuse, concurrent allocation
+churn and span boundaries. A bounded full-data Debug sanitizer run visibly drives
+the original race, advances the clock, reaches 70 in second gear, steers left,
+and exits with completed SDL shutdown and no sanitizer diagnostic. This is not
+a complete lap or physical iPad acceptance.
+
+Local software-GLES race samples improve from an average 11.388 to 17.044 over
+the final 25 reports after the span cache. Scene timing, software rendering and
+brief build overlap limit comparison: no precise speedup ratio or iPad FPS
+prediction is claimed. The next Apple build validates the UIKit overlay and
+native candidate; physical steady menu/race FPS and responsiveness remain open.

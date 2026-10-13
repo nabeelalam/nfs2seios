@@ -55,7 +55,10 @@ NativeGameFunction EngineMemory::function(uint32_t id){
     }
     return value;
 }
-size_t EngineMemory::capacity()const{return impl->heap.total_bytes();}
+// Storage is sized once before worker creation and never resized. Checking the
+// fixed region limit must not acquire the allocation-table mutex on every load;
+// contains() still validates allocation ownership under that mutex.
+size_t EngineMemory::capacity()const{return impl->storage.size();}
 size_t EngineMemory::available()const{return impl->heap.available_bytes();}
 }
 extern "C" void *nfs_host_address(uint32_t address,size_t length){return nfs::current().resolve(address,length);}

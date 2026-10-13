@@ -34,6 +34,7 @@ int main(){
         std::printf("Initial SDK snapshot: steering=%d left pedal=%d right pedal=%d A=%u POV=%u\n",state.axes[0],state.axes[6],state.axes[7],state.buttons[SDL_GAMEPAD_BUTTON_SOUTH],state.pov[0]);
         CHECK(state.axes[0]==65535 && state.axes[7]==65535 && state.axes[6]==0 && state.buttons[SDL_GAMEPAD_BUTTON_SOUTH]==0x80 && state.pov[0]==4500);
         CHECK(input.menu_buttons()==(nfs::menu_confirm|nfs::menu_up|nfs::menu_right));
+        CHECK(state.buttons[SDL_GAMEPAD_BUTTON_DPAD_UP]==0 && state.buttons[SDL_GAMEPAD_BUTTON_DPAD_RIGHT]==0);
         input.update(false);CHECK(read(0).axes[0]==32768 && read(0).axes[7]==0 && read(0).buttons[0]==0 && read(0).pov[0]==UINT32_MAX);
         input.update();CHECK(read(0).axes[0]==65535 && read(0).axes[7]==65535 && read(0).buttons[0]==0x80);
         CHECK(SDL_SetJoystickVirtualButton(other,SDL_GAMEPAD_BUTTON_SOUTH,true));input.update();

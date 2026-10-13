@@ -49,7 +49,9 @@ int main() {
     CHECK(memory.map(0x80000000,records,sizeof(records)) && memory.map(0x90000000,pixels,sizeof(pixels)));
     GrVertex vertex{}; vertex.x=77; vertex.r=31; vertex.tmuvtx[1].tow=9;
     guest_store<GrVertex>(0x80000003u,vertex); guest_store<GrVertex>(0x80000043u,vertex); guest_store<GrVertex>(0x80000083u,vertex);
-    CHECK(grDrawTriangle(int32_t(0x80000003u),int32_t(0x80000043u),int32_t(0x80000083u))==0 && saw_vertex);
+    CHECK(grDrawTriangle(int32_t(0x80000003u),int32_t(0x80000043u),int32_t(0x80000083u))==0 && !saw_vertex);
+    // Queued vertices are snapshots, not pointers borrowed until presentation.
+    std::memset(records+3,0,188);nfs::flush_renderer_commands();CHECK(saw_vertex);
     GrTexInfo texture{}; texture.smallLod=3; texture.largeLod=3; texture.format=GR_TEXFMT_P_8; texture.data=0x90000000;
     guest_store<GrTexInfo>(0x800000c3u,texture);
     CHECK(grTexDownloadMipMap(0,0,3,int32_t(0x800000c3u))==0 && saw_texture);

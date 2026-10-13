@@ -69,7 +69,9 @@ int main(){
     info=lock(0x800000a3u,1,0,0);pixels=static_cast<uint16_t *>(nfs_host_address(info.lfbPtr,NFS_SURFACE_BYTES));pixels[640*100+100]=0xffe0;
     CHECK(grLfbUnlock(1,0)==1);
     info=lock(0x800000a3u,0,0,0);pixels=static_cast<uint16_t *>(nfs_host_address(info.lfbPtr,NFS_SURFACE_BYTES));CHECK(pixels[640*100+100]==0xffe0);CHECK(grLfbUnlock(0,0)==1);
-    info=lock(0x800000a3u,0,1,0);pixels=static_cast<uint16_t *>(nfs_host_address(info.lfbPtr,NFS_SURFACE_BYTES));CHECK(pixels[640*100+100]==0x07e0);CHECK(grLfbUnlock(0,1)==1);
+    info=lock(0x800000a3u,0,1,0);pixels=static_cast<uint16_t *>(nfs_host_address(info.lfbPtr,NFS_SURFACE_BYTES));
+    if(pixels[640*100+100]!=0x07e0)std::fprintf(stderr,"Back surface pixel: expected=0x07e0 actual=0x%04x\n",pixels[640*100+100]);
+    CHECK(pixels[640*100+100]==0x07e0);CHECK(grLfbUnlock(0,1)==1);
     nfs::GraphicsLifecycle lifecycle;const auto original_context=SDL_GL_GetCurrentContext();CHECK(original_context);
     lifecycle.set_suspended(true);CHECK(SDL_GL_GetCurrentContext()==nullptr);
     bool rejected=false;try{grBufferClear(0,255,65535);}catch(const std::logic_error &){rejected=true;}CHECK(rejected);

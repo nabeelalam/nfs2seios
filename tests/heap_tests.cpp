@@ -5,6 +5,8 @@
 #include <vector>
 #include <thread>
 #include <atomic>
+#include <future>
+#include <new>
 #define CHECK(x) do { if (!(x)) { std::fprintf(stderr, "FAIL line %d: %s\n", __LINE__, #x); return 1; } } while (0)
 static nfs::GameMemory *active_memory;
 static nfs::HeapArena *active_heap;
@@ -59,6 +61,14 @@ int main() {
         CHECK(!arena.contains(0x80000000, 1));
         void *whole = arena.allocate(sizeof(storage)); CHECK(whole == storage);
         CHECK(!arena.allocate(1) && arena.release(whole));
+        void *cached=arena.allocate(64);CHECK(cached==storage);
+        CHECK(arena.contains(0x80000000,64));
+        std::promise<void> freed;
+        std::thread retire([&]{if(!arena.release(cached))std::terminate();freed.set_value();});
+        freed.get_future().wait();retire.join();CHECK(!arena.contains(0x80000000,1));
+        cached=arena.allocate(16);CHECK(cached==storage);
+        CHECK(arena.contains(0x80000000,16) && !arena.contains(0x80000000,17));
+        CHECK(arena.release(cached));
         const int32_t wrapped = calloc_wrap(8, 4);
         CHECK(uint32_t(wrapped) == 0x80000000 && wrapped < 0);
         auto *native = static_cast<uint8_t *>(nfs_host_address(uint32_t(wrapped), 32));
@@ -74,7 +84,10 @@ int main() {
         for (unsigned t=0; t<4; ++t) workers.emplace_back([&] {
             for (unsigned i=0; i<1000; ++i) {
                 void *p = arena.allocate_zeroed(1, 32);
-                if (!p || !arena.release(p)) valid = false;
+                uint32_t address=0;
+                if(!p || !memory.encode(p,address) || !arena.contains(address,32) ||
+                   arena.contains(address,33) || arena.contains(address+31,2))valid=false;
+                if(!arena.release(p))valid=false;
             }
         });
         for (auto &worker : workers) worker.join();
@@ -82,5 +95,15 @@ int main() {
     }
     CHECK(!memory.resolve(0x80000000));
     CHECK(!memory.unmap(0x80000000));
+    // A new arena can occupy exactly the same native object and guest region.
+    alignas(nfs::HeapArena) uint8_t arena_bytes[sizeof(nfs::HeapArena)];
+    for(size_t size:{size_t(64),size_t(16)}){
+        auto *arena=new(arena_bytes)nfs::HeapArena;
+        CHECK(arena->initialize(memory,0x80000000,storage,sizeof(storage)));
+        CHECK(arena->allocate(size)==storage);
+        CHECK(arena->contains(0x80000000,size));
+        CHECK(!arena->contains(0x80000000,size+1));
+        arena->~HeapArena();
+    }
     std::puts("PASS: high-address heap, allocation/resize/OOM, fragmentation/coalescing, typed game malloc/calloc/free ABI, 4000 threaded allocations, teardown");
 }

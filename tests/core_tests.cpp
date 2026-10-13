@@ -1,5 +1,6 @@
 #include "GameMemory.h"
 #include "FPU.h"
+#include "FrameRate.h"
 #include <cstdio>
 #include <cstring>
 #include <new>
@@ -9,6 +10,14 @@
 static void callback(void *p) { ++*static_cast<int *>(p); }
 static void other_callback(void *p) { *static_cast<int *>(p)+=2; }
 int main() {
+    nfs::FrameRate frame_rate;double fps=-1;
+    CHECK(!frame_rate.presented(1000000000ull,fps));
+    for(uint64_t i=1;i<60;++i)CHECK(!frame_rate.presented(1000000000ull+i*1000000000ull/60,fps));
+    CHECK(frame_rate.presented(2000000000ull,fps));CHECK(fps==60.0);
+    CHECK(frame_rate.presented(4000000000ull,fps));CHECK(fps==0.5);
+    frame_rate.reset();CHECK(!frame_rate.presented(7000000000ull,fps));
+    CHECK(!frame_rate.presented(1000000000ull,fps));
+    CHECK(frame_rate.presented(2000000000ull,fps));CHECK(fps==1.0);
     uint8_t bytes[64]{};
     nfs::GameMemory memory;
     CHECK(memory.map(0x80000000u, bytes, sizeof(bytes)));

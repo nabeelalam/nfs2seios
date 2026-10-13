@@ -3,12 +3,42 @@
 #include <atomic>
 #include <cstdio>
 #include <stdexcept>
+#include <vector>
 #define CHECK(x) do{if(!(x)){std::fprintf(stderr,"FAIL %d: %s\n",__LINE__,#x);return 1;}}while(0)
 int main(){
     MainThreadHarness owner;
     int value=0;
     for(int i=0;i<100;++i)CHECK(nfs::renderer_operation([&]{if(std::this_thread::get_id()!=owner.owner_id())throw std::runtime_error("Wrong render owner");return ++value;})==i+1);
     CHECK(nfs::renderer_operation([]{return nfs::renderer_operation([]{return 42;});})==42);
+    std::vector<int> commands;
+    int snapshot=17;nfs::renderer_command([snapshot,&commands]{commands.push_back(snapshot);return 0;});snapshot=99;
+    CHECK(commands.empty());CHECK(nfs::renderer_operation([&]{return commands.size()==1 && commands[0]==17?1:0;})==1);
+    // Two producers admit commands in a known order; either may drain them.
+    std::promise<void> first_admitted;
+    std::thread first([&]{nfs::renderer_command([&]{commands.push_back(1);return 0;});first_admitted.set_value();});
+    std::thread second([&]{first_admitted.get_future().wait();nfs::renderer_command([&]{commands.push_back(2);return 0;});nfs::flush_renderer_commands();});
+    first.join();second.join();CHECK(commands.size()==3 && commands[1]==1 && commands[2]==2);
+    std::atomic<int> bounded{0};
+    for(int i=0;i<400;++i)nfs::renderer_command([&]{++bounded;return 0;});
+    CHECK(bounded>0 && bounded<400);nfs::flush_renderer_commands();CHECK(bounded==400);
+    // Concurrent producers exceed the queue bound; each producer's order and
+    // exactly-once execution must survive drains initiated by other producers.
+    std::vector<int> producer_next(4,0);
+    std::atomic<bool> ordered{true};std::vector<std::thread> producers;
+    for(int producer=0;producer<4;++producer)producers.emplace_back([&,producer]{
+        for(int sequence=0;sequence<1000;++sequence)nfs::renderer_command([&,producer,sequence]{
+            if(std::this_thread::get_id()!=owner.owner_id() || producer_next[producer]!=sequence)ordered=false;
+            ++producer_next[producer];return 0;
+        });
+        nfs::flush_renderer_commands();
+    });
+    for(auto &producer:producers)producer.join();
+    CHECK(ordered);for(auto count:producer_next)CHECK(count==1000);
+    bool queued_failure=false;int skipped=0;
+    nfs::renderer_command([]()->int32_t{throw std::runtime_error("Queued render fixture");});
+    nfs::renderer_command([&]{++skipped;return 0;});
+    try{nfs::flush_renderer_commands();}catch(const std::runtime_error &){queued_failure=true;}
+    CHECK(queued_failure && skipped==0);CHECK(nfs::renderer_operation([]{return 9;})==9);
     bool failed=false;try{nfs::renderer_operation([]()->int32_t{throw std::runtime_error("Render failure");});}catch(const std::runtime_error &){failed=true;}CHECK(failed);
     // A stop request must not free borrowed buffers while a native call uses them.
     std::promise<void> entered,release;auto gate=release.get_future().share();std::promise<bool> completed;

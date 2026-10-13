@@ -116,8 +116,8 @@ REALIGN STDCALL BOOL grLfbUnlock(GrLock_t type, GrBuffer_t buffer)
     body=body.replace('glBindTexture(GL_TEXTURE_2D, g_framebufferTexture);','glBindTexture(GL_TEXTURE_2D, g_frontTexture);')
     begin_presentation=body.index('\tint32_t xOffset = 0')
     end_presentation=body.index('\tSDL_GL_SwapWindow(sdlWin);')+len('\tSDL_GL_SwapWindow(sdlWin);')
-    presentation=body[begin_presentation:end_presentation].replace('\tSDL_GL_SwapWindow(sdlWin);','\treturn SDL_GL_SwapWindow(sdlWin);')
-    helper='static BOOL presentFrontSurface(void)\n{\n\tuseGameProgram(false);\n\tglUniform1f(g_uGammaLocDisp,g_gammaValue);\n'+presentation+'\n}\n'
+    presentation=body[begin_presentation:end_presentation].replace('\tSDL_GL_SwapWindow(sdlWin);','\tconst BOOL presented=SDL_GL_SwapWindow(sdlWin);\n\tif(presented)nfs_frame_presented(sdlWin);\n\treturn presented;')
+    helper='#include "FramePresentation.h"\nstatic BOOL presentFrontSurface(void)\n{\n\tuseGameProgram(false);\n\tglUniform1f(g_uGammaLocDisp,g_gammaValue);\n'+presentation+'\n}\n'
     body=body[:begin_presentation]+'\tpresentFrontSurface();'+body[end_presentation:]
     text=text[:swap]+helper+body+text[end:]
     checked('static float g_gammaValue;', 'static float g_gammaValue = 1.0f;')
@@ -173,7 +173,19 @@ def prepare_glide_exports(source, dest):
                 arguments.append(f'arg{index}')
         invocation = f'native_{name}({", ".join(arguments)})'
         operation = f'{invocation}; return 0;' if result == 'void' else f'return static_cast<int32_t>({invocation});'
-        bridge += f' const int32_t result = nfs::renderer_operation([&]() -> int32_t {{ {operation} }});\n'
+        # Copy scalar state and vertex arguments into owned, bounded commands.
+        # Paletted TexSource reads the previously supplied guest palette, so it
+        # remains a barrier; non-paletted source selection has no guest read.
+        owned = result == 'void' and name not in {
+            'grBufferSwap','grGlideInit','grGlideShutdown','grSstWinClose',
+            'grSstIdle','grFogTable','grTexDownloadMipMap','grTexDownloadTable',
+            'guFogGenerateExp','grTexSource'}
+        if name == 'grTexSource':
+            bridge += f' if(value3.format!=GR_TEXFMT_P_8){{nfs::renderer_command([=]() mutable -> int32_t {{ {operation} }});return 0;}}\n'
+        if owned:
+            bridge += f' nfs::renderer_command([=]() mutable -> int32_t {{ {operation} }});\n'
+        else:
+            bridge += f' const int32_t result = nfs::renderer_operation([&]() -> int32_t {{ {operation} }});\n'
         for index, parameter in enumerate(parameters):
             if 'GrLfbInfo_t *' in parameter or 'GrHwConfiguration *' in parameter:
                 bridge += f' guest_store(uint32_t(arg{index}),value{index});\n'

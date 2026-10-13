@@ -3,6 +3,7 @@
 #include "GameMemory.h"
 #include <mutex>
 #include <cstring>
+#include <atomic>
 
 namespace nfs {
 // One stable guest mapping, many native allocations. Metadata contains native
@@ -16,6 +17,9 @@ class HeapArena {
     uint32_t base = 0;
     GameMemory *memory = nullptr;
     mutable std::mutex mutex;
+    static uint64_t next_identity(){static std::atomic<uint64_t> next{1};return next.fetch_add(1,std::memory_order_relaxed);}
+    const uint64_t identity=next_identity();
+    std::atomic<uint64_t> revision{1};
 
     void *allocate_locked(size_t size) {
         if (!storage || size > SIZE_MAX - 15) return nullptr;
@@ -32,6 +36,7 @@ class HeapArena {
             }
             b.size = size;
             b.used = true;
+            revision.fetch_add(1,std::memory_order_release);
             return storage + b.offset;
         }
         return nullptr;
@@ -56,6 +61,7 @@ class HeapArena {
                 --count;
             } else ++j;
         }
+        revision.fetch_add(1,std::memory_order_release);
         return true;
     }
 public:
@@ -102,9 +108,19 @@ public:
         return next;
     }
     bool contains(uint32_t address, size_t length) const {
-        std::lock_guard<std::mutex> lock(mutex);
         if (!storage || address < base || !length) return false;
         const size_t offset = address - base;
+        // Cache only a copied allocation span, never mutable table pointers.
+        // Every allocation/free invalidates all cached spans. Distinct lifetime
+        // identities also prevent reuse of a destroyed arena's native address.
+        struct Span {size_t offset=0,size=0;uint64_t revision=0;};
+        struct Cache {const HeapArena *owner=nullptr;uint64_t identity=0;unsigned next=0;Span spans[4];};
+        static thread_local Cache cache;
+        if(cache.owner!=this || cache.identity!=identity){cache=Cache{};cache.owner=this;cache.identity=identity;}
+        const auto observed=revision.load(std::memory_order_acquire);
+        for(const auto &span:cache.spans)
+            if(span.revision==observed && offset>=span.offset && offset-span.offset<span.size && length<=span.size-(offset-span.offset))return true;
+        std::lock_guard<std::mutex> lock(mutex);
         // Splits and coalescing preserve ascending offsets. Every guest load
         // checks this table; locate its block without scanning all allocations.
         size_t low = 0, high = count;
@@ -115,8 +131,9 @@ public:
         }
         if (!low) return false;
         const Block &b = blocks[low - 1];
-        return b.used && offset - b.offset < b.size &&
-               length <= b.size - (offset - b.offset);
+        const bool valid=b.used && offset-b.offset<b.size && length<=b.size-(offset-b.offset);
+        if(valid){cache.spans[cache.next]={b.offset,b.size,revision.load(std::memory_order_relaxed)};cache.next=(cache.next+1)%4;}
+        return valid;
     }
     size_t total_bytes() const { std::lock_guard<std::mutex> lock(mutex); return capacity; }
     size_t available_bytes() const {

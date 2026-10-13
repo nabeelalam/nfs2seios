@@ -5,6 +5,7 @@
 #include "GameSession.h"
 #include "RunLog.h"
 #include "MainThreadBridge.h"
+#include "FramePresentation.h"
 #include <cstdio>
 #include <memory>
 #include <exception>
@@ -44,7 +45,8 @@ int main(int argc,char **argv){
                     const auto timing=nfs::take_renderer_timing();
                     nfs::app_log("Renderer timing","interval_ms="+std::to_string(now-timing_start)+
                         " calls="+std::to_string(timing.calls)+" queue_ms="+std::to_string(timing.queue_ns/1000000)+
-                        " execution_ms="+std::to_string(timing.execution_ns/1000000));
+                        " execution_ms="+std::to_string(timing.execution_ns/1000000)+
+                        " presentation_fps="+std::to_string(nfs_frame_rate_value()));
                     timing_start=now;
                 }
                 nfs::wait_for_main_work();
