@@ -62,22 +62,6 @@ do not assume they will preserve device bundle behavior. Do not dispatch solely
 to repeat this successful Debug validation. An optimized device-test package is
 a distinct next validation target, after storage allowance is confirmed.
 
-## Measured current-revision validation
-
-The first public validation run of revision
-`2b8a4a6fd3b751f93781a5178c4088fa490c7e03` passed on standard runners:
-Linux 147 seconds, macOS 463 seconds. Apple SDK configuration took 366 seconds;
-source preparation took 6 seconds, host checks 44 seconds, and the separate
-engine/renderer/link/app steps 7/18/4/4 seconds. Configuration remains the
-principal measured cost. The timed engine build reported 136,167,424 bytes of
-maximum resident memory for that command, which is not a measurement of total
-job peak memory. No Probe rebuild, caches or IPA artifact uploads were used.
-
-Review configuration or generator changes before the next required Apple build;
-do not assume they will preserve device bundle behavior. Do not dispatch solely
-to repeat this successful Debug validation. An optimized device-test package is
-a distinct next validation target, after storage allowance is confirmed.
-
 ## Build sequence
 
 1. Validate locally with the existing host checks and relevant original-data WSL
