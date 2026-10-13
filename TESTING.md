@@ -54,4 +54,3 @@ No IPA artifact was uploaded in this validation run. Game assets were absent
 from cloud jobs. Signing, installation, original-data gameplay, sustained racing,
 physical controller behavior and audible game audio remain separate device gates.
 The intermittent original audio callback failure remains unresolved.
-

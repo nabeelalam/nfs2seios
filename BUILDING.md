@@ -56,3 +56,9 @@ Use `python scripts/publication_gate.py --mode staged` before a commit and
 repository-local Git hooks with `git config --local core.hooksPath .githooks`;
 on Unix, make both hook files executable. Use a GitHub no-reply commit identity.
 Checks supplement manual review of the exact diff, history and package inputs.
+
+Select `configuration=Release` for a deliberate optimized device-test build,
+keeping `include_probe=false` unless the diagnostic changed. Enable `publish_ipa`
+only after checking storage headroom; the aggregate upload limit is 64 MiB and
+retention is one day. Debug remains available for targeted compiler diagnostics.
+The package manifest records the selected configuration.

@@ -6,6 +6,7 @@ import sys
 import zipfile
 import json
 import hashlib
+import os
 from bundle_resources import ROOT, validate_game_resources
 
 app, output = map(Path, sys.argv[1:])
@@ -41,5 +42,6 @@ output.with_suffix(".json").write_text(json.dumps({
     "architecture": architectures, "platform": "iOS device", "support_sha256": resources,
     "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
     "ipa_sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
+    "configuration": os.environ.get("NFS_BUILD_CONFIGURATION", "unspecified"),
     "personal_signing_required": True, "installation_verified": False, "gameplay_verified": False,
 }, indent=2)+"\n", encoding="utf-8")
