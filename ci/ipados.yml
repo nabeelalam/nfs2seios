@@ -1,0 +1,176 @@
+name: Reviewed native iPadOS build
+on:
+  workflow_dispatch:
+    inputs:
+      build_ios:
+        description: Build the iPad app after Linux gates pass
+        type: boolean
+        default: false
+      include_probe:
+        description: Also rebuild the separate platform diagnostic
+        type: boolean
+        default: false
+      publish_ipa:
+        description: Upload unsigned IPA after reviewing account storage allowance
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: reviewed-native-build
+  cancel-in-progress: true
+jobs:
+  renderer-pixels:
+    if: github.event.repository.visibility == 'public' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Publication and independent secret gates
+        run: |
+          python3 tests/publication_audit_test.py
+          python3 tests/artifact_budget_test.py
+          python3 scripts/setup_secret_scanner.py
+          python3 scripts/publication_gate.py --mode history
+          python3 scripts/publication_audit.py --mode worktree
+      - name: Install GLES and headless window dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gdb ninja-build libgl-dev libegl-dev libgles-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxfixes-dev libxrender-dev libxss-dev libxtst-dev xvfb xauth
+      - name: Prepare pinned engine, SDL and renderer
+        run: |
+          python3 scripts/prepare_full_mapped.py
+          python3 scripts/prepare_renderer.py
+      - name: Build actual GLES pixel tests
+        run: |
+          python3 scripts/check_runner_space.py
+          cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON
+          cmake --build .build/pixels --target renderer_pixel_tests audio_sdl_tests input_sdl_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests -j 3
+      - name: Validate full native engine linkage and memory ownership
+        run: |
+          set -o pipefail
+          .build/pixels/engine_link_check 2>&1 | tee .build/engine-link.log
+          .build/pixels/menu_input_tests
+      - name: Execute original startup with a missing-assets sandbox
+        run: |
+          set -o pipefail
+          mkdir -p .build/startup-empty
+          LIBGL_ALWAYS_SOFTWARE=1 MESA_GLES_VERSION_OVERRIDE=2.0 SDL_AUDIODRIVER=dummy xvfb-run -a env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so timeout --signal=INT --kill-after=5s 15s .build/pixels/engine_startup_check .build/startup-empty 2>&1 | tee .build/engine-startup.log
+      - name: Execute original startup with configuration present
+        run: |
+          set -o pipefail
+          mkdir -p .build/startup-config
+          cp "candidates/link4/Need For Speed II SE/install.win" .build/startup-config/install.win
+          LIBGL_ALWAYS_SOFTWARE=1 MESA_GLES_VERSION_OVERRIDE=2.0 SDL_AUDIODRIVER=dummy xvfb-run -a env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so timeout --signal=INT --kill-after=5s 15s .build/pixels/engine_startup_check .build/startup-config config 2>&1 | tee .build/engine-config-startup.log
+      - name: Execute original startup with configuration and language present
+        run: |
+          set -o pipefail
+          mkdir -p .build/startup-language
+          cp "candidates/link4/Need For Speed II SE/install.win" "candidates/link4/Need For Speed II SE/text.eng" .build/startup-language/
+          LIBGL_ALWAYS_SOFTWARE=1 MESA_GLES_VERSION_OVERRIDE=2.0 SDL_AUDIODRIVER=dummy xvfb-run -a env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so timeout --signal=INT --kill-after=5s 15s .build/pixels/engine_startup_check .build/startup-language language 2>&1 | tee .build/engine-language-startup.log
+      - name: Execute original startup across background and foreground
+        run: |
+          set -o pipefail
+          LIBGL_ALWAYS_SOFTWARE=1 MESA_GLES_VERSION_OVERRIDE=2.0 SDL_AUDIODRIVER=dummy xvfb-run -a env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so timeout --signal=INT --kill-after=5s 15s .build/pixels/engine_startup_check .build/startup-language suspended-language 2>&1 | tee .build/engine-lifecycle-startup.log
+      - name: Validate actual rendered pixels under Mesa GLES2
+        run: |
+          set -o pipefail
+          LIBGL_ALWAYS_SOFTWARE=1 MESA_GLES_VERSION_OVERRIDE=2.0 xvfb-run -a env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so .build/pixels/renderer_pixel_tests 2>&1 | tee .build/gles-pixels.log
+      - name: Execute the shared SDL game app entry
+        run: |
+          set +e
+          LIBGL_ALWAYS_SOFTWARE=1 MESA_GLES_VERSION_OVERRIDE=2.0 SDL_AUDIODRIVER=dummy xvfb-run -a env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so timeout --signal=INT --kill-after=5s 15s .build/pixels/nfs_game_app .build/startup-language > .build/game-app-startup.log 2>&1
+          status=$?
+          cat .build/game-app-startup.log
+          test "$status" -eq 1 || exit 1
+          grep -F "Native game app stopped: exit=1 error=" .build/game-app-startup.log || exit 1
+          ! grep -F "Native game app failure:" .build/game-app-startup.log || exit 1
+          ! grep -E 'ERROR: (AddressSanitizer|LeakSanitizer)|runtime error:' .build/game-app-startup.log || exit 1
+      - name: Validate actual SDL audio stream callbacks
+        run: |
+          set -o pipefail
+          SDL_AUDIODRIVER=dummy timeout 15s .build/pixels/audio_sdl_tests 2>&1 | tee .build/sdl-audio.log
+      - name: Validate actual SDL gamepad input and reconnect
+        run: |
+          set -o pipefail
+          .build/pixels/input_sdl_tests 2>&1 | tee .build/sdl-input.log
+  build:
+    needs: renderer-pixels
+    if: inputs.build_ios
+    runs-on: macos-15
+    timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Toolchain information
+        run: |
+          python3 scripts/check_runner_space.py
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+          cmake --version
+      - name: Fetch pinned source and apply checked patches
+        run: python3 scripts/prepare_full_mapped.py
+      - name: Prepare pinned SDL and existing GLES2 renderer
+        run: python3 scripts/prepare_renderer.py
+      - name: Host regression tests
+        run: |
+          python3 tests/bundle_resources_test.py
+          cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
+          cmake --build .build/host --target core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests -j 3
+          ctest --test-dir .build/host --output-on-failure
+      - name: Configure native iPadOS targets
+        run: |
+          cmake -S . -B .build/ios -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+      - name: Compile translated engine to ARM64 objects
+        run: |
+          set -o pipefail
+          /usr/bin/time -l cmake --build .build/ios --config Debug --target full_mapped_translation -j 3 2>&1 | tee .build/engine-ipados.log
+      - name: Compile existing renderer and native platform bridges
+        run: |
+          set -o pipefail
+          cmake --build .build/ios --config Debug --target glide_gles2 platform_bridges -j 3 2>&1 | tee .build/renderer-ipados.log
+      - name: Link the complete translated engine with native platform services
+        run: |
+          set -o pipefail
+          cmake --build .build/ios --config Debug --target NFSIISEEngineCheck -j 3 2>&1 | tee .build/engine-link-ipados.log
+      - name: Build unsigned native platform diagnostic
+        if: inputs.include_probe
+        run: |
+          set -o pipefail
+          cmake --build .build/ios --config Debug --target NFSIISEProbe -j 3 2>&1 | tee .build/app-ipados.log
+      - name: Build the original engine game app entry
+        run: |
+          set -o pipefail
+          cmake --build .build/ios --config Debug --target NFSIISEGame -j 3 2>&1 | tee .build/game-app-ipados.log
+      - name: Validate ARM64 bundle and package unsigned IPA
+        if: inputs.include_probe
+        run: python3 scripts/package_ipa.py .build/ios/Debug-iphoneos/NFSIISEProbe.app .build/NFSIISEProbe-unsigned.ipa
+      - name: Validate and package the development game bundle
+        run: python3 scripts/package_ipa.py .build/ios/Debug-iphoneos/NFSIISEGame.app .build/NFSIISEGame-development-unsigned.ipa
+      - name: Bound optional artifact payload
+        if: inputs.publish_ipa
+        run: python3 scripts/check_artifact_budget.py
+      - name: Upload development game (personal signing and gameplay validation required)
+        if: inputs.publish_ipa
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          retention-days: 1
+          name: NFSIISEGame-development-unsigned
+          path: |
+            .build/NFSIISEGame-development-unsigned.ipa
+            .build/NFSIISEGame-development-unsigned.json
+          if-no-files-found: error
+      - name: Upload diagnostic (requires personal signing before installation)
+        if: inputs.publish_ipa && inputs.include_probe
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          retention-days: 1
+          name: NFSIISEProbe-unsigned
+          path: .build/NFSIISEProbe-unsigned.ipa
+          if-no-files-found: error

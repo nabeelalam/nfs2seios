@@ -1,0 +1,196 @@
+"""Fetch pinned SDL3 and prepare the existing Glide GLES2 renderer for iOS.
+
+Includes typed guest adapters and tested framebuffer transfers; device/game
+scene integration remains separate.
+"""
+import shutil
+import subprocess
+import re
+from prepare_engine import ROOT, prepare
+
+SDL_PIN = "829a65d769d935c4852f8159e964312c0957260a"
+SDL_TAG = "release-3.4.18"
+
+
+def prepare_renderer():
+    vendor = ROOT / ".build/vendor/SDL"
+    if not vendor.exists():
+        subprocess.run(["git", "clone", "--depth", "1", "--branch", SDL_TAG,
+                        "https://github.com/libsdl-org/SDL.git", str(vendor)], check=True)
+    actual = subprocess.check_output(["git", "-C", str(vendor), "rev-parse", "HEAD"], text=True).strip()
+    if actual != SDL_PIN: raise ValueError(f"SDL source mismatch: {actual}")
+    source = prepare()
+    dest = ROOT / ".build/renderer"
+    dest.mkdir(exist_ok=True)
+    for name in ["Glide2x.c", "Glide2x.h", "Wrapper.h"]:
+        shutil.copyfile(source / name, dest / name)
+    wrapper = dest / "Wrapper.h"
+    wrapper_text=wrapper.read_text().replace('void *this', 'void *game_context')
+    allocation='void *malloc32(size_t size);\nvoid free32(void *p);'
+    if wrapper_text.count(allocation)!=1:raise ValueError('Unexpected native allocation declarations')
+    wrapper_text=wrapper_text.replace(allocation,'#ifdef __cplusplus\nextern "C" {\n#endif\n'+allocation+'\n#ifdef __cplusplus\n}\n#endif')
+    wrapper.write_text(wrapper_text)
+    shutil.copytree(source / "Glide2x", dest / "Glide2x", dirs_exist_ok=True)
+    path = dest / "Glide2x/OpenGL2.c"
+    text = path.read_text()
+    if text.count("glBindFramebuffer(GL_FRAMEBUFFER, 0);") != 1:
+        raise ValueError("Unexpected default framebuffer binding count")
+    text = text.replace('#include <stdlib.h>', '#include <stdlib.h>\n#include <signal.h>')
+    text = text.replace('static SDL_GLContext g_glCtx;', 'static SDL_GLContext g_glCtx;\nstatic GLint g_drawableFramebuffer;\nstatic GLint g_drawableRenderbuffer;')
+    needle = '\n#ifndef GLES2\n\tglGetShaderiv = SDL_GL_GetProcAddress'
+    if text.count(needle) != 1: raise ValueError("Cannot identify post-context initialization")
+    text = text.replace(needle, '\n#ifdef GLES2\n\tglGetIntegerv(GL_FRAMEBUFFER_BINDING, &g_drawableFramebuffer);\n\tglGetIntegerv(GL_RENDERBUFFER_BINDING, &g_drawableRenderbuffer);\n#endif\n' + needle)
+    text = text.replace('glBindFramebuffer(GL_FRAMEBUFFER, 0);', 'glBindFramebuffer(GL_FRAMEBUFFER, (GLuint)g_drawableFramebuffer);')
+    # SDL UIKit presents the currently bound drawable renderbuffer. The game's
+    # offscreen depth target leaves renderbuffer 0 bound; restore before swap.
+    if text.count('SDL_GL_SwapWindow(sdlWin);') != 1: raise ValueError("Unexpected presentation call count")
+    text = text.replace('SDL_GL_SwapWindow(sdlWin);', '#ifdef GLES2\n\tglBindRenderbuffer(GL_RENDERBUFFER, (GLuint)g_drawableRenderbuffer);\n#endif\n\tSDL_GL_SwapWindow(sdlWin);')
+    text = text.replace('#include <signal.h>', '#include <signal.h>\n#include "GuestRuntimeC.h"')
+    pointer = 'info->lfbPtr = (uint32_t)(uintptr_t)g_lfb;'
+    if text.count(pointer) != 1: raise ValueError("Cannot identify linear framebuffer pointer export")
+    text = text.replace(pointer, 'info->lfbPtr = nfs_guest_address(g_lfb);')
+    pointer = 'uint16_t *dataIn  = (uint16_t *)(uintptr_t)info->data;'
+    if text.count(pointer) != 1: raise ValueError("Cannot identify texture pointer import")
+    text = text.replace(pointer, 'uint16_t *dataIn = (uint16_t *)nfs_host_address(info->data, ti->size * ti->size * (ti->fmt == GR_TEXFMT_P_8 ? 1 : 2));')
+    text = text.replace('uint16_t value = dataIn[i];', 'uint16_t value; memcpy(&value, (const uint8_t *)dataIn + i * 2, sizeof(value));')
+    text = text.replace('uint32_t value = g_palette[data[i]];', 'uint32_t value; memcpy(&value, (const uint8_t *)g_palette + data[i] * 4, sizeof(value));')
+    text = text.replace('g_lfb = (uint8_t *)malloc32(640*480*2);', 'g_lfb = (uint8_t *)malloc32(640*480*2);\n\t\tif (!g_lfb) return false;')
+    text = prepare_surfaces(text, dest)
+    path.write_text(text)
+    prepare_glide_exports(source, dest)
+    print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
+
+
+def prepare_surfaces(text, dest):
+    def checked(old, new):
+        nonlocal text
+        if text.count(old) != 1: raise ValueError(f"Unexpected renderer surface pattern: {old[:90]}")
+        text = text.replace(old,new)
+    checked('static uint32_t g_framebuffer;', 'static uint32_t g_framebuffer;\nstatic GLuint g_frontFramebuffer, g_frontTexture;\nstatic GrBuffer_t g_renderBuffer = GR_BUFFER_BACKBUFFER;')
+    checked('static void destroyFrameBuffer()\n{', 'static void destroyFrameBuffer()\n{\n\tif(g_frontFramebuffer)glDeleteFramebuffers(1,&g_frontFramebuffer);\n\tif(g_frontTexture)glDeleteTextures(1,&g_frontTexture);\n\tg_frontFramebuffer=g_frontTexture=0;')
+    checked('\tg_framebufferHeight = shorterEdge;', '''
+    glGenTextures(1,&g_frontTexture);glBindTexture(GL_TEXTURE_2D,g_frontTexture);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,w,h,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,(!fixedFramebufferSize || !framebufferLinearFiltering)?GL_NEAREST:GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    glGenFramebuffers(1,&g_frontFramebuffer);glBindFramebuffer(GL_FRAMEBUFFER,g_frontFramebuffer);
+    glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,g_frontTexture,0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,g_framebufferDepth);
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE){framebufferError=true;raise(SIGABRT);}
+    glBindTexture(GL_TEXTURE_2D,0);
+    glBindFramebuffer(GL_FRAMEBUFFER,g_framebuffer);
+    g_framebufferHeight = shorterEdge;''')
+    # Other framebuffer bindings during construction must stay unconditional.
+    checked('\t\tglBindFramebuffer(GL_FRAMEBUFFER, g_framebuffer);', '\t\tglBindFramebuffer(GL_FRAMEBUFFER, g_renderBuffer==GR_BUFFER_FRONTBUFFER?g_frontFramebuffer:g_framebuffer);')
+    begin=text.index('REALIGN STDCALL BOOL grLfbLock(')
+    end=text.index('REALIGN STDCALL void grRenderBuffer(',begin)
+    text=text[:begin]+'''#include "RendererSurface.h"
+#include "RendererLfbGL.inc"
+REALIGN STDCALL BOOL grLfbLock(GrLock_t type, GrBuffer_t buffer, GrLfbWriteMode_t writeMode, GrOriginLocation_t origin, BOOL pixelPipeline, GrLfbInfo_t *info)
+{
+    const NfsSurfaceOperations operations={lfbRead,lfbWrite};
+    return nfs_glide_lfb_lock(type,buffer,writeMode,origin,pixelPipeline,info,operations);
+}
+REALIGN STDCALL BOOL grLfbUnlock(GrLock_t type, GrBuffer_t buffer)
+{
+    return nfs_glide_lfb_unlock(type,buffer);
+}
+'''+text[end:]
+    # The manager is needed by teardown, which is above its transfer helpers.
+    checked('#include <stdlib.h>', '#include <stdlib.h>\n#include "RendererSurface.h"')
+    checked('static void destroyContext()\n{', 'static void destroyContext()\n{\n\tnfs_glide_lfb_reset();\n\tif(!g_glCtx)return;')
+    checked('REALIGN STDCALL BOOL grSstQueryHardware(GrHwConfiguration *hwconfig)\n{\n\treturn true;\n}', 'REALIGN STDCALL BOOL grSstQueryHardware(GrHwConfiguration *hwconfig)\n{\n\treturn nfs_glide_query_hardware(hwconfig);\n}')
+    checked('// \tfprintf(stderr, "grRenderBuffer\\n");', '''// Rendering and LFB access select the same independent front/back surfaces.
+    if(buffer!=GR_BUFFER_FRONTBUFFER && buffer!=GR_BUFFER_BACKBUFFER)return;
+    drawTriangles();g_renderBuffer=buffer;useGameProgram(true);''')
+    swap=text.index('REALIGN STDCALL void grBufferSwap(')
+    end=text.index('REALIGN STDCALL void grColorCombine(',swap)
+    body=text[swap:end]
+    if body.count('\tdrawTriangles();')!=1:raise ValueError('Unexpected buffer swap flush')
+    body=body.replace('\tdrawTriangles();','''\tdrawTriangles();
+    const GLuint oldTexture=g_framebufferTexture,oldFramebuffer=g_framebuffer;
+    g_framebufferTexture=g_frontTexture;g_framebuffer=g_frontFramebuffer;
+    g_frontTexture=oldTexture;g_frontFramebuffer=oldFramebuffer;''')
+    body=body.replace('glBindTexture(GL_TEXTURE_2D, g_framebufferTexture);','glBindTexture(GL_TEXTURE_2D, g_frontTexture);')
+    begin_presentation=body.index('\tint32_t xOffset = 0')
+    end_presentation=body.index('\tSDL_GL_SwapWindow(sdlWin);')+len('\tSDL_GL_SwapWindow(sdlWin);')
+    presentation=body[begin_presentation:end_presentation].replace('\tSDL_GL_SwapWindow(sdlWin);','\treturn SDL_GL_SwapWindow(sdlWin);')
+    helper='static BOOL presentFrontSurface(void)\n{\n\tuseGameProgram(false);\n\tglUniform1f(g_uGammaLocDisp,g_gammaValue);\n'+presentation+'\n}\n'
+    body=body[:begin_presentation]+'\tpresentFrontSurface();'+body[end_presentation:]
+    text=text[:swap]+helper+body+text[end:]
+    checked('static float g_gammaValue;', 'static float g_gammaValue = 1.0f;')
+    shutil.copyfile(ROOT/'scripts/renderer_lfb_gl.inc',dest/'Glide2x/RendererLfbGL.inc')
+    return text
+
+
+def prepare_glide_exports(source, dest):
+    declarations = dict(re.findall(r'extern "C" int32_t ((?:gr|gu)\w+)\(([^;]*)\);', (source / "Cpp/DATA.h").read_text()))
+    implementations = {}
+    for path in [dest / "Glide2x.c", dest / "Glide2x/OpenGL2.c"]:
+        for result, name, args in re.findall(r"REALIGN STDCALL (void|BOOL|uint32_t) (\w+)\(([^)]*)\)", path.read_text()):
+            if name in declarations: implementations[name] = (result, args)
+    if set(implementations) != set(declarations):
+        raise ValueError(f"Missing Glide implementations: {set(declarations)-set(implementations)}")
+    header = '#pragma once\n#include "Glide2x.h"\n#ifdef __cplusplus\nextern "C" {\n#endif\n'
+    bridge = '#include "GuestAccess.h"\n#include "NativeGlide.h"\n#undef true\n#undef false\n#include "MainThreadBridge.h"\n'
+    pointer_bridge = bridge
+    pointer_exports = {'grDrawTriangle','grTexDownloadMipMap','grTexSource','grLfbLock','grFogTable','guFogGenerateExp','grTexDownloadTable'}
+    for name, (result, native_args) in sorted(implementations.items()):
+        begin_bridge = len(bridge)
+        header += f'{result} native_{name}({native_args});\n'
+        bridge += f'extern "C" int32_t {name}({declarations[name]}) {{\n'
+        arguments = []
+        parameters = [] if native_args == 'void' else native_args.split(',')
+        for index, parameter in enumerate(parameters):
+            parameter = parameter.strip()
+            if '*' in parameter or '[' in parameter:
+                typename = re.sub(r"\w+(?:\[[^]]+\])?$", "", parameter).replace('*', '').strip()
+                if typename in ('const GrVertex', 'GrTexInfo'):
+                    type_name = typename.replace('const ', '')
+                    bridge += f' auto value{index} = guest_load<{type_name}>(uint32_t(arg{index}));\n'
+                    if type_name == 'GrTexInfo':
+                        bridge += f' if (value{index}.largeLod < 0 || value{index}.largeLod > 8) __builtin_trap();\n'
+                        bridge += ' if (uint32_t(arg1) >= 0x200000u || (uint32_t(arg1) & 3)) __builtin_trap();\n'
+                        if name == 'grTexDownloadMipMap':
+                            bridge += f' const size_t size = size_t(256 >> value{index}.largeLod);\n'
+                            bridge += f' const size_t bytes = size * size * (value{index}.format == GR_TEXFMT_P_8 ? 1 : 2);\n'
+                            bridge += ' if (bytes > 0x200000u - uint32_t(arg1)) __builtin_trap();\n'
+                            bridge += f' nfs_host_address(value{index}.data,bytes);\n'
+                    arguments.append(f'&value{index}')
+                elif typename in ('GrLfbInfo_t', 'GrHwConfiguration'):
+                    bridge += f' nfs_host_address(uint32_t(arg{index}),sizeof({typename}));\n {typename} value{index}{{}};\n'
+                    if typename == 'GrLfbInfo_t': bridge += f' value{index} = guest_load<GrLfbInfo_t>(uint32_t(arg{index}));\n'
+                    arguments.append(f'&value{index}')
+                elif typename in ('const GrFog_t', 'GrFog_t'):
+                    arguments.append(f'({typename} *)nfs_host_address(uint32_t(arg{index}),GR_FOG_TABLE_SIZE)')
+                elif typename == 'void' and name == 'grTexDownloadTable':
+                    arguments.append(f'nfs_host_address(uint32_t(arg{index}),arg1 == GR_TEXTABLE_PALETTE ? sizeof(GuTexPalette) : sizeof(GuNccTable))')
+                else:
+                    raise ValueError(f"Unreviewed Glide pointer parameter: {name}: {parameter}: {typename}")
+            else:
+                arguments.append(f'arg{index}')
+        invocation = f'native_{name}({", ".join(arguments)})'
+        operation = f'{invocation}; return 0;' if result == 'void' else f'return static_cast<int32_t>({invocation});'
+        bridge += f' const int32_t result = nfs::renderer_operation([&]() -> int32_t {{ {operation} }});\n'
+        for index, parameter in enumerate(parameters):
+            if 'GrLfbInfo_t *' in parameter or 'GrHwConfiguration *' in parameter:
+                bridge += f' guest_store(uint32_t(arg{index}),value{index});\n'
+        bridge += ' return 0;\n}\n' if result == 'void' else ' return result;\n}\n'
+        if name in pointer_exports: pointer_bridge += bridge[begin_bridge:]
+    header += '#ifdef __cplusplus\n}\n#endif\n'
+    (dest / 'NativeGlide.h').write_text(header)
+    (dest / 'GuestGlide.h').write_text('#pragma once\n#include <stdint.h>\n' + ''.join(
+        f'extern "C" int32_t {name}({args});\n' for name, args in sorted(declarations.items())))
+    (dest / 'GlideBridge.cpp').write_text(bridge)
+    (dest / 'PointerGlideBridge.cpp').write_text(pointer_bridge)
+    for path in [dest / "Glide2x.c", dest / "Glide2x/OpenGL2.c"]:
+        text = path.read_text()
+        for name in declarations: text = re.sub(r'\b' + name + r'\(', 'native_' + name + '(', text)
+        path.write_text(text)
+    print(f"Prepared {len(implementations)} typed Glide exports")
+
+
+if __name__ == "__main__":
+    prepare_renderer()

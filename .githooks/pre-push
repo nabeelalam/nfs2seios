@@ -1,0 +1,3 @@
+#!/bin/sh
+# Local and CI checks are independent; never bypass this gate to publish.
+exec python scripts/publication_gate.py --mode history

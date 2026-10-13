@@ -1,0 +1,2 @@
+#!/bin/sh
+exec python scripts/publication_gate.py --mode staged
