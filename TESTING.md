@@ -54,3 +54,19 @@ No IPA artifact was uploaded in this validation run. Game assets were absent
 from cloud jobs. Signing, installation, original-data gameplay, sustained racing,
 physical controller behavior and audible game audio remain separate device gates.
 The intermittent original audio callback failure remains unresolved.
+
+## Configure original racing controls
+
+The original game may start with a keyboard profile even when a controller
+navigates menus. Open **Options -> Controls -> Setup**. Select each row, confirm
+with the controller's south button, then supply the desired new input. Bind
+steer left and steer right by moving the left stick in the respective direction.
+Bind accelerate by pressing the right trigger. Choose **DONE** to accept the
+bindings and leave the controls menus before starting a race.
+
+A local original-data session verified this complete flow with an SDL virtual
+gamepad: both steering directions were captured, right-trigger acceleration
+reached displayed speed 105 in third gear, and calibrated steering returned
+to neutral after release. The session exited cleanly and generated non-silent
+game PCM. This does not establish physical iPad input, audible output or stable
+complete laps. Brake, shifts and remaining actions need their own checks.
