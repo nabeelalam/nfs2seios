@@ -24,7 +24,10 @@ int main(int argc,char **argv){
             if(!suspended_immediately)throw std::runtime_error("Background watcher did not suspend graphics before event polling");
             session.poll();
         }
-        session.start();const auto deadline=SDL_GetTicks()+3000;
+        // A shared runner exhausted the old 3s deadline before the required
+        // error was delivered. Keep an allowance inside CI's 15s outer limit;
+        // success still requires the exact expected original file-load failure.
+        session.start();const auto started=SDL_GetTicks(),deadline=started+10000;
         if(suspended_start){
             const auto foreground_at=SDL_GetTicks()+50;
             while(SDL_GetTicks()<foreground_at){session.poll();SDL_Delay(1);}
@@ -32,8 +35,12 @@ int main(int argc,char **argv){
             SDL_Event event{};event.type=SDL_EVENT_DID_ENTER_FOREGROUND;if(!SDL_PushEvent(&event))throw std::runtime_error("Could not queue foreground event");session.poll();
         }
         bool timed_out=false;
-        while(!session.result().finished){session.poll();if(!timed_out && SDL_GetTicks()>deadline){timed_out=true;std::fprintf(stderr,"Startup deadline reached; pending error=%s\n",session.result().error.c_str());session.request_stop();}SDL_Delay(1);}
+        while(!session.result().finished){session.poll();if(!timed_out && SDL_GetTicks()>deadline){timed_out=true;std::fprintf(stderr,"Startup deadline reached; pending error=%s\n",session.result().error.c_str());session.request_stop();}nfs::wait_for_main_work();}
         const auto result=session.result();std::fprintf(stderr,"Original startup result: exit=%u messages=%d error=%s\n",result.exit_code,messages,result.error.c_str());
+        const auto timing=nfs::take_renderer_timing();
+        std::fprintf(stderr,"Startup timing: elapsed_ms=%llu render_calls=%llu queue_ms=%llu execution_ms=%llu\n",
+            static_cast<unsigned long long>(SDL_GetTicks()-started),static_cast<unsigned long long>(timing.calls),
+            static_cast<unsigned long long>(timing.queue_ns/1000000),static_cast<unsigned long long>(timing.execution_ns/1000000));
         if(timed_out || !result.error.empty() || !messages || result.exit_code!=1)status=1;
         if(configuration_present && install_failed){std::fprintf(stderr,"FAIL: install.win exists in the fixture but the original loader could not load it\n");status=1;}
         if(configuration_present && !language_failed){std::fprintf(stderr,"FAIL: configuration startup did not reach the missing English language resource\n");status=1;}

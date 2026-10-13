@@ -88,3 +88,12 @@ it; counters are approximate concurrent aggregates, not GPU timer queries
 or an FPS measurement. This removes a source-confirmed per-call sleep, but
 physical speedup and any remaining bottleneck require another device test.
 The Apple host transport test uses the same new idle function.
+
+The first validation attempt stopped at the Linux missing-assets fixture: its
+three-second internal deadline expired before the expected file-load error,
+so the Apple job was skipped. All four current startup fixtures pass locally
+with sanitizers and graphics shader caching disabled. The fixture now uses
+the production idle function, logs elapsed/renderer timing, and allows ten
+seconds inside the existing fifteen-second external limit. It still fails
+on a deadline, wrong/missing expected error, runtime exception or wrong exit
+code; the cause of the shared-runner delay is not established.
