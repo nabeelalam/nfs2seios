@@ -116,3 +116,21 @@ category without printing sensitive matched values.
 
 These checks reduce risk; they do not prove arbitrary future content is safe.
 Review source, Git metadata, package inputs and upload storage before publication.
+
+## Latest targeted frame-scheduling validation
+
+A failed Linux startup gate prevented the Apple job from starting. After a
+locally validated fixture correction, the targeted optimized build completed
+in run 38463370000. The Apple job took 558 seconds: configuration 418 seconds,
+host checks 48 seconds, engine compilation 21 seconds and renderer/platform
+compilation 35 seconds. Pinned source fetch took five seconds. Its sole IPA
+artifact was 1,998,130 bytes with one-day retention; the Probe and caches were
+not rebuilt. These figures describe this run, not a guaranteed future budget.
+
+Configuration remains the main cost. [CMake documents alternative generators
+for iOS](https://cmake.org/cmake/help/v3.29/manual/cmake-toolchains.7.html#cross-compiling-for-ios-tvos-visionos-or-watchos),
+but recommends Xcode; alternatives require explicit CPU and signing handling.
+Retain the verified generator for this device test. Evaluate a faster generator
+only alongside a necessary future Apple validation, preserving ARM64/device
+SDK checks, unsigned bundle resources and package-path verification. No cache
+is justified by a five-second fetch.

@@ -69,7 +69,11 @@ gamepad: both steering directions were captured, right-trigger acceleration
 reached displayed speed 105 in third gear, and calibrated steering returned
 to neutral after release. The session exited cleanly and generated non-silent
 game PCM. This does not establish physical iPad input, audible output or stable
-complete laps. Brake, shifts and remaining actions need their own checks.
+complete laps. A separate sustained-button local run also accepts left-trigger braking, X
+handbrake, shoulders for shifts and Y camera. Calibrated brake transitions
+0 -> 255 -> 0, and a rendered race slows from speed 32 to 0 with the brake
+held. Detailed handbrake/camera action effects, shift behavior, full laps and
+physical-device braking remain separate checks.
 
 ## Physical game feedback and main-thread wait correction
 
@@ -97,3 +101,10 @@ the production idle function, logs elapsed/renderer timing, and allows ten
 seconds inside the existing fifteen-second external limit. It still fails
 on a deadline, wrong/missing expected error, runtime exception or wrong exit
 code; the cause of the shared-runner delay is not established.
+
+The corrected Release source in run 38463370000 passes Linux gates and all
+27 Apple host checks, compiles/links the actual ARM64 iPad bundle and packages
+a roughly 1.9 MiB artifact. Independent downloaded-package checks confirm
+source/configuration identity, iOS-device ARM64 architecture, pinned support
+hashes and the expected twelve bundle files. Owned assets and signing material
+are absent. Physical performance of the new idle wait remains unverified.
