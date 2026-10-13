@@ -39,3 +39,33 @@ not establish Apple GPU performance. Incomplete or forcibly killed runs fail.
 The intermittent invalid audio callback, sustained races, full laps, controller
 gameplay and the latest physical game build remain open. Do not declare the port
 complete based on a successful cloud compilation or retry.
+
+## Current public Apple SDK validation
+
+Revision `2b8a4a6fd3b751f93781a5178c4088fa490c7e03` passed the
+[manual validation run](https://github.com/nabeelalam/nfs2seios/actions/runs/38450215719).
+Linux checked native linkage, mapped contexts above 4 GB, original missing-asset
+startup/shutdown, GLES pixels, SDL audio callbacks and gamepad reconnect.
+macOS passed all 27 host checks using Xcode 16.4/iPhoneOS 18.5, compiled and linked
+the complete mapped ARM64 device engine, renderer, platform services and game
+app, then validated and packaged its unsigned Debug IPA.
+
+No IPA artifact was uploaded in this validation run. Game assets were absent
+from cloud jobs. Signing, installation, original-data gameplay, sustained racing,
+physical controller behavior and audible game audio remain separate device gates.
+The intermittent original audio callback failure remains unresolved.
+
+## Current public Apple SDK validation
+
+Revision `2b8a4a6fd3b751f93781a5178c4088fa490c7e03` passed the
+[manual validation run](https://github.com/nabeelalam/nfs2seios/actions/runs/38450215719).
+Linux checked native linkage, mapped contexts above 4 GB, original missing-asset
+startup/shutdown, GLES pixels, SDL audio callbacks and gamepad reconnect.
+macOS passed all 27 host checks using Xcode 16.4/iPhoneOS 18.5, compiled and linked
+the complete mapped ARM64 device engine, renderer, platform services and game
+app, then validated and packaged its unsigned Debug IPA.
+
+No IPA artifact was uploaded in this validation run. Game assets were absent
+from cloud jobs. Signing, installation, original-data gameplay, sustained racing,
+physical controller behavior and audible game audio remain separate device gates.
+The intermittent original audio callback failure remains unresolved.
