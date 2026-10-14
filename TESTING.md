@@ -193,3 +193,11 @@ controls/audio and a complete two-lap race/menu-return/clean sanitizer shutdown.
 Actual original codec initializers validate callback publication blocking and
 stack balance in the focused linkage check. Broader packet retirement lifetimes
 and physical error causality are not proven by this ordering change.
+
+Build 6 source `5fb787fc0efccfbc0ff8825894057190ac6550f3` passes run38646762033
+after correcting the precise Apple compiler failure in the initial run38645086168:
+the new overlay's weak ownership requires an explicit source-level ARC flag in
+the mixed-language Xcode target. The released ZIP is independently downloaded and
+checked for source, version6, iOS-device ARM64 and exact five-entry contents with
+no supplied startup/assets or signing material. New overlay/selector and native
+resolution performance still need physical acceptance.

@@ -4,13 +4,14 @@ Native game builds have been personally signed and launched on the target iPad
 through the user's existing SideStore setup. Earlier game versions rendered
 original menus and races with audio and controller input. Build4 was reported
 playable at 40-49 displayed race FPS, followed by a mid-race memory error.
-Build5 is a verified unsigned development download targeting an audio-state
-conflict; its installation and complete-race acceptance on the iPad remain
+Build5 now has reported automatic launch and completed playable races without
+further crashes. Build6 retains the audio-state guards and adds performance
+controls; its new diagnostics and resolution controls on the iPad remain
 pending. The separate Probe is a platform diagnostic, not the game.
 
 ## Update the existing game
 
-1. Download the [build5 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38637807635-1/NFSIISEGame-development-unsigned.zip)
+1. Download the [build6 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38646762033-1/NFSIISEGame-development-unsigned.zip)
    in Files and extract it.
 2. Keep the currently installed NFS II SE app and your separately stored game
    folder in Files. Install this update over the existing app.
@@ -22,15 +23,15 @@ pending. The separate Probe is a platform diagnostic, not the game.
    racing FPS. Check that menu directions select items without confirming them.
    A complete race and background/reopen check remain device acceptance items.
 
-Build5 retains the renderer optimization, presentation FPS counter, corrected
+Build6 retains the renderer optimization, presentation FPS counter, corrected
 separately supplied startup importer and callback exception-stack recovery,
-and adds per-voice audio initialization/decoding guards. Its exact production
-source passed a local complete two-lap race and menu return with sanitizers;
-this does not prove the reported iPad error is fixed.
+and protects audio callback selection as well as initialization/decoding.
+The ordering prototype passed a local complete two-lap race and menu return
+with sanitizers. New diagnostics and resolution controls need a device check.
 Import errors are displayed before the picker window is closed. The release tag
 and manifest identify its source revision.
 
-## Performance controls in the next candidate
+## Performance controls in build 6
 
 Tap the FPS overlay to select 640x480, 960x720, 1280x960 or native screen pixels.
 Pause with the controller before changing the setting. Native retains the
@@ -45,11 +46,11 @@ is unavailable with this renderer, and is not estimated from the FPS figure.
 
 ## Separately supplied game files
 
-The public build5 IPA contains only the executable, app metadata and license
+The public build6 IPA contains only the executable, app metadata and license
 notices. It excludes GAMEDATA, FEDATA, install.win and all text.* language files.
 For a folder import, supply install.win and text.eng beside GAMEDATA/FEDATA
 in the selected folder before opening it. Other text.* languages are optional.
-Build3 had a confirmed import regression; replace it with build5. Existing
+Build3 had a confirmed import regression; replace it with build6. Existing
 app-owned game folders remain reusable without importing them again.
 
 For the supplied-startup importer, the local helper
@@ -61,11 +62,11 @@ that folder through your private Files storage. The helper does not alter your
 original game folder, fetch game assets or upload files.
 Do not delete that folder or transfer it into the public repository.
 
-Build5 accepts a selected folder containing GAMEDATA, FEDATA,
+Build6 accepts a selected folder containing GAMEDATA, FEDATA,
 install.win and text.eng, with optional other text.* languages. Startup files
 must be compatible with the translated engine; an original CD root may not
 contain them. This import path passed local host and Apple build checks;
-the same importer launched build4 on the target iPad. Build5 device acceptance
+the same importer launched build4 on the target iPad. Build6 device acceptance
 is pending. The Windows executable is not used. The game's
 native-port.log is written into its app Documents folder for failure diagnosis.
 
