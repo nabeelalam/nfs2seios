@@ -43,24 +43,41 @@ int main(){
             const uint32_t header=memory.encode(dword_5A179C)+12;
             if(!memory.codec_mutex(header) || memory.codec_mutex(header+1))
                 throw std::runtime_error("Codec operation pool mapping failed");
+            std::unique_ptr<Game,void(*)(void *)> codec_context(nfs_create_game_context(),nfs_destroy_game_context);
+            if(!codec_context)throw std::bad_alloc();
+            const auto voice=header-12,decoder=voice+0xDA8,query=voice+0xDAC;
+            const auto stack=codec_context->esp;
+            const auto initialize=[&](bool floating){
+                codec_context->eax=header;codec_context->ebx=8;codec_context->edx=0;
+                // Original initializer ABI: three arguments plus return slot.
+                codec_context->push32(query);codec_context->push32(decoder);
+                codec_context->push32(0);codec_context->push32(0);
+                if(floating)codec_context->_sub_4BD848();else codec_context->_sub_4BD66C();
+                codec_context->esp+=4;
+                if(codec_context->esp!=stack)throw std::runtime_error("Codec initializer stack imbalance");
+            };
+            initialize(false);
             std::promise<void> entered,released,initializer_started;
             auto release=released.get_future();
             auto job=std::async(std::launch::async,[&]{
                 nfs::CodecOperationGuard operation{header};
                 {nfs::CodecOperationGuard nested{header};}
+                const auto selected=guest_load<uint32_t>(decoder);
                 entered.set_value();release.wait();
+                return selected==game_id_sub_4BD4B0 && guest_load<uint32_t>(decoder)==selected;
             });
             entered.get_future().wait();
             auto initializer=std::async(std::launch::async,[&]{
                 initializer_started.set_value();
-                nfs::CodecOperationGuard operation{header};
+                initialize(true);
             });
             initializer_started.get_future().wait();
             auto other=std::async(std::launch::async,[&]{nfs::CodecOperationGuard operation{header+3556};});
             const bool blocked=initializer.wait_for(std::chrono::milliseconds(30))==std::future_status::timeout;
             const bool independent=other.wait_for(std::chrono::seconds(1))==std::future_status::ready;
-            released.set_value();job.get();initializer.get();other.get();
-            if(!blocked || !independent)throw std::runtime_error("Codec initialization/job isolation failed");
+            released.set_value();const bool coherent=job.get();initializer.get();other.get();
+            if(!blocked || !independent || !coherent || guest_load<uint32_t>(decoder)!=game_id_sub_4BD6C4)
+                throw std::runtime_error("Codec initialization/selection isolation failed");
             try{nfs::CodecOperationGuard operation{header};throw std::runtime_error("Codec guard unwind");}
             catch(const std::runtime_error &){}
             {nfs::CodecOperationGuard recovered{header};}

@@ -171,3 +171,25 @@ unbinds graphics, freezes both captured presentation and PCM output; foreground
 rebinds graphics, produces fresh PCM and resumes observed driving. Shutdown is
 clean. These injected SDL events do not prove real iPadOS suspension,
 AVAudioSession interruption handling or audible quality.
+
+Physical build 5 feedback reports automatic launch without the picker, completed
+races and no further crashes. Reported race FPS is 35-57 (about 45 average),
+improving to 57-59 with reduced horizon/reflection/detail settings. This shows
+scene complexity matters, but does not isolate CPU work from GPU work.
+
+The next candidate adds a tappable diagnostics overlay and 640x480, 960x720,
+1280x960 or native-height 4:3 rendering choices. CPU/app uses process user/system
+time divided by elapsed time and logical-core capacity; RAM is process resident
+memory. Frame milliseconds are the averaged presentation interval, not GPU time.
+GPU utilization is explicitly unavailable. Choices persist and framebuffer
+changes occur at the existing swap boundary. Real GLES sanitizer tests verify
+all presets, native target2186x1640 in drawable2360x1640, original RGB565 readback
+and return to640x480. Initial asynchronous-resize observation was corrected with
+SDL synchronization; the original failure log is retained locally.
+
+The original decoder callback is also selected under its matching voice lock at
+two original dispatch sites. The private prototype passes original Outback
+controls/audio and a complete two-lap race/menu-return/clean sanitizer shutdown.
+Actual original codec initializers validate callback publication blocking and
+stack balance in the focused linkage check. Broader packet retirement lifetimes
+and physical error causality are not proven by this ordering change.

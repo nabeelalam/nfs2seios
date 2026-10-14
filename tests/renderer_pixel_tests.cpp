@@ -10,6 +10,7 @@ extern "C" uint64_t nfs_glide_palette_upload_count(void);
 #include "WindowBridge.h"
 #include "MainThreadBridge.h"
 #include "GraphicsLifecycle.h"
+#include "FramePresentation.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengles2.h>
 #include <cstdio>
@@ -173,6 +174,30 @@ int main(){
     grTexDownloadTable(0,GR_TEXTABLE_PALETTE,int32_t(palette_a));grTexSource(0,0,3,int32_t(metadata));pixel(255,0,0);
     CHECK(nfs_glide_palette_upload_count()==uploads_before_recreate+1 && glGetError()==GL_NO_ERROR);
     std::puts("PASS: native GLES context destroy/recreate restores texture and invalidates palette conversion");
+    // Resolution changes reallocate both buffers at swap, while original
+    // RGB565 readback coordinates remain 640x480 at every render density.
+    for(int height:{720,960,480}){
+        fixedFramebufferSize=1;initialWinWidth=height*4/3;initialWinHeight=height;windowResized=1;
+        grBufferSwap(0);CHECK(nfs_render_width()==height*4/3 && nfs_render_height()==height);
+        grBufferClear(0xff0000,255,0xffff);
+        auto scaled=lock(0x80000003,GR_LFB_READ_ONLY,GR_BUFFER_BACKBUFFER,GR_ORIGIN_UPPER_LEFT);
+        auto *pixels=static_cast<uint16_t *>(nfs_host_address(scaled.lfbPtr,NFS_SURFACE_BYTES));
+        CHECK(pixels[0]==0xf800 && pixels[640*480-1]==0xf800);
+        CHECK(grLfbUnlock(GR_LFB_READ_ONLY,GR_BUFFER_BACKBUFFER) && glGetError()==GL_NO_ERROR);
+    }
+    CHECK(SDL_SetWindowSize(sdlWin,2360,1640));SDL_PumpEvents();SDL_SyncWindow(sdlWin);SDL_PumpEvents();
+    SDL_GetWindowSizeInPixels(sdlWin,&winWidth,&winHeight);
+    fixedFramebufferSize=0;windowResized=1;grBufferSwap(0);
+    std::printf("Native target %dx%d; drawable %dx%d\n",nfs_render_width(),nfs_render_height(),winWidth,winHeight);
+    CHECK(nfs_render_height()==1640 && nfs_render_width()==2186 && glGetError()==GL_NO_ERROR);
+    grBufferClear(0xff0000,255,0xffff);
+    auto native_pixels=lock(0x80000003,GR_LFB_READ_ONLY,GR_BUFFER_BACKBUFFER,GR_ORIGIN_UPPER_LEFT);
+    auto *native_readback=static_cast<uint16_t *>(nfs_host_address(native_pixels.lfbPtr,NFS_SURFACE_BYTES));
+    CHECK(native_readback[0]==0xf800 && native_readback[640*480-1]==0xf800);
+    CHECK(grLfbUnlock(GR_LFB_READ_ONLY,GR_BUFFER_BACKBUFFER));
+    fixedFramebufferSize=1;initialWinWidth=640;initialWinHeight=480;windowResized=1;grBufferSwap(0);
+    CHECK(nfs_render_width()==640 && nfs_render_height()==480 && glGetError()==GL_NO_ERROR);
+    std::puts("PASS: 480/720/960/native-height render targets, both-buffer reallocation, original RGB565 readback and return to original resolution");
     for(auto table:eviction_tables)free32(table);
     free32(index_memory);free32(palette_memory);CHECK(heap.available_bytes()==before && glGetError()==GL_NO_ERROR);
     std::puts("PASS: owned palette snapshot, deferred guest mutation, generation A/B/A, same-address explicit updates, unchanged-content cache and texture invalidation RGB pixels");

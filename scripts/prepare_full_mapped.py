@@ -112,6 +112,18 @@ def prepare_full():
             if name not in functions:raise ValueError(f"Unknown trace method ID: {method}")
             return match.group(1)+f'\n\tnfs_trace_guest_call(game_id_{name},uint32_t(esp));'
         text=re.sub(r'(Fn\(void\) Game::(\w+)\(\)\s*\{)',trace,text)
+        if path.name == "Methods_14.cpp":
+            # Hold the same voice lock before reading its decoder callback.
+            # A callee-entry guard alone permits callback selection to race
+            # with an initializer that publishes a different codec layout.
+            for voice_register in ("esi", "edi"):
+                needle = f'\tcall(to32i({voice_register}+0xDA8));'
+                if text.count(needle) != 1:
+                    raise ValueError("Unexpected original codec dispatch site")
+                text = text.replace(needle,
+                    '\t{\n\t\tnfs::CodecOperationGuard codec_selection{uint32_t(eax)};\n\t' +
+                    needle + '\n\t}')
+            text = '#include "CodecOperations.h"\n' + text
         if path.name == "Methods_15.cpp":
             # Shared voice state must not be reinitialized midway through a
             # decoding job. Lock the complete operation, including parameter

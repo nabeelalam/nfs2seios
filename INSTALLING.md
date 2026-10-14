@@ -30,6 +30,19 @@ this does not prove the reported iPad error is fixed.
 Import errors are displayed before the picker window is closed. The release tag
 and manifest identify its source revision.
 
+## Performance controls in the next candidate
+
+Tap the FPS overlay to select 640x480, 960x720, 1280x960 or native screen pixels.
+Pause with the controller before changing the setting. Native retains the
+original 4:3 view; side borders and original bitmap artwork remain. The overlay
+shows actual render size, so this is distinct from merely stretching640x480.
+The menu also switches between detailed diagnostics and compact FPS display.
+Choices are remembered for the next launch.
+
+CPU/app is this game's share of total CPU capacity; RAM is its resident memory.
+The millisecond value is the averaged interval between presentations. GPU usage
+is unavailable with this renderer, and is not estimated from the FPS figure.
+
 ## Separately supplied game files
 
 The public build5 IPA contains only the executable, app metadata and license

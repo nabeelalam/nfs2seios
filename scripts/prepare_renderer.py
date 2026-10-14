@@ -63,7 +63,10 @@ def prepare_renderer():
     text = prepare_palettes(text, dest)
     text = text.replace('g_lfb = (uint8_t *)malloc32(640*480*2);', 'g_lfb = (uint8_t *)malloc32(640*480*2);\n\t\tif (!g_lfb) return false;')
     text = prepare_surfaces(text, dest)
-    path.write_text(text)
+    opening='\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);\n\n\thandleDpr();'
+    if text.count(opening)!=1: raise ValueError('Unexpected drawable initialization order')
+    text=text.replace(opening,'\thandleDpr();\n\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);')
+    path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
 
@@ -108,7 +111,8 @@ def prepare_surfaces(text, dest):
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE){framebufferError=true;raise(SIGABRT);}
     glBindTexture(GL_TEXTURE_2D,0);
     glBindFramebuffer(GL_FRAMEBUFFER,g_framebuffer);
-    g_framebufferHeight = shorterEdge;''')
+    g_framebufferHeight = shorterEdge;
+    nfs_render_target_changed(w,h);''')
     # Other framebuffer bindings during construction must stay unconditional.
     checked('\t\tglBindFramebuffer(GL_FRAMEBUFFER, g_framebuffer);', '\t\tglBindFramebuffer(GL_FRAMEBUFFER, g_renderBuffer==GR_BUFFER_FRONTBUFFER?g_frontFramebuffer:g_framebuffer);')
     begin=text.index('REALIGN STDCALL BOOL grLfbLock(')
