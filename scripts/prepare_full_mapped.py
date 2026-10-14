@@ -112,6 +112,21 @@ def prepare_full():
             if name not in functions:raise ValueError(f"Unknown trace method ID: {method}")
             return match.group(1)+f'\n\tnfs_trace_guest_call(game_id_{name},uint32_t(esp));'
         text=re.sub(r'(Fn\(void\) Game::(\w+)\(\)\s*\{)',trace,text)
+        if path.name == "Methods_15.cpp":
+            # Shared voice state must not be reinitialized midway through a
+            # decoding job. Lock the complete operation, including parameter
+            # setup and buffered phases, rather than individual sample stores.
+            operations = ("4BD458", "4BD66C", "4BD848", "4BDC7C",
+                          "4BDE94", "4C2040", "4BD24C", "4BD01C",
+                          "4BD4B0", "4BD6C4", "4BD8EC", "4BDAB8",
+                          "4BDCD0", "4C1FB0")
+            for operation in operations:
+                needle = f'\tnfs_trace_guest_call(game_id_sub_{operation},uint32_t(esp));'
+                if text.count(needle) != 1:
+                    raise ValueError(f"Unexpected codec operation entry: {operation}")
+                text = text.replace(needle, needle +
+                    '\n\tnfs::CodecOperationGuard codec_operation{uint32_t(eax)};')
+            text = '#include "CodecOperations.h"\n' + text
         text='#include "GameTrace.h"\n'+text
         (dest / path.name).write_text(text)
     stubs = (source / "Stubs.cpp").read_text()

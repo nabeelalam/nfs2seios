@@ -20,5 +20,6 @@ public:
     NativeGameFunction function(uint32_t);
     size_t capacity()const;
     size_t available()const;
+    std::recursive_mutex *codec_mutex(uint32_t header);
 };
 }

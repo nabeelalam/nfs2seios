@@ -106,7 +106,7 @@ jobs:
           cat > .build/release-notes.md <<'NOTES'
           Native ARM64 iPad development candidate. Personal signing through SideStore is required. Original game assets must be supplied separately.
 
-          This candidate reduces renderer handoffs and repeated palette conversions. Physical frame rate and intermittent race shutdown stability remain unverified; this is not a finished release.
+          This candidate prevents audio voice reinitialization during an active decoding job. Physical race stability still requires testing; this is not a finished release.
 
           This download excludes configuration and language files as well as game data. Its corrected importer reads separately supplied install.win and text.eng from your selected game folder alongside GAMEDATA and FEDATA. Keep existing app data when updating. If import fails, acknowledge the displayed error; do not delete your source assets. Record the displayed menu and race FPS, input behavior and any exact error.
           NOTES

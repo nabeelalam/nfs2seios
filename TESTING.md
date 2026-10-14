@@ -140,3 +140,15 @@ the final 25 reports after the span cache. Scene timing, software rendering and
 brief build overlap limit comparison: no precise speedup ratio or iPad FPS
 prediction is claimed. The next Apple build validates the UIKit overlay and
 native candidate; physical steady menu/race FPS and responsiveness remain open.
+
+Build 5 serializes six original codec initializers and eight complete decoding
+jobs within the matching sixteen-voice state pool. Engine-owned recursive locks
+allow nested decoding phases and remain alive until worker cleanup completes.
+Focused sanitizer checks cover same-voice initializer blocking, independent
+voices, recursion and exception release. Original method bodies remain unchanged
+apart from entry guards. The full reviewed production source, with only a private
+virtual-controller entry fixture, passes a bounded three-minute original Outback
+McLaren F1/eight-car run, observed steering/braking, PCM generation and clean
+shutdown without sanitizer errors. The earlier guarded diagnostic prototype
+completed a two-lap Proving Grounds race and returned to the menu. These host
+results do not establish physical iPad race stability or a performance increase.

@@ -13,6 +13,9 @@
 #include "Game.h"
 #include "MenuInput.h"
 #include "QfsCommand.h"
+#include "CodecOperations.h"
+#include <future>
+#include <chrono>
 #undef true
 #undef false
 extern "C" bool register_original_game_functions();
@@ -36,6 +39,32 @@ static void unbalanced_window_callback(void *context){
 int main(){
     try{
         nfs::EngineMemory memory(32*1024*1024);
+        {
+            const uint32_t header=memory.encode(dword_5A179C)+12;
+            if(!memory.codec_mutex(header) || memory.codec_mutex(header+1))
+                throw std::runtime_error("Codec operation pool mapping failed");
+            std::promise<void> entered,released,initializer_started;
+            auto release=released.get_future();
+            auto job=std::async(std::launch::async,[&]{
+                nfs::CodecOperationGuard operation{header};
+                {nfs::CodecOperationGuard nested{header};}
+                entered.set_value();release.wait();
+            });
+            entered.get_future().wait();
+            auto initializer=std::async(std::launch::async,[&]{
+                initializer_started.set_value();
+                nfs::CodecOperationGuard operation{header};
+            });
+            initializer_started.get_future().wait();
+            auto other=std::async(std::launch::async,[&]{nfs::CodecOperationGuard operation{header+3556};});
+            const bool blocked=initializer.wait_for(std::chrono::milliseconds(30))==std::future_status::timeout;
+            const bool independent=other.wait_for(std::chrono::seconds(1))==std::future_status::ready;
+            released.set_value();job.get();initializer.get();other.get();
+            if(!blocked || !independent)throw std::runtime_error("Codec initialization/job isolation failed");
+            try{nfs::CodecOperationGuard operation{header};throw std::runtime_error("Codec guard unwind");}
+            catch(const std::runtime_error &){}
+            {nfs::CodecOperationGuard recovered{header};}
+        }
         if(!register_original_game_functions() || !nfs_register_input_functions())throw std::runtime_error("Full native function registration failed");
         bool invalid_dispatch_rejected=false;
         try{(void)memory.function(0xc515e9e4u);}catch(const std::out_of_range &error){

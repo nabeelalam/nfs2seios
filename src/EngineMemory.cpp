@@ -3,6 +3,7 @@
 #include "GameMemory.h"
 #include "HeapArena.h"
 #include "GameTrace.h"
+#include "CodecOperations.h"
 #include "DATA.h"
 #include "BSS.h"
 #include <vector>
@@ -16,7 +17,7 @@
 #include <unistd.h>
 #endif
 namespace nfs {
-struct EngineMemory::Impl {GameMemory addresses;Functions functions;HeapArena heap;std::vector<uint8_t> storage;explicit Impl(size_t size):storage(size){}};
+struct EngineMemory::Impl {GameMemory addresses;Functions functions;HeapArena heap;std::vector<uint8_t> storage;std::recursive_mutex codec_operations[16];uint32_t codec_base=0;explicit Impl(size_t size):storage(size){}};
 static EngineMemory *active=nullptr;
 static EngineMemory &current(){if(!active)throw std::logic_error("Original engine memory unbound");return *active;}
 EngineMemory::EngineMemory(size_t size){
@@ -26,6 +27,7 @@ EngineMemory::EngineMemory(size_t size){
     if(!impl->addresses.map(0x00400000,reinterpret_cast<uint8_t *>(&_data),sizeof(_data)) ||
        !impl->addresses.map(0x02000000,reinterpret_cast<uint8_t *>(&_bss),sizeof(_bss)) ||
        !impl->heap.initialize(impl->addresses,0x10000000,impl->storage.data(),impl->storage.size()))throw std::runtime_error("Original engine regions could not be mapped");
+    impl->codec_base=encode(dword_5A179C);
     active=this;
 }
 EngineMemory::~EngineMemory(){if(active==this)active=nullptr;}
@@ -60,6 +62,13 @@ NativeGameFunction EngineMemory::function(uint32_t id){
 // contains() still validates allocation ownership under that mutex.
 size_t EngineMemory::capacity()const{return impl->storage.size();}
 size_t EngineMemory::available()const{return impl->heap.available_bytes();}
+std::recursive_mutex *EngineMemory::codec_mutex(uint32_t header){
+    if(header<impl->codec_base+12)return nullptr;
+    const auto offset=header-impl->codec_base-12;
+    if(offset%3556 || offset/3556>=16)return nullptr;
+    return &impl->codec_operations[offset/3556];
+}
+std::recursive_mutex *codec_operation_mutex(uint32_t header){return active?active->codec_mutex(header):nullptr;}
 }
 extern "C" void *nfs_host_address(uint32_t address,size_t length){return nfs::current().resolve(address,length);}
 extern "C" uint32_t nfs_guest_address(const void *pointer){return nfs::current().encode(pointer);}
