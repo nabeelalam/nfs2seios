@@ -4,6 +4,7 @@
 #include <SDL3/SDL.h>
 #include "AssetSelection.h"
 #include "AssetImport.h"
+#include "RunLog.h"
 #include <stdexcept>
 @interface GameFolderPicker : NSObject <UIDocumentPickerDelegate>
 @property(nonatomic) BOOL done;
@@ -59,7 +60,22 @@ std::string select_app_assets(int,char **){
             SDL_Event event;while(SDL_PollEvent(&event))if(event.type==SDL_EVENT_QUIT){quitting=true;if(!selection.importing){[picker dismissViewControllerAnimated:NO completion:nil];selection.done=YES;}}
             SDL_Delay(10);
         }
-        if(selection.error)throw std::runtime_error(selection.error.UTF8String);
+        if(selection.error){
+            nfs::app_log("Game import failed",selection.error.UTF8String);
+            // Keep the picker window alive until the user sees the error.
+            // Reporting after destroying the last UIKit window can hide it.
+            __block BOOL acknowledged=NO;
+            UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"Could not import game"
+                message:selection.error preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                handler:^(UIAlertAction *){acknowledged=YES;}]];
+            void (^showError)(void)=^{[native.rootViewController presentViewController:alert animated:YES completion:nil];};
+            if(native.rootViewController.presentedViewController)
+                [native.rootViewController dismissViewControllerAnimated:NO completion:showError];
+            else showError();
+            while(!acknowledged){SDL_PumpEvents();SDL_Delay(10);}
+            return std::string();
+        }
         return quitting || !selection.root ? std::string():std::string(selection.root.UTF8String);
     } @finally {SDL_DestroyWindow(window);}
 }
