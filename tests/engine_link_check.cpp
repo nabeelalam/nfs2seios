@@ -16,6 +16,23 @@
 #undef true
 #undef false
 extern "C" bool register_original_game_functions();
+static void throwing_window_callback(void *context){
+    auto &game=*static_cast<Game *>(context);
+    game.push32(0x1234);
+    throw std::runtime_error("Injected window callback failure");
+}
+static void balanced_window_callback(void *context){
+    auto &game=*static_cast<Game *>(context);
+    if(guest_load<uint32_t>(uint32_t(game.esp)+4)!=0x11 ||
+       guest_load<uint32_t>(uint32_t(game.esp)+8)!=0x22 ||
+       guest_load<uint32_t>(uint32_t(game.esp)+12)!=0x33 ||
+       guest_load<uint32_t>(uint32_t(game.esp)+16)!=0x44)
+        throw std::runtime_error("Window callback argument order changed");
+    game.esp+=16;game.eax=123;
+}
+static void unbalanced_window_callback(void *context){
+    static_cast<Game *>(context)->push32(0x1234);
+}
 int main(){
     try{
         nfs::EngineMemory memory(32*1024*1024);
@@ -37,6 +54,32 @@ int main(){
             if(!context || reinterpret_cast<uintptr_t>(context.get())<=UINT32_MAX)throw std::runtime_error("Full native Game context creation failed");
             const auto address=nfs_guest_address(context.get());if(nfs_resolve_game_context(address)!=context.get())throw std::runtime_error("Full native Game context mapping failed");
             auto &registers=*static_cast<Game *>(context.get());
+            if(!memory.add(0xee000100u,throwing_window_callback) || !memory.add(0xee000104u,balanced_window_callback) || !memory.add(0xee000108u,unbalanced_window_callback))
+                throw std::runtime_error("Window recovery witnesses could not register");
+            const auto window_stack=registers.esp;
+            bool window_failed=false;
+            try{nfs_dispatch_game_window(context.get(),0xee000100u,0x11,0x22,0x33,0x44);}
+            catch(const std::runtime_error &error){window_failed=std::string(error.what())=="Injected window callback failure";}
+            if(!window_failed || registers.esp!=window_stack)
+                throw std::runtime_error("Throwing window callback corrupted reusable context stack");
+            if(nfs_dispatch_game_window(context.get(),0xee000104u,0x11,0x22,0x33,0x44)!=123 || registers.esp!=window_stack)
+                throw std::runtime_error("Window callback after failure could not reuse context");
+            bool unbalanced_rejected=false;
+            try{nfs_dispatch_game_window(context.get(),0xee000108u,0x11,0x22,0x33,0x44);}
+            catch(const std::runtime_error &error){unbalanced_rejected=std::string(error.what())=="Unbalanced game window callback stack";}
+            if(!unbalanced_rejected || registers.esp!=window_stack)
+                throw std::runtime_error("Invalid window callback return lost stack recovery");
+            nfs::WorkerControl window_stop;window_stop.stop=true;
+            auto *prior_control=nfs::current_worker_control();nfs::current_worker_control()=&window_stop;
+            bool push_cancelled=false;
+            try{nfs_dispatch_game_window(context.get(),0xee000104u,0x11,0x22,0x33,0x44);}
+            catch(const nfs::WorkerStopped &){push_cancelled=true;}
+            catch(...){nfs::current_worker_control()=prior_control;throw;}
+            nfs::current_worker_control()=prior_control;
+            if(!push_cancelled || registers.esp!=window_stack)
+                throw std::runtime_error("Window argument-push cancellation corrupted stack");
+            if(nfs_dispatch_game_window(context.get(),0xee000104u,0x11,0x22,0x33,0x44)!=123 || registers.esp!=window_stack)
+                throw std::runtime_error("Window callback after cancellation could not reuse context");
             // Literal command followed by an exact-boundary end marker with
             // zero through three trailing literals: no four-byte lookahead.
             for(unsigned tail=0;tail<4;++tail){

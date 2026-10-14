@@ -37,11 +37,13 @@ extern "C" void nfs_run_game_worker(void *context) {
 extern "C" int32_t nfs_dispatch_game_window(void *context,uint32_t function,uint32_t window,uint32_t message,uint32_t wparam,uint32_t lparam){
     if(!context)throw std::invalid_argument("Missing window callback context");
     auto callback=nfs_lookup_guest_function(function);
-    auto &game=*static_cast<Game *>(context);const uint32_t expected=uint32_t(game.esp);
-    game.push32(int32_t(lparam));game.push32(int32_t(wparam));game.push32(int32_t(message));game.push32(int32_t(window));
-    game.push32(0);callback(context);game.esp+=4;
-    if(uint32_t(game.esp)!=expected)throw std::runtime_error("Unbalanced game window callback stack");
-    return game.eax;
+    auto &game=*static_cast<Game *>(context);const int32_t expected=game.esp;
+    try{
+        game.push32(int32_t(lparam));game.push32(int32_t(wparam));game.push32(int32_t(message));game.push32(int32_t(window));
+        game.push32(0);callback(context);game.esp+=4;
+        if(game.esp!=expected)throw std::runtime_error("Unbalanced game window callback stack");
+        return game.eax;
+    }catch(...){game.esp=expected;throw;}
 }
 extern "C" void nfs_dispatch_game_procedure(void *context,uint32_t function){
     if(!context)throw std::invalid_argument("Missing exit callback context");
