@@ -45,7 +45,7 @@ and validates unsigned ARM64 iPad bundles. No signing credentials are used.
 IPA uploads default to off. Before selecting publish_ipa, verify account-wide
 storage headroom. The payload is bounded and expires after one day. Ordinary
 workflow logs provide build diagnostics without redundant stored log artifacts.
-The current public workflow has not been run yet.
+Apple device validation has passed for the renderer optimization; physical performance remains unverified.
 
 ## Publication checks
 
@@ -62,3 +62,22 @@ keeping `include_probe=false` unless the diagnostic changed. Enable `publish_ipa
 only after checking storage headroom; the aggregate upload limit is 64 MiB and
 retention is one day. Debug remains available for targeted compiler diagnostics.
 The package manifest records the selected configuration.
+
+
+## Executable-only development downloads
+
+Select publish_release for a deliberate prerelease download instead of an
+expiring Actions artifact. This forces Release and excludes the separate Probe
+and Actions artifact uploads. The checked ZIP contains an unsigned IPA and its
+manifest; the IPA contains only the executable, app metadata and license notices.
+No original data, startup configuration or language files are distributed.
+Ordinary SDK validation remains read-only; only the explicit release caller can
+publish. No build runs automatically when source is pushed.
+
+Build3 is an update for an existing imported Documents/game installation. Install
+over the existing app without deleting it. Its startup files must remain in that
+app-owned folder. The newer source importer additionally accepts separately
+supplied install.win and text.eng in the selected root beside GAMEDATA/FEDATA,
+with optional text.* language files. Those files must be compatible with the
+translated engine; do not assume an original CD root contains them. This importer
+path has host validation only and is not included in build3 or device-validated.

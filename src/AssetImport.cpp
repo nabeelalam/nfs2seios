@@ -39,6 +39,16 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
     const auto destination=fs::canonical(requested.parent_path())/leaf;
     if(within(destination,source) || within(source,destination) || within(destination,support) || within(support,destination))throw std::runtime_error("Imported storage must be separate from its source folders");
     if(fs::exists(fs::symlink_status(destination)))throw std::runtime_error("Game data already exists; it will not be replaced");
+    // Executable-only downloads omit startup data. In that case the selected
+    // user-owned folder must supply both required files; never combine tables
+    // from two different support sets or follow a support-file symlink.
+    const bool bundled_config=fs::exists(fs::symlink_status(support/"install.win"));
+    const bool bundled_language=fs::exists(fs::symlink_status(support/"text.eng"));
+    const auto startup=(!bundled_config && !bundled_language)?source:support;
+    for(const auto name:{"install.win","text.eng"}){
+        if(!fs::is_regular_file(fs::symlink_status(startup/name)))
+            throw std::runtime_error("Startup files are missing or invalid. Select a folder containing GAMEDATA, FEDATA, install.win and text.eng. Existing imported game folders can be reused.");
+    }
     Staging staging;
     std::random_device random;
     for(unsigned attempt=0;attempt<20 && staging.root.empty();++attempt){
@@ -68,7 +78,7 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
     }
     if(!game_files || !front_files)throw std::runtime_error("Select the folder containing both GAMEDATA and FEDATA with files inside");
     for(const auto name:{"install.win","text.eng","text.ger","text.fre","text.ita","text.spa","text.swe"}){
-        const auto file=support/name;
+        const auto file=startup/name;
         if(std::string(name)!="install.win" && std::string(name)!="text.eng" && !fs::exists(fs::symlink_status(file)))continue;
         copy_file(file,staging.root/name,result);
     }
