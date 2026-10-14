@@ -31,6 +31,15 @@ The public build3 IPA contains only the executable, app metadata and license
 notices. It excludes GAMEDATA, FEDATA, install.win and all text.* language files.
 Build3 is an update for an existing imported game folder; it cannot perform a
 fresh import without the startup support that earlier installations supplied.
+
+For a future build with the supplied-startup importer, the local helper
+`python scripts/package_private_startup.py` prepares a private startup ZIP under
+ignored .build storage after verifying the already fetched pinned engine source.
+Keep this ZIP private. Extract its startup files into a separate copy of your own
+game folder alongside GAMEDATA/FEDATA and retain the license notice. Transfer
+that folder through your private Files storage when a compatible app build is
+available. The helper does not alter your original game folder, fetch game assets,
+upload files or add fresh import support to build3.
 Do not delete that folder or transfer it into the public repository.
 
 Newer source also accepts a selected folder containing GAMEDATA, FEDATA,
