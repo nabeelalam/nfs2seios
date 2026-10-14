@@ -44,7 +44,7 @@ struct GameSession::Impl {
     RuntimeServices services{{initialize,exit_requested,message}};
     std::unique_ptr<SDLGamepadInput> gamepads;
     MenuInput menu;
-    bool foreground=true;
+    bool foreground=true,background_shutdown=false;
     GraphicsLifecycle graphics;
     std::unique_ptr<void,void(*)(void *)> game{nullptr,nfs_destroy_game_context};
     std::vector<void *> bootstrap;std::thread thread;WorkerControl control;
@@ -139,6 +139,11 @@ void GameSession::poll(){
             uint32_t key=0,scan=0;switch(event.key.key){case SDLK_RETURN:key=13;scan=0x1c;break;case SDLK_ESCAPE:key=27;scan=1;break;case SDLK_LEFT:key=0x25;scan=0x4b;break;case SDLK_UP:key=0x26;scan=0x48;break;case SDLK_RIGHT:key=0x27;scan=0x4d;break;case SDLK_DOWN:key=0x28;scan=0x50;break;default:if(event.key.key>='a' && event.key.key<='z')key=event.key.key-32;}
             if(key){const uint32_t message=event.type==SDL_EVENT_KEY_DOWN?0x100:0x101;impl->window.post({0,message,key,1|(scan<<16),uint32_t(SDL_GetTicks()),0,0});if(message==0x100 && (key==13 || key==27))impl->window.post({0,0x102,key,1|(scan<<16),uint32_t(SDL_GetTicks()),0,0});}
         }
+    }
+    if(!impl->foreground && impl->control.stop.load() && !impl->background_shutdown){
+        impl->main.retire_renderer();
+        impl->graphics.abandon_suspended();
+        impl->background_shutdown=true;
     }
     impl->gamepads->update(impl->foreground);
     impl->menu.update(impl->foreground?impl->gamepads->menu_buttons():0,SDL_GetTicks(),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},impl.get());

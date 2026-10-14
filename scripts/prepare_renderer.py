@@ -66,6 +66,11 @@ def prepare_renderer():
     opening='\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);\n\n\thandleDpr();'
     if text.count(opening)!=1: raise ValueError('Unexpected drawable initialization order')
     text=text.replace(opening,'\thandleDpr();\n\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);')
+    # Permanent suspended shutdown releases an already-unbound context.
+    # Do not run the ordinary explicit GL deletion path in the background.
+    marker = "static void setTextureFiltering()"
+    if text.count(marker) != 1: raise ValueError("Cannot identify context abandonment insertion")
+    text = text.replace(marker, 'BOOL nfs_glide_abandon_unbound(void){\n    if(SDL_GL_GetCurrentContext()!=NULL)return false;\n    nfs_glide_lfb_reset();\n    if(g_glCtx && !SDL_GL_DestroyContext(g_glCtx))return false;\n    g_glCtx=NULL;g_trianglesCount=0;g_palette=NULL;\n    return true;\n}\n' + marker)
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")

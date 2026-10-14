@@ -10,7 +10,7 @@
 class MainThreadHarness {
     struct Request {nfs::MainTask task;void *context;std::promise<void> done;};
     std::mutex mutex;std::condition_variable changed;std::deque<Request *> queue;
-    bool stopping=false;std::thread owner;
+    bool stopping=false;std::thread owner;nfs::MainThreadBridge *bridge_instance=nullptr;
     std::promise<void> ready;
     static MainThreadHarness *&active(){static MainThreadHarness *value=nullptr;return value;}
     static void schedule(nfs::MainTask task,void *context){
@@ -19,7 +19,7 @@ class MainThreadHarness {
         done.get();
     }
     void run(){
-        nfs::MainThreadBridge bridge(schedule);nfs::bind_main_thread_bridge(&bridge);ready.set_value();
+        nfs::MainThreadBridge bridge(schedule);nfs::bind_main_thread_bridge(&bridge);bridge_instance=&bridge;ready.set_value();
         for(;;){
             Request *request;
             {std::unique_lock<std::mutex> lock(mutex);changed.wait(lock,[&]{return stopping || !queue.empty();});if(queue.empty())break;request=queue.front();queue.pop_front();}
@@ -30,6 +30,7 @@ class MainThreadHarness {
 public:
     MainThreadHarness(){active()=this;owner=std::thread([this]{run();});ready.get_future().wait();}
     ~MainThreadHarness(){{std::lock_guard<std::mutex> lock(mutex);stopping=true;changed.notify_one();}owner.join();active()=nullptr;}
+    nfs::MainThreadBridge &bridge(){return *bridge_instance;}
     std::thread::id owner_id()const{return owner.get_id();}
     bool wait_queued(size_t count){std::unique_lock<std::mutex> lock(mutex);return changed.wait_for(lock,std::chrono::seconds(2),[&]{return queue.size()>=count;});}
 };

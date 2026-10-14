@@ -74,6 +74,22 @@ int main(){
     auto stop_result=stopped.get_future();CHECK(stop_result.wait_for(std::chrono::milliseconds(20))==std::future_status::timeout);
     paused_control.stop=true;nfs::wake_worker_waits();CHECK(stop_result.get());cancelled.join();
     nfs::run_on_main([](void *){nfs::suspend_renderer(false);},nullptr);
+    // Permanent retirement: full queue under suspension, pending barrier,
+    // captured ownership released, no graphics callbacks executed.
+    nfs::run_on_main([](void *){nfs::suspend_renderer(true);},nullptr);
+    std::atomic<int> forbidden_calls{0};std::atomic<int> destroyed{0};auto ownership=std::shared_ptr<int>(new int(7),[&](int *p){
+        nfs::renderer_command([&]{++forbidden_calls;return 0;});
+        if(nfs::renderer_operation([&]{++forbidden_calls;return 1;})!=0)std::terminate();
+        delete p;++destroyed;
+    });std::weak_ptr<int> borrowed_owner=ownership;
+    for(int i=0;i<128;++i)nfs::renderer_command([ownership,&forbidden_calls]{++forbidden_calls;return 0;});
+    ownership.reset();CHECK(!borrowed_owner.expired());
+    std::promise<int> retired_result;
+    std::thread retiring_worker([&]{retired_result.set_value(nfs::renderer_operation([&]{++forbidden_calls;return 99;}));});
+    auto retirement=retired_result.get_future();CHECK(retirement.wait_for(std::chrono::milliseconds(20))==std::future_status::timeout);
+    nfs::run_on_main([](void *p){static_cast<nfs::MainThreadBridge *>(p)->retire_renderer();},&owner.bridge());
+    CHECK(retirement.get()==0);retiring_worker.join();CHECK(borrowed_owner.expired());CHECK(destroyed==1);CHECK(forbidden_calls==0);
+    nfs::renderer_command([&]{++forbidden_calls;return 0;});CHECK(nfs::renderer_operation([&]{++forbidden_calls;return 91;})==0);CHECK(forbidden_calls==0);
     // Reject a scheduler that silently runs the task on its caller thread.
     nfs::MainThreadBridge invalid([](nfs::MainTask task,void *p){task(p);});
     std::promise<bool> rejected;std::atomic<bool> ran{false};

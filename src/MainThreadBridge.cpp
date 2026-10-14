@@ -34,8 +34,9 @@ std::shared_ptr<MainThreadBridge::Command> MainThreadBridge::append_command(std:
         check_worker_stop();
         std::shared_ptr<Command> target;
         {
-            std::lock_guard<std::mutex> lock(command_mutex);
+            std::unique_lock<std::mutex> lock(command_mutex);
             // Bound pending storage even when several producers submit at once.
+            if(renderer_retiring.load()){lock.unlock();command->operation={};command->completed=true;return command;}
             if(commands.size()<128){commands.push_back(command);return command;}
             target=commands.back();
         }
@@ -138,6 +139,25 @@ void MainThreadBridge::suspend_renderer(bool value){
     if(std::this_thread::get_id()!=owner)throw std::logic_error("Renderer suspension needs main-thread owner");
     std::lock_guard<std::mutex> lock(renderer_mutex);renderer_suspended=value;renderer_changed.notify_all();
 }
+void MainThreadBridge::retire_renderer(){
+    if(std::this_thread::get_id()!=owner || command_depth)throw std::logic_error("Retirement requires idle renderer owner");
+    std::deque<std::shared_ptr<Command>> retired;
+    {
+        std::lock_guard<std::mutex> lock(command_mutex);
+        renderer_retiring.store(true);
+        retired.swap(commands);
+        // Borrowed cancellation may not steal captures during retirement.
+        for(auto &command:retired)command->executing=true;
+    }
+    // Captures can have reentrant destructors; release outside bridge locks.
+    for(auto &command:retired)command->operation={};
+    {
+        std::lock_guard<std::mutex> lock(command_mutex);
+        for(auto &command:retired){command->result=0;command->executing=false;command->completed=true;}
+        renderer_retired.store(true);
+    }
+    command_changed.notify_all();wake_renderer();
+}
 void MainThreadBridge::wake_renderer(){std::lock_guard<std::mutex> lock(renderer_mutex);renderer_changed.notify_all();}
 void MainThreadBridge::execute_renderer(MainTask task,void *context){
     if(!task)throw std::invalid_argument("Missing renderer operation");
@@ -146,9 +166,10 @@ void MainThreadBridge::execute_renderer(MainTask task,void *context){
         {
             std::unique_lock<std::mutex> lock(renderer_mutex);
             if(renderer_suspended && std::this_thread::get_id()==owner)throw std::logic_error("Main thread cannot wait on suspended graphics");
-            renderer_changed.wait(lock,[&]{return !renderer_suspended || worker_stop_ready();});
+            renderer_changed.wait(lock,[&]{return renderer_retired.load() || !renderer_suspended || worker_stop_ready();});
         }
         check_worker_stop();
+        if(renderer_retired.load())return;
         struct Pending {MainThreadBridge *bridge;MainTask task;void *context;bool ran=false;Clock::time_point submitted=Clock::now();} pending{this,task,context};
         execute([](void *value){
             auto &p=*static_cast<Pending *>(value);

@@ -20,3 +20,13 @@ void GraphicsLifecycle::set_suspended(bool value){
     }
 }
 }
+
+extern "C" int32_t nfs_glide_abandon_unbound();
+namespace nfs {
+void GraphicsLifecycle::abandon_suspended(){
+    if(!SDL_IsMainThread() || !suspended)throw std::logic_error("Abandon requires suspended graphics owner");
+    if(!nfs_glide_abandon_unbound())throw std::runtime_error("Suspended context abandonment failed");
+    context=nullptr;window=nullptr;
+}
+}
+

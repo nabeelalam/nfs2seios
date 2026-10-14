@@ -5,6 +5,7 @@
 #include <functional>
 #include <memory>
 #include <deque>
+#include <atomic>
 #include "WorkerControl.h"
 namespace nfs {
 using MainTask=void(*)(void *);
@@ -17,7 +18,7 @@ class MainThreadBridge {
     MainScheduler scheduler;
     std::mutex renderer_mutex;
     std::condition_variable renderer_changed;
-    bool renderer_suspended=false;
+    bool renderer_suspended=false;std::atomic<bool> renderer_retired{false},renderer_retiring{false};
     std::mutex command_mutex;
     std::condition_variable command_changed;
     std::deque<std::shared_ptr<Command>> commands;
@@ -31,6 +32,7 @@ public:
     void execute_renderer(MainTask task,void *context);
     void suspend_renderer(bool suspended);
     void wake_renderer();
+    void retire_renderer();
     int32_t renderer_barrier(std::function<int32_t()> operation);
     void enqueue_renderer(std::function<int32_t()> operation);
 };
