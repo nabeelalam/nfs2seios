@@ -54,11 +54,38 @@ def prepare_renderer():
     text = text.replace(pointer, 'uint16_t *dataIn = (uint16_t *)nfs_host_address(info->data, ti->size * ti->size * (ti->fmt == GR_TEXFMT_P_8 ? 1 : 2));')
     text = text.replace('uint16_t value = dataIn[i];', 'uint16_t value; memcpy(&value, (const uint8_t *)dataIn + i * 2, sizeof(value));')
     text = text.replace('uint32_t value = g_palette[data[i]];', 'uint32_t value; memcpy(&value, (const uint8_t *)g_palette + data[i] * 4, sizeof(value));')
+    # largeLod=0 is a supported 256x256 texture. Palette expansion writes one
+    # RGBA value per texel, including the last row; the upstream 32x32 scratch
+    # buffer cannot hold that valid download.
+    scratch = 'g_tmpTexture[0x400]'
+    if text.count(scratch) != 1: raise ValueError("Cannot identify palette conversion scratch buffer")
+    text = text.replace(scratch, 'g_tmpTexture[256 * 256]')
+    text = prepare_palettes(text, dest)
     text = text.replace('g_lfb = (uint8_t *)malloc32(640*480*2);', 'g_lfb = (uint8_t *)malloc32(640*480*2);\n\t\tif (!g_lfb) return false;')
     text = prepare_surfaces(text, dest)
     path.write_text(text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
+
+
+def prepare_palettes(text, dest):
+    def checked(old, new, count=1):
+        nonlocal text
+        if text.count(old) != count: raise ValueError(f"Unexpected palette pattern: {old[:90]}")
+        text = text.replace(old, new)
+    checked('void *palette;', 'uint64_t paletteGeneration;')
+    checked('static uint32_t *g_palette, g_tmpTexture[256 * 256];',
+            'static uint32_t *g_palette, g_tmpTexture[256 * 256];\n#include "RendererPalette.inc"')
+    checked('ti->palette = NULL;', 'ti->paletteGeneration = 0;', 2)
+    checked('if (type == GR_TEXTABLE_PALETTE)\n\t\tg_palette = (uint32_t *)data;',
+            'if (type == GR_TEXTABLE_PALETTE)\n\t\tnfs_glide_palette_table_owned(tmu,type,(uint64_t)(uintptr_t)data,(const GuTexPalette *)data);')
+    checked('ti->palette != g_palette', 'ti->paletteGeneration != g_paletteGeneration')
+    checked('ti->palette = g_palette;', 'ti->paletteGeneration = g_paletteGeneration;\n\t\t++nfs_palette_uploads;')
+    text = text.replace('// Update only when palette or texture changes (let\'s assume every palette has different pointer)',
+                        '// Update when exact submitted palette contents or texture data changes.')
+    text = text.replace('// When texture changes, palette is NULL', '// Texture uploads/context recreation invalidate the stored generation.')
+    shutil.copyfile(ROOT/'src/RendererPalette.inc', dest/'Glide2x/RendererPalette.inc')
+    return text
 
 
 def prepare_surfaces(text, dest):
@@ -134,6 +161,7 @@ def prepare_glide_exports(source, dest):
     if set(implementations) != set(declarations):
         raise ValueError(f"Missing Glide implementations: {set(declarations)-set(implementations)}")
     header = '#pragma once\n#include "Glide2x.h"\n#ifdef __cplusplus\nextern "C" {\n#endif\n'
+    header += 'void nfs_glide_palette_table_owned(GrChipID_t,GrTexTable_t,uint64_t,const GuTexPalette *);\nuint64_t nfs_glide_palette_upload_count(void);\n'
     bridge = '#include "GuestAccess.h"\n#include "NativeGlide.h"\n#undef true\n#undef false\n#include "MainThreadBridge.h"\n'
     pointer_bridge = bridge
     pointer_exports = {'grDrawTriangle','grTexDownloadMipMap','grTexSource','grLfbLock','grFogTable','guFogGenerateExp','grTexDownloadTable'}
@@ -173,15 +201,17 @@ def prepare_glide_exports(source, dest):
                 arguments.append(f'arg{index}')
         invocation = f'native_{name}({", ".join(arguments)})'
         operation = f'{invocation}; return 0;' if result == 'void' else f'return static_cast<int32_t>({invocation});'
+        if name == 'grTexDownloadTable':
+            # Glide downloads table contents, so the caller may mutate/free its
+            # palette after return. Admit the owned snapshot in global FIFO.
+            bridge += ' if(arg1==GR_TEXTABLE_PALETTE){auto palette=guest_load<GuTexPalette>(uint32_t(arg2));nfs::renderer_command([=]() mutable -> int32_t {nfs_glide_palette_table_owned(arg0,arg1,uint32_t(arg2),&palette);return 0;});return 0;}\n'
         # Copy scalar state and vertex arguments into owned, bounded commands.
-        # Paletted TexSource reads the previously supplied guest palette, so it
-        # remains a barrier; non-paletted source selection has no guest read.
+        # Palette storage and texture memory are owner-held. Source selection
+        # copies metadata; uploads/readbacks/context operations retain barriers.
         owned = result == 'void' and name not in {
             'grBufferSwap','grGlideInit','grGlideShutdown','grSstWinClose',
             'grSstIdle','grFogTable','grTexDownloadMipMap','grTexDownloadTable',
-            'guFogGenerateExp','grTexSource'}
-        if name == 'grTexSource':
-            bridge += f' if(value3.format!=GR_TEXFMT_P_8){{nfs::renderer_command([=]() mutable -> int32_t {{ {operation} }});return 0;}}\n'
+            'guFogGenerateExp'}
         if owned:
             bridge += f' nfs::renderer_command([=]() mutable -> int32_t {{ {operation} }});\n'
         else:
