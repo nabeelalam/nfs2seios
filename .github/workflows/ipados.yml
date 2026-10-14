@@ -21,6 +21,10 @@ on:
         description: Upload unsigned IPA after reviewing account storage allowance
         type: boolean
         default: false
+      publish_release:
+        description: Publish a checked development ZIP as a GitHub prerelease
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -43,6 +47,7 @@ jobs:
         run: |
           python3 tests/publication_audit_test.py
           python3 tests/artifact_budget_test.py
+          python3 tests/release_download_test.py
           python3 scripts/setup_secret_scanner.py
           python3 scripts/publication_gate.py --mode history
           python3 scripts/publication_audit.py --mode worktree
@@ -109,80 +114,20 @@ jobs:
           .build/pixels/input_sdl_tests 2>&1 | tee .build/sdl-input.log
   build:
     needs: renderer-pixels
-    if: inputs.build_ios
-    runs-on: macos-15
-    timeout-minutes: 30
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
-      NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        with:
-          persist-credentials: false
-      - name: Toolchain information
-        run: |
-          python3 scripts/check_runner_space.py
-          case "$NFS_BUILD_CONFIGURATION" in Debug|Release) ;; *) echo "Invalid build configuration"; exit 1 ;; esac
-          xcodebuild -version
-          xcrun --sdk iphoneos --show-sdk-version
-          cmake --version
-      - name: Fetch pinned source and apply checked patches
-        run: python3 scripts/prepare_full_mapped.py
-      - name: Prepare pinned SDL and existing GLES2 renderer
-        run: python3 scripts/prepare_renderer.py
-      - name: Host regression tests
-        run: |
-          python3 tests/bundle_resources_test.py
-          cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
-          cmake --build .build/host --target core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests -j 3
-          ctest --test-dir .build/host --output-on-failure
-      - name: Configure native iPadOS targets
-        run: |
-          cmake -S . -B .build/ios -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
-      - name: Compile translated engine to ARM64 objects
-        run: |
-          set -o pipefail
-          /usr/bin/time -l cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target full_mapped_translation -j 3 2>&1 | tee .build/engine-ipados.log
-      - name: Compile existing renderer and native platform bridges
-        run: |
-          set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target glide_gles2 platform_bridges -j 3 2>&1 | tee .build/renderer-ipados.log
-      - name: Link the complete translated engine with native platform services
-        run: |
-          set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEEngineCheck -j 3 2>&1 | tee .build/engine-link-ipados.log
-      - name: Build unsigned native platform diagnostic
-        if: inputs.include_probe
-        run: |
-          set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEProbe -j 3 2>&1 | tee .build/app-ipados.log
-      - name: Build the original engine game app entry
-        run: |
-          set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEGame -j 3 2>&1 | tee .build/game-app-ipados.log
-      - name: Validate ARM64 bundle and package unsigned IPA
-        if: inputs.include_probe
-        run: python3 scripts/package_ipa.py ".build/ios/${NFS_BUILD_CONFIGURATION}-iphoneos/NFSIISEProbe.app" .build/NFSIISEProbe-unsigned.ipa
-      - name: Validate and package the development game bundle
-        run: python3 scripts/package_ipa.py ".build/ios/${NFS_BUILD_CONFIGURATION}-iphoneos/NFSIISEGame.app" .build/NFSIISEGame-development-unsigned.ipa
-      - name: Bound optional artifact payload
-        if: inputs.publish_ipa
-        run: python3 scripts/check_artifact_budget.py
-      - name: Upload development game (personal signing and gameplay validation required)
-        if: inputs.publish_ipa
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          retention-days: 1
-          name: NFSIISEGame-development-unsigned
-          path: |
-            .build/NFSIISEGame-development-unsigned.ipa
-            .build/NFSIISEGame-development-unsigned.json
-          if-no-files-found: error
-      - name: Upload diagnostic (requires personal signing before installation)
-        if: inputs.publish_ipa && inputs.include_probe
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          retention-days: 1
-          name: NFSIISEProbe-unsigned
-          path: .build/NFSIISEProbe-unsigned.ipa
-          if-no-files-found: error
+    if: inputs.build_ios && !inputs.publish_release
+    permissions:
+      contents: read
+    uses: ./.github/workflows/apple-device.yml
+    with:
+      configuration: ${{ inputs.configuration }}
+      include_probe: ${{ inputs.include_probe }}
+      publish_ipa: ${{ inputs.publish_ipa }}
+  release:
+    needs: renderer-pixels
+    if: inputs.build_ios && inputs.publish_release && !inputs.publish_ipa && !inputs.include_probe
+    permissions:
+      contents: write
+    uses: ./.github/workflows/apple-device.yml
+    with:
+      configuration: Release
+      publish_release: true
