@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import plistlib
 import struct
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -58,6 +59,24 @@ class DownloadTest(unittest.TestCase):
             manifest.write_text(json.dumps(metadata))
             with self.assertRaisesRegex(ValueError, "claims"):
                 inspect(ipa, manifest, source)
+
+    def test_public_zip_excludes_all_language_and_configuration(self):
+        with tempfile.TemporaryDirectory() as folder:
+            ipa, manifest, source = self.fixture(folder)
+            output = Path(folder) / "download.zip"
+            subprocess.run([sys.executable, str(Path(__file__).resolve().parents[1] / "scripts/prepare_release_download.py"), str(ipa), str(manifest), str(output), "--source", source], check=True, capture_output=True)
+            with zipfile.ZipFile(output) as download:
+                public_ipa = Path(folder) / "public.ipa"
+                public_manifest = Path(folder) / "public.json"
+                public_ipa.write_bytes(download.read("NFSIISEGame-development-unsigned.ipa"))
+                public_manifest.write_bytes(download.read("NFSIISEGame-development-unsigned.json"))
+            inspect(public_ipa, public_manifest, source, assets_separate=True)
+            with zipfile.ZipFile(public_ipa) as public:
+                self.assertEqual(len(public.namelist()), 5)
+                self.assertNotIn(PREFIX + "install.win", public.namelist())
+                self.assertNotIn(PREFIX + "text.eng", public.namelist())
+            with self.assertRaisesRegex(ValueError, "support"):
+                inspect(ipa, manifest, source, assets_separate=True)
 
 if __name__ == "__main__":
     unittest.main()

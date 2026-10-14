@@ -108,7 +108,7 @@ jobs:
 
           This candidate reduces renderer handoffs and repeated palette conversions. Physical frame rate and intermittent race shutdown stability remain unverified; this is not a finished release.
 
-          Install the IPA from the ZIP over the existing app, preserving its imported assets. Record the displayed menu and race FPS, input behavior and any exact error.
+          This download excludes configuration and language files as well as game data. It is an update for an existing installation with Documents/game already imported; fresh asset import is not supported by this candidate. Install over the existing app without deleting it, preserving its imported assets. Record the displayed menu and race FPS, input behavior and any exact error.
           NOTES
           gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft --prerelease --title "Native iPad development candidate $GITHUB_RUN_ID" --notes-file .build/release-notes.md .build/NFSIISEGame-development-unsigned.zip
           gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false --latest=false

@@ -1,6 +1,7 @@
 """Allowlist and inspect an unsigned game IPA before creating a public download."""
 import argparse
 import hashlib
+import io
 import json
 from pathlib import Path
 import plistlib
@@ -11,12 +12,13 @@ import zipfile
 from publication_audit import PATTERNS
 
 PREFIX = "Payload/NFSIISEGame.app/"
-SUPPORT = {"install.win", "text.eng", "text.ger", "text.fre", "text.ita", "text.spa", "text.swe", "GameSupportLicense.txt", "SDLLicense.txt"}
+LICENSES = {"GameSupportLicense.txt", "SDLLicense.txt"}
+SUPPORT = {"install.win", "text.eng", "text.ger", "text.fre", "text.ita", "text.spa", "text.swe"} | LICENSES
 FILES = SUPPORT | {"Info.plist", "PkgInfo", "NFSIISEGame"}
 MANIFEST_KEYS = {"executable", "bundle_id", "architecture", "platform", "support_sha256", "source_commit", "ipa_sha256", "configuration", "personal_signing_required", "installation_verified", "gameplay_verified"}
 LIMIT = 64 * 1024 * 1024
 
-def inspect(ipa, manifest, source):
+def inspect(ipa, manifest, source, assets_separate=False):
     if ipa.is_symlink() or manifest.is_symlink():
         raise ValueError("Package symlinks refused")
     if not re.fullmatch(r"[0-9a-f]{40}", source):
@@ -31,11 +33,13 @@ def inspect(ipa, manifest, source):
         raise ValueError("Package identity or acceptance claims differ")
     if metadata["ipa_sha256"] != hashlib.sha256(ipa.read_bytes()).hexdigest():
         raise ValueError("IPA digest differs")
-    if set(metadata["support_sha256"]) != SUPPORT:
+    required_support = LICENSES if assets_separate else SUPPORT
+    if set(metadata["support_sha256"]) != required_support:
         raise ValueError("Unexpected support manifest")
     with zipfile.ZipFile(ipa) as archive:
         entries = archive.infolist()
-        if len(entries) != len(FILES) or {entry.filename for entry in entries} != {PREFIX + name for name in FILES}:
+        required_files = required_support | {"Info.plist", "PkgInfo", "NFSIISEGame"}
+        if len(entries) != len(required_files) or {entry.filename for entry in entries} != {PREFIX + name for name in required_files}:
             raise ValueError("Unexpected IPA contents")
         if sum(entry.file_size for entry in entries) > LIMIT:
             raise ValueError("Unpacked IPA exceeds delivery budget")
@@ -82,14 +86,30 @@ def main():
     parser.add_argument("output", type=Path)
     parser.add_argument("--source", required=True)
     args = parser.parse_args()
-    inspect(args.ipa, args.manifest, args.source)
+    metadata = inspect(args.ipa, args.manifest, args.source)
     if args.output.exists():
         raise ValueError("Existing release download will not be overwritten")
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(args.output, "x", zipfile.ZIP_DEFLATED) as archive:
-        archive.write(args.ipa, "NFSIISEGame-development-unsigned.ipa")
-        archive.write(args.manifest, "NFSIISEGame-development-unsigned.json")
-    print("Release download inspected: exact app allowlist, ARM64 device, digest and privacy checks pass")
+    # Public delivery contains the executable and licenses only. Configuration
+    # and language files stay in the user's separately imported game storage.
+    payload = io.BytesIO()
+    with zipfile.ZipFile(args.ipa) as original, zipfile.ZipFile(payload, "w", zipfile.ZIP_DEFLATED) as stripped:
+        for entry in original.infolist():
+            if entry.filename[len(PREFIX):] not in SUPPORT - LICENSES:
+                stripped.writestr(entry, original.read(entry))
+    metadata["support_sha256"] = {name: metadata["support_sha256"][name] for name in LICENSES}
+    metadata["ipa_sha256"] = hashlib.sha256(payload.getvalue()).hexdigest()
+    import tempfile
+    with tempfile.TemporaryDirectory(prefix="nfs-release-", dir=args.output.parent) as folder:
+        ipa = Path(folder) / "game.ipa"
+        manifest = Path(folder) / "game.json"
+        ipa.write_bytes(payload.getvalue())
+        manifest.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+        inspect(ipa, manifest, args.source, assets_separate=True)
+        with zipfile.ZipFile(args.output, "x", zipfile.ZIP_DEFLATED) as archive:
+            archive.write(ipa, "NFSIISEGame-development-unsigned.ipa")
+            archive.write(manifest, "NFSIISEGame-development-unsigned.json")
+    print("Release download inspected: executable and licenses only; configuration, language and original assets excluded")
 
 if __name__ == "__main__":
     main()
