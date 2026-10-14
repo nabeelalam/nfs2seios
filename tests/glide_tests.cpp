@@ -40,6 +40,10 @@ extern "C" BOOL native_grLfbLock(GrLock_t,GrBuffer_t,GrLfbWriteMode_t,GrOriginLo
 extern "C" void native_grFogTable(const GrFog_t table[GR_FOG_TABLE_SIZE]) { if(table[63]!=63) throw std::runtime_error("Bad fog table"); }
 extern "C" void native_guFogGenerateExp(GrFog_t table[GR_FOG_TABLE_SIZE],float density) { table[63]=uint8_t(density); }
 extern "C" void native_grTexDownloadTable(GrChipID_t,GrTexTable_t,void *data) { saw_palette=reinterpret_cast<uintptr_t>(data)>UINT32_MAX; }
+extern "C" void nfs_glide_palette_table_owned(GrChipID_t,GrTexTable_t type,uint64_t identity,const GuTexPalette *data) {
+    saw_palette=type==GR_TEXTABLE_PALETTE && identity==0x90000001u &&
+        reinterpret_cast<uintptr_t>(data)>UINT32_MAX && data->data[0]==0x9b9b9b9bu;
+}
 #define CHECK(x) do {if(!(x)){std::fprintf(stderr,"FAIL line %d: %s\n",__LINE__,#x);return 1;}}while(0)
 int main() {
     MainThreadHarness main_thread;
@@ -56,7 +60,11 @@ int main() {
     guest_store<GrTexInfo>(0x800000c3u,texture);
     CHECK(grTexDownloadMipMap(0,0,3,int32_t(0x800000c3u))==0 && saw_texture);
     CHECK(grTexSource(0,0,3,int32_t(0x800000c3u))==0 && saw_texture);
-    CHECK(grTexDownloadTable(0,GR_TEXTABLE_PALETTE,int32_t(0x90000001u))==0 && saw_palette);
+    CHECK(grTexDownloadTable(0,GR_TEXTABLE_PALETTE,int32_t(0x90000001u))==0 && !saw_palette);
+    // Own the complete unaligned table before deferred execution. Reusing the
+    // caller's bytes must not change the submitted palette.
+    std::memset(pixels+1,0x3a,sizeof(GuTexPalette));
+    nfs::flush_renderer_commands();CHECK(saw_palette);
     GrLfbInfo_t input_lfb{};input_lfb.size=20;guest_store(0x80000103u,input_lfb);
     CHECK(grLfbLock(1,0,0,0,0,int32_t(0x80000103u))==1);
     const auto lfb=guest_load<GrLfbInfo_t>(0x80000103u);
