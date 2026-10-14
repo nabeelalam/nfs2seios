@@ -36,11 +36,12 @@ not establish Apple GPU performance. Incomplete or forcibly killed runs fail.
 - Background/foreground, graphics context, audio and clean shutdown work.
 - Performance and memory use are measured on the physical target.
 
-The intermittent invalid audio callback, sustained races, full laps, controller
-gameplay and the latest physical game build remain open. Do not declare the port
-complete based on a successful cloud compilation or retry.
+Build5 physical feedback confirms completed playable races and no further
+crashes in the reported sessions. Broader controller/lifecycle coverage and the
+latest build's physical acceptance remain open. Do not declare the port complete
+based on a successful cloud compilation or retry.
 
-## Current public Apple SDK validation
+## Earlier Apple SDK validation
 
 Revision `2b8a4a6fd3b751f93781a5178c4088fa490c7e03` passed the
 [manual validation run](https://github.com/nabeelalam/nfs2seios/actions/runs/38450215719).
@@ -177,7 +178,7 @@ races and no further crashes. Reported race FPS is 35-57 (about 45 average),
 improving to 57-59 with reduced horizon/reflection/detail settings. This shows
 scene complexity matters, but does not isolate CPU work from GPU work.
 
-The next candidate adds a tappable diagnostics overlay and 640x480, 960x720,
+Builds 6 and 7 add a tappable diagnostics overlay and 640x480, 960x720,
 1280x960 or native-height 4:3 rendering choices. CPU/app uses process user/system
 time divided by elapsed time and logical-core capacity; RAM is process resident
 memory. Frame milliseconds are the averaged presentation interval, not GPU time.
@@ -201,3 +202,33 @@ the mixed-language Xcode target. The released ZIP is independently downloaded an
 checked for source, version6, iOS-device ARM64 and exact five-entry contents with
 no supplied startup/assets or signing material. New overlay/selector and native
 resolution performance still need physical acceptance.
+
+## Build 7 cleanup and delivery
+
+Build 7 source `b8202db35451d68944cbe2870df19c1eba5d70fa` passes
+[manual run 38653406201](https://github.com/nabeelalam/nfs2seios/actions/runs/38653406201).
+The downloaded Release ZIP independently passes source identity, version7,
+thin ARM64 iOS-device architecture, same bundle identity and exact five-file
+executable/metadata/license inspection. No supplied game/startup files or signing
+material are included; zero Actions artifacts were uploaded.
+
+An original-data local stop-while-suspended failure was captured in renderer
+shutdown waiting for foreground work. The fix permanently retires queued
+rendering, releases captures outside locks, resets CPU framebuffer ownership and
+releases the already-unbound context without issuing explicit GL deletion calls.
+It retains the original CPU exit callbacks and worker cleanup. Focused sanitizer
+checks cover a full queue, reentrant capture destruction and cancellation while
+a borrowed caller waits for retirement.
+
+The candidate exits cleanly from the captured suspended-stop sequence, retains
+ordinary pause/resume and foreground shutdown, and completes an original two-lap
+Proving Grounds race with results and menu return under address/undefined
+sanitizers. A separate local foreground cleanup timeout remains unexplained;
+the suspended-stop fix is not claimed as its common cause. Local software
+rendering and injected lifecycle events do not prove iPad GPU performance,
+actual OS suspension or audible continuity.
+
+On the iPad, compare 640x480 and Native in the same scene and detail settings,
+record FPS and CPU/app, check the chosen resolution after relaunch, and verify
+Home/resume. Real audio interruption, orientation and personal-signing refresh
+acceptance also remain open. See INSTALLING.md for the current download.
