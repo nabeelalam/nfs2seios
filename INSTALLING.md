@@ -3,13 +3,13 @@
 Native game builds have been personally signed and launched on the target iPad
 through the user's existing SideStore setup. Earlier game versions rendered
 original menus and races with audio and controller input, but racing performance
-was below enjoyable play. Build3 is a verified unsigned development download;
+was below enjoyable play. Build4 is a verified unsigned development download;
 its installation, frame rate and complete-race acceptance on the iPad remain
 pending. The separate Probe is a platform diagnostic, not the game.
 
 ## Update the existing game
 
-1. Download the [build3 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38599376607-1/NFSIISEGame-development-unsigned.zip)
+1. Download the [build4 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38609791419-1/NFSIISEGame-development-unsigned.zip)
    in Files and extract it.
 2. Keep the currently installed NFS II SE app and its imported Documents/game
    folder. Do not delete the app to install this update.
@@ -21,32 +21,34 @@ pending. The separate Probe is a platform diagnostic, not the game.
    racing FPS. Check that menu directions select items without confirming them.
    A complete race and background/reopen check remain device acceptance items.
 
-Build3 contains the renderer optimization and presentation FPS counter. Later
-source changes to startup import and callback exception recovery are not included
-in this exact download. The release tag and manifest identify its source revision.
+Build4 contains the renderer optimization, presentation FPS counter, corrected
+separately supplied startup importer and callback exception-stack recovery.
+Import errors are displayed before the picker window is closed. The release tag
+and manifest identify its source revision.
 
 ## Separately supplied game files
 
-The public build3 IPA contains only the executable, app metadata and license
+The public build4 IPA contains only the executable, app metadata and license
 notices. It excludes GAMEDATA, FEDATA, install.win and all text.* language files.
-Build3 is an update for an existing imported game folder; it cannot perform a
-fresh import without the startup support that earlier installations supplied.
+For a folder import, supply install.win and text.eng beside GAMEDATA/FEDATA
+in the selected folder before opening it. Other text.* languages are optional.
+Build3 had a confirmed import regression; replace it with build4. Existing
+app-owned game folders remain reusable without importing them again.
 
-For a future build with the supplied-startup importer, the local helper
+For the supplied-startup importer, the local helper
 `python scripts/package_private_startup.py` prepares a private startup ZIP under
 ignored .build storage after verifying the already fetched pinned engine source.
 Keep this ZIP private. Extract its startup files into a separate copy of your own
 game folder alongside GAMEDATA/FEDATA and retain the license notice. Transfer
-that folder through your private Files storage when a compatible app build is
-available. The helper does not alter your original game folder, fetch game assets,
-upload files or add fresh import support to build3.
+that folder through your private Files storage. The helper does not alter your
+original game folder, fetch game assets or upload files.
 Do not delete that folder or transfer it into the public repository.
 
-Newer source also accepts a selected folder containing GAMEDATA, FEDATA,
+Build4 accepts a selected folder containing GAMEDATA, FEDATA,
 install.win and text.eng, with optional other text.* languages. Startup files
 must be compatible with the translated engine; an original CD root may not
-contain them. This newer import path has local host tests only and is not in
-build3 or physically validated. The Windows executable is not used. The game's
+contain them. This import path passed local host and Apple build checks;
+physical import/launch acceptance is pending. The Windows executable is not used. The game's
 native-port.log is written into its app Documents folder for failure diagnosis.
 
 ## Signing and refresh
