@@ -2,17 +2,18 @@
 
 Native game builds have been personally signed and launched on the target iPad
 through the user's existing SideStore setup. Earlier game versions rendered
-original menus and races with audio and controller input, but racing performance
-was below enjoyable play. Build4 is a verified unsigned development download;
-its installation, frame rate and complete-race acceptance on the iPad remain
+original menus and races with audio and controller input. Build4 was reported
+playable at 40-49 displayed race FPS, followed by a mid-race memory error.
+Build5 is a verified unsigned development download targeting an audio-state
+conflict; its installation and complete-race acceptance on the iPad remain
 pending. The separate Probe is a platform diagnostic, not the game.
 
 ## Update the existing game
 
-1. Download the [build4 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38609791419-1/NFSIISEGame-development-unsigned.zip)
+1. Download the [build5 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38637807635-1/NFSIISEGame-development-unsigned.zip)
    in Files and extract it.
-2. Keep the currently installed NFS II SE app and its imported Documents/game
-   folder. Do not delete the app to install this update.
+2. Keep the currently installed NFS II SE app and your separately stored game
+   folder in Files. Install this update over the existing app.
 3. Enable the local VPN required by your existing SideStore setup. Import
    NFSIISEGame-development-unsigned.ipa into SideStore using the same Apple
    Account that signed the existing game. SideStore performs personal signing
@@ -21,18 +22,21 @@ pending. The separate Probe is a platform diagnostic, not the game.
    racing FPS. Check that menu directions select items without confirming them.
    A complete race and background/reopen check remain device acceptance items.
 
-Build4 contains the renderer optimization, presentation FPS counter, corrected
-separately supplied startup importer and callback exception-stack recovery.
+Build5 retains the renderer optimization, presentation FPS counter, corrected
+separately supplied startup importer and callback exception-stack recovery,
+and adds per-voice audio initialization/decoding guards. Its exact production
+source passed a local complete two-lap race and menu return with sanitizers;
+this does not prove the reported iPad error is fixed.
 Import errors are displayed before the picker window is closed. The release tag
 and manifest identify its source revision.
 
 ## Separately supplied game files
 
-The public build4 IPA contains only the executable, app metadata and license
+The public build5 IPA contains only the executable, app metadata and license
 notices. It excludes GAMEDATA, FEDATA, install.win and all text.* language files.
 For a folder import, supply install.win and text.eng beside GAMEDATA/FEDATA
 in the selected folder before opening it. Other text.* languages are optional.
-Build3 had a confirmed import regression; replace it with build4. Existing
+Build3 had a confirmed import regression; replace it with build5. Existing
 app-owned game folders remain reusable without importing them again.
 
 For the supplied-startup importer, the local helper
@@ -44,11 +48,12 @@ that folder through your private Files storage. The helper does not alter your
 original game folder, fetch game assets or upload files.
 Do not delete that folder or transfer it into the public repository.
 
-Build4 accepts a selected folder containing GAMEDATA, FEDATA,
+Build5 accepts a selected folder containing GAMEDATA, FEDATA,
 install.win and text.eng, with optional other text.* languages. Startup files
 must be compatible with the translated engine; an original CD root may not
 contain them. This import path passed local host and Apple build checks;
-physical import/launch acceptance is pending. The Windows executable is not used. The game's
+the same importer launched build4 on the target iPad. Build5 device acceptance
+is pending. The Windows executable is not used. The game's
 native-port.log is written into its app Documents folder for failure diagnosis.
 
 ## Signing and refresh

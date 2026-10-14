@@ -152,3 +152,22 @@ McLaren F1/eight-car run, observed steering/braking, PCM generation and clean
 shutdown without sanitizer errors. The earlier guarded diagnostic prototype
 completed a two-lap Proving Grounds race and returned to the menu. These host
 results do not establish physical iPad race stability or a performance increase.
+
+The same rebuilt production source subsequently completed the original two-lap
+Proving Grounds race with McLaren F1 and seven opponents, showed results and
+returned to the selected Race main-menu row. Clean shutdown occurred at 382.139
+seconds without address/undefined/leak sanitizer errors. Original PCM was
+captured locally; intermediate Lap Times and audible continuity were not
+independently verified. Build 5 source `78c9cb04e9f0ed1dd886f38db691eeeedd2342ec`
+passed sequential Linux and Apple Release checks in run `38637807635`.
+The downloaded public ZIP was independently checked for that source revision,
+version 5, iOS-device ARM64 and exactly five executable/license/metadata entries.
+It contains no supplied startup or game files. Physical Outback completion,
+performance and lifecycle acceptance remain open.
+
+The same production candidate also passes original controller B pause/A resume
+and synthetic SDL background/foreground recovery under sanitizers. Background
+unbinds graphics, freezes both captured presentation and PCM output; foreground
+rebinds graphics, produces fresh PCM and resumes observed driving. Shutdown is
+clean. These injected SDL events do not prove real iPadOS suspension,
+AVAudioSession interruption handling or audible quality.
