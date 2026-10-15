@@ -1,0 +1,24 @@
+name: Shared copy lock benchmark
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    if: github.event.repository.visibility == 'public' && github.ref == 'refs/heads/main'
+    runs-on: macos-15
+    timeout-minutes: 5
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compare standard mutex and Apple blocking unfair lock
+        run: |
+          set -euo pipefail
+          uname -m
+          xcrun --sdk macosx clang++ --version
+          mkdir -p .build/lock-benchmark
+          xcrun --sdk macosx clang++ -std=c++17 -O2 -pthread -Wall -Wextra -Werror tests/guest_copy_lock_benchmark.cpp -o .build/lock-benchmark/compare
+          .build/lock-benchmark/compare
