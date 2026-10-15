@@ -10,29 +10,26 @@ separately. This repository contains source and public development documentation
 it does not contain the original game executable, owned game assets, signing
 credentials or private operational records.
 
-Build 4 launched on the target iPad with original menus, controller input and
-game audio. The user reported playable 40-49 displayed race FPS, followed by an
-original-memory error during Outback. Build 5 targets a demonstrated audio-state
-initialization/decoding conflict; its exact production source passed a complete
-two-lap original race, menu return and clean sanitizer shutdown locally, plus
-controller steering/braking, pause and synthetic background/foreground recovery.
-These host checks do not prove the reported physical error is fixed.
+Build 7 physical feedback reports completed crash-free races at 36-60 displayed
+FPS, approximately 200 MB RAM and similar FPS at 480p and native resolution.
+Native resolution substantially improves image quality. Controller remapping
+works, but a resume press can also activate a driving action.
 
-Build 7 passed sequential Linux and Apple ARM64 Release validation. Its checked
-unsigned ZIP contains executable, metadata and licenses only. Use the current
-[installation guide](INSTALLING.md) for the download, personal signing and
-separately supplied assets. Real OS/audio-interruption recovery and signing
-refresh remain unverified.
+Build 8 reduces repeated synchronization around bounded original-engine
+arithmetic while retaining individual memory-span and allocation checks. It
+passed sequential Linux and Apple ARM64 Release validation, including 40,000
+mixed arithmetic equivalence cases on both hosts and 27 Apple host tests.
+The downloaded unsigned package contains executable, metadata and licenses only.
+Local original-data sanitizer tests complete a race and menu return; promising
+Linux performance measurements do not establish an iPad FPS improvement.
+**Build 8 physical testing and the constant 60 FPS target remain pending.**
 
-Later physical feedback confirms build 5 automatic launch, completed races and
-no further crashes, with 35-57 race FPS and 57-59 at reduced detail. The current
-build 7 download includes a tappable FPS/CPU-app/RAM/render-size overlay and
-640x480, 960x720, 1280x960 or native-height 4:3 render targets. Its Linux and Apple Release checks
-pass; new device controls and native-resolution performance await testing. GPU
-utilization is unavailable with the current renderer. Build 7 also fixes an
-original cleanup wait when stopping while suspended; local original-data
-suspended shutdown, resume and full race/menu-return checks pass. Physical
-lifecycle acceptance remains open. See INSTALLING.md.
+Use the [installation guide](INSTALLING.md) for the current download, personal
+signing and separately supplied assets. The tappable FPS/CPU-app/RAM/render-size
+overlay and 640x480, 960x720, 1280x960 or native-height 4:3 render targets remain.
+GPU utilization is unavailable with the current renderer. Real OS/audio
+interruption recovery and signing refresh still require acceptance. Controller
+input, touch gestures and sharper HUD work follow performance in priority order.
 
 - [PLAN.md](PLAN.md): mission, progress and remaining acceptance criteria.
 - [BUILDING.md](BUILDING.md): preparation and controlled cloud compilation.

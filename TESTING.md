@@ -232,3 +232,26 @@ On the iPad, compare 640x480 and Native in the same scene and detail settings,
 record FPS and CPU/app, check the chosen resolution after relaunch, and verify
 Home/resume. Real audio interruption, orientation and personal-signing refresh
 acceptance also remain open. See INSTALLING.md for the current download.
+
+## Build 8 arithmetic synchronization and delivery
+
+Source `ffb3475cacc70289637dd26957c406deaea11662` passes
+[manual run 38799395535](https://github.com/nabeelalam/nfs2seios/actions/runs/38799395535).
+Linux validation precedes the standard ARM Mac Release build. Both hosts pass
+40,000 O3 mixed integer/FPU/branch/alias equivalence cases; all 27 Apple host
+tests pass. Bounded transactions retain individual span/ownership checks and
+the existing mutex, ending before control flow, callbacks and unsafe helpers.
+
+Private local sanitizer checks complete a two-lap original race, results/menu
+return and clean shutdown. Outback input and render-density checks also pass.
+Local software-rendered comparisons show a promising improvement, with traffic
+and scene timing differences preventing a precise controlled percentage claim.
+These results do not prove iPad performance, audio quality or full acceptance.
+
+The downloaded version8 package independently matches the built source, thin
+ARM64 iOS-device Release architecture and the existing bundle identity. It has
+exactly five executable/metadata/license entries, no original assets or signing
+material. No Actions artifacts were uploaded. Physical build8 testing remains
+pending: Native resolution, unchanged full detail, Outback/McLaren F1/all
+opponents, menu and busy/clear race FPS, full-race completion and working audio.
+Constant60FPS is not yet established. See INSTALLING.md for the current ZIP.

@@ -1,19 +1,15 @@
 # Personal installation without a Mac
 
 Native game builds have been personally signed and launched on the target iPad
-through the user's existing SideStore setup. Earlier game versions rendered
-original menus and races with audio and controller input. Build4 was reported
-playable at 40-49 displayed race FPS, followed by a mid-race memory error.
-Build5 now has reported automatic launch and completed playable races without
-further crashes. Build7 retains the audio-state guards and performance controls.
-It fixes a
-locally reproduced stop-while-suspended cleanup wait. Its new diagnostics,
-resolution controls and real iPad lifecycle acceptance remain pending. The
-separate Probe is a platform diagnostic, not the game.
+through the user's existing SideStore setup. Build7 physical feedback reports
+completed crash-free races at 36-60 FPS with audio and controller input.
+Build8 targets synchronization overhead; its downloaded ARM64 Release package
+has passed independent inspection, but physical performance and stability are
+pending. The separate Probe is a platform diagnostic, not the game.
 
 ## Update the existing game
 
-1. Download the [build7 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38653406201-1/NFSIISEGame-development-unsigned.zip)
+1. Download the [build8 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38799395535-1/NFSIISEGame-development-unsigned.zip)
    in Files and extract it.
 2. Keep the currently installed NFS II SE app and your separately stored game
    folder in Files. Install this update over the existing app.
@@ -21,16 +17,16 @@ separate Probe is a platform diagnostic, not the game.
    NFSIISEGame-development-unsigned.ipa into SideStore using the same Apple
    Account that signed the existing game. SideStore performs personal signing
    and installation; the ZIP itself is not a signed installation.
-4. Launch NFS II SE, connect the controller, and record the displayed menu and
-   racing FPS. Check that menu directions select items without confirming them.
-   Build5 already has reported completed races; verify the new build and its
-   background/reopen behavior separately.
+4. Launch NFS II SE with Native resolution and the same full graphics settings.
+   Compare menu FPS and busy/clear race sections on Outback with McLaren F1 and
+   all opponents. Complete a race and check audio and stability. Keep resolution
+   and detail settings unchanged when comparing versions.
 
-Build7 retains the renderer optimization, presentation FPS counter, corrected
-separately supplied startup importer and callback exception-stack recovery,
-and protects audio callback selection as well as initialization/decoding.
-The ordering prototype passed a local complete two-lap race and menu return
-with sanitizers. New diagnostics and resolution controls need a device check.
+Build8 retains the overlay, resolution controls, startup importer, audio-state
+guards and suspended-stop cleanup fix. It reduces repeated locking in bounded
+arithmetic blocks while preserving memory checks. Controller, touch and HUD
+changes are not included. Background/reopen, audio interruptions and signing
+refresh remain separate physical acceptance checks.
 Import errors are displayed before the picker window is closed. The release tag
 and manifest identify its source revision.
 
