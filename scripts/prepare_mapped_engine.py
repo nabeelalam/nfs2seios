@@ -47,6 +47,13 @@ def rewrite_stores(text):
         address = text[inner+1:inner_end]
         args = text[inner_end+1:outer_end]
         typename = TYPES[match.group(3)]
+        # The one-operand signed multiply reads memory and writes EDX:EAX.
+        # Its by-value helper leaves the memory operand untouched. Two/three
+        # operand forms still modify their first operand and need a store.
+        if match.group(2) == "imul32" and not args.strip():
+            replacement = (f"{match.group(1)}imul32(guest_load<{typename}>({address}))")
+            text = text[:match.start()] + replacement + text[outer_end+1:]
+            continue
         replacement = (f"{match.group(1)}{{ const auto mapped_address = {address}; "
                        f"auto mapped_value = guest_load<{typename}>(mapped_address); "
                        f"{match.group(2)}(mapped_value{args}); "

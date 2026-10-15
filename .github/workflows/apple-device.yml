@@ -40,6 +40,7 @@ jobs:
       - name: Host regression tests
         run: |
           python3 tests/bundle_resources_test.py
+          python3 tests/guest_copy_semantics_test.py
           cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
           cmake --build .build/host --target core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests -j 3
           ctest --test-dir .build/host --output-on-failure
@@ -106,7 +107,7 @@ jobs:
           cat > .build/release-notes.md <<'NOTES'
           Native ARM64 iPad development candidate. Personal signing through SideStore is required. Original game assets must be supplied separately.
 
-          This candidate adds a tappable performance overlay and rendering resolution choices, including native-height rendering in the original 4:3 view. GPU utilization is unavailable. It also serializes audio callback selection and decoding. Device acceptance of the new controls remains pending; this is not a finished release.
+          This candidate reduces CPU synchronization overhead by batching bounded arithmetic operations while retaining checked memory access. It includes the performance overlay and selectable rendering resolutions. Physical 60 FPS validation is pending; this is a development build.
 
           This download excludes configuration and language files as well as game data. Its corrected importer reads separately supplied install.win and text.eng from your selected game folder alongside GAMEDATA and FEDATA. Keep existing app data when updating. If import fails, acknowledge the displayed error; do not delete your source assets. Record the displayed menu and race FPS, input behavior and any exact error.
           NOTES

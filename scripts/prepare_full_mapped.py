@@ -1,10 +1,8 @@
-"""Prepare all split methods for compile auditing of explicit guest boundaries.
-
-This target is not yet linked to platform wrappers or delivered in the IPA.
-"""
+"""Prepare statically translated methods with checked guest-copy boundaries."""
 import re
 import shutil
 from prepare_mapped_engine import prepare_mapped, rewrite_stores, closing, ROOT, TYPES
+from batch_guest_copies import batch_copies
 
 
 def rewrite_casts(text, functions):
@@ -39,6 +37,7 @@ def prepare_full():
         shutil.copyfile(path, dest / path.name)
     shutil.copyfile(mapped / "MappedMemory.cpp", dest / "MappedMemory.cpp")
     functions = set(re.findall(r"game_id_(\w+) =", (mapped / "FunctionIds.h").read_text()))
+    transaction_blocks = 0
     for path in sorted(source.glob("Methods_*.cpp")):
         text = path.read_text().replace('#include "Stubs.h"', '#include "FunctionIds.h"')
         # One platform-specific native buffer dereference in the pinned fork.
@@ -140,6 +139,8 @@ def prepare_full():
                     '\n\tnfs::CodecOperationGuard codec_operation{uint32_t(eax)};')
             text = '#include "CodecOperations.h"\n' + text
         text='#include "GameTrace.h"\n'+text
+        text, blocks = batch_copies(text)
+        transaction_blocks += len(blocks)
         (dest / path.name).write_text(text)
     stubs = (source / "Stubs.cpp").read_text()
     dispatch = '#include "Game.h"\n#include "FunctionIds.h"\nextern "C" bool nfs_register_guest_function(uint32_t, NativeGameFunction);\n'
@@ -150,7 +151,7 @@ def prepare_full():
     if len(registrations) != len(functions): raise ValueError("Incomplete native function dispatch table")
     dispatch += 'extern "C" bool register_original_game_functions() {\n' + ''.join(registrations) + 'return true;\n}\n'
     (dest / "FullDispatch.cpp").write_text(dispatch)
-    print("Prepared all 15 method units with explicit guest load/store and cast boundaries")
+    print(f"Prepared all 15 method units with checked guest boundaries and {transaction_blocks} bounded arithmetic transactions")
     return dest
 
 

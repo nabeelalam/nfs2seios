@@ -48,6 +48,8 @@ jobs:
           python3 tests/publication_audit_test.py
           python3 tests/artifact_budget_test.py
           python3 tests/release_download_test.py
+          python3 tests/mapped_operand_test.py
+          python3 tests/guest_copy_batching_test.py
           python3 scripts/setup_secret_scanner.py
           python3 scripts/publication_gate.py --mode history
           python3 scripts/publication_audit.py --mode worktree
@@ -61,14 +63,16 @@ jobs:
           python3 scripts/prepare_renderer.py
       - name: Build actual GLES pixel tests
         run: |
+          python3 tests/guest_copy_semantics_test.py
           python3 scripts/check_runner_space.py
           cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON
-          cmake --build .build/pixels --target renderer_pixel_tests audio_sdl_tests input_sdl_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests -j 3
+          cmake --build .build/pixels --target renderer_pixel_tests audio_sdl_tests input_sdl_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests -j 3
       - name: Validate full native engine linkage and memory ownership
         run: |
           set -o pipefail
           .build/pixels/engine_link_check 2>&1 | tee .build/engine-link.log
           .build/pixels/menu_input_tests
+          .build/pixels/shared_memory_tests
       - name: Execute original startup with a missing-assets sandbox
         run: |
           set -o pipefail
