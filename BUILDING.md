@@ -70,8 +70,8 @@ SDL keeps its existing settings. Compiler/linker probes run before the full
 build, and the workflow limits compile jobs and linker backend workers to two.
 Debug and the default workflow configuration retain their existing compiler
 settings. The optional Apple host gate also checks 40,000 mixed integer/FPU
-states with ThinLTO enabled. Local correctness checks passed; Apple compilation
-and physical split-screen FPS validation remain required for this candidate.
+states with ThinLTO enabled. Build 9 passed the Apple SDK build and independent downloaded-package checks.
+Physical split-screen FPS and race-stability validation remain required.
 
 
 ## Executable-only development downloads

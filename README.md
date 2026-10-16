@@ -10,19 +10,18 @@ separately. This repository contains source and public development documentation
 it does not contain the original game executable, owned game assets, signing
 credentials or private operational records.
 
-Build 7 physical feedback reports completed crash-free races at 36-60 displayed
-FPS, approximately 200 MB RAM and similar FPS at 480p and native resolution.
-Native resolution substantially improves image quality. Controller remapping
-works, but a resume press can also activate a driving action.
+Build 8 physical feedback reports improved FPS, reaching 60 in some sections,
+but lower split-screen performance and an intermittent unmapped-engine-span
+race failure. Constant split-screen 60 FPS and the crash fix remain open.
+Controller remapping works, but a resume press can also activate a driving action.
 
-Build 8 reduces repeated synchronization around bounded original-engine
-arithmetic while retaining individual memory-span and allocation checks. It
-passed sequential Linux and Apple ARM64 Release validation, including 40,000
-mixed arithmetic equivalence cases on both hosts and 27 Apple host tests.
-The downloaded unsigned package contains executable, metadata and licenses only.
-Local original-data sanitizer tests complete a race and menu return; promising
-Linux performance measurements do not establish an iPad FPS improvement.
-**Build 8 physical testing and the constant 60 FPS target remain pending.**
+Build 9 adds bounded ThinLTO compiler optimization to the existing checked
+arithmetic batching. Sequential Linux and Apple validation passed, including
+40,000 mixed integer/FPU cases with ThinLTO and all 27 Apple host tests.
+The downloaded version 9 package was independently checked for its exact source,
+thin ARM64 iPad architecture, contents, privacy and release digest. It contains
+the executable, metadata and licenses; supply original game files separately.
+**Build 9 physical FPS and stability testing remain pending.**
 
 Use the [installation guide](INSTALLING.md) for the current download, personal
 signing and separately supplied assets. The tappable FPS/CPU-app/RAM/render-size

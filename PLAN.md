@@ -27,19 +27,28 @@ Two requirements are part of the goal:
 - Local original menu/race rendering, keyboard driving and generated game PCM.
 - Host regression and sanitizer checks, plus portable ARM64 compile checks.
 
-These are development results. They do not establish current iPad gameplay.
+Build 8 physical feedback reports playable racing and better FPS, with lower
+split-screen performance and an intermittent unmapped-engine-span race failure.
+Build 9 has passed sequential Linux and Apple checks and independent downloaded
+package inspection. Its ThinLTO compiler path retains checked memory access;
+physical split-screen FPS and stability acceptance remain pending.
 
 ## Remaining sequence
 
-1. Reproduce and fix the intermittent invalid audio callback with an exact
-   callsite and verified cause; do not treat successful retries as a fix.
-2. Verify sustained original racing, complete laps and controller gameplay.
-3. Measure rendering and audio performance with clear host/device scope.
-4. After relevant local gates pass, perform a deliberate current-revision Apple
-   SDK build and validate the ARM64 device package. Use standard runners only.
-5. Personally sign and install the unsigned package, import original assets,
-   and verify menus, race behavior, controller reconnect, audio and lifecycle.
-6. Resolve physical-device failures and repeat only the affected validation.
+1. Reach constant 60 FPS in full-detail native-resolution split-screen racing
+   and fix the intermittent race failure with a verified cause. Use both players;
+   remap both original control profiles after selecting split-screen. Preserve
+   original pointer/span rejection while investigating. Local measurements select
+   candidates; physical iPad tests establish performance and crash acceptance.
+2. Then remove controller-to-keyboard aliases and prevent resume presses from
+   also triggering car actions. Retain native analog remapping and text entry.
+3. Then map touch movement to the cursor, one-finger tap to click, two-finger tap
+   to Escape and three-finger tap to Enter.
+4. Finally investigate sharper HUD text, speedometer, map and starting lights.
+   Original assets remain private and unchanged.
+5. Continue scoped controller reconnect, audio, lifecycle, signing refresh and
+   complete-race acceptance. Repeat only affected Apple build/package gates when
+   relevant source changes justify another controlled standard-runner build.
 
 Completion requires stable, playable original-game behavior on the physical
 iPad with the controller and native audio/graphics. A host test or an unsigned

@@ -1,15 +1,14 @@
 # Personal installation without a Mac
 
 Native game builds have been personally signed and launched on the target iPad
-through the user's existing SideStore setup. Build7 physical feedback reports
-completed crash-free races at 36-60 FPS with audio and controller input.
-Build8 targets synchronization overhead; its downloaded ARM64 Release package
-has passed independent inspection, but physical performance and stability are
-pending. The separate Probe is a platform diagnostic, not the game.
+through the user's existing SideStore setup. Build 8 improves performance but
+still has an intermittent split-screen race failure and does not sustain 60 FPS.
+Build 9 tests a compiler optimization; its downloaded ARM64 Release package has
+passed independent inspection. Physical performance and stability remain pending.
 
 ## Update the existing game
 
-1. Download the [build8 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38799395535-1/NFSIISEGame-development-unsigned.zip)
+1. Download the [build9 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38829204992-1/NFSIISEGame-development-unsigned.zip)
    in Files and extract it.
 2. Keep the currently installed NFS II SE app and your separately stored game
    folder in Files. Install this update over the existing app.
@@ -17,16 +16,16 @@ pending. The separate Probe is a platform diagnostic, not the game.
    NFSIISEGame-development-unsigned.ipa into SideStore using the same Apple
    Account that signed the existing game. SideStore performs personal signing
    and installation; the ZIP itself is not a signed installation.
-4. Launch NFS II SE with Native resolution and the same full graphics settings.
-   Compare menu FPS and busy/clear race sections on Outback with McLaren F1 and
-   all opponents. Complete a race and check audio and stability. Keep resolution
-   and detail settings unchanged when comparing versions.
+4. Select Split Screen in the original Setup menu. Use Native resolution and
+   the same full graphics, track, cars and opponents as your build 8 comparison.
+   Check displayed FPS in busy and clear race sections, complete a race, and
+   report audio or stability failures. When testing both controllers, remap both
+   player profiles in the original controls settings while split-screen is active.
 
-Build8 retains the overlay, resolution controls, startup importer, audio-state
-guards and suspended-stop cleanup fix. It reduces repeated locking in bounded
-arithmetic blocks while preserving memory checks. Controller, touch and HUD
-changes are not included. Background/reopen, audio interruptions and signing
-refresh remain separate physical acceptance checks.
+Build 9 adds ThinLTO compiler optimization while retaining checked memory access,
+the overlay, selectable render sizes, importer and prior runtime fixes. It does
+not claim a race-crash repair or controller, touch or HUD changes. Background
+recovery, audio interruptions and signing refresh remain physical acceptance checks.
 Import errors are displayed before the picker window is closed. The release tag
 and manifest identify its source revision.
 
@@ -46,11 +45,11 @@ is unavailable with this renderer, and is not estimated from the FPS figure.
 
 ## Separately supplied game files
 
-The public build7 IPA contains only the executable, app metadata and license
+The current public IPA contains only the executable, app metadata and license
 notices. It excludes GAMEDATA, FEDATA, install.win and all text.* language files.
 For a folder import, supply install.win and text.eng beside GAMEDATA/FEDATA
 in the selected folder before opening it. Other text.* languages are optional.
-Build3 had a confirmed import regression; replace it with build7. Existing
+Build3 had a confirmed import regression; replace it with the current build. Existing
 app-owned game folders remain reusable without importing them again.
 
 For the supplied-startup importer, the local helper
