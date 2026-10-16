@@ -159,3 +159,24 @@ The original menu pan/click/Escape/Enter sequence still passes, clean 28.733 s.
 All 34 local ASan/UBSan checks pass, including queued keys, cancellation, bounded
 overflow, neutral timing and clock wrap. This correction needs its own Apple
 build and physical iPad acceptance; it makes no energy-saving claim.
+
+
+Build 12 source fd63a194441b135434de2adea977b5fdde9ca782 passed the single
+sequential Linux/Apple run 38980392788. Independent downloaded-package inspection
+confirms version 12, thin ARM64 iOS-device Release, matching release/source
+digests and exactly executable, metadata and licenses. No game assets, signing
+material or sanitizer runtimes are included. All three changed input runtime
+files and all 15 translated units use verified O3/C++14/ThinLTO; both final links
+retain the two-worker backend cap. The 27 Apple host tests and 40,000 baseline
+and ThinLTO cases each pass; Linux production spans and new input suites pass.
+No probe was rebuilt and the Actions artifact count is zero.
+
+Build 11's immediate touch Escape race limitation is corrected locally in this
+source: the original two-player race pauses with two fingers and resumes with
+three, retaining the gear. Original menu gestures still pass. Physical build 12
+controller/remapping, keyboard entry, gestures, FPS/audio and OS recovery remain
+pending. Build 10 remains the user-accepted split-screen 60 FPS baseline.
+Battery savings and HD artwork are not established.
+
+Verified unsigned download: [build 12 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38980392788-1/NFSIISEGame-development-unsigned.zip). Personal signing and
+separately supplied original assets are required.

@@ -10,28 +10,31 @@ separately. This repository contains source and public development documentation
 it does not contain the original game executable, owned game assets, signing
 credentials or private operational records.
 
-Build 8 physical feedback reports improved FPS, reaching 60 in some sections,
-but lower split-screen performance and an intermittent unmapped-engine-span
-race failure. Constant split-screen 60 FPS and the crash fix remain open.
-Controller remapping works, but a resume press can also activate a driving action.
+The user accepts build 10 as the base performance milestone: split-screen at
+60 FPS with no observed drop or crash. This is feedback from their play session,
+not proof covering every track or rare path. Reported battery drain has not yet
+been measured under controlled conditions.
 
-Build 10 retains bounded ThinLTO and adds a direct heap-pointer return plus
-conservative logical-chunk ownership metadata. Bounds, allocation lifetime,
-cancellation and copy serialization remain checked. Its single sequential Linux
-and Apple run passed, including 45 production span/lifetime cases, all 27 Apple
-host tests and 40,000 mixed cases for each compiler configuration. The changed
-runtime and all translated units used verified ARM64 device Release ThinLTO.
-The downloaded version 10 package was independently inspected for source,
-architecture, contents, privacy and digest. It contains executable, metadata
-and licenses; original game assets remain separately supplied.
-**Build 10 physical FPS and race-stability acceptance remain pending.**
+Build 12 adds native controller menu/input ownership without controller keyboard
+aliases, held-resume consumption, a small keyboard toggle, and relative touch
+cursor controls. One finger taps to click, two fingers send Escape, and three
+send Enter. Nonblocking key holds let the original race input sampler observe
+Escape and Enter. Local original-menu and two-player race checks pass.
+
+Its sequential Linux/Apple run passed, including 45 production memory-span cases,
+the new input suites, 27 Apple host tests and 40,000 mixed cases each for baseline
+and ThinLTO. The downloaded version 12 thin ARM64 device Release package was
+independently checked for exact source, contents, privacy and release digest.
+It contains executable, metadata and licenses; game assets remain separate.
+**Build 12 physical controller, keyboard, touch and FPS regression is pending.**
 
 Use the [installation guide](INSTALLING.md) for the current download, personal
 signing and separately supplied assets. The tappable FPS/CPU-app/RAM/render-size
 overlay and 640x480, 960x720, 1280x960 or native-height 4:3 render targets remain.
 GPU utilization is unavailable with the current renderer. Real OS/audio
 interruption recovery and signing refresh still require acceptance. Controller
-input, touch gestures and sharper HUD work follow performance in priority order.
+and touch changes need device acceptance; controlled energy measurement and
+sharper HUD investigation remain. No energy or HD artwork improvement is claimed.
 
 - [PLAN.md](PLAN.md): mission, progress and remaining acceptance criteria.
 - [BUILDING.md](BUILDING.md): preparation and controlled cloud compilation.

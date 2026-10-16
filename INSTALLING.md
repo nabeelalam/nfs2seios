@@ -1,15 +1,14 @@
 # Personal installation without a Mac
 
 Native game builds have been personally signed and launched on the target iPad
-through the user's existing SideStore setup. Build 8 improves performance but
-still has an intermittent split-screen race failure and does not sustain 60 FPS.
-Build 10 adds measured memory-check optimizations and retains ThinLTO. Its
-downloaded ARM64 Release package has passed independent source, architecture,
-contents and privacy inspection. Physical performance and stability remain pending.
+through the existing SideStore setup. Build 10 is the user-accepted split-screen
+60 FPS baseline. Build 12 is the new controller, keyboard and touch candidate:
+its ARM64 Release package passed independent source, architecture, contents,
+privacy and digest checks. Its physical input/FPS regression remains pending.
 
 ## Update the existing game
 
-1. Download the [build 10 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38941504663-1/NFSIISEGame-development-unsigned.zip)
+1. Download the [build 12 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38980392788-1/NFSIISEGame-development-unsigned.zip)
    in Files and extract it.
 2. Keep the currently installed NFS II SE app and your separately stored game
    folder in Files. Install this update over the existing app.
@@ -20,14 +19,19 @@ contents and privacy inspection. Physical performance and stability remain pendi
 4. Select Split Screen in the original Setup menu. Use Native resolution and
    the same full graphics, track, cars and opponents as your most recent comparison.
    Check displayed FPS in busy and clear race sections, complete a race, and
-   report audio or stability failures. When testing both controllers, remap both
-   player profiles in the original controls settings while split-screen is active.
+   report audio or stability failures. Check both saved controller profiles;
+   remap only if needed in the original controls settings while Split Screen is active.
 
-Build 10 avoids duplicate heap-region resolution and uses conservative ownership
-flags for fully owned logical chunks. It retains ThinLTO, checked memory access,
-the overlay, selectable render sizes, importer and prior runtime fixes. It does
-not claim a race-crash repair or controller, touch or HUD changes. Background
-recovery, audio interruptions and signing refresh remain physical acceptance checks.
+Build 12 retains the accepted rendering and memory-check optimizations, ThinLTO,
+diagnostics, selectable render sizes and importer. It adds native controller input
+ownership, the keyboard icon and relative touch gestures. Check that a held
+resume press does not also downshift, while a released fresh press does. Test
+one-finger cursor movement/tap click, two-finger Escape (including race Pause),
+and three-finger Enter. The keyboard icon shows/hides the keyboard and can supply
+Return for original control remapping. Automatic text-field detection is deferred.
+No battery saving or HD artwork improvement is claimed. Build 10 remains the
+physically accepted comparison baseline. Background recovery, audio interruptions
+and signing refresh still need physical acceptance.
 Import errors are displayed before the picker window is closed. The release tag
 and manifest identify its source revision.
 
@@ -94,7 +98,7 @@ separate acceptance steps. A valid unsigned IPA does not prove installation,
 physical performance or stability.
 
 
-The next input candidate adds a keyboard icon below the FPS display: tap it to
+Build 12 adds a keyboard icon below the FPS display: tap it to
 show or hide the keyboard, including Return for opening the original control
 remapping prompt. Map both players separately in Split Screen setup. Controller
 input remains native; player one's Back/View resets the car. One-finger movement

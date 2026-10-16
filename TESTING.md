@@ -276,3 +276,27 @@ A corrected-header session exercised both players' steering and throttle for
 three minutes after setup and exited cleanly, but hit barriers and did not
 complete a lap. Full-detail Native split-screen FPS, complete races, rare-failure
 repair and lifecycle/signing acceptance still require physical evidence.
+
+
+## Build 12 physical acceptance
+
+The package/build checks pass; these physical checks remain:
+
+1. Use Native resolution, full graphics and two controllers in Split Screen.
+   Compare busy/clear sections with the user-accepted build 10 60 FPS baseline,
+   complete a race, and check audio/stability.
+2. Check both native controller profiles and menu navigation/confirmation.
+   With X mapped to downshift, resume Pause with X and hold briefly: gear should
+   stay unchanged. Release and press again: downshift should work.
+3. Use the small keyboard icon to show/hide the keyboard and supply Return for
+   original remapping. Check actual text/name entry when a suitable field occurs.
+4. Check relative one-finger movement and tap click, two-finger Escape in menus
+   and racing, and three-finger Enter. Check any system-gesture interference.
+5. Home/resume should not leave a gesture key or controller button held. Check
+   actual OS/audio interruption recovery separately from injected Linux events.
+
+For energy comparisons, match brightness, volume, resolution, controllers,
+network state, battery range and starting temperature. Repeat matched-duration
+menu-idle, paused and active split-screen sessions, alternating baseline and
+candidate order. Record elapsed time, battery start/end, FPS and app CPU.
+Battery percentage is coarse; no energy saving is established by host tests.
