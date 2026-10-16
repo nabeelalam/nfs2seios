@@ -63,6 +63,16 @@ only after checking storage headroom; the aggregate upload limit is 64 MiB and
 retention is one day. Debug remains available for targeted compiler diagnostics.
 The package manifest records the selected configuration.
 
+ThinLTO is an opt-in Release compiler experiment. Select `thin_lto=true` in the
+manual workflow, or configure locally with `-DNFS_THIN_LTO=ON
+-DNFS_THIN_LTO_JOBS=2` and a Release build. The selected game targets use ThinLTO;
+SDL keeps its existing settings. Compiler/linker probes run before the full
+build, and the workflow limits compile jobs and linker backend workers to two.
+Debug and the default workflow configuration retain their existing compiler
+settings. The optional Apple host gate also checks 40,000 mixed integer/FPU
+states with ThinLTO enabled. Local correctness checks passed; Apple compilation
+and physical split-screen FPS validation remain required for this candidate.
+
 
 ## Executable-only development downloads
 

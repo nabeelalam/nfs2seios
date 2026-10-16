@@ -1,5 +1,8 @@
 from pathlib import Path
-import subprocess,sys,shutil
+import argparse,subprocess,sys,shutil
+parser=argparse.ArgumentParser(description='Compare exact original and batched integer/FPU state')
+parser.add_argument('--thin-lto',action='store_true',help='Also exercise the bounded ThinLTO compiler/linker path')
+args=parser.parse_args()
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from batch_guest_copies import batch_copies as transform
 root=Path(__file__).resolve().parents[1]
@@ -78,6 +81,10 @@ int main(){
 '''
 path=out/'mixed_semantics.cpp';assert not path.exists();path.write_text(source)
 command=[shutil.which('clang++') or shutil.which('c++') or 'clang++','-std=c++14','-O3','-g','-pthread','-fwrapv','-fno-strict-aliasing','-Isrc','-I.build/fullmapped',str(path),'src/EngineMemory.cpp','src/GameTrace.cpp','-o',str(out/'mixed-semantics')]
+if args.thin_lto:
+    if not shutil.which('clang++'):raise RuntimeError('ThinLTO validation requires clang++')
+    backend='-Wl,-mllvm,-threads=2' if sys.platform=='darwin' else '-Wl,-plugin-opt,jobs=2'
+    command[1:1]=['-flto=thin',backend]
 with (out/'mixed-build.log').open('w') as log:subprocess.run(command,check=True,cwd=root,stdout=log,stderr=subprocess.STDOUT,timeout=60)
 with (out/'mixed-test.log').open('w') as log:subprocess.run([str(out/'mixed-semantics')],check=True,cwd=root,stdout=log,stderr=subprocess.STDOUT,timeout=30)
 print((out/'mixed-test.log').read_text())

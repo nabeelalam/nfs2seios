@@ -17,6 +17,10 @@ on:
         description: Also rebuild the separate platform diagnostic
         type: boolean
         default: false
+      thin_lto:
+        description: Enable locally validated bounded ThinLTO for Release game targets
+        type: boolean
+        default: false
       publish_ipa:
         description: Upload unsigned IPA after reviewing account storage allowance
         type: boolean
@@ -126,6 +130,7 @@ jobs:
       configuration: ${{ inputs.configuration }}
       include_probe: ${{ inputs.include_probe }}
       publish_ipa: ${{ inputs.publish_ipa }}
+      thin_lto: ${{ inputs.thin_lto }}
   release:
     needs: renderer-pixels
     if: inputs.build_ios && inputs.publish_release && !inputs.publish_ipa && !inputs.include_probe
@@ -135,3 +140,4 @@ jobs:
     with:
       configuration: Release
       publish_release: true
+      thin_lto: ${{ inputs.thin_lto }}

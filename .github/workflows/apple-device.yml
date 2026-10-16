@@ -8,6 +8,9 @@ on:
       include_probe:
         type: boolean
         default: false
+      thin_lto:
+        type: boolean
+        default: false
       publish_ipa:
         type: boolean
         default: false
@@ -22,6 +25,8 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
+      NFS_THIN_LTO: ${{ inputs.thin_lto && 'ON' || 'OFF' }}
+      NFS_BUILD_JOBS: ${{ inputs.thin_lto && '2' || '3' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -30,6 +35,7 @@ jobs:
         run: |
           python3 scripts/check_runner_space.py
           case "$NFS_BUILD_CONFIGURATION" in Debug|Release) ;; *) echo "Invalid build configuration"; exit 1 ;; esac
+          if [ "$NFS_THIN_LTO" = ON ] && [ "$NFS_BUILD_CONFIGURATION" != Release ]; then echo "ThinLTO validation requires Release"; exit 1; fi
           xcodebuild -version
           xcrun --sdk iphoneos --show-sdk-version
           cmake --version
@@ -41,33 +47,34 @@ jobs:
         run: |
           python3 tests/bundle_resources_test.py
           python3 tests/guest_copy_semantics_test.py
+          if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
           cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
           cmake --build .build/host --target core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests -j 3
           ctest --test-dir .build/host --output-on-failure
       - name: Configure native iPadOS targets
         run: |
-          cmake -S . -B .build/ios -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+          cmake -S . -B .build/ios -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DNFS_THIN_LTO="$NFS_THIN_LTO" -DNFS_THIN_LTO_JOBS=2
       - name: Compile translated engine to ARM64 objects
         run: |
           set -o pipefail
-          /usr/bin/time -l cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target full_mapped_translation -j 3 2>&1 | tee .build/engine-ipados.log
+          /usr/bin/time -l cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target full_mapped_translation -j "$NFS_BUILD_JOBS" 2>&1 | tee .build/engine-ipados.log
       - name: Compile existing renderer and native platform bridges
         run: |
           set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target glide_gles2 platform_bridges -j 3 2>&1 | tee .build/renderer-ipados.log
+          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target glide_gles2 platform_bridges -j "$NFS_BUILD_JOBS" 2>&1 | tee .build/renderer-ipados.log
       - name: Link the complete translated engine with native platform services
         run: |
           set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEEngineCheck -j 3 2>&1 | tee .build/engine-link-ipados.log
+          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEEngineCheck -j "$NFS_BUILD_JOBS" 2>&1 | tee .build/engine-link-ipados.log
       - name: Build unsigned native platform diagnostic
         if: inputs.include_probe
         run: |
           set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEProbe -j 3 2>&1 | tee .build/app-ipados.log
+          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEProbe -j "$NFS_BUILD_JOBS" 2>&1 | tee .build/app-ipados.log
       - name: Build the original engine game app entry
         run: |
           set -o pipefail
-          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEGame -j 3 2>&1 | tee .build/game-app-ipados.log
+          cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEGame -j "$NFS_BUILD_JOBS" 2>&1 | tee .build/game-app-ipados.log
       - name: Validate ARM64 bundle and package unsigned IPA
         if: inputs.include_probe
         run: python3 scripts/package_ipa.py ".build/ios/${NFS_BUILD_CONFIGURATION}-iphoneos/NFSIISEProbe.app" .build/NFSIISEProbe-unsigned.ipa
@@ -107,9 +114,10 @@ jobs:
           cat > .build/release-notes.md <<'NOTES'
           Native ARM64 iPad development candidate. Personal signing through SideStore is required. Original game assets must be supplied separately.
 
-          This candidate reduces CPU synchronization overhead by batching bounded arithmetic operations while retaining checked memory access. It includes the performance overlay and selectable rendering resolutions. Physical 60 FPS validation is pending; this is a development build.
+          This candidate retains bounded arithmetic batching, checked memory access, the performance overlay and selectable rendering resolutions. The selected compiler configuration is recorded below. Physical split-screen 60 FPS and the intermittent race-crash fix remain unverified; this is a development build.
 
           This download excludes configuration and language files as well as game data. Its corrected importer reads separately supplied install.win and text.eng from your selected game folder alongside GAMEDATA and FEDATA. Keep existing app data when updating. If import fails, acknowledge the displayed error; do not delete your source assets. Record the displayed menu and race FPS, input behavior and any exact error.
           NOTES
+          printf '\nCompiler configuration: ThinLTO=%s, compile jobs=%s, ThinLTO backend cap=2.\n' "$NFS_THIN_LTO" "$NFS_BUILD_JOBS" >> .build/release-notes.md
           gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft --prerelease --title "Native iPad development candidate $GITHUB_RUN_ID" --notes-file .build/release-notes.md .build/NFSIISEGame-development-unsigned.zip
           gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false --latest=false
