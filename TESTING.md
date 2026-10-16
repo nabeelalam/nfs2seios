@@ -255,3 +255,24 @@ material. No Actions artifacts were uploaded. Physical build8 testing remains
 pending: Native resolution, unchanged full detail, Outback/McLaren F1/all
 opponents, menu and busy/clear race FPS, full-race completion and working audio.
 Constant60FPS is not yet established. See INSTALLING.md for the current ZIP.
+
+
+## Build 10 acceptance boundary
+
+The [build 10 run](https://github.com/nabeelalam/nfs2seios/actions/runs/38941504663)
+passed Linux production linkage with 45 span/lifetime cases, real GLES pixel
+checks, SDL audio and controller checks. Apple passed 27 host tests and 40,000
+mixed states with each of the baseline and ThinLTO configurations. Actual device
+compile logs verify C++14/O3/ThinLTO for the changed memory runtime, all 15
+translated method units and three Objective-C++ units; device links cap ThinLTO
+backends at two. The separately downloaded version 10 package passes source,
+digest, privacy, thin ARM64 iOS-device and executable/license-only checks.
+Its app metadata differs from build 9 only in CFBundleVersion.
+
+Two local split-screen comparison orders observed about 7.2-7.4% less game-thread
+CPU per presented frame and 2.3-3.2% higher software-rendered FPS. Those runs have
+natural traffic differences and are not physical or formal causal speedup proof.
+A corrected-header session exercised both players' steering and throttle for
+three minutes after setup and exited cleanly, but hit barriers and did not
+complete a lap. Full-detail Native split-screen FPS, complete races, rare-failure
+repair and lifecycle/signing acceptance still require physical evidence.

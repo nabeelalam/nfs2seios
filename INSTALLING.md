@@ -3,12 +3,13 @@
 Native game builds have been personally signed and launched on the target iPad
 through the user's existing SideStore setup. Build 8 improves performance but
 still has an intermittent split-screen race failure and does not sustain 60 FPS.
-Build 9 tests a compiler optimization; its downloaded ARM64 Release package has
-passed independent inspection. Physical performance and stability remain pending.
+Build 10 adds measured memory-check optimizations and retains ThinLTO. Its
+downloaded ARM64 Release package has passed independent source, architecture,
+contents and privacy inspection. Physical performance and stability remain pending.
 
 ## Update the existing game
 
-1. Download the [build9 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38829204992-1/NFSIISEGame-development-unsigned.zip)
+1. Download the [build 10 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38941504663-1/NFSIISEGame-development-unsigned.zip)
    in Files and extract it.
 2. Keep the currently installed NFS II SE app and your separately stored game
    folder in Files. Install this update over the existing app.
@@ -17,12 +18,13 @@ passed independent inspection. Physical performance and stability remain pending
    Account that signed the existing game. SideStore performs personal signing
    and installation; the ZIP itself is not a signed installation.
 4. Select Split Screen in the original Setup menu. Use Native resolution and
-   the same full graphics, track, cars and opponents as your build 8 comparison.
+   the same full graphics, track, cars and opponents as your most recent comparison.
    Check displayed FPS in busy and clear race sections, complete a race, and
    report audio or stability failures. When testing both controllers, remap both
    player profiles in the original controls settings while split-screen is active.
 
-Build 9 adds ThinLTO compiler optimization while retaining checked memory access,
+Build 10 avoids duplicate heap-region resolution and uses conservative ownership
+flags for fully owned logical chunks. It retains ThinLTO, checked memory access,
 the overlay, selectable render sizes, importer and prior runtime fixes. It does
 not claim a race-crash repair or controller, touch or HUD changes. Background
 recovery, audio interruptions and signing refresh remain physical acceptance checks.

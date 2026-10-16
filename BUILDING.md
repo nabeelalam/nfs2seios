@@ -99,8 +99,8 @@ unaligned access, free/reallocation invalidation and DATA/BSS boundaries. The
 mapped-engine unit fixture uses a substitute resolver and cannot replace this
 gate. A successful fixed-heap ownership check now returns the existing backing
 pointer directly; invalid spans retain their original rejection paths. This
-source optimization is newer than the packaged build 9 and still requires a
-deliberate Apple SDK build and physical split-screen validation.
+source optimization is included in the independently inspected build 10,
+which passed the Apple SDK build and still requires physical split-screen validation.
 
 
 The heap also tracks conservative 4096-byte logical chunks, independently of
@@ -115,5 +115,5 @@ cross-chunk spans, frees and smaller allocations reusing the same addresses.
 The actual C++14 ThinLTO engine and shared runtime pass the production link
 suite. Separate address/undefined sanitizer checks cover initialization rejection
 and allocation-failure rollback, threaded lifetimes and 12,320 independently
-checked ownership cases. Apple compilation and physical acceptance of this
-source revision remain pending.
+checked ownership cases. Build 10 passes actual Apple compilation and independent
+downloaded-package checks. Physical acceptance remains pending.

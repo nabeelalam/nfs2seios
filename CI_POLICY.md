@@ -134,3 +134,15 @@ Retain the verified generator for this device test. Evaluate a faster generator
 only alongside a necessary future Apple validation, preserving ARM64/device
 SDK checks, unsigned bundle resources and package-path verification. No cache
 is justified by a five-second fetch.
+
+
+## Latest measured ownership optimization validation
+
+Source 22f8bcb026669c891e87dc7010bdc9c7a0d0a9bb used one deliberate Release
+ThinLTO run 38941504663. Standard Ubuntu finished in 145 seconds before the
+standard macOS job began; Apple finished in 449 seconds. Apple compile jobs
+and ThinLTO backends remained bounded at two. The Probe was skipped and the
+Actions artifacts API confirms zero artifacts. The checked prerelease ZIP is
+3,098,903 bytes and contains the separately inspected asset-free version 10 IPA.
+No duplicate run, larger runner, cache expansion or billing change was used.
+Package/compiler success does not establish physical-device performance.

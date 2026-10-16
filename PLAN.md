@@ -29,9 +29,9 @@ Two requirements are part of the goal:
 
 Build 8 physical feedback reports playable racing and better FPS, with lower
 split-screen performance and an intermittent unmapped-engine-span race failure.
-Build 9 has passed sequential Linux and Apple checks and independent downloaded
-package inspection. Its ThinLTO compiler path retains checked memory access;
-physical split-screen FPS and stability acceptance remain pending.
+Build 10 has passed sequential Linux and Apple checks and independent downloaded
+package inspection. Its memory-check optimizations and ThinLTO retain ownership
+and bounds checks. Physical split-screen FPS and stability remain pending.
 
 ## Remaining sequence
 
@@ -89,6 +89,18 @@ not complete a lap. No intermittent split-screen crash repair is established.
 The separately inspected original Split Screen graphics menu showed car detail
 on, far view distance and horizon on.
 
-Build 9 remains the latest packaged IPA. This source revision needs a deliberate
-Apple SDK compile/package check followed by physical split-screen testing.
-Constant 60 FPS and full-race stability remain required, unverified targets.
+Build 10 is now the latest independently inspected package. Its single deliberate
+Apple SDK build passed. Constant 60 FPS and full-race stability remain required,
+unverified physical targets.
+
+
+Build 10 delivery used source 22f8bcb026669c891e87dc7010bdc9c7a0d0a9bb and
+[manual run 38941504663](https://github.com/nabeelalam/nfs2seios/actions/runs/38941504663).
+Linux completed in 145 seconds, then Apple completed in 449 seconds. The
+downloaded thin ARM64 Release package has the existing app identity and version
+10, with only executable, metadata and licenses. Source, release digest, contents
+and private-path checks pass; there are no original assets, signing files,
+sanitizer runtimes or Actions artifact uploads. Apple host regressions and
+baseline/ThinLTO mixed-state checks pass; the changed memory runtime compiles
+with C++14, O3 and ThinLTO for the iOS device target. This is package/compiler
+validation, not physical split-screen 60 FPS or intermittent crash acceptance.

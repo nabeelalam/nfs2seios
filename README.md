@@ -15,13 +15,16 @@ but lower split-screen performance and an intermittent unmapped-engine-span
 race failure. Constant split-screen 60 FPS and the crash fix remain open.
 Controller remapping works, but a resume press can also activate a driving action.
 
-Build 9 adds bounded ThinLTO compiler optimization to the existing checked
-arithmetic batching. Sequential Linux and Apple validation passed, including
-40,000 mixed integer/FPU cases with ThinLTO and all 27 Apple host tests.
-The downloaded version 9 package was independently checked for its exact source,
-thin ARM64 iPad architecture, contents, privacy and release digest. It contains
-the executable, metadata and licenses; supply original game files separately.
-**Build 9 physical FPS and stability testing remain pending.**
+Build 10 retains bounded ThinLTO and adds a direct heap-pointer return plus
+conservative logical-chunk ownership metadata. Bounds, allocation lifetime,
+cancellation and copy serialization remain checked. Its single sequential Linux
+and Apple run passed, including 45 production span/lifetime cases, all 27 Apple
+host tests and 40,000 mixed cases for each compiler configuration. The changed
+runtime and all translated units used verified ARM64 device Release ThinLTO.
+The downloaded version 10 package was independently inspected for source,
+architecture, contents, privacy and digest. It contains executable, metadata
+and licenses; original game assets remain separately supplied.
+**Build 10 physical FPS and race-stability acceptance remain pending.**
 
 Use the [installation guide](INSTALLING.md) for the current download, personal
 signing and separately supplied assets. The tappable FPS/CPU-app/RAM/render-size
