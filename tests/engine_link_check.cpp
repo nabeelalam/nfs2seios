@@ -36,9 +36,61 @@ static void balanced_window_callback(void *context){
 static void unbalanced_window_callback(void *context){
     static_cast<Game *>(context)->push32(0x1234);
 }
+
+// Exercise the production resolver; mapped_engine_tests supplies a substitute.
+static void verify_engine_memory_spans(nfs::EngineMemory &memory){
+    unsigned cases=0;
+    auto valid=[&](uint32_t address,size_t length,void *expected){
+        ++cases;if(memory.resolve(address,length)!=expected)
+            throw std::runtime_error("Production span resolved to wrong native byte");
+    };
+    auto rejected=[&](uint32_t address,size_t length,const char *category){
+        ++cases;try{(void)memory.resolve(address,length);}
+        catch(const std::out_of_range &error){
+            if(std::string(error.what()).find(category)!=0)
+                throw std::runtime_error("Production span lost its failure category");
+            return;
+        }
+        throw std::runtime_error("Production resolver accepted an invalid span");
+    };
+    auto fixed_region=[&](void *pointer,size_t size){
+        auto *bytes=static_cast<unsigned char *>(pointer);
+        const uint32_t address=memory.encode(pointer);
+        valid(address,size,bytes);valid(address+1,4,bytes+1);
+        valid(address+uint32_t(size)-1,1,bytes+size-1);
+        rejected(address,0,"Unmapped original engine span");
+        rejected(address+uint32_t(size)-1,2,"Unmapped original engine span");
+        rejected(address+uint32_t(size),1,"Unmapped original engine span");
+        rejected(address,size_t(-1),"Unmapped original engine span");
+    };
+    fixed_region(&_data,sizeof(_data));fixed_region(&_bss,sizeof(_bss));
+    std::unique_ptr<void,void(*)(void *)> first(memory.allocate(64),free32);
+    std::unique_ptr<void,void(*)(void *)> next(memory.allocate(32),free32);
+    if(!first || !next)throw std::runtime_error("Production span fixture allocation failed");
+    auto *bytes=static_cast<unsigned char *>(first.get());const auto address=memory.encode(bytes);
+    valid(address,64,bytes);valid(address+1,4,bytes+1);valid(address+63,1,bytes+63);
+    // Even two adjacent live blocks do not form one owned span.
+    rejected(address+63,2,"Unallocated original engine heap span");
+    rejected(address,0,"Unallocated original engine heap span");
+    rejected(address,size_t(-1),"Unallocated original engine heap span");
+    const auto next_address=memory.encode(next.get());valid(next_address,32,next.get());
+    first.reset();rejected(address,1,"Unallocated original engine heap span");
+    valid(next_address,32,next.get());
+    std::unique_ptr<void,void(*)(void *)> replacement(memory.allocate(32),free32);
+    if(!replacement)throw std::runtime_error("Production span fixture reallocation failed");
+    auto *fresh=static_cast<unsigned char *>(replacement.get());const auto fresh_address=memory.encode(fresh);
+    valid(fresh_address,32,fresh);valid(fresh_address+31,1,fresh+31);
+    rejected(fresh_address+31,2,"Unallocated original engine heap span");
+    replacement.reset();rejected(fresh_address,4,"Unallocated original engine heap span");
+    rejected(0,4,"Unmapped original engine span");
+    rejected(0xc655380cu,4,"Unmapped original engine span");
+    std::printf("PASS: %u production engine span boundary/lifetime cases\n",cases);
+}
+
 int main(){
     try{
         nfs::EngineMemory memory(32*1024*1024);
+        verify_engine_memory_spans(memory);
         {
             const uint32_t header=memory.encode(dword_5A179C)+12;
             if(!memory.codec_mutex(header) || memory.codec_mutex(header+1))

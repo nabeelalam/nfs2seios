@@ -53,3 +53,19 @@ physical split-screen FPS and stability acceptance remain pending.
 Completion requires stable, playable original-game behavior on the physical
 iPad with the controller and native audio/graphics. A host test or an unsigned
 IPA alone is insufficient.
+
+
+This source revision removes a duplicate region lookup after the production
+heap resolver has already verified the complete span belongs to a live allocation.
+Allocation ownership, bounds, copy serialization and cancellation checks remain.
+The production link test now covers 29 static-region/heap boundary and allocation
+lifetime cases; both original and optimized full ThinLTO engines pass. Separate
+ASan/UBSan checks match 7,744 lifetime/boundary outcomes and 16,005 original matrix
+states. An additional 432 exact boundary outcomes match optimized and sanitized
+builds. The current original-game split-screen pair remapped both players and
+kept both cars active at native render size. Both runs stopped cleanly with
+nonzero captured audio. The optimized game worker used about 12.65% less CPU
+per presented frame in this pair; host FPS did not improve. Natural car positions
+vary, and software-rendered Linux results do not establish iPad performance or
+repair the intermittent race failure. Build 9 remains the latest packaged IPA;
+this source change has no Apple build or physical-device acceptance yet.

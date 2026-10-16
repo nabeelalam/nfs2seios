@@ -91,3 +91,13 @@ supplied install.win and text.eng in the selected root beside GAMEDATA/FEDATA,
 with optional text.* language files. Those files must be compatible with the
 translated engine; do not assume an original CD root contains them. This importer
 path has host validation only and is not included in build3 or device-validated.
+
+
+The production engine link check includes 29 span-routing and lifetime cases.
+These exercise EngineMemory itself, including adjacent-allocation rejection,
+unaligned access, free/reallocation invalidation and DATA/BSS boundaries. The
+mapped-engine unit fixture uses a substitute resolver and cannot replace this
+gate. A successful fixed-heap ownership check now returns the existing backing
+pointer directly; invalid spans retain their original rejection paths. This
+source optimization is newer than the packaged build 9 and still requires a
+deliberate Apple SDK build and physical split-screen validation.
