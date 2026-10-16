@@ -4,6 +4,8 @@
 #include <mutex>
 #include <cstring>
 #include <atomic>
+#include <memory>
+#include <new>
 
 namespace nfs {
 // One stable guest mapping, many native allocations. Metadata contains native
@@ -17,6 +19,15 @@ class HeapArena {
     uint32_t base = 0;
     GameMemory *memory = nullptr;
     mutable std::mutex mutex;
+    // Logical heap metadata chunks, independent of operating-system pages.
+    static constexpr size_t chunk_size=4096;
+    std::unique_ptr<std::atomic<unsigned char>[]> owned_chunks;
+    static_assert(ATOMIC_CHAR_LOCK_FREE==2,"Chunk flags require lock-free bytes");
+    void mark_owned_chunks(size_t offset,size_t bytes,unsigned char value){
+        const size_t first=(offset+chunk_size-1)/chunk_size,last=(offset+bytes)/chunk_size;
+        for(size_t i=first;i<last;++i)owned_chunks[i].store(value,std::memory_order_release);
+    }
+
     static uint64_t next_identity(){static std::atomic<uint64_t> next{1};return next.fetch_add(1,std::memory_order_relaxed);}
     const uint64_t identity=next_identity();
     std::atomic<uint64_t> revision{1};
@@ -36,6 +47,7 @@ class HeapArena {
             }
             b.size = size;
             b.used = true;
+            mark_owned_chunks(b.offset,b.size,1);
             revision.fetch_add(1,std::memory_order_release);
             return storage + b.offset;
         }
@@ -53,6 +65,7 @@ class HeapArena {
         if (!p) return true;
         size_t i = find(p);
         if (i == count) return false;
+        mark_owned_chunks(blocks[i].offset,blocks[i].size,0);
         blocks[i].used = false;
         for (size_t j = 0; j+1 < count;) {
             if (!blocks[j].used && !blocks[j+1].used) {
@@ -72,7 +85,16 @@ public:
     bool initialize(GameMemory &space, uint32_t guest_base, uint8_t *buffer, size_t size) {
         std::lock_guard<std::mutex> lock(mutex);
         if (storage || !size || size % 16 || guest_base % 16 ||
-            reinterpret_cast<uintptr_t>(buffer) % 16 || !space.map(guest_base, buffer, size)) return false;
+            reinterpret_cast<uintptr_t>(buffer) % 16) return false;
+        // Validate/register the mapping before allocating metadata. This bounds
+        // chunk count by the 32-bit guest region and preserves invalid-map rejection.
+        // Registration precedes all users; roll back the new mapping on OOM.
+        if(!space.map(guest_base,buffer,size))return false;
+        const size_t chunks=(size+chunk_size-1)/chunk_size;
+        std::unique_ptr<std::atomic<unsigned char>[]> flags(new(std::nothrow) std::atomic<unsigned char>[chunks]);
+        if(!flags){space.unmap(guest_base);return false;}
+        for(size_t i=0;i<chunks;++i)flags[i].store(0,std::memory_order_relaxed);
+        owned_chunks=std::move(flags);
         memory = &space; storage = buffer; capacity = size; base = guest_base;
         blocks[0] = {0, size, false}; count = 1;
         return true;
@@ -110,6 +132,10 @@ public:
     bool contains(uint32_t address, size_t length) const {
         if (!storage || address < base || !length) return false;
         const size_t offset = address - base;
+        // A true flag proves this whole chunk belongs to one live allocation.
+        // Cross-chunk and partial-chunk queries retain existing ownership checks.
+        if(offset<capacity && length<=chunk_size-(offset%chunk_size) && owned_chunks[offset/chunk_size].load(std::memory_order_acquire))return true;
+
         // Cache only a copied allocation span, never mutable table pointers.
         // Every allocation/free invalidates all cached spans. Distinct lifetime
         // identities also prevent reuse of a destroyed arena's native address.

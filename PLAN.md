@@ -69,3 +69,26 @@ per presented frame in this pair; host FPS did not improve. Natural car position
 vary, and software-rendered Linux results do not establish iPad performance or
 repair the intermittent race failure. Build 9 remains the latest packaged IPA;
 this source change has no Apple build or physical-device acceptance yet.
+
+
+The next performance candidate adds conservative logical-chunk ownership
+metadata to avoid repeated allocation-span cache searches for fully owned
+single-chunk requests. It retains all original bounds, ownership, cancellation
+and copy-serialization safeguards. Initialization and allocation-failure rollback
+are separately validated. The production link regression now has 45 span and
+lifetime cases, including large chunks, cross-chunk requests and smaller reuse.
+
+Two original North Country split-screen comparisons ran in opposite orders,
+with both native player profiles remapped, native rendering and captured audio.
+Observed game-thread CPU time per presented frame fell about 7.2-7.4%, while
+Linux software-rendered FPS rose about 2.3-3.2%. Natural traffic varies between
+runs; these observations are not physical iPad measurements or a formal causal
+speedup estimate. A longer corrected-header session exercised independent
+steering/throttle and exited cleanly, but the test driver hit barriers and did
+not complete a lap. No intermittent split-screen crash repair is established.
+The separately inspected original Split Screen graphics menu showed car detail
+on, far view distance and horizon on.
+
+Build 9 remains the latest packaged IPA. This source revision needs a deliberate
+Apple SDK compile/package check followed by physical split-screen testing.
+Constant 60 FPS and full-race stability remain required, unverified targets.

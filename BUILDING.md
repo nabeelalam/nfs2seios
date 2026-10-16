@@ -93,7 +93,7 @@ translated engine; do not assume an original CD root contains them. This importe
 path has host validation only and is not included in build3 or device-validated.
 
 
-The production engine link check includes 29 span-routing and lifetime cases.
+The production engine link check includes 45 span-routing and lifetime cases.
 These exercise EngineMemory itself, including adjacent-allocation rejection,
 unaligned access, free/reallocation invalidation and DATA/BSS boundaries. The
 mapped-engine unit fixture uses a substitute resolver and cannot replace this
@@ -101,3 +101,19 @@ gate. A successful fixed-heap ownership check now returns the existing backing
 pointer directly; invalid spans retain their original rejection paths. This
 source optimization is newer than the packaged build 9 and still requires a
 deliberate Apple SDK build and physical split-screen validation.
+
+
+The heap also tracks conservative 4096-byte logical chunks, independently of
+operating-system page size. A flag is true only when an entire chunk belongs to
+one live allocation. Single-chunk requests can use that proof directly; partial
+chunks and cross-chunk requests retain the existing ownership checks. Freeing
+an allocation clears its flags before reuse. Initialization validates the mapping
+before metadata allocation and rolls the new mapping back on allocation failure.
+The metadata costs 32 KiB for a 128 MiB heap. Bounds, cancellation and guest-copy
+serialization remain enabled. Added production cases cover complete chunks,
+cross-chunk spans, frees and smaller allocations reusing the same addresses.
+The actual C++14 ThinLTO engine and shared runtime pass the production link
+suite. Separate address/undefined sanitizer checks cover initialization rejection
+and allocation-failure rollback, threaded lifetimes and 12,320 independently
+checked ownership cases. Apple compilation and physical acceptance of this
+source revision remain pending.

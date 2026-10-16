@@ -84,6 +84,31 @@ static void verify_engine_memory_spans(nfs::EngineMemory &memory){
     replacement.reset();rejected(fresh_address,4,"Unallocated original engine heap span");
     rejected(0,4,"Unmapped original engine span");
     rejected(0xc655380cu,4,"Unmapped original engine span");
+
+    std::unique_ptr<void,void(*)(void *)> large(memory.allocate(16384),free32),tail(memory.allocate(8192),free32);
+    if(!large || !tail)throw std::runtime_error("Large production span fixture allocation failed");
+    auto *large_bytes=static_cast<unsigned char *>(large.get());const auto large_address=memory.encode(large.get());
+    const uint32_t chunk=(large_address+4095u)&~uint32_t(4095);
+    const auto chunk_offset=size_t(chunk-large_address);
+    valid(large_address,16384,large_bytes);valid(chunk,4096,large_bytes+chunk_offset);
+    valid(chunk+4095,1,large_bytes+chunk_offset+4095);
+    valid(chunk+4095,2,large_bytes+chunk_offset+4095);
+    valid(large_address+16383,1,large_bytes+16383);
+    rejected(large_address+16383,2,"Unallocated original engine heap span");
+    rejected(chunk,0,"Unallocated original engine heap span");
+    rejected(chunk,size_t(-1),"Unallocated original engine heap span");
+    const auto tail_address=memory.encode(tail.get());valid(tail_address,8192,tail.get());
+    large.reset();rejected(chunk,4,"Unallocated original engine heap span");
+    rejected(chunk+4095,1,"Unallocated original engine heap span");
+    valid(tail_address,8192,tail.get());
+    std::unique_ptr<void,void(*)(void *)> smaller(memory.allocate(4096),free32);
+    if(!smaller || memory.encode(smaller.get())!=large_address)
+        throw std::runtime_error("Production chunk reuse setup differed");
+    const size_t remaining=4096-chunk_offset;
+    valid(chunk,remaining,large_bytes+chunk_offset);
+    rejected(chunk,remaining+1,"Unallocated original engine heap span");
+    smaller.reset();rejected(chunk,4,"Unallocated original engine heap span");
+    tail.reset();rejected(tail_address,4,"Unallocated original engine heap span");
     std::printf("PASS: %u production engine span boundary/lifetime cases\n",cases);
 }
 
