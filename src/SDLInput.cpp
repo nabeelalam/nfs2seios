@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 #include "InputDevices.h"
-#include "MenuInput.h"
 #include <SDL3/SDL.h>
 #include <stdexcept>
 namespace nfs {
@@ -15,13 +14,9 @@ SDLGamepadInput::SDLGamepadInput(InputDevices &devices):impl(new Impl(devices)){
 SDLGamepadInput::~SDLGamepadInput()=default;
 uint8_t SDLGamepadInput::menu_buttons()const{
     if(!SDL_IsMainThread())throw std::logic_error("Menu input must use app main thread");
-    uint8_t buttons=0;
-    for(auto pad:impl->pads)if(pad && SDL_GamepadConnected(pad)){
-        const SDL_GamepadButton mappings[]={SDL_GAMEPAD_BUTTON_DPAD_LEFT,SDL_GAMEPAD_BUTTON_DPAD_UP,SDL_GAMEPAD_BUTTON_DPAD_RIGHT,SDL_GAMEPAD_BUTTON_DPAD_DOWN,SDL_GAMEPAD_BUTTON_SOUTH,SDL_GAMEPAD_BUTTON_EAST};
-        for(unsigned i=0;i<6;++i)if(SDL_GetGamepadButton(pad,mappings[i]))buttons|=uint8_t(1u<<i);
-        if(SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_START))buttons|=menu_cancel;
-    }
-    return buttons;
+    // Controllers use original native frontend and driving actions. Keep the
+    // legacy keyboard-message adapter neutral, including on held buttons.
+    return 0;
 }
 void SDLGamepadInput::update(bool active){
     if(!SDL_IsMainThread())throw std::logic_error("Gamepad polling must use app main thread");
@@ -46,6 +41,7 @@ void SDLGamepadInput::update(bool active){
         auto pad=input.pads[slot];
         if(pad && !SDL_GamepadConnected(pad)){SDL_CloseGamepad(pad);input.pads[slot]=nullptr;input.ids[slot]=0;pad=nullptr;}
         if(!pad || !active){input.devices.publish(slot,nullptr);continue;}
+        if(slot==0)input.devices.publish_reset(SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_BACK));
         GameJoystickState state;
         state.axes[0]=int32_t(SDL_GetGamepadAxis(pad,SDL_GAMEPAD_AXIS_LEFTX))+32768;
         state.axes[1]=int32_t(SDL_GetGamepadAxis(pad,SDL_GAMEPAD_AXIS_LEFTY))+32768;
@@ -57,10 +53,11 @@ void SDLGamepadInput::update(bool active){
         for(unsigned button=0;button<32 && button<unsigned(SDL_GAMEPAD_BUTTON_COUNT);++button){
             // A native joystick hat is not also a face/action button. The
             // original frontend activates a choice for any button press;
-            // duplicating standardized D-pad buttons here also activated the
-            // choice reached by MenuInput's arrow message. Preserve POV below.
+            // duplicating standardized D-pad buttons here would activate the
+            // choice reached by native hat navigation. Preserve POV below.
             const bool direction=button>=unsigned(SDL_GAMEPAD_BUTTON_DPAD_UP) && button<=unsigned(SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
-            state.buttons[button]=!direction && SDL_GetGamepadButton(pad,SDL_GamepadButton(button))?0x80:0;
+            const bool reset=slot==0 && button==unsigned(SDL_GAMEPAD_BUTTON_BACK);
+            state.buttons[button]=!direction && !reset && SDL_GetGamepadButton(pad,SDL_GamepadButton(button))?0x80:0;
         }
         const bool up=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_UP),down=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_DOWN);
         const bool left=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_LEFT),right=SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
@@ -70,3 +67,27 @@ void SDLGamepadInput::update(bool active){
     }
 }
 }
+extern "C" uint32_t nfs_controller_frontend_hat(){return nfs::input_devices().frontend_hat_command(SDL_GetTicks());}
+extern "C" bool nfs_controller_frontend_cancel(){
+    return nfs::input_devices().take_frontend_cancel((uint32_t(1)<<SDL_GAMEPAD_BUTTON_EAST)|(uint32_t(1)<<SDL_GAMEPAD_BUTTON_START));
+}
+extern "C" bool nfs_controller_frontend_confirm(){
+    const uint32_t cancel=(uint32_t(1)<<SDL_GAMEPAD_BUTTON_EAST)|(uint32_t(1)<<SDL_GAMEPAD_BUTTON_START);
+    return nfs::input_devices().consume_frontend_buttons(~cancel);
+}
+extern "C" bool nfs_controller_pause_pressed(){
+    return nfs::input_devices().consume_frontend_buttons(uint32_t(1)<<SDL_GAMEPAD_BUTTON_START);
+}
+extern "C" uint32_t nfs_controller_frontend_actions(){return nfs::input_devices().pause_actions();}
+extern "C" void nfs_controller_capture_frontend_cancel(){
+    nfs::input_devices().capture_frontend_cancel((uint32_t(1)<<SDL_GAMEPAD_BUTTON_EAST)|(uint32_t(1)<<SDL_GAMEPAD_BUTTON_START));
+}
+extern "C" bool nfs_controller_reset_pressed(){return nfs::input_devices().take_reset();}
+extern "C" void nfs_controller_capture_pause_buttons(){
+    nfs::input_devices().capture_pause_buttons((uint32_t(1)<<SDL_GAMEPAD_BUTTON_EAST)|(uint32_t(1)<<SDL_GAMEPAD_BUTTON_START));
+}
+
+extern "C" void nfs_controller_begin_frontend(){nfs::input_devices().begin_frontend();}
+extern "C" void nfs_controller_begin_driving(){nfs::input_devices().begin_driving();}
+
+extern "C" uint32_t nfs_controller_binding_buttons(uint32_t slot){return nfs::input_devices().binding_buttons(slot);}

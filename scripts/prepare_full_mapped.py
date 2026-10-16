@@ -3,6 +3,7 @@ import re
 import shutil
 from prepare_mapped_engine import prepare_mapped, rewrite_stores, closing, ROOT, TYPES
 from batch_guest_copies import batch_copies
+from native_controller_hooks import add_native_controller_hooks
 
 
 def rewrite_casts(text, functions):
@@ -106,11 +107,19 @@ def prepare_full():
                     f"swap({register}, mapped_value); guest_store<{typename}>(mapped_address, mapped_value); }}")
         text = re.sub(r"swap\((\w+), to(32i|8i)\(([^()]+)\)\);", exchange, text)
         text = rewrite_stores(text)
+        if path.name=="Methods_07.cpp":
+            # Only the original active frontend close transition consumes
+            # held buttons; ordinary driving frames must never do so.
+            needle='loc_46F907:\n\tpush32(edi);\n\txor_(edi, edi);\n\tguest_store<int32_t>(dword_5222D0, static_cast<int32_t>(edi)); //mov'
+            if text.count(needle)!=1:raise ValueError("Original frontend close transition no longer matches")
+            text=text.replace(needle,needle.replace('\n\tguest_store','\n\tnfs::input_devices().consume_held_buttons();\n\tguest_store'))
+            text='#include "InputDevices.h"\n'+text
         def trace(match):
             method=match.group(2);name=method[1:]
             if name not in functions:raise ValueError(f"Unknown trace method ID: {method}")
             return match.group(1)+f'\n\tnfs_trace_guest_call(game_id_{name},uint32_t(esp));'
         text=re.sub(r'(Fn\(void\) Game::(\w+)\(\)\s*\{)',trace,text)
+        text=add_native_controller_hooks(text,path.name)
         if path.name == "Methods_14.cpp":
             # Hold the same voice lock before reading its decoder callback.
             # A callee-entry guard alone permits callback selection to race

@@ -92,3 +92,13 @@ required by the tested installation route.
 Compiling, packaging, signing, installing, launching and completing a race are
 separate acceptance steps. A valid unsigned IPA does not prove installation,
 physical performance or stability.
+
+
+The next input candidate adds a keyboard icon below the FPS display: tap it to
+show or hide the keyboard, including Return for opening the original control
+remapping prompt. Map both players separately in Split Screen setup. Controller
+input remains native; player one's Back/View resets the car. One-finger movement
+acts as a relative trackpad. A one-finger tap clicks, a two-finger tap sends
+Escape, and a three-finger tap sends Enter. Physical iPad validation of these
+new controls remains pending. Preserve imported assets and saved control profiles
+when updating; remap only if the existing profile needs it.

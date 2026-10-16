@@ -117,3 +117,28 @@ suite. Separate address/undefined sanitizer checks cover initialization rejectio
 and allocation-failure rollback, threaded lifetimes and 12,320 independently
 checked ownership cases. Build 10 passes actual Apple compilation and independent
 downloaded-package checks. Physical acceptance remains pending.
+
+
+The next input candidate retains build 10's accepted split-screen rendering
+configuration. Controller buttons use native joystick state and frontend input,
+without also sending keyboard aliases. Short menu presses and control-recording
+presses have separate bounded ownership; closing a menu consumes held buttons
+until release so a resume press cannot also shift. Both controller profiles and
+analog remapping remain supported. Player one's Back/View button resets the car.
+
+A small keyboard icon below the performance overlay shows or hides the system
+keyboard. Use it for names or Return when opening a control-recording prompt.
+It stays available for explicit dismissal; automatic field detection is deferred.
+Touch works as a relative trackpad: move one finger to move the original cursor,
+tap one finger to click, two fingers for Escape, and three fingers for Enter.
+Chords commit only after the last finger lifts. Long presses, pans and cancelled
+gestures do not also click. This adds menu input, not touch racing buttons.
+
+Local Clang C++14 address/undefined sanitizer checks pass 34 tests. Actual SDL
+finger-event injection moves the original cursor and exercises all three tap
+actions in the original menus. A two-player original race regression exercises
+manual shifts, held/fresh resume, reset and injected background/foreground
+recovery, with clean shutdown. These are Linux functional checks, not physical
+iPad touch/keyboard acceptance or new iPad FPS or energy measurements. The user
+accepted build 10 at split-screen 60 FPS; this input revision needs its own
+physical regression. Reported battery drain still needs controlled measurement.

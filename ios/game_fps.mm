@@ -7,12 +7,26 @@ extern "C" {extern int32_t fixedFramebufferSize,initialWinWidth,initialWinHeight
 @interface NFSPerformanceOverlay : NSObject
 @property(nonatomic,weak) UIWindow *host;
 @property(nonatomic,strong) UILabel *label;
+@property(nonatomic,strong) UIButton *keyboardButton;
 @property(nonatomic) SDL_Window *window;
 @property(nonatomic) BOOL detailed;
 - (void)openSettings;
 - (void)selectHeight:(NSInteger)height;
+- (void)toggleKeyboard;
 @end
 @implementation NFSPerformanceOverlay
+- (void)toggleKeyboard {
+    if(!self.window)return;
+    if(SDL_TextInputActive(self.window))SDL_StopTextInput(self.window);
+    else {
+        SDL_PropertiesID properties=SDL_CreateProperties();
+        if(!properties)return;
+        SDL_SetBooleanProperty(properties,SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN,false);
+        SDL_SetBooleanProperty(properties,SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN,false);
+        SDL_StartTextInputWithProperties(self.window,properties);
+        SDL_DestroyProperties(properties);
+    }
+}
 - (void)selectHeight:(NSInteger)height {
     if(!self.window)return;
     // Renderer reallocates after pending triangles at its next swap boundary.
@@ -56,7 +70,7 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
     static NFSPerformanceOverlay *overlay=nil;
     if(!overlay)overlay=[[NFSPerformanceOverlay alloc] init];
     if(overlay.label.superview!=native){
-        [overlay.label removeFromSuperview];overlay.host=native;overlay.window=window;
+        [overlay.label removeFromSuperview];[overlay.keyboardButton removeFromSuperview];overlay.host=native;overlay.window=window;
         NSUserDefaults *preferences=NSUserDefaults.standardUserDefaults;
         overlay.detailed=[preferences objectForKey:@"NFSDetailedOverlay"]?[preferences boolForKey:@"NFSDetailedOverlay"]:YES;
         UILabel *label=[[UILabel alloc] init];overlay.label=label;
@@ -69,7 +83,20 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
         label.accessibilityHint=@"Tap to select rendering resolution or overlay details";
         [label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:overlay action:@selector(openSettings)]];
         [native addSubview:label];
+        UIButton *keyboard=[UIButton buttonWithType:UIButtonTypeSystem];overlay.keyboardButton=keyboard;
+        keyboard.translatesAutoresizingMaskIntoConstraints=NO;
+        [keyboard setImage:[UIImage systemImageNamed:@"keyboard"] forState:UIControlStateNormal];
+        keyboard.tintColor=UIColor.whiteColor;keyboard.backgroundColor=[UIColor colorWithWhite:0 alpha:0.55];
+        keyboard.layer.cornerRadius=8;
+        keyboard.accessibilityLabel=@"Show or hide keyboard";
+        keyboard.accessibilityIdentifier=@"NativeKeyboardToggle";
+        [keyboard addTarget:overlay action:@selector(toggleKeyboard) forControlEvents:UIControlEventTouchUpInside];
+        [native addSubview:keyboard];
         [NSLayoutConstraint activateConstraints:@[
+            [keyboard.topAnchor constraintEqualToAnchor:label.bottomAnchor constant:6],
+            [keyboard.trailingAnchor constraintEqualToAnchor:label.trailingAnchor],
+            [keyboard.widthAnchor constraintEqualToConstant:44],
+            [keyboard.heightAnchor constraintEqualToConstant:44],
             [label.topAnchor constraintEqualToAnchor:native.safeAreaLayoutGuide.topAnchor constant:8],
             [label.trailingAnchor constraintEqualToAnchor:native.safeAreaLayoutGuide.trailingAnchor constant:-8],
             [label.widthAnchor constraintEqualToConstant:220],
@@ -83,4 +110,5 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
     NSString *memoryText=memoryAvailable?[NSString stringWithFormat:@"%.0f MB",double(info.resident_size)/1048576.0]:@"—";
     overlay.label.text=overlay.detailed?[NSString stringWithFormat:@"FPS %.1f  ·  %.1f ms\nCPU/app %@  ·  RAM %@\nRender %d × %d  ·  GPU n/a",fps,fps>0?1000.0/fps:0,cpuText,memoryText,width,height]:[NSString stringWithFormat:@"FPS %.1f  ·  Tap for settings",fps];
     [native bringSubviewToFront:overlay.label];
+    [native bringSubviewToFront:overlay.keyboardButton];
 }

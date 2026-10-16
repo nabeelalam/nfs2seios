@@ -12,6 +12,8 @@
 #include "MainThreadBridge.h"
 #include "WindowBridge.h"
 #include "MenuInput.h"
+#include "SDLKeyboardInput.h"
+#include "SDLTouchInput.h"
 #include "GraphicsLifecycle.h"
 #include "SDLThreadCleanup.h"
 #include "InputDevices.h"
@@ -33,6 +35,7 @@
 #undef false
 extern "C" bool register_original_game_functions();
 extern "C" int32_t stopTimer();
+extern "C" SDL_Window *sdlWin;
 namespace nfs {
 struct GameSession::Impl {
     static Impl *active;
@@ -44,7 +47,8 @@ struct GameSession::Impl {
     RuntimeServices services{{initialize,exit_requested,message}};
     std::unique_ptr<SDLGamepadInput> gamepads;
     MenuInput menu;
-    bool foreground=true,background_shutdown=false;
+    TouchPointer touch;
+    bool foreground=true,background_shutdown=false,pointer_focused=true;
     GraphicsLifecycle graphics;
     std::unique_ptr<void,void(*)(void *)> game{nullptr,nfs_destroy_game_context};
     std::vector<void *> bootstrap;std::thread thread;WorkerControl control;
@@ -58,11 +62,13 @@ struct GameSession::Impl {
     void lifecycle(uint32_t type){
         if(type==SDL_EVENT_TERMINATING){request_stop();return;}
         if(type==SDL_EVENT_WILL_ENTER_BACKGROUND && foreground){
+            touch.reset();input.clear_pointer(uint32_t(SDL_GetTicks()));pointer_focused=false;
             foreground=false;graphics.set_suspended(true);audio.set_suspended(true);
             menu.update(0,SDL_GetTicks(),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},this);
             window.post({0,8,0,0,uint32_t(SDL_GetTicks()),0,0});
         }
         if(type==SDL_EVENT_DID_ENTER_FOREGROUND && !foreground){
+            pointer_focused=true;
             graphics.set_suspended(false);foreground=true;audio.set_suspended(false);window.post({0,7,0,0,uint32_t(SDL_GetTicks()),0,0});
         }
     }
@@ -135,10 +141,17 @@ void GameSession::poll(){
     SDL_Event event;while(SDL_PollEvent(&event)){
         if(event.type==SDL_EVENT_QUIT || event.type==SDL_EVENT_TERMINATING)impl->request_stop();
         impl->lifecycle(event.type); // Fallback for events pushed from other threads; owner notifications were handled immediately.
-        if(event.type==SDL_EVENT_KEY_DOWN || event.type==SDL_EVENT_KEY_UP){
-            uint32_t key=0,scan=0;switch(event.key.key){case SDLK_RETURN:key=13;scan=0x1c;break;case SDLK_ESCAPE:key=27;scan=1;break;case SDLK_LEFT:key=0x25;scan=0x4b;break;case SDLK_UP:key=0x26;scan=0x48;break;case SDLK_RIGHT:key=0x27;scan=0x4d;break;case SDLK_DOWN:key=0x28;scan=0x50;break;default:if(event.key.key>='a' && event.key.key<='z')key=event.key.key-32;}
-            if(key){const uint32_t message=event.type==SDL_EVENT_KEY_DOWN?0x100:0x101;impl->window.post({0,message,key,1|(scan<<16),uint32_t(SDL_GetTicks()),0,0});if(message==0x100 && (key==13 || key==27))impl->window.post({0,0x102,key,1|(scan<<16),uint32_t(SDL_GetTicks()),0,0});}
+        const auto now=uint32_t(SDL_GetTicks());
+        if(event.type==SDL_EVENT_WINDOW_FOCUS_LOST){impl->pointer_focused=false;impl->touch.reset();impl->input.clear_pointer(now);}
+        if(event.type==SDL_EVENT_WINDOW_FOCUS_GAINED)impl->pointer_focused=true;
+        if(impl->foreground && impl->pointer_focused){
+            const auto touch=original_touch_event(impl->touch,event,sdlWin?SDL_GetWindowID(sdlWin):0,now);
+            if(touch.clear)impl->input.clear_pointer(now);
+            if(touch.dx || touch.dy)impl->input.pointer_motion(touch.dx,touch.dy,now);
+            if(touch.action==TouchAction::click)impl->input.pointer_click(now);
+            original_touch_key(touch.action,now,[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},impl.get());
         }
+        original_keyboard_event(event,uint32_t(SDL_GetTicks()),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},impl.get());
     }
     if(!impl->foreground && impl->control.stop.load() && !impl->background_shutdown){
         impl->main.retire_renderer();

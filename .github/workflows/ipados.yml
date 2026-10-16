@@ -70,7 +70,7 @@ jobs:
           python3 tests/guest_copy_semantics_test.py
           python3 scripts/check_runner_space.py
           cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON
-          cmake --build .build/pixels --target renderer_pixel_tests audio_sdl_tests input_sdl_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests -j 3
+          cmake --build .build/pixels --target renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests -j 3
       - name: Validate full native engine linkage and memory ownership
         run: |
           set -o pipefail
@@ -120,6 +120,10 @@ jobs:
         run: |
           set -o pipefail
           .build/pixels/input_sdl_tests 2>&1 | tee .build/sdl-input.log
+          timeout 15s .build/pixels/keyboard_input_tests
+          timeout 15s .build/pixels/touch_pointer_tests
+          timeout 15s .build/pixels/touch_sdl_tests
+          timeout 15s .build/pixels/pointer_buffer_tests
   build:
     needs: renderer-pixels
     if: inputs.build_ios && !inputs.publish_release
