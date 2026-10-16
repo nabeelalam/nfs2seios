@@ -19,14 +19,38 @@ inline TouchResult original_touch_event(TouchPointer &pointer,const SDL_Event &e
     return pointer.update(phase,event.tfinger.touchID,event.tfinger.fingerID,
                           event.tfinger.x,event.tfinger.y,now);
 }
-inline void original_touch_key(TouchAction action,uint32_t now,MenuMessageSink sink,void *context){
+inline void original_touch_key_edge(TouchAction action,bool down,uint32_t now,MenuMessageSink sink,void *context){
     if(action!=TouchAction::escape && action!=TouchAction::enter)return;
     SDL_Event key{};
-    key.type=SDL_EVENT_KEY_DOWN;
+    key.type=down?SDL_EVENT_KEY_DOWN:SDL_EVENT_KEY_UP;
     key.key.scancode=action==TouchAction::escape?SDL_SCANCODE_ESCAPE:SDL_SCANCODE_RETURN;
     key.key.key=action==TouchAction::escape?SDLK_ESCAPE:SDLK_RETURN;
     original_keyboard_event(key,now,sink,context);
-    key.type=SDL_EVENT_KEY_UP;
-    original_keyboard_event(key,now,sink,context);
 }
+// Racing samples held keys separately from the frontend character queue.
+// Keep a gesture key down briefly across those polls without blocking the app
+// thread, and give consecutive pulses a neutral interval. No repeats are sent.
+class TouchKeyPulse {
+    std::array<TouchAction,8> pending{};unsigned head=0,count=0;
+    TouchAction active=TouchAction::none;uint32_t pressed=0,released_at=0;bool released=false;
+public:
+    bool push(TouchAction action){
+        if(action!=TouchAction::escape && action!=TouchAction::enter)return false;
+        if(count==pending.size())return false;
+        pending[(head+count)%pending.size()]=action;++count;return true;
+    }
+    void update(uint32_t now,MenuMessageSink sink,void *context){
+        if(active!=TouchAction::none){
+            if(uint32_t(now-pressed)>=250){original_touch_key_edge(active,false,now,sink,context);active=TouchAction::none;released_at=now;released=true;}
+            return;
+        }
+        if(!count || (released && uint32_t(now-released_at)<40))return;
+        active=pending[head];head=(head+1)%pending.size();--count;pressed=now;
+        original_touch_key_edge(active,true,now,sink,context);
+    }
+    void cancel(uint32_t now,MenuMessageSink sink,void *context){
+        if(active!=TouchAction::none)original_touch_key_edge(active,false,now,sink,context);
+        active=TouchAction::none;head=count=0;released=false;
+    }
+};
 }

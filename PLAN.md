@@ -129,3 +129,20 @@ recovery, with clean shutdown. These are Linux functional checks, not physical
 iPad touch/keyboard acceptance or new iPad FPS or energy measurements. The user
 accepted build 10 at split-screen 60 FPS; this input revision needs its own
 physical regression. Reported battery drain still needs controlled measurement.
+
+
+An additional original split-screen test found that immediate synthetic Escape
+down/up works in menus but can be missed by racing's held-key sampler. Actual
+held keyboard Escape pauses the same race. Build 11 is inspected and retains a
+public release-note warning for that limitation. The next input candidate uses
+a nonblocking 250 ms gesture key hold with a 40 ms neutral gap between queued
+pulses; no key repeats or app-thread sleep. Pending actions are bounded to eight.
+Cancellation, focus loss and background release the active key and clear queued
+gestures. Controller input remains native and unchanged.
+
+The exact previously failed original-race gesture case now pauses on two-finger
+Escape and resumes on three-finger Enter with the same gear, clean 88.819 s.
+The original menu pan/click/Escape/Enter sequence still passes, clean 28.733 s.
+All 34 local ASan/UBSan checks pass, including queued keys, cancellation, bounded
+overflow, neutral timing and clock wrap. This correction needs its own Apple
+build and physical iPad acceptance; it makes no energy-saving claim.

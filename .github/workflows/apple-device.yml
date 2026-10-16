@@ -114,7 +114,7 @@ jobs:
           cat > .build/release-notes.md <<'NOTES'
           Native ARM64 iPad development candidate. Personal signing through SideStore is required. Original game assets must be supplied separately.
 
-          This candidate retains build 10 rendering optimizations and adds native controller input ownership, a keyboard toggle, and relative touch cursor controls: one-finger tap clicks, two fingers send Escape, three fingers send Enter. Linux sanitizer and original-game input checks pass. Build 10 was physically accepted at split-screen 60 FPS; this input revision still needs its own iPad controller, touch, keyboard and performance checks. No battery saving is claimed.
+          This candidate retains build 10 rendering optimizations and adds native controller input ownership, a keyboard toggle, and relative touch cursor controls: one-finger tap clicks, two fingers send Escape, three fingers send Enter. Linux sanitizer and original-game input checks pass. Build 10 was physically accepted at split-screen 60 FPS; this input revision still needs its own iPad controller, touch, keyboard and performance checks. Gesture Escape/Enter now use nonblocking short key holds so racing can observe them; the original race Pause/resume and menu tests pass locally. No battery saving is claimed.
 
           This download excludes configuration and language files as well as game data. Its corrected importer reads separately supplied install.win and text.eng from your selected game folder alongside GAMEDATA and FEDATA. Keep existing app data when updating. If import fails, acknowledge the displayed error; do not delete your source assets. Record the displayed menu and race FPS, input behavior and any exact error.
           NOTES
