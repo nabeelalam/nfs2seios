@@ -441,3 +441,30 @@ downloaded version15 package matches source and release digests. It contains
 only executable,metadata and two licenses,no assets,signing material,private
 computer paths or sanitizer runtime. Zero Actions artifacts were uploaded.
 These gates are separate from device performance,stability and battery acceptance.
+
+
+## Complete original sound operations
+
+The sound candidate preserves original callback selection and state publication
+under one recursive operation owner,before existing codec/copy locks. Shared
+mixer scratch requires ownership across voices. Actual original stop notification
+order and exception propagation are retained. The production-generated code
+passes eight original entry-contention cases,two active stop/exception cases and
+288original estimator cases under ASan/UBSan. These are scoped host contracts.
+
+A diagnostic Tournament replay captured seven initialization/output overlaps
+across six voices. The guarded diagnostic replay ran through its bounded window
+and stopped cleanly without an overlap or memory-error report. The optimized
+original split-screen pair passes both-player gears,Pause,held/fresh resume,reset
+and simulated lifecycle checks. Owner CPU means were22.09/21.80ms per submitted
+frame on Linux;this is not an iPad estimate or a claimed gain. Different traffic
+and views,software graphics and one run per binary limit the comparison.
+
+The separate optimized Tournament replay reached lap2/4 through repeated wall
+contacts and stopped cleanly at its bounded limit. This is not complete-event
+acceptance. Audit the exact source diff/history,then use one sequential standard
+public-runner Apple build,without Probe,Actions artifacts or caches. Independently
+inspect ARM64device identity,version,contents,digests and privacy before delivery.
+Physical full-race stability and matched normal/LowPower FPS/Game CPU observations
+remain required. Existing four-finger diagnostics,optional30cap,keyboard,touch
+and original assets import behavior remain part of regression testing.

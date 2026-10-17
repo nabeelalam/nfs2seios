@@ -29,6 +29,23 @@ def rewrite_casts(text, functions):
     return text
 
 
+def add_audio_operation_guards(text):
+    # The original mixer shares scratch storage across voices. Protect complete
+    # setup/update/mixing jobs, including callback selection and publication.
+    # Insert after copy batching so ownership starts outside every copy scope.
+    operations = ("4A7028", "4A734C", "4A7600", "4A7758", "4A77B8",
+                  "4A7800", "4A7850", "4A78B0", "4A7A40")
+    if "nfs::AudioOperationGuard audio_operation;" in text:
+        raise ValueError("Original sound operation guards already applied")
+    for operation in operations:
+        needle = f'\tnfs_trace_guest_call(game_id_sub_{operation},uint32_t(esp));'
+        if text.count(needle) != 1:
+            raise ValueError(f"Unexpected sound operation entry: {operation}")
+        text = text.replace(needle, needle +
+                            '\n\tnfs::AudioOperationGuard audio_operation;')
+    return '#include "AudioOperations.h"\n' + text
+
+
 def prepare_full():
     mapped = prepare_mapped()
     source = ROOT / ".build/engine/Cpp"
@@ -150,6 +167,8 @@ def prepare_full():
         text='#include "GameTrace.h"\n'+text
         text, blocks = batch_copies(text)
         transaction_blocks += len(blocks)
+        if path.name == "Methods_14.cpp":
+            text = add_audio_operation_guards(text)
         (dest / path.name).write_text(text)
     stubs = (source / "Stubs.cpp").read_text()
     dispatch = '#include "Game.h"\n#include "FunctionIds.h"\nextern "C" bool nfs_register_guest_function(uint32_t, NativeGameFunction);\n'

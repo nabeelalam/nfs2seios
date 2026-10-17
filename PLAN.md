@@ -272,3 +272,27 @@ The Game CPU row measures the owner only,averaged over60 submissions. It cannot
 establish whole-frame,GPU or energy cost. Stable60FPS in Low Power Mode,battery
 improvement and the physical Tournament freeze remain unverified. Continue with
 matched physical measurements before choosing the next performance change.
+
+
+## Build16 sound-operation candidate
+
+The original mixer shares work buffers between sound voices. The candidate
+serializes complete original sound setup,voice initialization,pitch/volume
+updates,mixing and stop work. This retains original math,audio callbacks,checked
+memory access and nested stop/fade behavior. A diagnostic original-data replay
+observed initialization overlapping active output;the guarded local replay did
+not observe that overlap. This does not prove the physical Tournament freeze
+had the same cause or is fixed.
+
+Production generator/header checks preserve all15translated bodies apart from
+nine ownership scopes. Actual original entry,active-stop,callback-error and
+estimator checks pass under sanitizers. A matched optimized original split-screen
+pilot found no material owner-CPU or submission-throughput regression;near-zero
+Linux differences do not establish a performance or battery improvement. A separate
+optimized Tournament/collision replay reached lap2/4 and stopped cleanly after
+its bounded window. No completed four-lap event or physical fix is claimed.
+
+Build15 remains the delivered IPA until16passes one necessary sequential
+standard-public Apple build and independent package checks. Keep the same app
+identity and existing imported data. Device stability,Low Power Mode60FPS and
+battery cost remain unverified. No new graphics optimization is claimed.
