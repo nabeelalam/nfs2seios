@@ -13,6 +13,10 @@ class ExitCallbacks {
 public:
     bool add(uint32_t function);
     void drain(void *game);
+    // Failure-cancellable original cleanup; first error closes remaining callbacks.
+    void drain_cancellable(void *game);
+private:
+    void drain_impl(void *game,bool cancellable);
 };
 void bind_exit_callbacks(ExitCallbacks *callbacks);
 }

@@ -12,15 +12,22 @@ bool ExitCallbacks::add(uint32_t function){
     if(state==State::closed || count==512)return false;
     callbacks[count++]=function;return true;
 }
-void ExitCallbacks::drain(void *game){
+void ExitCallbacks::drain(void *game){ScopedWorkerStopDeferral cleanup;drain_impl(game,false);}
+void ExitCallbacks::drain_cancellable(void *game){drain_impl(game,true);}
+void ExitCallbacks::drain_impl(void *game,bool cancellable){
     if(!game)throw std::invalid_argument("Missing exit Game context");
     {std::lock_guard<std::mutex> lock(mutex);if(state==State::closed)return;if(state==State::draining)throw std::logic_error("Recursive exit drain");state=State::draining;}
-    ScopedWorkerStopDeferral cleanup;
     std::exception_ptr failure;
     for(;;){
         uint32_t function;
         {std::lock_guard<std::mutex> lock(mutex);if(!count){state=State::closed;break;}function=callbacks[--count];}
-        try{nfs_dispatch_game_exit(game,function);}catch(...){if(!failure)failure=std::current_exception();}
+        try{if(cancellable)check_worker_stop();nfs_dispatch_game_exit(game,function);}
+        catch(...){
+            if(cancellable){
+                std::lock_guard<std::mutex> lock(mutex);count=0;state=State::closed;throw;
+            }
+            if(!failure)failure=std::current_exception();
+        }
     }
     if(failure)std::rethrow_exception(failure);
 }

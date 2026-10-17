@@ -34,6 +34,8 @@ void ThreadBridge::run(std::shared_ptr<Worker> worker) {
     current_worker_control()=nullptr;
     worker->context.reset();
     {std::lock_guard<std::mutex> lock(worker->mutex);worker->finished=true;worker->changed.notify_all();}
+    // Publish only after critical ownership and the worker context are retired.
+    worker->failures->publish(worker->failure);
 }
 uint32_t ThreadBridge::create(GameFunction function,void *context,void(*destroy)(void *),bool suspended,uint32_t &thread_id) {
     if(!destroy) throw std::invalid_argument("Worker context destructor required");
@@ -55,7 +57,7 @@ uint32_t ThreadBridge::create(GameFunction function,void *context,void(*destroy)
     for(uint32_t i=0;i<256;++i) if(!slots[i].worker && slots[i].generation<65535){index=i;break;}
     if(index==256) return 0;
     const uint32_t id=allocate_id();if(!id) return 0;
-    auto worker=std::make_shared<Worker>(function,incoming.get(),destroy,id,suspended);
+    auto worker=std::make_shared<Worker>(function,incoming.get(),destroy,id,suspended,failures);
     incoming.release();
     // Retain before spawning: vector allocation failure must not orphan a thread.
     owned.push_back(worker);
@@ -88,7 +90,7 @@ uint32_t ThreadBridge::duplicate(uint32_t id) {
         const uint32_t current=current_game_thread_id();if(!current) return 0;
         for(auto &slot:slots)if(slot.worker && slot.worker->thread_id==current){source=slot.worker;break;}
         if(!source) for(auto &worker:owned)if(worker->thread_id==current){source=worker;break;}
-        if(!source) source=std::make_shared<Worker>(nullptr,nullptr,[](void *){},current,false);
+        if(!source) source=std::make_shared<Worker>(nullptr,nullptr,[](void *){},current,false,failures);
     } else {
         if(!valid(id)) return 0;
         source=slots[id&255].worker;

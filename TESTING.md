@@ -387,3 +387,26 @@ Physical same-settings split-screen Low Power Mode off/on tests remain needed.
 Battery savings,constant Low Power Mode60FPS,real OS/audio recovery,completed
 events and the reported Tournament freeze are unverified. A separate optimized
 source13 long-run shutdown wait was captured locally; no fix is claimed in14.
+
+## Unreleased worker-error cleanup validation
+
+The complete local sanitizer host suite passes37/37 checks after integration.
+Thread tests cover first-error notification after ownership retirement, closed
+and reaped handles, concurrent failures, independent owners, cooperative stop
+and retained join errors. Exit tests preserve the legacy LIFO/nested/error
+behaviour and cover the additional failure-cancellable registry path.
+
+Separate controlled native-session checks exercise normal/explicit exit,
+interrupted entry, original callback errors, background cancellation and child
+failure. Late child failure during an original exit callback now unwinds at its
+existing cancellation checks; a recursive critical-section case confirms the
+protected guest write completes before the final release allows cancellation.
+These controlled tests are distinct from natural original-data gameplay.
+
+The local original split-screen replay checks both players and simulated
+lifecycle recovery before deliberately failing a separate native worker. The
+application reports that error and drains with expected error status, rather
+than requiring an external stop. A healthy original menu exit still writes
+settings. Completed native writes are retained; pending original save logic
+cannot be guaranteed after a genuine failure. No new physical freeze, power or
+performance acceptance is claimed. Build14 remains the delivered device package.

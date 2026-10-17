@@ -3,6 +3,8 @@
 #include "GameMemory.h"
 #include "WorkerControl.h"
 #include <memory>
+#include <atomic>
+#include <utility>
 #include <mutex>
 #include <condition_variable>
 #include <thread>
@@ -10,6 +12,22 @@
 #include <exception>
 namespace nfs {
 class ThreadBridge {
+    struct FailureMailbox {
+        std::mutex mutex;std::exception_ptr first;
+        std::atomic<bool> pending{false};
+        void publish(std::exception_ptr error){
+            if(!error)return;
+            std::lock_guard<std::mutex> lock(mutex);
+            if(first)return;
+            first=error;pending.store(true,std::memory_order_release);
+        }
+        std::exception_ptr take(){
+            if(!pending.load(std::memory_order_acquire))return {};
+            if(!pending.exchange(false,std::memory_order_acquire))return {};
+            std::lock_guard<std::mutex> lock(mutex);return first;
+        }
+    };
+    std::shared_ptr<FailureMailbox> failures=std::make_shared<FailureMailbox>();
     struct Worker {
         std::mutex mutex;
         std::condition_variable changed;
@@ -20,8 +38,9 @@ class ThreadBridge {
         bool suspended,cancelled=false,finished=false;
         std::exception_ptr failure;
         WorkerControl control;
-        Worker(GameFunction fn,void *p,void(*destroy)(void *),uint32_t id,bool paused)
-            :context(p,destroy),function(fn),thread_id(id),suspended(paused){}
+        std::shared_ptr<FailureMailbox> failures;
+        Worker(GameFunction fn,void *p,void(*destroy)(void *),uint32_t id,bool paused,std::shared_ptr<FailureMailbox> sink)
+            :context(p,destroy),function(fn),thread_id(id),suspended(paused),failures(std::move(sink)){}
     };
     struct Slot { std::shared_ptr<Worker> worker;uint32_t generation=0; } slots[256];
     std::mutex mutex;
@@ -37,6 +56,9 @@ public:
     uint32_t duplicate(uint32_t id);
     bool terminate(uint32_t id);
     bool close(uint32_t id);
+    // Single-consumer first-failure notification, independent of handle/reaping.
+    // Healthy polling takes no mutex and scans no workers; join_all still reports.
+    std::exception_ptr take_failure(){return failures->take();}
     void request_stop_all(); // Non-blocking; main event loop must keep servicing work.
     // Cancel workers that never started, then join. Running game callbacks must
     // receive their game-level quit signal first. May not run on a game worker.

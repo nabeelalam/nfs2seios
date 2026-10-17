@@ -27,28 +27,33 @@ Two requirements are part of the goal:
 - Local original menu/race rendering, keyboard driving and generated game PCM.
 - Host regression and sanitizer checks, plus portable ARM64 compile checks.
 
-Build 8 physical feedback reports playable racing and better FPS, with lower
-split-screen performance and an intermittent unmapped-engine-span race failure.
-Build 10 has passed sequential Linux and Apple checks and independent downloaded
-package inspection. Its memory-check optimizations and ThinLTO retain ownership
-and bounds checks. Physical split-screen FPS and stability remain pending.
+Historical build10 physical split-screen testing reported60FPS without an
+observed crash. Build12 feedback accepts split-screen FPS and relative touch
+gestures, but reports an unexplained single-player Tournament freeze.
+Build14 is the latest delivered and independently inspected ARM64 device package;
+its current physical regression, Low Power Mode60FPS and battery cost remain open.
+The source-only worker-error/cleanup update below has local validation and is not
+yet included in a delivered IPA.
 
 ## Remaining sequence
 
-1. Reach constant 60 FPS in full-detail native-resolution split-screen racing
-   and fix the intermittent race failure with a verified cause. Use both players;
-   remap both original control profiles after selecting split-screen. Preserve
-   original pointer/span rejection while investigating. Local measurements select
-   candidates; physical iPad tests establish performance and crash acceptance.
-2. Then remove controller-to-keyboard aliases and prevent resume presses from
-   also triggering car actions. Retain native analog remapping and text entry.
-3. Then map touch movement to the cursor, one-finger tap to click, two-finger tap
-   to Escape and three-finger tap to Enter.
-4. Finally investigate sharper HUD text, speedometer, map and starting lights.
-   Original assets remain private and unchanged.
-5. Continue scoped controller reconnect, audio, lifecycle, signing refresh and
-   complete-race acceptance. Repeat only affected Apple build/package gates when
-   relevant source changes justify another controlled standard-runner build.
+1. Retain full-detail native-resolution split-screen60FPS and aim for the same
+   with Low Power Mode enabled. Compare matched physical scenes/settings; measure
+   before selecting further optimizations. Retain bounds/lifetime/cancellation
+   checks. Host samples select experiments; device evidence establishes results.
+2. Investigate the reported Tournament collision freeze and complete current
+   race/lifecycle acceptance. Controlled host error-path repairs do not establish
+   the physical cause or a physical fix.
+3. Preserve the implemented native controller ownership, analog remapping,
+   held-resume protection and keyboard button. Verify current name entry,
+   reconnect and real OS/audio recovery on device.
+4. Preserve relative touch movement, one-finger click, two-finger Escape and
+   three-finger Enter; build12 gestures were accepted. Validate current fullscreen
+   and overlay/pacing behaviour separately.
+5. Keep sharper HUD text, speedometer, map and starting lights last. Original
+   assets stay separate. Continue personal signing/refresh and complete-race gates.
+   Repeat only affected Apple SDK/package checks when reviewed source changes
+   justify one controlled standard-runner build.
 
 Completion requires stable, playable original-game behavior on the physical
 iPad with the controller and native audio/graphics. A host test or an unsigned
@@ -212,3 +217,24 @@ Test the same split-screen settings with Low Power Mode off/on and the optional
 OS/audio recovery remain physical gates. Tournament freeze diagnosis continues;
 the separate captured long-run shutdown wait is not a demonstrated physical
 freeze cause. Sharper HUD artwork remains last priority.
+
+## Unreleased worker failure and exit cleanup changes
+
+The source now reports managed-worker failures during the running session, rather
+than waiting until final joins. Interrupted or failed original work uses native
+owner cleanup. Healthy exits retain the original save callbacks; a separate
+failure control lets an exit callback stop waiting for a failed dependency while
+respecting the original critical sections. The legacy exit-registry API retains
+its previous deferred cleanup behaviour.
+
+All37 local host checks pass with address/undefined sanitizers. Controlled native
+session tests cover failure during gameplay, exit cleanup and a nested critical
+section. Local original-data split-screen checks cover both native players,
+pause/resume/reset and simulated lifecycle transitions, followed by a deliberate
+separate worker error and clean diagnostic shutdown. Ordinary original Exit/Yes
+also completes and writes settings. Original assets and raw evidence remain
+private. These checks do not reproduce or explain the physical Tournament freeze.
+
+This is a source-only update. Build14 remains the latest delivered IPA; no Apple
+build was dispatched for this change. Apple compilation and current-device
+regression, Low Power Mode60FPS and battery measurements remain open.

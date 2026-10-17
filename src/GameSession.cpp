@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+extern "C" void native_grGlideShutdown();
 #include "GameSession.h"
 #include "EngineMemory.h"
 #include "GameContexts.h"
@@ -53,7 +54,7 @@ struct GameSession::Impl {
     bool foreground=true,background_shutdown=false,pointer_focused=true;
     GraphicsLifecycle graphics;
     std::unique_ptr<void,void(*)(void *)> game{nullptr,nfs_destroy_game_context};
-    std::vector<void *> bootstrap;std::thread thread;WorkerControl control;
+    std::vector<void *> bootstrap;std::thread thread;WorkerControl control,exit_control;
     std::mutex result_mutex;GameSessionResult state;bool started=false;
     int32_t(*present)(const std::string &,const std::string &,uint32_t);
     static bool post_input(void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);}
@@ -118,19 +119,44 @@ struct GameSession::Impl {
         {std::lock_guard<std::mutex> lock(control.mutex);control.stop=true;control.changed.notify_all();}
         wake_worker_waits();
     }
-    void failure(std::exception_ptr error){try{std::rethrow_exception(error);}catch(const std::exception &e){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error=std::string(e.what())+"; "+recent_game_calls();}catch(...){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error="Unknown native game failure";}}
+    void failure(std::exception_ptr error){
+        // A genuine failure may abort original exit callbacks. Ordinary game
+        // exit keeps this separate control live so normal saves can complete.
+        {std::lock_guard<std::mutex> lock(exit_control.mutex);exit_control.stop=true;exit_control.changed.notify_all();}
+        wake_worker_waits();
+        try{std::rethrow_exception(error);}catch(const std::exception &e){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error=std::string(e.what())+"; "+recent_game_calls();}catch(...){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error="Unknown native game failure";}}
     template<class F> void cleanup(F action){try{action();}catch(...){failure(std::current_exception());}}
     void run(uint32_t function){
         SDLThreadCleanup thread_cleanup;
         current_worker_control()=&control;
-        try{nfs_dispatch_game_procedure(game.get(),function);}catch(const GameExited &exit){std::lock_guard<std::mutex> lock(result_mutex);state.exit_code=exit.code;}catch(const WorkerStopped &){}catch(...){failure(std::current_exception());}
+        bool original_completed=true;
+        try{nfs_dispatch_game_procedure(game.get(),function);}catch(const GameExited &exit){std::lock_guard<std::mutex> lock(result_mutex);state.exit_code=exit.code;}catch(const WorkerStopped &){original_completed=false;}catch(...){original_completed=false;failure(std::current_exception());}
         critical.retire_current_thread();request_stop();
+        if(auto error=workers.take_failure()){original_completed=false;failure(error);}
+        if(exit_control.stop.load())original_completed=false;
+        if(original_completed){
+            // Ignore the ordinary entry-frame stop while healthy exit callbacks
+            // save and signal their workers. A reported failure can still unwind
+            // these callbacks at existing checked safe points, respecting held
+            // critical sections. Native teardown below remains stop-deferred.
+            current_worker_control()=&exit_control;
+            try{exits.drain_cancellable(game.get());}
+            catch(const WorkerStopped &){original_completed=false;}
+            catch(...){original_completed=false;failure(std::current_exception());}
+            current_worker_control()=&control;
+        }
         ScopedWorkerStopDeferral orderly_cleanup;
-        // Keep app main dispatch alive while joining and draining renderer/audio.
-        // Original cleanup signals worker quit flags and waits for their original
-        // completion fields. Cancelling them first skips those epilogues.
-        cleanup([&]{exits.drain(game.get());});workers.request_stop_all();window.stop();
+        cleanup([&]{critical.retire_current_thread();});
+        workers.request_stop_all();window.stop();
         cleanup([&]{workers.join_all();});cleanup([&]{audio.stop();});cleanup([]{stopTimer();});
+        if(!original_completed)cleanup([&]{
+            flush_renderer_commands();
+            run_on_main([](void *opaque){
+                auto &self=*static_cast<Impl *>(opaque);
+                if(self.foreground)native_grGlideShutdown();
+                else if(!self.background_shutdown){self.graphics.abandon_suspended();self.background_shutdown=true;}
+            },this);
+        });
         cleanup([&]{if(!mappings.flush_and_unmap_all())throw std::runtime_error("Game mapped save writeback failed");});
         events.shutdown();cleanup([&]{window.shutdown();});current_worker_control()=nullptr;
         {std::lock_guard<std::mutex> lock(result_mutex);state.finished=true;}
@@ -144,6 +170,9 @@ void GameSession::request_stop(){impl->request_stop();}
 GameSessionResult GameSession::result(){std::lock_guard<std::mutex> lock(impl->result_mutex);return impl->state;}
 void GameSession::poll(){
     if(!SDL_IsMainThread())throw std::logic_error("Game event polling needs app main thread");
+    if(auto error=impl->workers.take_failure()){
+        impl->failure(error);impl->request_stop();
+    }
     nfs_diagnostics_activity(impl->foreground?1:0);
     SDL_Event event;while(SDL_PollEvent(&event)){
         if(event.type==SDL_EVENT_QUIT || event.type==SDL_EVENT_TERMINATING)impl->request_stop();

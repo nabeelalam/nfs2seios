@@ -1,3 +1,5 @@
+#include <chrono>
+#include <string>
 #include "ThreadBridge.h"
 #include "FileBridge.h"
 #include "EventBridge.h"
@@ -120,5 +122,60 @@ int main(){
     bulk_entered.get_future().wait();CHECK(all_stopping.create([](void *){throw std::runtime_error("Suspended worker ran during shutdown");},&ctx,nfs_destroy_game_context,true,native_id));
     all_stopping.request_stop_all();all_stopping.join_all();CHECK(destroyed==14);
     nfs::bind_event_bridge(nullptr);nfs::bind_critical_sections(nullptr);nfs::bind_thread_bridge(nullptr);
+
+    auto poll_failure=[](nfs::ThreadBridge &owner){
+        const auto until=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+        std::exception_ptr result;
+        while(!(result=owner.take_failure()) && std::chrono::steady_clock::now()<until)std::this_thread::yield();
+        return result;
+    };
+    auto error_text=[](std::exception_ptr error){
+        try{if(error)std::rethrow_exception(error);}catch(const std::exception &e){return std::string(e.what());}
+        return std::string();
+    };
+    auto fail=[](void *){throw std::runtime_error("mailbox worker failure");};
+    auto destroy=[](void *){++destroyed;};
+    auto noop=[](void *){};
+    {
+        nfs::ThreadBridge owner;
+        for(unsigned i=0;i<1000000;++i)CHECK(!owner.take_failure());
+        CHECK(owner.create(noop,&ctx,destroy,false,native_id));owner.join_all();CHECK(!owner.take_failure());
+    }
+    {
+        nfs::ThreadBridge owner;const auto before=destroyed.load();
+        auto owned=owner.create(fail,&ctx,destroy,false,native_id);CHECK(owned && owner.close(owned));
+        auto error=poll_failure(owner);CHECK(error_text(error)=="mailbox worker failure");
+        CHECK(destroyed==before+1 && !owner.take_failure());
+        bool threw=false;try{owner.join_all();}catch(const std::runtime_error &e){threw=std::string(e.what())=="mailbox worker failure";}CHECK(threw);
+    }
+    {
+        nfs::ThreadBridge owner;const auto before=destroyed.load();
+        CHECK(owner.create(fail,&ctx,destroy,false,native_id));
+        const auto until=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+        while(destroyed==before && std::chrono::steady_clock::now()<until)std::this_thread::yield();
+        CHECK(destroyed==before+1);CHECK(owner.create(noop,&ctx,destroy,false,native_id));
+        CHECK(error_text(poll_failure(owner))=="mailbox worker failure");
+        bool threw=false;try{owner.join_all();}catch(const std::runtime_error &){threw=true;}CHECK(threw && !owner.take_failure());
+    }
+    {
+        nfs::ThreadBridge owner;
+        for(unsigned i=0;i<8;++i)CHECK(owner.create(fail,&ctx,destroy,false,native_id));
+        CHECK(error_text(poll_failure(owner))=="mailbox worker failure");
+        try{owner.join_all();}catch(const std::runtime_error &){}
+        CHECK(!owner.take_failure());
+    }
+    {
+        nfs::ThreadBridge cancelled,independent;
+        CHECK(cancelled.create([](void *){throw nfs::WorkerStopped();},&ctx,destroy,false,native_id));
+        cancelled.join_all();CHECK(!cancelled.take_failure() && !independent.take_failure());
+        CHECK(independent.create(fail,&ctx,destroy,false,native_id));
+        CHECK(poll_failure(independent));CHECK(!cancelled.take_failure());
+        try{independent.join_all();}catch(const std::runtime_error &){}
+    }
+    {
+        nfs::ThreadBridge owner;CHECK(owner.create(fail,&ctx,destroy,true,native_id));
+        owner.request_stop_all();owner.join_all();CHECK(!owner.take_failure());
+    }
+    std::puts("PASS: first worker-failure handoff,closed/reaped handles,post-destruction publication,one-shot concurrent errors,independent bridges,cooperative cancellation and healthy polling");
     std::puts("PASS: worker context/start frame, handle lifetime, failure reporting, stop during events/guest loads/delay, self stop deferred until recursive locks release");
 }
