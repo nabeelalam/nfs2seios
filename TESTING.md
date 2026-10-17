@@ -410,3 +410,22 @@ than requiring an external stop. A healthy original menu exit still writes
 settings. Completed native writes are retained; pending original save logic
 cannot be guaranteed after a genuine failure. No new physical freeze, power or
 performance acceptance is claimed. Build14 remains the delivered device package.
+
+## Game-thread CPU measurement candidate
+
+The local suite passes39/39 sanitizer checks, including deterministic sampling
+cadence, disabled/non-owner paths without clock queries, reset during an in-flight
+valid sample, unavailable/regressed clocks, and the real host thread CPU provider.
+Eight controlled native-session cases also pass against current runtime objects.
+The separate optimized original-data two-player replay passes with clean shutdown;
+its CPU values are Linux sanitizer measurements, not iPad performance estimates.
+
+For device comparison, use the same split-screen race, full graphics and Native
+resolution, with Lock FPS to30 off. Four-finger tap to show detailed diagnostics.
+Allow at least60 submissions after showing diagnostics or changing Low Power Mode.
+Record FPS and Game CPU ms/frame in similar busy and clear sections, first with
+Low Power Mode off and then on. Game CPU excludes waiting and other workers; a
+small value does not establish that the full frame is GPU-bound. Hide diagnostics
+for any later controlled battery comparison. Temperature, brightness, audio and
+radio use must be comparable; a short percentage plateau cannot establish energy
+savings. Device acceptance is still required.

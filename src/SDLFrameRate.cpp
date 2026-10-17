@@ -2,6 +2,7 @@
 #include "FrameRate.h"
 #include "FramePresentation.h"
 #include "FramePacer.h"
+#include "EngineThreadMetrics.h"
 #include "WorkerControl.h"
 #include <SDL3/SDL.h>
 #include <cstdio>
@@ -24,9 +25,10 @@ namespace {std::atomic<int> frame_limit{0};}
 extern "C" void nfs_set_frame_limit(int fps){frame_limit.store(fps==30?30:0,std::memory_order_relaxed);}
 extern "C" int nfs_frame_limit(){return frame_limit.load(std::memory_order_relaxed);}
 extern "C" void nfs_wait_frame_slot(){
+    nfs_engine_frame_boundary();
     // Never sleep UIKit's main queue or its renderer/audio callbacks.
     static thread_local nfs::FramePacer pacer;
-    // The normal unrestricted path needs no clock query or wait.
+    // Unrestricted pacing itself needs no clock query or wait.
     if(nfs_frame_limit()!=30){pacer.reset();return;}
     if(SDL_IsMainThread())return;
     for(;;){
@@ -58,7 +60,7 @@ extern "C" void nfs_diagnostics_activity(int state){
 #endif
 }
 extern "C" int nfs_render_height(){return render_height.load();}
-extern "C" void nfs_reset_frame_rate(){rate.reset();last_window=nullptr;last_fps=0;cpu_wall=0;cpu_time=0;}
+extern "C" void nfs_reset_frame_rate(){rate.reset();last_window=nullptr;last_fps=0;cpu_wall=0;cpu_time=0;nfs_reset_engine_metrics();}
 extern "C" double nfs_frame_rate_value(){return last_fps.load(std::memory_order_relaxed);}
 extern "C" void nfs_frame_presented(void *window){
     nfs_diagnostics_activity(2);

@@ -238,3 +238,24 @@ private. These checks do not reproduce or explain the physical Tournament freeze
 This is a source-only update. Build14 remains the latest delivered IPA; no Apple
 build was dispatched for this change. Apple compilation and current-device
 regression, Low Power Mode60FPS and battery measurements remain open.
+
+## Build 15 candidate: measure the device bottleneck
+
+The next candidate combines the validated worker-error cleanup with an opt-in
+game-thread CPU measurement. The measurement is disabled while diagnostics are
+hidden. Visible detailed diagnostics average owner-thread CPU time over60
+original submissions; this excludes waiting, other workers and GPU work. It is
+a bottleneck clue, not a whole-frame or energy measurement.
+
+All39 local sanitizer host checks and eight controlled native-session cases
+pass. An optimized sanitizer original-data replay exercises two active players,
+pause/resume/reset and simulated lifecycle recovery. It verifies capture enable,
+reset and disable, including60 further submissions without new CPU queries after
+hiding. An unoptimized replay was too slow to meet its race-readiness bound; it
+was not counted as a gameplay pass. Portable ARM64 object checks do not validate
+Apple SDK branches. One bounded manual sequential standard-runner Apple build
+is justified to check those branches and prepare device measurement.
+
+Build14 remains the delivered package until the candidate is independently
+inspected. Stable60FPS in Low Power Mode, battery savings and the physical
+Tournament freeze remain open. No new rendering optimization is claimed.

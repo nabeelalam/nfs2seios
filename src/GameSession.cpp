@@ -16,6 +16,7 @@ extern "C" void native_grGlideShutdown();
 #include "SDLKeyboardInput.h"
 #include "SDLTouchInput.h"
 #include "FramePresentation.h"
+#include "EngineThreadMetrics.h"
 #include "GraphicsLifecycle.h"
 #include "SDLThreadCleanup.h"
 #include "InputDevices.h"
@@ -124,10 +125,11 @@ struct GameSession::Impl {
         // exit keeps this separate control live so normal saves can complete.
         {std::lock_guard<std::mutex> lock(exit_control.mutex);exit_control.stop=true;exit_control.changed.notify_all();}
         wake_worker_waits();
-        try{std::rethrow_exception(error);}catch(const std::exception &e){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error=std::string(e.what())+"; "+recent_game_calls();}catch(...){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error="Unknown native game failure";}}
+        try{std::rethrow_exception(error);}catch(const std::exception &e){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error=std::string(e.what())+"; "+recent_game_calls()+"; "+sampled_game_calls();}catch(...){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error="Unknown native game failure; "+sampled_game_calls();}}
     template<class F> void cleanup(F action){try{action();}catch(...){failure(std::current_exception());}}
     void run(uint32_t function){
         SDLThreadCleanup thread_cleanup;
+        EngineMetricsOwner metrics_owner;
         current_worker_control()=&control;
         bool original_completed=true;
         try{nfs_dispatch_game_procedure(game.get(),function);}catch(const GameExited &exit){std::lock_guard<std::mutex> lock(result_mutex);state.exit_code=exit.code;}catch(const WorkerStopped &){original_completed=false;}catch(...){original_completed=false;failure(std::current_exception());}

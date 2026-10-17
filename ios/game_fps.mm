@@ -3,6 +3,7 @@
 #import <mach/mach.h>
 #include <SDL3/SDL.h>
 #include "FramePresentation.h"
+#include "EngineThreadMetrics.h"
 #include "GameTrace.h"
 #include <atomic>
 #include <thread>
@@ -112,7 +113,7 @@ extern "C" {extern int32_t fixedFramebufferSize,initialWinWidth,initialWinHeight
         message:@"Pause before changing resolution. Native keeps the original 4:3 view. CPU/app is this game's share of total CPU capacity. Four-finger tap shows or hides diagnostics."
         preferredStyle:UIAlertControllerStyleActionSheet];
     NSArray<NSNumber *> *heights=@[@480,@720,@960,@0];
-    NSArray<NSString *> *titles=@[@"640 Ã— 480 (original)",@"960 Ã— 720",@"1280 Ã— 960",@"Native screen pixels (4:3)"];
+    NSArray<NSString *> *titles=@[@"640 × 480 (original)",@"960 × 720",@"1280 × 960",@"Native screen pixels (4:3)"];
     for(NSUInteger i=0;i<heights.count;++i){
         const NSInteger height=heights[i].integerValue;
         [sheet addAction:[UIAlertAction actionWithTitle:titles[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction *){[self selectHeight:height];}]];
@@ -134,7 +135,7 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
     if(!native)return;
     if(!overlay)overlay=[[NFSPerformanceOverlay alloc] init];
     if(overlay.label.superview!=native){
-        [overlay.label removeFromSuperview];[overlay.keyboardButton removeFromSuperview];[overlay.limitRow removeFromSuperview];overlay.host=native;overlay.window=window;overlay.visible=NO;
+        [overlay.label removeFromSuperview];[overlay.keyboardButton removeFromSuperview];[overlay.limitRow removeFromSuperview];overlay.host=native;overlay.window=window;overlay.visible=NO;nfs_set_engine_metrics_capture(0);
         NSUserDefaults *preferences=NSUserDefaults.standardUserDefaults;
         overlay.detailed=[preferences objectForKey:@"NFSDetailedOverlay"]?[preferences boolForKey:@"NFSDetailedOverlay"]:YES;
         UILabel *label=[[UILabel alloc] init];overlay.label=label;
@@ -189,11 +190,17 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
             [overlay selectHeight:[preferences integerForKey:@"NFSRenderHeight"]];
     }
     if(!overlay.visible)return;
+    const BOOL lowPower=NSProcessInfo.processInfo.lowPowerModeEnabled;
+    static BOOL powerKnown=NO,previousPower=NO;
+    if(powerKnown && previousPower!=lowPower)nfs_reset_engine_metrics();
+    powerKnown=YES;previousPower=lowPower;
     mach_task_basic_info_data_t info{};mach_msg_type_number_t count=MACH_TASK_BASIC_INFO_COUNT;
     const BOOL memoryAvailable=task_info(mach_task_self(),MACH_TASK_BASIC_INFO,reinterpret_cast<task_info_t>(&info),&count)==KERN_SUCCESS;
-    NSString *cpuText=cpu>=0?[NSString stringWithFormat:@"%.1f%%",cpu]:@"â€”";
-    NSString *memoryText=memoryAvailable?[NSString stringWithFormat:@"%.0f MB",double(info.resident_size)/1048576.0]:@"â€”";
-    overlay.label.text=overlay.detailed?[NSString stringWithFormat:@"FPS %.1f  Â·  %.1f ms\nCPU/app %@  Â·  RAM %@\nRender %d Ã— %d\nLow Power Mode: %@",fps,fps>0?1000.0/fps:0,cpuText,memoryText,width,height,NSProcessInfo.processInfo.lowPowerModeEnabled?@"On":@"Off"]:[NSString stringWithFormat:@"FPS %.1f  Â·  Tap for settings",fps];
+    NSString *cpuText=cpu>=0?[NSString stringWithFormat:@"%.1f%%",cpu]:@"—";
+    NSString *memoryText=memoryAvailable?[NSString stringWithFormat:@"%.0f MB",double(info.resident_size)/1048576.0]:@"—";
+    const double engineCpu=nfs_engine_cpu_ms_per_frame();
+    NSString *engineLine=engineCpu>=0?[NSString stringWithFormat:@"\nGame CPU: %.2f ms/frame",engineCpu]:@"";
+    overlay.label.text=overlay.detailed?[NSString stringWithFormat:@"FPS %.1f  ·  %.1f ms\nCPU/app %@  ·  RAM %@%@\nRender %d × %d\nLow Power Mode: %@",fps,fps>0?1000.0/fps:0,cpuText,memoryText,engineLine,width,height,lowPower?@"On":@"Off"]:[NSString stringWithFormat:@"FPS %.1f  ·  Tap for settings",fps];
     overlay.label.hidden=!overlay.visible;overlay.limitRow.hidden=!overlay.visible;
     [native bringSubviewToFront:overlay.label];
     [native bringSubviewToFront:overlay.limitRow];
@@ -202,5 +209,6 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
 extern "C" void nfs_toggle_performance_overlay(void *window){
     if(!overlay || overlay.window!=window)nfs_show_frame_rate(window,0,-1,nfs_render_width(),nfs_render_height());
     overlay.visible=!overlay.visible;
+    nfs_set_engine_metrics_capture(overlay.visible?1:0);
     overlay.label.hidden=!overlay.visible;overlay.limitRow.hidden=!overlay.visible;
 }
