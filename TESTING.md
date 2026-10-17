@@ -429,3 +429,15 @@ small value does not establish that the full frame is GPU-bound. Hide diagnostic
 for any later controlled battery comparison. Temperature, brightness, audio and
 radio use must be comparable; a short percentage plateau cannot establish energy
 savings. Device acceptance is still required.
+
+
+## Build15 Apple/package validation; physical acceptance open
+
+Sourceafd2bbe passed30 Apple host checks,including the real CPU-provider test,
+and40,000 baseline plus40,000 ThinLTO mixed state cases. All15 translated units
+and eight reviewed native runtime units compile as ARM64 iOS-device Release
+O3/C++14/ThinLTO. Both device links retain the two-backend cap. The independently
+downloaded version15 package matches source and release digests. It contains
+only executable,metadata and two licenses,no assets,signing material,private
+computer paths or sanitizer runtime. Zero Actions artifacts were uploaded.
+These gates are separate from device performance,stability and battery acceptance.

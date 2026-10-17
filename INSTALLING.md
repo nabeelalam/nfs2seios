@@ -1,11 +1,11 @@
 # Personal installation without a Mac
 
-Build 14 is an independently inspected thin ARM64 iOS-device Release package.
+Build 15 is an independently inspected thin ARM64 iOS-device Release package.
 Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 14 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38995915505-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+1. Download the [build 15 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39005977672-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
 2. Update the existing app through your ready SideStore setup, importing
    NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
    performs personal signing; the ZIP itself is unsigned.
@@ -41,7 +41,7 @@ Pause before changing render size. Settings offer 640x480, 960x720, 1280x960
 and native screen pixels in the original 4:3 view; the overlay shows actual
 render size. CPU/app is the share of total CPU capacity, so one busy core can
 limit performance despite a low percentage. GPU utilization is not estimated.
-Physical build 13 acceptance, battery savings and HD artwork are unverified.
+Physical build15 acceptance, battery savings and HD artwork are unverified.
 
 ## Separately supplied game files
 
@@ -97,6 +97,14 @@ show or hide the keyboard, including Return for opening the original control
 remapping prompt. Map both players separately in Split Screen setup. Controller
 input remains native; player one's Back/View resets the car. One-finger movement
 acts as a relative trackpad. A one-finger tap clicks, a two-finger tap sends
-Escape, and a three-finger tap sends Enter. Physical iPad validation of these
-new controls remains pending. Preserve imported assets and saved control profiles
+Escape, and a three-finger tap sends Enter. Build12 physical feedback accepted touch tracking and gestures. Current
+controller/typing regression still needs device validation. Preserve imported assets and saved control profiles
 when updating; remap only if the existing profile needs it.
+
+
+Build15 detailed diagnostics show Game CPU ms/frame after60 submissions.
+Use the FPS label to select detailed diagnostics if compact view is enabled.
+After switching Low Power Mode, allow a fresh60-submission interval before
+recording both FPS and Game CPU in comparable busy and clear sections. This
+is game-thread CPU time, not GPU use, complete frame latency or energy use.
+The worker-error cleanup change is not a confirmed fix for the Tournament freeze.

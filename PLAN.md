@@ -259,3 +259,16 @@ is justified to check those branches and prepare device measurement.
 Build14 remains the delivered package until the candidate is independently
 inspected. Stable60FPS in Low Power Mode, battery savings and the physical
 Tournament freeze remain open. No new rendering optimization is claimed.
+
+
+## Build15 delivered; device measurement is next
+
+One manual sequential standard public runner build passed. Apple host tests
+include a real current-thread CPU provider check; native ARM64 iOS-device
+Release/ThinLTO compilation and independent downloaded-package inspection pass.
+No Probe,Actions artifacts,caches,billing changes or duplicate build occurred.
+Build15 supersedes14 for the next device test; both use the same app identity.
+The Game CPU row measures the owner only,averaged over60 submissions. It cannot
+establish whole-frame,GPU or energy cost. Stable60FPS in Low Power Mode,battery
+improvement and the physical Tournament freeze remain unverified. Continue with
+matched physical measurements before choosing the next performance change.

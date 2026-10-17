@@ -157,3 +157,13 @@ pacing tests executed on Linux; Apple compiler/package gates passed. No Probe,
 Actions artifact upload,cache,billing change,larger runner or duplicate run.
 The independently downloaded,asset-free version14 ZIP is3,832,064bytes.
 This validates compilation and packaging; physical FPS and energy remain open.
+
+
+## Build15 measurement validation
+
+One manual Release/ThinLTO dispatch39005977672 at reviewed sourceafd2bbe.
+Sequential standard Ubuntu164s then standard macOS
+669s. No Probe,Actions artifacts,caches,paid runner or billing
+change. Apple host30tests,including actual thread CPU provider,passed before
+device compilation. Existing compiler/link worker bounds remain. Native package
+inspection passed; physical Low Power Mode FPS and energy measurements remain open.
