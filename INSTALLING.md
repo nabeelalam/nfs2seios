@@ -1,11 +1,11 @@
 # Personal installation without a Mac
 
-Build 15 is an independently inspected thin ARM64 iOS-device Release package.
+Build 16 is an independently inspected thin ARM64 iOS-device Release package.
 Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 15 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39005977672-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+1. Download the [build 16 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39075795713-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
 2. Update the existing app through your ready SideStore setup, importing
    NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
    performs personal signing; the ZIP itself is unsigned.
@@ -108,3 +108,14 @@ After switching Low Power Mode, allow a fresh60-submission interval before
 recording both FPS and Game CPU in comparable busy and clear sections. This
 is game-thread CPU time, not GPU use, complete frame latency or energy use.
 The worker-error cleanup change is not a confirmed fix for the Tournament freeze.
+
+
+Build 16 retains the same app identity and existing imported startup behavior.
+It adds sound-operation ownership tested locally with original-code contracts,
+Tournament collision playback and optimized split-screen controls. Update the
+existing app through SideStore with the same Apple Account. Whether this resolves the reported
+iPad Tournament freeze remains unverified; please finish at least one race in that
+scenario and report any freeze, error or stall report. For the performance target,
+use the same full-graphics Native-resolution split race in normal/Low Power Mode,
+Lock FPS to 30 off, and allow 60 submissions before recording Game CPU with FPS.
+No battery or 60 FPS in Low Power Mode improvement is claimed by the sound change.

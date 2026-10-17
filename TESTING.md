@@ -468,3 +468,12 @@ inspect ARM64device identity,version,contents,digests and privacy before deliver
 Physical full-race stability and matched normal/LowPower FPS/Game CPU observations
 remain required. Existing four-finger diagnostics,optional30cap,keyboard,touch
 and original assets import behavior remain part of regression testing.
+
+
+Build 16 Apple validation passes 30 host checks, including actual owner CPU clock,
+two sets of 40, 000 mixed-operation tests, 15 original device translation units,
+reviewed native runtime units and two bounded ThinLTO device links. Independent
+download inspection confirms source/version 16/thin ARM64/device platform and
+exact executable/metadata/license contents, with no assets or signing material.
+This is compile/package evidence. Device race stability, 60 FPS in Low Power Mode, energy
+cost and actual OS recovery still require physical observations.

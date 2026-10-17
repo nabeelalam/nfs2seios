@@ -296,3 +296,21 @@ Build15 remains the delivered IPA until16passes one necessary sequential
 standard-public Apple build and independent package checks. Keep the same app
 identity and existing imported data. Device stability,Low Power Mode60FPS and
 battery cost remain unverified. No new graphics optimization is claimed.
+
+
+## Build 16 compiled, inspected and delivered
+
+One manual sequential standard-public Linux/Apple run passed. The downloaded
+version 16 thin ARM64 iOS-device Release/ThinLTO package passes exact source,
+five-entry allowlist, hashes and privacy checks. No Probe, Actions artifact, cache,
+billing change or duplicate build occurred. The original repository stays
+private; the public source update passed independent staged/history scans.
+
+The sound-operation source preserves original bodies apart from ownership
+scopes. Production sanitizer contracts and optimized original split/Tournament
+checks pass. One bounded optimized Tournament run reaches lap 2/4 through wall
+contacts and stops cleanly; no full event or physical crash fix is proved.
+Local CPU/throughput pilot differences are near zero, not an energy improvement.
+Next:physical current-build Tournament completion and matched split normal/
+Low Power Mode FPS/Game CPU, then evidence-led optimization. Full OS recovery,
+signing refresh and sharper HUD artwork remain separate acceptance gates.

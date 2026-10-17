@@ -167,3 +167,12 @@ Sequential standard Ubuntu164s then standard macOS
 change. Apple host30tests,including actual thread CPU provider,passed before
 device compilation. Existing compiler/link worker bounds remain. Native package
 inspection passed; physical Low Power Mode FPS and energy measurements remain open.
+
+
+## Build 16 sound-operation validation
+
+One manual Release/ThinLTO dispatch 39075795713 at reviewed source ce9d6de.
+Sequential standard Ubuntu 148 seconds then standard macOS
+632 seconds. No Probe, Actions artifacts, caches, paid runner
+or billing change. Existing compiler/backend bounds retained. Source, download
+and package privacy inspected; physical performance/energy remain unverified.
