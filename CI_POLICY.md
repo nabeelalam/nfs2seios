@@ -136,7 +136,7 @@ SDK checks, unsigned bundle resources and package-path verification. No cache
 is justified by a five-second fetch.
 
 
-## Latest measured ownership optimization validation
+## Earlier measured ownership optimization validation (build 10)
 
 Source 22f8bcb026669c891e87dc7010bdc9c7a0d0a9bb used one deliberate Release
 ThinLTO run 38941504663. Standard Ubuntu finished in 145 seconds before the
@@ -146,3 +146,14 @@ Actions artifacts API confirms zero artifacts. The checked prerelease ZIP is
 3,098,903 bytes and contains the separately inspected asset-free version 10 IPA.
 No duplicate run, larger runner, cache expansion or billing change was used.
 Package/compiler success does not establish physical-device performance.
+
+
+## Latest measured native validation: build 14
+
+Reviewed source3ade3b3 used one manual Release/ThinLTO dispatch38995915505.
+Standard Ubuntu completed in169seconds before standard macOS began; Apple
+completed in520seconds. Device links retain two ThinLTO backends. The new
+pacing tests executed on Linux; Apple compiler/package gates passed. No Probe,
+Actions artifact upload,cache,billing change,larger runner or duplicate run.
+The independently downloaded,asset-free version14 ZIP is3,832,064bytes.
+This validates compilation and packaging; physical FPS and energy remain open.

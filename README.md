@@ -15,7 +15,13 @@ subsequently passed physical feedback for split-screen FPS and relative touch
 tracking/gestures. A single-player Tournament freeze on Proving Grounds remains
 under investigation; this is not general stability acceptance for every mode.
 
-Build 13 adds four-finger diagnostics toggling, initially hidden, an optional
+Build 14 reduces repeated checked-memory locking and optional frame-wait
+wakeups. Scoped Linux split-screen comparisons observed 8-10% lower game-worker
+CPU per displayed frame; this does not establish iPad FPS or battery savings.
+The verified [build 14 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38995915505-1/NFSIISEGame-development-unsigned.zip) is ready for personal signing and
+same-settings testing with Low Power Mode off/on, with the 30 FPS lock off.
+
+Build 14 retains four-finger diagnostics toggling, initially hidden, an optional
 Lock FPS to 30 switch (off by default), an independent keyboard button and Low
 Power Mode status. The unused GPU label is removed. The game explicitly requests
 fullscreen and opts into Apple Game Mode. Notification filtering is separately
@@ -23,7 +29,7 @@ controlled by Gaming Focus. Normal-speed rendering optimizations are retained.
 
 The single sequential run passed Linux validation and 28 Apple host tests,
 40,000 baseline and ThinLTO cases each, and verified ARM64 Release compilation.
-The downloaded version 13 package passes exact-source, contents, privacy and
+The downloaded version 14 package passes exact-source, contents, privacy and
 release-digest inspection. It contains only executable, metadata and licenses.
 No original game assets, signing material or sanitizer runtime is included.
 No probe was rebuilt and no Actions artifact was uploaded.
@@ -31,12 +37,12 @@ No probe was rebuilt and no Actions artifact was uploaded.
 A bounded local original-data Tournament run used white McLaren F1, Proving
 Grounds and all opponents. It continued through blinking-light-tunnel wall
 contacts into lap two and shut down cleanly. This did not reproduce the iPad
-freeze, complete the four-lap event or establish physical build 13 acceptance.
-If frames stall, build 13 attempts to save one NFSIISE-stall.txt in the app's
+freeze, complete the four-lap event or establish physical build 14 acceptance.
+If frames stall, build 14 attempts to save one NFSIISE-stall.txt in the app's
 Documents folder for diagnosis; it does not force recovery.
 
 Use the [installation guide](INSTALLING.md) for the current download, personal
-signing and separate game assets. Physical build 13 UI, Game Mode, pacing and
+signing and separate game assets. Physical build 14 UI, Game Mode, pacing and
 regressions still need testing. Stable 60 FPS in Low Power Mode, controlled
 battery savings, lifecycle/signing refresh and sharper HUD artwork remain open.
 

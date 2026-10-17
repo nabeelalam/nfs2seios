@@ -1,11 +1,11 @@
 # Personal installation without a Mac
 
-Build 13 is an independently inspected thin ARM64 iOS-device Release package.
+Build 14 is an independently inspected thin ARM64 iOS-device Release package.
 Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 13 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38987697730-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+1. Download the [build 14 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38995915505-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
 2. Update the existing app through your ready SideStore setup, importing
    NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
    performs personal signing; the ZIP itself is unsigned.

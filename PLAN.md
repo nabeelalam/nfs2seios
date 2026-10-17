@@ -199,13 +199,16 @@ do not force iOS process termination to imitate a desktop exit.
 Verified unsigned download: [build 13 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38987697730-1/NFSIISEGame-development-unsigned.zip).
 
 
-## Next Apple validation: build 14 candidate
+## Build 14 delivered; next physical acceptance
 
-Local checked-copy batching and optional frame-wait changes passed scoped
-sanitizer and original two-player replay gates; see TESTING.md. Publish only
-the reviewed source/test/version/documentation set. One manual sequential
-standard-public-runner Release/ThinLTO build is justified to validate these
-changes against the Apple SDK and produce a device-comparison candidate.
-Do not rebuild the Probe, upload Actions artifacts, change billing, or infer
-M3 FPS/battery savings from Linux. The original repository remains private;
-all original assets, profiles, screenshots and raw local evidence stay separate.
+Source3ade3b3 passed one manual sequential standard Linux169s/Apple520s run.
+Version14 thinARM64 iOS-device Release has matching source/digests and inspected
+executable/metadata/license-only contents. No Probe,Actions artifacts,caches,
+billing change or duplicate dispatch. The reviewed source and public notes stay
+separate from originals,profiles,captures and raw local evidence.
+
+Test the same split-screen settings with Low Power Mode off/on and the optional
+30 FPS lock off. Normal/Low Power Mode60FPS,battery cost,UIKit/keyboard and real
+OS/audio recovery remain physical gates. Tournament freeze diagnosis continues;
+the separate captured long-run shutdown wait is not a demonstrated physical
+freeze cause. Sharper HUD artwork remains last priority.

@@ -350,10 +350,10 @@ open. No controlled energy saving is established. A static exit confirmation's
 FPS and the black screen after Exit to System are lower-priority observations;
 do not force iOS process termination to imitate a desktop exit.
 
-Verified unsigned download: [build 13 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38987697730-1/NFSIISEGame-development-unsigned.zip).
+Verified unsigned download: [build 14 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38995915505-1/NFSIISEGame-development-unsigned.zip).
 
 
-## Build 14 candidate: local performance and pacing validation
+## Build 14: performance and pacing validation; device acceptance open
 
 The arithmetic copy transaction minimum is reduced from four checked accesses
 to two. Every access retains its mapped-span, live-allocation and cooperative
@@ -374,8 +374,16 @@ mode avoids the timer query. Thirty-seven host sanitizer tests pass. A fresh
 cover both players' gears, pause, held/fresh resume, reset, simulated lifecycle,
 and switching the cap off, with clean shutdown and no reported sanitizer error.
 
-This candidate still needs Apple compilation/package checks and physical
-same-settings split-screen tests with Low Power Mode off/on. Battery savings,
-constant Low Power Mode 60 FPS, physical OS recovery, completed events and the
-reported Tournament freeze are unverified. Build 13 remains the verified
-download until a new package is independently inspected.
+Source 3ade3b33bf122323842bb199bee0b4fcf97f1616 passed one sequential standard
+Linux169s/Apple520s run38995915505. The new Linux pacing/sampler tests executed;
+Apple passed28host tests and40,000 mixed cases each for baseline/ThinLTO. All15
+translated units compile ARM64 iOS-device O3/C++14/ThinLTO; two links retain the
+two-backend limit. The downloaded version14 thinARM64device Release passes
+exact-source,contents,privacy and digest checks. It contains executable,metadata
+and two licenses, with no original assets,signing material or sanitizer runtime.
+Zero Actions artifacts; no Probe rebuild or extra dispatch.
+
+Physical same-settings split-screen Low Power Mode off/on tests remain needed.
+Battery savings,constant Low Power Mode60FPS,real OS/audio recovery,completed
+events and the reported Tournament freeze are unverified. A separate optimized
+source13 long-run shutdown wait was captured locally; no fix is claimed in14.
