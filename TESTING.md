@@ -351,3 +351,31 @@ FPS and the black screen after Exit to System are lower-priority observations;
 do not force iOS process termination to imitate a desktop exit.
 
 Verified unsigned download: [build 13 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38987697730-1/NFSIISEGame-development-unsigned.zip).
+
+
+## Build 14 candidate: local performance and pacing validation
+
+The arithmetic copy transaction minimum is reduced from four checked accesses
+to two. Every access retains its mapped-span, live-allocation and cooperative
+stop checks, the same shared mutex, and existing control/call/declaration
+barriers and 32-access/64-line limits. Eleven generator checks, 40,000 mixed
+aliased/unaligned CPU/FPU/memory cases under ASan/UBSan, whole-source operation
+reconstruction, and exact integrated/tested output matching cover all 15 units.
+
+Four optimized original two-active-player split-screen trials in both orders
+observed 8.10-10.18% lower game-worker CPU per displayed frame and 4.34-9.03%
+higher presentation FPS on Linux. Scenes and traffic naturally vary, so these
+are directional observations, not identical-frame or physical iPad gains.
+Linux executable text grows 20.38%; Apple size and device behavior remain open.
+
+Optional 30 FPS pacing now uses an interruptible worker event wait; unrestricted
+mode avoids the timer query. Thirty-seven host sanitizer tests pass. A fresh
+65-project-unit ASan/UBSan game build and a combined-change split-screen replay
+cover both players' gears, pause, held/fresh resume, reset, simulated lifecycle,
+and switching the cap off, with clean shutdown and no reported sanitizer error.
+
+This candidate still needs Apple compilation/package checks and physical
+same-settings split-screen tests with Low Power Mode off/on. Battery savings,
+constant Low Power Mode 60 FPS, physical OS recovery, completed events and the
+reported Tournament freeze are unverified. Build 13 remains the verified
+download until a new package is independently inspected.

@@ -34,7 +34,7 @@ def batch_copies(text):
     result=[];pending=[];manifest=[];method=None;copies=0;skip_next=False;in_comment=False
     def flush():
         nonlocal pending,copies
-        if copies>=4:
+        if copies>=2:
             indent=re.match(r'\s*',pending[0][1]).group();original=''.join(line for _,line in pending)
             result.append(indent+'{ // checked copy transaction begin\n'+indent+'nfs::GuestCopyTransaction guest_transaction;\n'+rewrite(original)+indent+'} // checked copy transaction end\n')
             manifest.append({'method':method,'startLine':pending[0][0],'endLine':pending[-1][0],'checkedCopies':copies,'lines':len(pending)})

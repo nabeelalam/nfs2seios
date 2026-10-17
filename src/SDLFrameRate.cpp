@@ -5,6 +5,7 @@
 #include "WorkerControl.h"
 #include <SDL3/SDL.h>
 #include <cstdio>
+#include <chrono>
 #include <atomic>
 #ifdef __APPLE__
 #include <TargetConditionals.h>
@@ -19,18 +20,27 @@ namespace {nfs::FrameRate rate;void *last_window=nullptr;std::atomic<double> las
 extern "C" void nfs_render_target_changed(int width,int height){render_width=width;render_height=height;}
 extern "C" int nfs_render_width(){return render_width.load();}
 namespace {std::atomic<int> frame_limit{0};}
+
 extern "C" void nfs_set_frame_limit(int fps){frame_limit.store(fps==30?30:0,std::memory_order_relaxed);}
 extern "C" int nfs_frame_limit(){return frame_limit.load(std::memory_order_relaxed);}
 extern "C" void nfs_wait_frame_slot(){
     // Never sleep UIKit's main queue or its renderer/audio callbacks.
-    if(SDL_IsMainThread())return;
     static thread_local nfs::FramePacer pacer;
+    // The normal unrestricted path needs no clock query or wait.
+    if(nfs_frame_limit()!=30){pacer.reset();return;}
+    if(SDL_IsMainThread())return;
     for(;;){
         nfs::check_worker_stop();
-        const auto now=SDL_GetTicksNS();
+        // Keep deadlines in the same time domain as condition-variable waits.
+        const auto now=uint64_t(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
         const auto wait=pacer.remaining(now,nfs_frame_limit()==30);
         if(!wait){if(nfs_frame_limit()==30)pacer.admitted(now);return;}
-        SDL_DelayNS(SDL_min(wait,uint64_t(2000000)));
+        if(auto *control=nfs::current_worker_control()){
+            // Stop notifications wake this worker. Deferrals/held engine locks
+            // must still suppress unwinding without turning the wait into a spin.
+            std::unique_lock<std::mutex> lock(control->mutex);
+            control->changed.wait_for(lock,std::chrono::nanoseconds(wait),[]{return nfs::worker_stop_ready() || nfs_frame_limit()!=30;});
+        }else SDL_DelayNS(wait);
     }
 }
 extern "C" void nfs_toggle_diagnostics(void *window){
