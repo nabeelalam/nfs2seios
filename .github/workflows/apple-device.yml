@@ -49,7 +49,7 @@ jobs:
           python3 tests/guest_copy_semantics_test.py
           if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
           cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
-          cmake --build .build/host --target core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests -j 3
+          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests -j 3
           ctest --test-dir .build/host --output-on-failure
       - name: Configure native iPadOS targets
         run: |
@@ -114,7 +114,9 @@ jobs:
           cat > .build/release-notes.md <<'NOTES'
           Native ARM64 iPad development candidate. Personal signing through SideStore is required. Original game assets must be supplied separately.
 
-          This candidate retains build 10 rendering optimizations and adds native controller input ownership, a keyboard toggle, and relative touch cursor controls: one-finger tap clicks, two fingers send Escape, three fingers send Enter. Linux sanitizer and original-game input checks pass. Build 10 was physically accepted at split-screen 60 FPS; this input revision still needs its own iPad controller, touch, keyboard and performance checks. Gesture Escape/Enter now use nonblocking short key holds so racing can observe them; the original race Pause/resume and menu tests pass locally. No battery saving is claimed.
+          Build 13 keeps the accepted normal-speed rendering path and adds an optional Lock FPS to 30 switch. Four-finger tap shows or hides diagnostics, which start hidden; the small keyboard button stays available. The unused GPU label is removed. The overlay reports Low Power Mode, and the app now explicitly requests full-screen presentation and Apple Game Mode. Notification filtering remains an iPad Gaming Focus setting.
+
+          The reported single-player Tournament freeze is still under investigation. If frames stop for at least ten seconds while the app is active, this candidate attempts to save one small NFSIISE-stall.txt report in the app Documents folder, available through Files. It includes original function IDs, event-loop progress and CPU-time change, without original assets or user text. It does not forcibly terminate or restart the game. Local sanitizer checks pass; Apple compilation and physical-device behavior are separate gates. Build 12 split-screen FPS and touch gestures were physically accepted. Stable 60 FPS in Low Power Mode and battery savings remain unverified.
 
           This download excludes configuration and language files as well as game data. Its corrected importer reads separately supplied install.win and text.eng from your selected game folder alongside GAMEDATA and FEDATA. Keep existing app data when updating. If import fails, acknowledge the displayed error; do not delete your source assets. Record the displayed menu and race FPS, input behavior and any exact error.
           NOTES

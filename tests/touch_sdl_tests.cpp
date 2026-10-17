@@ -14,6 +14,12 @@ int main(){try{
     event(SDL_EVENT_FINGER_DOWN,0);event(SDL_EVENT_FINGER_DOWN,1);
     check(event(SDL_EVENT_FINGER_UP,0).action==nfs::TouchAction::none);
     const auto escape=event(SDL_EVENT_FINGER_UP,1);check(escape.action==nfs::TouchAction::escape);
+    for(unsigned i=0;i<4;++i)event(SDL_EVENT_FINGER_DOWN,i);
+    for(unsigned i=0;i<3;++i)check(event(SDL_EVENT_FINGER_UP,i).action==nfs::TouchAction::none);
+    const auto diagnostics=event(SDL_EVENT_FINGER_UP,3);
+    check(diagnostics.action==nfs::TouchAction::diagnostics);
+    nfs::TouchKeyPulse diagnostic_pulse;check(!diagnostic_pulse.push(diagnostics.action));
+    diagnostic_pulse.update(123,send,&messages);check(messages.empty());
     nfs::TouchKeyPulse pulse;check(pulse.push(escape.action));pulse.update(123,send,&messages);
     check(pulse.push(nfs::TouchAction::enter)); // A second gesture waits for release and neutral spacing.
     check(messages.size()==2);pulse.update(372,send,&messages);check(messages.size()==2);

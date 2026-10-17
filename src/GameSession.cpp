@@ -14,6 +14,7 @@
 #include "MenuInput.h"
 #include "SDLKeyboardInput.h"
 #include "SDLTouchInput.h"
+#include "FramePresentation.h"
 #include "GraphicsLifecycle.h"
 #include "SDLThreadCleanup.h"
 #include "InputDevices.h"
@@ -64,6 +65,7 @@ struct GameSession::Impl {
     void lifecycle(uint32_t type){
         if(type==SDL_EVENT_TERMINATING){request_stop();return;}
         if(type==SDL_EVENT_WILL_ENTER_BACKGROUND && foreground){
+            nfs_diagnostics_activity(0);
             touch.reset();input.clear_pointer(uint32_t(SDL_GetTicks()));pointer_focused=false;
             touch_keys.cancel(uint32_t(SDL_GetTicks()),post_input,this);
             foreground=false;graphics.set_suspended(true);audio.set_suspended(true);
@@ -88,6 +90,7 @@ struct GameSession::Impl {
         bind_audio_bridge(&audio);bind_exit_callbacks(&exits);bind_track_record_files(&files);bind_runtime_services(&services);active=this;
     }
     ~Impl(){
+        nfs_diagnostics_activity(0);
         SDL_RemoveEventWatch(lifecycle_watch,this);
         // Destruction before completion would deadlock the app main queue or
         // free bindings still borrowed by workers. App iterate must finish first.
@@ -141,6 +144,7 @@ void GameSession::request_stop(){impl->request_stop();}
 GameSessionResult GameSession::result(){std::lock_guard<std::mutex> lock(impl->result_mutex);return impl->state;}
 void GameSession::poll(){
     if(!SDL_IsMainThread())throw std::logic_error("Game event polling needs app main thread");
+    nfs_diagnostics_activity(impl->foreground?1:0);
     SDL_Event event;while(SDL_PollEvent(&event)){
         if(event.type==SDL_EVENT_QUIT || event.type==SDL_EVENT_TERMINATING)impl->request_stop();
         impl->lifecycle(event.type); // Fallback for events pushed from other threads; owner notifications were handled immediately.
@@ -152,6 +156,7 @@ void GameSession::poll(){
             if(touch.clear){impl->input.clear_pointer(now);impl->touch_keys.cancel(now,Impl::post_input,impl.get());}
             if(touch.dx || touch.dy)impl->input.pointer_motion(touch.dx,touch.dy,now);
             if(touch.action==TouchAction::click)impl->input.pointer_click(now);
+            if(touch.action==TouchAction::diagnostics)nfs_toggle_diagnostics(sdlWin);
             impl->touch_keys.push(touch.action);
         }
         original_keyboard_event(event,uint32_t(SDL_GetTicks()),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},impl.get());

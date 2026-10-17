@@ -5,7 +5,7 @@
 #include <cstdint>
 namespace nfs {
 enum class TouchPhase {down,motion,up,cancel};
-enum class TouchAction {none,click,escape,enter};
+enum class TouchAction {none,click,escape,enter,diagnostics};
 struct TouchResult {int32_t dx=0,dy=0;TouchAction action=TouchAction::none;bool clear=false;};
 // Main-thread relative trackpad. Coordinates use the original 640x480 UI,
 // independent of render resolution. A chord commits only after its last lift.
@@ -31,7 +31,7 @@ public:
             for(auto &f:fingers)if(!f.used){found=&f;break;}
             if(!found){rejected=true;return result;}
             *found={finger,x,y,true};++count;if(count>peak)peak=count;
-            if(peak>3)rejected=true;
+            if(peak>4)rejected=true;
             return result;
         }
         if(!found)return result;
@@ -46,7 +46,7 @@ public:
             found->used=false;--count;
             if(!count){
                 if(!rejected && uint32_t(now-started)<=350 && path<=8)
-                    result.action=peak==1?TouchAction::click:peak==2?TouchAction::escape:TouchAction::enter;
+                    result.action=peak==1?TouchAction::click:peak==2?TouchAction::escape:peak==3?TouchAction::enter:TouchAction::diagnostics;
                 clear_state();
             }
         }

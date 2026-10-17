@@ -14,7 +14,12 @@ int main(){try{
     CHECK(up(0,110).action==TouchAction::click);CHECK(up(0,111).action==TouchAction::none);
     down(1,200);down(2,210);CHECK(up(1,220).action==TouchAction::none);CHECK(up(2,230).action==TouchAction::escape);
     down(1,300);down(2,301);down(3,302);CHECK(up(3,303).action==TouchAction::none);up(1,304);CHECK(up(2,305).action==TouchAction::enter);
-    down(1,400);down(2,401);down(3,402);down(4,403);up(4,404);up(3,405);up(2,406);CHECK(up(1,407).action==TouchAction::none);
+    down(1,400);down(2,401);down(3,402);down(4,403);up(4,404);up(3,405);up(2,406);CHECK(up(1,407).action==TouchAction::diagnostics);
+    for(unsigned i=0;i<5;++i)down(i,420+i);
+    for(unsigned i=0;i<5;++i)CHECK(up(i,430+i).action==TouchAction::none);
+    for(unsigned i=0;i<4;++i)down(i,450+i);
+    CHECK(event(TouchPhase::cancel,2,.5,.5,460).clear);
+    for(unsigned i=0;i<4;++i)CHECK(up(i,470+i).action==TouchAction::none);
     down(1,500);CHECK(up(1,851).action==TouchAction::none);
     down(1,900);auto r=event(TouchPhase::motion,1,.6,.55,910);CHECK(r.dx==63 || r.dx==64);CHECK(r.dy==24);
     r=event(TouchPhase::up,1,.6,.55,920);CHECK(r.action==TouchAction::none);

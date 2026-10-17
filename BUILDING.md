@@ -180,3 +180,24 @@ Battery savings and HD artwork are not established.
 
 Verified unsigned download: [build 12 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38980392788-1/NFSIISEGame-development-unsigned.zip). Personal signing and
 separately supplied original assets are required.
+
+
+Build 13 candidate: four-finger tap toggles diagnostics, hidden initially;
+the keyboard button remains available. Diagnostics omit the unavailable GPU
+label and show Low Power Mode. A separate switch enables an optional 30 FPS
+worker-side cap, off by default. Original simulation timing is unchanged;
+actual iPad pacing and battery effects still require device tests.
+
+The game window explicitly requests iPad fullscreen and the bundle opts into
+Game Mode. Gaming Focus controls notification filtering separately. A best-effort
+monitor attempts to save one bounded NFSIISE-stall.txt in Documents after ten
+seconds without a presented frame while active. It samples original function
+IDs, event-loop progress and CPU-time change; it does not publish game data or
+force recovery. Long loading can also trigger a report, so a report alone does
+not establish the cause of a freeze. The Tournament/Proving Grounds collision
+freeze and 60 FPS in Low Power Mode remain unresolved physical-device targets.
+
+Local validation: 37 sanitizer checks, including four-finger gesture isolation,
+actual SDL worker pacing/cancellation and bounded concurrent call sampling.
+Build 12 has physical acceptance for split-screen FPS and touch gestures. That
+does not establish build 13 acceptance. No battery saving is claimed.

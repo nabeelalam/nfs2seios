@@ -7,7 +7,7 @@
 <key>CFBundleDisplayName</key><string>NFS II SE</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleShortVersionString</key><string>0.1.0</string>
-<key>CFBundleVersion</key><string>12</string>
+<key>CFBundleVersion</key><string>13</string>
 <key>LSRequiresIPhoneOS</key><true/>
 <key>UIDeviceFamily</key><array><integer>2</integer></array>
 <key>UISupportedInterfaceOrientations</key><array>
@@ -18,4 +18,5 @@
 <key>LSSupportsOpeningDocumentsInPlace</key><true/>
 <key>UIApplicationSupportsIndirectInputEvents</key><true/>
 <key>UIRequiresFullScreen</key><true/>
+<key>GCSupportsGameMode</key><true/>
 </dict></plist>
