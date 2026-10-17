@@ -10,31 +10,35 @@ separately. This repository contains source and public development documentation
 it does not contain the original game executable, owned game assets, signing
 credentials or private operational records.
 
-The user accepts build 10 as the base performance milestone: split-screen at
-60 FPS with no observed drop or crash. This is feedback from their play session,
-not proof covering every track or rare path. Reported battery drain has not yet
-been measured under controlled conditions.
+Build 10 is the physically accepted split-screen 60 FPS baseline. Build 12
+subsequently passed physical feedback for split-screen FPS and relative touch
+tracking/gestures. A single-player Tournament freeze on Proving Grounds remains
+under investigation; this is not general stability acceptance for every mode.
 
-Build 12 adds native controller menu/input ownership without controller keyboard
-aliases, held-resume consumption, a small keyboard toggle, and relative touch
-cursor controls. One finger taps to click, two fingers send Escape, and three
-send Enter. Nonblocking key holds let the original race input sampler observe
-Escape and Enter. Local original-menu and two-player race checks pass.
+Build 13 adds four-finger diagnostics toggling, initially hidden, an optional
+Lock FPS to 30 switch (off by default), an independent keyboard button and Low
+Power Mode status. The unused GPU label is removed. The game explicitly requests
+fullscreen and opts into Apple Game Mode. Notification filtering is separately
+controlled by Gaming Focus. Normal-speed rendering optimizations are retained.
 
-Its sequential Linux/Apple run passed, including 45 production memory-span cases,
-the new input suites, 27 Apple host tests and 40,000 mixed cases each for baseline
-and ThinLTO. The downloaded version 12 thin ARM64 device Release package was
-independently checked for exact source, contents, privacy and release digest.
-It contains executable, metadata and licenses; game assets remain separate.
-**Build 12 physical controller, keyboard, touch and FPS regression is pending.**
+The single sequential run passed Linux validation and 28 Apple host tests,
+40,000 baseline and ThinLTO cases each, and verified ARM64 Release compilation.
+The downloaded version 13 package passes exact-source, contents, privacy and
+release-digest inspection. It contains only executable, metadata and licenses.
+No original game assets, signing material or sanitizer runtime is included.
+No probe was rebuilt and no Actions artifact was uploaded.
+
+A bounded local original-data Tournament run used white McLaren F1, Proving
+Grounds and all opponents. It continued through blinking-light-tunnel wall
+contacts into lap two and shut down cleanly. This did not reproduce the iPad
+freeze, complete the four-lap event or establish physical build 13 acceptance.
+If frames stall, build 13 attempts to save one NFSIISE-stall.txt in the app's
+Documents folder for diagnosis; it does not force recovery.
 
 Use the [installation guide](INSTALLING.md) for the current download, personal
-signing and separately supplied assets. The tappable FPS/CPU-app/RAM/render-size
-overlay and 640x480, 960x720, 1280x960 or native-height 4:3 render targets remain.
-GPU utilization is unavailable with the current renderer. Real OS/audio
-interruption recovery and signing refresh still require acceptance. Controller
-and touch changes need device acceptance; controlled energy measurement and
-sharper HUD investigation remain. No energy or HD artwork improvement is claimed.
+signing and separate game assets. Physical build 13 UI, Game Mode, pacing and
+regressions still need testing. Stable 60 FPS in Low Power Mode, controlled
+battery savings, lifecycle/signing refresh and sharper HUD artwork remain open.
 
 - [PLAN.md](PLAN.md): mission, progress and remaining acceptance criteria.
 - [BUILDING.md](BUILDING.md): preparation and controlled cloud compilation.

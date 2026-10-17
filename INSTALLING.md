@@ -1,53 +1,47 @@
 # Personal installation without a Mac
 
-Native game builds have been personally signed and launched on the target iPad
-through the existing SideStore setup. Build 10 is the user-accepted split-screen
-60 FPS baseline. Build 12 is the new controller, keyboard and touch candidate:
-its ARM64 Release package passed independent source, architecture, contents,
-privacy and digest checks. Its physical input/FPS regression remains pending.
+Build 13 is an independently inspected thin ARM64 iOS-device Release package.
+Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 12 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38980392788-1/NFSIISEGame-development-unsigned.zip)
-   in Files and extract it.
-2. Keep the currently installed NFS II SE app and your separately stored game
-   folder in Files. Install this update over the existing app.
-3. Enable the local VPN required by your existing SideStore setup. Import
-   NFSIISEGame-development-unsigned.ipa into SideStore using the same Apple
-   Account that signed the existing game. SideStore performs personal signing
-   and installation; the ZIP itself is not a signed installation.
-4. Select Split Screen in the original Setup menu. Use Native resolution and
-   the same full graphics, track, cars and opponents as your most recent comparison.
-   Check displayed FPS in busy and clear race sections, complete a race, and
-   report audio or stability failures. Check both saved controller profiles;
-   remap only if needed in the original controls settings while Split Screen is active.
+1. Download the [build 13 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38987697730-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+2. Update the existing app through your ready SideStore setup, importing
+   NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
+   performs personal signing; the ZIP itself is unsigned.
+3. Keep using the same separately stored original game folder. Build 12's
+   automatic saved-folder startup is retained.
+4. Diagnostics start hidden. Tap with four fingers to show or hide them. Tap
+   the FPS label for rendering settings. The small keyboard button is independent.
+5. Keep **Lock FPS to 30 off** while testing normal 60 FPS and Low Power Mode.
+   Compare the same track, opponents, render size and graphics. The overlay
+   shows Low Power Mode state. A few minutes at one battery percentage does
+   not establish energy savings; controlled longer comparisons remain needed.
+6. The optional 30 FPS switch is below diagnostics and is remembered. Check
+   the counter and normal game-clock/car behavior when enabled, then turn it
+   off to return to the normal rendering path.
+7. For the reported freeze, test single-player Tournament, white McLaren F1,
+   Proving Grounds and all opponents. If it freezes, leave the app open for
+   at least 15 seconds before closing. Look for NFSIISE-stall.txt in the app's
+   folder in Files and share that report. A report is best effort; long loading
+   can also trigger it, and its presence alone does not establish a cause.
 
-Build 12 retains the accepted rendering and memory-check optimizations, ThinLTO,
-diagnostics, selectable render sizes and importer. It adds native controller input
-ownership, the keyboard icon and relative touch gestures. Check that a held
-resume press does not also downshift, while a released fresh press does. Test
-one-finger cursor movement/tap click, two-finger Escape (including race Pause),
-and three-finger Enter. The keyboard icon shows/hides the keyboard and can supply
-Return for original control remapping. Automatic text-field detection is deferred.
-No battery saving or HD artwork improvement is claimed. Build 10 remains the
-physically accepted comparison baseline. Background recovery, audio interruptions
-and signing refresh still need physical acceptance.
-Import errors are displayed before the picker window is closed. The release tag
-and manifest identify its source revision.
+The app requests fullscreen and opts into Game Mode. To filter notifications,
+configure [Gaming Focus](https://support.apple.com/en-us/105118) on the iPad.
+The app cannot force all system notifications off.
 
-## Performance controls
+## Input and rendering controls
 
-Tap the FPS overlay to select 640x480, 960x720, 1280x960 or native screen pixels.
-Pause with the controller before changing the setting. Native retains the
-original 4:3 view; side borders and original bitmap artwork remain. The overlay
-shows actual render size, so this is distinct from merely stretching640x480.
-The menu also switches between detailed diagnostics and compact FPS display.
-Choices are remembered for the next launch.
+One finger moves the cursor and taps to click; two fingers send Escape, three
+send Enter, and four toggle diagnostics without sending game keys. The keyboard
+button shows/hides typing input. Native controller remapping remains in the
+original controls settings; a held resume press should not also shift down.
 
-CPU/app is this game's share of total CPU capacity; RAM is its resident memory.
-A busy single core can limit performance even when CPU/app is low.
-The millisecond value is the averaged interval between presentations. GPU usage
-is unavailable with this renderer, and is not estimated from the FPS figure.
+Pause before changing render size. Settings offer 640x480, 960x720, 1280x960
+and native screen pixels in the original 4:3 view; the overlay shows actual
+render size. CPU/app is the share of total CPU capacity, so one busy core can
+limit performance despite a low percentage. GPU utilization is not estimated.
+Physical build 13 acceptance, battery savings and HD artwork are unverified.
 
 ## Separately supplied game files
 

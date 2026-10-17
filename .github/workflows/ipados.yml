@@ -120,6 +120,9 @@ jobs:
         run: |
           set -o pipefail
           .build/pixels/input_sdl_tests 2>&1 | tee .build/sdl-input.log
+          timeout 15s .build/pixels/frame_pacer_tests
+          timeout 15s .build/pixels/frame_pacing_sdl_tests
+          timeout 15s .build/pixels/game_trace_tests
           timeout 15s .build/pixels/keyboard_input_tests
           timeout 15s .build/pixels/touch_pointer_tests
           timeout 15s .build/pixels/touch_sdl_tests

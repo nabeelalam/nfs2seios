@@ -201,3 +201,33 @@ Local validation: 37 sanitizer checks, including four-finger gesture isolation,
 actual SDL worker pacing/cancellation and bounded concurrent call sampling.
 Build 12 has physical acceptance for split-screen FPS and touch gestures. That
 does not establish build 13 acceptance. No battery saving is claimed.
+
+
+Build 13 delivery, 17 October 2026: runtime source 6b9d5466d05e7678b39f708efc6239ca6d4a0ca6 passed
+run 38987697730. Sequential standard Linux/Apple jobs took 151/419 seconds;
+no Probe and zero Actions artifacts. The independent download is version 13,
+thin ARM64 iOS-device Release, exactly five executable/metadata/license files,
+matching source/API size and SHA-256. Game Mode opt-in and the existing full-screen
+requirement are present. All 15 translated units and five changed C++ runtime
+units use verified O3/C++14/ThinLTO; both links retain two backends. Apple host
+28 tests and 40,000 baseline/ThinLTO cases each pass. The 37-test local sanitizer
+suite passes. Linux cloud compiled the three new pacing/sampler targets;
+standalone pacing execution was local, and sampler execution also passed on
+the Apple host. Future workflow dispatches explicitly execute all three on Linux.
+
+The same-process original-data test verified Tournament, Proving Grounds,
+white McLaren F1, automatic transmission and eight cars. A 338.88-second bounded
+run continued through tunnel/wall contacts into lap 2 of 4 with clean sanitizer
+shutdown and no presentation stall. Exact traffic collision followed by wall
+contact was not independently established; no completed event or physical freeze
+fix is claimed. Earlier private test-harness reference/argument errors were
+corrected and were not game failures.
+
+Build 12 physical feedback accepts split-screen FPS and touch gestures. Build 13
+still needs physical UI/fullscreen/Game Mode, optional pacing and regression
+acceptance. The Tournament freeze and stable 60 FPS in Low Power Mode remain
+open. No controlled energy saving is established. A static exit confirmation's
+FPS and the black screen after Exit to System are lower-priority observations;
+do not force iOS process termination to imitate a desktop exit.
+
+Verified unsigned download: [build 13 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38987697730-1/NFSIISEGame-development-unsigned.zip).
