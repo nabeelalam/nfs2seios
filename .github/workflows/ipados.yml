@@ -36,7 +36,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   renderer-pixels:
-    if: github.event.repository.visibility == 'public' && github.ref == 'refs/heads/main'
+    if: github.event.repository.visibility == 'public' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codex/hd-ui')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -50,6 +50,7 @@ jobs:
       - name: Publication and independent secret gates
         run: |
           python3 tests/publication_audit_test.py
+          python3 tests/diagnostic_session_summary_test.py
           python3 tests/artifact_budget_test.py
           python3 tests/release_download_test.py
           python3 tests/mapped_operand_test.py

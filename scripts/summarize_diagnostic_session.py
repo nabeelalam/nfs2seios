@@ -53,6 +53,8 @@ def summarize(data):
     end = None
     gaps = 0
     count = 0
+    timing_rows = []
+    previous_timing = None
     for index, row in enumerate(rows[1:], start=1):
         if row.get("type") == "end":
             if index != len(rows) - 1 or partial_tail:
@@ -75,6 +77,13 @@ def summarize(data):
             raise ValueError("Invalid sample time or power mode")
         if type(identity) is not int or not 0 <= identity < 2**64:
             raise ValueError("Invalid CPU window identity")
+        timing = row.get("hd_timing_requested")
+        if timing is not None and type(timing) is not bool:
+            raise ValueError("Invalid HD timing mode")
+        # Do not assign a transition interval to either visual mode. Old logs
+        # omit the additive field and remain valid with unavailable mode.
+        timing_rows.append((power, timing, row, count == 0 or timing == previous_timing))
+        previous_timing = timing
         if previous >= 0 and elapsed - previous > 2.5:
             gaps += 1
         previous = elapsed
@@ -109,6 +118,25 @@ def summarize(data):
             "battery_first_observed_percent": batteries[0] if batteries else None,
             "battery_last_observed_percent": batteries[-1] if batteries else None,
             "battery_caution": "Coarse percentage; pooled mode samples may be noncontiguous. No energy or drain-rate inference."}
+    result["timing_art_comparison"] = {}
+    for power in (False, True):
+        modes = {}
+        for mode, label in ((False, "original"), (True, "hd_requested"), (None, "unavailable")):
+            selected = [r for p, m, r, stable in timing_rows if p == power and m is mode and stable]
+            ids = set()
+            cpu = []
+            for row in selected:
+                identity = row["game_cpu_sample_id"]
+                value = row.get("game_cpu_ms_per_frame")
+                if identity > 0 and identity not in ids and number(value):
+                    ids.add(identity)
+                    cpu.append(value)
+            modes[label] = {
+                "stable_samples": len(selected),
+                "fps_observations": distribution([r["presentation_fps"] for r in selected if number(r.get("presentation_fps"), 10000)]),
+                "game_cpu_ms_per_frame_unique_windows": distribution(cpu)}
+        result["timing_art_comparison"]["low_power_on" if power else "low_power_off"] = modes
+    result["timing_art_caution"] = "Requested timing art only; unknown atlases fall back. First sample after mode changes excluded. Partial FPS/CPU windows are not energy measurements."
     return result
 
 

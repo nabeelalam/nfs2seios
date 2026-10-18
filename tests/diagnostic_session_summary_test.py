@@ -25,6 +25,7 @@ class SummaryTests(unittest.TestCase):
         self.assertTrue(result["clean_end_record"])
         self.assertEqual(result["low_power_mode"]["off"]["game_cpu_ms_per_frame_unique_windows"]["count"], 1)
         self.assertEqual(result["low_power_mode"]["on"]["fps_observations"]["median"], 45)
+        self.assertEqual(result["timing_art_comparison"]["low_power_off"]["unavailable"]["stable_samples"], 2)
 
     def test_interruption_and_gap(self):
         result = summary.summarize(fixture([sample(0), sample(8)]) + b'{"type":')
@@ -64,6 +65,19 @@ class SummaryTests(unittest.TestCase):
         result = summary.summarize(fixture([sample(i, bool(i % 2), i + 1) for i in range(3600)]))
         self.assertEqual(result["samples"], 3600)
         self.assertEqual(result["low_power_mode"]["on"]["samples"], 1800)
+
+    def test_hd_modes_split_and_transition_excluded(self):
+        rows = [dict(sample(0), hd_timing_requested=False),
+                dict(sample(1, identity=2, fps=40), hd_timing_requested=True),
+                dict(sample(2, identity=3, fps=58), hd_timing_requested=True)]
+        result = summary.summarize(fixture(rows))["timing_art_comparison"]["low_power_off"]
+        self.assertEqual(result["original"]["stable_samples"], 1)
+        self.assertEqual(result["hd_requested"]["stable_samples"], 1)
+        self.assertEqual(result["hd_requested"]["fps_observations"]["median"], 58)
+        self.assertEqual(result["hd_requested"]["game_cpu_ms_per_frame_unique_windows"]["count"], 1)
+        for value in [0, 1, "true", []]:
+            with self.assertRaises(ValueError):
+                summary.summarize(fixture([dict(sample(0), hd_timing_requested=value)]))
 
 
 if __name__ == "__main__":

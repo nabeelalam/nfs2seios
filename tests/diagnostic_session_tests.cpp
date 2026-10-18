@@ -20,6 +20,10 @@ int main(){
     sample.app_cpu_percent=7.7778;sample.low_power=true;sample.width=2186;sample.height=1640;
     auto line=nfs::diagnostic_sample_json(sample);CHECK(line.size()<8192 && line.back()=='\n');
     CHECK(line.find("\"game_cpu_sample_id\":42")!=std::string::npos);
+    CHECK(line.find("\"hd_timing_requested\":null")!=std::string::npos);
+    sample.hd_timing=1;CHECK(nfs::diagnostic_sample_json(sample).find("\"hd_timing_requested\":true")!=std::string::npos);
+    sample.hd_timing=0;CHECK(nfs::diagnostic_sample_json(sample).find("\"hd_timing_requested\":false")!=std::string::npos);
+    sample.hd_timing=9;CHECK(nfs::diagnostic_sample_json(sample).find("\"hd_timing_requested\":null")!=std::string::npos);
     std::fputs(line.c_str(),stdout);
     sample.elapsed=1;sample.game_cpu_ms=-1;sample.fps=std::numeric_limits<double>::infinity();
     sample.ram_mb=std::numeric_limits<double>::quiet_NaN();sample.battery_percent=101;

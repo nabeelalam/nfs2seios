@@ -10,7 +10,7 @@ identify the revision and specific unresolved Apple SDK or packaging question.
 
 | Resource | GitHub rule | Project policy |
 | --- | --- | --- |
-| Public standard runner minutes | Free and unlimited | Only manual runs against reviewed main-branch revisions |
+| Public standard runner minutes | Free and unlimited | Only manual runs against reviewed main or codex/hd-ui revisions |
 | Private minutes | GitHub Free includes 2,000 monthly minutes | Workflow refuses private-repository execution |
 | Larger runners | Always paid | Never selected |
 | Concurrent standard jobs on Free | 20 total, including at most 5 macOS | One active workflow; Linux completes before macOS starts |
@@ -37,6 +37,13 @@ current account usage and existing artifacts, including other repositories. If
 that cannot be verified, build without uploading. Do not enable billing, increase
 quotas or delete existing user artifacts to bypass a limit. One-day retention is
 not an immediate cleanup or a refund for previously accrued storage.
+
+The named `codex/hd-ui` exception permits a separately audited experimental
+device build without merging unfinished visuals into main. Both the Linux gate
+and reusable Apple workflow require a public repository and one of these exact
+two branches. Other branches and private execution remain excluded. Manual
+dispatch, sequential standard machines, timeouts, privacy scans, package bounds,
+no caches and no paid resources remain required for the experimental branch.
 
 ## Resource decisions
 

@@ -49,6 +49,12 @@ int nfs_glide_hd_atlas_load_file(const char *path);
 void nfs_glide_hd_atlas_clear(void);
 void nfs_glide_hd_builtin_enable(int enabled);
 uint64_t nfs_glide_hd_atlas_upload_count(void);
+/* Live comparison on the renderer/main owner only. Mode is -1 for unavailable,
+ * 0 for original timing, 1 for HD requested (unknown atlases still fall back).
+ * Switching flushes pending triangles but never reloads textures or CPU art.
+ * The setter rejects worker calls and calls without a current context. */
+int nfs_glide_hd_timing_mode(void);
+int nfs_glide_hd_timing_set_visible(int visible);
 #ifdef __cplusplus
 }
 #endif

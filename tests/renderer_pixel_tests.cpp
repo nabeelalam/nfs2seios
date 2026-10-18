@@ -232,6 +232,7 @@ int main(int argc,char **argv){
     FILE *hd_file=std::fopen(hd_path.c_str(),"wbx");CHECK(hd_file);
     CHECK(std::fwrite(hd_pack.data(),1,hd_pack.size(),hd_file)==hd_pack.size());CHECK(!std::fclose(hd_file));
     CHECK(nfs_glide_hd_atlas_load_file(hd_path.c_str()));CHECK(!std::remove(hd_path.c_str()));
+    CHECK(nfs_glide_hd_timing_mode()==-1 && !nfs_glide_hd_timing_set_visible(1));
     for(unsigned i=0;i<4;++i)guest_store<uint16_t>(index+2*i,0xfc00); // Original ARGB1555 red
     texture.largeLod=texture.smallLod=7;texture.format=GR_TEXFMT_ARGB_1555;texture.data=index;guest_store(metadata,texture);
     grTexDownloadMipMap(0,2048,3,int32_t(metadata));grTexSource(0,2048,3,int32_t(metadata));
@@ -341,9 +342,26 @@ int main(int argc,char **argv){
         }
         std::printf("Native sampled differences: atlas=%zu glyph=%zu\n",atlas_differences,glyph_differences);
         CHECK(atlas_differences==0 && glyph_differences>100 && glGetError()==GL_NO_ERROR);
+        const auto uploads_before_switch=nfs_glide_hd_atlas_upload_count();
+        CHECK(nfs_glide_hd_timing_mode()==1 && nfs_glide_hd_timing_set_visible(0));
+        CHECK(nfs_glide_hd_timing_mode()==0 && sampled_scene()==sampled_original);
+        std::atomic<int> worker_switch{-1};std::thread switch_worker([&]{worker_switch=nfs_glide_hd_timing_set_visible(1);});switch_worker.join();
+        CHECK(worker_switch==0 && nfs_glide_hd_timing_mode()==0);
+        CHECK(nfs_glide_hd_timing_set_visible(1) && sampled_scene()==sampled_hd);
+        // A UI switch must finish already buffered geometry in its old mode.
+        auto queue_glyph=[&](){grDrawTriangle(quad_address,quad_address+sizeof(GrVertex),quad_address+2*sizeof(GrVertex));};
+        auto read_scene=[&](){std::vector<unsigned char> p(2186*1640*4);glReadPixels(0,0,2186,1640,GL_RGBA,GL_UNSIGNED_BYTE,p.data());return p;};
+        queue_glyph();CHECK(nfs_glide_hd_timing_set_visible(0));const auto pending_switched=read_scene();CHECK(pending_switched!=sampled_hd);
+        CHECK(nfs_glide_hd_timing_set_visible(1));sampled_scene();queue_glyph();grTexSource(0,1048576,3,int32_t(metadata));
+        CHECK(read_scene()==pending_switched && nfs_glide_hd_atlas_upload_count()==uploads_before_switch);
+        sampled_scene();
         lifecycle.set_suspended(true);CHECK(SDL_GL_GetCurrentContext()==nullptr);
+        CHECK(!nfs_glide_hd_timing_set_visible(0) && nfs_glide_hd_timing_mode()==1);
         lifecycle.set_suspended(false);CHECK(SDL_GL_GetCurrentContext()!=nullptr);
         CHECK(sampled_scene()==sampled_hd && glGetError()==GL_NO_ERROR);
+        CHECK(nfs_glide_hd_timing_set_visible(0) && sampled_scene()==sampled_original);
+        CHECK(nfs_glide_hd_timing_set_visible(1) && sampled_scene()==sampled_hd);
+        std::puts("PASS: live original/HD comparison, identical pixels both ways, no reuploads, buffered old-mode flush and worker/unbound rejection");
         // Overlapping CPU texture RAM must not corrupt the matched original GPU
         // image when context restoration reuploads it from the owned snapshot.
         GrTexInfo overlap=texture;overlap.largeLod=overlap.smallLod=7;

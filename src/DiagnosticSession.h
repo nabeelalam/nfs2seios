@@ -16,6 +16,7 @@ struct DiagnosticSample {
     unsigned logical_cores=0;
     int width=0,height=0,frame_limit=0,thermal=-1,battery_state=0,app_state=0;
     bool low_power=false;
+    int hd_timing=-1;
     CpuLoadReading cores{};
 };
 inline void diagnostic_number(std::ostream &out,double value,double maximum=1e15){
@@ -60,6 +61,7 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"brightness\":";diagnostic_number(out,s.brightness,1);
     out<<",\"thermal_state\":"<<s.thermal<<",\"app_state\":"<<s.app_state;
     out<<",\"low_power_mode\":"<<(s.low_power?"true":"false");
+    out<<",\"hd_timing_requested\":"<<(s.hd_timing==0?"false":s.hd_timing==1?"true":"null");
     out<<",\"render_width\":"<<s.width<<",\"render_height\":"<<s.height;
     out<<",\"frame_limit\":"<<s.frame_limit<<",\"system_core_percent\":[";
     const auto count=s.cores.count<=64?s.cores.count:0;

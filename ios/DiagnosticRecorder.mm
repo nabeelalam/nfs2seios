@@ -4,6 +4,7 @@
 #include "DiagnosticSession.h"
 #include "EngineThreadMetrics.h"
 #include "FramePresentation.h"
+#include "HdAtlas.h"
 #include <SDL3/SDL.h>
 #include <atomic>
 #include <cstdio>
@@ -134,6 +135,7 @@ static NSURL *recording_folder(){
     sample.battery_state=int(device.batteryState);sample.brightness=self.host?self.host.screen.brightness:-1;
     sample.thermal=int(NSProcessInfo.processInfo.thermalState);sample.app_state=int(UIApplication.sharedApplication.applicationState);
     sample.width=_width;sample.height=_height;sample.frame_limit=nfs_frame_limit();
+    sample.hd_timing=nfs_glide_hd_timing_mode();
     nfs::CpuLoadSnapshot ticks;if(nfs::read_system_cpu_ticks(ticks))sample.cores=_cores.observe(ticks);else _cores.reset();
     if(![self append:nfs::diagnostic_sample_json(sample)])[self stop:_failed.load()?@"write_error":@"writer_backlog" notify:YES];
 }

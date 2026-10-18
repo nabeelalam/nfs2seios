@@ -7,6 +7,7 @@
 #include "EngineThreadMetrics.h"
 #include "SystemCpuLoad.h"
 #include "GameTrace.h"
+#include "HdAtlas.h"
 #include <atomic>
 #include <thread>
 #include <mutex>
@@ -155,6 +156,14 @@ NSString *system_core_text(){
         reset_core_load();
         [NSUserDefaults.standardUserDefaults setBool:self.detailed forKey:@"NFSDetailedOverlay"];
     }]];
+    const int hdMode=nfs_glide_hd_timing_mode();
+    UIAlertAction *timing=[UIAlertAction actionWithTitle:hdMode<0?@"HD timing unavailable":(hdMode?@"Timing digits: HD — switch to Original":@"Timing digits: Original — switch to HD") style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
+        if(nfs_glide_hd_timing_set_visible(hdMode==0)){
+            nfs_reset_engine_metrics();nfs_reset_frame_rate();
+            nfs_recording_latest_frame(-1,nfs_render_width(),nfs_render_height());
+        }
+    }];
+    timing.enabled=hdMode>=0;[sheet addAction:timing];
     __weak UIAlertController *weakSheet=sheet;
     if(nfs_recording_finishing()){
         UIAlertAction *saving=[UIAlertAction actionWithTitle:@"Saving recording…" style:UIAlertActionStyleDefault handler:nil];saving.enabled=NO;[sheet addAction:saving];

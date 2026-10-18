@@ -321,3 +321,25 @@ measurement of the iPad GPU, energy consumption or sustained frame rate.
 Main is unchanged. Before any HD integration, measure actual device frame time,
 memory and energy with the existing session recorder. Physical appearance,
 performance, shader precision and battery acceptance are still unverified.
+
+## Device comparison control
+
+In the HD branch, four-finger tap shows diagnostics; tap its FPS label to open
+settings. The Timing digits action switches between Original and HD immediately
+without restarting, changing resolution, reloading textures or importing files.
+It flushes pending geometry in its old mode, rejects background/worker calls,
+and keeps cached artwork for later comparisons. The preference resets to HD
+when a new game session starts. Unknown atlases still render their originals;
+the control is unavailable with an explicit developer pack override.
+
+Session JSONL samples include `hd_timing_requested` as true, false or null.
+Changing modes resets FPS/engine timing windows and invalidates the recorder's
+cached FPS. The summary utility separates Original/HD observations within each
+Low Power Mode and excludes the first interval after each art-mode transition.
+Older recordings without this additive field remain readable as unavailable.
+Compare the same race section and allow a few seconds after changing modes.
+
+The renderer switch has optimized/sanitized sampled-pixel, pending-batch,
+context restoration and no-reupload coverage. The UIKit control and recorder
+provider still require Apple compilation and physical testing. One explicitly
+named HD-branch workflow exception allows that test without changing main.

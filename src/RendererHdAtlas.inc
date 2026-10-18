@@ -2,9 +2,21 @@
 #include "HdAtlas.h"
 #include "BuiltinTiming.h"
 #include "HdGlyphSelect.h"
+#include <SDL3/SDL_init.h>
 static NfsHdAtlas nfs_hd_atlas;
 static uint64_t nfs_hd_uploads;
 static int nfs_hd_builtin_enabled;
+static int nfs_hd_visible=1;
+static inline void drawTriangles(void);
+int nfs_glide_hd_timing_mode(void){return nfs_hd_builtin_enabled?nfs_hd_visible:-1;}
+int nfs_glide_hd_timing_set_visible(int visible){
+    if(!nfs_hd_builtin_enabled || !SDL_IsMainThread() || !SDL_GL_GetCurrentContext())return 0;
+    if(nfs_hd_visible!=(visible!=0)){
+        drawTriangles(); // Finish queued geometry with its original selection.
+        nfs_hd_visible=(visible!=0);
+    }
+    return 1;
+}
 static GLuint nfs_hd_aux_texture;
 static int nfs_hd_selected,nfs_hd_uniform_sent;
 static GLint nfs_hd_active_location;
@@ -14,7 +26,7 @@ static void nfs_hd_program_created(GLuint program){
     glUniform1f(nfs_hd_active_location,0);nfs_hd_uniform_sent=0;nfs_hd_selected=0;
 }
 static void nfs_hd_sync_uniform(void){
-    int active=nfs_hd_selected && nfs_hd_builtin_enabled && nfs_hd_aux_texture;
+    int active=nfs_hd_selected && nfs_hd_builtin_enabled && nfs_hd_visible && nfs_hd_aux_texture;
     if(active!=nfs_hd_uniform_sent){glUniform1f(nfs_hd_active_location,(GLfloat)active);nfs_hd_uniform_sent=active;}
 }
 static void nfs_hd_context_retired(int bound){
@@ -22,7 +34,7 @@ static void nfs_hd_context_retired(int bound){
     nfs_hd_aux_texture=0;nfs_hd_selected=0;nfs_hd_uniform_sent=-1;
 }
 static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const GrVertex *c){
-    if(!nfs_hd_selected || !nfs_hd_builtin_enabled || !nfs_hd_aux_texture)return 0;
+    if(!nfs_hd_selected || !nfs_hd_builtin_enabled || !nfs_hd_visible || !nfs_hd_aux_texture)return 0;
     const GrVertex *vertices[3]={a,b,c};float uv[6];
     for(unsigned i=0;i<3;++i){
         float q=vertices[i]->oow;if(!(q>0))return 0;
@@ -36,7 +48,7 @@ int nfs_glide_hd_atlas_load_file(const char *path){
     FILE *file=fopen(path,"rb");if(!file)return 0;
     int result=nfs_hd_atlas_read(&nfs_hd_atlas,file);fclose(file);return result;
 }
-void nfs_glide_hd_builtin_enable(int enabled){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=(enabled!=0);}
+void nfs_glide_hd_builtin_enable(int enabled){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=(enabled!=0);nfs_hd_visible=1;}
 void nfs_glide_hd_atlas_clear(void){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_builtin_enabled=0;}
 uint64_t nfs_glide_hd_atlas_upload_count(void){return nfs_hd_uploads;}
 static int nfs_hd_upload_texture(TextureInfo *ti){
