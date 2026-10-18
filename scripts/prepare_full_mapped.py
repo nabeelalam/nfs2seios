@@ -1,9 +1,12 @@
 """Prepare statically translated methods with checked guest-copy boundaries."""
 import re
 import shutil
+from pathlib import Path
 from prepare_mapped_engine import prepare_mapped, rewrite_stores, closing, ROOT, TYPES
 from batch_guest_copies import batch_copies
 from native_controller_hooks import add_native_controller_hooks
+from batch_rep_words import batch_rep_words
+from batch_complete_helpers import batch_complete_helpers
 
 
 def rewrite_casts(text, functions):
@@ -46,16 +49,29 @@ def add_audio_operation_guards(text):
     return '#include "AudioOperations.h"\n' + text
 
 
-def prepare_full():
+def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=False):
+    if (bounded_rep_words or checked_copy_bundle) and output_dir is None:
+        raise ValueError("Experimental word-copy generation requires a new output directory")
+    dest = ROOT / ".build/fullmapped"
+    if output_dir is not None:
+        requested = Path(output_dir)
+        dest = (requested if requested.is_absolute() else ROOT / requested).resolve()
+        try:
+            dest.relative_to((ROOT / ".build").resolve())
+        except ValueError:
+            raise ValueError("Generated output must stay inside the project build directory") from None
+        if dest.exists():
+            raise FileExistsError("Explicit generated output directory must be new")
     mapped = prepare_mapped()
     source = ROOT / ".build/engine/Cpp"
-    dest = ROOT / ".build/fullmapped"
-    dest.mkdir(exist_ok=True)
+    dest.mkdir(parents=True, exist_ok=output_dir is None)
     for path in mapped.glob("*.h"):
         shutil.copyfile(path, dest / path.name)
     shutil.copyfile(mapped / "MappedMemory.cpp", dest / "MappedMemory.cpp")
     functions = set(re.findall(r"game_id_(\w+) =", (mapped / "FunctionIds.h").read_text()))
     transaction_blocks = 0
+    rep_word_loops = 0
+    complete_helpers = 0
     for path in sorted(source.glob("Methods_*.cpp")):
         text = path.read_text().replace('#include "Stubs.h"', '#include "FunctionIds.h"')
         # One platform-specific native buffer dereference in the pinned fork.
@@ -167,6 +183,12 @@ def prepare_full():
         text='#include "GameTrace.h"\n'+text
         text, blocks = batch_copies(text)
         transaction_blocks += len(blocks)
+        if bounded_rep_words or checked_copy_bundle:
+            text, rep_blocks = batch_rep_words(text, path.name)
+            rep_word_loops += sum(block["loops"] for block in rep_blocks)
+        if checked_copy_bundle:
+            text, helper_blocks = batch_complete_helpers(text, path.name)
+            complete_helpers += len(helper_blocks)
         if path.name == "Methods_14.cpp":
             text = add_audio_operation_guards(text)
         (dest / path.name).write_text(text)
@@ -179,9 +201,28 @@ def prepare_full():
     if len(registrations) != len(functions): raise ValueError("Incomplete native function dispatch table")
     dispatch += 'extern "C" bool register_original_game_functions() {\n' + ''.join(registrations) + 'return true;\n}\n'
     (dest / "FullDispatch.cpp").write_text(dispatch)
+    if (bounded_rep_words or checked_copy_bundle) and rep_word_loops != 12:
+        raise ValueError("Incomplete reviewed bounded-word-copy method set")
+    if checked_copy_bundle and complete_helpers != 2:
+        raise ValueError("Incomplete reviewed complete-helper method set")
     print(f"Prepared all 15 method units with checked guest boundaries and {transaction_blocks} bounded arithmetic transactions")
+    if bounded_rep_words or checked_copy_bundle:
+        print(f"Enabled {rep_word_loops} reviewed bounded word-copy loops")
+    if checked_copy_bundle:
+        print(f"Enabled {complete_helpers} pinned complete-helper copy scopes")
     return dest
 
 
 if __name__ == "__main__":
-    prepare_full()
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--bounded-rep-words", action="store_true",
+                        help="enable the reviewed experimental word-copy scopes")
+    parser.add_argument("--checked-copy-bundle", action="store_true",
+                        help="enable the reviewed word loops and two pinned complete-helper scopes")
+    parser.add_argument("--output-dir", type=Path,
+                        help="new output directory inside .build (required for experimental scopes)")
+    arguments = parser.parse_args()
+    prepare_full(bounded_rep_words=arguments.bounded_rep_words,
+                 output_dir=arguments.output_dir,
+                 checked_copy_bundle=arguments.checked_copy_bundle)

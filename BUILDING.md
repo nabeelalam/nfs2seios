@@ -231,3 +231,29 @@ FPS and the black screen after Exit to System are lower-priority observations;
 do not force iOS process termination to imitate a desktop exit.
 
 Verified unsigned download: [build 13 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-38987697730-1/NFSIISEGame-development-unsigned.zip).
+
+## Build 17 checked-copy validation candidate
+
+The manual workflow explicitly selects twelve reviewed word-copy loops and
+two complete helper scopes, with eight and twenty-nine checked copies. Each
+scope retains the existing typed span and cancellation checks and stays within
+the thirty-two-copy limit. Original integer and floating-point behavior is
+preserved; no unchecked pointer cache is enabled. Both complete helper bodies
+are pinned by input and output hashes so upstream changes require review.
+
+Generation remains opt-in outside the reviewed workflow. A new output directory
+is required; clean CI jobs use `.build/fullmapped` so existing compile and test
+include paths remain valid. To review separately after pinned preparation:
+
+```sh
+python3 scripts/prepare_full_mapped.py --checked-copy-bundle \
+  --output-dir .build/fullmapped-copy-review
+```
+
+Private original-data Release comparisons in both run orders and the complete
+ASan/UBSan candidate passed bounded two-player driving, reset, simulated
+lifecycle and clean shutdown. Scene differences limit the timing comparison;
+no completed-event, physical iPad speedup, Low Power Mode or energy improvement
+is established. Five generated units exactly match the tested candidate and
+the other ten method units remain unchanged. Build 17 requires Apple compilation,
+package inspection and physical acceptance before those claims can advance.

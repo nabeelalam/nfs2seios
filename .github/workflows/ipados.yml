@@ -54,6 +54,8 @@ jobs:
           python3 tests/release_download_test.py
           python3 tests/mapped_operand_test.py
           python3 tests/guest_copy_batching_test.py
+          python3 tests/rep_word_batching_test.py
+          python3 tests/complete_helper_batching_test.py
           python3 scripts/setup_secret_scanner.py
           python3 scripts/publication_gate.py --mode history
           python3 scripts/publication_audit.py --mode worktree
@@ -63,7 +65,7 @@ jobs:
           sudo apt-get install -y gdb ninja-build libgl-dev libegl-dev libgles-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxfixes-dev libxrender-dev libxss-dev libxtst-dev xvfb xauth
       - name: Prepare pinned engine, SDL and renderer
         run: |
-          python3 scripts/prepare_full_mapped.py
+          python3 scripts/prepare_full_mapped.py --checked-copy-bundle --output-dir .build/fullmapped
           python3 scripts/prepare_renderer.py
       - name: Build actual GLES pixel tests
         run: |
