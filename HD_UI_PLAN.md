@@ -440,3 +440,13 @@ appearance, frame time and energy acceptance remain open. Other HUD elements,
 including small record-time digits and punctuation, maps, logos and starting
 lights, remain original. This source update
 does not require another cloud build by itself.
+
+
+Narrow glyph bounds are verified through the original compiled shape and UI-quad
+routines. A four-pixel-wide I still has an eight-pixel source height: the
+horizontal and vertical corner offsets differ. Detection and sampling now use
+those independent bounds; the graphics regression fixture uses the original
+geometry. The same original-method check covers the ten small record numerals
+and dot/colon. Original zero and O share identical converted pixels and geometry,
+so the reviewed O artwork is deliberately shared with zero. The remaining small
+record numerals and punctuation are still awaiting replacement.

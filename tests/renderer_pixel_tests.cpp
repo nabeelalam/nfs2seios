@@ -424,7 +424,7 @@ int main(int argc,char **argv){
             sampled_scene();grTexSource(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));
             auto draw_font=[&](float x,float y,float scale){
                 for(unsigned i=0;i<4;++i){GrVertex a{};a.x=786432+x+((i&1)?widths[d]*scale:0);a.y=786432+y+((i&2)?8*scale:0);a.r=a.g=a.b=a.a=255;a.oow=1;
-                    a.tmuvtx[0].sow=(i&1)?255:127.5f/edges[d];a.tmuvtx[0].tow=(i&2)?255:127.5f/edges[d];
+                    a.tmuvtx[0].sow=(i&1)?255:127.5f/edges[d];a.tmuvtx[0].tow=(i&2)?255:15.9375f;
                     if(malformed==1 && !(i&1))a.tmuvtx[0].sow+=1;if(malformed==2)a.tmuvtx[0].sow=100;
                     if(malformed==3){a.oow=2;a.tmuvtx[0].sow*=2;a.tmuvtx[0].tow*=2;}
                     guest_store(quad_address+i*sizeof(a),a);}
