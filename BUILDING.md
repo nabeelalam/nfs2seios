@@ -257,3 +257,19 @@ no completed-event, physical iPad speedup, Low Power Mode or energy improvement
 is established. Five generated units exactly match the tested candidate and
 the other ten method units remain unchanged. Build 17 requires Apple compilation,
 package inspection and physical acceptance before those claims can advance.
+
+
+### Reproduce the new small HUD font
+
+Use the same local librsvg/Cairo vector rasterizer as the timing and speed
+sources. No original game files or downloaded font are used by the generator.
+
+```sh
+python3 scripts/generate_small_builtin.py --check
+```
+
+The `small_font_tests` and `small_font_select_tests` host targets validate the
+bounded tile decoder and complete glyph-corner selection. For private original
+data validation, the renderer pixel fixture optionally reads the local case
+file named by `NFS_HUD_FONT_CASES`; leave that variable unset for ordinary
+public CI. The optional case file and original captures must stay outside Git.

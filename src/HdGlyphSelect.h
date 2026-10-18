@@ -6,6 +6,19 @@
  * cells use their complete observed corner bounds, including original trims. In raw
  * coordinates digits 7-9 begin slightly before their integer cell boundary.
  * Reject constant UV, clipped and cross-cell primitives. */
+// Small letters occupy separate exact-content textures. Only complete
+// observed corners qualify; clipped, constant and nonfinite UVs stay original.
+static int nfs_hd_small_font_triangle(const float uv[6],unsigned edge){
+    if(!uv || (edge!=4 && edge!=8))return 0;
+    const float low=127.5f/edge;unsigned corners=0;
+    for(unsigned i=0;i<3;++i){float u=uv[i*2],v=uv[i*2+1];
+        if(!(u>=low-.01f && u<=255.01f && v>=low-.01f && v<=255.01f))return 0;
+        int right=u>=254.99f,bottom=v>=254.99f;
+        if((!right && u>low+.01f)||(!bottom && v>low+.01f))return 0;
+        corners|=1u<<(right+2*bottom);
+    }
+    return corners==7||corners==11||corners==13||corners==14;
+}
 static int nfs_hd_digit_triangle(const float uv[6]){
 
     static const float bounds[10][4]={{43.330078125f,47.314453125f,72.71484375f,70.72265625f},{72.216796875f,47.314453125f,100.60546875f,70.72265625f},{101.103515625f,47.314453125f,130.48828125f,70.72265625f},{129.990234375f,47.314453125f,159.375f,70.72265625f},{159.873046875f,47.314453125f,189.2578125f,70.72265625f},{188.759765625f,47.314453125f,218.14453125f,70.72265625f},{217.646484375f,47.314453125f,246.03515625f,70.72265625f},{73.212890625f,71.220703125f,101.6015625f,94.62890625f},{102.099609375f,71.220703125f,131.484375f,94.62890625f},{130.986328125f,71.220703125f,160.37109375f,94.62890625f}};

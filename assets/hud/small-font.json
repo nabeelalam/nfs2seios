@@ -1,0 +1,345 @@
+{
+  "version": 1,
+  "status": "Provisional new uppercase HUD paths; physical appearance and performance unverified",
+  "originalGamePixelsIncluded": false,
+  "entries": [
+    {
+      "character": "A",
+      "file": "small-A.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "b870a902b80168fef9f63f1b76cc6980a7d16acf8a16630b1800c3f0724ed278"
+    },
+    {
+      "character": "B",
+      "file": "small-B.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "01f0b0380da483ebbfc44fa5628cf79c0295b171cd5e63ecfc9d6d4f97c22e4c"
+    },
+    {
+      "character": "C",
+      "file": "small-C.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "924200403ae30cf99bd6ac75b24907c4c42942734265d17cf5f15b8da0ed6af6"
+    },
+    {
+      "character": "D",
+      "file": "small-D.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "c4d66eafe7bfc77aba996ab52d1217ca427c35b10fa253832b029c0b0f944626"
+    },
+    {
+      "character": "E",
+      "file": "small-E.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "d1cc8bc4cc8be1e6f2a75fe384368b3848f2cd9e763fcaa454b1f2ff2eac6a33"
+    },
+    {
+      "character": "F",
+      "file": "small-F.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "00401536b47594e0a2e1d86838b64a357aec816961c43b0dd049aa435f7e6f72"
+    },
+    {
+      "character": "G",
+      "file": "small-G.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "0336c684034d6a6b51e970ac307a2f9b3b5bfbbb5673bc12654b810c07ea1fd0"
+    },
+    {
+      "character": "H",
+      "file": "small-H.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "299489df44638725ed10088691fc2adcedfc14b93aa6617bf4eabd53d55eb852"
+    },
+    {
+      "character": "I",
+      "file": "small-I.svg",
+      "vectorSize": [
+        4,
+        8
+      ],
+      "rasterSize": [
+        32,
+        64
+      ],
+      "sha256": "3a400e4bcffcf48ef2cc40d0151ce7207b7531c38869062511d1dc865d7059f6"
+    },
+    {
+      "character": "J",
+      "file": "small-J.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "8dba93db15847e6dd7ef8dbb89d099647963d9113aed797ef4eaf9934b802220"
+    },
+    {
+      "character": "K",
+      "file": "small-K.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "d987997ac73c56d6d0372dee9f63dcd8ee7b333047c227c03d2bfcb6c9c736b2"
+    },
+    {
+      "character": "L",
+      "file": "small-L.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "96999c72a0270547f4e4109f853f103b6efd3440686213f9cba1ffe72c191ad7"
+    },
+    {
+      "character": "M",
+      "file": "small-M.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "c4c984c674d0ae681b380dff58dc69d77d8cc0a41a60b6a4e3d955d6e48465b2"
+    },
+    {
+      "character": "N",
+      "file": "small-N.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "e423dfed7571c42975eb01048e77ead5b8c77fada52b72286b2a01090f494979"
+    },
+    {
+      "character": "O",
+      "file": "small-O.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "1d8e3805b7011777233c6493a712e7768d5c837805c6bd4d4ca7efe77e687888"
+    },
+    {
+      "character": "P",
+      "file": "small-P.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "717be3466d6971252c0335f209cbb1156c85d37fc849a70efff7e79c14789fa4"
+    },
+    {
+      "character": "Q",
+      "file": "small-Q.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "6566dfc1e3a998bbdefc4fb227fcecd4d7c4e128d2de8fe1480b3bfd73cd38ac"
+    },
+    {
+      "character": "R",
+      "file": "small-R.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "e19d906e33b1b3a93c738afd3e9b87547d4e8f760d16ca69ed71c5a59a3e6a22"
+    },
+    {
+      "character": "S",
+      "file": "small-S.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "ec10210bebf1967b0866ca61587513797fdfd9921d056694a4a9978aafa6e453"
+    },
+    {
+      "character": "T",
+      "file": "small-T.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "bed2715d7d312eef447b1772374e113df9454baec61e126f98d269d29853ddd4"
+    },
+    {
+      "character": "U",
+      "file": "small-U.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "6fe658c02c6008ec10e4e25d8901b12b733c62742c9bd954db8a505522c30509"
+    },
+    {
+      "character": "V",
+      "file": "small-V.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "387635f42922075749212018b0e034499e51793196565c1db982c04918b5f823"
+    },
+    {
+      "character": "W",
+      "file": "small-W.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "38cdfbc4f50fb3f9deece19ce81becafdc2ae219ad2b168b9987298c7d3d20b6"
+    },
+    {
+      "character": "X",
+      "file": "small-X.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "09233cdbf09610b3452dc6efe3bfd4bdc8aee0170a0c6b8a4877e3d39fd1a4fc"
+    },
+    {
+      "character": "Y",
+      "file": "small-Y.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "042660cd84a459248d571328779d96549f85618a3e64e9a67fab5626b833d6cd"
+    },
+    {
+      "character": "Z",
+      "file": "small-Z.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "5d13136c26fc79104aae2eb623bae2c888bccd246de277e0c8cd9c22032765a1"
+    }
+  ]
+}

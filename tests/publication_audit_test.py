@@ -54,4 +54,22 @@ class PublicationAuditTest(unittest.TestCase):
                      template.replace(b'CONTENT',b'<!--hidden contents-->')):
             self.assertIn("unreviewed_svg",content_findings("assets/hud/speed-0.svg",data))
 
+    def test_small_uppercase_vectors_keep_strict_boundary(self):
+        template=b'<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">CONTENT</svg>'
+        shape=b'<defs><linearGradient id="gold"><stop stop-color="#fff"/></linearGradient></defs><path d="M1 1H6V6Z" fill="none" stroke="url(#gold)"/>'
+        valid=template.replace(b'CONTENT',shape)
+        self.assertEqual(content_findings("assets/hud/small-A.svg",valid),[])
+        narrow=valid.replace(b'width="8"',b'width="4"').replace(b'0 0 8 8',b'0 0 4 8')
+        self.assertEqual(content_findings("assets/hud/small-I.svg",narrow),[])
+        self.assertIn("unreviewed_svg",content_findings("assets/hud/small-I.svg",valid))
+        self.assertIn("unreviewed_svg",content_findings("assets/hud/small-A.svg",narrow))
+        for name in ("assets/hud/small-a.svg","assets/hud/small-AA.svg","assets/hud/small-0.svg","small-A.svg"):
+            self.assertIn("unreviewed_svg",content_findings(name,valid))
+        for data in (valid.replace(b'gold',b'face'),valid.replace(b'height="8"',b'height="9"'),
+                     template.replace(b'CONTENT',b'<image href="data:fixture"/>'),
+                     template.replace(b'CONTENT',b'<text>metadata</text>'),
+                     template.replace(b'CONTENT',b'<!--hidden-->'),
+                     template.replace(b'CONTENT',b'<path d="M1 1" fill="url(https://example.invalid)"/>')):
+            self.assertIn("unreviewed_svg",content_findings("assets/hud/small-A.svg",data))
+
 if __name__=="__main__":unittest.main()

@@ -13,9 +13,11 @@ extern "C" void native_grGlideShutdown(void);
 #include "GraphicsLifecycle.h"
 #include "FramePresentation.h"
 #include "HdAtlas.h"
+#include "TextureDigest.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengles2.h>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <stdexcept>
 #include <thread>
@@ -396,6 +398,93 @@ int main(int argc,char **argv){
         }
         sampled_scene();
         CHECK(nfs_glide_hd_atlas_upload_count()==before_all_digits);
+        if(const char *font_case_path=std::getenv("NFS_HUD_FONT_CASES")){
+        void *font_memory=malloc32(26*128),*font_meta_memory=malloc32(26*sizeof(GrTexInfo));CHECK(font_memory && font_meta_memory);
+        GrTexInfo info[26];unsigned widths[26],edges[26];unsigned char originals[26][128]{};
+        unsigned char scene_digest[26][32];const uint32_t font_base=1572864,font_data=nfs_guest_address(font_memory),font_meta=nfs_guest_address(font_meta_memory);
+        FILE *font_file=std::fopen(font_case_path,"rb");CHECK(font_file);unsigned font_count=0;CHECK(std::fread(&font_count,4,1,font_file)==1 && font_count==26);
+        const auto font_uploads=nfs_glide_hd_atlas_upload_count();
+        for(unsigned d=0;d<26;++d){unsigned h[4];CHECK(std::fread(h,4,4,font_file)==4 && h[0]==65+d && h[1]>=16 && h[1]<=144 && (h[2]==4 || h[2]==8) && h[3]==h[2]*h[2]*2);
+            unsigned char source[144];CHECK(std::fread(source,1,h[1],font_file)==h[1] && std::fread(originals[d],1,h[3],font_file)==h[3]);
+            widths[d]=source[4]|(unsigned(source[5])<<8);edges[d]=h[2];CHECK(widths[d]==edges[d]);
+            for(unsigned j=0;j<edges[d]*edges[d];++j){uint16_t v;std::memcpy(&v,originals[d]+2*j,2);guest_store<uint16_t>(font_data+d*128+2*j,(v>>1)|((v&1)<<15));}
+            info[d]=texture;info[d].largeLod=info[d].smallLod=edges[d]==4?6:5;info[d].data=font_data+d*128;
+            guest_store(font_meta+d*sizeof(GrTexInfo),info[d]);grTexDownloadMipMap(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));
+        }
+        CHECK(std::fgetc(font_file)==EOF && !std::fclose(font_file));CHECK(nfs_glide_hd_atlas_upload_count()==font_uploads);
+        auto check_font_original_gpu=[&](unsigned d)->int{
+            grTexSource(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));
+            GLint tex=0,previous=0;GLuint f=0;unsigned char pixels[256];glGetIntegerv(GL_TEXTURE_BINDING_2D,&tex);glGetIntegerv(GL_FRAMEBUFFER_BINDING,&previous);
+            glGenFramebuffers(1,&f);glBindFramebuffer(GL_FRAMEBUFFER,f);glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,GLuint(tex),0);
+            CHECK(glCheckFramebufferStatus(GL_FRAMEBUFFER)==GL_FRAMEBUFFER_COMPLETE);glReadPixels(0,0,edges[d],edges[d],GL_RGBA,GL_UNSIGNED_BYTE,pixels);
+            for(unsigned j=0;j<edges[d]*edges[d];++j){uint16_t v=((pixels[j*4]>>3)<<11)|((pixels[j*4+1]>>3)<<6)|((pixels[j*4+2]>>3)<<1)|(pixels[j*4+3]>>7),expected;std::memcpy(&expected,originals[d]+j*2,2);CHECK(v==expected);}
+            glBindFramebuffer(GL_FRAMEBUFFER,GLuint(previous));glDeleteFramebuffers(1,&f);return 0;
+        };
+        auto font_scene=[&](unsigned d,int malformed=0){
+            sampled_scene();grTexSource(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));
+            auto draw_font=[&](float x,float y,float scale){
+                for(unsigned i=0;i<4;++i){GrVertex a{};a.x=786432+x+((i&1)?widths[d]*scale:0);a.y=786432+y+((i&2)?8*scale:0);a.r=a.g=a.b=a.a=255;a.oow=1;
+                    a.tmuvtx[0].sow=(i&1)?255:127.5f/edges[d];a.tmuvtx[0].tow=(i&2)?255:127.5f/edges[d];
+                    if(malformed==1 && !(i&1))a.tmuvtx[0].sow+=1;if(malformed==2)a.tmuvtx[0].sow=100;
+                    if(malformed==3){a.oow=2;a.tmuvtx[0].sow*=2;a.tmuvtx[0].tow*=2;}
+                    guest_store(quad_address+i*sizeof(a),a);}
+                grDrawTriangle(quad_address,quad_address+sizeof(GrVertex),quad_address+2*sizeof(GrVertex));grDrawTriangle(quad_address+sizeof(GrVertex),quad_address+3*sizeof(GrVertex),quad_address+2*sizeof(GrVertex));
+            };
+            draw_font(450,40,8);draw_font(450,200,1);grTexSource(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));
+            std::vector<unsigned char> p(2186*1640*4);glReadPixels(0,0,2186,1640,GL_RGBA,GL_UNSIGNED_BYTE,p.data());return p;
+        };
+        for(unsigned d=0;d<26;++d){CHECK(check_font_original_gpu(d)==0);
+            CHECK(nfs_glide_hd_timing_set_visible(0));const auto original=font_scene(d);CHECK(nfs_glide_hd_timing_set_visible(1));const auto hd=font_scene(d);
+            size_t changes=0,native_changes=0;
+            for(unsigned y=0;y<1640;++y)for(unsigned x=0;x<2186;++x){size_t at=(y*2186+x)*4;
+                if(x<1500){CHECK(!std::memcmp(original.data()+at,sampled_original.data()+at,4));CHECK(!std::memcmp(hd.data()+at,sampled_hd.data()+at,4));}
+                else if(std::memcmp(original.data()+at,hd.data()+at,4)){++changes;if(y>=925 && y<=960)++native_changes;}}
+            CHECK(changes>100 && native_changes>0 && nfs_texture_sha256(hd.data(),hd.size(),scene_digest[d]) && glGetError()==GL_NO_ERROR);
+            char name[64];std::snprintf(name,sizeof(name),"letter-%c.rgba",65+d);FILE *f=std::fopen(name,"wb");CHECK(f);
+            for(unsigned y=1170;y<1510;++y)CHECK(std::fwrite(hd.data()+(y*2186+1500)*4,1,500*4,f)==500*4);CHECK(!std::fclose(f));
+            if(d==0){f=std::fopen("letter-A-full.rgba","wb");CHECK(f && std::fwrite(hd.data(),1,hd.size(),f)==hd.size());CHECK(!std::fclose(f));}
+            if(d==0 || d==8 || d==25){
+                CHECK(nfs_glide_hd_timing_set_visible(0) && font_scene(d)==original);CHECK(nfs_glide_hd_timing_set_visible(1) && font_scene(d)==hd);
+                for(int malformed=1;malformed<=3;++malformed){CHECK(nfs_glide_hd_timing_set_visible(0));const auto o=font_scene(d,malformed);CHECK(nfs_glide_hd_timing_set_visible(1));const auto h=font_scene(d,malformed);
+                    for(unsigned y=0;y<1640;++y)CHECK(!std::memcmp(o.data()+(y*2186+1500)*4,h.data()+(y*2186+1500)*4,(2186-1500)*4));}
+                uint16_t saved=guest_load<uint16_t>(info[d].data);guest_store<uint16_t>(info[d].data,saved^1);grTexDownloadMipMap(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));
+                CHECK(nfs_glide_hd_timing_set_visible(0));const auto o=font_scene(d);CHECK(nfs_glide_hd_timing_set_visible(1));const auto h=font_scene(d);
+                for(unsigned y=0;y<1640;++y)CHECK(!std::memcmp(o.data()+(y*2186+1500)*4,h.data()+(y*2186+1500)*4,(2186-1500)*4));
+                guest_store<uint16_t>(info[d].data,saved);grTexDownloadMipMap(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));CHECK(font_scene(d)==hd);
+            }
+            CHECK(nfs_glide_hd_atlas_upload_count()==font_uploads);
+            std::printf("PASS uppercase %c edge=%u changed=%zu native=%zu\n",65+d,edges[d],changes,native_changes);
+        }
+
+        // Match the actual untextured split HUD trapezoid while a recognized
+        // glyph remains selected. No font sampling may recolor this panel.
+        auto flat_panel=[&](unsigned d,int visible){
+            nfs_glide_hd_timing_set_visible(visible);grBufferClear(0,255,65535);
+            grClipWindow(0,0,640,480);grTexSource(0,font_base+d*4096,3,int32_t(font_meta+d*sizeof(GrTexInfo)));
+            grAlphaCombine(0,0,0,0,0);
+            const float x[4]={363,640,331,640},y[4]={0,0,32,32};
+            for(unsigned i=0;i<4;++i){GrVertex v{};v.x=786432+x[i];v.y=786432+y[i];v.r=v.g=v.b=64;v.a=255;v.oow=1;guest_store(quad_address+i*sizeof(v),v);}
+            grDrawTriangle(quad_address,quad_address+sizeof(GrVertex),quad_address+2*sizeof(GrVertex));
+            grDrawTriangle(quad_address+sizeof(GrVertex),quad_address+3*sizeof(GrVertex),quad_address+2*sizeof(GrVertex));
+            grAlphaCombine(0,0,0,GR_COMBINE_OTHER_TEXTURE,0);
+            std::vector<unsigned char> p(2186*1640*4);glReadPixels(0,0,2186,1640,GL_RGBA,GL_UNSIGNED_BYTE,p.data());return p;
+        };
+        for(unsigned d:{0u,8u,25u}){
+            const auto original=flat_panel(d,0),hd=flat_panel(d,1);CHECK(original==hd);
+            const auto at=(1620u*2186+1875u)*4;
+            CHECK(hd[at]==64 && hd[at+1]==64 && hd[at+2]==64 && hd[at+3]==255 && glGetError()==GL_NO_ERROR);
+        }
+        std::puts("PASS exact native HUD flat-panel color across Original/HD with A/I/Z selected");
+
+        for(unsigned d=0;d<26;++d){GrTexInfo overlap=info[d];overlap.largeLod=overlap.smallLod=7;
+            guest_store(font_meta+d*sizeof(GrTexInfo),overlap);grTexDownloadMipMap(0,font_base+d*4096+4,3,int32_t(font_meta+d*sizeof(GrTexInfo)));guest_store(font_meta+d*sizeof(GrTexInfo),info[d]);}
+        needRecreateGl=1;grBufferSwap(0);
+        for(unsigned d=0;d<26;++d){const auto hd=font_scene(d);unsigned char digest[32];CHECK(nfs_texture_sha256(hd.data(),hd.size(),digest) && !std::memcmp(digest,scene_digest[d],32));CHECK(check_font_original_gpu(d)==0);}
+        free32(font_memory);free32(font_meta_memory);sampled_scene();
+        std::puts("PASS all26original GPUs exact; A/I/Z negative controls, no extra upload, all26CPU-RAM overlaps/context restored");
+
+        }
+
         // Overlapping CPU texture RAM must not corrupt the matched original GPU
         // image when context restoration reuploads it from the owned snapshot.
         GrTexInfo overlap=texture;overlap.largeLod=overlap.smallLod=7;

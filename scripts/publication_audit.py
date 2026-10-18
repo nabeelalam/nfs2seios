@@ -18,12 +18,13 @@ ALLOWED_SUFFIXES = {".md", ".json", ".py", ".cpp", ".c", ".h", ".inc", ".mm", ".
 SAFE_EMAIL = re.compile(r"(?i)^(?:[^<>\s]+@users\.noreply\.github\.com|codex@(?:localhost|local|invalid)|[^<>\s]+@example\.(?:com|org|net))$")
 
 def reviewed_timing_svg(name, data):
-    """Allow only small path/gradient numeral sources; no embedded game images."""
-    match=re.fullmatch(r"assets/hud/(timing|speed)-[0-9]\.svg",name)
+    """Allow only bounded path/gradient HUD glyph sources; no embedded images."""
+    match=re.fullmatch(r"assets/hud/(?:(timing|speed)-([0-9])|small-([A-Z]))\.svg",name)
     if not match or len(data)>65536:
         return False
     speed=match[1]=="speed"
-    gradient="gold" if speed else "face"
+    small=bool(match[3])
+    gradient="gold" if speed or small else "face"
     if any(token in data.lower() for token in (b"<!",b"<?",b"data:",b"href")):
         return False
     try:
@@ -31,6 +32,9 @@ def reviewed_timing_svg(name, data):
         namespace="{http://www.w3.org/2000/svg}"
         if root.tag!=namespace+"svg":return False
         expected={"width":"29","height":"24","viewBox":"0 0 29 24"} if speed else {"width":"12","height":"27","viewBox":"0 0 12 27"}
+        if small:
+            width="4" if match[3]=="I" else "8"
+            expected={"width":width,"height":"8","viewBox":"0 0 "+width+" 8"}
         if root.attrib!=expected:return False
         permitted={"defs":set(),"linearGradient":{"id","x1","y1","x2","y2"},
                    "stop":{"offset","stop-color"},

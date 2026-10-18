@@ -413,3 +413,30 @@ Runtime source: `aa276622b62e06baef9df001a92b40daf684fbc9`.
 One sequential standard public run passed Linux gates and 37 Apple host checks. Independent compiler-log and package inspection confirms Release ARM64 for iOS 16, both bounded ThinLTO links, actual renderer settings, all generated gold artwork embedded, and an allowlisted five-file app. Original assets, signing material, private directories, private test probes and sanitizer runtimes are excluded. No Probe, cache or Actions artifact upload was used.
 
 Update the existing app through SideStore with the same Apple Account and keep the separately supplied game folder. Compare HUD digits Original/HD in matched North Country split-screen sections at Native resolution, full graphics and the 30 FPS lock off. Record normal power and Low Power Mode separately, stop and share the JSONL recordings. Physical appearance, stability, frame time and battery impact remain open. Main is unchanged, and other HUD artwork is still original. This documentation update requires no additional build.
+
+
+## Small uppercase labels on the HD branch
+
+The branch now adds 26 newly drawn uppercase glyphs for recognized original
+race HUD textures, including the narrow I. They share the existing auxiliary
+texture with timing and speed numerals. Original GPU textures remain intact;
+exact content matching and complete-corner selection leave other or clipped
+artwork unchanged. Runtime-owned source snapshots preserve matching letters
+across overlapping guest texture RAM and context recreation. Limited fragment
+precision retains the original letters and gold digits while HD timing remains
+available. The diagnostics switch is labelled HUD text; its recording field
+remains unchanged for existing session-analysis tools.
+
+Optimized and sanitizer GPU checks cover all 26 letters, both display modes,
+source mutations, malformed triangles, exact original pixels, texture-memory
+overlap, context recovery and suspended cleanup. New-art generation matches the
+independently tested raster, with bounded decoding and strict vector-source
+publication rules. The original game can request a yellow HUD panel: a local
+input/framebuffer trace reproduced the same color in Original and HD modes.
+This color is not produced by the glyph replacement.
+
+Build 21 does not contain these letters. Main remains separate, and physical
+appearance, frame time and energy acceptance remain open. Other HUD elements,
+including small record-time digits and punctuation, maps, logos and starting
+lights, remain original. This source update
+does not require another cloud build by itself.
