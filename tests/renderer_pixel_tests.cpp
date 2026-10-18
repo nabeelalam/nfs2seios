@@ -293,7 +293,7 @@ int main(int argc,char **argv){
         void *quad_memory=malloc32(4*sizeof(GrVertex));CHECK(quad_memory);
         const uint32_t quad_address=nfs_guest_address(quad_memory);
         fixedFramebufferSize=1;initialWinWidth=2186;initialWinHeight=1640;windowResized=1;grBufferSwap(0);
-        auto sampled_scene=[&](){
+        auto sampled_scene=[&](unsigned digit=0){
             grBufferClear(0x19436b,255,65535);grClipWindow(0,0,640,480);
             grDepthBufferMode(GR_DEPTHBUFFER_DISABLE);grFogMode(GR_FOG_DISABLE);
             grAlphaBlendFunction(GR_BLEND_ONE,GR_BLEND_ZERO,GR_BLEND_ONE,GR_BLEND_ZERO);
@@ -312,7 +312,8 @@ int main(int argc,char **argv){
             // Entire original atlas rejects numeral routing, including the round
             // indicator. A separate whole glyph positively exercises HD routing.
             quad(8,8,256,256,0,0,255,255);
-            quad(320,40,96,208,48.31f,21.42f,11.45f,25.40f);
+            const float shrink=255.0f/256.0f;
+            quad(320,40,96,208,(48.5f+12*digit)*shrink,21.5f*shrink,11.5f*shrink,25.5f*shrink);
             // Lines reuse triangle storage. Their selector must be cleared even
             // when the preceding primitive was an HD numeral.
             auto line_a=guest_load<GrVertex>(quad_address);
@@ -362,6 +363,19 @@ int main(int argc,char **argv){
         CHECK(nfs_glide_hd_timing_set_visible(0) && sampled_scene()==sampled_original);
         CHECK(nfs_glide_hd_timing_set_visible(1) && sampled_scene()==sampled_hd);
         std::puts("PASS: live original/HD comparison, identical pixels both ways, no reuploads, buffered old-mode flush and worker/unbound rejection");
+        const auto before_all_digits=nfs_glide_hd_atlas_upload_count();
+        for(unsigned digit=0;digit<10;++digit){
+            CHECK(nfs_glide_hd_timing_set_visible(0));const auto original=sampled_scene(digit);
+            CHECK(nfs_glide_hd_timing_set_visible(1));const auto hd=sampled_scene(digit);
+            size_t changed=0;
+            for(unsigned y=0;y<1640;++y)for(unsigned x=0;x<2186;++x){
+                size_t at=(y*2186+x)*4;if(!std::memcmp(original.data()+at,hd.data()+at,4))continue;
+                CHECK(x>=1093 && x<=1421 && y>=792 && y<=1505);++changed;
+            }
+            CHECK(changed>100 && glGetError()==GL_NO_ERROR);
+            std::printf("PASS: original biased digit %u actual sampled HD changed pixels=%zu\n",digit,changed);
+        }
+        CHECK(nfs_glide_hd_atlas_upload_count()==before_all_digits);
         // Overlapping CPU texture RAM must not corrupt the matched original GPU
         // image when context restoration reuploads it from the owned snapshot.
         GrTexInfo overlap=texture;overlap.largeLod=overlap.smallLod=7;

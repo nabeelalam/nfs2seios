@@ -359,3 +359,17 @@ one in Low Power Mode. Within each recording compare Original and HD on similar
 sections and allow a few seconds after switching. Stop and share each JSONL log;
 no manual FPS/CPU transcription is needed. Changing system power settings may
 interrupt recording, so set the power mode before starting each recording.
+
+## Post-build-20 coordinate correction
+
+Build 20's timing classifier misses digits 7-9 because the original game scales
+texel coordinates by 255/256. Their lower bounds lie slightly before the integer
+cell boundaries. The next source revision reverses that bias for classification
+only and requires three distinct complete cell corners. Sampling coordinates
+remain untouched; constant-UV, clipped and cross-cell primitives retain original
+sampling. The expanded native-size GPU fixture verifies every digit 0-9 in both
+triangles and Original/HD modes with no changed pixels outside the target glyph.
+Optimized and sanitized project-unit checks pass. An otherwise identical old-
+selector negative control passes digits 0-6 and fails at digit 7, proving this
+fixture covers the regression. This correction is not included in the build 20
+download above; no additional Apple build has been started for it.
