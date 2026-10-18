@@ -111,3 +111,20 @@ software framebuffer before selecting the replacement hook. Palette identity,
 transparent pixels and both split-screen views must be preserved. Changing
 filtering alone does not constitute HD artwork. No HD renderer, replacement
 artwork, FPS improvement or device behavior is claimed yet.
+
+The next inspection stage now has a bounded indexed8 decoder and native-size PNG
+exporter for private review. Three synthetic fixtures check exact RGBA/PNG pixels,
+transparent palette entries, local-palette precedence, unsupported formats and
+malformed dimensions/indices/attachment spans. All 246 indexed8 entries in the
+nine copied HUD archives decoded without a rejected entry; copies were unchanged.
+Only three native previews have been visually reviewed so far: a grey HUD panel,
+a grid panel and a shaded map dot. This does not establish complete visual parity,
+runtime usage or any HD replacement. Images and decoded inventories stay ignored.
+
+The directory contains repeated entry names, so the inspection tools select by
+entry index instead of silently overwriting duplicates. Runtime replacement
+identity must also account for actual pixels, dimensions and palette/context
+lifetime; a filename, short entry name or reused texture address alone is unsafe.
+Static source inspection connects HUD named-entry lookup to the original layout
+setup, but the actual race draw path has not yet been demonstrated. Keep the
+original split-screen positions and metadata while identifying that boundary.
