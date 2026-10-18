@@ -514,7 +514,7 @@ are not controlled energy measurements. The Low Power Mode 60 FPS goal remains
 unmet; build 18 is diagnostic and claims no performance or energy improvement.
 
 
-## Session recording (build 19 candidate)
+## Session recording (build 19)
 
 Four-finger tap shows diagnostics. Tap the FPS label, then choose **Start session
 recording** before a race. The visible overlay shows REC while recording. You can
@@ -550,3 +550,22 @@ graphics, brightness, volume and charging state, with separate longer sessions
 for normal and Low Power Mode; short percentage changes alone do not establish
 energy efficiency. Actual iPad recording controls, export and runtime cost still
 require physical testing after installation.
+
+For a local summary, run `python scripts/summarize_diagnostic_session.py
+private-session.jsonl` with a privately supplied log. The summary separates power
+modes, deduplicates engine CPU windows, flags incomplete recordings and sampling
+gaps, and reports sampled distributions without inventing wattage or a battery
+drain rate. Seven local fixtures cover power modes, repeat windows, missing data,
+interrupted or malformed logs, partial saves and a full 3600-row session. Session
+JSONL files and the Diagnostics folder are ignored by Git; keep them private.
+
+Build 19 source and package validation: the single sequential public workflow
+39134676336 passed Linux regressions and 33 Apple host tests. The actual recorder
+Objective-C++ file compiled for iPad ARM64 with the existing Release/ThinLTO
+configuration. Independent package inspection confirmed build 19, iOS device,
+minimum iOS 16, unchanged app identity and exactly five executable/metadata/license
+files, without game assets or signing material. Portable JSON tests cover a
+comma-decimal global locale, nonfinite values, unavailable readings, bounded
+duration/rows and the safe end record; sampling tests cover published window
+identity and rejection of in-flight stale values. These checks do not establish
+physical recorder controls, export, race stability or battery overhead.
