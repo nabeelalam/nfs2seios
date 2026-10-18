@@ -314,3 +314,14 @@ Local CPU/throughput pilot differences are near zero, not an energy improvement.
 Next:physical current-build Tournament completion and matched split normal/
 Low Power Mode FPS/Game CPU, then evidence-led optimization. Full OS recovery,
 signing refresh and sharper HUD artwork remain separate acceptance gates.
+
+## Build 17 compiled and independently inspected
+
+The reviewed checked-copy bundle passed one sequential standard-public
+Linux/Apple ReleaseThinLTO run. Independent download inspection verifies source,
+version17,thinARM64,iOSdevice,exact five-entry allowlist,privacy and digests.
+No Probe,Actions artifacts,caches,paid runner or extra dispatch. Original-data
+exact-state,cancellation and complete sanitizer checks pass locally. These
+checks do not prove completed events,physical LowPower60FPS or battery savings.
+Next:physical Tournament completion and matched split normal/LowPower FPS
+and GameCPU. OS recovery,signing refresh and sharper HUD remain open.

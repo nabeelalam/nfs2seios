@@ -1,11 +1,11 @@
 # Personal installation without a Mac
 
-Build 16 is an independently inspected thin ARM64 iOS-device Release package.
+Build 17 is an independently inspected thin ARM64 iOS-device Release package.
 Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 16 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39075795713-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+1. Download the [build 17 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39093193712-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
 2. Update the existing app through your ready SideStore setup, importing
    NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
    performs personal signing; the ZIP itself is unsigned.
@@ -119,3 +119,12 @@ scenario and report any freeze, error or stall report. For the performance targe
 use the same full-graphics Native-resolution split race in normal/Low Power Mode,
 Lock FPS to 30 off, and allow 60 submissions before recording Game CPU with FPS.
 No battery or 60 FPS in Low Power Mode improvement is claimed by the sound change.
+
+
+Build 17 retains the same app identity, imported folder access and controls.
+It adds the checked-copy bundle validated under local original-data sanitizer
+and Release runs. Update with the same Apple Account through SideStore.
+Compare the same Native-resolution/full-graphics split-screen race in normal
+and Low Power Mode, with Lock FPS to 30 off. Allow sixty submissions for the
+Game CPU average. Physical improvement is unverified; report FPS and Game CPU
+in comparable busy and clear sections and any freeze or incorrect behavior.

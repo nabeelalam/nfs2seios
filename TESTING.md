@@ -477,3 +477,13 @@ download inspection confirms source/version 16/thin ARM64/device platform and
 exact executable/metadata/license contents, with no assets or signing material.
 This is compile/package evidence. Device race stability, 60 FPS in Low Power Mode, energy
 cost and actual OS recovery still require physical observations.
+
+Build 17 uses the exact five-unit checked-copy candidate validated locally.
+All fifteen generated method units match that candidate;unrelated methods,
+headers,dispatch and memory routing remain unchanged. Input/output hashes pin
+the two complete helpers. The Apple run passes thirty host checks,two40000case
+compiler configurations,fifteen original method units,eight reviewed native
+units,three Objective-C++ units and two ThinLTO device links capped at two.
+The independently downloaded package is build17,thinARM64,iOSdevice,Release,
+with only executable,metadata and licenses. Device stability,FPS,energy and
+real OS lifecycle acceptance remain open.

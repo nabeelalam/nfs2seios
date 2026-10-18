@@ -176,3 +176,11 @@ Sequential standard Ubuntu 148 seconds then standard macOS
 632 seconds. No Probe, Actions artifacts, caches, paid runner
 or billing change. Existing compiler/backend bounds retained. Source, download
 and package privacy inspected; physical performance/energy remain unverified.
+
+## Build 17 checked-copy validation
+
+One manual dispatch39093193712 at source1b9a561. Standard sequential Ubuntu
+135seconds,then standard macOS449seconds.
+No Probe,Actions artifacts,caches,paid runner,billing change or duplicate build.
+All source/staged/history/metadata/independent secret checks passed;package
+privacy and source/digests inspected. Physical energy/FPS remain unverified.
