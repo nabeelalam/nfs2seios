@@ -143,8 +143,10 @@ Different data at a reused texture address follows the original upload path.
 Other texture formats and palette-generation behavior remain unchanged.
 
 The app looks for `gamedata/hud-hd.nfsatlas` within its selected/imported asset
-root, once before the game session starts. Missing or invalid packs use original
-art. Configuration changes are permitted before a session starts; clearing takes
+root, once before the game session starts. A valid explicit pack takes priority.
+If it is absent or invalid, this branch enables the built-in recipe below;
+unrecognized original textures retain their original art. Configuration changes
+are permitted before a session starts; clearing takes
 place after its renderer and workers stop. CPU pack data survives context
 recreation and is released at session end, including exceptions. There is no
 per-frame file polling. Packs are private original-data derivatives and ignored
