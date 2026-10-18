@@ -63,6 +63,7 @@ def prepare_renderer():
     text = prepare_palettes(text, dest)
     text = text.replace('g_lfb = (uint8_t *)malloc32(640*480*2);', 'g_lfb = (uint8_t *)malloc32(640*480*2);\n\t\tif (!g_lfb) return false;')
     text = prepare_surfaces(text, dest)
+    text = prepare_hd_atlas(text, dest)
     opening='\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);\n\n\thandleDpr();'
     if text.count(opening)!=1: raise ValueError('Unexpected drawable initialization order')
     text=text.replace(opening,'\thandleDpr();\n\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);')
@@ -74,6 +75,19 @@ def prepare_renderer():
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
+
+
+def prepare_hd_atlas(text, dest):
+    marker = '#include "RendererPalette.inc"'
+    if text.count(marker) != 1: raise ValueError("Cannot identify HD atlas helper insertion")
+    text = text.replace(marker, marker + '\n#include "RendererHdAtlas.inc"')
+    marker = '\tswitch (ti->fmt)'
+    start = text.index('static void uploadTexture(TextureInfo *ti)')
+    at = text.index(marker, start)
+    text = text[:at] + '\tif(nfs_hd_upload_texture(ti))return;\n\n' + text[at:]
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc'):
+        shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
+    return text
 
 
 def prepare_palettes(text, dest):

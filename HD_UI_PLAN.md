@@ -2,7 +2,7 @@
 
 Development branch: `codex/hd-ui`. Integration branch: `main`.
 
-This branch starts from the accepted build 18 source and documentation on main.
+This branch incorporates main through the build 19 session-recorder delivery.
 It is an independent workstream. Performance, battery work and session recording
 continue on main; no unfinished visual changes are required there. This document
 establishes the work, not a claim that replacement artwork is implemented.
@@ -126,5 +126,57 @@ entry index instead of silently overwriting duplicates. Runtime replacement
 identity must also account for actual pixels, dimensions and palette/context
 lifetime; a filename, short entry name or reused texture address alone is unsafe.
 Static source inspection connects HUD named-entry lookup to the original layout
-setup, but the actual race draw path has not yet been demonstrated. Keep the
-original split-screen positions and metadata while identifying that boundary.
+setup. A subsequent bounded original-data split-screen trace identified a packed
+256-square RGBA5551 HUD atlas: 15 source-entry pixel matches, with 22 same-frame
+triangle pairs using the same UVs and geometry shifted by one viewport height.
+The atlas includes HUD fonts and icons and is used in both views; an icon being
+present in this shared atlas does not mean that icon was drawn during the race.
+The trace itself adds overhead and provides no FPS or energy measurement.
+
+## Optional atlas upload boundary
+
+The first experimental hook accepts one privately generated atlas pack. It
+matches every original converted RGBA5551 byte, format and size at texture
+download/context restoration. It changes the GPU image dimensions and RGBA8
+pixels while retaining original CPU pixels, UVs, screen geometry and filtering.
+Different data at a reused texture address follows the original upload path.
+Other texture formats and palette-generation behavior remain unchanged.
+
+The app looks for `gamedata/hud-hd.nfsatlas` within its selected/imported asset
+root, once before the game session starts. Missing or invalid packs use original
+art. Configuration changes are permitted before a session starts; clearing takes
+place after its renderer and workers stop. CPU pack data survives context
+recreation and is released at session end, including exceptions. There is no
+per-frame file polling. Packs are private original-data derivatives and ignored
+by Git; they are never included in the application package or source publication.
+
+The development format is a 32-byte little-endian header:
+
+| Offset | Field |
+| --- | --- |
+| 0 | Eight bytes: `NFSHDA1` followed by zero |
+| 8 | Original square edge, power of two, at most 256 |
+| 12 | Replacement square edge, power of two, larger, at most 2048 and 8x original |
+| 16 | Original byte count, exactly edge squared times two |
+| 20 | Replacement byte count, exactly edge squared times four |
+| 24, 28 | Reserved, both zero |
+
+Then come the exact original GPU RGBA5551 bytes and straight RGBA8 replacement
+bytes, without trailers. All sizes are checked before allocation. Short files,
+unknown flags, unsupported dimensions and extra data are rejected. GPU maximum
+texture size is checked on a match; unsupported sizes retain original art.
+
+Optimized and ASan/UBSan parser fixtures exercise full-content identity, all
+truncation points, invalid headers, trailing data, allocation bounds, alpha and
+ownership. Actual GLES fixtures verify larger image pixels/dimensions, exact
+transparent RGBA, same-address content changes, original fallback and context
+recreation, alongside the existing palette and resolution checks. This is an
+upload-boundary proof, not finished HD artwork or device acceptance. A subsequent
+20-second original-data race uses a conspicuously colored synthetic 512-square
+replacement in both split-screen HUDs, with both native controllers active,
+reset, simulated background/resume and clean shutdown. The temporary pack is
+removed and copied configuration restored afterward. The test retains 64 game
+objects and changes only the renderer and app lifetime. This 480-line host run
+does not establish HD visual quality, device performance or energy efficiency.
+Next redraw and review one visible HUD element, test multiple output sizes and
+track transitions, then consider one Apple build for device acceptance.

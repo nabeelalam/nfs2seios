@@ -6,10 +6,18 @@
 #include "RunLog.h"
 #include "MainThreadBridge.h"
 #include "FramePresentation.h"
+#include "HdAtlas.h"
 #include <cstdio>
 #include <memory>
 #include <exception>
 namespace {
+struct HdAtlasLifetime {
+    explicit HdAtlasLifetime(const std::string &root){
+        if(nfs_glide_hd_atlas_load_file((root+"/gamedata/hud-hd.nfsatlas").c_str()))
+            nfs::app_log("HD interface","Optional texture atlas loaded");
+    }
+    ~HdAtlasLifetime(){nfs_glide_hd_atlas_clear();}
+};
 int32_t present(const std::string &text,const std::string &caption,uint32_t flags){
     nfs::app_log("Game message",caption+": "+text);
 #ifdef NFS_APP_HEADLESS_MESSAGES
@@ -33,6 +41,7 @@ int main(int argc,char **argv){
     try{
         const auto root=nfs::select_app_assets(argc,argv);
         if(!root.empty()){
+            HdAtlasLifetime hd_atlas(root);
             // No host process exit inside the engine. Retain the root context
             // and continue pumping SDL until renderer/worker cleanup finishes.
             auto session=std::unique_ptr<nfs::GameSession>(new nfs::GameSession(root,present));

@@ -37,3 +37,4 @@ NFSIISE/
 
 *.jsonl
 /Diagnostics/
+*.nfsatlas

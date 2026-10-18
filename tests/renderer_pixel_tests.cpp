@@ -11,6 +11,7 @@ extern "C" uint64_t nfs_glide_palette_upload_count(void);
 #include "MainThreadBridge.h"
 #include "GraphicsLifecycle.h"
 #include "FramePresentation.h"
+#include "HdAtlas.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengles2.h>
 #include <cstdio>
@@ -20,6 +21,7 @@ extern "C" uint64_t nfs_glide_palette_upload_count(void);
 #include <atomic>
 #include <exception>
 #include <future>
+#include <vector>
 extern "C" {
 int32_t keepAspectRatio=1,needRecreateGl=0,windowResized=0,linearFiltering=0,fixedFramebufferSize=1,framebufferLinearFiltering=1;
 int32_t vSync=0,winWidth=640,winHeight=480,initialWinWidth=640,initialWinHeight=480;
@@ -198,6 +200,47 @@ int main(){
     fixedFramebufferSize=1;initialWinWidth=640;initialWinHeight=480;windowResized=1;grBufferSwap(0);
     CHECK(nfs_render_width()==640 && nfs_render_height()==480 && glGetError()==GL_NO_ERROR);
     std::puts("PASS: 480/720/960/native-height render targets, both-buffer reallocation, original RGB565 readback and return to original resolution");
+    // A synthetic two-pixel atlas becomes four pixels without changing CPU data.
+    // No original game artwork is embedded in this fixture.
+    std::vector<unsigned char> hd_pack(32+8+64,0);
+    std::memcpy(hd_pack.data(),"NFSHDA1\0",8);
+    auto hd_word=[&](unsigned at,uint32_t value){for(unsigned i=0;i<4;++i)hd_pack[at+i]=(value>>(8*i))&255;};
+    hd_word(8,2);hd_word(12,4);hd_word(16,8);hd_word(20,64);
+    for(unsigned i=0;i<4;++i){hd_pack[32+2*i]=1;hd_pack[33+2*i]=248;}
+    for(unsigned i=0;i<16;++i){hd_pack[40+4*i+1]=255;hd_pack[40+4*i+3]=255;}
+    hd_pack[40]=17;hd_pack[41]=33;hd_pack[42]=99;hd_pack[43]=0;
+    const auto hd_path="hd-atlas-fixture-"+std::to_string(SDL_GetTicksNS())+".nfsatlas";
+    FILE *hd_file=std::fopen(hd_path.c_str(),"wbx");CHECK(hd_file);
+    CHECK(std::fwrite(hd_pack.data(),1,hd_pack.size(),hd_file)==hd_pack.size());CHECK(!std::fclose(hd_file));
+    CHECK(nfs_glide_hd_atlas_load_file(hd_path.c_str()));CHECK(!std::remove(hd_path.c_str()));
+    for(unsigned i=0;i<4;++i)guest_store<uint16_t>(index+2*i,0xfc00); // Original ARGB1555 red
+    texture.largeLod=texture.smallLod=7;texture.format=GR_TEXFMT_ARGB_1555;texture.data=index;guest_store(metadata,texture);
+    grTexDownloadMipMap(0,2048,3,int32_t(metadata));grTexSource(0,2048,3,int32_t(metadata));
+    CHECK(nfs_glide_hd_atlas_upload_count()==1);pixel(0,255,0,3,3);
+    // Exact straight RGBA including a transparent texel survives the upload.
+    GLint hd_texture=0,hd_previous=0;GLuint hd_frame=0;unsigned char hd_rgba[4]{};
+    glGetIntegerv(GL_TEXTURE_BINDING_2D,&hd_texture);glGetIntegerv(GL_FRAMEBUFFER_BINDING,&hd_previous);
+    glGenFramebuffers(1,&hd_frame);glBindFramebuffer(GL_FRAMEBUFFER,hd_frame);
+    glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,GLuint(hd_texture),0);
+    CHECK(glCheckFramebufferStatus(GL_FRAMEBUFFER)==GL_FRAMEBUFFER_COMPLETE);
+    glReadPixels(0,0,1,1,GL_RGBA,GL_UNSIGNED_BYTE,hd_rgba);
+    CHECK(!std::memcmp(hd_rgba,hd_pack.data()+40,4));
+    glBindFramebuffer(GL_FRAMEBUFFER,GLuint(hd_previous));glDeleteFramebuffers(1,&hd_frame);
+    CHECK(guest_load<uint16_t>(index)==0xfc00);
+    // Reusing the same address for different pixels must restore the original.
+    for(unsigned i=0;i<4;++i)guest_store<uint16_t>(index+2*i,0x801f);
+    grTexDownloadMipMap(0,2048,3,int32_t(metadata));grTexSource(0,2048,3,int32_t(metadata));pixel(0,0,255);
+    CHECK(nfs_glide_hd_atlas_upload_count()==1);
+    for(unsigned i=0;i<4;++i)guest_store<uint16_t>(index+2*i,0xfc00);
+    grTexDownloadMipMap(0,2048,3,int32_t(metadata));grTexSource(0,2048,3,int32_t(metadata));pixel(0,255,0,3,3);
+    CHECK(nfs_glide_hd_atlas_upload_count()==2);
+    needRecreateGl=1;grBufferSwap(0);grTexSource(0,2048,3,int32_t(metadata));pixel(0,255,0,3,3);
+    CHECK(nfs_glide_hd_atlas_upload_count()==3 && glGetError()==GL_NO_ERROR);
+    // Missing optional data clears matching; a fresh download is ordinary red.
+    CHECK(!nfs_glide_hd_atlas_load_file(hd_path.c_str()));
+    grTexDownloadMipMap(0,2048,3,int32_t(metadata));grTexSource(0,2048,3,int32_t(metadata));pixel(255,0,0);
+    nfs_glide_hd_atlas_clear();nfs_glide_hd_atlas_clear();
+    std::puts("PASS: optional HD texture RGBA/dimensions, exact content identity, same-address fallback, CPU immutability and context recreation");
     for(auto table:eviction_tables)free32(table);
     free32(index_memory);free32(palette_memory);CHECK(heap.available_bytes()==before && glGetError()==GL_NO_ERROR);
     std::puts("PASS: owned palette snapshot, deferred guest mutation, generation A/B/A, same-address explicit updates, unchanged-content cache and texture invalidation RGB pixels");
