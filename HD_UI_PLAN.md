@@ -86,6 +86,28 @@ actually needed and reviewed.
 
 ## Current status
 
-Branch and isolated working copy established. Source inspection and one-element
-proof are next. No HD renderer, artwork pack, FPS improvement or device behavior
-is claimed by this setup commit.
+Main through the delivered build 19 recorder and its documentation has been
+merged without conflicts. The difference against main remains dedicated visual
+work and its plan; no HD runtime changes have been merged back into main.
+
+The read-only `scripts/inspect_hud_archive.py` inventories uncompressed FSH
+directory and entry headers with bounded reads, exact archive-size checks and
+entry-span validation. Synthetic tests cover malformed directories, offsets,
+truncation and raw signed metadata. It neither exports nor changes artwork.
+Private inspection of nine copied HUD archives succeeded and verified the copies
+were unchanged. The shared HUD archive contains 194 bitmap entries, with maximum
+dimensions 209 by 135; map-marker images are at most 9 by 9. Dimensions alone do
+not identify which visible element an entry draws.
+
+The format layout was checked against the upstream
+[FSH structures](https://github.com/OpenNFS/LibOpenNFS/blob/3ebd326c1ee3ac0858bd7fa522d077978cc1f016/Shared/FSH/FshTypes.h)
+and [archive reader](https://github.com/OpenNFS/LibOpenNFS/blob/3ebd326c1ee3ac0858bd7fa522d077978cc1f016/Shared/FSH/FshArchive.cpp).
+No upstream code is executed or incorporated into this utility. Original-data
+inventories and source research copies remain in ignored local storage.
+
+Next: decode and visually identify selected entries locally, then trace the
+actual race draw path. Determine whether an element reaches Glide textures or a
+software framebuffer before selecting the replacement hook. Palette identity,
+transparent pixels and both split-screen views must be preserved. Changing
+filtering alone does not constitute HD artwork. No HD renderer, replacement
+artwork, FPS improvement or device behavior is claimed yet.
