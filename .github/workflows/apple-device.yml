@@ -114,7 +114,7 @@ jobs:
           cat > .build/release-notes.md <<'NOTES'
           Native ARM64 iPad development candidate. Personal signing through SideStore is required. Original game assets must be supplied separately.
 
-          This candidate reduces checked-copy lock overhead in six reviewed original helpers. Typed span and per-copy cancellation checks, original arithmetic and complete sound-operation ownership are retained. Exact-state, cancellation, original-data sanitizer and bounded two-order Release checks pass locally. Scene differences limit timing comparisons; physical iPad FPS, Low Power Mode and battery improvement remain unverified. The reported Tournament freeze still requires current-device acceptance.
+          This is an experimental native ARM64 development package. Consult the source revision and current project documentation for the changes in this candidate. Compilation and package checks do not establish physical iPad performance, battery efficiency, stability or complete device acceptance.
 
           Four-finger tap shows or hides diagnostics; they start hidden. Detailed Game CPU averages owner-thread CPU time over 60 original submissions and excludes other workers, GPU time and waiting. Keep the optional 30 FPS lock off for 60 FPS comparisons. Managed-worker error cleanup and the bounded NFSIISE-stall.txt report remain available.
 

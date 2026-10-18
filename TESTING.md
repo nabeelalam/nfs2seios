@@ -487,3 +487,28 @@ units,three Objective-C++ units and two ThinLTO device links capped at two.
 The independently downloaded package is build17,thinARM64,iOSdevice,Release,
 with only executable,metadata and licenses. Device stability,FPS,energy and
 real OS lifecycle acceptance remain open.
+
+
+## Build 18 diagnostic validation
+
+The diagnostic-only source adds bounded per-core tick deltas and visible-overlay
+battery monitoring. Arithmetic fixtures pass Release and ASan/UBSan runs,
+including baseline, idle ticks, counter rollover/reset and core-count changes.
+Linux correctly skips the native Mach provider; Apple host validation actually
+executes it. All 32 Apple host checks pass, including the existing game-thread
+CPU clock and both 40,000-case compiler configurations.
+
+Direct Apple compile logs verify fifteen translated method units, nine native
+runtime units, three Objective-C++ units and two bounded ThinLTO links. The
+independently downloaded version 18 package matches source
+70bdf4d56987a0e8d063fd23312e8f95b2530271, thin ARM64, iOS-device Release,
+minimum iOS 16, and the five-file executable/metadata/license allowlist.
+Privacy and digest checks pass. Apple host counters do not prove that iPadOS
+will expose the same counters. Actual per-core availability, overlay layout,
+battery display and physical regressions remain device acceptance gates.
+
+New physical build 17 feedback reports Proving Grounds running fine, normal
+North Country split-screen 60 FPS and Low Power Mode 37-51 FPS. The CPU percentage
+is approximate; Game CPU timing was not measured. Short battery observations
+are not controlled energy measurements. The Low Power Mode 60 FPS goal remains
+unmet; build 18 is diagnostic and claims no performance or energy improvement.

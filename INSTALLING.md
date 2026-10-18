@@ -1,11 +1,11 @@
 # Personal installation without a Mac
 
-Build 17 is an independently inspected thin ARM64 iOS-device Release package.
+Build 18 is an independently inspected thin ARM64 iOS-device Release package.
 Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 17 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39093193712-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+1. Download the [build 18 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39118406383-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
 2. Update the existing app through your ready SideStore setup, importing
    NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
    performs personal signing; the ZIP itself is unsigned.
@@ -41,7 +41,7 @@ Pause before changing render size. Settings offer 640x480, 960x720, 1280x960
 and native screen pixels in the original 4:3 view; the overlay shows actual
 render size. CPU/app is the share of total CPU capacity, so one busy core can
 limit performance despite a low percentage. GPU utilization is not estimated.
-Physical build15 acceptance, battery savings and HD artwork are unverified.
+Build 18 diagnostics, controlled battery savings and HD artwork still need physical validation.
 
 ## Separately supplied game files
 
@@ -128,3 +128,20 @@ Compare the same Native-resolution/full-graphics split-screen race in normal
 and Low Power Mode, with Lock FPS to 30 off. Allow sixty submissions for the
 Game CPU average. Physical improvement is unverified; report FPS and Game CPU
 in comparable busy and clear sections and any freeze or incorrect behavior.
+
+
+## Build 18 diagnostics
+
+Battery percentage appears in compact and detailed views. Detailed view puts
+Game CPU time in ms/frame directly below FPS and keeps App CPU percentage
+separate. System core percentages, when available, measure the whole iPad;
+they cannot attribute this app's work to individual cores. Unsupported counters
+are omitted. The new sampling stops when diagnostics are hidden.
+
+Build 18 retains build 17 gameplay code; no speedup is claimed. Physical build 17
+feedback reports Proving Grounds running fine and North Country split-screen
+60 FPS normally, 37-51 FPS in Low Power Mode. The approximate CPU percentage is
+not a Game CPU timing measurement. Settings and test conditions were not
+reconfirmed. Compare the same section with Native resolution, full graphics,
+Lock FPS to 30 off, then record FPS and Game CPU time in ms/frame in each mode.
+Actual build 18 core readings, layout and regressions remain unverified on iPad.

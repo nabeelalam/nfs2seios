@@ -7,53 +7,49 @@ targeting iPad Air M3 and an external controller, without x86 emulation or JIT.
 The project adapts a pinned original-game C++ translation, the existing Glide
 GLES2 renderer and SDL3 platform services. Original game assets must be supplied
 separately. This repository contains source and public development documentation;
-it does not contain the original game executable, owned game assets, signing
-credentials or private operational records.
+it does not contain original game executables, owned assets, signing credentials
+or private operational records.
 
-Build 10 is the physically accepted split-screen 60 FPS baseline. Build 12
-subsequently passed physical feedback for split-screen FPS and relative touch
-tracking/gestures. A single-player Tournament freeze on Proving Grounds remains
-under investigation; this is not general stability acceptance for every mode.
+The verified [build 18 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39118406383-1/NFSIISEGame-development-unsigned.zip) is ready for personal signing.
+It adds battery percentage, a prominent Game CPU time in ms/frame, and per-core
+activity for the whole iPad when the system API provides valid counters.
+Per-core readings are not this app's usage on each core. Sampling occurs at most
+once per second while detailed diagnostics are visible. The game engine,
+renderer, audio ownership, input and import behavior are retained from build 17;
+this diagnostic update makes no FPS or battery improvement claim.
 
-Build 17 reduces checked-copy lock overhead in six reviewed original helpers.
-The verified [build 17 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39093193712-1/NFSIISEGame-development-unsigned.zip) is ready for personal signing.
-Twelve bounded word-copy loops and two complete helper scopes retain typed
-span checks, per-copy cancellation, original arithmetic and sound ownership.
-Private two-order Release comparisons and complete sanitizer checks pass.
-Scene differences limit those timings; physical speedup and battery savings
-remain unverified. The earlier sound-operation fix is retained; the reported
-physical Tournament freeze still needs current-build acceptance.
+Four-finger tap shows or hides diagnostics. Tap the overlay for settings and
+enable Detailed diagnostics. Game CPU averages need sixty submissions and
+exclude other workers, GPU and waiting. App CPU is separately labelled as a
+percentage across all cores. Battery percentage also appears in compact view.
+Actual per-core API availability and the new layout still need an iPad test.
 
-Four-finger tap shows diagnostics; detailed Game CPU appears after 60 submissions.
-For the next performance comparison, use the same split-screen race with Low
-Power Mode off/on and Lock FPS to 30 off. Game CPU excludes other workers, GPU
-and waiting. Record comparable busy/clear sections rather than assuming the
-game thread accounts for the entire frame.
+Physical build 17 feedback reports Proving Grounds running fine and North
+Country split-screen maintaining 60 FPS normally, versus 37-51 FPS in Low Power
+Mode. The reported CPU percentage was approximate; no Game CPU ms/frame result
+was obtained. Short whole-percentage battery observations suggest a difference
+but do not establish precise energy savings or abnormal consumption. Graphics
+settings and matching test conditions were not reconfirmed with that feedback.
 
-Build 17 retains four-finger diagnostics toggling, initially hidden, an optional
-Lock FPS to 30 switch (off by default), an independent keyboard button and Low
-Power Mode status. The unused GPU label is removed. The game explicitly requests
-fullscreen and opts into Apple Game Mode. Notification filtering is separately
-controlled by Gaming Focus. Normal-speed rendering optimizations are retained.
+The build 18 sequential run passed Linux validation and 32 Apple host checks,
+including the actual system-core provider, plus two sets of 40,000 mixed cases.
+Independent inspection verifies a thin ARM64 iOS-device Release package, version
+18, containing only executable, metadata and licenses. No game assets, signing
+material or sanitizer runtime is included. No probe was rebuilt, no Actions
+artifact uploaded and no extra build dispatched for these documentation changes.
 
-The build 17 sequential run passed Linux validation and 30 Apple host tests,
-40, 000 baseline and ThinLTO cases each, and verified ARM64 Release compilation.
-The downloaded version 17 package passes exact-source, contents, privacy and
-release-digest inspection. It contains only executable, metadata and licenses.
-No original game assets, signing material or sanitizer runtime is included.
-No probe was rebuilt and no Actions artifact was uploaded.
+Diagnostics start hidden; the optional Lock FPS to 30 switch defaults off. The
+keyboard button, touch gestures and controller remapping remain available. The
+app requests fullscreen and opts into Apple Game Mode; Gaming Focus separately
+controls notification filtering. Stable 60 FPS in Low Power Mode, controlled
+battery efficiency, broader stability and OS lifecycle/signing refresh tests,
+and sharper HUD artwork remain open.
 
-A bounded local original-data Tournament run used white McLaren F1, Proving
-Grounds and all opponents. It continued through blinking-light-tunnel wall
-contacts into lap two and shut down cleanly. This did not reproduce the iPad
-freeze, complete the four-lap event or establish physical build 17 acceptance.
-If frames stall, build 17 attempts to save one NFSIISE-stall.txt in the app's
-Documents folder for diagnosis; it does not force recovery.
-
-Use the [installation guide](INSTALLING.md) for the current download, personal
-signing and separate game assets. Physical build 17 UI, Game Mode, pacing and
-regressions still need testing. Stable 60 FPS in Low Power Mode, controlled
-battery savings, lifecycle/signing refresh and sharper HUD artwork remain open.
+Use the [installation guide](INSTALLING.md) to update through SideStore with the
+same Apple Account and keep using the separately stored original game folder.
+For the next comparison, use the same North Country split-screen section,
+Native resolution, full graphics and Lock FPS to 30 off. Record FPS and the
+explicit Game CPU time in ms/frame in normal and Low Power Mode.
 
 - [PLAN.md](PLAN.md): mission, progress and remaining acceptance criteria.
 - [BUILDING.md](BUILDING.md): preparation and controlled cloud compilation.
