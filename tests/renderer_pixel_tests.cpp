@@ -293,7 +293,7 @@ int main(int argc,char **argv){
         void *quad_memory=malloc32(4*sizeof(GrVertex));CHECK(quad_memory);
         const uint32_t quad_address=nfs_guest_address(quad_memory);
         fixedFramebufferSize=1;initialWinWidth=2186;initialWinHeight=1640;windowResized=1;grBufferSwap(0);
-        auto sampled_scene=[&](unsigned digit=0){
+        auto sampled_scene=[&](unsigned digit=0,unsigned speed=10){
             grBufferClear(0x19436b,255,65535);grClipWindow(0,0,640,480);
             grDepthBufferMode(GR_DEPTHBUFFER_DISABLE);grFogMode(GR_FOG_DISABLE);
             grAlphaBlendFunction(GR_BLEND_ONE,GR_BLEND_ZERO,GR_BLEND_ONE,GR_BLEND_ZERO);
@@ -314,6 +314,9 @@ int main(int argc,char **argv){
             quad(8,8,256,256,0,0,255,255);
             const float shrink=255.0f/256.0f;
             quad(320,40,96,208,(48.5f+12*digit)*shrink,21.5f*shrink,11.5f*shrink,25.5f*shrink);
+            static const float speedBounds[10][4]={{43.330078125f,47.314453125f,72.71484375f,70.72265625f},{72.216796875f,47.314453125f,100.60546875f,70.72265625f},{101.103515625f,47.314453125f,130.48828125f,70.72265625f},{129.990234375f,47.314453125f,159.375f,70.72265625f},{159.873046875f,47.314453125f,189.2578125f,70.72265625f},{188.759765625f,47.314453125f,218.14453125f,70.72265625f},{217.646484375f,47.314453125f,246.03515625f,70.72265625f},{73.212890625f,71.220703125f,101.6015625f,94.62890625f},{102.099609375f,71.220703125f,131.484375f,94.62890625f},{130.986328125f,71.220703125f,160.37109375f,94.62890625f}};
+            static const float speedWidth[10]={120,116,120,120,120,120,116,116,120,120};
+            if(speed<10){const float *sb=speedBounds[speed];quad(450,40,speedWidth[speed],96,sb[0],sb[1],sb[2]-sb[0],sb[3]-sb[1]);}
             // Lines reuse triangle storage. Their selector must be cleared even
             // when the preceding primitive was an HD numeral.
             auto line_a=guest_load<GrVertex>(quad_address);
@@ -375,6 +378,23 @@ int main(int argc,char **argv){
             CHECK(changed>100 && glGetError()==GL_NO_ERROR);
             std::printf("PASS: original biased digit %u actual sampled HD changed pixels=%zu\n",digit,changed);
         }
+        CHECK(nfs_glide_hd_atlas_upload_count()==before_all_digits);
+        for(unsigned speed=0;speed<10;++speed){
+            CHECK(nfs_glide_hd_timing_set_visible(0));const auto original=sampled_scene(0,speed);
+            CHECK(nfs_glide_hd_timing_set_visible(1));const auto hd=sampled_scene(0,speed);
+            size_t changed=0;
+            for(unsigned y=0;y<1640;++y)for(unsigned x=0;x<2186;++x){
+                const size_t at=(y*2186+x)*4;
+                if(x<1500){CHECK(!std::memcmp(original.data()+at,sampled_original.data()+at,4));CHECK(!std::memcmp(hd.data()+at,sampled_hd.data()+at,4));}
+                else if(std::memcmp(original.data()+at,hd.data()+at,4))++changed;
+            }
+            CHECK(changed>100 && glGetError()==GL_NO_ERROR);
+            std::printf("PASS: gold family digit=%u changed=%zu\n",speed,changed);
+            char path[64];std::snprintf(path,sizeof(path),"gold-%u.rgba",speed);FILE *file=std::fopen(path,"wb");CHECK(file);
+            for(unsigned y=1170;y<1510;++y)CHECK(std::fwrite(hd.data()+(y*2186+1500)*4,1,500*4,file)==500*4);
+            CHECK(!std::fclose(file));
+        }
+        sampled_scene();
         CHECK(nfs_glide_hd_atlas_upload_count()==before_all_digits);
         // Overlapping CPU texture RAM must not corrupt the matched original GPU
         // image when context restoration reuploads it from the owned snapshot.

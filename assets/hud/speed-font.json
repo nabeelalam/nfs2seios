@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "status": "Provisional new hand-drawn gold numerals; physical appearance and performance unverified",
+  "originalGamePixelsIncluded": false,
+  "vectorSize": [
+    29,
+    24
+  ],
+  "rasterSize": [
+    116,
+    96
+  ],
+  "entries": [
+    {
+      "digit": 0,
+      "file": "speed-0.svg",
+      "sha256": "312e596933786b245318f9ded5be0177f91770c63d184589bc9266bdc5850d80"
+    },
+    {
+      "digit": 1,
+      "file": "speed-1.svg",
+      "sha256": "ae416ea9f16eef69141a51c11e2a13bc27cb6e8781a7e726a4412db1966e2b6a"
+    },
+    {
+      "digit": 2,
+      "file": "speed-2.svg",
+      "sha256": "c9929037524b8ddcff89c461552387becad1fb3c6d3a6a4030889fe4f831ee62"
+    },
+    {
+      "digit": 3,
+      "file": "speed-3.svg",
+      "sha256": "c84ea8ea17da50e3d5baf8838af705ec93cb521958119e83feeb5f129380988c"
+    },
+    {
+      "digit": 4,
+      "file": "speed-4.svg",
+      "sha256": "f8fbe36f915984a32ce261f19f00e26b99fb7f15924835774b5d2f6241ff9a80"
+    },
+    {
+      "digit": 5,
+      "file": "speed-5.svg",
+      "sha256": "ca84124113efeaac1b2c33097738bd65b68c20d69c2c75a9cf6ff7acdb9f8ae2"
+    },
+    {
+      "digit": 6,
+      "file": "speed-6.svg",
+      "sha256": "6e23552d8d84f418f6036b291b9aed9259992f4599265becb648159a29c03fc4"
+    },
+    {
+      "digit": 7,
+      "file": "speed-7.svg",
+      "sha256": "c885283ee381d227c30970ea81947f270ebf47c495d8983e71039df3dd1a54dc"
+    },
+    {
+      "digit": 8,
+      "file": "speed-8.svg",
+      "sha256": "6e8ceeafbaa9317b19bf730534730390a9f1be693aab1f201d239dc335567283"
+    },
+    {
+      "digit": 9,
+      "file": "speed-9.svg",
+      "sha256": "aa84917bbea6e6ec62035ac5e2b607322816b33b6a09460d59f2b5718e691bd6"
+    }
+  ]
+}

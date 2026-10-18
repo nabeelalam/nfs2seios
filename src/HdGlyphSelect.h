@@ -2,10 +2,24 @@
 #ifndef NFS_HD_GLYPH_SELECT_H
 #define NFS_HD_GLYPH_SELECT_H
 /* The game shrinks texel coordinates by 255/256. Undo that only for identifying
- * complete timing cells; leave actual sampling coordinates untouched. In raw
+ * complete timing cells; leave actual sampling coordinates untouched. Gold speed
+ * cells use their complete observed corner bounds, including original trims. In raw
  * coordinates digits 7-9 begin slightly before their integer cell boundary.
  * Reject constant UV, clipped and cross-cell primitives. */
 static int nfs_hd_digit_triangle(const float uv[6]){
+
+    static const float bounds[10][4]={{43.330078125f,47.314453125f,72.71484375f,70.72265625f},{72.216796875f,47.314453125f,100.60546875f,70.72265625f},{101.103515625f,47.314453125f,130.48828125f,70.72265625f},{129.990234375f,47.314453125f,159.375f,70.72265625f},{159.873046875f,47.314453125f,189.2578125f,70.72265625f},{188.759765625f,47.314453125f,218.14453125f,70.72265625f},{217.646484375f,47.314453125f,246.03515625f,70.72265625f},{73.212890625f,71.220703125f,101.6015625f,94.62890625f},{102.099609375f,71.220703125f,131.484375f,94.62890625f},{130.986328125f,71.220703125f,160.37109375f,94.62890625f}};
+    for(unsigned d=0;d<10;++d){
+        const float *b=bounds[d];unsigned corners=0;int inside=1;
+        for(unsigned i=0;i<3;++i){float u=uv[2*i],v=uv[2*i+1];
+            if(!(u>=b[0]-.01f && u<=b[2]+.01f && v>=b[1]-.01f && v<=b[3]+.01f)){inside=0;break;}
+            int right=u>=b[2]-.01f,bottom=v>=b[3]-.01f;
+            if((!right && u>b[0]+.01f)||(!bottom && v>b[1]+.01f)){inside=0;break;}
+            corners|=1u<<(right+2*bottom);
+        }
+        if(inside && (corners==7||corners==11||corners==13||corners==14))return 2+d;
+    }
+
     const float scale=256.0f/255.0f,tolerance=.01f;
     float low_u=uv[0]*scale,high_u=low_u,low_v=uv[1]*scale,high_v=low_v;
     for(unsigned i=0;i<3;++i){

@@ -19,15 +19,19 @@ SAFE_EMAIL = re.compile(r"(?i)^(?:[^<>\s]+@users\.noreply\.github\.com|codex@(?:
 
 def reviewed_timing_svg(name, data):
     """Allow only small path/gradient numeral sources; no embedded game images."""
-    if not re.fullmatch(r"assets/hud/timing-[0-9]\.svg",name) or len(data)>65536:
+    match=re.fullmatch(r"assets/hud/(timing|speed)-[0-9]\.svg",name)
+    if not match or len(data)>65536:
         return False
+    speed=match[1]=="speed"
+    gradient="gold" if speed else "face"
     if any(token in data.lower() for token in (b"<!",b"<?",b"data:",b"href")):
         return False
     try:
         root=ET.fromstring(data)
         namespace="{http://www.w3.org/2000/svg}"
         if root.tag!=namespace+"svg":return False
-        if root.attrib!={"width":"12","height":"27","viewBox":"0 0 12 27"}:return False
+        expected={"width":"29","height":"24","viewBox":"0 0 29 24"} if speed else {"width":"12","height":"27","viewBox":"0 0 12 27"}
+        if root.attrib!=expected:return False
         permitted={"defs":set(),"linearGradient":{"id","x1","y1","x2","y2"},
                    "stop":{"offset","stop-color"},
                    "path":{"d","fill","stroke","stroke-width","stroke-linecap","stroke-linejoin"}}
@@ -41,9 +45,9 @@ def reviewed_timing_svg(name, data):
                 if key=="d":
                     if not value or not re.fullmatch(r"[MmZzLlHhVvCcSsQqTtAaEe0-9+.,\s-]+",value):return False
                 elif key in ("fill","stroke","stop-color"):
-                    if value not in ("none","url(#face)") and not re.fullmatch(r"#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?",value):return False
+                    if value not in ("none","url(#"+gradient+")") and not re.fullmatch(r"#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?",value):return False
                 elif key=="id":
-                    if value!="face":return False
+                    if value!=gradient:return False
                 elif key=="stroke-linecap":
                     if value not in ("butt","round","square"):return False
                 elif key=="stroke-linejoin":

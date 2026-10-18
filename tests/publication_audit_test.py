@@ -40,4 +40,18 @@ class PublicationAuditTest(unittest.TestCase):
         for data in (b'<!DOCTYPE svg>'+valid,b'<?fixture?>'+valid,valid.replace(b'12',b'4096',1),b'not XML'):
             self.assertIn("unreviewed_svg",content_findings("assets/hud/timing-0.svg",data))
 
+    def test_speed_vectors_keep_strict_boundary(self):
+        template=b'<svg xmlns="http://www.w3.org/2000/svg" width="29" height="24" viewBox="0 0 29 24">CONTENT</svg>'
+        shape=b'<defs><linearGradient id="gold"><stop stop-color="#fff"/></linearGradient></defs><path d="M1 1H20V20Z" fill="none" stroke="url(#gold)"/>'
+        valid=template.replace(b'CONTENT',shape)
+        self.assertEqual(content_findings("assets/hud/speed-0.svg",valid),[])
+        for name in ("assets/hud/speed-10.svg","assets/hud/speed-test.svg","assets/hud/timing-0.svg","speed-0.svg"):
+            self.assertIn("unreviewed_svg",content_findings(name,valid))
+        for data in (valid.replace(b'29',b'30',1),valid.replace(b'gold',b'face'),
+                     template.replace(b'CONTENT',b'<image href="data:fixture"/>'),
+                     template.replace(b'CONTENT',b'<text>private metadata</text>'),
+                     template.replace(b'CONTENT',b'<path d="M1 1" fill="url(https://example.invalid)"/>'),
+                     template.replace(b'CONTENT',b'<!--hidden contents-->')):
+            self.assertIn("unreviewed_svg",content_findings("assets/hud/speed-0.svg",data))
+
 if __name__=="__main__":unittest.main()

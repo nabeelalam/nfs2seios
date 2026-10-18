@@ -373,3 +373,34 @@ Optimized and sanitized project-unit checks pass. An otherwise identical old-
 selector negative control passes digits 0-6 and fails at digit 7, proving this
 fixture covers the regression. This correction is not included in the build 20
 download above; no additional Apple build has been started for it.
+
+## Gold speed numerals: next device candidate
+
+Build 21's source adds ten new hand-drawn gold speedometer numerals. The existing
+Original/HD control is labelled HUD digits and switches timing and speed art
+together. The recorded `hd_timing_requested` field keeps its existing name for
+compatibility. Other HUD textures and text remain original.
+
+New vectors and their generated pixels contain no original game pixels. The
+generator reads only the ten fixed vector filenames and verifies their hashes
+and the strict SVG publication policy. A bounded decoder validates the complete
+stream before writing reserved cells in the existing auxiliary texture. The
+original GPU texture, shared timing gutters and game geometry remain intact.
+Full glyph-corner matching respects the original per-digit trims. Relocated
+gold sampling uses fragment high precision; the fallback retains original gold
+pixels while keeping HD timing numerals available.
+
+Local validation covers all ten timing and speed digits at native render size,
+Original/HD switching without reuploads, context recreation, suspended cleanup,
+exact whole-atlas generation, malformed-stream atomicity and memory-error checks.
+The integrated branch matches the accepted private prototype's sampled pixels.
+A bounded original split-screen run selected every gold digit in both views,
+with both players controlled, braking, reset and simulated suspend/resume. It
+ended cleanly; this was not a complete-race or physical-device acceptance test.
+
+One sequential standard-runner device build is justified to check the actual
+Apple compiler, package and shader path, then compare appearance and recorded
+frame time in normal and Low Power Mode. Main remains unchanged. No device
+performance, battery improvement or visual acceptance is claimed by these local
+results. The build 20 download above remains the latest inspected package until
+the new candidate is built and independently inspected.

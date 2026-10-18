@@ -157,7 +157,7 @@ NSString *system_core_text(){
         [NSUserDefaults.standardUserDefaults setBool:self.detailed forKey:@"NFSDetailedOverlay"];
     }]];
     const int hdMode=nfs_glide_hd_timing_mode();
-    UIAlertAction *timing=[UIAlertAction actionWithTitle:hdMode<0?@"HD timing unavailable":(hdMode?@"Timing digits: HD — switch to Original":@"Timing digits: Original — switch to HD") style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
+    UIAlertAction *timing=[UIAlertAction actionWithTitle:hdMode<0?@"HD HUD unavailable":(hdMode?@"HUD digits: HD — switch to Original":@"HUD digits: Original — switch to HD") style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
         if(nfs_glide_hd_timing_set_visible(hdMode==0)){
             nfs_reset_engine_metrics();nfs_reset_frame_rate();
             nfs_recording_latest_frame(-1,nfs_render_width(),nfs_render_height());

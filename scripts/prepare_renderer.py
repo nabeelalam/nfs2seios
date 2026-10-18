@@ -93,8 +93,7 @@ def prepare_hd_atlas(text, dest):
     checked('"vec4 texture = uTextureEnabled * texture2D(uTextureSampler, vTexCoord.st / vTexCoord.q);"',
             '"vec4 sampled = texture2D(uTextureSampler, vTexCoord.st / vTexCoord.q);"\n'
             '\t\t"if (uHdActive > 0.5) {"\n'
-            '\t\t"vec4 hd = texture2D(uHdTextureSampler, vTexCoord.st / vTexCoord.q);"\n'
-            '\t\t"if (vTexCoord.z > 0.5) sampled = hd;}"\n'
+            '#include "SpeedShader.inc"\n'
             '\t\t"vec4 texture = uTextureEnabled * sampled;"')
     checked('glUniform1i(glGetUniformLocation(g_shaderProgram, "uTextureSampler"), 0);',
             'glUniform1i(glGetUniformLocation(g_shaderProgram, "uTextureSampler"), 0);\n\t\tnfs_hd_program_created(g_shaderProgram);')
@@ -107,7 +106,7 @@ def prepare_hd_atlas(text, dest):
     checked('\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);',
             '\tnfs_hd_sync_uniform();\n\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);')
     checked('\tconst GrVertex *grVertices[3] = {a, b, c};',
-            '\tconst int hdDigit=g_textureEnabled && nfs_hd_triangle_selected(a,b,c);\n\tconst GrVertex *grVertices[3] = {a, b, c};')
+            '\tconst int hdDigit=g_textureEnabled ? nfs_hd_triangle_selected(a,b,c) : 0;\n\tconst GrVertex *grVertices[3] = {a, b, c};')
     checked('\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;',
             '\t\tg_textureCoord[g_trianglesCount].vertex[i].r = (float)hdDigit;\n\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;')
     checked('\t\tg_vertices->vertex[i].x = grVertices[i]->x - VertexSnap;',
@@ -138,7 +137,7 @@ def prepare_hd_atlas(text, dest):
     section = text[start:end]
     assert section.endswith('\n}\n')
     text = text[:start] + section[:-3] + '\n\tti->data=originalData;\n}\n' + text[end:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h'):
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

@@ -4,6 +4,7 @@
 #include "HdAtlas.h"
 #include "TextureDigest.h"
 #include "TimingFontPixels.inc"
+#include "BuiltinSpeed.h"
 static uint64_t nfs_timing_sample(const unsigned char *data){
     uint64_t value=UINT64_C(14695981039346656037);
     for(unsigned block=0;block<131072;block+=4096)for(unsigned i=0;i<16;++i)value=(value^data[block+i])*UINT64_C(1099511628211);
@@ -33,7 +34,8 @@ static int nfs_timing_build(NfsHdAtlas *atlas,unsigned size,const void *original
         unsigned index=((y/4)*256+x/4)*2,value=src[index]|((unsigned)src[index+1]<<8);unsigned char *pixel=next.rgba+((size_t)y*1024+x)*4;
         pixel[0]=((value>>11)&31)*255/31;pixel[1]=((value>>6)&31)*255/31;pixel[2]=((value>>1)&31)*255/31;pixel[3]=(value&1)?255:0;
     }
-    if(!nfs_timing_expand(nfs_timing_pixels_rle,sizeof(nfs_timing_pixels_rle),next.rgba,4194304)){nfs_hd_atlas_free(&next);return 0;}
+    if(!nfs_timing_expand(nfs_timing_pixels_rle,sizeof(nfs_timing_pixels_rle),next.rgba,4194304) ||
+       !nfs_speed_expand(nfs_speed_pixels_rle,sizeof(nfs_speed_pixels_rle),next.rgba,4194304)){nfs_hd_atlas_free(&next);return 0;}
     nfs_hd_atlas_free(atlas);*atlas=next;return 1;
 }
 #endif
