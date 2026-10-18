@@ -1,11 +1,11 @@
 # Personal installation without a Mac
 
-Build 18 is an independently inspected thin ARM64 iOS-device Release package.
+Build 19 is an independently inspected thin ARM64 iOS-device Release package.
 Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 18 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39118406383-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+1. Download the [build 19 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39134676336-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
 2. Update the existing app through your ready SideStore setup, importing
    NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
    performs personal signing; the ZIP itself is unsigned.
@@ -30,6 +30,16 @@ The app requests fullscreen and opts into Game Mode. To filter notifications,
 configure [Gaming Focus](https://support.apple.com/en-us/105118) on the iPad.
 The app cannot force all system notifications off.
 
+## Record a session
+
+Four-finger tap to show diagnostics, tap the FPS label and choose Start session
+recording. Play your race; you may hide diagnostics while recording. Afterwards,
+show diagnostics, tap the label and choose Stop & save recording, then Share log.
+Logs are also in Files, On My iPad, NFS II SE, Diagnostics. Share last recording
+works after relaunch. Tell the recipient the track, cars and mode; Low Power Mode
+is recorded automatically. Share logs privately. Recording stops on backgrounding
+or after 60 minutes, and interrupted sessions may contain partial logs.
+
 ## Input and rendering controls
 
 One finger moves the cursor and taps to click; two fingers send Escape, three
@@ -41,7 +51,7 @@ Pause before changing render size. Settings offer 640x480, 960x720, 1280x960
 and native screen pixels in the original 4:3 view; the overlay shows actual
 render size. CPU/app is the share of total CPU capacity, so one busy core can
 limit performance despite a low percentage. GPU utilization is not estimated.
-Build 18 diagnostics, controlled battery savings and HD artwork still need physical validation.
+Build 19 diagnostics, controlled battery savings and HD artwork still need physical validation.
 
 ## Separately supplied game files
 
@@ -130,7 +140,7 @@ Game CPU average. Physical improvement is unverified; report FPS and Game CPU
 in comparable busy and clear sections and any freeze or incorrect behavior.
 
 
-## Build 18 diagnostics
+## Build 19 diagnostics
 
 Battery percentage appears in compact and detailed views. Detailed view puts
 Game CPU time in ms/frame directly below FPS and keeps App CPU percentage
@@ -138,7 +148,7 @@ separate. System core percentages, when available, measure the whole iPad;
 they cannot attribute this app's work to individual cores. Unsupported counters
 are omitted. The new sampling stops when diagnostics are hidden.
 
-Build 18 retains build 17 gameplay code; no speedup is claimed. Physical build 17
+Build 19 retains build 17 gameplay code; no speedup is claimed. Physical build 17
 feedback reports Proving Grounds running fine and North Country split-screen
 60 FPS normally, 37-51 FPS in Low Power Mode. The approximate CPU percentage is
 not a Game CPU timing measurement. Settings and test conditions were not

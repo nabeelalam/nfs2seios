@@ -34,3 +34,6 @@ NFSIISE/
 *.fsh
 *.bnk
 *.mus
+
+*.jsonl
+/Diagnostics/

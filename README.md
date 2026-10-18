@@ -10,19 +10,17 @@ separately. This repository contains source and public development documentation
 it does not contain original game executables, owned assets, signing credentials
 or private operational records.
 
-The verified [build 18 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39118406383-1/NFSIISEGame-development-unsigned.zip) is ready for personal signing.
-It adds battery percentage, a prominent Game CPU time in ms/frame, and per-core
-activity for the whole iPad when the system API provides valid counters.
-Per-core readings are not this app's usage on each core. Sampling occurs at most
-once per second while detailed diagnostics are visible. The game engine,
-renderer, audio ownership, input and import behavior are retained from build 17;
-this diagnostic update makes no FPS or battery improvement claim.
-
-Four-finger tap shows or hides diagnostics. Tap the overlay for settings and
-enable Detailed diagnostics. Game CPU averages need sixty submissions and
-exclude other workers, GPU and waiting. App CPU is separately labelled as a
-percentage across all cores. Battery percentage also appears in compact view.
-Actual per-core API availability and the new layout still need an iPad test.
+The inspected [build 19 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39134676336-1/NFSIISEGame-development-unsigned.zip) is ready for personal signing.
+It adds start/stop session recording so a race can be logged without watching
+the overlay. Four-finger tap, tap the FPS label, choose Start session recording,
+then Stop & save recording and Share log after the race. Recording continues
+with the overlay hidden. Files are also available in the app Diagnostics folder.
+Low Power Mode, FPS, engine CPU time, app/main CPU work, RAM, battery, brightness,
+thermal state and available whole-system core activity are captured about once
+a second. The core readings are not per-core attribution of this app, and battery
+percentage is not measured energy. Missing values and sampling gaps are explicit.
+This diagnostic update claims no FPS or battery improvement; game engine,
+renderer, audio ownership, input and import behavior are retained.
 
 Physical build 17 feedback reports Proving Grounds running fine and North
 Country split-screen maintaining 60 FPS normally, versus 37-51 FPS in Low Power
@@ -31,10 +29,10 @@ was obtained. Short whole-percentage battery observations suggest a difference
 but do not establish precise energy savings or abnormal consumption. Graphics
 settings and matching test conditions were not reconfirmed with that feedback.
 
-The build 18 sequential run passed Linux validation and 32 Apple host checks,
+The build 19 sequential run passed Linux validation and 33 Apple host checks,
 including the actual system-core provider, plus two sets of 40,000 mixed cases.
 Independent inspection verifies a thin ARM64 iOS-device Release package, version
-18, containing only executable, metadata and licenses. No game assets, signing
+19, containing only executable, metadata and licenses. No game assets, signing
 material or sanitizer runtime is included. No probe was rebuilt, no Actions
 artifact uploaded and no extra build dispatched for these documentation changes.
 
@@ -48,8 +46,9 @@ and sharper HUD artwork remain open.
 Use the [installation guide](INSTALLING.md) to update through SideStore with the
 same Apple Account and keep using the separately stored original game folder.
 For the next comparison, use the same North Country split-screen section,
-Native resolution, full graphics and Lock FPS to 30 off. Record FPS and the
-explicit Game CPU time in ms/frame in normal and Low Power Mode.
+Native resolution, full graphics and Lock FPS to 30 off. Capture separate diagnostic recordings in normal and Low Power Mode, then share
+the logs privately with the track, cars and game mode. Actual iPad recorder
+controls, export and overhead still need physical testing.
 
 - [PLAN.md](PLAN.md): mission, progress and remaining acceptance criteria.
 - [BUILDING.md](BUILDING.md): preparation and controlled cloud compilation.

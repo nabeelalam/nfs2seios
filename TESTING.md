@@ -512,3 +512,60 @@ North Country split-screen 60 FPS and Low Power Mode 37-51 FPS. The CPU percenta
 is approximate; Game CPU timing was not measured. Short battery observations
 are not controlled energy measurements. The Low Power Mode 60 FPS goal remains
 unmet; build 18 is diagnostic and claims no performance or energy improvement.
+
+
+## Session recording (build 19)
+
+Four-finger tap shows diagnostics. Tap the FPS label, then choose **Start session
+recording** before a race. The visible overlay shows REC while recording. You can
+hide the overlay with another four-finger tap; recording continues. When finished,
+show diagnostics, tap its label and choose **Stop & save recording**, then **Share
+log**. **Share last recording** also works after reopening the app. The file is in
+Files, On My iPad, NFS II SE, Diagnostics. Send it privately with the track, cars,
+mode and approximate race start time; do not commit personal session logs.
+
+Each JSONL file contains a schema header, approximately one sample per second and
+an end record after a clean stop. It records FPS, engine-thread CPU milliseconds
+per submission, interval process/main-thread CPU work, normalized app CPU, RAM,
+battery level and charging state, brightness, thermal state, Low Power Mode,
+render dimensions, frame cap and available whole-system core activity. Low Power
+Mode is recorded automatically; manual observation of the overlay is unnecessary.
+No game assets, game folder paths or personal device identifiers are recorded.
+
+Game CPU is the latest 60-submission measurement, not instantaneous total-device
+utilization; repeated sample IDs identify repeated measurements. Unavailable
+values are null. Core activity is for the whole iPad, not per-core attribution of
+this app. Battery percentage is coarse OS telemetry, not a wattage measurement.
+Intervals and FPS age are included; gaps are not filled with invented samples.
+The recorder can add measurement overhead, so use matching recording settings
+when comparing runs; this build does not claim improved FPS or battery life.
+
+Sampling stops automatically on backgrounding, window replacement, storage/write
+failure, a bounded writer backlog, or after 60 minutes/3600 samples. Each queued
+row is flushed on a serial writer; pending rows are bounded. A crash or blocked
+main thread can leave a partial file or sampling gap without an end record. An
+interrupted file is still available through Files or Share last recording.
+Previously saved logs are preserved. For battery comparisons use the same race,
+graphics, brightness, volume and charging state, with separate longer sessions
+for normal and Low Power Mode; short percentage changes alone do not establish
+energy efficiency. Actual iPad recording controls, export and runtime cost still
+require physical testing after installation.
+
+For a local summary, run `python scripts/summarize_diagnostic_session.py
+private-session.jsonl` with a privately supplied log. The summary separates power
+modes, deduplicates engine CPU windows, flags incomplete recordings and sampling
+gaps, and reports sampled distributions without inventing wattage or a battery
+drain rate. Seven local fixtures cover power modes, repeat windows, missing data,
+interrupted or malformed logs, partial saves and a full 3600-row session. Session
+JSONL files and the Diagnostics folder are ignored by Git; keep them private.
+
+Build 19 source and package validation: the single sequential public workflow
+39134676336 passed Linux regressions and 33 Apple host tests. The actual recorder
+Objective-C++ file compiled for iPad ARM64 with the existing Release/ThinLTO
+configuration. Independent package inspection confirmed build 19, iOS device,
+minimum iOS 16, unchanged app identity and exactly five executable/metadata/license
+files, without game assets or signing material. Portable JSON tests cover a
+comma-decimal global locale, nonfinite values, unavailable readings, bounded
+duration/rows and the safe end record; sampling tests cover published window
+identity and rejection of in-flight stale values. These checks do not establish
+physical recorder controls, export, race stability or battery overhead.

@@ -40,6 +40,7 @@ std::atomic<bool> capture{false};
 std::atomic<uint64_t> generation{1};
 std::mutex publication;
 int64_t latest_ns=-1;
+uint64_t sample_id=0;
 thread_local bool owner=false;
 thread_local nfs::EngineCpuWindow window;
 void reset_locked(){generation.fetch_add(1,std::memory_order_release);latest_ns=-1;}
@@ -61,10 +62,13 @@ extern "C" void nfs_engine_frame_boundary(){
     // The clock read occurs outside this mutex: reset can invalidate an in-flight
     // sample without waiting for a platform query or publishing stale values.
     std::lock_guard<std::mutex> lock(publication);
-    if(capture.load(std::memory_order_acquire) && generation.load(std::memory_order_acquire)==epoch)latest_ns=result;
+    if(capture.load(std::memory_order_acquire) && generation.load(std::memory_order_acquire)==epoch){latest_ns=result;++sample_id;}
 }
-extern "C" double nfs_engine_cpu_ms_per_frame(){
+extern "C" double nfs_engine_cpu_sample(uint64_t *id){
+    if(id)*id=0;
     if(!capture.load(std::memory_order_acquire))return -1;
     std::lock_guard<std::mutex> lock(publication);
+    if(id)*id=sample_id;
     return latest_ns<0?-1:double(latest_ns)/1000000.0;
 }
+extern "C" double nfs_engine_cpu_ms_per_frame(){return nfs_engine_cpu_sample(nullptr);}
