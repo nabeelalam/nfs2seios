@@ -25,4 +25,19 @@ class PublicationAuditTest(unittest.TestCase):
         self.assertTrue(SAFE_EMAIL.fullmatch("example@users.noreply.github.com"))
         self.assertFalse(SAFE_EMAIL.fullmatch("private@example.invalid"))
 
+    def test_reviewed_vector_sources_only(self):
+        template=b'<svg xmlns="http://www.w3.org/2000/svg" width="12" height="27" viewBox="0 0 12 27">CONTENT</svg>'
+        valid=template.replace(b'CONTENT',b'<path d="M1 1H10V25H1Z" fill="#fff"/>')
+        self.assertEqual(content_findings("assets/hud/timing-0.svg",valid),[])
+        for name in ("image.svg","assets/hud/other.svg","assets/hud/timing-10.svg"):
+            self.assertIn("unreviewed_svg",content_findings(name,valid))
+        for content in (b'<image href="data:image/png;base64,AAAA"/>',b'<script>anything</script>',
+                        b'<foreignObject/>',b'<text>private metadata</text>',
+                        b'<path d="M1 1" fill="url(file:///fixture)"/>',
+                        b'<path d="M1 1" onclick="fixture"/>',b'<!--hidden image bytes-->',
+                        b'<path d="not geometry"/>',b'<path d="M1 1" style="fill:red"/>'):
+            self.assertIn("unreviewed_svg",content_findings("assets/hud/timing-0.svg",template.replace(b'CONTENT',content)))
+        for data in (b'<!DOCTYPE svg>'+valid,b'<?fixture?>'+valid,valid.replace(b'12',b'4096',1),b'not XML'):
+            self.assertIn("unreviewed_svg",content_findings("assets/hud/timing-0.svg",data))
+
 if __name__=="__main__":unittest.main()

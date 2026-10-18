@@ -3,6 +3,7 @@ import argparse
 import json
 import re
 import subprocess
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +17,42 @@ BLOCKED = re.compile(r"(?i)(^(?:game|gamedata|fedata|\.build|\.tools|candidates|
 ALLOWED_SUFFIXES = {".md", ".json", ".py", ".cpp", ".c", ".h", ".inc", ".mm", ".plist", ".yml", ".yaml"}
 SAFE_EMAIL = re.compile(r"(?i)^(?:[^<>\s]+@users\.noreply\.github\.com|codex@(?:localhost|local|invalid)|[^<>\s]+@example\.(?:com|org|net))$")
 
+def reviewed_timing_svg(name, data):
+    """Allow only small path/gradient numeral sources; no embedded game images."""
+    if not re.fullmatch(r"assets/hud/timing-[0-9]\.svg",name) or len(data)>65536:
+        return False
+    if any(token in data.lower() for token in (b"<!",b"<?",b"data:",b"href")):
+        return False
+    try:
+        root=ET.fromstring(data)
+        namespace="{http://www.w3.org/2000/svg}"
+        if root.tag!=namespace+"svg":return False
+        if root.attrib!={"width":"12","height":"27","viewBox":"0 0 12 27"}:return False
+        permitted={"defs":set(),"linearGradient":{"id","x1","y1","x2","y2"},
+                   "stop":{"offset","stop-color"},
+                   "path":{"d","fill","stroke","stroke-width","stroke-linecap","stroke-linejoin"}}
+        for node in root.iter():
+            if (node.text or "").strip() or (node.tail or "").strip():return False
+            if node is root:continue
+            if not node.tag.startswith(namespace):return False
+            tag=node.tag[len(namespace):]
+            if tag not in permitted or set(node.attrib)-permitted[tag]:return False
+            for key,value in node.attrib.items():
+                if key=="d":
+                    if not value or not re.fullmatch(r"[MmZzLlHhVvCcSsQqTtAaEe0-9+.,\s-]+",value):return False
+                elif key in ("fill","stroke","stop-color"):
+                    if value not in ("none","url(#face)") and not re.fullmatch(r"#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?",value):return False
+                elif key=="id":
+                    if value!="face":return False
+                elif key=="stroke-linecap":
+                    if value not in ("butt","round","square"):return False
+                elif key=="stroke-linejoin":
+                    if value not in ("miter","round","bevel"):return False
+                elif not re.fullmatch(r"[0-9]+(?:\.[0-9]*)?|\.[0-9]+",value) or float(value)>4096:
+                    return False
+        return True
+    except (ET.ParseError,ValueError,OverflowError):return False
+
 def git(*args):
     return subprocess.check_output(["git", *args], cwd=ROOT)
 
@@ -23,7 +60,9 @@ def content_findings(name, data, mode="100644"):
     found = []
     if BLOCKED.search(name): found.append("forbidden_file")
     if mode == "120000": found.append("symlink")
-    if Path(name).suffix not in ALLOWED_SUFFIXES and name not in {".gitignore", "CMakeLists.txt", ".githooks/pre-commit", ".githooks/pre-push"}:
+    if Path(name).suffix==".svg":
+        if not reviewed_timing_svg(name,data):found.append("unreviewed_svg")
+    elif Path(name).suffix not in ALLOWED_SUFFIXES and name not in {".gitignore", "CMakeLists.txt", ".githooks/pre-commit", ".githooks/pre-push"}:
         found.append("unreviewed_file_type")
     if len(data) > 1024 * 1024: found.append("large_file_review")
     if b"\0" in data: found.append("binary_file")

@@ -178,5 +178,38 @@ reset, simulated background/resume and clean shutdown. The temporary pack is
 removed and copied configuration restored afterward. The test retains 64 game
 objects and changes only the renderer and app lifetime. This 480-line host run
 does not establish HD visual quality, device performance or energy efficiency.
-Next redraw and review one visible HUD element, test multiple output sizes and
-track transitions, then consider one Apple build for device acceptance.
+Timing numeral candidates follow below. Native-display review, track transitions
+and device frame-time/memory checks remain required before final acceptance.
+
+## Timing digit artwork candidate
+
+The first ten hand-drawn timing numerals are in `assets/hud/timing-0.svg` through
+`timing-9.svg`, with a source-hash/placement catalog in `timing-font.json`.
+These are new path/gradient artwork, not embedded original images. The style is
+provisional. Only these specifically named, bounded path/gradient SVGs are allowed
+by publication checks; embedded images, scripts, external resources, text,
+metadata/comments, unknown attributes and other SVG locations remain rejected.
+
+Each 12x27 vector canvas renders at 48x108 pixels. Only the first 104 raster rows
+replace a 12x26 original rectangle: original atlas row47 is shared with the speed
+font and must remain untouched. The private assembled atlas is 1024-square.
+Every pixel outside the ten rectangles, including the shared row, is checked
+against original nearest expansion. Colon/dot punctuation and other HUD elements
+are still original.
+
+A bounded original-data split race with both native controllers passes 480 to
+960 to 480 render-height changes, reset, simulated background/resume and clean
+shutdown. The visual test first recognizes unchanged player indicators, captures
+the candidate HUD as its own reference, then requires its clock to advance. An
+earlier original-font template timeout is retained as a test-harness failure,
+not accepted as a game pass. Screenshots still present at 640x480 while the game
+framebuffer reaches 1280x960; native-display visual quality is not established.
+
+For developers, `scripts/build_timing_atlas.py` accepts a private captured
+256-square GPU RGBA5551 atlas, its independently known SHA-256 and a new output
+filename. It verifies the capture, vector source catalog and layout, then uses
+locally installed librsvg/Cairo to create the optional pack without modifying
+originals. The pack contains original data and must remain private. This is an
+offline development path; convenient automatic generation from the user's game
+assets and final iPad artwork delivery are still required. No artwork is added
+to the main branch or application package by this prototype.

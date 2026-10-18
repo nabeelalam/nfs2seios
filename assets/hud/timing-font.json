@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "status": "Provisional hand-drawn timing numeral artwork; host proof only",
+  "originalGamePixelsIncluded": false,
+  "scale": 4,
+  "sharedNextSpriteRow": 47,
+  "sharedNextSpriteRowMustRemainOriginal": true,
+  "entries": [
+    {
+      "digit": 0,
+      "file": "timing-0.svg",
+      "sha256": "617118a89e703e4712fef80af1a05cae3b6ca965a44ee6ec74f2e69659409e70",
+      "atlasRect": [
+        48,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 1,
+      "file": "timing-1.svg",
+      "sha256": "7679ea5b21d4bd01fcc265acd83588b2931edc9e9c838798295d518b052360e8",
+      "atlasRect": [
+        60,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 2,
+      "file": "timing-2.svg",
+      "sha256": "0195efe3cc0e4b602a1cfe2b5f4c6131821d3b14d679c4c3bdca752b739cccb1",
+      "atlasRect": [
+        72,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 3,
+      "file": "timing-3.svg",
+      "sha256": "2c19b9d0ea549612bdf471a6d2d3f264a49aef35420b2961ed60181ea3eac47c",
+      "atlasRect": [
+        84,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 4,
+      "file": "timing-4.svg",
+      "sha256": "04cfa04a40ec9539920ab53c25e2371d12f5f960680457853ab35e412fd667b1",
+      "atlasRect": [
+        96,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 5,
+      "file": "timing-5.svg",
+      "sha256": "8044e6b61ab24e6239069db2f81500c9dd404c26431c9f8510e6f08458f33c32",
+      "atlasRect": [
+        108,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 6,
+      "file": "timing-6.svg",
+      "sha256": "364edfc58700322edd76980c20d3a059a158256dff3e2ba8b64bba0d3ef638bc",
+      "atlasRect": [
+        120,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 7,
+      "file": "timing-7.svg",
+      "sha256": "5b38d78a021935d4dc23fa11e7ecdc94647e2153141e8adbc1cabc30b2e98ab6",
+      "atlasRect": [
+        132,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 8,
+      "file": "timing-8.svg",
+      "sha256": "5401916461133d055ba10896c21c67ce436b9b11fc06c7ee5356e6ddeef3fbaf",
+      "atlasRect": [
+        144,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    },
+    {
+      "digit": 9,
+      "file": "timing-9.svg",
+      "sha256": "7adc195eeab7cea3ce25f6579ae38f383ff95f8a1b65e7cf944b6d6b1e10c546",
+      "atlasRect": [
+        156,
+        21,
+        12,
+        26
+      ],
+      "vectorViewBox": [
+        0,
+        0,
+        12,
+        27
+      ]
+    }
+  ]
+}
