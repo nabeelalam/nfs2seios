@@ -11,6 +11,9 @@ void nfs_reset_engine_metrics(void);
 void nfs_engine_frame_boundary(void);
 double nfs_engine_cpu_ms_per_frame(void);
 #ifdef __cplusplus
+double nfs_engine_cpu_sample(uint64_t *sample_id);
+#endif
+#ifdef __cplusplus
 }
 namespace nfs {
 int64_t current_thread_cpu_ns();

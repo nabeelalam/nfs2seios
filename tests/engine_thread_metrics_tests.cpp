@@ -40,9 +40,13 @@ int main(){
     nfs_set_engine_metrics_capture(1);frames(1);CHECK(queries==1 && nfs_engine_cpu_ms_per_frame()<0);
     cpu=120000000;frames(59);CHECK(queries==1);frames(1);
     CHECK(queries==2 && nfs_engine_cpu_ms_per_frame()==2);
+    uint64_t first_id=0,repeated_id=0;
+    CHECK(nfs_engine_cpu_sample(&first_id)==2 && first_id>0);
+    CHECK(nfs_engine_cpu_sample(&repeated_id)==2 && repeated_id==first_id);
     std::thread foreign([]{frames(100000);nfs_engine_metrics_owner_end();});foreign.join();
     CHECK(queries==2 && nfs_engine_cpu_ms_per_frame()==2);
     cpu=120000000;frames(60);CHECK(queries==3 && nfs_engine_cpu_ms_per_frame()==0);
+    CHECK(nfs_engine_cpu_sample(&repeated_id)==0 && repeated_id>first_id);
     cpu=-1;frames(60);CHECK(queries==4 && nfs_engine_cpu_ms_per_frame()<0);
     frames(59);CHECK(queries==4);frames(1);CHECK(queries==5 && nfs_engine_cpu_ms_per_frame()<0);
     cpu=500000000;frames(60);CHECK(queries==6 && nfs_engine_cpu_ms_per_frame()<0);
@@ -51,6 +55,7 @@ int main(){
     cpu=60000001;frames(60);CHECK(queries==9 && nfs_engine_cpu_ms_per_frame()==1);
     nfs_reset_engine_metrics();CHECK(nfs_engine_cpu_ms_per_frame()<0);frames(1);CHECK(queries==10);
     nfs_set_engine_metrics_capture(0);frames(100000);CHECK(queries==10 && nfs_engine_cpu_ms_per_frame()<0);
+    repeated_id=99;CHECK(nfs_engine_cpu_sample(&repeated_id)<0 && repeated_id==0);
     nfs_set_engine_metrics_capture(1);frames(1);CHECK(queries==11 && nfs_engine_cpu_ms_per_frame()<0);
     cpu+=180000000;frames(60);CHECK(nfs_engine_cpu_ms_per_frame()==3);
     nfs_engine_metrics_owner_end();CHECK(nfs_engine_cpu_ms_per_frame()<0);const auto before=queries.load();frames(1000);CHECK(queries==before);

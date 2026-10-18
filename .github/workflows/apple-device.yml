@@ -49,7 +49,7 @@ jobs:
           python3 tests/guest_copy_semantics_test.py
           if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
           cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
-          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests -j 3
+          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests -j 3
           ctest --test-dir .build/host --output-on-failure
       - name: Configure native iPadOS targets
         run: |
@@ -113,6 +113,8 @@ jobs:
           tag="development-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           cat > .build/release-notes.md <<'NOTES'
           Native ARM64 iPad development candidate. Personal signing through SideStore is required. Original game assets must be supplied separately.
+
+          Build 19 adds start/stop session recording in the diagnostics menu. Four-finger tap, tap the FPS label, start recording before a race, then stop and share the log. Logs are also available in Files under the app Diagnostics folder. Recording continues with the overlay hidden and automatically captures Low Power Mode. No FPS or battery improvement is claimed.
 
           This is an experimental native ARM64 development package. Consult the source revision and current project documentation for the changes in this candidate. Compilation and package checks do not establish physical iPad performance, battery efficiency, stability or complete device acceptance.
 

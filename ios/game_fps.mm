@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #import <UIKit/UIKit.h>
+#import "DiagnosticRecorder.h"
 #import <mach/mach.h>
 #include <SDL3/SDL.h>
 #include "FramePresentation.h"
@@ -141,7 +142,7 @@ NSString *system_core_text(){
     while(presenter.presentedViewController)presenter=presenter.presentedViewController;
     if(!presenter || [presenter isKindOfClass:UIAlertController.class])return;
     UIAlertController *sheet=[UIAlertController alertControllerWithTitle:@"Rendering & diagnostics"
-        message:@"Pause before changing resolution. Native keeps the original 4:3 view. App CPU is averaged across all cores. Game CPU time measures the engine thread per frame. System-core readings cover the whole iPad when available. Four-finger tap shows or hides diagnostics."
+        message:@"Pause before changing resolution. Native keeps the original 4:3 view. App CPU is averaged across all cores. Game CPU time measures the engine thread per frame. System-core readings cover the whole iPad when available. Four-finger tap shows or hides diagnostics. Session recording samples about once a second and continues with diagnostics hidden."
         preferredStyle:UIAlertControllerStyleActionSheet];
     NSArray<NSNumber *> *heights=@[@480,@720,@960,@0];
     NSArray<NSString *> *titles=@[@"640 × 480 (original)",@"960 × 720",@"1280 × 960",@"Native screen pixels (4:3)"];
@@ -154,6 +155,20 @@ NSString *system_core_text(){
         reset_core_load();
         [NSUserDefaults.standardUserDefaults setBool:self.detailed forKey:@"NFSDetailedOverlay"];
     }]];
+    __weak UIAlertController *weakSheet=sheet;
+    if(nfs_recording_finishing()){
+        UIAlertAction *saving=[UIAlertAction actionWithTitle:@"Saving recording…" style:UIAlertActionStyleDefault handler:nil];saving.enabled=NO;[sheet addAction:saving];
+    }else{
+        const bool recording=nfs_recording_active();
+        [sheet addAction:[UIAlertAction actionWithTitle:recording?@"Stop & save recording":@"Start session recording" style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
+            [weakSheet dismissViewControllerAnimated:YES completion:^{
+                if(recording)nfs_recording_stop(@"manual",true);else nfs_recording_start(self.host);
+            }];
+        }]];
+    }
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Share last recording" style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
+        [weakSheet dismissViewControllerAnimated:YES completion:^{nfs_recording_share(self.host);}];
+    }]];
     [sheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     sheet.popoverPresentationController.sourceView=self.label;
     sheet.popoverPresentationController.sourceRect=self.label.bounds;
@@ -161,14 +176,21 @@ NSString *system_core_text(){
 }
 @end
 static NFSPerformanceOverlay *overlay=nil;
+extern "C" void nfs_sync_diagnostic_capture(){
+    static bool capturing=false;
+    const bool needed=overlay.visible || nfs_recording_active();
+    [overlay setDeviceMonitoring:needed];
+    if(needed!=capturing){capturing=needed;nfs_set_engine_metrics_capture(needed?1:0);}
+}
 extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int width,int height){
     auto *window=static_cast<SDL_Window *>(pointer);
     UIWindow *native=(__bridge UIWindow *)SDL_GetPointerProperty(SDL_GetWindowProperties(window),SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER,nullptr);
     if(!native)return;
     if(!overlay)overlay=[[NFSPerformanceOverlay alloc] init];
     if(overlay.label.superview!=native){
+        nfs_recording_stop(@"window_changed",false);
         [overlay setDeviceMonitoring:NO];reset_core_load();
-        [overlay.label removeFromSuperview];[overlay.keyboardButton removeFromSuperview];[overlay.limitRow removeFromSuperview];overlay.host=native;overlay.window=window;overlay.visible=NO;nfs_set_engine_metrics_capture(0);
+        [overlay.label removeFromSuperview];[overlay.keyboardButton removeFromSuperview];[overlay.limitRow removeFromSuperview];overlay.host=native;overlay.window=window;overlay.visible=NO;nfs_sync_diagnostic_capture();
         NSUserDefaults *preferences=NSUserDefaults.standardUserDefaults;
         overlay.detailed=[preferences objectForKey:@"NFSDetailedOverlay"]?[preferences boolForKey:@"NFSDetailedOverlay"]:YES;
         UILabel *label=[[UILabel alloc] init];overlay.label=label;
@@ -222,10 +244,11 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
         if([preferences objectForKey:@"NFSRenderHeight"])
             [overlay selectHeight:[preferences integerForKey:@"NFSRenderHeight"]];
     }
+    nfs_recording_latest_frame(fps,width,height);
     if(!overlay.visible)return;
     const BOOL lowPower=NSProcessInfo.processInfo.lowPowerModeEnabled;
     static BOOL powerKnown=NO,previousPower=NO;
-    if(powerKnown && previousPower!=lowPower){nfs_reset_engine_metrics();reset_core_load();}
+    if(powerKnown && previousPower!=lowPower){if(!nfs_recording_active())nfs_reset_engine_metrics();reset_core_load();}
     powerKnown=YES;previousPower=lowPower;
     mach_task_basic_info_data_t info{};mach_msg_type_number_t count=MACH_TASK_BASIC_INFO_COUNT;
     const BOOL memoryAvailable=task_info(mach_task_self(),MACH_TASK_BASIC_INFO,reinterpret_cast<task_info_t>(&info),&count)==KERN_SUCCESS;
@@ -239,6 +262,7 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
     NSString *cores=overlay.detailed?system_core_text():@"";
     overlay.label.text=overlay.detailed?[NSString stringWithFormat:@"FPS %.1f · Frame %.1f ms\n%@\nApp CPU (all cores): %@\nRAM %@ · Battery %@%@\nRender %d × %d\nLow Power Mode: %@",fps,fps>0?1000.0/fps:0,engineLine,cpuText,memoryText,batteryText,cores,width,height,lowPower?@"On":@"Off"]:[NSString stringWithFormat:@"FPS %.1f · Battery %@ · Tap",fps,batteryText];
     overlay.label.hidden=!overlay.visible;overlay.limitRow.hidden=!overlay.visible;
+    if(nfs_recording_active())overlay.label.text=[@"● REC · " stringByAppendingString:overlay.label.text];
     [native bringSubviewToFront:overlay.label];
     [native bringSubviewToFront:overlay.limitRow];
     [native bringSubviewToFront:overlay.keyboardButton];
@@ -246,7 +270,6 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
 extern "C" void nfs_toggle_performance_overlay(void *window){
     if(!overlay || overlay.window!=window)nfs_show_frame_rate(window,0,-1,nfs_render_width(),nfs_render_height());
     overlay.visible=!overlay.visible;
-    [overlay setDeviceMonitoring:overlay.visible];reset_core_load();
-    nfs_set_engine_metrics_capture(overlay.visible?1:0);
+    nfs_sync_diagnostic_capture();reset_core_load();
     overlay.label.hidden=!overlay.visible;overlay.limitRow.hidden=!overlay.visible;
 }
