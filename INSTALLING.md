@@ -1,11 +1,11 @@
 # Personal installation without a Mac
 
-Build 19 is an independently inspected thin ARM64 iOS-device Release package.
+The separate HD branch offers build 21, an independently inspected thin ARM64 iOS-device Release package. It adds gold speed digits and the timing-digit correction; main remains on its separate build 19 baseline.
 Personal SideStore signing is still required. Original game files stay separate.
 
 ## Update the existing game
 
-1. Download the [build 19 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39134676336-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
+1. Download the [build 21 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
 2. Update the existing app through your ready SideStore setup, importing
    NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
    performs personal signing; the ZIP itself is unsigned.
@@ -155,3 +155,7 @@ not a Game CPU timing measurement. Settings and test conditions were not
 reconfirmed. Compare the same section with Native resolution, full graphics,
 Lock FPS to 30 off, then record FPS and Game CPU time in ms/frame in each mode.
 Actual build 18 core readings, layout and regressions remain unverified on iPad.
+
+## HD digit comparison
+
+Build 21 is the next experimental HD test, superseding build 20 for this comparison. In the hidden diagnostic settings, HUD digits switches timing and speed numerals together between Original and HD. The existing session recorder uses the compatible `hd_timing_requested` field. Use Native resolution, full graphics, the 30 FPS lock off and matched North Country split-screen sections. Make separate recordings in normal power and Low Power Mode, comparing both art modes within each recording. Stop and share each JSONL file; no manual counter transcription is required. Allow a few seconds after switching modes. Report any missing, clipped or incorrect digits or a crash. These device results remain unverified.

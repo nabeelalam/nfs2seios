@@ -402,5 +402,14 @@ One sequential standard-runner device build is justified to check the actual
 Apple compiler, package and shader path, then compare appearance and recorded
 frame time in normal and Low Power Mode. Main remains unchanged. No device
 performance, battery improvement or visual acceptance is claimed by these local
-results. The build 20 download above remains the latest inspected package until
-the new candidate is built and independently inspected.
+results. The inspected build 21 download below now supersedes build 20 for the
+next physical comparison.
+
+## Verified build 21 delivery
+
+Experimental download: [Build 21 unsigned ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip).
+Runtime source: `aa276622b62e06baef9df001a92b40daf684fbc9`.
+
+One sequential standard public run passed Linux gates and 37 Apple host checks. Independent compiler-log and package inspection confirms Release ARM64 for iOS 16, both bounded ThinLTO links, actual renderer settings, all generated gold artwork embedded, and an allowlisted five-file app. Original assets, signing material, private directories, private test probes and sanitizer runtimes are excluded. No Probe, cache or Actions artifact upload was used.
+
+Update the existing app through SideStore with the same Apple Account and keep the separately supplied game folder. Compare HUD digits Original/HD in matched North Country split-screen sections at Native resolution, full graphics and the 30 FPS lock off. Record normal power and Low Power Mode separately, stop and share the JSONL recordings. Physical appearance, stability, frame time and battery impact remain open. Main is unchanged, and other HUD artwork is still original. This documentation update requires no additional build.

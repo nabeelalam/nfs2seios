@@ -569,3 +569,9 @@ comma-decimal global locale, nonfinite values, unavailable readings, bounded
 duration/rows and the safe end record; sampling tests cover published window
 identity and rejection of in-flight stale values. These checks do not establish
 physical recorder controls, export, race stability or battery overhead.
+
+## Experimental build 21 HD acceptance
+
+The [inspected build 21 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip) contains ten new gold speed numerals and the corrected timing-digit selector, with a live HUD digits Original/HD control. Local release and instrumented checks prove matching prototype pixels for all ten gold digits, unchanged timing pixels, exact whole-atlas construction, original-pixel fallback, malformed-stream rejection and context/lifecycle behavior. A bounded original split-screen run exercised all digits in both views; it did not establish a complete race or physical-device acceptance.
+
+Apple compilation and the independently inspected ARM64/iOS 16 Release package passed, including 37 Apple host checks. The complete generated new-art stream is present in the executable, and the five-entry package excludes original assets, private paths and signing material. No device FPS, energy or appearance result is inferred from those checks. Use the existing session recordings for matched Original/HD, normal/Low Power Mode split-screen comparison before any main-branch merge.

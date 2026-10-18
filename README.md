@@ -4,13 +4,15 @@ Development of a native ARM64 iPadOS port of Need for Speed II Special Edition,
 targeting iPad Air M3 and an external controller, without x86 emulation or JIT.
 **An experimental development IPA is available; full iPad acceptance remains open.**
 
+On the separate HD branch, the inspected [build 21 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip) adds all ten gold speedometer digits and fixes timing-digit 7-9 recognition. Use HUD digits in rendering settings to compare Original and HD while recording a session. Other HUD art remains original. Main is unchanged; device appearance, performance and battery acceptance remain open.
+
 The project adapts a pinned original-game C++ translation, the existing Glide
 GLES2 renderer and SDL3 platform services. Original game assets must be supplied
 separately. This repository contains source and public development documentation;
 it does not contain original game executables, owned assets, signing credentials
 or private operational records.
 
-The inspected [build 19 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39134676336-1/NFSIISEGame-development-unsigned.zip) is ready for personal signing.
+The main-branch baseline [build 19 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39134676336-1/NFSIISEGame-development-unsigned.zip) is ready for personal signing.
 It adds start/stop session recording so a race can be logged without watching
 the overlay. Four-finger tap, tap the FPS label, choose Start session recording,
 then Stop & save recording and Share log after the race. Recording continues
