@@ -284,3 +284,40 @@ non-target pixel comparisons, verify context/texture state and cleanup, and
 assess added CPU/GPU work before any Apple build. Native host appearance is now
 observed, but physical iPad display precision, performance and energy acceptance
 remain open. Original game screenshots and comparison artifacts stay private.
+
+## Isolated numeral sampling correction
+
+The current local correction retains the original GPU atlas and its filtering.
+Only recognized complete timing numerals use an auxiliary HD sampler, selected
+through the third texture-coordinate component. Other sprites, constant-color
+UV primitives and unknown or clipped regions retain their original samples.
+Explicit developer atlas overrides retain their existing whole-image behavior.
+The original texture snapshot also survives context recreation when overlapping
+texture memory has since been overwritten by another download.
+
+Actual shader sampling at 2186 by 1640 now gives zero changed non-target pixels
+and a positive changed-numeral result in the same executable. Optimized and
+sanitized project-unit checks cover line storage reuse, texture unit restoration,
+suspend/resume, overlapping texture memory and context recreation. Permanent
+background shutdown follows the session's actual queue-retirement order and
+issues no intercepted HD texture/sampler/uniform operations without a context.
+An initial fixture that tried to dispatch another graphics command after
+suspension was rejected and corrected to match the actual session lifecycle.
+
+The bounded original split-screen run passed with both native controllers,
+480/960/1640/480 drawable sizes, reset, simulated suspend/resume and clean exit.
+The previously affected lower round indicator and an unchanged LAP-label region
+are now byte-identical to the earlier original-font reference. This comparison
+uses the same engine and harness with a changed renderer; it is distinct from
+the same-executable sampled-pixel fixture. Private captures remain unpublished.
+
+Four alternating-order pairs replaying 128 recorded HUD triangles at native
+render size used identical draw and texture-bind counts with zero per-frame
+uploads. The HD path adds shader work: the local software renderer showed about
+0.35 milliseconds more elapsed time per sampled frame. This is a partial HUD
+geometry replay with fixed modulation, not a complete race benchmark or a
+measurement of the iPad GPU, energy consumption or sustained frame rate.
+
+Main is unchanged. Before any HD integration, measure actual device frame time,
+memory and energy with the existing session recorder. Physical appearance,
+performance, shader precision and battery acceptance are still unverified.

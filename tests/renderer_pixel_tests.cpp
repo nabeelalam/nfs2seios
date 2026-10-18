@@ -1,5 +1,6 @@
 #include <stdint.h>
 extern "C" uint64_t nfs_glide_palette_upload_count(void);
+extern "C" void native_grGlideShutdown(void);
 // SPDX-License-Identifier: MIT
 #include "GuestGlide.h"
 #include "RendererSurface.h"
@@ -32,6 +33,24 @@ static nfs::GameMemory memory;static nfs::HeapArena heap;
 alignas(16) static uint8_t storage[4*1024*1024];
 extern "C" void *malloc32(size_t size){return heap.allocate(size);}
 extern "C" void free32(void *p){if(!heap.release(p))throw std::runtime_error("Bad GPU surface free");}
+#ifdef NFS_TEST_GL_CALLS
+static unsigned unbound_hd_gl_calls;
+extern "C" void __real_glDeleteTextures(GLsizei,const GLuint *);
+extern "C" void __real_glUniform1f(GLint,GLfloat);
+extern "C" void __real_glActiveTexture(GLenum);
+extern "C" void __wrap_glDeleteTextures(GLsizei n,const GLuint *ids){
+    if(!SDL_GL_GetCurrentContext())++unbound_hd_gl_calls;
+    __real_glDeleteTextures(n,ids);
+}
+extern "C" void __wrap_glUniform1f(GLint location,GLfloat value){
+    if(!SDL_GL_GetCurrentContext())++unbound_hd_gl_calls;
+    __real_glUniform1f(location,value);
+}
+extern "C" void __wrap_glActiveTexture(GLenum unit){
+    if(!SDL_GL_GetCurrentContext())++unbound_hd_gl_calls;
+    __real_glActiveTexture(unit);
+}
+#endif
 extern "C" void *nfs_host_address(uint32_t id,size_t size){auto *p=memory.resolve(id,size);if(!p)throw std::out_of_range("GPU guest span");return p;}
 extern "C" uint32_t nfs_guest_address(const void *p){uint32_t id;if(!memory.encode(p,id))throw std::out_of_range("GPU guest pointer");return id;}
 #define CHECK(x) do{if(!(x)){std::fprintf(stderr,"FAIL %d: %s SDL=%s GL=0x%x\n",__LINE__,#x,SDL_GetError(),glGetError());return 1;}}while(0)
@@ -256,7 +275,11 @@ int main(int argc,char **argv){
         CHECK(nfs_glide_hd_atlas_upload_count()==1);
         auto check_auto_pixels=[&](){
             GLint bound=0,previous=0;GLuint frame=0;std::vector<unsigned char> actual(4194304);
+            GLint active=0;glGetIntegerv(GL_ACTIVE_TEXTURE,&active);
+            if(active!=GL_TEXTURE0)throw std::runtime_error("HD upload did not restore unit zero");
+            glActiveTexture(GL_TEXTURE1);
             glGetIntegerv(GL_TEXTURE_BINDING_2D,&bound);glGetIntegerv(GL_FRAMEBUFFER_BINDING,&previous);
+            glActiveTexture(GL_TEXTURE0);
             glGenFramebuffers(1,&frame);glBindFramebuffer(GL_FRAMEBUFFER,frame);glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,GLuint(bound),0);
             if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)throw std::runtime_error("Automatic atlas FBO incomplete");
             glReadPixels(0,0,1024,1024,GL_RGBA,GL_UNSIGNED_BYTE,actual.data());
@@ -265,6 +288,70 @@ int main(int argc,char **argv){
         };
         check_auto_pixels();needRecreateGl=1;grBufferSwap(0);grTexSource(0,1048576,3,int32_t(metadata));
         CHECK(nfs_glide_hd_atlas_upload_count()==2);check_auto_pixels();
+        // Compare actual shader sampling at native size, not just uploaded bytes.
+        void *quad_memory=malloc32(4*sizeof(GrVertex));CHECK(quad_memory);
+        const uint32_t quad_address=nfs_guest_address(quad_memory);
+        fixedFramebufferSize=1;initialWinWidth=2186;initialWinHeight=1640;windowResized=1;grBufferSwap(0);
+        auto sampled_scene=[&](){
+            grBufferClear(0x19436b,255,65535);grClipWindow(0,0,640,480);
+            grDepthBufferMode(GR_DEPTHBUFFER_DISABLE);grFogMode(GR_FOG_DISABLE);
+            grAlphaBlendFunction(GR_BLEND_ONE,GR_BLEND_ZERO,GR_BLEND_ONE,GR_BLEND_ZERO);
+            grAlphaCombine(0,0,0,GR_COMBINE_OTHER_TEXTURE,0);
+            grTexSource(0,1048576,3,int32_t(metadata));
+            auto quad=[&](float x,float y,float w,float h,float u,float v,float uw,float vh){
+                for(unsigned i=0;i<4;++i){
+                    GrVertex a{};a.x=786432+x+((i&1)?w:0);a.y=786432+y+((i&2)?h:0);
+                    a.r=a.g=a.b=a.a=255;a.oow=1;
+                    a.tmuvtx[0].sow=u+((i&1)?uw:0);a.tmuvtx[0].tow=v+((i&2)?vh:0);
+                    guest_store(quad_address+i*sizeof(a),a);
+                }
+                grDrawTriangle(quad_address,quad_address+sizeof(GrVertex),quad_address+2*sizeof(GrVertex));
+                grDrawTriangle(quad_address+sizeof(GrVertex),quad_address+3*sizeof(GrVertex),quad_address+2*sizeof(GrVertex));
+            };
+            // Entire original atlas rejects numeral routing, including the round
+            // indicator. A separate whole glyph positively exercises HD routing.
+            quad(8,8,256,256,0,0,255,255);
+            quad(320,40,96,208,48.31f,21.42f,11.45f,25.40f);
+            // Lines reuse triangle storage. Their selector must be cleared even
+            // when the preceding primitive was an HD numeral.
+            auto line_a=guest_load<GrVertex>(quad_address);
+            auto line_b=guest_load<GrVertex>(quad_address+sizeof(GrVertex));
+            line_a.x=786448;line_b.x=786680;line_a.y=line_b.y=786732;
+            guest_store(quad_address,line_a);guest_store(quad_address+sizeof(GrVertex),line_b);
+            grDrawLine(quad_address,quad_address+sizeof(GrVertex));
+            grTexSource(0,1048576,3,int32_t(metadata));
+            std::vector<unsigned char> pixels(2186*1640*4);
+            glReadPixels(0,0,2186,1640,GL_RGBA,GL_UNSIGNED_BYTE,pixels.data());
+            return pixels;
+        };
+        nfs_glide_hd_builtin_enable(0);grTexDownloadMipMap(0,1048576,3,int32_t(metadata));
+        const auto sampled_original=sampled_scene();
+        nfs_glide_hd_builtin_enable(1);grTexDownloadMipMap(0,1048576,3,int32_t(metadata));
+        const auto sampled_hd=sampled_scene();
+        for(unsigned which=0;which<2;++which){
+            const auto &pixels=which?sampled_hd:sampled_original;
+            FILE *proof=std::fopen(which?"sampled-hd.rgba":"sampled-original.rgba","wb");
+            CHECK(proof && std::fwrite(pixels.data(),1,pixels.size(),proof)==pixels.size());CHECK(!std::fclose(proof));
+        }
+        size_t atlas_differences=0,glyph_differences=0;
+        for(unsigned y=0;y<1640;++y)for(unsigned x=0;x<2186;++x){
+            const size_t offset=(y*2186+x)*4;
+            if(!std::memcmp(sampled_original.data()+offset,sampled_hd.data()+offset,4))continue;
+            if(x<1000)++atlas_differences;else ++glyph_differences;
+        }
+        std::printf("Native sampled differences: atlas=%zu glyph=%zu\n",atlas_differences,glyph_differences);
+        CHECK(atlas_differences==0 && glyph_differences>100 && glGetError()==GL_NO_ERROR);
+        lifecycle.set_suspended(true);CHECK(SDL_GL_GetCurrentContext()==nullptr);
+        lifecycle.set_suspended(false);CHECK(SDL_GL_GetCurrentContext()!=nullptr);
+        CHECK(sampled_scene()==sampled_hd && glGetError()==GL_NO_ERROR);
+        // Overlapping CPU texture RAM must not corrupt the matched original GPU
+        // image when context restoration reuploads it from the owned snapshot.
+        GrTexInfo overlap=texture;overlap.largeLod=overlap.smallLod=7;
+        guest_store(metadata,overlap);grTexDownloadMipMap(0,1048580,3,int32_t(metadata));
+        guest_store(metadata,texture);needRecreateGl=1;grBufferSwap(0);
+        CHECK(sampled_scene()==sampled_hd && glGetError()==GL_NO_ERROR);
+        free32(quad_memory);
+        std::printf("PASS: native 2186x1640 actual shader sampling: zero non-target changed pixels, %zu changed glyph pixels; overlapping RAM/context restoration identical\n",glyph_differences);
         nfs_glide_hd_builtin_enable(0);guest_store<uint16_t>(texture.data,0x801f);
         grTexDownloadMipMap(0,1048576,3,int32_t(metadata));grTexSource(0,1048576,3,int32_t(metadata));pixel(0,0,255);
         CHECK(nfs_glide_hd_atlas_upload_count()==0 && glGetError()==GL_NO_ERROR);
@@ -274,6 +361,18 @@ int main(int argc,char **argv){
     for(auto table:eviction_tables)free32(table);
     free32(index_memory);free32(palette_memory);CHECK(heap.available_bytes()==before && glGetError()==GL_NO_ERROR);
     std::puts("PASS: owned palette snapshot, deferred guest mutation, generation A/B/A, same-address explicit updates, unchanged-content cache and texture invalidation RGB pixels");
-    grGlideShutdown();operations.destroy(sdlWin);sdlWin=nullptr;nfs::bind_main_thread_bridge(nullptr);SDL_Quit();
+    if(argc==3){
+        // Permanent background shutdown must release the still-owned auxiliary
+        // texture through context destruction without issuing unbound GL calls.
+        lifecycle.set_suspended(true);CHECK(SDL_GL_GetCurrentContext()==nullptr);
+        main.retire_renderer();
+        lifecycle.abandon_suspended();CHECK(SDL_GL_GetCurrentContext()==nullptr);
+        native_grGlideShutdown();nfs_glide_hd_atlas_clear();
+#ifdef NFS_TEST_GL_CALLS
+        CHECK(unbound_hd_gl_calls==0);
+#endif
+        std::puts("PASS: permanent suspended HD context abandonment and idempotent shutdown without unbound HD GL operations");
+    }else grGlideShutdown();
+    operations.destroy(sdlWin);sdlWin=nullptr;nfs::bind_main_thread_bridge(nullptr);SDL_Quit();
     std::puts("PASS: actual GLES pixels, RGB565 partial writes/stride, row origins, front/back buffers, presentation, context suspend/restore with preserved pixels, guest canaries and cleanup");
 }

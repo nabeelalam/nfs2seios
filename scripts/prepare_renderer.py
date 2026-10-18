@@ -71,21 +71,74 @@ def prepare_renderer():
     # Do not run the ordinary explicit GL deletion path in the background.
     marker = "static void setTextureFiltering()"
     if text.count(marker) != 1: raise ValueError("Cannot identify context abandonment insertion")
-    text = text.replace(marker, 'BOOL nfs_glide_abandon_unbound(void){\n    if(SDL_GL_GetCurrentContext()!=NULL)return false;\n    nfs_glide_lfb_reset();\n    if(g_glCtx && !SDL_GL_DestroyContext(g_glCtx))return false;\n    g_glCtx=NULL;g_trianglesCount=0;g_palette=NULL;\n    return true;\n}\n' + marker)
+    text = text.replace(marker, 'BOOL nfs_glide_abandon_unbound(void){\n    if(SDL_GL_GetCurrentContext()!=NULL)return false;\n    nfs_glide_lfb_reset();\n    if(g_glCtx && !SDL_GL_DestroyContext(g_glCtx))return false;\n    nfs_hd_context_retired(0);g_glCtx=NULL;g_trianglesCount=0;g_palette=NULL;\n    return true;\n}\n' + marker)
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
 
 
 def prepare_hd_atlas(text, dest):
+    def checked(old, new, count=1):
+        nonlocal text
+        if text.count(old) != count:
+            raise ValueError(f'Unexpected isolated HD renderer pattern: {old[:80]}')
+        text = text.replace(old, new)
+
     marker = '#include "RendererPalette.inc"'
     if text.count(marker) != 1: raise ValueError("Cannot identify HD atlas helper insertion")
     text = text.replace(marker, marker + '\n#include "RendererHdAtlas.inc"')
+    checked('\tuint32_t id;\n} TextureInfo;', '\tuint32_t id;\n\tuint32_t hdDigits;\n} TextureInfo;')
+    checked('"uniform float uTextureEnabled;"',
+            '"uniform sampler2D uHdTextureSampler;"\n\t"uniform float uHdActive;"\n\t"uniform float uTextureEnabled;"')
+    checked('"vec4 texture = uTextureEnabled * texture2D(uTextureSampler, vTexCoord.st / vTexCoord.q);"',
+            '"vec4 sampled = texture2D(uTextureSampler, vTexCoord.st / vTexCoord.q);"\n'
+            '\t\t"if (uHdActive > 0.5) {"\n'
+            '\t\t"vec4 hd = texture2D(uHdTextureSampler, vTexCoord.st / vTexCoord.q);"\n'
+            '\t\t"if (vTexCoord.z > 0.5) sampled = hd;}"\n'
+            '\t\t"vec4 texture = uTextureEnabled * sampled;"')
+    checked('glUniform1i(glGetUniformLocation(g_shaderProgram, "uTextureSampler"), 0);',
+            'glUniform1i(glGetUniformLocation(g_shaderProgram, "uTextureSampler"), 0);\n\t\tnfs_hd_program_created(g_shaderProgram);')
+    checked('\tif(!g_glCtx)return;', '\tif(!g_glCtx)return;\n\tnfs_hd_context_retired(1);')
+    # In full preparation abandonment is inserted below; a previously prepared
+    # renderer used by focused fixtures already contains this function.
+    if 'BOOL nfs_glide_abandon_unbound(void)' in text:
+        checked('g_glCtx=NULL;g_trianglesCount=0;g_palette=NULL;',
+                'nfs_hd_context_retired(0);g_glCtx=NULL;g_trianglesCount=0;g_palette=NULL;')
+    checked('\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);',
+            '\tnfs_hd_sync_uniform();\n\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);')
+    checked('\tconst GrVertex *grVertices[3] = {a, b, c};',
+            '\tconst int hdDigit=g_textureEnabled && nfs_hd_triangle_selected(a,b,c);\n\tconst GrVertex *grVertices[3] = {a, b, c};')
+    checked('\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;',
+            '\t\tg_textureCoord[g_trianglesCount].vertex[i].r = (float)hdDigit;\n\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;')
+    checked('\t\tg_vertices->vertex[i].x = grVertices[i]->x - VertexSnap;',
+            '\t\tg_textureCoord->vertex[i].r = 0;\n\t\tg_vertices->vertex[i].x = grVertices[i]->x - VertexSnap;')
+    checked('\tglDrawArrays(GL_LINES, 0, 2);', '\tnfs_hd_sync_uniform();\n\tglDrawArrays(GL_LINES, 0, 2);')
+    checked('\tti->data = &g_textureMem[startAddress];',
+            '\tti->hdDigits=0;\n\tti->data = &g_textureMem[startAddress];')
+    checked('\tglBindTexture(GL_TEXTURE_2D, ti->id);\n\tif (info->format',
+            '\tglBindTexture(GL_TEXTURE_2D, ti->id);\n\tnfs_hd_selected=ti->hdDigits;\n\tif (info->format')
+    # Desktop GL loads extension entry points explicitly; GLES2 exports them.
+    checked('static PFNGLUNIFORM1IPROC glUniform1i;',
+            'static PFNGLUNIFORM1IPROC glUniform1i;\nstatic PFNGLACTIVETEXTUREPROC glActiveTexture;')
+    checked('\tglUniform1i = SDL_GL_GetProcAddress("glUniform1i");',
+            '\tglUniform1i = SDL_GL_GetProcAddress("glUniform1i");\n\tglActiveTexture = SDL_GL_GetProcAddress("glActiveTexture");')
+    checked('\tok &= !!glUniform1i;', '\tok &= !!glUniform1i;\n\tok &= !!glActiveTexture;')
     marker = '\tswitch (ti->fmt)'
     start = text.index('static void uploadTexture(TextureInfo *ti)')
     at = text.index(marker, start)
-    text = text[:at] + '\tif(nfs_hd_upload_texture(ti))return;\n\n' + text[at:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc'):
+    text = text[:at] + '''\tvoid *originalData=ti->data;
+    if(ti->hdDigits && nfs_hd_builtin_enabled && nfs_hd_atlas.original &&
+       ti->size==nfs_hd_atlas.original_size && ti->fmt==GR_TEXFMT_ARGB_1555)
+        ti->data=nfs_hd_atlas.original;
+    if(nfs_hd_upload_texture(ti)){ti->data=originalData;return;}
+    if(newTexture || ti->fmt!=GR_TEXFMT_P_8)nfs_hd_selected=ti->hdDigits;
+
+''' + text[at:]
+    end = text.index('\nstatic void recreateContext()', start)
+    section = text[start:end]
+    assert section.endswith('\n}\n')
+    text = text[:start] + section[:-3] + '\n\tti->data=originalData;\n}\n' + text[end:]
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 
