@@ -260,3 +260,27 @@ transitions, reset, simulated background/resume and clean shutdown pass. The
 copied profile is restored afterward. This remains local host integration:
 physical iPad sharpness, native-display appearance, frame time, memory and energy
 must be checked before final integration into main.
+
+## Native-size review: sampling correction required
+
+A subsequent private host harness matches the actual SDL drawable and render
+buffer at 640x480, 1280x960 and 2186x1640, then returns to 640x480. It captures
+only the exact game executable's PID-verified window at one-to-one pixel scale.
+Both native controllers, reset and simulated resume after returning to 480 pass.
+A same-binary original-font control also passes; a synthetic constant-transparent
+explicit override disables the automatic recipe without changing visible pixels.
+The temporary control is removed and the copied profile restored afterward.
+
+Full-size crops show sharper timing/lap digits, but also expose an unintended
+change to a round player indicator that was not redrawn: it becomes more
+pixelated. A separate unchanged LAP label region is byte-identical in the two
+runs. Retaining original texel values in a nearest-expanded atlas does not retain
+the original texture's linear-filter footprint. Source-array identity and whole
+uploaded-image identity therefore do not establish unchanged sampled output.
+
+This candidate is not ready for an HD iPad release. Keep main unchanged and first
+isolate numeric glyph sampling from original atlas sampling. Add actual sampled
+non-target pixel comparisons, verify context/texture state and cleanup, and
+assess added CPU/GPU work before any Apple build. Native host appearance is now
+observed, but physical iPad display precision, performance and energy acceptance
+remain open. Original game screenshots and comparison artifacts stay private.
