@@ -19,12 +19,12 @@ SAFE_EMAIL = re.compile(r"(?i)^(?:[^<>\s]+@users\.noreply\.github\.com|codex@(?:
 
 def reviewed_timing_svg(name, data):
     """Allow only bounded path/gradient HUD glyph sources; no embedded images."""
-    match=re.fullmatch(r"assets/hud/(?:(timing|speed)-([0-9])|small-([A-Z]))\.svg",name)
+    match=re.fullmatch(r"assets/hud/(?:(timing|speed)-([0-9])|small-([A-Z])|record-([1-9]|dot|colon))\.svg",name)
     if not match or len(data)>65536:
         return False
     speed=match[1]=="speed"
-    small=bool(match[3])
-    gradient="gold" if speed or small else "face"
+    small=bool(match[3]);record=bool(match[4])
+    gradient="gold" if speed or small or record else "face"
     if any(token in data.lower() for token in (b"<!",b"<?",b"data:",b"href")):
         return False
     try:
@@ -34,6 +34,9 @@ def reviewed_timing_svg(name, data):
         expected={"width":"29","height":"24","viewBox":"0 0 29 24"} if speed else {"width":"12","height":"27","viewBox":"0 0 12 27"}
         if small:
             width="4" if match[3]=="I" else "8"
+            expected={"width":width,"height":"8","viewBox":"0 0 "+width+" 8"}
+        if record:
+            width="4" if match[4] in ("1","dot","colon") else "8"
             expected={"width":width,"height":"8","viewBox":"0 0 "+width+" 8"}
         if root.attrib!=expected:return False
         permitted={"defs":set(),"linearGradient":{"id","x1","y1","x2","y2"},

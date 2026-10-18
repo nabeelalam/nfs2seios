@@ -435,10 +435,9 @@ publication rules. The original game can request a yellow HUD panel: a local
 input/framebuffer trace reproduced the same color in Original and HD modes.
 This color is not produced by the glyph replacement.
 
-Build 21 does not contain these letters. Main remains separate, and physical
+Build 21 does not contain these uppercase or record-time glyphs. Main remains separate, and physical
 appearance, frame time and energy acceptance remain open. Other HUD elements,
-including small record-time digits and punctuation, maps, logos and starting
-lights, remain original. This source update
+including maps, logos and starting lights, remain original. This source update
 does not require another cloud build by itself.
 
 
@@ -448,5 +447,35 @@ horizontal and vertical corner offsets differ. Detection and sampling now use
 those independent bounds; the graphics regression fixture uses the original
 geometry. The same original-method check covers the ten small record numerals
 and dot/colon. Original zero and O share identical converted pixels and geometry,
-so the reviewed O artwork is deliberately shared with zero. The remaining small
-record numerals and punctuation are still awaiting replacement.
+so the reviewed O artwork is deliberately shared with zero. The small record numerals and punctuation are now integrated on this branch;
+physical acceptance remains open.
+
+
+## Small record-time numerals and punctuation
+
+Twelve visible numeric characters now use reviewed new vectors: zero through
+nine, dot and colon. Original zero and O have the same converted pixels and
+geometry, so zero deliberately shares O's existing cell. Only eleven additional
+tiles and source identities are stored. The same 1024-pixel auxiliary texture
+and sampler serve timing, speed, letters and record text. Original GPU pixels
+remain intact, with owned numeric source snapshots for context recovery.
+
+Small-cell coordinates now use arithmetic indexing of the shared layout rather
+than extending a per-character shader branch chain. The GPU tests prove that
+all earlier letter, timing and speed pixels remain byte-identical. This is a
+source/layout improvement; no iPad speed or battery gain is inferred.
+
+Local optimized, address/undefined-behavior and limited-precision matrices cover
+38 visible glyph cases, exact original GPU textures, the zero/O alias, source
+mutations and invalid triangles, live switching without uploads, both owned
+caches under overlapping guest RAM/context recovery, flat panels and suspended
+cleanup. Separate decoder tests verify all eleven new tiles, untouched pixels,
+canaries, malformed-stream atomicity and reproducible vector generation. The
+limited-precision path retains original record text and letters. Physical
+appearance, stability, frame time and energy acceptance remain separate.
+
+A bounded local original-game split-screen run also exercised both virtual
+controllers, resolution changes, reset and simulated suspension/context recovery.
+New record characters were observed in both views; shutdown was clean and the
+copied profile was restored. This was a short driving check, not a complete race
+or iPad visual, performance or energy acceptance.

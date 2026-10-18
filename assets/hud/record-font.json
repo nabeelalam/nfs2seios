@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "status": "Provisional record-time vectors; physical appearance and performance unverified",
+  "entries": [
+    {
+      "character": "0",
+      "file": "small-O.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "1d8e3805b7011777233c6493a712e7768d5c837805c6bd4d4ca7efe77e687888",
+      "aliasOf": "O"
+    },
+    {
+      "character": "1",
+      "file": "record-1.svg",
+      "vectorSize": [
+        4,
+        8
+      ],
+      "rasterSize": [
+        32,
+        64
+      ],
+      "sha256": "4f121855b7d5eccf505e630666190e164bdff23c6e4e243a157f202127c897de"
+    },
+    {
+      "character": "2",
+      "file": "record-2.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "87bfd9f2e01b079a47740d0cf1a5052df4c18f2de1dc86b6a150906dddcf2d6e"
+    },
+    {
+      "character": "3",
+      "file": "record-3.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "7317f2578298044740f2f11fa62d0f32baeb64ea95ddc5a2fd8b555c0ddf6a8f"
+    },
+    {
+      "character": "4",
+      "file": "record-4.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "d8e0bedee59149ad930a59297651d453a190a112700e5f691d66634fe2552050"
+    },
+    {
+      "character": "5",
+      "file": "record-5.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "1621ed698969073d74cb3b0266bc9f315afec8104ead645d0c83ee40a989e3ea"
+    },
+    {
+      "character": "6",
+      "file": "record-6.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "dcae40455c13a0d8a4118ffc8c70ccc2172c1401d425734588417e9b1e35bd4b"
+    },
+    {
+      "character": "7",
+      "file": "record-7.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "94b30d70d37eb06183bf308fc01db66f92ed12aaabf025148c041088e115c196"
+    },
+    {
+      "character": "8",
+      "file": "record-8.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "818bca6abef92ecc94b8b0adc02c89af1227bbc3a1797a97d94a222bae38b1b5"
+    },
+    {
+      "character": "9",
+      "file": "record-9.svg",
+      "vectorSize": [
+        8,
+        8
+      ],
+      "rasterSize": [
+        64,
+        64
+      ],
+      "sha256": "9bad3a2eff677e2b5666a5233568835e5e497016a4d188e051c2e1415f3ac50d"
+    },
+    {
+      "character": ".",
+      "file": "record-dot.svg",
+      "vectorSize": [
+        4,
+        8
+      ],
+      "rasterSize": [
+        32,
+        64
+      ],
+      "sha256": "905d167cd74a967ef3121351e8a84055a77ca4ca98c4559a2a59fbbc0dde0be7"
+    },
+    {
+      "character": ":",
+      "file": "record-colon.svg",
+      "vectorSize": [
+        4,
+        8
+      ],
+      "rasterSize": [
+        32,
+        64
+      ],
+      "sha256": "5887a178bcca548590a6ea7f46b90edec669c3c4268accb6899ae3e0d1f65b83"
+    }
+  ]
+}

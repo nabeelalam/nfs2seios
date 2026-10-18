@@ -72,4 +72,18 @@ class PublicationAuditTest(unittest.TestCase):
                      template.replace(b'CONTENT',b'<path d="M1 1" fill="url(https://example.invalid)"/>')):
             self.assertIn("unreviewed_svg",content_findings("assets/hud/small-A.svg",data))
 
+    def test_record_vectors_keep_strict_boundary(self):
+        template=b'<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">CONTENT</svg>'
+        valid=template.replace(b'CONTENT',b'<path d="M1 1H6V6Z" fill="#fff"/>')
+        narrow=valid.replace(b'width="8"',b'width="4"').replace(b'0 0 8 8',b'0 0 4 8')
+        self.assertEqual(content_findings("assets/hud/record-2.svg",valid),[])
+        for name in ("record-1.svg","record-dot.svg","record-colon.svg"):
+            self.assertEqual(content_findings("assets/hud/"+name,narrow),[])
+            self.assertIn("unreviewed_svg",content_findings("assets/hud/"+name,valid))
+        self.assertIn("unreviewed_svg",content_findings("assets/hud/record-2.svg",narrow))
+        for name in ("record-0.svg","record-10.svg","record-test.svg"):
+            self.assertIn("unreviewed_svg",content_findings("assets/hud/"+name,valid))
+        for payload in (b'<image href="data:fixture"/>',b'<text>metadata</text>',b'<!--hidden-->',b'<path d="M1 1" fill="url(https://example.invalid)"/>'):
+            self.assertIn("unreviewed_svg",content_findings("assets/hud/record-2.svg",template.replace(b'CONTENT',payload)))
+
 if __name__=="__main__":unittest.main()

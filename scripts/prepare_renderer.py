@@ -126,6 +126,10 @@ def prepare_hd_atlas(text, dest):
     start = text.index('static void uploadTexture(TextureInfo *ti)')
     at = text.index(marker, start)
     text = text[:at] + '''\tvoid *originalData=ti->data;
+    if(ti->hdDigits>=28 && ti->hdDigits<=38 && nfs_hd_builtin_enabled &&
+       (nfs_record_font_valid&(1u<<(ti->hdDigits-28))) &&
+       ti->size==nfs_record_font_edge[ti->hdDigits-28] && ti->fmt==GR_TEXFMT_ARGB_1555)
+        ti->data=nfs_record_font_original[ti->hdDigits-28];
     if(ti->hdDigits>=2 && ti->hdDigits<=27 && nfs_hd_builtin_enabled &&
        (nfs_small_font_valid&(1u<<(ti->hdDigits-2))) &&
        ti->size==nfs_small_font_edge[ti->hdDigits-2] && ti->fmt==GR_TEXFMT_ARGB_1555)
@@ -141,7 +145,7 @@ def prepare_hd_atlas(text, dest):
     section = text[start:end]
     assert section.endswith('\n}\n')
     text = text[:start] + section[:-3] + '\n\tti->data=originalData;\n}\n' + text[end:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc'):
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

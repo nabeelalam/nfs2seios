@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "SmallFontIdentity.h"
+#include "RecordFontRuntime.inc"
 // Own converted source pixels only after an exact runtime content match. The
 // guest texture RAM can overlap, so context restoration must not borrow it.
 static unsigned char nfs_small_font_original[26][128];
@@ -12,5 +13,5 @@ static int nfs_small_font_match(TextureInfo *ti){
         if(ti->data!=nfs_small_font_original[d])memcpy(nfs_small_font_original[d],ti->data,bytes);
         nfs_small_font_valid|=1u<<d;ti->hdDigits=2+d;return 1;
     }
-    return 0;
+    return nfs_record_font_match(ti,digest,bytes);
 }

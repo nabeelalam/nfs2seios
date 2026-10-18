@@ -1,0 +1,24 @@
+{
+  "generatedFrom": "New record vectors only; zero aliases reviewed O",
+  "originalGamePixelsIncluded": false,
+  "sourceHashes": {
+    "small-O.svg": "1d8e3805b7011777233c6493a712e7768d5c837805c6bd4d4ca7efe77e687888",
+    "record-1.svg": "4f121855b7d5eccf505e630666190e164bdff23c6e4e243a157f202127c897de",
+    "record-2.svg": "87bfd9f2e01b079a47740d0cf1a5052df4c18f2de1dc86b6a150906dddcf2d6e",
+    "record-3.svg": "7317f2578298044740f2f11fa62d0f32baeb64ea95ddc5a2fd8b555c0ddf6a8f",
+    "record-4.svg": "d8e0bedee59149ad930a59297651d453a190a112700e5f691d66634fe2552050",
+    "record-5.svg": "1621ed698969073d74cb3b0266bc9f315afec8104ead645d0c83ee40a989e3ea",
+    "record-6.svg": "dcae40455c13a0d8a4118ffc8c70ccc2172c1401d425734588417e9b1e35bd4b",
+    "record-7.svg": "94b30d70d37eb06183bf308fc01db66f92ed12aaabf025148c041088e115c196",
+    "record-8.svg": "818bca6abef92ecc94b8b0adc02c89af1227bbc3a1797a97d94a222bae38b1b5",
+    "record-9.svg": "9bad3a2eff677e2b5666a5233568835e5e497016a4d188e051c2e1415f3ac50d",
+    "record-dot.svg": "905d167cd74a967ef3121351e8a84055a77ca4ca98c4559a2a59fbbc0dde0be7",
+    "record-colon.svg": "5887a178bcca548590a6ea7f46b90edec669c3c4268accb6899ae3e0d1f65b83"
+  },
+  "zeroAliasRasterSha256": "9ba993982313c19bf17887f7c9a974a738a5c54a13d7f1db7939f79c29e9b84b",
+  "rasterSha256": "6c377fd29870bc09ff402de2a406f400f719597c694be54b8124823bda8c4edb",
+  "rasterBytes": 180224,
+  "storedTiles": 11,
+  "rleBytes": 50130,
+  "headerSha256": "021463c466014ad17d92694ad87db7012b3422ce5a1f35e6a4be0e453e2ebabe"
+}

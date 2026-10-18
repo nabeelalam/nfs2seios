@@ -273,3 +273,23 @@ bounded tile decoder and complete glyph-corner selection. For private original
 data validation, the renderer pixel fixture optionally reads the local case
 file named by `NFS_HUD_FONT_CASES`; leave that variable unset for ordinary
 public CI. The optional case file and original captures must stay outside Git.
+
+
+Record-time artwork uses the same local vector rasterizer and bounded source
+policy. Check its generated source with:
+
+```sh
+python3 scripts/generate_record_builtin.py --check
+```
+
+The `record_font_tests` host target checks the eleven new stored tiles. Zero
+shares the O tile and needs no additional raster. Private renderer-matrix input
+now contains 38 ordered visible cases: A-Z, 0-9, dot and colon. Keep those
+original cases outside public Git and leave `NFS_HUD_FONT_CASES` unset for
+ordinary public CI.
+
+A bounded local original-game split-screen run also exercised both virtual
+controllers, resolution changes, reset and simulated suspension/context recovery.
+New record characters were observed in both views; shutdown was clean and the
+copied profile was restored. This was a short driving check, not a complete race
+or iPad visual, performance or energy acceptance.
