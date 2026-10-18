@@ -47,6 +47,7 @@ extern "C" {
  * Pack contents remain resident across GL context recreation. */
 int nfs_glide_hd_atlas_load_file(const char *path);
 void nfs_glide_hd_atlas_clear(void);
+void nfs_glide_hd_builtin_enable(int enabled);
 uint64_t nfs_glide_hd_atlas_upload_count(void);
 #ifdef __cplusplus
 }

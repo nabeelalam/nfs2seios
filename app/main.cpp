@@ -15,6 +15,10 @@ struct HdAtlasLifetime {
     explicit HdAtlasLifetime(const std::string &root){
         if(nfs_glide_hd_atlas_load_file((root+"/gamedata/hud-hd.nfsatlas").c_str()))
             nfs::app_log("HD interface","Optional texture atlas loaded");
+        else{
+            nfs_glide_hd_builtin_enable(1);
+            nfs::app_log("HD interface","Built-in timing artwork enabled");
+        }
     }
     ~HdAtlasLifetime(){nfs_glide_hd_atlas_clear();}
 };

@@ -85,7 +85,7 @@ def prepare_hd_atlas(text, dest):
     start = text.index('static void uploadTexture(TextureInfo *ti)')
     at = text.index(marker, start)
     text = text[:at] + '\tif(nfs_hd_upload_texture(ti))return;\n\n' + text[at:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc'):
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

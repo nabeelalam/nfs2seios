@@ -210,6 +210,51 @@ For developers, `scripts/build_timing_atlas.py` accepts a private captured
 filename. It verifies the capture, vector source catalog and layout, then uses
 locally installed librsvg/Cairo to create the optional pack without modifying
 originals. The pack contains original data and must remain private. This is an
-offline development path; convenient automatic generation from the user's game
-assets and final iPad artwork delivery are still required. No artwork is added
-to the main branch or application package by this prototype.
+offline development path. The automatic runtime path below removes this manual
+step for the recognized original atlas. No artwork is added to main by this
+prototype; physical iPad acceptance remains required.
+
+## Automatic built-in generation
+
+The HD branch enables built-in timing artwork when no explicit private override
+pack is supplied. `TimingFontPixels.inc` contains only the new glyph pixels,
+run-length encoded from the reviewed vector sources. The generator reads no
+original game images. Original-atlas metadata contains only content fingerprints.
+Apple builds compile the generated header directly and need no SVG library,
+downloaded font, extra game assets, developer-captured atlas or private pack.
+
+At a 256-square converted RGBA5551 upload, a cheap 512-byte sampled fingerprint
+rejects unrelated textures. A match must then pass SHA-256 over every original
+byte; the sampled fingerprint never determines replacement identity. Unknown or
+changed textures use original graphics. A match allocates a private original
+reference and builds the 1024-square image from the user's own uploaded texture,
+then overlays only the ten new glyph rectangles. Shared atlas row47 and all
+unrelated pixels remain original. The image stays resident across GL recreation
+and is freed after the session stops. There is no per-frame file polling or
+dependency on a developer-generated private file.
+
+`TextureDigest.h` uses portable unsigned SHA-256 operations. Optimized and
+ASan/UBSan fixtures cover standard known vectors, padding boundaries, alignment,
+canaries, a million-byte message and 96 independent Python-hashlib comparisons.
+An unsampled one-byte mutation passes the cheap prefilter but is rejected by the
+full digest. New-art RLE fixtures check counts, truncation, output capacity,
+exact glyph bytes and every untouched pixel. Actual original-data automatic
+composition equals the previously accepted private pack byte for byte. Real
+GLES readback checks every resulting RGBA pixel, context restoration and disabled
+fallback, alongside the existing renderer tests. These host checks do not prove
+Apple compilation, physical display quality, frame time or battery efficiency.
+
+After vector changes, regenerate with `python scripts/generate_timing_builtin.py`
+on a development host with librsvg/Cairo, review the artwork and generated diff,
+then use `--check` to verify reproducibility. The generated manifest records
+source/pixel/header hashes. Future cloud runs include the small portable parser,
+fingerprint and compositor fixtures in the existing sequential host job; this
+does not add a runner or automatically dispatch builds.
+
+The automatic path also passes a bounded 20-second original split-screen race
+with no private atlas file present before or after the run. Both native players
+are controlled, one automatic upload is observed, and 480/960/480 render-height
+transitions, reset, simulated background/resume and clean shutdown pass. The
+copied profile is restored afterward. This remains local host integration:
+physical iPad sharpness, native-display appearance, frame time, memory and energy
+must be checked before final integration into main.

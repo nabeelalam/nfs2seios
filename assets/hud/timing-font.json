@@ -176,5 +176,13 @@
         27
       ]
     }
-  ]
+  ],
+  "originalGpuFingerprint": {
+    "format": "Converted GPU RGBA5551 little-endian",
+    "edge": 256,
+    "sha256": "c067e866e0168ae1b74e89fb9f9f165342a4fde1394f56ce8718b54da06eac8a",
+    "sampleFnv64": "fb8e73bd198ee626",
+    "sampleStride": 4096,
+    "sampleBytes": 16
+  }
 }

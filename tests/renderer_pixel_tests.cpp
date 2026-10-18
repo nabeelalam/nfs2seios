@@ -40,7 +40,7 @@ static GrLfbInfo_t lock(uint32_t address,int type,int buffer,int origin){
     if(!grLfbLock(type,buffer,0,origin,0,int32_t(address)))throw std::runtime_error("GPU LFB lock failed");
     return guest_load<GrLfbInfo_t>(address);
 }
-int main(){
+int main(int argc,char **argv){
     alignas(16) uint8_t records[256];std::memset(records,0xcc,sizeof(records));
     CHECK(memory.map(0x80000000,records,sizeof(records)) && heap.initialize(memory,0x10000000,storage,sizeof(storage)));
     CHECK(reinterpret_cast<uintptr_t>(storage)>UINT32_MAX && SDL_Init(SDL_INIT_VIDEO));
@@ -241,6 +241,36 @@ int main(){
     grTexDownloadMipMap(0,2048,3,int32_t(metadata));grTexSource(0,2048,3,int32_t(metadata));pixel(255,0,0);
     nfs_glide_hd_atlas_clear();nfs_glide_hd_atlas_clear();
     std::puts("PASS: optional HD texture RGBA/dimensions, exact content identity, same-address fallback, CPU immutability and context recreation");
+    if(argc==3){
+        // Private original-data extension: ordinary CI never needs these files.
+        NfsHdAtlas expected{};FILE *file=std::fopen(argv[2],"rb");CHECK(file);
+        CHECK(nfs_hd_atlas_read(&expected,file));CHECK(!std::fclose(file));
+        CHECK(expected.original_size==256 && expected.replacement_size==1024);
+        void *raw_memory=malloc32(131072);CHECK(raw_memory);auto *raw=static_cast<unsigned char *>(raw_memory);
+        file=std::fopen(argv[1],"rb");CHECK(file && std::fread(raw,1,131072,file)==131072 && std::fgetc(file)==EOF);CHECK(!std::fclose(file));
+        CHECK(!std::memcmp(raw,expected.original,131072));
+        // Feed original ARGB1555 through the real download conversion.
+        for(unsigned i=0;i<65536;++i){uint16_t value;std::memcpy(&value,raw+2*i,2);value=(value>>1)|((value&1)<<15);std::memcpy(raw+2*i,&value,2);}
+        texture.largeLod=texture.smallLod=0;texture.format=GR_TEXFMT_ARGB_1555;texture.data=nfs_guest_address(raw_memory);guest_store(metadata,texture);
+        nfs_glide_hd_builtin_enable(1);grTexDownloadMipMap(0,1048576,3,int32_t(metadata));grTexSource(0,1048576,3,int32_t(metadata));
+        CHECK(nfs_glide_hd_atlas_upload_count()==1);
+        auto check_auto_pixels=[&](){
+            GLint bound=0,previous=0;GLuint frame=0;std::vector<unsigned char> actual(4194304);
+            glGetIntegerv(GL_TEXTURE_BINDING_2D,&bound);glGetIntegerv(GL_FRAMEBUFFER_BINDING,&previous);
+            glGenFramebuffers(1,&frame);glBindFramebuffer(GL_FRAMEBUFFER,frame);glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,GLuint(bound),0);
+            if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)throw std::runtime_error("Automatic atlas FBO incomplete");
+            glReadPixels(0,0,1024,1024,GL_RGBA,GL_UNSIGNED_BYTE,actual.data());
+            glBindFramebuffer(GL_FRAMEBUFFER,GLuint(previous));glDeleteFramebuffers(1,&frame);
+            if(std::memcmp(actual.data(),expected.rgba,actual.size()))throw std::runtime_error("Automatic GPU pixels differ from accepted atlas");
+        };
+        check_auto_pixels();needRecreateGl=1;grBufferSwap(0);grTexSource(0,1048576,3,int32_t(metadata));
+        CHECK(nfs_glide_hd_atlas_upload_count()==2);check_auto_pixels();
+        nfs_glide_hd_builtin_enable(0);guest_store<uint16_t>(texture.data,0x801f);
+        grTexDownloadMipMap(0,1048576,3,int32_t(metadata));grTexSource(0,1048576,3,int32_t(metadata));pixel(0,0,255);
+        CHECK(nfs_glide_hd_atlas_upload_count()==0 && glGetError()==GL_NO_ERROR);
+        nfs_glide_hd_atlas_clear();nfs_hd_atlas_free(&expected);free32(raw_memory);
+        std::puts("PASS: automatic original-data GPU atlas byte identity, context restoration and disabled fallback without private pack loading");
+    }
     for(auto table:eviction_tables)free32(table);
     free32(index_memory);free32(palette_memory);CHECK(heap.available_bytes()==before && glGetError()==GL_NO_ERROR);
     std::puts("PASS: owned palette snapshot, deferred guest mutation, generation A/B/A, same-address explicit updates, unchanged-content cache and texture invalidation RGB pixels");
