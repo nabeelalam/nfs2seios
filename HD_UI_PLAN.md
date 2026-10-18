@@ -340,6 +340,22 @@ Older recordings without this additive field remain readable as unavailable.
 Compare the same race section and allow a few seconds after changing modes.
 
 The renderer switch has optimized/sanitized sampled-pixel, pending-batch,
-context restoration and no-reupload coverage. The UIKit control and recorder
-provider still require Apple compilation and physical testing. One explicitly
-named HD-branch workflow exception allows that test without changing main.
+context restoration and no-reupload coverage. Build 20 passed Apple compilation
+and independent ARM64/iOS 16 Release package inspection, including 37 Apple host
+checks and the actual UIKit/recorder integration. Physical testing remains open.
+The explicitly named HD-branch workflow exception permits this test without
+changing main.
+
+Experimental download: [Build 20 unsigned ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39153713916-1/NFSIISEGame-development-unsigned.zip).
+Runtime source: `583ee201fdf41ebca3f32d29fb19d1f2a02b74d0`.
+This is a timing-digit prototype, not a complete HD interface or a performance
+improvement claim. Update the existing app through SideStore with the same Apple
+Account; keep the separately supplied game folder. Main's build 19 remains
+separate from this experimental source.
+
+For device comparison, use Native resolution, full graphics and the 30 FPS lock
+off in North Country split-screen. Make one recording in normal power mode and
+one in Low Power Mode. Within each recording compare Original and HD on similar
+sections and allow a few seconds after switching. Stop and share each JSONL log;
+no manual FPS/CPU transcription is needed. Changing system power settings may
+interrupt recording, so set the power mode before starting each recording.
