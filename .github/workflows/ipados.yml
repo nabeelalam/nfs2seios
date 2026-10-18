@@ -72,7 +72,7 @@ jobs:
           python3 tests/guest_copy_semantics_test.py
           python3 scripts/check_runner_space.py
           cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON
-          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests -j 3
+          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests -j 3
       - name: Validate full native engine linkage and memory ownership
         run: |
           set -o pipefail
@@ -81,6 +81,7 @@ jobs:
           .build/pixels/shared_memory_tests
           timeout 10s .build/pixels/engine_thread_metrics_tests
           timeout 10s .build/pixels/engine_thread_clock_tests
+          timeout 10s .build/pixels/system_cpu_load_tests
       - name: Execute original startup with a missing-assets sandbox
         run: |
           set -o pipefail

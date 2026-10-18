@@ -4,6 +4,7 @@
 #include <SDL3/SDL.h>
 #include "FramePresentation.h"
 #include "EngineThreadMetrics.h"
+#include "SystemCpuLoad.h"
 #include "GameTrace.h"
 #include <atomic>
 #include <thread>
@@ -62,6 +63,29 @@ StallMonitor &stall_monitor(){static StallMonitor monitor;return monitor;}
 }
 extern "C" void nfs_monitor_activity(int state){stall_monitor().activity(state);}
 extern "C" {extern int32_t fixedFramebufferSize,initialWinWidth,initialWinHeight,windowResized,winWidth,winHeight;}
+namespace {
+nfs::SystemCpuLoadWindow core_window;
+nfs::CpuLoadReading core_reading{};
+uint64_t core_read_ns=0;
+bool core_provider_rejected=false;
+void reset_core_load(){core_window.reset();core_reading={};core_read_ns=0;core_provider_rejected=false;}
+NSString *system_core_text(){
+    if(core_provider_rejected)return @"";
+    const auto now=SDL_GetTicksNS();
+    if(!core_read_ns || now<core_read_ns || now-core_read_ns>=1000000000ull){
+        nfs::CpuLoadSnapshot snapshot;
+        if(!nfs::read_system_cpu_ticks(snapshot)){core_provider_rejected=true;core_window.reset();return @"";}
+        core_reading=core_window.observe(snapshot);core_read_ns=now;
+    }
+    NSMutableString *text=[NSMutableString stringWithString:@"\nSystem cores (whole iPad):"];
+    for(std::size_t i=0;i<core_reading.count;++i){
+        [text appendString:i%4==0?@"\n":@" · "];
+        if(core_reading.valid[i])[text appendFormat:@"C%zu %.0f%%",i+1,core_reading.percent[i]];
+        else [text appendFormat:@"C%zu —",i+1];
+    }
+    return text;
+}
+}
 @interface NFSPerformanceOverlay : NSObject
 @property(nonatomic,weak) UIWindow *host;
 @property(nonatomic,strong) UILabel *label;
@@ -70,12 +94,19 @@ extern "C" {extern int32_t fixedFramebufferSize,initialWinWidth,initialWinHeight
 @property(nonatomic) BOOL visible;
 @property(nonatomic) SDL_Window *window;
 @property(nonatomic) BOOL detailed;
+@property(nonatomic) BOOL ownsBatteryMonitoring;
 - (void)openSettings;
 - (void)selectHeight:(NSInteger)height;
 - (void)toggleKeyboard;
 - (void)changeLimit:(UISwitch *)sender;
+- (void)setDeviceMonitoring:(BOOL)enabled;
 @end
 @implementation NFSPerformanceOverlay
+- (void)setDeviceMonitoring:(BOOL)enabled {
+    UIDevice *device=UIDevice.currentDevice;
+    if(enabled && !device.batteryMonitoringEnabled){device.batteryMonitoringEnabled=YES;self.ownsBatteryMonitoring=YES;}
+    if(!enabled && self.ownsBatteryMonitoring){device.batteryMonitoringEnabled=NO;self.ownsBatteryMonitoring=NO;}
+}
 - (void)changeLimit:(UISwitch *)sender {
     nfs_set_frame_limit(sender.on?30:0);
     [NSUserDefaults.standardUserDefaults setBool:sender.on forKey:@"NFSLock30FPS"];
@@ -110,7 +141,7 @@ extern "C" {extern int32_t fixedFramebufferSize,initialWinWidth,initialWinHeight
     while(presenter.presentedViewController)presenter=presenter.presentedViewController;
     if(!presenter || [presenter isKindOfClass:UIAlertController.class])return;
     UIAlertController *sheet=[UIAlertController alertControllerWithTitle:@"Rendering & diagnostics"
-        message:@"Pause before changing resolution. Native keeps the original 4:3 view. CPU/app is this game's share of total CPU capacity. Four-finger tap shows or hides diagnostics."
+        message:@"Pause before changing resolution. Native keeps the original 4:3 view. App CPU is averaged across all cores. Game CPU time measures the engine thread per frame. System-core readings cover the whole iPad when available. Four-finger tap shows or hides diagnostics."
         preferredStyle:UIAlertControllerStyleActionSheet];
     NSArray<NSNumber *> *heights=@[@480,@720,@960,@0];
     NSArray<NSString *> *titles=@[@"640 × 480 (original)",@"960 × 720",@"1280 × 960",@"Native screen pixels (4:3)"];
@@ -120,6 +151,7 @@ extern "C" {extern int32_t fixedFramebufferSize,initialWinWidth,initialWinHeight
     }
     [sheet addAction:[UIAlertAction actionWithTitle:self.detailed?@"Compact FPS overlay":@"Detailed diagnostics" style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
         self.detailed=!self.detailed;
+        reset_core_load();
         [NSUserDefaults.standardUserDefaults setBool:self.detailed forKey:@"NFSDetailedOverlay"];
     }]];
     [sheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
@@ -135,6 +167,7 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
     if(!native)return;
     if(!overlay)overlay=[[NFSPerformanceOverlay alloc] init];
     if(overlay.label.superview!=native){
+        [overlay setDeviceMonitoring:NO];reset_core_load();
         [overlay.label removeFromSuperview];[overlay.keyboardButton removeFromSuperview];[overlay.limitRow removeFromSuperview];overlay.host=native;overlay.window=window;overlay.visible=NO;nfs_set_engine_metrics_capture(0);
         NSUserDefaults *preferences=NSUserDefaults.standardUserDefaults;
         overlay.detailed=[preferences objectForKey:@"NFSDetailedOverlay"]?[preferences boolForKey:@"NFSDetailedOverlay"]:YES;
@@ -184,7 +217,7 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
             [limit.centerYAnchor constraintEqualToAnchor:row.centerYAnchor],
             [label.topAnchor constraintEqualToAnchor:native.safeAreaLayoutGuide.topAnchor constant:8],
             [label.trailingAnchor constraintEqualToAnchor:native.safeAreaLayoutGuide.trailingAnchor constant:-8],
-            [label.widthAnchor constraintEqualToConstant:220],
+            [label.widthAnchor constraintEqualToConstant:300],
             [label.heightAnchor constraintGreaterThanOrEqualToConstant:28]]];
         if([preferences objectForKey:@"NFSRenderHeight"])
             [overlay selectHeight:[preferences integerForKey:@"NFSRenderHeight"]];
@@ -192,15 +225,19 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
     if(!overlay.visible)return;
     const BOOL lowPower=NSProcessInfo.processInfo.lowPowerModeEnabled;
     static BOOL powerKnown=NO,previousPower=NO;
-    if(powerKnown && previousPower!=lowPower)nfs_reset_engine_metrics();
+    if(powerKnown && previousPower!=lowPower){nfs_reset_engine_metrics();reset_core_load();}
     powerKnown=YES;previousPower=lowPower;
     mach_task_basic_info_data_t info{};mach_msg_type_number_t count=MACH_TASK_BASIC_INFO_COUNT;
     const BOOL memoryAvailable=task_info(mach_task_self(),MACH_TASK_BASIC_INFO,reinterpret_cast<task_info_t>(&info),&count)==KERN_SUCCESS;
     NSString *cpuText=cpu>=0?[NSString stringWithFormat:@"%.1f%%",cpu]:@"—";
     NSString *memoryText=memoryAvailable?[NSString stringWithFormat:@"%.0f MB",double(info.resident_size)/1048576.0]:@"—";
+    [overlay setDeviceMonitoring:YES];
+    const float battery=UIDevice.currentDevice.batteryLevel;
+    NSString *batteryText=battery>=0 && battery<=1?[NSString stringWithFormat:@"%.0f%%",double(battery)*100]:@"…";
     const double engineCpu=nfs_engine_cpu_ms_per_frame();
-    NSString *engineLine=engineCpu>=0?[NSString stringWithFormat:@"\nGame CPU: %.2f ms/frame",engineCpu]:@"";
-    overlay.label.text=overlay.detailed?[NSString stringWithFormat:@"FPS %.1f  ·  %.1f ms\nCPU/app %@  ·  RAM %@%@\nRender %d × %d\nLow Power Mode: %@",fps,fps>0?1000.0/fps:0,cpuText,memoryText,engineLine,width,height,lowPower?@"On":@"Off"]:[NSString stringWithFormat:@"FPS %.1f  ·  Tap for settings",fps];
+    NSString *engineLine=engineCpu>=0?[NSString stringWithFormat:@"Game CPU time: %.2f ms/frame",engineCpu]:@"Game CPU time: measuring…";
+    NSString *cores=overlay.detailed?system_core_text():@"";
+    overlay.label.text=overlay.detailed?[NSString stringWithFormat:@"FPS %.1f · Frame %.1f ms\n%@\nApp CPU (all cores): %@\nRAM %@ · Battery %@%@\nRender %d × %d\nLow Power Mode: %@",fps,fps>0?1000.0/fps:0,engineLine,cpuText,memoryText,batteryText,cores,width,height,lowPower?@"On":@"Off"]:[NSString stringWithFormat:@"FPS %.1f · Battery %@ · Tap",fps,batteryText];
     overlay.label.hidden=!overlay.visible;overlay.limitRow.hidden=!overlay.visible;
     [native bringSubviewToFront:overlay.label];
     [native bringSubviewToFront:overlay.limitRow];
@@ -209,6 +246,7 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
 extern "C" void nfs_toggle_performance_overlay(void *window){
     if(!overlay || overlay.window!=window)nfs_show_frame_rate(window,0,-1,nfs_render_width(),nfs_render_height());
     overlay.visible=!overlay.visible;
+    [overlay setDeviceMonitoring:overlay.visible];reset_core_load();
     nfs_set_engine_metrics_capture(overlay.visible?1:0);
     overlay.label.hidden=!overlay.visible;overlay.limitRow.hidden=!overlay.visible;
 }
