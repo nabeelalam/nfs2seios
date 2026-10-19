@@ -559,3 +559,18 @@ identified a sprite font page and mapped all 128 captured text triangles to
 complete glyph cells. Software prepares the font page; accelerated draws use
 size-specific sampling offsets. An optional replacement must preserve those
 contracts and the original fallback. No new menu lettering is enabled yet.
+
+The main-menu remaster retains tall, consistently condensed lettering and
+complete-word spacing. A maintained default-off capability bridge now isolates
+renderer availability from engine linkage. The prepared original hit routine
+extends only the left edges of the exact eight-row English main menu, then
+restores them before returning or unwinding. Unsupported forms retain their
+original targets, and the disabled hook makes no extra guest table reads.
+The original compiled routine passes 1,008 strict-edge, cursor, register, stack
+and restoration cases through this prepared hook. Optimized/sanitized helper
+checks and C linkage also pass without SDL or a renderer.
+
+This checkpoint does not enable new lettering: connecting the reviewed condensed
+word atlas and publishing capability through the renderer lifecycle is next.
+The main performance branch stays separate; no new cloud build or IPA is needed
+for this intermediate input integration.

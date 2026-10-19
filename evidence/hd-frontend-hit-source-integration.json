@@ -1,0 +1,26 @@
+{
+  "scope": "Default-off maintained main-menu hit hook; authored renderer integration remains pending",
+  "rendererIndependentCapability": true,
+  "defaultActive": false,
+  "cApiCompileAndLink": "passed",
+  "optimizedHostTests": "passed",
+  "addressAndUndefinedSanitizerHostTests": "passed",
+  "sourcePreparationTests": 4,
+  "signatureNegativeCases": 44,
+  "originalCompiledHitCases": 1008,
+  "completeEnglishMenuSignatureRequired": true,
+  "otherMenusRetainOriginalBounds": true,
+  "normalAndExceptionExitRestoration": "passed",
+  "originalCursorRegistersAndStack": "preserved",
+  "originalFunctionBodyAndTrace": "preserved outside authored entry scope",
+  "sourceOriginalGamePixelsIncluded": false,
+  "sourceOriginalGeneratedMethodsIncluded": false,
+  "cloudBuildStarted": false,
+  "physicalIpadAcceptance": false,
+  "remaining": [
+    "Reviewed condensed lettering assets and deterministic generator",
+    "Renderer publication on matching source, visibility, shader and context lifecycle",
+    "Integrated renderer fallback and runtime checks",
+    "Other frontend forms and physical UI review"
+  ]
+}

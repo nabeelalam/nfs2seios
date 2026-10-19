@@ -672,3 +672,16 @@ identified a sprite font page and mapped all 128 captured text triangles to
 complete glyph cells. Software prepares the font page; accelerated draws use
 size-specific sampling offsets. An optional replacement must preserve those
 contracts and the original fallback. No new menu lettering is enabled yet.
+
+For the optional condensed main-menu hit hook, run
+`python tests/frontend_word_hooks_test.py` and the CMake target
+`frontend_word_tests` (CTest name `frontend_word_hit_bounds`). Set
+`BOUNDARY_SANITIZERS=ON` for address/undefined checks. The runtime capability
+starts disabled, has a C-compatible interface, and links without SDL/graphics.
+Tests cover all forty fields of the exact signature, root/count/disabled
+fallbacks, null input, concurrent mode publication and normal/unwind restoration.
+
+A separate private original-code check exercised the maintained preparation
+hook for 1,008 cases against the compiled original hit routine. It preserves
+cursor coordinates, saved registers, stack and original bounds. This does not
+prove renderer integration, other menu layouts or physical iPad behavior.
