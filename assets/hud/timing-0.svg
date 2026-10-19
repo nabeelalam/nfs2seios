@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="12" height="27" viewBox="0 0 12 27">
-<defs><linearGradient id="face" x1="0" y1="0" x2="0.18" y2="1"><stop stop-color="#fff"/><stop offset=".58" stop-color="#f6f6f6"/><stop offset="1" stop-color="#d5d5d8"/></linearGradient></defs>
-<path d="M4 1H8Q11 1 11 4V22Q11 25.5 8 25.5H4Q1 25.5 1 22V4Q1 1 4 1Z" fill="#0b0b0e"/>
-<path d="M4.3 2H7.8Q9.9 2 9.9 4.2V21.7Q9.9 24.1 7.7 24.1H4.3Q2.15 24.1 2.15 21.7V4.2Q2.15 2 4.3 2Z" fill="url(#face)"/>
-<path d="M5.25 4.5H6.9V21.5H5.25Z" fill="#18181b"/>
-<path d="M4.3 2.5H7.7Q9.4 2.5 9.4 4.3" fill="none" stroke="#fff" stroke-width=".35"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="26" viewBox="0 0 12 26"><defs>
+<linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".17" stop-color="#fafcff"/><stop offset=".43" stop-color="#c8d1da"/><stop offset=".53" stop-color="#aab4bf"/><stop offset=".76" stop-color="#f3f6fa"/><stop offset="1" stop-color="#8b96a2"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff2ab"/><stop offset=".22" stop-color="#f4d369"/><stop offset=".49" stop-color="#d4a631"/><stop offset=".56" stop-color="#ae7b16"/><stop offset=".79" stop-color="#f1ca56"/><stop offset="1" stop-color="#9e701c"/></linearGradient>
+<linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#888985"/><stop offset=".07" stop-color="#62635f"/><stop offset=".45" stop-color="#575955"/><stop offset=".53" stop-color="#4a4c49"/><stop offset="1" stop-color="#535550"/></linearGradient>
+<linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e85145"/><stop offset=".1" stop-color="#b32b28"/><stop offset=".57" stop-color="#7c1b20"/><stop offset="1" stop-color="#a82429"/></linearGradient>
+<filter id="raised" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation=".12" result="soft"/><feOffset in="soft" dy=".35" result="offset"/><feFlood flood-color="#000" flood-opacity=".85"/><feComposite in2="offset" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs><text x="6" y="24" font-family="Bebas Neue" font-size="25" text-anchor="middle" fill="url(#silver)" stroke="#191a18" stroke-width=".3" paint-order="stroke fill" filter="url(#raised)">0</text></svg>

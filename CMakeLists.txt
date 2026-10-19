@@ -81,6 +81,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
     "${GAME_SUPPORT}/text.spa" "${GAME_SUPPORT}/text.swe")
   configure_file("${CMAKE_SOURCE_DIR}/candidates/link4/LICENSE" "${CMAKE_BINARY_DIR}/GameSupportLicense.txt" COPYONLY)
   list(APPEND GAME_SUPPORT_FILES "${CMAKE_BINARY_DIR}/GameSupportLicense.txt")
+  list(APPEND GAME_SUPPORT_FILES
+    "${CMAKE_SOURCE_DIR}/assets/hud/fonts/BebasNeue-OFL.txt"
+    "${CMAKE_SOURCE_DIR}/assets/hud/fonts/Michroma-OFL.txt"
+    "${CMAKE_SOURCE_DIR}/assets/hud/HUDArtworkNotice.md")
   set_source_files_properties(${GAME_SUPPORT_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
   if(TARGET platform_bridges)
     configure_file("${CMAKE_SOURCE_DIR}/.build/vendor/SDL/LICENSE.txt" "${CMAKE_BINARY_DIR}/SDLLicense.txt" COPYONLY)

@@ -12,7 +12,7 @@ import zipfile
 from publication_audit import PATTERNS
 
 PREFIX = "Payload/NFSIISEGame.app/"
-LICENSES = {"GameSupportLicense.txt", "SDLLicense.txt"}
+LICENSES = {"GameSupportLicense.txt", "SDLLicense.txt", "BebasNeue-OFL.txt", "Michroma-OFL.txt", "HUDArtworkNotice.md"}
 SUPPORT = {"install.win", "text.eng", "text.ger", "text.fre", "text.ita", "text.spa", "text.swe"} | LICENSES
 FILES = SUPPORT | {"Info.plist", "PkgInfo", "NFSIISEGame"}
 MANIFEST_KEYS = {"executable", "bundle_id", "architecture", "platform", "support_sha256", "source_commit", "ipa_sha256", "configuration", "personal_signing_required", "installation_verified", "gameplay_verified"}

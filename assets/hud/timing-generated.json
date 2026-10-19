@@ -1,20 +1,20 @@
 {
-  "generatedFrom": "New vector timing glyphs only",
+  "generatedFrom": "Reviewed existing-font/brand SVG artwork",
   "originalGamePixelsIncluded": false,
   "sourceHashes": {
-    "timing-0.svg": "617118a89e703e4712fef80af1a05cae3b6ca965a44ee6ec74f2e69659409e70",
-    "timing-1.svg": "7679ea5b21d4bd01fcc265acd83588b2931edc9e9c838798295d518b052360e8",
-    "timing-2.svg": "0195efe3cc0e4b602a1cfe2b5f4c6131821d3b14d679c4c3bdca752b739cccb1",
-    "timing-3.svg": "2c19b9d0ea549612bdf471a6d2d3f264a49aef35420b2961ed60181ea3eac47c",
-    "timing-4.svg": "04cfa04a40ec9539920ab53c25e2371d12f5f960680457853ab35e412fd667b1",
-    "timing-5.svg": "8044e6b61ab24e6239069db2f81500c9dd404c26431c9f8510e6f08458f33c32",
-    "timing-6.svg": "364edfc58700322edd76980c20d3a059a158256dff3e2ba8b64bba0d3ef638bc",
-    "timing-7.svg": "5b38d78a021935d4dc23fa11e7ecdc94647e2153141e8adbc1cabc30b2e98ab6",
-    "timing-8.svg": "5401916461133d055ba10896c21c67ce436b9b11fc06c7ee5356e6ddeef3fbaf",
-    "timing-9.svg": "7adc195eeab7cea3ce25f6579ae38f383ff95f8a1b65e7cf944b6d6b1e10c546"
+    "assets/hud/timing-0.svg": "6bc29fedb33c2027b5079228d9766eae36f61771b94da97eec38a1a0e55764bd",
+    "assets/hud/timing-1.svg": "30d4c4e004bcad816c2f6063c2f406f95c1020e3ca419a47dedc4ff0fcc1d6a1",
+    "assets/hud/timing-2.svg": "5f0ddcf0025c0d8f5ff08eb23c50794e5747acf9cc4685580ff6ec84392f2378",
+    "assets/hud/timing-3.svg": "600088113c08331a13ba1ea1cbb296d335c9724b9bb3b68f73408b2be8842531",
+    "assets/hud/timing-4.svg": "dd0feecdf9eabf879065466e1d1849a38905fbef05a46301db0a4ead43726696",
+    "assets/hud/timing-5.svg": "2111a09d48094d1862e88dd65050ba6f5d6a1e5e312eee2ec29326f915562434",
+    "assets/hud/timing-6.svg": "a698d02c361099c6bfa88b34a3845f621d826344df7a748817361af151ba9815",
+    "assets/hud/timing-7.svg": "95d4d3e15681b7ca854f4c279087d18cff5184002caf719a64190c8cee912b5e",
+    "assets/hud/timing-8.svg": "38a8a953f1de5ad89b78001fc9cd1293519167e1b07c87e431438d39feac3bb4",
+    "assets/hud/timing-9.svg": "126e7d479e9e12113e964e2a5335c721f213349e88c9a6f1704cc016718f42e3"
   },
-  "rasterSha256": "f0d5657e0c0f11b85c4d5cb833d8fe20c7dfabb179a5cbc312edc58fb7655ce4",
+  "rasterSha256": "db84106c171d5935a591d811aafdee05f33e8f71dd92fe5dc0089a40a4bdf245",
   "rasterBytes": 199680,
-  "rleBytes": 86826,
-  "headerSha256": "2c2f0f947221c7a2630d1ec3ad288cc7d49c36f6b93e13a39bf08541ad2bea66"
+  "rleBytes": 41802,
+  "headerSha256": "bc3502e36a3fc06c45079ec0e2325057969fc5658073c613c9708280509e1eb4"
 }

@@ -575,3 +575,28 @@ physical recorder controls, export, race stability or battery overhead.
 The [inspected build 21 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip) contains ten new gold speed numerals and the corrected timing-digit selector, with a live HUD digits Original/HD control. Local release and instrumented checks prove matching prototype pixels for all ten gold digits, unchanged timing pixels, exact whole-atlas construction, original-pixel fallback, malformed-stream rejection and context/lifecycle behavior. A bounded original split-screen run exercised all digits in both views; it did not establish a complete race or physical-device acceptance.
 
 Apple compilation and the independently inspected ARM64/iOS 16 Release package passed, including 37 Apple host checks. The complete generated new-art stream is present in the executable, and the five-entry package excludes original assets, private paths and signing material. No device FPS, energy or appearance result is inferred from those checks. Use the existing session recordings for matched Original/HD, normal/Low Power Mode split-screen comparison before any main-branch merge.
+
+## Unreleased existing-font remaster source
+
+The HD branch now contains Bebas Neue silver timing and pause lettering,
+Michroma italic gold speed digits, and the proper logo artwork for both
+original HUD logo sources. The alternate timing-atlas logo has its own exact
+source/quad match; the separate WRONG WAY banner retains its original route.
+Source snapshots preserve pause and logo textures through overlapping guest
+texture memory and graphics recovery. These changes remain experimental.
+
+On Linux with fontconfig, Cairo and librsvg available, run
+`python3 scripts/generate_remaster_pixels.py --check`. The generator uses only
+the pinned project fonts and reviewed SVGs, rejects font substitution, and
+does not read original game assets. Normal builds use committed generated
+headers and do not require these font tools. Font and brand notices are
+required bundle resources and remain in the stripped personal-install ZIP.
+
+Fresh branch-generated renderer checks passed in optimized, ASan/UBSan and
+limited-precision fallback configurations. All 59 GPU output files in each
+configuration matched the tested prototype. These are local renderer checks;
+the existing SDL archive itself was not sanitizer-instrumented. Original-game
+component observations exist for timing, speed and pause/Continue. Natural
+alternate HUD mode, physical iPad appearance/performance, remaining panel and
+record artwork, other interface fonts and final layout review remain open.
+This source integration is not a new IPA or an Apple SDK build result.

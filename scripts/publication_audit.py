@@ -5,6 +5,7 @@ import re
 import subprocess
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from hud_asset_review import reviewed_font_file, reviewed_remaster_svg
 
 ROOT = Path(__file__).resolve().parents[1]
 PATTERNS = {
@@ -19,6 +20,7 @@ SAFE_EMAIL = re.compile(r"(?i)^(?:[^<>\s]+@users\.noreply\.github\.com|codex@(?:
 
 def reviewed_timing_svg(name, data):
     """Allow only bounded path/gradient HUD glyph sources; no embedded images."""
+    if reviewed_remaster_svg(name,data):return True
     match=re.fullmatch(r"assets/hud/(?:(timing|speed)-([0-9])|small-([A-Z])|record-([1-9]|dot|colon))\.svg",name)
     if not match or len(data)>65536:
         return False
@@ -69,14 +71,15 @@ def git(*args):
 
 def content_findings(name, data, mode="100644"):
     found = []
+    pinned_font=reviewed_font_file(name,data)
     if BLOCKED.search(name): found.append("forbidden_file")
     if mode == "120000": found.append("symlink")
     if Path(name).suffix==".svg":
         if not reviewed_timing_svg(name,data):found.append("unreviewed_svg")
-    elif Path(name).suffix not in ALLOWED_SUFFIXES and name not in {".gitignore", "CMakeLists.txt", ".githooks/pre-commit", ".githooks/pre-push"}:
+    elif not pinned_font and Path(name).suffix not in ALLOWED_SUFFIXES and name not in {".gitignore", "CMakeLists.txt", ".githooks/pre-commit", ".githooks/pre-push"}:
         found.append("unreviewed_file_type")
     if len(data) > 1024 * 1024: found.append("large_file_review")
-    if b"\0" in data: found.append("binary_file")
+    if b"\0" in data and not pinned_font: found.append("binary_file")
     for category, pattern in PATTERNS.items():
         if pattern.search(data): found.append(category)
     return found

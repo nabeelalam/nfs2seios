@@ -9,6 +9,9 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def generate():
     directory=ROOT/'assets/hud';catalog=json.loads((directory/'timing-font.json').read_text())
+    if catalog.get('artworkRevision')=='existing-font-v1':
+        from generate_remaster_pixels import generate as remaster
+        return remaster('timing')
     fingerprint=catalog['originalGpuFingerprint']
     if fingerprint['edge']!=256 or fingerprint['sampleStride']!=4096 or fingerprint['sampleBytes']!=16 or not re.fullmatch('[0-9a-f]{64}',fingerprint['sha256']) or not re.fullmatch('[0-9a-f]{16}',fingerprint['sampleFnv64']):
         raise ValueError('Unsupported atlas fingerprint metadata')

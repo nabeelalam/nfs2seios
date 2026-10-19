@@ -10,7 +10,7 @@ import tempfile
 import unittest
 import zipfile
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from prepare_release_download import inspect, PREFIX, SUPPORT
+from prepare_release_download import inspect, PREFIX, SUPPORT, LICENSES
 
 class DownloadTest(unittest.TestCase):
     def fixture(self, folder, extra=None, binary=None):
@@ -72,7 +72,7 @@ class DownloadTest(unittest.TestCase):
                 public_manifest.write_bytes(download.read("NFSIISEGame-development-unsigned.json"))
             inspect(public_ipa, public_manifest, source, assets_separate=True)
             with zipfile.ZipFile(public_ipa) as public:
-                self.assertEqual(len(public.namelist()), 5)
+                self.assertEqual(set(public.namelist()),{PREFIX+name for name in LICENSES|{"Info.plist","PkgInfo","NFSIISEGame"}})
                 self.assertNotIn(PREFIX + "install.win", public.namelist())
                 self.assertNotIn(PREFIX + "text.eng", public.namelist())
             with self.assertRaisesRegex(ValueError, "support"):

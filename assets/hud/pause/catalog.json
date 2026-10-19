@@ -1,0 +1,206 @@
+{
+  "fontFamily": "Bebas Neue",
+  "rasterScale": 4,
+  "region": [
+    320,
+    640,
+    704,
+    384
+  ],
+  "entries": [
+    {
+      "name": "continue",
+      "file": "continue.svg",
+      "raster": [
+        620,
+        96
+      ],
+      "logicalCell": [
+        155,
+        24
+      ]
+    },
+    {
+      "name": "restart",
+      "file": "restart.svg",
+      "raster": [
+        620,
+        96
+      ],
+      "logicalCell": [
+        155,
+        24
+      ]
+    },
+    {
+      "name": "racing-music",
+      "file": "racing-music.svg",
+      "raster": [
+        620,
+        96
+      ],
+      "logicalCell": [
+        155,
+        24
+      ]
+    },
+    {
+      "name": "sound-effects",
+      "file": "sound-effects.svg",
+      "raster": [
+        1020,
+        96
+      ],
+      "logicalCell": [
+        255,
+        24
+      ]
+    },
+    {
+      "name": "quit",
+      "file": "quit.svg",
+      "raster": [
+        620,
+        96
+      ],
+      "logicalCell": [
+        155,
+        24
+      ]
+    },
+    {
+      "name": "quit-to-system",
+      "file": "quit-to-system.svg",
+      "raster": [
+        1020,
+        112
+      ],
+      "logicalCell": [
+        255,
+        28
+      ]
+    }
+  ],
+  "placements": {
+    "continue": {
+      "atlasInkBounds": [
+        322,
+        642,
+        305,
+        79
+      ],
+      "originalRasterInkBounds": [
+        10,
+        9,
+        315,
+        88
+      ],
+      "originalLogicalCell": [
+        155,
+        24
+      ],
+      "rasterScale": 4,
+      "allNonzeroAlphaPreserved": true
+    },
+    "restart": {
+      "atlasInkBounds": [
+        631,
+        642,
+        270,
+        79
+      ],
+      "originalRasterInkBounds": [
+        11,
+        9,
+        281,
+        88
+      ],
+      "originalLogicalCell": [
+        155,
+        24
+      ],
+      "rasterScale": 4,
+      "allNonzeroAlphaPreserved": true
+    },
+    "racing-music": {
+      "atlasInkBounds": [
+        322,
+        725,
+        437,
+        79
+      ],
+      "originalRasterInkBounds": [
+        11,
+        9,
+        448,
+        88
+      ],
+      "originalLogicalCell": [
+        155,
+        24
+      ],
+      "rasterScale": 4,
+      "allNonzeroAlphaPreserved": true
+    },
+    "quit": {
+      "atlasInkBounds": [
+        763,
+        725,
+        139,
+        85
+      ],
+      "originalRasterInkBounds": [
+        10,
+        9,
+        149,
+        94
+      ],
+      "originalLogicalCell": [
+        155,
+        24
+      ],
+      "rasterScale": 4,
+      "allNonzeroAlphaPreserved": true
+    },
+    "sound-effects": {
+      "atlasInkBounds": [
+        322,
+        814,
+        487,
+        79
+      ],
+      "originalRasterInkBounds": [
+        9,
+        9,
+        496,
+        88
+      ],
+      "originalLogicalCell": [
+        255,
+        24
+      ],
+      "rasterScale": 4,
+      "allNonzeroAlphaPreserved": true
+    },
+    "quit-to-system": {
+      "atlasInkBounds": [
+        322,
+        897,
+        496,
+        85
+      ],
+      "originalRasterInkBounds": [
+        10,
+        17,
+        506,
+        102
+      ],
+      "originalLogicalCell": [
+        255,
+        28
+      ],
+      "rasterScale": 4,
+      "allNonzeroAlphaPreserved": true
+    }
+  }
+}

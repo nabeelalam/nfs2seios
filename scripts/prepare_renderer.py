@@ -126,6 +126,8 @@ def prepare_hd_atlas(text, dest):
     start = text.index('static void uploadTexture(TextureInfo *ti)')
     at = text.index(marker, start)
     text = text[:at] + '''\tvoid *originalData=ti->data;
+    if(ti->hdDigits==40 && nfs_hd_builtin_enabled && nfs_pause_valid && ti->size==256 && ti->fmt==GR_TEXFMT_ARGB_1555)ti->data=nfs_pause_original;
+    if(ti->hdDigits==39 && nfs_hd_builtin_enabled && nfs_logo_valid && ti->size==64 && ti->fmt==GR_TEXFMT_ARGB_4444)ti->data=nfs_logo_original;
     if(ti->hdDigits>=28 && ti->hdDigits<=38 && nfs_hd_builtin_enabled &&
        (nfs_record_font_valid&(1u<<(ti->hdDigits-28))) &&
        ti->size==nfs_record_font_edge[ti->hdDigits-28] && ti->fmt==GR_TEXFMT_ARGB_1555)
@@ -134,7 +136,7 @@ def prepare_hd_atlas(text, dest):
        (nfs_small_font_valid&(1u<<(ti->hdDigits-2))) &&
        ti->size==nfs_small_font_edge[ti->hdDigits-2] && ti->fmt==GR_TEXFMT_ARGB_1555)
         ti->data=nfs_small_font_original[ti->hdDigits-2];
-    if(ti->hdDigits && nfs_hd_builtin_enabled && nfs_hd_atlas.original &&
+    if(ti->hdDigits==1 && nfs_hd_builtin_enabled && nfs_hd_atlas.original &&
        ti->size==nfs_hd_atlas.original_size && ti->fmt==GR_TEXFMT_ARGB_1555)
         ti->data=nfs_hd_atlas.original;
     if(nfs_hd_upload_texture(ti)){ti->data=originalData;return;}
@@ -145,7 +147,7 @@ def prepare_hd_atlas(text, dest):
     section = text[start:end]
     assert section.endswith('\n}\n')
     text = text[:start] + section[:-3] + '\n\tti->data=originalData;\n}\n' + text[end:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc'):
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

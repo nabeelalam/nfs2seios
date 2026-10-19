@@ -3,6 +3,11 @@ import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+HUD_NOTICE_SOURCES = {
+    "BebasNeue-OFL.txt": ROOT / "assets/hud/fonts/BebasNeue-OFL.txt",
+    "Michroma-OFL.txt": ROOT / "assets/hud/fonts/Michroma-OFL.txt",
+    "HUDArtworkNotice.md": ROOT / "assets/hud/HUDArtworkNotice.md",
+}
 
 def validate_game_resources(app: Path) -> dict[str, str]:
     support = ROOT / "candidates/link4/Need For Speed II SE"
@@ -11,6 +16,7 @@ def validate_game_resources(app: Path) -> dict[str, str]:
     )}
     sources["GameSupportLicense.txt"] = ROOT / "candidates/link4/LICENSE"
     sources["SDLLicense.txt"] = ROOT / ".build/vendor/SDL/LICENSE.txt"
+    sources.update(HUD_NOTICE_SOURCES)
     hashes = {}
     for name, source in sources.items():
         target = app / name

@@ -1,0 +1,16 @@
+{
+  "generatedFrom": "Reviewed existing-font/brand SVG artwork",
+  "originalGamePixelsIncluded": false,
+  "sourceHashes": {
+    "assets/hud/pause/continue.svg": "892e13a8f3ad0de5d44209567f8a9bcc59007c02faabc041ac1ddf742fe21672",
+    "assets/hud/pause/restart.svg": "fa4799ba1968e1dfa628a61949704874c11c6fdf5f0b42f279dc5a0b6c5cf567",
+    "assets/hud/pause/racing-music.svg": "557eb10e3ae07cd9e6034257b52ebef9d5682f911342bb40b956cfaec1c96075",
+    "assets/hud/pause/sound-effects.svg": "9dfae8a7c509c16ec278282ec6e9d8f3d0b59461dede4d7c621bf6703741843b",
+    "assets/hud/pause/quit.svg": "155851fc5dba9aa3cde5203c088432402601418614761fb5828dd43f03396847",
+    "assets/hud/pause/quit-to-system.svg": "32509757acd1812e0cddc52c116aa88449babecfdcb3ad9d42039af07e7bf61b"
+  },
+  "rasterSha256": "c6e78d7b52d3190fa2bcd7a1a963546815b645f6ad1f775369967fa6ab701a83",
+  "rasterBytes": 1081344,
+  "rleBytes": 223590,
+  "headerSha256": "cb84231ad6503067a00cdcd8b7811c565a01335fa9ff19cd6b34b78181f700fd"
+}

@@ -1,0 +1,52 @@
+{
+  "fonts": [
+    {
+      "family": "Bebas Neue",
+      "fontFile": "BebasNeue-Regular.ttf",
+      "licenseFile": "BebasNeue-OFL.txt",
+      "commit": "47d54ca1ebb14fd864695f1d39dc734f39017c33",
+      "sourceFiles": [
+        {
+          "file": "BebasNeue-Regular.ttf",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bebasneue/BebasNeue-Regular.ttf",
+          "sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73"
+        },
+        {
+          "file": "OFL.txt",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bebasneue/OFL.txt",
+          "sha256": "72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341"
+        },
+        {
+          "file": "METADATA.pb",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bebasneue/METADATA.pb",
+          "sha256": "180da4f2ee7757e589eb5cb82f32c58b64c49f015e504ccab6b21401e7f5d43a"
+        }
+      ],
+      "unmodifiedFont": true
+    },
+    {
+      "family": "Michroma",
+      "fontFile": "Michroma-Regular.ttf",
+      "licenseFile": "Michroma-OFL.txt",
+      "commit": "47d54ca1ebb14fd864695f1d39dc734f39017c33",
+      "sourceFiles": [
+        {
+          "file": "Michroma-Regular.ttf",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/michroma/Michroma-Regular.ttf",
+          "sha256": "b62301163788bc5b7f8fcac0b74b184e34e1827e577b499ecb724da065098f87"
+        },
+        {
+          "file": "OFL.txt",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/michroma/OFL.txt",
+          "sha256": "33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393"
+        },
+        {
+          "file": "METADATA.pb",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/michroma/METADATA.pb",
+          "sha256": "be476631b50b6b77bc57c038642b8e8abe7b5b1dcb57b2e6cc4aeb20dd5b31f2"
+        }
+      ],
+      "unmodifiedFont": true
+    }
+  ]
+}

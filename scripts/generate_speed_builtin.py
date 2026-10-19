@@ -11,6 +11,9 @@ ROOT=Path(__file__).resolve().parents[1]
 def generate():
     directory=ROOT/'assets/hud'
     catalog=json.loads((directory/'speed-font.json').read_text())
+    if catalog.get('artworkRevision')=='existing-font-v1':
+        from generate_remaster_pixels import generate as remaster
+        return remaster('speed')
     if catalog['vectorSize']!=[29,24] or catalog['rasterSize']!=[116,96] or len(catalog['entries'])!=10:
         raise ValueError('Unexpected new speed glyph layout')
     rgba=bytearray();sources={}

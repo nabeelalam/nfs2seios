@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "Provisional hand-drawn timing numeral artwork; host proof only",
+  "status": "Existing-font private candidate; local GPU proof, device and final layout acceptance pending",
   "originalGamePixelsIncluded": false,
   "scale": 4,
   "sharedNextSpriteRow": 47,
@@ -9,7 +9,7 @@
     {
       "digit": 0,
       "file": "timing-0.svg",
-      "sha256": "617118a89e703e4712fef80af1a05cae3b6ca965a44ee6ec74f2e69659409e70",
+      "sha256": "6bc29fedb33c2027b5079228d9766eae36f61771b94da97eec38a1a0e55764bd",
       "atlasRect": [
         48,
         21,
@@ -20,13 +20,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 1,
       "file": "timing-1.svg",
-      "sha256": "7679ea5b21d4bd01fcc265acd83588b2931edc9e9c838798295d518b052360e8",
+      "sha256": "30d4c4e004bcad816c2f6063c2f406f95c1020e3ca419a47dedc4ff0fcc1d6a1",
       "atlasRect": [
         60,
         21,
@@ -37,13 +37,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 2,
       "file": "timing-2.svg",
-      "sha256": "0195efe3cc0e4b602a1cfe2b5f4c6131821d3b14d679c4c3bdca752b739cccb1",
+      "sha256": "5f0ddcf0025c0d8f5ff08eb23c50794e5747acf9cc4685580ff6ec84392f2378",
       "atlasRect": [
         72,
         21,
@@ -54,13 +54,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 3,
       "file": "timing-3.svg",
-      "sha256": "2c19b9d0ea549612bdf471a6d2d3f264a49aef35420b2961ed60181ea3eac47c",
+      "sha256": "600088113c08331a13ba1ea1cbb296d335c9724b9bb3b68f73408b2be8842531",
       "atlasRect": [
         84,
         21,
@@ -71,13 +71,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 4,
       "file": "timing-4.svg",
-      "sha256": "04cfa04a40ec9539920ab53c25e2371d12f5f960680457853ab35e412fd667b1",
+      "sha256": "dd0feecdf9eabf879065466e1d1849a38905fbef05a46301db0a4ead43726696",
       "atlasRect": [
         96,
         21,
@@ -88,13 +88,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 5,
       "file": "timing-5.svg",
-      "sha256": "8044e6b61ab24e6239069db2f81500c9dd404c26431c9f8510e6f08458f33c32",
+      "sha256": "2111a09d48094d1862e88dd65050ba6f5d6a1e5e312eee2ec29326f915562434",
       "atlasRect": [
         108,
         21,
@@ -105,13 +105,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 6,
       "file": "timing-6.svg",
-      "sha256": "364edfc58700322edd76980c20d3a059a158256dff3e2ba8b64bba0d3ef638bc",
+      "sha256": "a698d02c361099c6bfa88b34a3845f621d826344df7a748817361af151ba9815",
       "atlasRect": [
         120,
         21,
@@ -122,13 +122,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 7,
       "file": "timing-7.svg",
-      "sha256": "5b38d78a021935d4dc23fa11e7ecdc94647e2153141e8adbc1cabc30b2e98ab6",
+      "sha256": "95d4d3e15681b7ca854f4c279087d18cff5184002caf719a64190c8cee912b5e",
       "atlasRect": [
         132,
         21,
@@ -139,13 +139,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 8,
       "file": "timing-8.svg",
-      "sha256": "5401916461133d055ba10896c21c67ce436b9b11fc06c7ee5356e6ddeef3fbaf",
+      "sha256": "38a8a953f1de5ad89b78001fc9cd1293519167e1b07c87e431438d39feac3bb4",
       "atlasRect": [
         144,
         21,
@@ -156,13 +156,13 @@
         0,
         0,
         12,
-        27
+        26
       ]
     },
     {
       "digit": 9,
       "file": "timing-9.svg",
-      "sha256": "7adc195eeab7cea3ce25f6579ae38f383ff95f8a1b65e7cf944b6d6b1e10c546",
+      "sha256": "126e7d479e9e12113e964e2a5335c721f213349e88c9a6f1704cc016718f42e3",
       "atlasRect": [
         156,
         21,
@@ -173,7 +173,7 @@
         0,
         0,
         12,
-        27
+        26
       ]
     }
   ],
@@ -184,5 +184,12 @@
     "sampleFnv64": "fb8e73bd198ee626",
     "sampleStride": 4096,
     "sampleBytes": 16
-  }
+  },
+  "artworkRevision": "existing-font-v1",
+  "vectorViewBox": [
+    0,
+    0,
+    12,
+    26
+  ]
 }

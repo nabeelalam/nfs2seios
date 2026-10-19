@@ -1,0 +1,11 @@
+{
+  "generatedFrom": "Reviewed existing-font/brand SVG artwork",
+  "originalGamePixelsIncluded": false,
+  "sourceHashes": {
+    "assets/hud/omega.svg": "1f8b29faef69a266b454e69a37a6c8077c85ceff27703ca9b1a2581d25c87968"
+  },
+  "rasterSha256": "d3587f45472014248065f7fa6c07bb96ab8442eca5ba7e9175f8535cc170e39d",
+  "rasterBytes": 262144,
+  "rleBytes": 12654,
+  "headerSha256": "f8f0dba54f85a9f485fdd7a87104d2b5dc525ced6585019d6dcb6ef92b8fa8bf"
+}

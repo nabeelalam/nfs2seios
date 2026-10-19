@@ -1,20 +1,20 @@
 {
-  "generatedFrom": "New vector gold numerals only",
+  "generatedFrom": "Reviewed existing-font/brand SVG artwork",
   "originalGamePixelsIncluded": false,
   "sourceHashes": {
-    "speed-0.svg": "312e596933786b245318f9ded5be0177f91770c63d184589bc9266bdc5850d80",
-    "speed-1.svg": "ae416ea9f16eef69141a51c11e2a13bc27cb6e8781a7e726a4412db1966e2b6a",
-    "speed-2.svg": "c9929037524b8ddcff89c461552387becad1fb3c6d3a6a4030889fe4f831ee62",
-    "speed-3.svg": "c84ea8ea17da50e3d5baf8838af705ec93cb521958119e83feeb5f129380988c",
-    "speed-4.svg": "f8fbe36f915984a32ce261f19f00e26b99fb7f15924835774b5d2f6241ff9a80",
-    "speed-5.svg": "ca84124113efeaac1b2c33097738bd65b68c20d69c2c75a9cf6ff7acdb9f8ae2",
-    "speed-6.svg": "6e23552d8d84f418f6036b291b9aed9259992f4599265becb648159a29c03fc4",
-    "speed-7.svg": "c885283ee381d227c30970ea81947f270ebf47c495d8983e71039df3dd1a54dc",
-    "speed-8.svg": "6e8ceeafbaa9317b19bf730534730390a9f1be693aab1f201d239dc335567283",
-    "speed-9.svg": "aa84917bbea6e6ec62035ac5e2b607322816b33b6a09460d59f2b5718e691bd6"
+    "assets/hud/speed-0.svg": "3829efadd70d5a98f88d8e9af572f93ea62ee462137ed4daffa695ae9beb725b",
+    "assets/hud/speed-1.svg": "0405c83fe51c8f47b61e07214138cda219d93c12af9ee4b030ade35d563b7fad",
+    "assets/hud/speed-2.svg": "3b04705f7d22cc5ac99e5e2a43a21f6d314da0a2b6a0c0ad387b72cc70f3e3fc",
+    "assets/hud/speed-3.svg": "0c05d1743dae9fcbf6a003f607231ad0992d98ee081cae83aae49c17b72d208b",
+    "assets/hud/speed-4.svg": "1e35f331c103fc7336dc1e18a29b2eef0f704e74cb5c65049a19a9b8885f2b1a",
+    "assets/hud/speed-5.svg": "c5739cf20b9dbce02dbaae0da506824e97ebe85d06404fcee03a7cc886939b7b",
+    "assets/hud/speed-6.svg": "9c7499b48dab8cfa529bac88b9d1d1ffe2841885fa1290d25070e5632c60c487",
+    "assets/hud/speed-7.svg": "59bb1bad540479b5285eeb3b81f3e38f211d1090aa55d0b13c155bc70c16e65e",
+    "assets/hud/speed-8.svg": "3dec7f9a095f3ac96769681eca993ae2858d69904514b606e4a0082cc30a3c34",
+    "assets/hud/speed-9.svg": "ef53507cb84fca6f6332c9413ef6660d7c7256e6b9887a4f0bd87b10f6cd7d0f"
   },
-  "rasterSha256": "d3184e653fb41a78f69e1109d01e6306ebf54935a575671028f2477a386eec7c",
+  "rasterSha256": "62b56449e737a3181f9b32b4a176766d13334752288722f1dcc5ffbefe522a7a",
   "rasterBytes": 445440,
-  "rleBytes": 78162,
-  "headerSha256": "289438f2102761b52ad7fed916dc8b3ec9adb96286fd2d88237ceaff643e394a"
+  "rleBytes": 68436,
+  "headerSha256": "28e4bcc8d72dee07ee70f24abfdfd8a9edea09b51f9a829c7f30116c02a61744"
 }

@@ -3,7 +3,29 @@
 #include "BuiltinTiming.h"
 #include "HdGlyphSelect.h"
 #include "SmallFontRuntime.inc"
+#include "PauseFontRuntime.inc"
 #include <SDL3/SDL_init.h>
+static unsigned char nfs_logo_original[8192];
+static int nfs_logo_valid;
+static int nfs_logo_match(TextureInfo *ti){
+ if(ti->fmt!=GR_TEXFMT_ARGB_4444 || ti->size!=64)return 0;unsigned char digest[32];
+ if(!nfs_texture_sha256(ti->data,8192,digest) || memcmp(digest,nfs_logo_original_digest,32))return 0;
+ if(ti->data!=nfs_logo_original)memcpy(nfs_logo_original,ti->data,8192);nfs_logo_valid=1;ti->hdDigits=39;return 1;
+}
+static int nfs_logo_triangle(const float uv[6]){
+ unsigned corners=0;for(unsigned i=0;i<3;++i){float u=uv[2*i],v=uv[2*i+1];
+ if(!((u>=1.9821875f && u<=2.0021875f)||(u>=254.99f && u<=255.01f)) || !((v>=1.9821875f && v<=2.0021875f)||(v>=254.99f && v<=255.01f)))return 0;
+ corners|=1u<<((u>128)+(v>128)*2);}
+ return corners==7||corners==11||corners==13||corners==14;
+}
+static int nfs_alternate_logo_triangle(const float uv[6]){
+ unsigned corners=0;for(unsigned i=0;i<3;++i){unsigned x=2,y=2;
+  if(fabsf(uv[2*i]-.498046875f)<=.01f)x=0;else if(fabsf(uv[2*i]-47.8125f)<=.01f)x=1;
+  if(fabsf(uv[2*i+1]-21.416015625f)<=.01f)y=0;else if(fabsf(uv[2*i+1]-43.828125f)<=.01f)y=1;
+  if(x>1 || y>1)return 0;corners|=1u<<(x+y*2);
+ }
+ return corners==7 || corners==11 || corners==13 || corners==14;
+}
 static NfsHdAtlas nfs_hd_atlas;
 static uint64_t nfs_hd_uploads;
 static int nfs_hd_builtin_enabled;
@@ -41,6 +63,9 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         float q=vertices[i]->oow;if(!(q>0))return 0;
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
+    if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1 && nfs_alternate_logo_triangle(uv))return 56;
+    if(nfs_hd_selected==40)return a->oow==1 && b->oow==1 && c->oow==1?nfs_pause_triangle(uv):0;
+    if(nfs_hd_selected==39)return a->oow==1 && b->oow==1 && c->oow==1 && nfs_logo_triangle(uv)?49:0;
     if(nfs_hd_selected>=2 && nfs_hd_selected<=27){
         if(a->oow!=1 || b->oow!=1 || c->oow!=1)return 0;
         unsigned d=nfs_hd_selected-2;
@@ -54,16 +79,18 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
     return nfs_hd_digit_triangle(uv);
 }
 int nfs_glide_hd_atlas_load_file(const char *path){
-    nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=0;nfs_small_font_valid=0;nfs_record_font_valid=0;
+    nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=0;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;
     if(!path)return 0;
     FILE *file=fopen(path,"rb");if(!file)return 0;
     int result=nfs_hd_atlas_read(&nfs_hd_atlas,file);fclose(file);return result;
 }
-void nfs_glide_hd_builtin_enable(int enabled){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=(enabled!=0);nfs_hd_visible=1;nfs_small_font_valid=0;nfs_record_font_valid=0;}
-void nfs_glide_hd_atlas_clear(void){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_builtin_enabled=0;nfs_small_font_valid=0;nfs_record_font_valid=0;}
+void nfs_glide_hd_builtin_enable(int enabled){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=(enabled!=0);nfs_hd_visible=1;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;}
+void nfs_glide_hd_atlas_clear(void){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_builtin_enabled=0;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;}
 uint64_t nfs_glide_hd_atlas_upload_count(void){return nfs_hd_uploads;}
 static int nfs_hd_upload_texture(TextureInfo *ti){
     ti->hdDigits=0;
+    if(nfs_hd_builtin_enabled && nfs_pause_match(ti))return 0;
+    if(nfs_hd_builtin_enabled && nfs_logo_match(ti))return 0;
     if(ti->fmt!=GR_TEXFMT_ARGB_1555)return 0;
     if(nfs_hd_builtin_enabled && nfs_small_font_match(ti))return 0;
     if(nfs_hd_builtin_enabled && !nfs_hd_atlas.original)nfs_timing_build(&nfs_hd_atlas,ti->size,ti->data);

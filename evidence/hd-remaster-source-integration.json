@@ -1,0 +1,38 @@
+{
+  "scope": "Unreleased HD branch source integration; local evidence only",
+  "authoredArtwork": [
+    "Bebas Neue silver timing digits",
+    "Michroma italic gold speed digits",
+    "Bebas Neue pause menu words",
+    "Proper logo vector artwork with proportional fit and alpha-edge colour treatment"
+  ],
+  "originalGamePixelsIncluded": false,
+  "originalAssetsSuppliedSeparately": true,
+  "fontFilesPinnedAndUnmodified": true,
+  "fontAndBrandNoticesRetained": true,
+  "reproduction": "python3 scripts/generate_remaster_pixels.py --check",
+  "localChecks": {
+    "allFourGeneratedPixelArrayFamiliesMatchPrototype": true,
+    "freshBranchGeneratedOpenGL2MatchesTestedCandidate": true,
+    "normalGpuOutputFilesExact": 59,
+    "sanitizedGpuOutputFilesExact": 59,
+    "limitedPrecisionFallbackOutputFilesExact": 59,
+    "wrongWayBannerPreserved": true,
+    "sourceSnapshotOverlapAndGraphicsRecovery": true,
+    "fontSubstitutionRejected": true,
+    "modifiedFontOrUnreviewedSvgRejected": true,
+    "requiredBundleNoticesChecked": true,
+    "strippedPackageExcludesConfigurationAndLanguages": true
+  },
+  "sanitizerLimit": "Project GPU test units instrumented; existing SDL archive not instrumented",
+  "newAppleBuild": false,
+  "newIpa": false,
+  "physicalAcceptance": false,
+  "fullGoalComplete": false,
+  "remaining": [
+    "Natural original-race alternate HUD mode and iPad acceptance",
+    "Panel materials, record plaque and other interface fonts",
+    "Final single-player and split-screen alignment and padding",
+    "Matched device frame-time and energy validation"
+  ]
+}

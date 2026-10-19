@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from bundle_resources import ROOT, validate_game_resources
+from bundle_resources import ROOT, HUD_NOTICE_SOURCES, validate_game_resources
 
 class ResourcesTest(unittest.TestCase):
     def test_required_resources_and_rejections(self):
@@ -17,7 +17,12 @@ class ResourcesTest(unittest.TestCase):
                 shutil.copyfile(support / name, app / name)
             shutil.copyfile(ROOT / "candidates/link4/LICENSE", app / "GameSupportLicense.txt")
             shutil.copyfile(ROOT / ".build/vendor/SDL/LICENSE.txt", app / "SDLLicense.txt")
-            self.assertEqual(len(validate_game_resources(app)), 9)
+            for name,source in HUD_NOTICE_SOURCES.items():shutil.copyfile(source,app/name)
+            self.assertEqual(len(validate_game_resources(app)), 12)
+            (app / "BebasNeue-OFL.txt").unlink()
+            with self.assertRaisesRegex(RuntimeError,"missing"):
+                validate_game_resources(app)
+            shutil.copyfile(HUD_NOTICE_SOURCES["BebasNeue-OFL.txt"],app/"BebasNeue-OFL.txt")
             (app / "text.eng").write_bytes(b"incorrect language resource")
             with self.assertRaisesRegex(RuntimeError, "differs"):
                 validate_game_resources(app)
