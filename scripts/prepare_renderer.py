@@ -86,7 +86,7 @@ def prepare_hd_atlas(text, dest):
 
     marker = '#include "RendererPalette.inc"'
     if text.count(marker) != 1: raise ValueError("Cannot identify HD atlas helper insertion")
-    text = text.replace(marker, marker + '\n#include "RendererHdAtlas.inc"')
+    text = text.replace(marker, marker + '\n#include "RendererHdAtlas.inc"\n#include "PanelMaterialRuntime.inc"')
     checked('\tuint32_t id;\n} TextureInfo;', '\tuint32_t id;\n\tuint32_t hdDigits;\n} TextureInfo;')
     checked('"uniform float uTextureEnabled;"',
             '"uniform sampler2D uHdTextureSampler;"\n\t"uniform float uHdActive;"\n\t"uniform float uTextureEnabled;"')
@@ -106,7 +106,7 @@ def prepare_hd_atlas(text, dest):
     checked('\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);',
             '\tnfs_hd_sync_uniform();\n\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);')
     checked('\tconst GrVertex *grVertices[3] = {a, b, c};',
-            '\tconst int hdDigit=g_textureEnabled ? nfs_hd_triangle_selected(a,b,c) : 0;\n\tconst GrVertex *grVertices[3] = {a, b, c};')
+            '\tGrVertex panelVertices[3];\n\tif(!g_textureEnabled && nfs_hd_builtin_enabled && nfs_hd_visible && nfs_panel_material(a,b,c,panelVertices)){a=panelVertices;b=panelVertices+1;c=panelVertices+2;}\n\tconst int hdDigit=g_textureEnabled ? nfs_hd_triangle_selected(a,b,c) : 0;\n\tconst GrVertex *grVertices[3] = {a, b, c};')
     checked('\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;',
             '\t\tg_textureCoord[g_trianglesCount].vertex[i].r = (float)hdDigit;\n\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;')
     checked('\t\tg_vertices->vertex[i].x = grVertices[i]->x - VertexSnap;',
@@ -147,7 +147,7 @@ def prepare_hd_atlas(text, dest):
     section = text[start:end]
     assert section.endswith('\n}\n')
     text = text[:start] + section[:-3] + '\n\tti->data=originalData;\n}\n' + text[end:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc'):
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

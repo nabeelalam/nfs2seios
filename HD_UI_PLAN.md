@@ -2,7 +2,7 @@
 
 Development branch: `codex/hd-ui`. Integration branch: `main`.
 
-This branch incorporates main through the build 19 session-recorder delivery.
+This branch shares the performance and session-recording infrastructure with main.
 It is an independent workstream. Performance, battery work and session recording
 continue on main; no unfinished visual changes are required there. This document
 establishes the work, not a claim that replacement artwork is implemented.
@@ -479,3 +479,23 @@ controllers, resolution changes, reset and simulated suspension/context recovery
 New record characters were observed in both views; shutdown was clean and the
 copied profile was restored. This was a short driving check, not a complete race
 or iPad visual, performance or energy acceptance.
+
+## Maintained panel, arc and gear sources
+
+The reviewed surface artwork now lives in the source pipeline alongside the
+timing, speed, pause and brand artwork. Smooth vectors retain the original rising
+RPM arc and tapered end; its transparent interior leaves animation to the game.
+Shared panel shading removes the old opaque sprite-background mismatch. A
+classic circular badge and Bebas gear lettering retain the original placements,
+with a common optical baseline. Reverse, neutral and gears 1 through 6 were
+observed for both players in a bounded local manual-transmission run.
+
+Regeneration reads authored vectors and pinned fonts, with no original game
+pixel input. It reuses the existing auxiliary atlas without additional textures
+or uploads on gear changes. The maintained renderer reproduces all 83 scoped
+GPU outputs of the tested candidate in three configurations. The SVG publication
+exception remains tied to 39 exact reviewed digests and a bounded XML schema.
+
+The record plaque, remaining interface fonts, full layout review and physical
+iPad acceptance are unfinished. Keep these visual changes on this branch while
+main continues performance work; merge them only after the remaster is finalized.

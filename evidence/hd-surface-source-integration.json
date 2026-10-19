@@ -1,0 +1,35 @@
+{
+  "scope": "Maintained HD branch source for classic panel shading, smooth RPM arc and existing-font gear badge",
+  "artworkFamilies": 6,
+  "reviewedVectorSources": 39,
+  "generatedPixelAndIdentityArraysMatchedToTestedCandidate": 18,
+  "originalGamePixelsUsedBySourceGeneration": false,
+  "generatedRendererMatchesTestedCandidate": true,
+  "localGpuValidation": {
+    "configurations": ["optimized", "ASan and UBSan", "forced limited-precision fallback"],
+    "allPassed": true,
+    "outputFilesByteExactPerConfiguration": 83,
+    "extraTexturesOrUploadsOnGearChanges": false,
+    "originalInputVerticesUnchanged": true,
+    "prebuiltSdlSanitizerInstrumented": false
+  },
+  "matchingCandidateOriginalGameObservation": {
+    "boundedRunSeconds": 244.128,
+    "manualTransmissionVerifiedForBothPlayers": true,
+    "reverseNeutralAndAllSixForwardGearsObservedBothViews": true,
+    "pauseContinueResetAndSimulatedLifecycleSequenceCompleted": true,
+    "cleanShutdownAndTestConfigurationRestored": true,
+    "alternateYellowPanelBrandArtworkVisuallyObserved": true,
+    "fullRaceCompletionProved": false
+  },
+  "remaining": [
+    "Record plaque and remaining interface fonts",
+    "Complete single-player and split-screen layout review",
+    "Physical iPad appearance, frame time and energy validation"
+  ],
+  "mainBranchVisualChanges": false,
+  "newAppleSdkBuild": false,
+  "newIpa": false,
+  "physicalIpadAcceptance": false,
+  "finalArtworkAcceptance": false
+}

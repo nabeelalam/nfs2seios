@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="43" height="26" viewBox="10 32 43 26">
+<defs><linearGradient id="panel" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="74"><stop offset="0" stop-color="rgb(66.7,65.55,66.7)"/><stop offset="1" stop-color="rgb(46.4,45.6,46.4)"/></linearGradient></defs>
+<path fill="url(#panel)" fill-rule="evenodd" d="M0 0H180V74H0Z M10 57 C17 43.9 25 37.2 32 32.25 C53 17.5 77 8.6 105 8.6 H175 L164 18 H105 C84 18 67 22 52 32 C40 40 32 48.5 24 57 Z"/>
+<path d="M10 57 C17 43.9 25 37.2 32 32.25 C53 17.5 77 8.6 105 8.6 H175 L164 18 H105 C84 18 67 22 52 32 C40 40 32 48.5 24 57 Z" fill="none" stroke="#1c1d1e" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M10 57 C17 43.9 25 37.2 32 32.25 C53 17.5 77 8.6 105 8.6 H175" fill="none" stroke="#a1a59f" stroke-width="0.42" stroke-linecap="round"/>
+<path d="M24 57 C32 48.5 40 40 52 32 C67 22 84 18 105 18 H164 L175 8.6" fill="none" stroke="#424640" stroke-width="0.4" stroke-linecap="round"/>
+</svg>

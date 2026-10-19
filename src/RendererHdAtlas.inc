@@ -63,6 +63,8 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         float q=vertices[i]->oow;if(!(q>0))return 0;
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
+    if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;}
+    if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gauge=nfs_gauge_mask_triangle(uv);if(gauge)return gauge;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1 && nfs_alternate_logo_triangle(uv))return 56;
     if(nfs_hd_selected==40)return a->oow==1 && b->oow==1 && c->oow==1?nfs_pause_triangle(uv):0;
     if(nfs_hd_selected==39)return a->oow==1 && b->oow==1 && c->oow==1 && nfs_logo_triangle(uv)?49:0;

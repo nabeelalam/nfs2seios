@@ -1,0 +1,19 @@
+{
+  "generatedFrom": "Reviewed newly drawn classic HUD vectors and pinned font",
+  "originalGamePixelsIncluded": false,
+  "sourceHashes": {
+    "assets/hud/gear/N.svg": "642a0451a49321754855debc5365b856c5e1ee3b9fcfd29479931a23d77d5d0c",
+    "assets/hud/gear/R.svg": "f418d6d6070ecb7a9113d53823d40641e888423ae2fb45e3ecb109eaa9cb82ea",
+    "assets/hud/gear/1.svg": "2e26dea4937e3c6c2488b6f9ac1cbe4d075be0609a7b692240d920816d347d98",
+    "assets/hud/gear/2.svg": "5522f4261c86cb4104173a6931e82bd8004f57b65cfa10db65e6d00143c7a83f",
+    "assets/hud/gear/3.svg": "5ae6cc38e0fb1e54993a635255b372c6fb456755226b9894124d15c757cb9b0f",
+    "assets/hud/gear/4.svg": "8e522107284f2b0297e8122938e8c66ad78668e746ee0af53887b0076d9dd04e",
+    "assets/hud/gear/5.svg": "4832ca4c5c1e908c1e3ee3122a1be3345090a8925b5dd217ccde5036a8fc3720",
+    "assets/hud/gear/6.svg": "75692cc48b6dce2344ce33f5e75ba4dd9ad15b899eaf942d2a2132e297c3e1bb",
+    "assets/hud/gear/face.svg": "177a4b00d63aa3f99ba59de489fdde9b215cc8998366d484275fed41dcbad1fa"
+  },
+  "rasterSha256": "ebf8f2005d794b5cd3042992da224e5423c4412e45ed5c1628e909f9e8fb9ad3",
+  "rasterBytes": 188416,
+  "rleBytes": 63528,
+  "headerSha256": "e4037390f63411dc05401d498856df8da305e6d09f1c3bc5dfeaa4932c2d939d"
+}

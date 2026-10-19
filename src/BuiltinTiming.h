@@ -11,6 +11,8 @@
 #include "RecordFontPixels.inc"
 #include "LogoPixels.inc"
 #include "PauseFontPixels.inc"
+#include "GaugeMaskPixels.inc"
+#include "GearPixels.inc"
 static uint64_t nfs_timing_sample(const unsigned char *data){
     uint64_t value=UINT64_C(14695981039346656037);
     for(unsigned block=0;block<131072;block+=4096)for(unsigned i=0;i<16;++i)value=(value^data[block+i])*UINT64_C(1099511628211);
@@ -43,7 +45,7 @@ static int nfs_timing_build(NfsHdAtlas *atlas,unsigned size,const void *original
     if(!nfs_timing_expand(nfs_timing_pixels_rle,sizeof(nfs_timing_pixels_rle),next.rgba,4194304) ||
        !nfs_speed_expand(nfs_speed_pixels_rle,sizeof(nfs_speed_pixels_rle),next.rgba,4194304) ||
        !nfs_small_font_expand(nfs_small_font_pixels_rle,sizeof(nfs_small_font_pixels_rle),next.rgba,4194304) ||
-       !nfs_record_font_expand(nfs_record_font_pixels_rle,sizeof(nfs_record_font_pixels_rle),next.rgba,4194304) || !nfs_logo_expand(next.rgba,4194304) || !nfs_pause_expand(next.rgba,4194304)){nfs_hd_atlas_free(&next);return 0;}
+       !nfs_record_font_expand(nfs_record_font_pixels_rle,sizeof(nfs_record_font_pixels_rle),next.rgba,4194304) || !nfs_logo_expand(next.rgba,4194304) || !nfs_pause_expand(next.rgba,4194304) || !nfs_gauge_mask_expand(next.rgba,4194304) || !nfs_gear_expand(next.rgba,4194304)){nfs_hd_atlas_free(&next);return 0;}
     nfs_hd_atlas_free(atlas);*atlas=next;return 1;
 }
 #endif

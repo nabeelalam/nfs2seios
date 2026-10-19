@@ -593,10 +593,21 @@ headers and do not require these font tools. Font and brand notices are
 required bundle resources and remain in the stripped personal-install ZIP.
 
 Fresh branch-generated renderer checks passed in optimized, ASan/UBSan and
-limited-precision fallback configurations. All 59 GPU output files in each
-configuration matched the tested prototype. These are local renderer checks;
-the existing SDL archive itself was not sanitizer-instrumented. Original-game
-component observations exist for timing, speed and pause/Continue. Natural
-alternate HUD mode, physical iPad appearance/performance, remaining panel and
-record artwork, other interface fonts and final layout review remain open.
+limited-precision fallback configurations. All 83 GPU output files in each
+configuration matched the tested panel, arc and gear prototype. These are local
+renderer checks; the existing SDL archive itself was not sanitizer-instrumented.
+The matching prototype also completed a bounded original-game split-screen
+observation: both controllers selected manual transmission and exercised reverse,
+neutral and gears 1 through 6. Pause/Continue, resolution changes, reset and
+simulated lifecycle checks completed, with clean shutdown and restored test
+configuration. The alternate yellow panel and proper Omega artwork were also
+visually observed in that run. This proves the scoped local behavior, not full
+race completion or physical iPad appearance, frame time or energy acceptance.
+The record plaque, remaining fonts and final layout review remain open.
 This source integration is not a new IPA or an Apple SDK build result.
+
+The same vector regeneration command now checks six artwork families, including
+the smooth arc masks and eight existing-font gear glyphs with a circular badge.
+Only reviewed project vectors and pinned fonts supply the new pixels. Original
+game textures and private screenshots are not generation inputs or repository
+assets. Exact compatibility fingerprints identify supported original draws.

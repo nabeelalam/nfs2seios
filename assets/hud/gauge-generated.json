@@ -1,0 +1,13 @@
+{
+  "generatedFrom": "Reviewed newly drawn classic HUD vectors and pinned font",
+  "originalGamePixelsIncluded": false,
+  "sourceHashes": {
+    "assets/hud/gauge/lower.svg": "810d4e1a4876c4a6216ab2c1e306b7b7660c133a08063c9ef38362c015417b40",
+    "assets/hud/gauge/middle.svg": "663c7ef1a34da0c1bdab9bec65d4a4f617e9f174d36273de8d5debb2fd49628a",
+    "assets/hud/gauge/right.svg": "777ed83ae58e012f3d3a5876d0b05c9cd9201d7b4d9cbc285cc46f6a4122944f"
+  },
+  "rasterSha256": "93c8ebcf736daf29e33271dcc4ba32c04d409d1f00d3be4b478a28b67e4d14b8",
+  "rasterBytes": 317440,
+  "rleBytes": 33294,
+  "headerSha256": "6b86e7947a54912b46b5548539b9543ae8aba4252ea2206386a5ac8afda26125"
+}

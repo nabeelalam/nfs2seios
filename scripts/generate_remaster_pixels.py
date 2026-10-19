@@ -77,5 +77,7 @@ def main():
         if args.check:
             if header.read_text()!=text or json.loads(receipt.read_text())!=meta:raise ValueError('Generated remaster artwork differs: '+kind)
         else:header.write_text(text);receipt.write_text(json.dumps(meta,indent=2)+'\n')
+    from generate_surface_pixels import generate_surface_pixels
+    generate_surface_pixels(args.check)
     print('Verified remaster pixels from pinned project fonts and reviewed vectors' if args.check else 'Generated reviewed remaster pixels; no original assets read')
 if __name__=='__main__':main()

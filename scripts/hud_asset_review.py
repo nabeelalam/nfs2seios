@@ -17,25 +17,31 @@ def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
-    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system))\.svg',name):return False
+    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
         if hashlib.sha256(data).hexdigest()!=approved.get(name):return False
         root=ET.fromstring(data);ns='{http://www.w3.org/2000/svg}'
         if root.tag!=ns+'svg' or set(root.attrib)!={'width','height','viewBox'}:return False
-        if name.endswith('omega.svg'):size=(64,64)
+        origin=(0,0)
+        if '/gauge/' in name:
+            x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
+            origin=(x,y);size=(w,h)
+        elif '/gear/' in name:size=(32,32) if name.endswith('/face.svg') else (14,24)
+        elif name.endswith('omega.svg'):size=(64,64)
         elif '/pause/' in name:size=(255,28) if name.endswith('quit-to-system.svg') else ((255,24) if name.endswith('sound-effects.svg') else (155,24))
         else:size=(12,26) if '/timing-' in name else (29,24)
-        if root.attrib!={'width':str(size[0]),'height':str(size[1]),'viewBox':'0 0 %d %d'%size}:return False
+        if root.attrib!={'width':str(size[0]),'height':str(size[1]),'viewBox':'%d %d %d %d'%(*origin,*size)}:return False
         attrs={
-            'defs':set(),'g':{'transform'},'linearGradient':{'id','x1','y1','x2','y2'},
+            'defs':set(),'g':{'transform'},'linearGradient':{'id','x1','y1','x2','y2','gradientUnits'},
             'stop':{'offset','stop-color'},'filter':{'id','x','y','width','height'},
             'feGaussianBlur':{'in','stdDeviation','result'},'feOffset':{'in','dy','result'},
             'feFlood':{'flood-color','flood-opacity'},'feComposite':{'in2','operator','result'},
             'feMerge':set(),'feMergeNode':{'in'},
             'text':{'x','y','font-family','font-size','text-anchor','transform','fill','stroke','stroke-width','paint-order','filter'},
-            'path':{'d','fill'},'polygon':{'points','fill'},
+            'path':{'d','fill','fill-rule','stroke','stroke-width','stroke-linejoin','stroke-linecap','stroke-opacity'},'polygon':{'points','fill'},
+            'circle':{'cx','cy','r','fill','stroke','stroke-width','stroke-opacity'},
         }
         for node in root.iter():
             if node is root:continue
@@ -46,7 +52,16 @@ def reviewed_remaster_svg(name,data):
             if (node.text or '').strip() and (tag!='text' or not re.fullmatch('[A-Z0-9 ]+',node.text)):return False
             for key,value in node.attrib.items():
                 if key in ('fill','stroke','stop-color','flood-color'):
-                    if not re.fullmatch(r'#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?|url\(#[a-zA-Z][a-zA-Z0-9_-]*\)',value):return False
+                    rgb=re.fullmatch(r'rgb\(([0-9]+(?:\.[0-9]+)?),([0-9]+(?:\.[0-9]+)?),([0-9]+(?:\.[0-9]+)?)\)',value)
+                    if rgb:
+                        if any(float(c)>255 for c in rgb.groups()):return False
+                    elif value!='none' and not re.fullmatch(r'#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?|url\(#[a-zA-Z][a-zA-Z0-9_-]*\)',value):return False
+                elif key=='gradientUnits':
+                    if value!='userSpaceOnUse':return False
+                elif key=='fill-rule':
+                    if value!='evenodd':return False
+                elif key in ('stroke-linejoin','stroke-linecap'):
+                    if value!='round':return False
                 elif key=='filter':
                     if not re.fullmatch(r'url\(#[a-zA-Z][a-zA-Z0-9_-]*\)',value):return False
                 elif key=='font-family':
