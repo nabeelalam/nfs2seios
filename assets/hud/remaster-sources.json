@@ -78,7 +78,8 @@
     "assets/hud/record-dot.svg": "99f229b83a5c1469851e4589174ae2283b69e849e57c53e227e1a8c4d7d4975a",
     "assets/hud/record-colon.svg": "99e68abc6d94ecae2a0b60d3a4bc0cbb48fc4fd640b6cda2be215957551f3225",
     "assets/hud/punctuation/clock.svg": "d1ef8ddd3e78c52a49ba335c687b39d1a39b0b913711bd9dcc0508326c01941c",
-    "assets/hud/punctuation/slash.svg": "6118d02fd4318a6d265ee10d3e769f0d9f59af8f8d3d0aca510b8b979a739f9c"
+    "assets/hud/punctuation/slash.svg": "6118d02fd4318a6d265ee10d3e769f0d9f59af8f8d3d0aca510b8b979a739f9c",
+    "assets/hud/start/sphere.svg": "debc081ae786919056c6177778008e7617d50be390ecab1b3984b703cbd295cd"
   },
   "logoSource": "https://www.omegawatches.com/static/version1791865285/frontend/Omega/default/default/images/logo.svg",
   "logoGeometryUnchanged": true,

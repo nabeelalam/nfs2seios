@@ -1,0 +1,77 @@
+{
+  "scope": "Maintained authored countdown sphere, isolated UI branch; no original artwork in source or generation.",
+  "reviewedSvgCount": 79,
+  "artwork": {
+    "source": "assets/hud/start/sphere.svg",
+    "raster": [
+      222,
+      222
+    ],
+    "atlasBanks": [
+      [
+        248,
+        188,
+        222,
+        112
+      ],
+      [
+        470,
+        188,
+        222,
+        112
+      ]
+    ],
+    "overlapRows": [
+      110,
+      111
+    ],
+    "newGpuTexturesOrDrawCalls": 0
+  },
+  "sourceValidation": {
+    "deterministicGenerationAndCheckPassed": true,
+    "testedPixelAndIdentityArraysExact": 26,
+    "additionalAuthoredRasterDigest": true,
+    "actualGeneratedRendererEquivalentToTestedCandidate": true,
+    "freshOptimizedGpuImagesByteExact": 91,
+    "equivalentPrototypeOptimizedSanitizedBasicGpuConfigurationsPassed": true,
+    "basicShaderChanges": 0,
+    "permanentSanitizerTargets": [
+      "hud_start_light_tests",
+      "hud_punctuation_tests",
+      "hud_label_layout_tests",
+      "builtin_timing_tests"
+    ],
+    "pythonSourceReviewTests": 3,
+    "pythonPublicationTests": 7
+  },
+  "equivalentPrivateOriginalGameCandidate": {
+    "split": {
+      "captures": 35,
+      "lastCaptureSeconds": 192.6,
+      "naturalSelections": 36,
+      "bothControllersActive": true,
+      "allCountdownColorsBothViews": true,
+      "countdownImagesVisuallyReviewed": true
+    },
+    "single": {
+      "captures": 32,
+      "lastCaptureSeconds": 174.5,
+      "naturalSelections": 18,
+      "onePlayerSetupVisuallyVerified": true,
+      "nativeThrottleAndSteeringExercised": true,
+      "allCountdownColorsObserved": true,
+      "countdownPlacementVisuallyReviewed": true
+    },
+    "cleanShutdownAndCopiedProfileRestorationBothRuns": true,
+    "fullRaceCompletionProved": false
+  },
+  "selection": "Exact original atlas identity, complete sphere UV corners and original common depth; requires visible built-in HD and full-shader capability. Original guest vertices, game colors, positions and timing are retained.",
+  "remaining": [
+    "Review remaining menus, icons and map artwork.",
+    "Complete single-player and split-screen layout review across alternate states.",
+    "Physical iPad appearance, frame time and energy acceptance."
+  ],
+  "newAppleBuildOrIpa": false,
+  "publicUpload": false,
+  "mainChanged": false
+}

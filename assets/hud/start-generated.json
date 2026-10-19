@@ -1,0 +1,31 @@
+{
+  "originalGamePixelsIncluded": false,
+  "sourceHashes": {
+    "assets/hud/start/sphere.svg": "debc081ae786919056c6177778008e7617d50be390ecab1b3984b703cbd295cd"
+  },
+  "rasterSha256": "6e4a93aa58fa914f862f2e5efa2af71fd9569be9a0061e82b52e2ff715fd28db",
+  "raster": [
+    222,
+    222
+  ],
+  "banks": [
+    [
+      248,
+      188,
+      222,
+      112
+    ],
+    [
+      470,
+      188,
+      222,
+      112
+    ]
+  ],
+  "sharedRows": [
+    110,
+    111
+  ],
+  "rleBytes": 163854,
+  "headerSha256": "b213d7a067b0737be34845a39f4719b839284e9f7821f11ee6175b3543b30701"
+}

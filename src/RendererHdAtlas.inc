@@ -59,6 +59,8 @@ static void nfs_hd_context_retired(int bound){
     if(bound && nfs_hd_aux_texture)glDeleteTextures(1,&nfs_hd_aux_texture);
     nfs_hd_aux_texture=0;nfs_hd_selected=0;nfs_hd_uniform_sent=-1;
 }
+
+#include "StartLightRuntime.inc"
 static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const GrVertex *c){
     if(!nfs_hd_selected || !nfs_hd_builtin_enabled || !nfs_hd_visible || !nfs_hd_aux_texture)return 0;
     const GrVertex *vertices[3]={a,b,c};float uv[6];
@@ -66,6 +68,7 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         float q=vertices[i]->oow;if(!(q>0))return 0;
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
+    if(nfs_hd_selected==1 && nfs_hd_cell_layout_available && nfs_start_light_triangle(a,b,c,uv))return 71;
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;if(nfs_hd_cell_layout_available && nfs_clock_punctuation_triangle(uv))return 69;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gauge=nfs_gauge_mask_triangle(uv);if(gauge)return gauge;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1 && nfs_alternate_logo_triangle(uv))return 56;

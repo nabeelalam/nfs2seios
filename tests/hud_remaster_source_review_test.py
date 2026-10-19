@@ -21,7 +21,7 @@ class SourceReview(unittest.TestCase):
 
     def test_reviewed_vectors_and_mutation_rejection(self):
         sources=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
-        self.assertEqual(len(sources),78)
+        self.assertEqual(len(sources),79)
         for name in sources:
             data=(ROOT/name).read_bytes()
             self.assertTrue(reviewed_remaster_svg(name,data),name)
@@ -34,7 +34,10 @@ class SourceReview(unittest.TestCase):
                ('assets/hud/gear/face.svg',b'<circle ',b'<image '),
                ('assets/hud/small-W.svg',b'font-weight="500"',b'font-weight="900"'),
                ('assets/hud/record-colon.svg',b'font-family="Oxanium"',b'font-family="Unreviewed"'),
-               ('assets/hud/punctuation/clock.svg',b'width="33"',b'width="34"')]
+               ('assets/hud/punctuation/clock.svg',b'width="33"',b'width="34"'),
+               ('assets/hud/start/sphere.svg',b'<radialGradient ',b'<image '),
+               ('assets/hud/start/sphere.svg',b'width="64"',b'width="65"'),
+               ('assets/hud/start/sphere.svg',b'stop-opacity=".3"',b'stop-opacity="999"')]
         for name,old,new in cases:
             data=(ROOT/name).read_bytes()
             self.assertIn(old,data)

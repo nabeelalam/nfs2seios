@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<defs>
+<radialGradient id="body" cx=".33" cy=".28" r=".74"><stop stop-color="#e8e8e8"/><stop offset=".14" stop-color="#d0d0d0"/><stop offset=".38" stop-color="#8d8d8d"/><stop offset=".67" stop-color="#434343"/><stop offset=".88" stop-color="#1d1d1d"/><stop offset="1" stop-color="#0a0a0a"/></radialGradient>
+<linearGradient id="rim" x1=".12" y1="0" x2=".85" y2="1"><stop stop-color="#9c9c9c"/><stop offset=".36" stop-color="#444444"/><stop offset=".68" stop-color="#101010"/><stop offset="1" stop-color="#050505"/></linearGradient>
+<radialGradient id="sheen" cx=".38" cy=".32" r=".66"><stop stop-color="#fff" stop-opacity=".3"/><stop offset=".6" stop-color="#fff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+</defs>
+<circle cx="32" cy="32" r="31.25" fill="url(#rim)"/>
+<circle cx="32" cy="32" r="30.45" fill="url(#body)"/>
+<ellipse cx="26.7" cy="20.7" rx="17.1" ry="13.3" fill="url(#sheen)"/>
+</svg>

@@ -641,3 +641,21 @@ configuration. Both clock groups and all four separators were naturally selected
 Actual native captures show aligned decimal bottoms and colon placement within
 the numeral cap height. The maintained renderer and pixel arrays reproduce that
 candidate; this is not a new Apple build, IPA or physical-device acceptance.
+
+The countdown lights now use a newly authored sphere with smooth edges and a
+restrained highlight. The three original circles, equal spacing, game colors and
+countdown timing are preserved. Two overlapping banks fit the existing auxiliary
+atlas; this adds no GPU textures or draw calls. The reviewed ledger has79 SVGs.
+
+Source generation reproduces26 tested pixel/identity arrays and adds a digest of
+the authored sphere raster. A fresh maintained renderer reproduces all91 local
+GPU reference images. The equivalent prototype also passed sanitizer and basic
+shader matrices; the basic path remains original. Permanent decoder/selector
+checks cover atlas boundaries, shared seam rows, all24 triangle orientations,
+unchanged input and unsupported UV/depth cases.
+
+The equivalent private candidate completed bounded original single-player and
+split-screen observations with native controls, all countdown colors, clean
+shutdown and restored copied settings. Actual countdown placement was reviewed.
+These runs do not establish full-race completion or physical iPad acceptance.
+Remaining menus, map artwork and complete layout/device/energy review stay open.
