@@ -1,0 +1,40 @@
+{
+  "scope": "Maintained clock punctuation and smooth classic separator source",
+  "reviewedSvgCount": 78,
+  "newVectors": ["punctuation/clock.svg", "punctuation/slash.svg"],
+  "originalGamePixelsUsedForArtworkGeneration": false,
+  "freshMaintainedSource": {
+    "deterministicGenerationAndCheckPassed": true,
+    "pixelAndIdentityArraysMatchTestedCandidate": 25,
+    "generatedRendererMatchesGameTestedCandidate": true,
+    "gpuConfigurations": ["optimized", "ASan and UBSan", "basic shader fallback"],
+    "byteExactCandidateImagesPerConfiguration": 85,
+    "punctuationLayoutAndAtlasSanitizerChecksPassed": true,
+    "existingLabelAndCombinedAtlasSanitizerChecksPassed": true
+  },
+  "equivalentPrivateOriginalGameCandidate": {
+    "elapsedSeconds": 195.37,
+    "captures": 35,
+    "cleanShutdown": true,
+    "copiedProfileRestored": true,
+    "bothClockGroupsObserved": true,
+    "allFourSlashGroupsObserved": true,
+    "nativeOpticalAlignmentReviewedBothViews": true,
+    "fullRaceCompletionProved": false
+  },
+  "behavior": {
+    "guestInputsImmutable": true,
+    "exactOriginalPrimitiveGates": true,
+    "unsupportedGeometryFallsBack": true,
+    "basicShaderFallbackUnchanged": true,
+    "additionalGpuTextures": 0,
+    "additionalDrawCalls": 0
+  },
+  "physicalIpadAcceptance": false,
+  "newAppleBuildOrIpa": false,
+  "remaining": [
+    "Remaining menus, icons, start lights and map artwork",
+    "Complete single-player and split-screen visual review",
+    "Physical iPad appearance, frame time and energy validation"
+  ]
+}

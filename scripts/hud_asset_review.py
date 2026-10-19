@@ -19,7 +19,7 @@ def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
-    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face))\.svg',name):return False
+    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
@@ -30,6 +30,7 @@ def reviewed_remaster_svg(name,data):
         if '/gauge/' in name:
             x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
             origin=(x,y);size=(w,h)
+        elif '/punctuation/' in name:size=(33,26) if name.endswith('/clock.svg') else (9,28)
         elif '/gear/' in name:size=(32,32) if name.endswith('/face.svg') else (14,24)
         elif '/small-' in name:size=(10 if name.endswith('small-W.svg') else 4 if name.endswith('small-I.svg') else 8,8)
         elif '/record-' in name:size=(6 if name.endswith('record-1.svg') else 4 if name.endswith(('record-dot.svg','record-colon.svg')) else 8,8)

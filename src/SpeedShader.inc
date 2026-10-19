@@ -30,6 +30,7 @@
 "if(vTexCoord.z>67.5 && vTexCoord.z<68.5){hdCoord=hdCoord*vec2(1.019856831621538,1.019856831621538)+vec2(-0.001984126984126984,-0.4583333333333333);hdCoord=clamp(hdCoord,vec2(0.00048828125,0.00048828125),vec2(0.12451171875,0.12451171875));}\n"
 "if(vTexCoord.z>33.5 && vTexCoord.z<34.5 && uHdCellLayout>.5)hdCoord=(vTexCoord.st/vTexCoord.q)*vec2(0.08261437908496733,0.06588235294117648)+vec2(-0.004654947916666667,0.17998046875);\n"
 "if(vTexCoord.z>37.5 && vTexCoord.z<38.5 && uHdCellLayout>.5)hdCoord=(vTexCoord.st/vTexCoord.q)*vec2(0.05266106442577031,0.06588235294117648)+vec2(0.6189313616071429,0.55888671875);\n"
+"if(vTexCoord.z>68.5 && vTexCoord.z<69.5){hdCoord=(vTexCoord.st/vTexCoord.q)*vec2(1.011644042232277,1.202371181030552)+vec2(0.07664513221153846,-0.5059842841569767);hdCoord=clamp(hdCoord,vec2(0.07861328125,0.18408203125),vec2(0.20654296875,0.28466796875));}\n"
 		"vec4 hd = texture2D(uHdTextureSampler, hdCoord);if(pauseOutside)hd=vec4(0.0);\n"
 		"if (vTexCoord.z > 0.5) sampled = hd;\n"
 		"#else\n"

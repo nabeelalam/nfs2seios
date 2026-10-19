@@ -44,6 +44,7 @@ int nfs_glide_hd_timing_set_visible(int visible){
 static GLuint nfs_hd_aux_texture;
 static int nfs_hd_selected,nfs_hd_uniform_sent;
 static GLint nfs_hd_active_location;
+#include "SilverSlashRuntime.inc"
 static void nfs_hd_program_created(GLuint program){
     GLint cell=glGetUniformLocation(program,"uHdCellLayout");nfs_hd_cell_layout_available=cell>=0;if(cell>=0)glUniform1f(cell,1);
     nfs_hd_active_location=glGetUniformLocation(program,"uHdActive");
@@ -65,7 +66,7 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         float q=vertices[i]->oow;if(!(q>0))return 0;
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
-    if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;}
+    if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;if(nfs_hd_cell_layout_available && nfs_clock_punctuation_triangle(uv))return 69;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gauge=nfs_gauge_mask_triangle(uv);if(gauge)return gauge;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1 && nfs_alternate_logo_triangle(uv))return 56;
     if(nfs_hd_selected==40)return a->oow==1 && b->oow==1 && c->oow==1?nfs_pause_triangle(uv):0;

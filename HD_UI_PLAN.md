@@ -502,7 +502,7 @@ main continues performance work; merge them only after the remaster is finalized
 
 The small gold labels and record numerals now regenerate from the pinned,
 unmodified Oxanium font, with its license included in application and release
-resources. The source ledger covers 76 SVGs. A wide W uses a spare strip in the
+resources. The source ledger covers 78 SVGs. A wide W uses a spare strip in the
 same auxiliary atlas; the narrow 1 gets its natural cell width. Glyph placement
 uses copied vertices and an active full-shader capability check, preserving
 original guest attributes and the basic-shader fallback.
@@ -511,6 +511,20 @@ The record plaque keeps the classic embossed frame and uses a more readable
 body material. Its caption has tighter tracking; the time retains the original
 whole-string advance measurement with corrected centering and a common font
 baseline. Exact original POS/LAP cells have tighter spacing around their original
-centers. These changes add no GPU textures or draw calls. Static separators,
-remaining menus/icons and complete single-player/split-screen visual acceptance
+centers. These changes add no GPU textures or draw calls. Remaining menus/icons
+and complete single-player/split-screen visual acceptance
 still need work; this is not final artwork or physical-device acceptance.
+
+Clock punctuation and position/lap slashes now regenerate from two further
+reviewed vectors, bringing the pinned SVG ledger to 78 sources. The clock uses
+the numeral font and silver finish, with optical alignment to the actual numeral
+row. The slash follows the classic angle with a thinner outline and smooth
+coverage. Both use disjoint spare regions of the existing auxiliary atlas.
+
+Exact original UV/geometry/color gates select these replacements. Guest inputs
+stay immutable, unsupported cases retain original rendering, and the basic
+shader path remains unchanged. Fresh source generation reproduces 25 tested
+pixel/identity arrays and all 85 GPU regression images in three configurations.
+The equivalent private candidate completed a bounded original split-screen run;
+both clocks and all four separators were observed. This is local evidence,
+not physical iPad appearance, frame time, battery or full-race acceptance.

@@ -624,3 +624,20 @@ source-policy tests reject changed font bytes and unreviewed SVG content.
 Fresh maintained-source optimized, sanitizer and basic-shader GPU matrices
 each reproduce all 83 candidate regression images. Original-game and physical
 device acceptance remain separate from these host checks.
+
+Clock punctuation and slash generation is also part of
+`python scripts/generate_remaster_pixels.py --check`. The current source
+checkpoint reproduces 25 pixel/identity arrays and all 85 images of the locally
+reviewed candidate in optimized, sanitizer and basic-fallback GPU configurations.
+The earlier 83-image result remains historical evidence for the label checkpoint.
+`hud_punctuation_tests` exercises both separator positions and rows, triangle
+orientations, disabled/depth/position fallback, unchanged guest attributes, clock
+UV/geometry selection and disjoint atlas/canary writes. These checks require no
+original artwork in the source checkout.
+
+The equivalent private original-game candidate completed a 195.37-second
+split-screen observation with 35 captures, clean shutdown and restored copied
+configuration. Both clock groups and all four separators were naturally selected.
+Actual native captures show aligned decimal bottoms and colon placement within
+the numeral cap height. The maintained renderer and pixel arrays reproduce that
+candidate; this is not a new Apple build, IPA or physical-device acceptance.

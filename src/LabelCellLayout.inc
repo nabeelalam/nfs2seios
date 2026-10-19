@@ -1,9 +1,17 @@
 #include <math.h>
 static int nfs_hd_cell_layout_available;
+static int nfs_clock_punctuation_geometry(const GrVertex *a,const GrVertex *b,const GrVertex *c,GrVertex output[3]){
+ const GrVertex *v[3]={a,b,c};float x0=1000,x1=-1,y0=1000,y1=-1;for(unsigned i=0;i<3;++i){float x=v[i]->x-VertexSnap,y=v[i]->y-VertexSnap;if(v[i]->oow!=1 || !(x>=0 && x<=640 && y>=0 && y<=480))return -1;x0=fminf(x0,x);x1=fmaxf(x1,x);y0=fminf(y0,y);y1=fmaxf(y1,y);}
+ if(fabsf(x0-272)>.01f || fabsf(x1-305)>.01f || fabsf(y1-y0-22)>.01f || !(fabsf(y0-8)<.01f || fabsf(y0-249)<.01f))return -1;
+ unsigned corners=0;for(unsigned i=0;i<3;++i){float x=v[i]->x-VertexSnap,y=v[i]->y-VertexSnap;int right=fabsf(x-x1)<.01f,bottom=fabsf(y-y1)<.01f;if((!right && fabsf(x-x0)>.01f) || (!bottom && fabsf(y-y0)>.01f))return -1;corners|=1u<<(right+2*bottom);}if(corners!=7 && corners!=11 && corners!=13 && corners!=14)return -1;
+ for(unsigned i=0;i<3;++i){output[i]=*v[i];output[i].y=VertexSnap+y0-3.0f+(v[i]->y-VertexSnap-y0)*(26.0f/22.0f);}return 1;
+}
+
 // Natural W/1 cells and exact original record rows use copied vertices only.
 // Unsupported layouts retain original rendering; guest attributes are immutable.
 static int nfs_hd_label_geometry(int selector,const GrVertex *a,const GrVertex *b,const GrVertex *c,GrVertex output[3]){
  if(!nfs_hd_cell_layout_available)return 0;
+ if(selector==69)return nfs_clock_punctuation_geometry(a,b,c,output);
  const int wide=selector==34 || selector==38;
  if(!wide && (selector<12 || selector>48))return 0;
  const GrVertex *v[3]={a,b,c};float x0=1000,y0=1000,x1=-1,y1=-1;

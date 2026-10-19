@@ -1,0 +1,22 @@
+{
+  "originalGamePixelsIncluded": false,
+  "generatedFrom": "Reviewed vectors and pinned project font",
+  "families": {
+    "clock": {
+      "sourceHashes": {
+        "assets/hud/punctuation/clock.svg": "d1ef8ddd3e78c52a49ba335c687b39d1a39b0b913711bd9dcc0508326c01941c"
+      },
+      "rasterSha256": "79cbc321b1b796d477b1e3d42fd2e5baf85e05421306a635204c86b81ded1a58",
+      "rasterBytes": 54912,
+      "headerSha256": "0e0cbc4c699202436d0c554dd0e056e4a9336fc8558327f5603c3b1cd59cb1e9"
+    },
+    "slash": {
+      "sourceHashes": {
+        "assets/hud/punctuation/slash.svg": "6118d02fd4318a6d265ee10d3e769f0d9f59af8f8d3d0aca510b8b979a739f9c"
+      },
+      "rasterSha256": "2d544fddb793dfb32fb307353dcebf94464d6a6520d400ae74e8d1558e2c5143",
+      "rasterBytes": 16128,
+      "headerSha256": "2aafc950425bb07850a4a438298475c8383cb115cbd9447fce760bfd64daecac"
+    }
+  }
+}
