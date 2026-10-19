@@ -107,7 +107,7 @@ def prepare_hd_atlas(text, dest):
     checked('\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);',
             '\tnfs_hd_sync_uniform();\n\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);')
     checked('\tconst GrVertex *grVertices[3] = {a, b, c};',
-            '\tGrVertex slashVertices[3];int slash=!g_textureEnabled?nfs_hd_silver_slash(a,b,c,slashVertices):0;\n\tif(slash==2)return;\n\tif(slash==1){a=slashVertices;b=slashVertices+1;c=slashVertices+2;}\n\tGrVertex panelVertices[3];\n\tif(!slash && !g_textureEnabled && nfs_hd_builtin_enabled && nfs_hd_visible && nfs_panel_material(a,b,c,panelVertices)){a=panelVertices;b=panelVertices+1;c=panelVertices+2;}\n\tint hdDigit=slash==1?70:g_textureEnabled ? nfs_hd_triangle_selected(a,b,c) : 0;\n\tGrVertex labelVertices[3];int labelLayout=nfs_hd_label_geometry(hdDigit,a,b,c,labelVertices);\n\tif(labelLayout>0){a=labelVertices;b=labelVertices+1;c=labelVertices+2;}else if(labelLayout<0)hdDigit=0;\n\tconst GrVertex *grVertices[3] = {a, b, c};')
+            '\tGrVertex slashVertices[3];int slash=!g_textureEnabled?nfs_hd_silver_slash(a,b,c,slashVertices):0;\n\tif(slash==2)return;\n\tif(slash==1){a=slashVertices;b=slashVertices+1;c=slashVertices+2;}\n\tGrVertex panelVertices[3];\n\tif(!slash && !g_textureEnabled && nfs_hd_builtin_enabled && nfs_hd_visible && nfs_panel_material(a,b,c,panelVertices)){a=panelVertices;b=panelVertices+1;c=panelVertices+2;}\n\tGrVertex frontendVertices[3];int frontend=g_textureEnabled?nfs_front_font_geometry(a,b,c,frontendVertices):0;\n\tif(frontend){a=frontendVertices;b=frontendVertices+1;c=frontendVertices+2;}\n\tint hdDigit=frontend?72:slash==1?70:g_textureEnabled ? nfs_hd_triangle_selected(a,b,c) : 0;\n\tGrVertex labelVertices[3];int labelLayout=nfs_hd_label_geometry(hdDigit,a,b,c,labelVertices);\n\tif(labelLayout>0){a=labelVertices;b=labelVertices+1;c=labelVertices+2;}else if(labelLayout<0)hdDigit=0;\n\tconst GrVertex *grVertices[3] = {a, b, c};')
     checked('\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;',
             '\t\tg_textureCoord[g_trianglesCount].vertex[i].r = (float)hdDigit;\n\t\tg_textureCoord[g_trianglesCount].vertex[i].q = grVertex->oow;')
     checked('\t\tg_vertices->vertex[i].x = grVertices[i]->x - VertexSnap;',
@@ -127,6 +127,7 @@ def prepare_hd_atlas(text, dest):
     start = text.index('static void uploadTexture(TextureInfo *ti)')
     at = text.index(marker, start)
     text = text[:at] + '''\tvoid *originalData=ti->data;
+    if(ti->hdDigits==41 && nfs_front_font_valid && ti->size==256 && ti->fmt==GR_TEXFMT_ARGB_4444)ti->data=nfs_front_font_original;
     if(ti->hdDigits==40 && nfs_hd_builtin_enabled && nfs_pause_valid && ti->size==256 && ti->fmt==GR_TEXFMT_ARGB_1555)ti->data=nfs_pause_original;
     if(ti->hdDigits==39 && nfs_hd_builtin_enabled && nfs_logo_valid && ti->size==64 && ti->fmt==GR_TEXFMT_ARGB_4444)ti->data=nfs_logo_original;
     if(ti->hdDigits>=28 && ti->hdDigits<=38 && nfs_hd_builtin_enabled &&
@@ -148,7 +149,7 @@ def prepare_hd_atlas(text, dest):
     section = text[start:end]
     assert section.endswith('\n}\n')
     text = text[:start] + section[:-3] + '\n\tti->data=originalData;\n}\n' + text[end:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc'):
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendFontPixels.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

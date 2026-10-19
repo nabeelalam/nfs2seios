@@ -85,5 +85,7 @@ def main():
     generate_punctuation(args.check)
     from generate_start_light_pixels import generate_start_light
     generate_start_light(args.check)
+    from generate_frontend_pixels import generate_frontend
+    generate_frontend(args.check)
     print('Verified remaster pixels from pinned project fonts and reviewed vectors' if args.check else 'Generated reviewed remaster pixels; no original assets read')
 if __name__=='__main__':main()

@@ -671,7 +671,8 @@ seven external fonts, 1,568 lookups and 45 strings. Actual frontend observation
 identified a sprite font page and mapped all 128 captured text triangles to
 complete glyph cells. Software prepares the font page; accelerated draws use
 size-specific sampling offsets. An optional replacement must preserve those
-contracts and the original fallback. No new menu lettering is enabled yet.
+contracts and the original fallback. Main-menu lettering now has the scoped
+optional integration described below.
 
 For the optional condensed main-menu hit hook, run
 `python tests/frontend_word_hooks_test.py` and the CMake target
@@ -684,4 +685,21 @@ fallbacks, null input, concurrent mode publication and normal/unwind restoration
 A separate private original-code check exercised the maintained preparation
 hook for 1,008 cases against the compiled original hit routine. It preserves
 cursor coordinates, saved registers, stack and original bounds. This does not
-prove renderer integration, other menu layouts or physical iPad behavior.
+prove other menu layouts or physical iPad behavior.
+
+Run `python tests/frontend_asset_review_test.py` to verify the narrow eight-word
+SVG publication boundary. `python scripts/generate_remaster_pixels.py --check`
+also regenerates their atlas using pinned project fonts, checks nonoverlapping
+allocations, complete word partitions and every antialiased ink pixel against
+its click rectangle. No original game assets are read for artwork generation.
+The `frontend_font_tests` CMake/CTest target verifies its digest, decoder
+canaries, 248 complete triangles, immutable guest attributes and invalid-mode,
+position, depth and UV fallback; it participates in boundary sanitizers.
+
+Separate private full/sanitized/basic graphics checks preserve 91 prior HUD
+images and match six condensed-menu reference images per variant. They exercise
+visibility, exact source updates, owned context restoration and cache switches.
+An actual original frontend run with the maintained renderer and prepared hook
+checks new-edge clicking at 640x480 and 2186x1640, Escape and controller navigation,
+clean shutdown and copied-settings restoration. Other forms remain original;
+full-race, energy and physical iPad results are not established by these checks.

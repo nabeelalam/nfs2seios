@@ -558,7 +558,8 @@ seven external fonts, 1,568 lookups and 45 strings. Actual frontend observation
 identified a sprite font page and mapped all 128 captured text triangles to
 complete glyph cells. Software prepares the font page; accelerated draws use
 size-specific sampling offsets. An optional replacement must preserve those
-contracts and the original fallback. No new menu lettering is enabled yet.
+contracts and the original fallback. The optional main-menu lettering uses the
+exact-source and placement guards described below.
 
 The main-menu remaster retains tall, consistently condensed lettering and
 complete-word spacing. A maintained default-off capability bridge now isolates
@@ -570,7 +571,21 @@ The original compiled routine passes 1,008 strict-edge, cursor, register, stack
 and restoration cases through this prepared hook. Optimized/sanitized helper
 checks and C linkage also pass without SDL or a renderer.
 
-This checkpoint does not enable new lettering: connecting the reviewed condensed
-word atlas and publishing capability through the renderer lifecycle is next.
-The main performance branch stays separate; no new cloud build or IPA is needed
-for this intermediate input integration.
+The reviewed condensed word atlas is now integrated with renderer lifecycle
+publication. All eight new vectors use the pinned project fonts, and every
+visible ink pixel fits its matching interactive target. The separate 1024-square
+atlas uploads once per owned context; switching between it and the HUD adds no
+triangles or per-draw uploads. Unsupported sources, placements and basic shaders
+retain original lettering and click targets.
+
+Optimized, sanitized and basic-shader graphics matrices preserve all 91 earlier
+HUD outputs per variant and reproduce six prototype menu images per variant.
+The maintained renderer and prepared engine hook also pass an actual original
+frontend run at 640x480 and 2186x1640: the newly widened Location edge selects and
+opens its form, Escape returns and native controller Down selects Player One.
+Shutdown is clean and copied settings are restored. Local images were reviewed.
+This remains local frontend evidence, not full-race or physical iPad acceptance.
+
+Next remaster the other frontend forms and fonts, then review remaining artwork
+and complete UI spacing. The main performance branch stays separate; no new
+cloud build or IPA was used for this source checkpoint.

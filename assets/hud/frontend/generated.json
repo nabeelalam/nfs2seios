@@ -1,0 +1,67 @@
+{
+  "originalGamePixelsIncluded": false,
+  "sourceHashes": {
+    "assets/hud/frontend/game-setup.svg": "287b7b41637b1aee3d4943df0afbc6c5da2f15794ec22e517b867386201d0960",
+    "assets/hud/frontend/location.svg": "6b27c30a441963d321a06067df6251f3d026e4e61d52195db52bfcd16ebddd1b",
+    "assets/hud/frontend/player-one.svg": "fc79f86886b8da42a288cbc7e36f344c1b82de4676ef944565c3f2a940f865bb",
+    "assets/hud/frontend/player-two.svg": "d4bdafc331739b36879ee711bd1adb596fd286c314f2c51a87c0cd03b2ceb815",
+    "assets/hud/frontend/opponents.svg": "cd0db600787635696cdef2d9c2ff59745b893e568883ca19041362f5e1b2a383",
+    "assets/hud/frontend/race.svg": "6b719551646834c72970e81a22d6dfe91e5d6983b41c2ccfb0f2194e7b80d410",
+    "assets/hud/frontend/options.svg": "8edd25281b676d108c6b00e2fca5ea7e8ab0043b98cdb6350f26bf06f5eb313b",
+    "assets/hud/frontend/exit.svg": "d281a5b44f8ac1b90a7a50ac0c047030a754f648d361df9721938475b8f18fb2"
+  },
+  "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
+  "rasterSha256": "6dcf0b046e5ac92bb3a29fc6a3c80cc860f4d48c8fa0d0c89fccdc4c22a57479",
+  "raster": [
+    1024,
+    1024
+  ],
+  "rleBytes": 147672,
+  "glyphPartitions": 62,
+  "inkFit": [
+    {
+      "text": "game setup",
+      "nontransparentPixels": 9820,
+      "outsideMatchingHitRectangle": 0
+    },
+    {
+      "text": "location",
+      "nontransparentPixels": 6750,
+      "outsideMatchingHitRectangle": 0
+    },
+    {
+      "text": "player one",
+      "nontransparentPixels": 8503,
+      "outsideMatchingHitRectangle": 0
+    },
+    {
+      "text": "player two",
+      "nontransparentPixels": 8717,
+      "outsideMatchingHitRectangle": 0
+    },
+    {
+      "text": "opponents",
+      "nontransparentPixels": 9119,
+      "outsideMatchingHitRectangle": 0
+    },
+    {
+      "text": "RACE",
+      "nontransparentPixels": 23993,
+      "outsideMatchingHitRectangle": 0
+    },
+    {
+      "text": "options",
+      "nontransparentPixels": 6377,
+      "outsideMatchingHitRectangle": 0
+    },
+    {
+      "text": "exit",
+      "nontransparentPixels": 3224,
+      "outsideMatchingHitRectangle": 0
+    }
+  ],
+  "headerHashes": {
+    "FrontendFontPixels.inc": "17b24c4688021e2f3b298b291a6299a756d637371dbeb738f66b376e3ec5b54c",
+    "FrontendWordLayout.inc": "973e848fdb4c6b5f4fb97e5567732194c40836b63e1ba3faea6f2fc07193ba5b"
+  }
+}

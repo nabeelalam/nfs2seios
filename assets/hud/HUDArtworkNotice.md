@@ -21,3 +21,10 @@ Oxanium-OFL.txt; artwork generation uses the digest-pinned project font.
 The countdown sphere is newly authored vector artwork. Its smooth coverage and
 shading preserve the classic circular layout; the game retains control of
 countdown colors, positions and timing. No original sprite pixels are included.
+
+The eight English main-menu labels use newly authored complete-word vectors:
+Oxanium at weight 500 with uniform horizontal condensation, and the naturally
+condensed Bebas Neue for RACE. Font licensing remains SIL OFL. Their catalog
+contains scalar compatibility positions and interactive bounds, not original
+font bitmap data. The optional separate atlas preserves original menu colors
+and falls back to the original font for unsupported sources and placements.

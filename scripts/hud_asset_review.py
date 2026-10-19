@@ -14,12 +14,18 @@ FONT_FILES={
     'assets/hud/fonts/BebasNeue-OFL.txt':'72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341',
     'assets/hud/fonts/Michroma-OFL.txt':'33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393',
 }
+FRONTEND_WORDS = {
+    'game-setup': ('game setup', 95), 'location': ('location', 66),
+    'player-one': ('player one', 85), 'player-two': ('player two', 86),
+    'opponents': ('opponents', 87), 'race': ('RACE', 75),
+    'options': ('options', 62), 'exit': ('exit', 32),
+}
 
 def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
-    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face))\.svg',name):return False
+    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
@@ -30,6 +36,7 @@ def reviewed_remaster_svg(name,data):
         if '/gauge/' in name:
             x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
             origin=(x,y);size=(w,h)
+        elif '/frontend/' in name:size=(FRONTEND_WORDS[Path(name).stem][1],51)
         elif '/start/' in name:size=(64,64)
         elif '/punctuation/' in name:size=(33,26) if name.endswith('/clock.svg') else (9,28)
         elif '/gear/' in name:size=(32,32) if name.endswith('/face.svg') else (14,24)
@@ -56,7 +63,11 @@ def reviewed_remaster_svg(name,data):
             tag=node.tag[len(ns):]
             if tag not in attrs or set(node.attrib)-attrs[tag]:return False
             if (node.tail or '').strip():return False
-            if (node.text or '').strip() and (tag!='text' or not re.fullmatch('[A-Z0-9 .:]+',node.text)):return False
+            if (node.text or '').strip():
+                if tag!='text':return False
+                if '/frontend/' in name:
+                    if node.text!=FRONTEND_WORDS[Path(name).stem][0]:return False
+                elif not re.fullmatch('[A-Z0-9 .:]+',node.text):return False
             for key,value in node.attrib.items():
                 if key in ('fill','stroke','stop-color','flood-color'):
                     rgb=re.fullmatch(r'rgb\(([0-9]+(?:\.[0-9]+)?),([0-9]+(?:\.[0-9]+)?),([0-9]+(?:\.[0-9]+)?)\)',value)

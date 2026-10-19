@@ -1,3 +1,5 @@
+#include "FrontendWordMode.h"
+static void nfs_front_hit_refresh(void);
 // SPDX-License-Identifier: MIT
 #include "HdAtlas.h"
 #include "BuiltinTiming.h"
@@ -39,25 +41,31 @@ int nfs_glide_hd_timing_set_visible(int visible){
         drawTriangles(); // Finish queued geometry with its original selection.
         nfs_hd_visible=(visible!=0);
     }
-    return 1;
+    nfs_front_hit_refresh();return 1;
 }
-static GLuint nfs_hd_aux_texture;
+static GLuint nfs_hd_aux_texture,nfs_hd_bound_aux_texture;
 static int nfs_hd_selected,nfs_hd_uniform_sent;
 static GLint nfs_hd_active_location;
 #include "SilverSlashRuntime.inc"
+#include "FrontendFontRuntime.inc"
+static void nfs_front_hit_refresh(void){int next=nfs_hd_builtin_enabled && nfs_hd_visible && nfs_hd_cell_layout_available && nfs_front_font_texture && nfs_front_source_matched;nfs_front_word_set_available(next!=0);}
+
 static void nfs_hd_program_created(GLuint program){
     GLint cell=glGetUniformLocation(program,"uHdCellLayout");nfs_hd_cell_layout_available=cell>=0;if(cell>=0)glUniform1f(cell,1);
     nfs_hd_active_location=glGetUniformLocation(program,"uHdActive");
     glUniform1i(glGetUniformLocation(program,"uHdTextureSampler"),1);
-    glUniform1f(nfs_hd_active_location,0);nfs_hd_uniform_sent=0;nfs_hd_selected=0;
+    glUniform1f(nfs_hd_active_location,0);nfs_hd_uniform_sent=0;nfs_hd_selected=0;nfs_front_hit_refresh();
 }
 static void nfs_hd_sync_uniform(void){
-    int active=nfs_hd_selected && nfs_hd_builtin_enabled && nfs_hd_visible && nfs_hd_aux_texture;
+    GLuint auxiliary=nfs_hd_selected==41?nfs_front_font_texture:nfs_hd_aux_texture;
+    int active=nfs_hd_selected && nfs_hd_builtin_enabled && nfs_hd_visible && auxiliary;
+    if(active && nfs_hd_bound_aux_texture!=auxiliary){glActiveTexture(GL_TEXTURE1);glBindTexture(GL_TEXTURE_2D,auxiliary);glActiveTexture(GL_TEXTURE0);nfs_hd_bound_aux_texture=auxiliary;}
     if(active!=nfs_hd_uniform_sent){glUniform1f(nfs_hd_active_location,(GLfloat)active);nfs_hd_uniform_sent=active;}
 }
 static void nfs_hd_context_retired(int bound){
     if(bound && nfs_hd_aux_texture)glDeleteTextures(1,&nfs_hd_aux_texture);
-    nfs_hd_aux_texture=0;nfs_hd_selected=0;nfs_hd_uniform_sent=-1;
+    if(bound && nfs_front_font_texture)glDeleteTextures(1,&nfs_front_font_texture);
+    nfs_front_font_texture=0;nfs_hd_bound_aux_texture=0;nfs_hd_aux_texture=0;nfs_hd_selected=0;nfs_hd_uniform_sent=-1;nfs_front_source_matched=0;nfs_front_source_owner=NULL;nfs_front_hit_refresh();
 }
 
 #include "StartLightRuntime.inc"
@@ -68,6 +76,7 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         float q=vertices[i]->oow;if(!(q>0))return 0;
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
+    if(nfs_hd_selected==41)return 0;
     if(nfs_hd_selected==1 && nfs_hd_cell_layout_available && nfs_start_light_triangle(a,b,c,uv))return 71;
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;if(nfs_hd_cell_layout_available && nfs_clock_punctuation_triangle(uv))return 69;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gauge=nfs_gauge_mask_triangle(uv);if(gauge)return gauge;}
@@ -88,15 +97,16 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
 }
 int nfs_glide_hd_atlas_load_file(const char *path){
     nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=0;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;
-    if(!path)return 0;
+    nfs_front_hit_refresh();if(!path)return 0;
     FILE *file=fopen(path,"rb");if(!file)return 0;
     int result=nfs_hd_atlas_read(&nfs_hd_atlas,file);fclose(file);return result;
 }
-void nfs_glide_hd_builtin_enable(int enabled){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=(enabled!=0);nfs_hd_visible=1;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;}
-void nfs_glide_hd_atlas_clear(void){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_builtin_enabled=0;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;}
+void nfs_glide_hd_builtin_enable(int enabled){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_uploads=0;nfs_hd_builtin_enabled=(enabled!=0);nfs_hd_visible=1;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;nfs_front_hit_refresh();}
+void nfs_glide_hd_atlas_clear(void){nfs_hd_atlas_free(&nfs_hd_atlas);nfs_hd_builtin_enabled=0;nfs_small_font_valid=0;nfs_record_font_valid=0;nfs_logo_valid=0;nfs_pause_valid=0;nfs_front_hit_refresh();}
 uint64_t nfs_glide_hd_atlas_upload_count(void){return nfs_hd_uploads;}
 static int nfs_hd_upload_texture(TextureInfo *ti){
     ti->hdDigits=0;
+    if(nfs_front_font_upload(ti))return 0;
     if(nfs_hd_builtin_enabled && nfs_pause_match(ti))return 0;
     if(nfs_hd_builtin_enabled && nfs_logo_match(ti))return 0;
     if(ti->fmt!=GR_TEXFMT_ARGB_1555)return 0;
@@ -111,7 +121,7 @@ static int nfs_hd_upload_texture(TextureInfo *ti){
             glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
             glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,nfs_hd_atlas.replacement_size,nfs_hd_atlas.replacement_size,0,GL_RGBA,GL_UNSIGNED_BYTE,nfs_hd_atlas.rgba);
-            glActiveTexture(GL_TEXTURE0);++nfs_hd_uploads;
+            nfs_hd_bound_aux_texture=nfs_hd_aux_texture;glActiveTexture(GL_TEXTURE0);++nfs_hd_uploads;
         }
         ti->hdDigits=1;return 0; // Keep the original GPU atlas and its filtering.
     }
