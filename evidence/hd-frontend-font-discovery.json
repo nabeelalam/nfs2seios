@@ -1,0 +1,48 @@
+{
+  "scope": "Frontend font discovery and bounded external-metrics inspector; no new menu artwork or runtime replacement enabled.",
+  "inspector": {
+    "originalBitmapPixelsExported": false,
+    "maximumFileBytes": 1048576,
+    "syntheticTestsPassed": 5,
+    "originalFontFilesParsedLocally": 7,
+    "explicitOriginalLengthDiscrepancyReported": true
+  },
+  "originalCompiledLayout": {
+    "fonts": 7,
+    "glyphLookups": 1568,
+    "strings": 45,
+    "capturedGlyphDraws": 259,
+    "offsetsAdvancesNewlinesAndBitmapStrideVerified": true,
+    "originalSourcesStackCanariesAndResourceLifetimePreserved": true,
+    "engineRecompilesForLayoutProof": 0
+  },
+  "actualOriginalFrontend": {
+    "scenesObserved": [
+      "main",
+      "Setup",
+      "Player",
+      "Automatic selection"
+    ],
+    "finalFilteredProbeCaptures": 6,
+    "lastPeriodicCaptureSeconds": 31.5,
+    "cleanShutdown": true,
+    "copiedSettingsRestored": true,
+    "readOnlyFontAndRendererTraces": true,
+    "observedFontPage": {
+      "format": "RGBA4444",
+      "edge": 256,
+      "capturedTriangles": 128,
+      "trianglesMappedToExactlyOneCompleteGlyphCell": 128
+    }
+  },
+  "findings": [
+    "Software routines prepare bitmap font pages; the accelerated frontend text path draws glyph sprites from them.",
+    "Large, regular and reduced text sizes have different original sampling offsets and geometry.",
+    "Straight overwrite reconstruction differs at68pixels; every difference lies where source glyphs overlap. This is not a byte-exact reconstruction of the original compositing."
+  ],
+  "next": "Author replacement glyphs with existing pinned fonts, preserve observed geometry and size-specific sampling, and add an optional exact-source cache with original fallback before native menu review.",
+  "newMenuArtworkEnabled": false,
+  "mainChanged": false,
+  "newAppleBuildOrIpa": false,
+  "physicalAcceptance": false
+}

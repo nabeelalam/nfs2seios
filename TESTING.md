@@ -659,3 +659,16 @@ split-screen observations with native controls, all countdown colors, clean
 shutdown and restored copied settings. Actual countdown placement was reviewed.
 These runs do not establish full-race completion or physical iPad acceptance.
 Remaining menus, map artwork and complete layout/device/energy review stay open.
+
+Frontend font discovery now has a bounded metadata inspector:
+`python scripts/inspect_frontend_font.py /path/to/an/external/font.ffn`.
+It reports glyph advances, bearings, line metrics and bitmap bounds without
+exporting bitmap pixels. Five synthetic tests cover metrics identity, malformed
+structures, payload bounds and the original numeric-font length discrepancy.
+
+The original compiled font initialization, lookup and layout were exercised with
+seven external fonts, 1,568 lookups and 45 strings. Actual frontend observation
+identified a sprite font page and mapped all 128 captured text triangles to
+complete glyph cells. Software prepares the font page; accelerated draws use
+size-specific sampling offsets. An optional replacement must preserve those
+contracts and the original fallback. No new menu lettering is enabled yet.
