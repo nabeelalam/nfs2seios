@@ -47,6 +47,30 @@
         }
       ],
       "unmodifiedFont": true
+    },
+    {
+      "family": "Oxanium",
+      "fontFile": "Oxanium-Variable.ttf",
+      "licenseFile": "Oxanium-OFL.txt",
+      "commit": "47d54ca1ebb14fd864695f1d39dc734f39017c33",
+      "sourceFiles": [
+        {
+          "file": "METADATA.pb",
+          "source": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/oxanium/METADATA.pb",
+          "sha256": "adf6faeb4238003d1d5eb8d15f59c940e145672e3f78bcf82b1802afe9f7c4d2"
+        },
+        {
+          "file": "Oxanium[wght].ttf",
+          "source": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/oxanium/Oxanium%5Bwght%5D.ttf",
+          "sha256": "2ce01d946e1e1ffc8d7eecfffbda8623bedd63eaf811a20488c4b69af45babb0"
+        },
+        {
+          "file": "OFL.txt",
+          "source": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/oxanium/OFL.txt",
+          "sha256": "fe17c0f2581d71b4e1ea7e636e7f4877c29223e11bb1dd1a871e8c3f2a86336b"
+        }
+      ],
+      "unmodifiedFont": true
     }
   ]
 }

@@ -29,7 +29,7 @@ int main() {
             size_t at=16+((size_t)(512+((26+d)/16)*64+y)*1024+((26+d)%16)*64+x)*4;
             glyphs.insert(glyphs.end(),destination.begin()+at,destination.begin()+at+4);
             alpha+=destination[at+3];
-            if((d==0 || d==9 || d==10) && x>=32)for(unsigned c=0;c<4;++c)CHECK(destination[at+c]==0);
+            if(((d==9 || d==10) && x>=32) || (d==0 && x>=48))for(unsigned c=0;c<4;++c)CHECK(destination[at+c]==0);
         }
         CHECK(alpha>0);
     }

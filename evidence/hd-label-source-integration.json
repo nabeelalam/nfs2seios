@@ -1,0 +1,47 @@
+{
+  "scope": "Maintained remaster label font, record plaque and optical layout source",
+  "sourceInputs": {
+    "reviewedSvgCount": 76,
+    "pinnedFontFamilies": ["Bebas Neue", "Michroma", "Oxanium"],
+    "newFontUnmodified": true,
+    "newFontLicenseRequiredInBundleAndRelease": true,
+    "originalGamePixelsUsedForArtworkGeneration": false
+  },
+  "validation": {
+    "deterministicGenerationAndCheckPassed": true,
+    "pixelAndIdentityArraysMatchTestedCandidate": 23,
+    "freshSourceGeneratedGpuVariants": ["optimized", "ASan and UBSan", "basic shader fallback"],
+    "byteExactCandidateRegressionImagesPerVariant": 83,
+    "maintainedLayoutAndDecoderSanitizerChecksPassed": true,
+    "sourcePolicyTestsPassed": 3,
+    "publicationPolicyTestsPassed": 7,
+    "releasePackagingTestsPassed": 4,
+    "resourcePackagingTestsPassed": 1,
+    "boundedOriginalSplitScreenRun": {
+      "elapsedSeconds": 193.275,
+      "captures": 35,
+      "cleanShutdown": true,
+      "copiedProfileRestored": true,
+      "bothPlayersActive": true,
+      "actualNativeCaptionLayoutVisuallyReviewedBothViews": true,
+      "fullRaceCompletionProved": false
+    }
+  },
+  "behavior": {
+    "naturalGlyphProportions": true,
+    "captionCentersPreserved": true,
+    "recordTimeWholeStringAdvancesPreserved": true,
+    "recordFontBaselineAligned": true,
+    "guestVerticesUnchanged": true,
+    "extraGpuTextures": 0,
+    "extraDrawCalls": 0
+  },
+  "physicalIpadAcceptance": false,
+  "newAppleBuildOrIpa": false,
+  "remaining": [
+    "White timing punctuation and separators",
+    "Remaining menus, icons, start lights and map artwork",
+    "Complete single-player and split-screen visual review",
+    "Physical iPad appearance, frame time and energy validation"
+  ]
+}

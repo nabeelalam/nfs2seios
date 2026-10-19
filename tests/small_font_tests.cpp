@@ -31,7 +31,7 @@ int main() {
             alpha+=destination[at+3];
             if(d==8 && x>=32)for(unsigned c=0;c<4;++c)CHECK(destination[at+c]==0);
         }
-        CHECK(alpha>0);
+        CHECK(d==22 ? alpha==0 : alpha>0); // W owns the separately checked wide strip.
     }
     unsigned char digest[32];
     CHECK(glyphs.size()==425984 && nfs_texture_sha256(glyphs.data(),glyphs.size(),digest));

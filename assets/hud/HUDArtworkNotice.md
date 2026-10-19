@@ -13,3 +13,7 @@ with its owner, and this personal compatibility port implies no endorsement.
 The remaster is unfinished. Local renderer tests are distinct from original
 race-mode and physical iPad acceptance. Panels, record plaque, other interface
 fonts and final single-player/split-screen spacing remain under development.
+
+Small gold HUD labels and record numerals use the unmodified Oxanium variable
+font at weight 500. Its upstream SIL Open Font License is included as
+Oxanium-OFL.txt; artwork generation uses the digest-pinned project font.

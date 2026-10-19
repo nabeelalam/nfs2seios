@@ -1,24 +1,22 @@
 {
-  "generatedFrom": "New record vectors only; zero aliases reviewed O",
+  "generatedFrom": "Reviewed Oxanium SVG artwork with pinned font",
   "originalGamePixelsIncluded": false,
   "sourceHashes": {
-    "small-O.svg": "1d8e3805b7011777233c6493a712e7768d5c837805c6bd4d4ca7efe77e687888",
-    "record-1.svg": "4f121855b7d5eccf505e630666190e164bdff23c6e4e243a157f202127c897de",
-    "record-2.svg": "87bfd9f2e01b079a47740d0cf1a5052df4c18f2de1dc86b6a150906dddcf2d6e",
-    "record-3.svg": "7317f2578298044740f2f11fa62d0f32baeb64ea95ddc5a2fd8b555c0ddf6a8f",
-    "record-4.svg": "d8e0bedee59149ad930a59297651d453a190a112700e5f691d66634fe2552050",
-    "record-5.svg": "1621ed698969073d74cb3b0266bc9f315afec8104ead645d0c83ee40a989e3ea",
-    "record-6.svg": "dcae40455c13a0d8a4118ffc8c70ccc2172c1401d425734588417e9b1e35bd4b",
-    "record-7.svg": "94b30d70d37eb06183bf308fc01db66f92ed12aaabf025148c041088e115c196",
-    "record-8.svg": "818bca6abef92ecc94b8b0adc02c89af1227bbc3a1797a97d94a222bae38b1b5",
-    "record-9.svg": "9bad3a2eff677e2b5666a5233568835e5e497016a4d188e051c2e1415f3ac50d",
-    "record-dot.svg": "905d167cd74a967ef3121351e8a84055a77ca4ca98c4559a2a59fbbc0dde0be7",
-    "record-colon.svg": "5887a178bcca548590a6ea7f46b90edec669c3c4268accb6899ae3e0d1f65b83"
+    "assets/hud/small-O.svg": "4f2be9dd64503191eff0b52399100e0d64452c30553465b9e33aba021ee95aab",
+    "assets/hud/record-1.svg": "44f7202acc6bf3b52e36bbfcadec8610209a085d1dedf6e398f2ccbb74ef7c96",
+    "assets/hud/record-2.svg": "ecb1da5bcbd80712e24ad7255f6aef3fb76434ecfc089ed038fdf8f2373d33d7",
+    "assets/hud/record-3.svg": "38fd64c9fcf7e2565c972a50fe6ae99e845eae34c075f54d0220d0c46e27f967",
+    "assets/hud/record-4.svg": "0064bde5d532fae083751069acecbba94ed1824731e39b15ea6e69b82729506f",
+    "assets/hud/record-5.svg": "a7ca18a4939608adf5e0d9ce188459ecb0146a38176ed5c6625b08c87db599da",
+    "assets/hud/record-6.svg": "9a307ee839e5a365591b2413635721a156af9d037586e215c39ed864fac05c08",
+    "assets/hud/record-7.svg": "c526b40a588ede6986426472dcc33e2d8bc760a935a90ce0bf0b23722b3c9162",
+    "assets/hud/record-8.svg": "cc3c4971abf277dd52c1b229d8d11049a4380ee6e1401c739adade2160d2beb1",
+    "assets/hud/record-9.svg": "fd88480d3fb41fe2167ebada5d4ae0e7085fe01c6bbe6063890680d1bc340af5",
+    "assets/hud/record-dot.svg": "99f229b83a5c1469851e4589174ae2283b69e849e57c53e227e1a8c4d7d4975a",
+    "assets/hud/record-colon.svg": "99e68abc6d94ecae2a0b60d3a4bc0cbb48fc4fd640b6cda2be215957551f3225"
   },
-  "zeroAliasRasterSha256": "9ba993982313c19bf17887f7c9a974a738a5c54a13d7f1db7939f79c29e9b84b",
-  "rasterSha256": "6c377fd29870bc09ff402de2a406f400f719597c694be54b8124823bda8c4edb",
+  "rasterSha256": "72f35701449fe27df4fe78ca346db7932e6ff3b007b2ab7344a4c3eb13811ce4",
   "rasterBytes": 180224,
-  "storedTiles": 11,
-  "rleBytes": 50130,
-  "headerSha256": "021463c466014ad17d92694ad87db7012b3422ce5a1f35e6a4be0e453e2ebabe"
+  "rleBytes": 21906,
+  "headerSha256": "8de2ab692a3e3304a961d31ab91e95d8de1ec6a1d58054752e364984cad48e15"
 }

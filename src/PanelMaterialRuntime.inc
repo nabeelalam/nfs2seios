@@ -147,7 +147,41 @@ static const NfsPanelFingerprint nfs_panel_fingerprints[]={
 {UINT64_C(0xfadc035a694989ca),{124,61,95,3,56,157,62,109,161,25,171,153,145,179,107,106,164,212,137,158,88,203,75,235,146,164,90,62,99,40,210,137}},
 {UINT64_C(0xfb154b7d7f389e83),{128,162,94,27,137,82,139,146,254,235,227,246,244,30,253,242,111,248,219,7,166,215,2,111,134,186,237,143,224,65,209,41}}
 };
+static const NfsPanelFingerprint nfs_record_plaque_fingerprints[]={
+{UINT64_C(0x0fbf9be16a192251),{172,129,162,239,128,116,220,8,107,221,204,199,0,202,51,138,21,185,197,188,14,85,165,236,33,11,80,82,145,122,244,178}},
+{UINT64_C(0x16096e10f0112678),{100,104,167,24,10,184,26,182,48,122,154,182,142,155,68,106,177,236,133,202,25,56,128,200,50,150,209,102,176,68,126,28}},
+{UINT64_C(0x224ace8543f81404),{2,215,249,5,208,176,45,54,91,168,232,169,39,215,118,243,23,214,44,60,97,218,236,215,142,68,73,178,220,39,66,91}},
+{UINT64_C(0x678e3309ee0602c3),{116,100,88,68,6,203,237,222,7,234,60,48,175,117,189,17,78,92,165,78,100,203,230,56,125,83,239,196,156,34,3,37}},
+{UINT64_C(0x6a56d6d77875c666),{22,199,98,50,29,229,17,147,19,148,17,246,70,181,169,87,101,36,132,28,146,100,201,208,131,156,145,242,111,148,212,7}},
+{UINT64_C(0x83abce5f88ae1957),{198,231,47,211,157,224,174,206,38,196,62,187,233,249,215,209,76,130,243,243,120,116,241,138,1,235,223,58,66,129,143,126}},
+{UINT64_C(0x86f4b8075f42c810),{243,81,194,48,111,235,194,250,243,228,224,106,210,7,238,231,108,152,138,177,10,109,169,140,137,224,78,45,207,155,219,62}},
+{UINT64_C(0x8e78fac21d578129),{131,115,159,164,31,196,15,4,193,229,229,64,74,201,131,174,47,73,240,195,193,14,155,23,94,112,208,107,50,240,247,62}},
+{UINT64_C(0xa10fe9e6b693fc6e),{189,110,90,29,153,35,61,69,21,72,193,37,220,14,78,111,21,163,114,184,250,131,15,46,123,27,244,219,211,106,120,206}},
+{UINT64_C(0xa30d7b696af1ead7),{219,173,200,216,156,124,73,71,176,126,45,150,153,21,231,75,181,26,212,17,217,58,248,175,85,234,7,94,205,215,114,112}},
+{UINT64_C(0xa426f9ea706750aa),{2,178,92,155,159,22,184,221,93,2,117,167,68,134,79,201,123,27,105,167,243,162,149,224,102,15,153,67,201,36,77,233}},
+{UINT64_C(0xa626643dd885c9c4),{53,102,164,181,33,181,68,167,3,26,70,152,78,191,47,64,137,249,70,125,53,141,145,197,123,146,141,205,110,79,82,171}},
+{UINT64_C(0xa6fbf31fb86dd363),{127,80,79,81,130,190,238,13,70,112,113,151,64,198,227,36,238,157,162,139,126,113,180,195,241,122,247,99,231,165,105,191}},
+{UINT64_C(0xd3def31f4b5ed37e),{216,35,52,170,8,119,27,18,26,166,129,38,12,118,129,27,160,119,229,137,197,156,33,52,122,35,19,173,137,107,22,189}},
+{UINT64_C(0xe3e6d5e22ab26e71),{234,45,250,70,68,104,15,200,226,194,20,83,29,120,251,243,53,242,75,104,248,185,144,56,67,135,106,198,74,75,81,236}},
+{UINT64_C(0xe71351ff3d6134dd),{95,237,46,150,179,39,9,213,233,13,242,12,63,40,84,207,214,170,52,245,220,195,233,35,197,232,11,84,114,161,231,39}}
+};
+static int nfs_record_plaque_material(const GrVertex *a,const GrVertex *b,const GrVertex *c,GrVertex output[3]){
+ const GrVertex *v[3]={a,b,c};unsigned x[3],y[3];unsigned char data[16];
+ if(a->a!=127 || !(a->r>=0 && a->r<=255) || !(a->g>=0 && a->g<=255) || !(a->b>=0 && a->b<=255))return 0;
+ unsigned red=(unsigned)a->r,green=(unsigned)a->g,blue=(unsigned)a->b;if(a->r!=(float)red || a->g!=(float)green || a->b!=(float)blue)return 0;
+ for(unsigned i=0;i<3;++i){if(v[i]->oow!=1 || v[i]->a!=127 || v[i]->r!=a->r || v[i]->g!=a->g || v[i]->b!=a->b)return 0;float px=v[i]->x-VertexSnap,py=v[i]->y-VertexSnap;if(!(px>=0 && px<=108 && py>=203 && py<=480))return 0;x[i]=(unsigned)px;y[i]=(unsigned)py;if(px!=(float)x[i] || py!=(float)y[i])return 0;}
+ for(unsigned i=0;i<3;++i)for(unsigned j=i+1;j<3;++j)if(x[j]<x[i] || (x[j]==x[i] && y[j]<y[i])){unsigned t=x[i];x[i]=x[j];x[j]=t;t=y[i];y[i]=y[j];y[j]=t;}
+ for(unsigned i=0;i<3;++i){data[i*4]=x[i];data[i*4+1]=x[i]>>8;data[i*4+2]=y[i];data[i*4+3]=y[i]>>8;}data[12]=red;data[13]=green;data[14]=blue;data[15]=127;
+ uint64_t key=UINT64_C(14695981039346656037);for(unsigned i=0;i<16;++i)key=(key^data[i])*UINT64_C(1099511628211);
+ unsigned low=0,high=sizeof(nfs_record_plaque_fingerprints)/sizeof(nfs_record_plaque_fingerprints[0]);while(low<high){unsigned m=low+(high-low)/2;if(nfs_record_plaque_fingerprints[m].key<key)low=m+1;else high=m;}
+ if(low==sizeof(nfs_record_plaque_fingerprints)/sizeof(nfs_record_plaque_fingerprints[0]) || nfs_record_plaque_fingerprints[low].key!=key)return 0;
+ unsigned char digest[32];if(!nfs_texture_sha256(data,16,digest) || memcmp(digest,nfs_record_plaque_fingerprints[low].digest,32))return 0;
+ for(unsigned i=0;i<3;++i){output[i]=*v[i];if(red==82 && green==85 && blue==82){float localY=v[i]->y-VertexSnap;localY-=localY>=443?443:203;float factor=1.22f-.50f*((localY-2)/35);output[i].r=v[i]->r*factor;output[i].g=v[i]->g*factor;output[i].b=v[i]->b*factor;output[i].a=245;}else output[i].a=230;}
+ return 1;
+}
+
 static int nfs_panel_material(const GrVertex *a,const GrVertex *b,const GrVertex *c,GrVertex output[3]){
+ if(nfs_record_plaque_material(a,b,c,output))return 1;
  const GrVertex *v[3]={a,b,c};unsigned x[3],y[3];unsigned char data[16];
  if(a->a!=255 || !(a->r>=0 && a->r<=255) || !(a->g>=0 && a->g<=255) || !(a->b>=0 && a->b<=255))return 0;
  unsigned red=(unsigned)a->r,green=(unsigned)a->g,blue=(unsigned)a->b;

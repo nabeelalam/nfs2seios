@@ -18,11 +18,11 @@ class ResourcesTest(unittest.TestCase):
             shutil.copyfile(ROOT / "candidates/link4/LICENSE", app / "GameSupportLicense.txt")
             shutil.copyfile(ROOT / ".build/vendor/SDL/LICENSE.txt", app / "SDLLicense.txt")
             for name,source in HUD_NOTICE_SOURCES.items():shutil.copyfile(source,app/name)
-            self.assertEqual(len(validate_game_resources(app)), 12)
-            (app / "BebasNeue-OFL.txt").unlink()
+            self.assertEqual(len(validate_game_resources(app)), 13)
+            (app / "Oxanium-OFL.txt").unlink()
             with self.assertRaisesRegex(RuntimeError,"missing"):
                 validate_game_resources(app)
-            shutil.copyfile(HUD_NOTICE_SOURCES["BebasNeue-OFL.txt"],app/"BebasNeue-OFL.txt")
+            shutil.copyfile(HUD_NOTICE_SOURCES["Oxanium-OFL.txt"],app/"Oxanium-OFL.txt")
             (app / "text.eng").write_bytes(b"incorrect language resource")
             with self.assertRaisesRegex(RuntimeError, "differs"):
                 validate_game_resources(app)

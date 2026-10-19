@@ -1,4 +1,4 @@
-"""Use only the two pinned project fonts, without changing global font settings."""
+"""Use only the pinned project fonts, without changing global font settings."""
 from contextlib import contextmanager
 import os
 from pathlib import Path
@@ -17,7 +17,7 @@ def project_fonts():
         config.write_text('<fontconfig><dir>'+escape(str(ROOT/'assets/hud/fonts'))+'</dir><cachedir>'+escape(str(p/'cache'))+'</cachedir></fontconfig>')
         os.environ['FONTCONFIG_FILE']=str(config)
         try:
-            for family,name in [('Bebas Neue','BebasNeue-Regular.ttf'),('Michroma','Michroma-Regular.ttf')]:
+            for family,name in [('Bebas Neue','BebasNeue-Regular.ttf'),('Michroma','Michroma-Regular.ttf'),('Oxanium','Oxanium-Variable.ttf')]:
                 actual=subprocess.check_output(['fc-match','-f','%{file}',family],text=True).strip()
                 if Path(actual).resolve()!=(ROOT/'assets/hud/fonts'/name).resolve():raise ValueError('HUD font substitution rejected')
             yield

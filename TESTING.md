@@ -603,7 +603,7 @@ simulated lifecycle checks completed, with clean shutdown and restored test
 configuration. The alternate yellow panel and proper Omega artwork were also
 visually observed in that run. This proves the scoped local behavior, not full
 race completion or physical iPad appearance, frame time or energy acceptance.
-The record plaque, remaining fonts and final layout review remain open.
+Remaining interface artwork and final layout review remain open.
 This source integration is not a new IPA or an Apple SDK build result.
 
 The same vector regeneration command now checks six artwork families, including
@@ -611,3 +611,16 @@ the smooth arc masks and eight existing-font gear glyphs with a circular badge.
 Only reviewed project vectors and pinned fonts supply the new pixels. Original
 game textures and private screenshots are not generation inputs or repository
 assets. Exact compatibility fingerprints identify supported original draws.
+
+The generation command also reproduces small labels, record numerals and the
+relocated wide W strip from Oxanium. `generate_small_builtin.py --check` and
+`generate_record_builtin.py --check` remain supported entry points. The new
+`hud_label_layout_tests` target checks both original POS/LAP rows and all triangle
+orientations, immutable attributes, disabled/adjacent-row fallback and wide-strip
+atlas canaries. Font decoder tests account for W's deliberately empty old slot
+and the natural six-unit 1 cell. Resource tests require the Oxanium license;
+source-policy tests reject changed font bytes and unreviewed SVG content.
+
+Fresh maintained-source optimized, sanitizer and basic-shader GPU matrices
+each reproduce all 83 candidate regression images. Original-game and physical
+device acceptance remain separate from these host checks.

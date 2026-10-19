@@ -494,8 +494,23 @@ Regeneration reads authored vectors and pinned fonts, with no original game
 pixel input. It reuses the existing auxiliary atlas without additional textures
 or uploads on gear changes. The maintained renderer reproduces all 83 scoped
 GPU outputs of the tested candidate in three configurations. The SVG publication
-exception remains tied to 39 exact reviewed digests and a bounded XML schema.
+exception remains tied to exact reviewed digests and a bounded XML schema.
 
-The record plaque, remaining interface fonts, full layout review and physical
+Remaining interface fonts, full layout review and physical
 iPad acceptance are unfinished. Keep these visual changes on this branch while
 main continues performance work; merge them only after the remaster is finalized.
+
+The small gold labels and record numerals now regenerate from the pinned,
+unmodified Oxanium font, with its license included in application and release
+resources. The source ledger covers 76 SVGs. A wide W uses a spare strip in the
+same auxiliary atlas; the narrow 1 gets its natural cell width. Glyph placement
+uses copied vertices and an active full-shader capability check, preserving
+original guest attributes and the basic-shader fallback.
+
+The record plaque keeps the classic embossed frame and uses a more readable
+body material. Its caption has tighter tracking; the time retains the original
+whole-string advance measurement with corrected centering and a common font
+baseline. Exact original POS/LAP cells have tighter spacing around their original
+centers. These changes add no GPU textures or draw calls. Static separators,
+remaining menus/icons and complete single-player/split-screen visual acceptance
+still need work; this is not final artwork or physical-device acceptance.

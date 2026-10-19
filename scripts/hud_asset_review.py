@@ -7,6 +7,8 @@ import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 FONT_FILES={
+    'assets/hud/fonts/Oxanium-OFL.txt':'fe17c0f2581d71b4e1ea7e636e7f4877c29223e11bb1dd1a871e8c3f2a86336b',
+    'assets/hud/fonts/Oxanium-Variable.ttf':'2ce01d946e1e1ffc8d7eecfffbda8623bedd63eaf811a20488c4b69af45babb0',
     'assets/hud/fonts/BebasNeue-Regular.ttf':'08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73',
     'assets/hud/fonts/Michroma-Regular.ttf':'b62301163788bc5b7f8fcac0b74b184e34e1827e577b499ecb724da065098f87',
     'assets/hud/fonts/BebasNeue-OFL.txt':'72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341',
@@ -17,7 +19,7 @@ def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
-    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face))\.svg',name):return False
+    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
@@ -29,6 +31,8 @@ def reviewed_remaster_svg(name,data):
             x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
             origin=(x,y);size=(w,h)
         elif '/gear/' in name:size=(32,32) if name.endswith('/face.svg') else (14,24)
+        elif '/small-' in name:size=(10 if name.endswith('small-W.svg') else 4 if name.endswith('small-I.svg') else 8,8)
+        elif '/record-' in name:size=(6 if name.endswith('record-1.svg') else 4 if name.endswith(('record-dot.svg','record-colon.svg')) else 8,8)
         elif name.endswith('omega.svg'):size=(64,64)
         elif '/pause/' in name:size=(255,28) if name.endswith('quit-to-system.svg') else ((255,24) if name.endswith('sound-effects.svg') else (155,24))
         else:size=(12,26) if '/timing-' in name else (29,24)
@@ -39,7 +43,7 @@ def reviewed_remaster_svg(name,data):
             'feGaussianBlur':{'in','stdDeviation','result'},'feOffset':{'in','dy','result'},
             'feFlood':{'flood-color','flood-opacity'},'feComposite':{'in2','operator','result'},
             'feMerge':set(),'feMergeNode':{'in'},
-            'text':{'x','y','font-family','font-size','text-anchor','transform','fill','stroke','stroke-width','paint-order','filter'},
+            'text':{'x','y','font-family','font-weight','font-size','text-anchor','transform','fill','stroke','stroke-width','paint-order','filter'},
             'path':{'d','fill','fill-rule','stroke','stroke-width','stroke-linejoin','stroke-linecap','stroke-opacity'},'polygon':{'points','fill'},
             'circle':{'cx','cy','r','fill','stroke','stroke-width','stroke-opacity'},
         }
@@ -49,7 +53,7 @@ def reviewed_remaster_svg(name,data):
             tag=node.tag[len(ns):]
             if tag not in attrs or set(node.attrib)-attrs[tag]:return False
             if (node.tail or '').strip():return False
-            if (node.text or '').strip() and (tag!='text' or not re.fullmatch('[A-Z0-9 ]+',node.text)):return False
+            if (node.text or '').strip() and (tag!='text' or not re.fullmatch('[A-Z0-9 .:]+',node.text)):return False
             for key,value in node.attrib.items():
                 if key in ('fill','stroke','stop-color','flood-color'):
                     rgb=re.fullmatch(r'rgb\(([0-9]+(?:\.[0-9]+)?),([0-9]+(?:\.[0-9]+)?),([0-9]+(?:\.[0-9]+)?)\)',value)
@@ -65,7 +69,9 @@ def reviewed_remaster_svg(name,data):
                 elif key=='filter':
                     if not re.fullmatch(r'url\(#[a-zA-Z][a-zA-Z0-9_-]*\)',value):return False
                 elif key=='font-family':
-                    if value not in ('Bebas Neue','Michroma'):return False
+                    if value not in ('Bebas Neue','Michroma','Oxanium'):return False
+                elif key=='font-weight':
+                    if value!='500':return False
                 elif key=='d':
                     if not re.fullmatch(r'[MmZzLlHhVvCcSsQqTtAaEe0-9+.,\s-]+',value):return False
                 elif key=='points':

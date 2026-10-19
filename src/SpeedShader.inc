@@ -28,6 +28,8 @@
 "if(vTexCoord.z>65.5 && vTexCoord.z<66.5){hdCoord=hdCoord*vec2(1.041103848946986,1.025281602002503)+vec2(-0.3653067129629629,-0.2969581117021277);pauseOutside=hdCoord.x<0.515625 || hdCoord.x>0.5625 || hdCoord.y<0.0 || hdCoord.y>0.078125;hdCoord=clamp(hdCoord,vec2(0.51611328125,0.00048828125),vec2(0.56201171875,0.07763671875));}\n"
 "if(vTexCoord.z>66.5 && vTexCoord.z<67.5){hdCoord=hdCoord*vec2(1.041103848946986,1.025281602002503)+vec2(-0.3673321759259259,-0.2969581117021277);pauseOutside=hdCoord.x<0.5703125 || hdCoord.x>0.6171875 || hdCoord.y<0.0 || hdCoord.y>0.078125;hdCoord=clamp(hdCoord,vec2(0.57080078125,0.00048828125),vec2(0.61669921875,0.07763671875));}\n"
 "if(vTexCoord.z>67.5 && vTexCoord.z<68.5){hdCoord=hdCoord*vec2(1.019856831621538,1.019856831621538)+vec2(-0.001984126984126984,-0.4583333333333333);hdCoord=clamp(hdCoord,vec2(0.00048828125,0.00048828125),vec2(0.12451171875,0.12451171875));}\n"
+"if(vTexCoord.z>33.5 && vTexCoord.z<34.5 && uHdCellLayout>.5)hdCoord=(vTexCoord.st/vTexCoord.q)*vec2(0.08261437908496733,0.06588235294117648)+vec2(-0.004654947916666667,0.17998046875);\n"
+"if(vTexCoord.z>37.5 && vTexCoord.z<38.5 && uHdCellLayout>.5)hdCoord=(vTexCoord.st/vTexCoord.q)*vec2(0.05266106442577031,0.06588235294117648)+vec2(0.6189313616071429,0.55888671875);\n"
 		"vec4 hd = texture2D(uHdTextureSampler, hdCoord);if(pauseOutside)hd=vec4(0.0);\n"
 		"if (vTexCoord.z > 0.5) sampled = hd;\n"
 		"#else\n"

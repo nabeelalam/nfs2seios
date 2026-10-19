@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "Provisional new uppercase HUD paths; physical appearance and performance unverified",
+  "status": "Oxanium geometric remaster candidate; locally reviewed, physical acceptance pending",
   "originalGamePixelsIncluded": false,
   "entries": [
     {
@@ -14,7 +14,7 @@
         64,
         64
       ],
-      "sha256": "b870a902b80168fef9f63f1b76cc6980a7d16acf8a16630b1800c3f0724ed278"
+      "sha256": "2ca5a64004b6f02e109b818cfdc4990957a42f28edb2a465a72d66642e78f741"
     },
     {
       "character": "B",
@@ -27,7 +27,7 @@
         64,
         64
       ],
-      "sha256": "01f0b0380da483ebbfc44fa5628cf79c0295b171cd5e63ecfc9d6d4f97c22e4c"
+      "sha256": "ec9cc91cce3ebce590eda0933e6def6362ec2c8fee7cd62daf4a11acbfa91e50"
     },
     {
       "character": "C",
@@ -40,7 +40,7 @@
         64,
         64
       ],
-      "sha256": "924200403ae30cf99bd6ac75b24907c4c42942734265d17cf5f15b8da0ed6af6"
+      "sha256": "313ff4257c2d9853df2f0b1f201b0e821893c51dd1b6a6e433527f7ca3635b34"
     },
     {
       "character": "D",
@@ -53,7 +53,7 @@
         64,
         64
       ],
-      "sha256": "c4d66eafe7bfc77aba996ab52d1217ca427c35b10fa253832b029c0b0f944626"
+      "sha256": "7a729236ae7271c358f64e328973f863e8a5535f85654599124488afa8c43ca8"
     },
     {
       "character": "E",
@@ -66,7 +66,7 @@
         64,
         64
       ],
-      "sha256": "d1cc8bc4cc8be1e6f2a75fe384368b3848f2cd9e763fcaa454b1f2ff2eac6a33"
+      "sha256": "c74aace16414b1821c59072961fed54f0653b84a1600b17dffda5e9204d32d5c"
     },
     {
       "character": "F",
@@ -79,7 +79,7 @@
         64,
         64
       ],
-      "sha256": "00401536b47594e0a2e1d86838b64a357aec816961c43b0dd049aa435f7e6f72"
+      "sha256": "ee1c771e71fd7546aab96c6a4b7cd4865824afcc577bf7285a42c6b6acfe31de"
     },
     {
       "character": "G",
@@ -92,7 +92,7 @@
         64,
         64
       ],
-      "sha256": "0336c684034d6a6b51e970ac307a2f9b3b5bfbbb5673bc12654b810c07ea1fd0"
+      "sha256": "64c9085b17e0eb70165923f98408abef12a2160e699c0e93a365b189766d6980"
     },
     {
       "character": "H",
@@ -105,7 +105,7 @@
         64,
         64
       ],
-      "sha256": "299489df44638725ed10088691fc2adcedfc14b93aa6617bf4eabd53d55eb852"
+      "sha256": "c8c15c22067e5e31021f1ee0ab3fb4a3bb25a3c67ef0340b0f4baab6105514a1"
     },
     {
       "character": "I",
@@ -118,7 +118,7 @@
         32,
         64
       ],
-      "sha256": "3a400e4bcffcf48ef2cc40d0151ce7207b7531c38869062511d1dc865d7059f6"
+      "sha256": "eac40f6460e3043d436add47f679c807f6876aa490a8b67166e81e9a76f9620a"
     },
     {
       "character": "J",
@@ -131,7 +131,7 @@
         64,
         64
       ],
-      "sha256": "8dba93db15847e6dd7ef8dbb89d099647963d9113aed797ef4eaf9934b802220"
+      "sha256": "1ee3b0f631f30fb1f521e4e5691074ec36eea8c98c9ecc27bb4257cb927f3a7e"
     },
     {
       "character": "K",
@@ -144,7 +144,7 @@
         64,
         64
       ],
-      "sha256": "d987997ac73c56d6d0372dee9f63dcd8ee7b333047c227c03d2bfcb6c9c736b2"
+      "sha256": "6df06573cf455edc16e29c59e2e8ae2da9cd0d3aefec5c6f62ff565781e551f2"
     },
     {
       "character": "L",
@@ -157,7 +157,7 @@
         64,
         64
       ],
-      "sha256": "96999c72a0270547f4e4109f853f103b6efd3440686213f9cba1ffe72c191ad7"
+      "sha256": "3de352c06b22728e358aca9593f4aa80c81928585b1afb441e06abbf6f319d80"
     },
     {
       "character": "M",
@@ -170,7 +170,7 @@
         64,
         64
       ],
-      "sha256": "c4c984c674d0ae681b380dff58dc69d77d8cc0a41a60b6a4e3d955d6e48465b2"
+      "sha256": "3542a188bd526eefdc1bb5dc7f476dc8f1f00e217f61a08cc58cd831a584290e"
     },
     {
       "character": "N",
@@ -183,7 +183,7 @@
         64,
         64
       ],
-      "sha256": "e423dfed7571c42975eb01048e77ead5b8c77fada52b72286b2a01090f494979"
+      "sha256": "dd09ea9b7fc46a7d4b8ec63a7bedb0943c558cdd07173a3f041bc3856dfbfdff"
     },
     {
       "character": "O",
@@ -196,7 +196,7 @@
         64,
         64
       ],
-      "sha256": "1d8e3805b7011777233c6493a712e7768d5c837805c6bd4d4ca7efe77e687888"
+      "sha256": "4f2be9dd64503191eff0b52399100e0d64452c30553465b9e33aba021ee95aab"
     },
     {
       "character": "P",
@@ -209,7 +209,7 @@
         64,
         64
       ],
-      "sha256": "717be3466d6971252c0335f209cbb1156c85d37fc849a70efff7e79c14789fa4"
+      "sha256": "af7fe005d054dccadb4e47d4a953d00b61d0b694557b26e03cb42e082a5eb667"
     },
     {
       "character": "Q",
@@ -222,7 +222,7 @@
         64,
         64
       ],
-      "sha256": "6566dfc1e3a998bbdefc4fb227fcecd4d7c4e128d2de8fe1480b3bfd73cd38ac"
+      "sha256": "1b99ab50e0e7d453ab9cd9fc741617f0d2421787a668db8980b4b1d5b2d4acc4"
     },
     {
       "character": "R",
@@ -235,7 +235,7 @@
         64,
         64
       ],
-      "sha256": "e19d906e33b1b3a93c738afd3e9b87547d4e8f760d16ca69ed71c5a59a3e6a22"
+      "sha256": "33ed267d2b05edf5db4aab576b270adadabc8ccde55d7a7d5bfef494ad7d69d4"
     },
     {
       "character": "S",
@@ -248,7 +248,7 @@
         64,
         64
       ],
-      "sha256": "ec10210bebf1967b0866ca61587513797fdfd9921d056694a4a9978aafa6e453"
+      "sha256": "caa4513c27c0ab1f1b9db96a11e5b5b1008587949871d50f5944c2e45793ba68"
     },
     {
       "character": "T",
@@ -261,7 +261,7 @@
         64,
         64
       ],
-      "sha256": "bed2715d7d312eef447b1772374e113df9454baec61e126f98d269d29853ddd4"
+      "sha256": "f09ed94a5f3c307c0f6795fd4812be7cfe997eb7d9ffa8286e85d7e9f288832e"
     },
     {
       "character": "U",
@@ -274,7 +274,7 @@
         64,
         64
       ],
-      "sha256": "6fe658c02c6008ec10e4e25d8901b12b733c62742c9bd954db8a505522c30509"
+      "sha256": "ac0b18c84ea6ff6fefafae1fe6aff1b118dc93c0124d29ef772459cacae1167a"
     },
     {
       "character": "V",
@@ -287,20 +287,20 @@
         64,
         64
       ],
-      "sha256": "387635f42922075749212018b0e034499e51793196565c1db982c04918b5f823"
+      "sha256": "0349b00b422ba37c7205e916b947924585509fb3d82bf1d92bd3affc7d79ef45"
     },
     {
       "character": "W",
       "file": "small-W.svg",
       "vectorSize": [
-        8,
+        10,
         8
       ],
       "rasterSize": [
-        64,
+        80,
         64
       ],
-      "sha256": "38cdfbc4f50fb3f9deece19ce81becafdc2ae219ad2b168b9987298c7d3d20b6"
+      "sha256": "3f9e4effcdda8a524135f58a5d9d538c36e5481dcdac74be8104f137eb0d2420"
     },
     {
       "character": "X",
@@ -313,7 +313,7 @@
         64,
         64
       ],
-      "sha256": "09233cdbf09610b3452dc6efe3bfd4bdc8aee0170a0c6b8a4877e3d39fd1a4fc"
+      "sha256": "9b84554f2904e82c2dd5b9dd1d5c68258f67fdb79d53d7e1bec12c9517fbb3b4"
     },
     {
       "character": "Y",
@@ -326,7 +326,7 @@
         64,
         64
       ],
-      "sha256": "042660cd84a459248d571328779d96549f85618a3e64e9a67fab5626b833d6cd"
+      "sha256": "66012967e7fc4ea20f3a0219efda2918b79995871d04eb4074ba9f02e96d3c85"
     },
     {
       "character": "Z",
@@ -339,7 +339,9 @@
         64,
         64
       ],
-      "sha256": "5d13136c26fc79104aae2eb623bae2c888bccd246de277e0c8cd9c22032765a1"
+      "sha256": "59bdde4568d3067cd5bdeddc718cd1b53c8d3524a883b168bba02bb5ef95cd48"
     }
-  ]
+  ],
+  "font": "Oxanium",
+  "weight": 500
 }

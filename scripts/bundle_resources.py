@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HUD_NOTICE_SOURCES = {
     "BebasNeue-OFL.txt": ROOT / "assets/hud/fonts/BebasNeue-OFL.txt",
     "Michroma-OFL.txt": ROOT / "assets/hud/fonts/Michroma-OFL.txt",
+    "Oxanium-OFL.txt": ROOT / "assets/hud/fonts/Oxanium-OFL.txt",
     "HUDArtworkNotice.md": ROOT / "assets/hud/HUDArtworkNotice.md",
 }
 

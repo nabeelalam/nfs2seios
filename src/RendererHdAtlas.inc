@@ -4,6 +4,7 @@
 #include "HdGlyphSelect.h"
 #include "SmallFontRuntime.inc"
 #include "PauseFontRuntime.inc"
+#include "LabelCellLayout.inc"
 #include <SDL3/SDL_init.h>
 static unsigned char nfs_logo_original[8192];
 static int nfs_logo_valid;
@@ -44,6 +45,7 @@ static GLuint nfs_hd_aux_texture;
 static int nfs_hd_selected,nfs_hd_uniform_sent;
 static GLint nfs_hd_active_location;
 static void nfs_hd_program_created(GLuint program){
+    GLint cell=glGetUniformLocation(program,"uHdCellLayout");nfs_hd_cell_layout_available=cell>=0;if(cell>=0)glUniform1f(cell,1);
     nfs_hd_active_location=glGetUniformLocation(program,"uHdActive");
     glUniform1i(glGetUniformLocation(program,"uHdTextureSampler"),1);
     glUniform1f(nfs_hd_active_location,0);nfs_hd_uniform_sent=0;nfs_hd_selected=0;
