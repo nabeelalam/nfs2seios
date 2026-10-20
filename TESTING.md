@@ -718,5 +718,23 @@ CTest. This checks local workflow coverage; it is not evidence of a cloud run.
 The private guarded Location consumer additionally exercises 1,430 captured
 triangles, with missing/different identities retaining original rendering, and
 an actual North Country/Pacific Spirit/back-to-North-Country runtime observation.
-Location art integration, broader pixel regressions and physical review remain
-open.
+The expanded Location art is now generated from reviewed vectors and scalar
+compatibility geometry; no original game pixels are inputs. Seven RLE include
+parts reconstruct the same tested 4 MiB atlas while staying below the unchanged
+publication file-size limit. `prepare_renderer.py` copies those parts and the
+complete-text header through an explicit allowlist.
+
+`frontend_font_tests` links `FrontendTextContext.cpp` and checks the authored
+atlas digest, decoder canaries, 1,520 full glyph triangles, exact output/UV
+placement, unchanged source attributes and fallback. Twelve ambiguous glyph
+positions must select by complete string, not stop at the first coordinate
+match. Missing/wrong identities must leave guarded Location text original.
+Both optimized and address/undefined sanitizer variants run without game data.
+
+The private original-game acceptance expands to every track/lap choice observed
+in the current copied Single Race profile at 640x480 and 2186x1640, including
+wraparound, Done/Escape/controller and copied-settings restoration. Independent
+shape recognition checks 24 actual value screenshots. This is not coverage of
+all unlocks/modes or physical iPad performance/energy. Three graphics variants
+also preserve 103 earlier reference images each and replay 636 triangle/context
+pairs; the pixel captures remain private. Physical review remains open.

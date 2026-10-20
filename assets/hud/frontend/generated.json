@@ -8,16 +8,34 @@
     "assets/hud/frontend/opponents.svg": "cd0db600787635696cdef2d9c2ff59745b893e568883ca19041362f5e1b2a383",
     "assets/hud/frontend/race.svg": "6b719551646834c72970e81a22d6dfe91e5d6983b41c2ccfb0f2194e7b80d410",
     "assets/hud/frontend/options.svg": "8edd25281b676d108c6b00e2fca5ea7e8ab0043b98cdb6350f26bf06f5eb313b",
-    "assets/hud/frontend/exit.svg": "d281a5b44f8ac1b90a7a50ac0c047030a754f648d361df9721938475b8f18fb2"
+    "assets/hud/frontend/exit.svg": "d281a5b44f8ac1b90a7a50ac0c047030a754f648d361df9721938475b8f18fb2",
+    "assets/hud/frontend/location/track.svg": "bc0e296a11aaf1e2b091ef03ca690b8624c7186dc92ed0ac5edf5acf1da2a24e",
+    "assets/hud/frontend/location/colon.svg": "73d84244d0c76ae2758fc54b0e1dfb7e1a623120ce8e1b6d57bb5a0c319d6d37",
+    "assets/hud/frontend/location/north-country.svg": "14aaac7a8b7eea3621a087761ed459fa20318bc178a65f72633ac2f946df4172",
+    "assets/hud/frontend/location/laps.svg": "3fe95f6270caacad129df8130dddaf37019df8c5200e63c225cb02d0e4070a36",
+    "assets/hud/frontend/location/lap-two.svg": "673c7802b86c46da6356466157865c6356d241faa58e4a56e4997f378f231e10",
+    "assets/hud/frontend/location/track-info.svg": "b1c75a4d17aaa9735cf6ec2cdc7863853ba9aeafc823457679bb8c033afab8f6",
+    "assets/hud/frontend/location/track-records.svg": "5f24978b988d8ef5af5a1a14f56900e74d3379f7073a01dce6bb46b204688980",
+    "assets/hud/frontend/location/personal-statistics.svg": "6c6a2637cecca55029bb852af1a0dbb02b4c6b24c7381addcbfbb52a21e14ed5",
+    "assets/hud/frontend/location/done.svg": "149ef1645b2ba35cc34a8fd93bcaf87c6f01d790cf3e92a19756c235c01b61cb",
+    "assets/hud/frontend/location/cancel.svg": "1c741c0cb4282153082c6d17fc53dd00e07d34208c05f25bef89da3bfab02068",
+    "assets/hud/frontend/location/pacific-spirit.svg": "a84ade8ee5209ae0890d0e5617c023f0a893a8fc45c0836cd79b31f1735d9f2b",
+    "assets/hud/frontend/location/mediterraneo.svg": "729cbf591ca9b4c7802b57a584302703e548b37972842fea03eb42a91ec764b0",
+    "assets/hud/frontend/location/mystic-peaks.svg": "cb6d6922eef1b358d805977d5cac8ee247bf787f5da0299a6b41d513f37be987",
+    "assets/hud/frontend/location/proving-grounds.svg": "dd2b87039b20b6b546ff49bf9f792206c7d872f0689f9700c91946f330143a1f",
+    "assets/hud/frontend/location/outback.svg": "49f798119d1ff803d9b1701c2c794a126a7d8fbbb2cc04ddb35a0f871149337b",
+    "assets/hud/frontend/location/last-resort.svg": "68e8034e99ca69da1d379f952ca858ffff8e06eb9dc5d681dd6a9b6f96061823",
+    "assets/hud/frontend/location/lap-4.svg": "115a7d26fe0b9e043b316abdfda54219970077b9cc184b1b1c0a8ef01f087d24",
+    "assets/hud/frontend/location/lap-8.svg": "443a10b29969bedc10e859aa549427207823c0c4dce4f0662aa4ac8e2b1f6965"
   },
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "6dcf0b046e5ac92bb3a29fc6a3c80cc860f4d48c8fa0d0c89fccdc4c22a57479",
+  "rasterSha256": "e80a19bc2ef419d3e4138f63bf3e750c7f459c5cf621cc6d13c12aadcf0066c0",
   "raster": [
     1024,
     1024
   ],
-  "rleBytes": 147672,
-  "glyphPartitions": 62,
+  "rleBytes": 433464,
+  "glyphPartitions": 380,
   "inkFit": [
     {
       "text": "game setup",
@@ -60,8 +78,324 @@
       "outsideMatchingHitRectangle": 0
     }
   ],
+  "locationCatalogSha256": "034362df7d9b69e8f92f0cfb6a512799922b3adb9d3611f7f9fc977de3555816",
+  "locationPlacements": [
+    {
+      "file": "track.svg",
+      "atlas": [
+        384,
+        412,
+        132,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        132,
+        76
+      ],
+      "outputX": 343.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "colon.svg",
+      "atlas": [
+        520,
+        412,
+        24,
+        54
+      ],
+      "sourceCrop": [
+        0,
+        28,
+        24,
+        54
+      ],
+      "outputX": 382.25,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "north-country.svg",
+      "atlas": [
+        548,
+        412,
+        352,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        352,
+        96
+      ],
+      "outputX": 395.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "laps.svg",
+      "atlas": [
+        904,
+        412,
+        108,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        108,
+        96
+      ],
+      "outputX": 349.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "lap-two.svg",
+      "atlas": [
+        384,
+        492,
+        40,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        40,
+        71
+      ],
+      "outputX": 394.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "track-info.svg",
+      "atlas": [
+        428,
+        512,
+        280,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        280,
+        76
+      ],
+      "outputX": 318.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "track-records.svg",
+      "atlas": [
+        384,
+        592,
+        368,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        368,
+        76
+      ],
+      "outputX": 296.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "personal-statistics.svg",
+      "atlas": [
+        0,
+        672,
+        496,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        496,
+        96
+      ],
+      "outputX": 264.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "done.svg",
+      "atlas": [
+        756,
+        512,
+        128,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        128,
+        76
+      ],
+      "outputX": 342.5,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "cancel.svg",
+      "atlas": [
+        756,
+        592,
+        184,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        184,
+        76
+      ],
+      "outputX": 398.5,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "pacific-spirit.svg",
+      "atlas": [
+        500,
+        672,
+        312,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        312,
+        96
+      ],
+      "outputX": 395.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "mediterraneo.svg",
+      "atlas": [
+        0,
+        772,
+        336,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        336,
+        76
+      ],
+      "outputX": 395.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "mystic-peaks.svg",
+      "atlas": [
+        340,
+        772,
+        328,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        328,
+        96
+      ],
+      "outputX": 395.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "proving-grounds.svg",
+      "atlas": [
+        0,
+        872,
+        408,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        408,
+        96
+      ],
+      "outputX": 395.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "outback.svg",
+      "atlas": [
+        672,
+        772,
+        212,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        212,
+        76
+      ],
+      "outputX": 395.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "last-resort.svg",
+      "atlas": [
+        672,
+        852,
+        284,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        284,
+        71
+      ],
+      "outputX": 395.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "lap-4.svg",
+      "atlas": [
+        960,
+        512,
+        40,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        40,
+        71
+      ],
+      "outputX": 394.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "lap-8.svg",
+      "atlas": [
+        960,
+        587,
+        40,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        40,
+        71
+      ],
+      "outputX": 394.0,
+      "inkFitsOriginalHorizontalTextBounds": true
+    }
+  ],
   "headerHashes": {
-    "FrontendFontPixels.inc": "17b24c4688021e2f3b298b291a6299a756d637371dbeb738f66b376e3ec5b54c",
-    "FrontendWordLayout.inc": "973e848fdb4c6b5f4fb97e5567732194c40836b63e1ba3faea6f2fc07193ba5b"
+    "FrontendFontPixels.inc": "a2110ec99cfe8b8005d50e553c34bd5291316db6eba686a63c6a1944c42d54b8",
+    "FrontendWordLayout.inc": "63b4d56469f76573b2482596a1f38a36eca4599a7c048097108dcc9bf08fcca0",
+    "FrontendFontPixelsPart0.inc": "4cef23742b53be2795a03f2680891817845170e38ceba1d172c2a4cd092ff22a",
+    "FrontendFontPixelsPart1.inc": "5eb77ebe4d6e8f9bcdac70ad5b3e9a1169b0aeac2d71a753aa843149557ed5dd",
+    "FrontendFontPixelsPart2.inc": "0c342fdeec928f3bbce43fdd06dbf75ce69cdfffb804a2d5f2908b9609436195",
+    "FrontendFontPixelsPart3.inc": "ba63a60d9c050e781eb3142bd0cf38aee5431adcad7c0887fb6332bf821a8575",
+    "FrontendFontPixelsPart4.inc": "45d30bd1b60aa3be7d42df35e0b319360b037d53d593cfc578185e3f27b3b07f",
+    "FrontendFontPixelsPart5.inc": "6f425bef6a9d77b5b22b14bbb6cf7644c75e442e0d7429f9e201c7ff3bccc8a5",
+    "FrontendFontPixelsPart6.inc": "b375875f172b229cee1b0ddc54a0feaf71ddef608cd336e60e2206ddd4c54440"
   }
 }

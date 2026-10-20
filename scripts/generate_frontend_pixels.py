@@ -1,10 +1,103 @@
-"""Generate the authored condensed main-menu atlas without original game data."""
+"""Generate authored condensed menu/Location words without original game data."""
 import hashlib
 import json
 import math
-from hud_asset_review import ROOT, FRONTEND_WORDS
+from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS
 from hud_font_environment import project_fonts
-from generate_remaster_pixels import array, rle, source
+from generate_remaster_pixels import rle, source
+
+
+def text_identity(text):
+    if not 1 <= len(text) < 96 or any(not 32 <= ord(c) <= 126 for c in text):
+        raise ValueError('Unsupported complete draw string')
+    identity = 14695981039346656037
+    for c in text.encode('ascii'):
+        identity = ((identity ^ c) * 1099511628211) & 0xffffffffffffffff
+    return identity
+
+
+def location_words(directory, pixels, main_words, hashes, rows):
+    """Crop new ink only and pack it around unchanged main-menu allocations."""
+    path = directory/'location/catalog.json'
+    words = json.loads(path.read_text())['words']
+    if [w['file'] for w in words] != [n+'.svg' for n in LOCATION_WORDS]:
+        raise ValueError('Unexpected reviewed Location word set')
+    skyline, placements = [0]*1024, []
+    for word in main_words:
+        for x in range(word['x']*4, min(1024, (word['x']+word['width']+1)*4)):
+            skyline[x] = max(skyline[x], min(1024, (word['y']+52)*4))
+    for word in words:
+        text, logical_width = LOCATION_WORDS[word['file'][:-4]]
+        if word['text'] != text or word['width'] != logical_width:
+            raise ValueError('Unexpected reviewed Location dimensions')
+        width = logical_width*4
+        rgba = source(directory/'location'/word['file'], width, 204, hashes)
+        ink = [(x,y) for y in range(204) for x in range(width) if rgba[(y*width+x)*4+3]]
+        if not ink:
+            raise ValueError('Empty Location artwork')
+        top, bottom = max(0,min(y for x,y in ink)-2), min(204,max(y for x,y in ink)+3)
+        height = bottom-top
+        if bottom > 104:
+            raise ValueError('Location ink crosses the next row')
+        ay, ax = min((max(skyline[x:x+width+4]),x) for x in range(0,1024-width-3,4))
+        if ay+height+4 > 1024:
+            raise ValueError('Location artwork exceeds the existing atlas')
+        for x in range(ax,ax+width+4):
+            skyline[x] = ay+height+4
+        for y in range(height):
+            at = ((ay+y)*1024+ax)*4
+            pixels[at:at+width*4] = rgba[(top+y)*width*4:(top+y+1)*width*4]
+        base = word['placements'][0]
+        target = base['right']-logical_width
+        if word['file'] in ('done.svg','cancel.svg') or word.get('kind') == 'lap':
+            target = base['x']+(base['width']-logical_width)/2
+        elif word.get('kind') == 'track':
+            target = base['x']
+        candidates = []
+        for step in range(-32,33):
+            left = round(target*4)/4+step/4
+            if all(base['x'] < left+(x+.5)/4 < base['right'] for x,y in ink):
+                candidates.append((abs(left-target),left))
+        if not candidates:
+            raise ValueError('Location ink exceeds original horizontal text extents')
+        left = min(candidates)[1]
+        for placement in word['placements']:
+            edge = 0
+            for glyph in placement['glyphs']:
+                values = [glyph[k] for k in ('cell','x','y','w','h','left','right')]
+                if any(not isinstance(v,(int,float)) or not math.isfinite(v) for v in values):
+                    raise ValueError('Nonfinite Location geometry')
+                if not (1 <= glyph['cell'] <= 120 and 0 <= glyph['x'] < glyph['x']+glyph['w'] <= 640
+                        and 0 <= glyph['y'] < glyph['y']+glyph['h'] <= 480
+                        and glyph['y'] == placement['y'] and 0 < glyph['w'] <= 32 and glyph['h'] == 51
+                        and glyph['left'] == edge < glyph['right'] <= 1):
+                    raise ValueError('Invalid Location compatibility partition')
+                edge = glyph['right']
+                draw_text = glyph['drawText']
+                if draw_text not in ((text[:-3],'...') if text.endswith('...') else (text,)):
+                    raise ValueError('Unrelated complete draw string')
+                values += [ax/4,ay/4,logical_width,left+placement['x']-base['x'],top/4,height/4]
+                rows.append('{'+','.join(format(v,'.12g') for v in values)+',UINT64_C(0x'+format(text_identity(draw_text),'016x')+')}')
+            if edge != 1 or placement['glyphs'][0]['left'] != 0:
+                raise ValueError('Incomplete Location word partition')
+        placements.append(dict(file=word['file'],atlas=[ax,ay,width,height],sourceCrop=[0,top,width,height],
+                               outputX=left,inkFitsOriginalHorizontalTextBounds=True))
+    return placements, hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def chunked_pixels(encoded):
+    # Run-aligned decimal literals; keep every source below the unchanged 1 MiB gate.
+    outputs = {}
+    names = []
+    for i, start in enumerate(range(0,len(encoded),65520)):
+        name = 'FrontendFontPixelsPart'+str(i)+'.inc'
+        data = encoded[start:start+65520]
+        outputs[name] = '// SPDX-License-Identifier: MIT\n'+',\n'.join(','.join(str(v) for v in data[j:j+24]) for j in range(0,len(data),24))+',\n'
+        names.append(name)
+    if len(names) != 7:
+        raise ValueError('Update the explicit prepared-renderer part allowlist')
+    aggregate = 'static const unsigned char nfs_front_font_rle[]={\n'+''.join('#include "'+n+'"\n' for n in names)+'};'
+    return aggregate, outputs
 
 
 def generate_frontend(check=False):
@@ -57,23 +150,31 @@ def generate_frontend(check=False):
                 if not (1 <= glyph['cell'] <= 120 and 0 <= glyph['x'] < 200 and glyph['y'] == y0 and 0 < glyph['w'] <= 32 and 0 < glyph['h'] <= 51 and glyph['left'] == edge < glyph['right'] <= 1):
                     raise ValueError('Invalid word compatibility partition')
                 edge = glyph['right']
-                rows.append('{'+','.join(format(v,'.12g') for v in values+[ax,ay,width])+'}')
+                rows.append('{'+','.join(format(v,'.12g') for v in values+[ax,ay,width,168-width,0,51])+',UINT64_C(0x0000000000000000)}')
     if len(rows) != 62:
         raise ValueError('Unexpected main-menu glyph coverage')
-    layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
+    with project_fonts():
+        location_placements, location_catalog_hash = location_words(directory,pixels,words,hashes,rows)
+    if len(rows) != 380:
+        raise ValueError('Unexpected reviewed Location coverage')
+    layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
     template = json.loads((ROOT/'scripts/hud_templates/FrontendFontPixels.json').read_text())['template']
     if template.count('@PIXEL_ARRAY@') != 1:
         raise ValueError('Invalid frontend decoder template')
     encoded = rle(pixels)
-    header = template.replace('@PIXEL_ARRAY@', array('nfs_front_font_rle', encoded, decimal=True).rstrip())
+    aggregate, parts = chunked_pixels(encoded)
+    header = template.replace('@PIXEL_ARRAY@', aggregate)
     notice = '// SPDX-License-Identifier: MIT\n// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.\n'
-    outputs = {'FrontendFontPixels.inc': notice+header, 'FrontendWordLayout.inc': notice+layout}
+    outputs = {'FrontendFontPixels.inc': notice+header, 'FrontendWordLayout.inc': notice+layout, **parts}
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
                     rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,1024],
                     rleBytes=len(encoded), glyphPartitions=len(rows), inkFit=ink,
+                    locationCatalogSha256=location_catalog_hash, locationPlacements=location_placements,
                     headerHashes={n:hashlib.sha256(s.encode()).hexdigest() for n,s in outputs.items()})
     for name, content in outputs.items():
+        if len(content.encode()) > 1048576:
+            raise ValueError('Generated frontend source exceeds publication size gate')
         path = ROOT/'src'/name
         if check:
             if path.read_text() != content:

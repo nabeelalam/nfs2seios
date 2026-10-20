@@ -20,12 +20,33 @@ FRONTEND_WORDS = {
     'opponents': ('opponents', 87), 'race': ('RACE', 75),
     'options': ('options', 62), 'exit': ('exit', 32),
 }
+LOCATION_WORDS = {
+    'track': ('track', 33),
+    'colon': (':', 6),
+    'north-country': ('North Country', 88),
+    'laps': ('laps', 27),
+    'lap-two': ('2', 10),
+    'track-info': ('track info...', 70),
+    'track-records': ('track records...', 92),
+    'personal-statistics': ('personal statistics...', 124),
+    'done': ('DONE', 32),
+    'cancel': ('CANCEL', 46),
+    'pacific-spirit': ('Pacific Spirit', 78),
+    'mediterraneo': ('Mediterraneo', 84),
+    'mystic-peaks': ('Mystic Peaks', 82),
+    'proving-grounds': ('Proving Grounds', 102),
+    'outback': ('Outback', 53),
+    'last-resort': ('Last Resort', 71),
+    'lap-4': ('4', 10),
+    'lap-8': ('8', 10),
+}
+
 
 def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
-    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit))\.svg',name):return False
+    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit|location/(?:track|colon|north-country|laps|lap-two|track-info|track-records|personal-statistics|done|cancel|pacific-spirit|mediterraneo|mystic-peaks|proving-grounds|outback|last-resort|lap-4|lap-8)))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
@@ -36,6 +57,7 @@ def reviewed_remaster_svg(name,data):
         if '/gauge/' in name:
             x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
             origin=(x,y);size=(w,h)
+        elif '/frontend/location/' in name:size=(LOCATION_WORDS[Path(name).stem][1],51)
         elif '/frontend/' in name:size=(FRONTEND_WORDS[Path(name).stem][1],51)
         elif '/start/' in name:size=(64,64)
         elif '/punctuation/' in name:size=(33,26) if name.endswith('/clock.svg') else (9,28)
@@ -65,7 +87,9 @@ def reviewed_remaster_svg(name,data):
             if (node.tail or '').strip():return False
             if (node.text or '').strip():
                 if tag!='text':return False
-                if '/frontend/' in name:
+                if '/frontend/location/' in name:
+                    if node.text!=LOCATION_WORDS[Path(name).stem][0]:return False
+                elif '/frontend/' in name:
                     if node.text!=FRONTEND_WORDS[Path(name).stem][0]:return False
                 elif not re.fullmatch('[A-Z0-9 .:]+',node.text):return False
             for key,value in node.attrib.items():

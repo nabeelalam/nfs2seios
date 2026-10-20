@@ -603,10 +603,32 @@ fallback and the second-row colon. An actual run changes North Country to Pacifi
 Spirit (original font throughout), then back to remastered North Country, with
 working Done/Escape/controller navigation at both reviewed resolutions. Its
 settings are restored. This is not physical iPad or performance acceptance.
-Location artwork/guarded geometry remain private pending broader graphics checks
-and deterministic source integration; the maintained main-menu art is unchanged.
+That initial single-value prototype has now been expanded and integrated below;
+the maintained main-menu allocations remain unchanged.
 
 The existing Linux/Apple host workflow target lists now include all registered
 UI tests, including the generated deferred bridge witness. A small local policy
 test checks build/run coverage to catch omissions before Apple compilation.
 No new cloud jobs or builds were started.
+
+The Location form now has 18 reviewed authored words: static labels/buttons,
+seven track names and lap counts 2/4/8 observed in the copied Single Race profile.
+This does not establish every unlock or game mode. Unrecognized complete strings
+retain the original font, rather than partially matching a known track name.
+The dense form uses condensed Oxanium with Bebas buttons, preserving original
+row baselines, one-pixel shadow offsets and horizontal text extents. Done's
+interactive behavior was checked; text bounds alone do not prove every hit box.
+
+The generator packs cropped new ink into unused space in the same 1024-square
+atlas. It preserves all eight main-menu allocations and reproduces the tested
+atlas exactly. Seven bounded RLE literal parts retain the existing 1 MiB public
+file limit; no original pixels or private captures enter the source repository.
+Per-word geometry uses the existing queued complete-text identity, including
+independent identities for labels whose ellipsis is a separate original draw.
+
+Local evidence covers both reviewed resolutions, all observed track/lap cycles,
+Done/Escape/controller navigation, clean shutdown and copied-settings restoration.
+Three GPU configurations preserve 103 prior images each and exercise 636 paired
+original triangles/full-label contexts, plus missing/wrong-context fallback.
+Other forms, remaining artwork, complete layout review and physical iPad
+performance/energy acceptance remain open. Main performance work stays separate.

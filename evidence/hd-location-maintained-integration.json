@@ -1,0 +1,98 @@
+{
+  "scope": "Maintained authored Location typography integrated into isolated UI branch; observed copied Single Race profile only",
+  "parentUiCommit": "2673ec52b385dd6fdaf443ffca86250244a31721",
+  "fonts": {
+    "form": "Pinned Oxanium500,24px,scaleX0.54,baseline20",
+    "buttons": "Pinned Bebas Neue,25px,scaleX0.75,baseline21"
+  },
+  "reviewedAuthoredLocationSvgCount": 18,
+  "reviewedTotalSvgCount": 105,
+  "originalGamePixelsIncluded": false,
+  "compatibility": {
+    "totalGlyphPlacements": 380,
+    "guardedLocationGlyphPlacements": 318,
+    "mainGlyphPlacements": 62,
+    "ambiguousPositions": 12,
+    "completeStringRequiredForLocation": true,
+    "unrecognizedTextOriginalFallback": true
+  },
+  "sourceGeneration": {
+    "atlas": [
+      1024,
+      1024
+    ],
+    "atlasBytes": 4194304,
+    "atlasSha256": "e80a19bc2ef419d3e4138f63bf3e750c7f459c5cf621cc6d13c12aadcf0066c0",
+    "rleBytes": 433464,
+    "boundedLiteralParts": 7,
+    "maximumPartBytes": 201364,
+    "unchangedPublicFileLimitBytes": 1048576,
+    "noNewTextureAllocation": true,
+    "allMainAllocationsPreserved": true,
+    "explicitPreparedDependenciesVerified": true
+  },
+  "checks": {
+    "optimizedGeometryTriangles": 1520,
+    "sanitizedGeometryTriangles": 1520,
+    "decoderDigestCanaries": true,
+    "immutableSourceVertices": true,
+    "wholeLabelMissingWrongFallback": true,
+    "assetPolicyCases": 4,
+    "preparationCases": 5,
+    "fontInspectionCases": 5,
+    "workflowCoverageCases": 3,
+    "publicationPolicyCases": 7,
+    "allArtRegenerationPassed": true
+  },
+  "equivalentPrivateGraphicsProof": {
+    "variants": [
+      "normal",
+      "sanitized",
+      "fallback"
+    ],
+    "priorImagesExactPerVariant": 103,
+    "pairedObservedTriangleContextReplays": 636,
+    "geometryAndRendererExactToTestedCandidate": true,
+    "encodedAtlasExactToTestedCandidate": true
+  },
+  "actualMaintainedGame": {
+    "resolutions": [
+      [
+        640,
+        480
+      ],
+      [
+        2186,
+        1640
+      ]
+    ],
+    "trackNames": [
+      "North Country",
+      "Pacific Spirit",
+      "Mediterraneo",
+      "Mystic Peaks",
+      "Proving Grounds",
+      "Outback",
+      "Last Resort"
+    ],
+    "lapCounts": [
+      2,
+      4,
+      8
+    ],
+    "independentShapeRecognitions": 24,
+    "elapsedSeconds": 125.639,
+    "doneEscapeController": true,
+    "cleanShutdown": true,
+    "copiedSettingsRestored": true,
+    "originalEngineObjectsRetained": true
+  },
+  "initialHarnessRefusal": "Default display had unexpected dimensions; harness refused before starting game and restored copied settings. The successful run used its isolated correctly sized virtual display.",
+  "limitations": [
+    "Not all original unlocks/modes",
+    "Other frontend forms and remaining artwork incomplete",
+    "Not physical iPad visual/performance/energy acceptance",
+    "No new IPA, cloud build or push",
+    "Main performance source unchanged"
+  ]
+}
