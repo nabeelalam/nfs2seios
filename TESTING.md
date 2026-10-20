@@ -738,3 +738,21 @@ shape recognition checks 24 actual value screenshots. This is not coverage of
 all unlocks/modes or physical iPad performance/energy. Three graphics variants
 also preserve 103 earlier reference images each and replay 636 triangle/context
 pairs; the pixel captures remain private. Physical review remains open.
+
+The Setup checkpoint expands `frontend_font_tests` to 2,904 triangles and 28
+ambiguous placements. Its generated 1024x2048 dimensions and 8 MiB decoder
+capacity must agree; optimized and ASan/UBSan runs verify the exact taller atlas,
+canaries, output/UV placement and original fallback. Its accepted top half is
+unchanged. Eleven explicit include parts remain individually below 1 MiB.
+`frontend_asset_review_test.py` also checks the exact Setup word schema and
+rejects independent aliases for the three shared Location words.
+
+Setup's private runtime check recognizes 25 values per resolution across all
+six observed option cycles, with Done/Escape and copied-settings restoration.
+The native run switches density after observing the main menu and verifies
+every recognized screenshot is 2186x1640. A startup density request alone can
+be overridden by original engine window initialization and is insufficient.
+Three graphics variants preserve 109 prior reference images each, replay 692
+Setup triangle/full-context pairs and exercise source/visibility/context/cache,
+wrong/missing-label fallback and no-per-draw-upload guards. Captures stay private;
+legacy connection behavior and physical iPad performance/energy remain unproven.

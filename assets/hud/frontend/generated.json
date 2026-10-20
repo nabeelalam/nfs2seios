@@ -26,16 +26,35 @@
     "assets/hud/frontend/location/outback.svg": "49f798119d1ff803d9b1701c2c794a126a7d8fbbb2cc04ddb35a0f871149337b",
     "assets/hud/frontend/location/last-resort.svg": "68e8034e99ca69da1d379f952ca858ffff8e06eb9dc5d681dd6a9b6f96061823",
     "assets/hud/frontend/location/lap-4.svg": "115a7d26fe0b9e043b316abdfda54219970077b9cc184b1b1c0a8ef01f087d24",
-    "assets/hud/frontend/location/lap-8.svg": "443a10b29969bedc10e859aa549427207823c0c4dce4f0662aa4ac8e2b1f6965"
+    "assets/hud/frontend/location/lap-8.svg": "443a10b29969bedc10e859aa549427207823c0c4dce4f0662aa4ac8e2b1f6965",
+    "assets/hud/frontend/setup/game-type.svg": "7a73279fda8228d9f2b0b4f902efcf486d1c911aaefd85fe2e660c910c690dc9",
+    "assets/hud/frontend/setup/race-type.svg": "641b8cbde8a2d0a73d7c8e8828172cf7abee2979f8f0d11545c757fad7a2f224",
+    "assets/hud/frontend/setup/style.svg": "811bdf762dcec247cc8193e28e6ac5a60787b2b2ba8555c094aa322695511a5f",
+    "assets/hud/frontend/setup/catch-up.svg": "3be51f3483b7e3907f55d6d7bf341b2f1eee3d3c706a9f2659b4a0dc232624c4",
+    "assets/hud/frontend/setup/backwards.svg": "0e0b29b447e03fdae1394a1708b221a3bd73a46385ccde73deaa5971228a8f0b",
+    "assets/hud/frontend/setup/mirrored.svg": "0604773c6c3a6ac216c683c8986201ec1868d344feac439879260dae5813c32e",
+    "assets/hud/frontend/setup/one-player.svg": "47891efa130872ed0a7e264615de4d7d14160337b8da74f4f5d44bd373832977",
+    "assets/hud/frontend/setup/split-screen.svg": "ebd1f36d1f678b5b7ffede5adb6ff81a61857f3f52610d1cbda219f63f8a6d2d",
+    "assets/hud/frontend/setup/modem.svg": "595bc5d3e49a4d5aed2525c4c985f1019293389ec4d3a0c7c948ab2514fe0b40",
+    "assets/hud/frontend/setup/serial-link.svg": "1659292d6989d1f60ee6671d63a5ec370bc171a71bf2776f4b12576799c1d937",
+    "assets/hud/frontend/setup/network.svg": "1ce476f9954d625ff7624bf1c9208a4c6e04b06aafeec44ef60bde9283906829",
+    "assets/hud/frontend/setup/single-race.svg": "88c857b9634c063e737ef8902726271865a73ec56a658b1f13e19b972c964bb2",
+    "assets/hud/frontend/setup/tournament.svg": "2fb0de9764007d066908299cf81e85d7de18b60c7f49af534958d961c4a82a68",
+    "assets/hud/frontend/setup/knockout.svg": "9f47c04077ce69b7b17bd6d4dcdd98718f02f7b95358e96363f8734fe4e247bd",
+    "assets/hud/frontend/setup/wild.svg": "2b86d9eeee42faddb3669a71b05fed9be6398407db315e7e66833ebfc9765898",
+    "assets/hud/frontend/setup/arcade.svg": "78f87b11aaa704fabf5b9cadd4cb15cf801a7cfbed717e921483731cc685838d",
+    "assets/hud/frontend/setup/simulation.svg": "24fcc3f18a8d70cff6bf82affc0a07f5ddb9947c08db5556617d125a0f39452b",
+    "assets/hud/frontend/setup/off.svg": "f668250e483b967bb6c36eeddd79a807d8a88b556f273f5a641a53bd57f8e2f9",
+    "assets/hud/frontend/setup/on.svg": "73d40fc15d4864e4a352975800c5ded70d51dc8d3516f9c1964026a24aa20dc2"
   },
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "e80a19bc2ef419d3e4138f63bf3e750c7f459c5cf621cc6d13c12aadcf0066c0",
+  "rasterSha256": "9158b9d5b47a576bde6b447feec17bf9ace481b75901fe617e2480085ed56301",
   "raster": [
     1024,
-    1024
+    2048
   ],
-  "rleBytes": 433464,
-  "glyphPartitions": 380,
+  "rleBytes": 719094,
+  "glyphPartitions": 726,
   "inkFit": [
     {
       "text": "game setup",
@@ -387,15 +406,399 @@
       "inkFitsOriginalHorizontalTextBounds": true
     }
   ],
+  "setupCatalogSha256": "433140e18222907ea8a1693e3c4c6f7a19b5f0fb07690e0956ed5cdf7c5f9b7d",
+  "setupPlacements": [
+    {
+      "file": "game-type.svg",
+      "atlas": [
+        0,
+        1024,
+        264,
+        91
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        264,
+        91
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "race-type.svg",
+      "atlas": [
+        268,
+        1024,
+        236,
+        91
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        236,
+        91
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "style.svg",
+      "atlas": [
+        508,
+        1024,
+        128,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        128,
+        96
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "catch-up.svg",
+      "atlas": [
+        640,
+        1024,
+        216,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        216,
+        96
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "backwards.svg",
+      "atlas": [
+        0,
+        1119,
+        268,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        268,
+        76
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "mirrored.svg",
+      "atlas": [
+        272,
+        1119,
+        220,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        220,
+        76
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "colon.svg",
+      "atlas": [
+        520,
+        412,
+        24,
+        54
+      ],
+      "sourceCrop": [
+        0,
+        28,
+        24,
+        54
+      ],
+      "reusedImage": true,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "one-player.svg",
+      "atlas": [
+        496,
+        1124,
+        264,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        264,
+        96
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "split-screen.svg",
+      "atlas": [
+        0,
+        1199,
+        288,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        288,
+        96
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "modem.svg",
+      "atlas": [
+        764,
+        1124,
+        192,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        192,
+        76
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "serial-link.svg",
+      "atlas": [
+        764,
+        1204,
+        240,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        240,
+        77
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "network.svg",
+      "atlas": [
+        292,
+        1224,
+        212,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        212,
+        76
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "single-race.svg",
+      "atlas": [
+        508,
+        1285,
+        272,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        272,
+        96
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "tournament.svg",
+      "atlas": [
+        0,
+        1304,
+        296,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        296,
+        71
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "knockout.svg",
+      "atlas": [
+        784,
+        1285,
+        236,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        236,
+        76
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "wild.svg",
+      "atlas": [
+        300,
+        1304,
+        108,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        108,
+        77
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "arcade.svg",
+      "atlas": [
+        784,
+        1365,
+        172,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        172,
+        76
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "simulation.svg",
+      "atlas": [
+        0,
+        1379,
+        264,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        264,
+        77
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "off.svg",
+      "atlas": [
+        412,
+        1304,
+        80,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        80,
+        76
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "on.svg",
+      "atlas": [
+        412,
+        1384,
+        72,
+        55
+      ],
+      "sourceCrop": [
+        0,
+        27,
+        72,
+        55
+      ],
+      "reusedImage": false,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "done.svg",
+      "atlas": [
+        756,
+        512,
+        128,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        128,
+        76
+      ],
+      "reusedImage": true,
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "cancel.svg",
+      "atlas": [
+        756,
+        592,
+        184,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        184,
+        76
+      ],
+      "reusedImage": true,
+      "inkFitsOriginalHorizontalTextBounds": true
+    }
+  ],
+  "acceptedTopRasterSha256": "e80a19bc2ef419d3e4138f63bf3e750c7f459c5cf621cc6d13c12aadcf0066c0",
+  "rasterBytes": 8388608,
+  "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
-    "FrontendFontPixels.inc": "a2110ec99cfe8b8005d50e553c34bd5291316db6eba686a63c6a1944c42d54b8",
-    "FrontendWordLayout.inc": "63b4d56469f76573b2482596a1f38a36eca4599a7c048097108dcc9bf08fcca0",
+    "FrontendFontPixels.inc": "46548a0bc077674f48ba2d50e86aee0224451bb94db575789daade581b43327f",
+    "FrontendWordLayout.inc": "12bf0abb0b900052d3e944565d2331ee296b6c1b0bd97134feed658cdc47423e",
     "FrontendFontPixelsPart0.inc": "4cef23742b53be2795a03f2680891817845170e38ceba1d172c2a4cd092ff22a",
     "FrontendFontPixelsPart1.inc": "5eb77ebe4d6e8f9bcdac70ad5b3e9a1169b0aeac2d71a753aa843149557ed5dd",
     "FrontendFontPixelsPart2.inc": "0c342fdeec928f3bbce43fdd06dbf75ce69cdfffb804a2d5f2908b9609436195",
     "FrontendFontPixelsPart3.inc": "ba63a60d9c050e781eb3142bd0cf38aee5431adcad7c0887fb6332bf821a8575",
     "FrontendFontPixelsPart4.inc": "45d30bd1b60aa3be7d42df35e0b319360b037d53d593cfc578185e3f27b3b07f",
     "FrontendFontPixelsPart5.inc": "6f425bef6a9d77b5b22b14bbb6cf7644c75e442e0d7429f9e201c7ff3bccc8a5",
-    "FrontendFontPixelsPart6.inc": "b375875f172b229cee1b0ddc54a0feaf71ddef608cd336e60e2206ddd4c54440"
+    "FrontendFontPixelsPart6.inc": "451a33cafa18f2548bbd11e5f02c84a896bc5b7676364b3a0c18aa0786dade69",
+    "FrontendFontPixelsPart7.inc": "c38a5706e72fb4b9c1df17bff30c620fdd1d0e4206b693a492d446c9c659d78e",
+    "FrontendFontPixelsPart8.inc": "060682b3ed2ecf7d87b4a85d95faecc98e7836a4d44cf22ae9500fe4d5b740f6",
+    "FrontendFontPixelsPart9.inc": "3c9d65a166e62ede9bb6326b295596dd7d235b6e610cb3e144cd34c672ef9e1c",
+    "FrontendFontPixelsPart10.inc": "82a5fae8e287c63e622382bfbcd31bb056bdee70b0b93b6dcd7f62ed1efe659c"
   }
 }

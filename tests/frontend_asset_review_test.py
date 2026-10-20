@@ -5,12 +5,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
-from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, reviewed_remaster_svg
+from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, SETUP_WORDS, SETUP_SHARED, reviewed_remaster_svg
 
 
 class FrontendAssetReview(unittest.TestCase):
     def test_reviewed_words(self):
-        for name in list(FRONTEND_WORDS)+['location/'+n for n in LOCATION_WORDS]:
+        for name in list(FRONTEND_WORDS)+['location/'+n for n in LOCATION_WORDS]+['setup/'+n for n in SETUP_WORDS if n not in SETUP_SHARED]:
             relative='assets/hud/frontend/'+name+'.svg'
             with self.subTest(name=name):
                 self.assertTrue(reviewed_remaster_svg(relative,(ROOT/relative).read_bytes()))
@@ -43,6 +43,23 @@ class FrontendAssetReview(unittest.TestCase):
             manifest={'reviewedSvgSha256':{relative:hashlib.sha256(mutated).hexdigest()}}
             with patch('hud_asset_review.json.loads',return_value=manifest):
                 self.assertFalse(reviewed_remaster_svg(relative,mutated))
+
+    def test_setup_schema_does_not_allow_other_text_even_with_pin(self):
+        relative='assets/hud/frontend/setup/game-type.svg'
+        data=(ROOT/relative).read_bytes()
+        for mutated in (data.replace(b'game type',b'private label'),
+                        data.replace(b'height="51"',b'height="52"'),
+                        data.replace(b'</svg>',b'<image href="private.png"/></svg>')):
+            manifest={'reviewedSvgSha256':{relative:hashlib.sha256(mutated).hexdigest()}}
+            with patch('hud_asset_review.json.loads',return_value=manifest):
+                self.assertFalse(reviewed_remaster_svg(relative,mutated))
+
+    def test_setup_shared_words_have_no_independent_file_alias(self):
+        for name in SETUP_SHARED:
+            existing='assets/hud/frontend/location/'+name+'.svg'
+            data=(ROOT/existing).read_bytes()
+            self.assertTrue(reviewed_remaster_svg(existing,data))
+            self.assertFalse(reviewed_remaster_svg('assets/hud/frontend/setup/'+name+'.svg',data))
 
 
 if __name__=='__main__':unittest.main()

@@ -41,12 +41,38 @@ LOCATION_WORDS = {
     'lap-8': ('8', 10),
 }
 
+SETUP_WORDS = {
+    'game-type': ('game type', 66),
+    'race-type': ('race type', 59),
+    'style': ('style', 32),
+    'catch-up': ('catch up', 54),
+    'backwards': ('backwards', 67),
+    'mirrored': ('mirrored', 55),
+    'colon': (':', 6),
+    'one-player': ('one player', 66),
+    'split-screen': ('split screen', 72),
+    'modem': ('modem', 48),
+    'serial-link': ('serial link', 60),
+    'network': ('network', 53),
+    'single-race': ('single race', 68),
+    'tournament': ('tournament', 74),
+    'knockout': ('knockout', 59),
+    'wild': ('wild', 27),
+    'arcade': ('arcade', 43),
+    'simulation': ('simulation', 66),
+    'off': ('off', 20),
+    'on': ('on', 18),
+    'done': ('DONE', 32),
+    'cancel': ('CANCEL', 46),
+}
+SETUP_SHARED = {'colon', 'done', 'cancel'}
+
 
 def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
-    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit|location/(?:track|colon|north-country|laps|lap-two|track-info|track-records|personal-statistics|done|cancel|pacific-spirit|mediterraneo|mystic-peaks|proving-grounds|outback|last-resort|lap-4|lap-8)))\.svg',name):return False
+    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit|location/(?:track|colon|north-country|laps|lap-two|track-info|track-records|personal-statistics|done|cancel|pacific-spirit|mediterraneo|mystic-peaks|proving-grounds|outback|last-resort|lap-4|lap-8)|setup/(?:game-type|race-type|style|catch-up|backwards|mirrored|one-player|split-screen|modem|serial-link|network|single-race|tournament|knockout|wild|arcade|simulation|off|on)))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
@@ -57,6 +83,7 @@ def reviewed_remaster_svg(name,data):
         if '/gauge/' in name:
             x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
             origin=(x,y);size=(w,h)
+        elif '/frontend/setup/' in name:size=(SETUP_WORDS[Path(name).stem][1],51)
         elif '/frontend/location/' in name:size=(LOCATION_WORDS[Path(name).stem][1],51)
         elif '/frontend/' in name:size=(FRONTEND_WORDS[Path(name).stem][1],51)
         elif '/start/' in name:size=(64,64)
@@ -87,7 +114,9 @@ def reviewed_remaster_svg(name,data):
             if (node.tail or '').strip():return False
             if (node.text or '').strip():
                 if tag!='text':return False
-                if '/frontend/location/' in name:
+                if '/frontend/setup/' in name:
+                    if node.text!=SETUP_WORDS[Path(name).stem][0]:return False
+                elif '/frontend/location/' in name:
                     if node.text!=LOCATION_WORDS[Path(name).stem][0]:return False
                 elif '/frontend/' in name:
                     if node.text!=FRONTEND_WORDS[Path(name).stem][0]:return False

@@ -16,14 +16,16 @@ static int nfs_front_font_texture=1, nfs_hd_cell_layout_available=1;
 #define CHECK(v) do { if (!(v)) { std::fprintf(stderr,"Frontend check failed: %d\n",__LINE__); std::abort(); } } while (0)
 
 int main() {
-    const size_t size=4194304;
+    const size_t size=NFS_FRONT_FONT_RGBA_BYTES;
+    CHECK(NFS_FRONT_FONT_WIDTH==1024 && NFS_FRONT_FONT_HEIGHT==2048 && size==8388608);
+    CHECK(NFS_FRONT_FONT_PIXELS==NFS_FRONT_FONT_WIDTH*NFS_FRONT_FONT_HEIGHT && size==NFS_FRONT_FONT_PIXELS*4);
     std::vector<unsigned char> memory(size+32,0x5b);
     auto pixels=memory.data()+16;
     CHECK(!nfs_front_font_expand(nullptr,size));
     CHECK(!nfs_front_font_expand(pixels,size-1));
     for (auto c:memory) CHECK(c==0x5b);
     CHECK(nfs_front_font_expand(pixels,size));
-    const unsigned char expected[]={0xe8,0x0a,0x19,0xbc,0x2e,0xf4,0x19,0xd3,0xe4,0x13,0x8f,0x63,0xbf,0x3e,0x75,0x0c,0x7f,0x45,0x9c,0x5c,0xf6,0x21,0xcc,0x6d,0x13,0xc1,0x2a,0xad,0xcf,0x00,0x66,0xc0};
+    const unsigned char expected[]={0x91,0x58,0xb9,0xd5,0xb4,0x7a,0x57,0x6b,0xde,0x6b,0x44,0x7f,0xee,0xc1,0x7b,0xf9,0xac,0xe4,0x81,0xb7,0x59,0x01,0xfe,0x61,0x7e,0x24,0x80,0x08,0x5e,0xd5,0x63,0x01};
     unsigned char digest[32];
     CHECK(nfs_texture_sha256(pixels,size,digest) && !std::memcmp(digest,expected,32));
     for (unsigned i=0;i<16;++i) CHECK(memory[i]==0x5b && memory[size+16+i]==0x5b);
@@ -58,7 +60,7 @@ int main() {
                 CHECK(std::fabs(out[i].x-(786432+glyph.outputX+edge*glyph.width))<.063f);
                 CHECK(std::fabs(out[i].y-(786432+glyph.y+glyph.inkTop+(bottom?glyph.inkHeight:0)))<.063f);
                 CHECK(std::fabs(out[i].tmuvtx[0].sow-(glyph.atlasX+edge*glyph.width))<.001f);
-                CHECK(std::fabs(out[i].tmuvtx[0].tow-(glyph.atlasY+(bottom?glyph.inkHeight:0)))<.001f);
+                CHECK(std::fabs(out[i].tmuvtx[0].tow-(glyph.atlasY+(bottom?glyph.inkHeight*nfs_front_font_v_scale:0)))<.001f);
                 out[i].x=v[i].x; out[i].y=v[i].y;
                 out[i].tmuvtx[0].sow=v[i].tmuvtx[0].sow;
                 out[i].tmuvtx[0].tow=v[i].tmuvtx[0].tow;
@@ -88,6 +90,6 @@ int main() {
         for (const auto &other:nfs_front_word_glyphs)
             if(glyph.word && other.word && glyph.word!=other.word && glyph.cell==other.cell && glyph.x==other.x && glyph.y==other.y && glyph.w==other.w && glyph.h==other.h){++ambiguous;break;}
     }
-    CHECK(cases==1520 && ambiguous==12 && nfs_front_text_context()==0);
+    CHECK(cases==2904 && ambiguous==28 && nfs_front_text_context()==0);
     std::printf("PASS authored atlas digest/canaries, %u complete glyph triangles, %u ambiguous positions, immutable attributes and whole-label fallback guards\n",cases,ambiguous);
 }

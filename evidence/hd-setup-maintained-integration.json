@@ -1,0 +1,93 @@
+{
+  "scope": "Maintained authored Setup form remaster; isolated UI branch, not complete frontend or physical acceptance",
+  "parentUiCommit": "355c48b8e37e2fa1f9ff758968f00b241d688789",
+  "newReviewedSvgCount": 19,
+  "explicitSharedLocationWords": [
+    "colon",
+    "done",
+    "cancel"
+  ],
+  "totalReviewedSvgCount": 124,
+  "authoredSetupWords": 22,
+  "setupGlyphPlacements": 346,
+  "totalGlyphPlacements": 726,
+  "generation": {
+    "originalGamePixelsIncluded": false,
+    "atlas": [
+      1024,
+      2048
+    ],
+    "rasterBytes": 8388608,
+    "additionalCachedTextureBytes": 4194304,
+    "rasterSha256": "9158b9d5b47a576bde6b447feec17bf9ace481b75901fe617e2480085ed56301",
+    "acceptedTopRasterSha256": "e80a19bc2ef419d3e4138f63bf3e750c7f459c5cf621cc6d13c12aadcf0066c0",
+    "rleBytes": 719094,
+    "boundedLiteralParts": 11,
+    "maximumPartBytes": 201364,
+    "unchangedPublicFileLimitBytes": 1048576,
+    "explicitPreparedIncludesPassed": true,
+    "sharedAliasesVerified": true
+  },
+  "checks": {
+    "optimizedTriangles": 2904,
+    "sanitizedTriangles": 2904,
+    "ambiguousPositions": 28,
+    "decoderDigestCanariesAndDimensionAgreement": true,
+    "immutableInputsAndWholeLabelFallback": true,
+    "allArtRegeneration": true,
+    "assetPolicyCases": 6,
+    "fontInspectionCases": 5,
+    "preparationCases": 5,
+    "workflowCoverageCases": 3,
+    "publicationPolicyCases": 7
+  },
+  "equivalentCandidateGraphics": {
+    "variants": [
+      "normal",
+      "sanitized",
+      "fallback"
+    ],
+    "priorImagesExactPerVariant": 109,
+    "setupTriangleCompleteContextPairs": 692,
+    "sourceVisibilityOwnedContextCacheAndNoPerDrawUploads": true,
+    "encodedAtlasExact": true,
+    "geometryAndRuntimeEquivalent": true,
+    "shaderAndRendererHooksExact": true
+  },
+  "maintainedNativeRuntime": [
+    {
+      "resolution": [
+        640,
+        480
+      ],
+      "recognizedValues": 25,
+      "minimumShapeScore": 0.8095,
+      "elapsedSeconds": 44.027,
+      "doneEscape": true,
+      "cleanShutdown": true,
+      "copiedSettingsRestored": true
+    },
+    {
+      "resolution": [
+        2186,
+        1640
+      ],
+      "recognizedValues": 25,
+      "minimumShapeScore": 0.7843,
+      "elapsedSeconds": 166.511,
+      "doneEscape": true,
+      "cleanShutdown": true,
+      "copiedSettingsRestored": true
+    }
+  ],
+  "originalEngineObjectsRetained": true,
+  "mainPerformanceSourceUnchanged": true,
+  "noNewTextureObjectOrPerDrawUpload": true,
+  "limitations": [
+    "Only observed Setup choices; no proof of modem/serial/network connection behavior",
+    "Taller cached menu texture adds4MiB; physical battery/performance impact unmeasured",
+    "Other forms/map/art and complete UI review remain open",
+    "No new IPA, cloud build or push",
+    "No physical iPad visual/performance/energy acceptance"
+  ]
+}

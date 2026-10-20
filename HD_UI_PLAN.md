@@ -632,3 +632,29 @@ Three GPU configurations preserve 103 prior images each and exercise 636 paired
 original triangles/full-label contexts, plus missing/wrong-context fallback.
 Other forms, remaining artwork, complete layout review and physical iPad
 performance/energy acceptance remain open. Main performance work stays separate.
+
+Setup is now integrated with 22 authored labels/choices and 346 guarded glyph
+placements across its six option rows. Nineteen new vectors reuse the same dense
+Oxanium/Bebas roles; colon, Done and Cancel explicitly share Location sources.
+Observed game/race/style and toggle cycles include the original automatic
+catch-up change when selecting split screen. Rendering a legacy modem/serial/
+network label does not establish functioning connection modes.
+
+Measured artwork did not fit the old square atlas in the bounded packing trials.
+To preserve font size and proportions, the single cached menu atlas is now
+1024x2048 RGBA (8 MiB, 4 MiB more than the earlier Location checkpoint). Its
+accepted main/Location top half remains byte-exact. Generated dimensions drive
+decoder bounds, allocation, GL capability checks and upload dimensions; the
+vertical UV factor changes to one half. Eleven bounded literal parts retain the
+unchanged 1 MiB publication gate. There are no new per-draw uploads or texture
+objects, and unsupported source/capability/shader paths retain the original font.
+This is not evidence of unchanged physical iPad battery use or performance.
+
+The private tested candidate passes 2,904 sanitized triangle cases with 28
+ambiguous placements resolved by complete draw-string identity. Actual original
+game runs cover every observed Setup choice, Done and Escape at both resolutions
+with clean shutdown and copied-settings restoration. Native coverage requires
+each recognition screenshot to be 2186x1640, not just a density request. Three
+GPU variants preserve 109 prior images each and replay 692 Setup/context pairs.
+Maintained generation reproduces that candidate's artwork, geometry and runtime.
+Remaining forms/artwork and physical iPad acceptance remain open.

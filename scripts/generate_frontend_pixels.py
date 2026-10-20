@@ -1,8 +1,8 @@
-"""Generate authored condensed menu/Location words without original game data."""
+"""Generate authored menu/Location/Setup words without original game data."""
 import hashlib
 import json
 import math
-from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS
+from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, SETUP_WORDS, SETUP_SHARED
 from hud_font_environment import project_fonts
 from generate_remaster_pixels import rle, source
 
@@ -76,12 +76,84 @@ def location_words(directory, pixels, main_words, hashes, rows):
                 draw_text = glyph['drawText']
                 if draw_text not in ((text[:-3],'...') if text.endswith('...') else (text,)):
                     raise ValueError('Unrelated complete draw string')
-                values += [ax/4,ay/4,logical_width,left+placement['x']-base['x'],top/4,height/4]
+                values += [ax/4,ay/8,logical_width,left+placement['x']-base['x'],top/4,height/4]
                 rows.append('{'+','.join(format(v,'.12g') for v in values)+',UINT64_C(0x'+format(text_identity(draw_text),'016x')+')}')
             if edge != 1 or placement['glyphs'][0]['left'] != 0:
                 raise ValueError('Incomplete Location word partition')
         placements.append(dict(file=word['file'],atlas=[ax,ay,width,height],sourceCrop=[0,top,width,height],
                                outputX=left,inkFitsOriginalHorizontalTextBounds=True))
+    return placements, hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def setup_words(directory, pixels, location_placements, hashes, rows):
+    """Keep accepted top-half pixels and reuse three already-reviewed words."""
+    path = directory/'setup/catalog.json'
+    words = json.loads(path.read_text())['words']
+    if [w['file'] for w in words] != [n+'.svg' for n in SETUP_WORDS]:
+        raise ValueError('Unexpected reviewed Setup word set')
+    shared = {p['file']:p for p in location_placements}
+    skyline, placements = [1024]*1024, []
+    for word in words:
+        name = word['file'][:-4]
+        text, logical_width = SETUP_WORDS[name]
+        if word['text'] != text or word['width'] != logical_width or word['shared'] != (name in SETUP_SHARED):
+            raise ValueError('Unexpected Setup word dimensions or alias')
+        directory_name = 'location' if word['shared'] else 'setup'
+        width = logical_width*4
+        rgba = source(directory/directory_name/word['file'], width, 204, hashes)
+        ink = [(x,y) for y in range(204) for x in range(width) if rgba[(y*width+x)*4+3]]
+        if not ink:
+            raise ValueError('Empty Setup artwork')
+        top, bottom = max(0,min(y for x,y in ink)-2), min(204,max(y for x,y in ink)+3)
+        height = bottom-top
+        if bottom > 104:
+            raise ValueError('Setup ink crosses the next row')
+        if word['shared']:
+            entry = shared[word['file']]
+            ax, ay, original_width, original_height = entry['atlas']
+            if original_width != width or original_height != height or entry['sourceCrop'] != [0,top,width,height]:
+                raise ValueError('Shared Setup artwork differs from its reviewed Location crop')
+        else:
+            ay, ax = min((max(skyline[x:x+width+4]),x) for x in range(0,1024-width-3,4))
+            if ay+height+4 > 2048:
+                raise ValueError('Setup artwork exceeds reviewed taller atlas')
+            for x in range(ax,ax+width+4):
+                skyline[x] = ay+height+4
+            for y in range(height):
+                at = ((ay+y)*1024+ax)*4
+                pixels[at:at+width*4] = rgba[(top+y)*width*4:(top+y+1)*width*4]
+        if word['kind'] not in ('label','colon','value','button'):
+            raise ValueError('Unexpected Setup alignment role')
+        for placement in word['placements']:
+            target = placement['right']-logical_width
+            if word['kind'] == 'value':
+                target = placement['x']
+            elif word['kind'] == 'button':
+                target = placement['x']+(placement['width']-logical_width)/2
+            candidates = []
+            for step in range(-32,33):
+                left = round(target*4)/4+step/4
+                if all(placement['x'] < left+(x+.5)/4 < placement['right'] for x,y in ink):
+                    candidates.append((abs(left-target),left))
+            if not candidates:
+                raise ValueError('Setup ink exceeds original horizontal text extents')
+            left, edge = min(candidates)[1], 0
+            for glyph in placement['glyphs']:
+                values = [glyph[k] for k in ('cell','x','y','w','h','left','right')]
+                if any(not isinstance(v,(int,float)) or not math.isfinite(v) for v in values):
+                    raise ValueError('Nonfinite Setup geometry')
+                if not (1 <= glyph['cell'] <= 120 and 0 <= glyph['x'] < glyph['x']+glyph['w'] <= 640
+                        and 0 <= glyph['y'] < glyph['y']+glyph['h'] <= 480
+                        and glyph['y'] == placement['y'] and 0 < glyph['w'] <= 32 and glyph['h'] == 51
+                        and glyph['left'] == edge < glyph['right'] <= 1 and glyph['drawText'] == text):
+                    raise ValueError('Invalid Setup word/context partition')
+                edge = glyph['right']
+                values += [ax/4,ay/8,logical_width,left,top/4,height/4]
+                rows.append('{'+','.join(format(v,'.12g') for v in values)+',UINT64_C(0x'+format(text_identity(text),'016x')+')}')
+            if edge != 1 or placement['glyphs'][0]['left'] != 0:
+                raise ValueError('Incomplete Setup word partition')
+        placements.append(dict(file=word['file'],atlas=[ax,ay,width,height],sourceCrop=[0,top,width,height],
+                               reusedImage=word['shared'],inkFitsOriginalHorizontalTextBounds=True))
     return placements, hashlib.sha256(path.read_bytes()).hexdigest()
 
 
@@ -94,7 +166,7 @@ def chunked_pixels(encoded):
         data = encoded[start:start+65520]
         outputs[name] = '// SPDX-License-Identifier: MIT\n'+',\n'.join(','.join(str(v) for v in data[j:j+24]) for j in range(0,len(data),24))+',\n'
         names.append(name)
-    if len(names) != 7:
+    if len(names) != 11:
         raise ValueError('Update the explicit prepared-renderer part allowlist')
     aggregate = 'static const unsigned char nfs_front_font_rle[]={\n'+''.join('#include "'+n+'"\n' for n in names)+'};'
     return aggregate, outputs
@@ -106,7 +178,7 @@ def generate_frontend(check=False):
     words = catalog['words']
     if len(words) != 8 or [w['file'] for w in words] != [n+'.svg' for n in FRONTEND_WORDS]:
         raise ValueError('Unexpected reviewed main-menu word set')
-    pixels = bytearray(1024*1024*4)
+    pixels = bytearray(1024*2048*4)
     occupied = set()
     hashes, ink, rows = {}, [], []
     with project_fonts():
@@ -150,27 +222,35 @@ def generate_frontend(check=False):
                 if not (1 <= glyph['cell'] <= 120 and 0 <= glyph['x'] < 200 and glyph['y'] == y0 and 0 < glyph['w'] <= 32 and 0 < glyph['h'] <= 51 and glyph['left'] == edge < glyph['right'] <= 1):
                     raise ValueError('Invalid word compatibility partition')
                 edge = glyph['right']
-                rows.append('{'+','.join(format(v,'.12g') for v in values+[ax,ay,width,168-width,0,51])+',UINT64_C(0x0000000000000000)}')
+                rows.append('{'+','.join(format(v,'.12g') for v in values+[ax,ay/2,width,168-width,0,51])+',UINT64_C(0x0000000000000000)}')
     if len(rows) != 62:
         raise ValueError('Unexpected main-menu glyph coverage')
     with project_fonts():
         location_placements, location_catalog_hash = location_words(directory,pixels,words,hashes,rows)
     if len(rows) != 380:
         raise ValueError('Unexpected reviewed Location coverage')
+    top_hash = hashlib.sha256(pixels[:4194304]).hexdigest()
+    with project_fonts():
+        setup_placements, setup_catalog_hash = setup_words(directory,pixels,location_placements,hashes,rows)
+    if len(rows) != 726:
+        raise ValueError('Unexpected reviewed Setup coverage')
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
     template = json.loads((ROOT/'scripts/hud_templates/FrontendFontPixels.json').read_text())['template']
     if template.count('@PIXEL_ARRAY@') != 1:
         raise ValueError('Invalid frontend decoder template')
     encoded = rle(pixels)
     aggregate, parts = chunked_pixels(encoded)
-    header = template.replace('@PIXEL_ARRAY@', aggregate)
+    dimensions = 'enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2048,NFS_FRONT_FONT_PIXELS=2097152,NFS_FRONT_FONT_RGBA_BYTES=8388608};\nstatic const float nfs_front_font_v_scale=.5f;\n'
+    header = dimensions+template.replace('@PIXEL_ARRAY@', aggregate)
     notice = '// SPDX-License-Identifier: MIT\n// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.\n'
     outputs = {'FrontendFontPixels.inc': notice+header, 'FrontendWordLayout.inc': notice+layout, **parts}
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
-                    rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,1024],
+                    rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2048],
                     rleBytes=len(encoded), glyphPartitions=len(rows), inkFit=ink,
                     locationCatalogSha256=location_catalog_hash, locationPlacements=location_placements,
+                    setupCatalogSha256=setup_catalog_hash, setupPlacements=setup_placements,
+                    acceptedTopRasterSha256=top_hash, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304,
                     headerHashes={n:hashlib.sha256(s.encode()).hexdigest() for n,s in outputs.items()})
     for name, content in outputs.items():
         if len(content.encode()) > 1048576:
