@@ -22,7 +22,7 @@ template<class Reader> uint64_t frontend_text_identity(uint32_t address, Reader 
             if (address > UINT32_MAX-i) return 0;
             const uint8_t c = read(address+i);
             if (!c) return i ? hash : 0;
-            if (c < 32 || c > 126) return 0;
+            if (c < 32 || (c > 126 && c != 224)) return 0;
             hash = (hash ^ c) * UINT64_C(1099511628211);
         }
     } catch (...) {

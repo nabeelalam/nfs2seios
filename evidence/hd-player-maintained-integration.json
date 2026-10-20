@@ -1,0 +1,164 @@
+{
+  "scope": "Maintained Player One/Two typography integration; local source and equivalent-prototype validation, not full UI or physical acceptance",
+  "parentUiCommit": "203a70ffec507fa569a273f349fbc7ddfc63d759",
+  "newReviewedSvgCount": 29,
+  "totalReviewedSvgCount": 153,
+  "authoredPlayerWords": 34,
+  "sharedWords": {
+    "location": [
+      "colon",
+      "done",
+      "cancel"
+    ],
+    "setup": [
+      "off",
+      "on"
+    ]
+  },
+  "generation": {
+    "originalGamePixelsIncluded": false,
+    "atlas": [
+      1024,
+      2048
+    ],
+    "rasterBytes": 8388608,
+    "additionalCachedTextureBytesForPlayer": 0,
+    "rasterSha256": "4a7df6c943fe5448ca3b664c470ec005a48ec1351c7cd7912896d7e5b4231ea4",
+    "rleBytes": 1228992,
+    "boundedLiteralParts": 19,
+    "maximumPartBytes": 201651,
+    "logicalWords": 82,
+    "uniqueImages": 74,
+    "oldAuthoredSourceRectanglesByteExact": 48,
+    "oldGlyphGeometryAndInkMetricsPreserved": 726,
+    "totalGlyphPlacements": 1267
+  },
+  "checks": {
+    "optimizedTriangles": 5068,
+    "sanitizedTriangles": 5068,
+    "ambiguousPositions": 138,
+    "assetPolicyCases": 9,
+    "allArtRegeneration": true,
+    "exactCompiledAtlasDigest": true,
+    "threadLocalBoundedTextIdentity": true,
+    "unsupportedEncodingFallback": true
+  },
+  "sourceEquivalence": {
+    "preparedRendererExactAfterNewlineNormalization": true,
+    "encodedPixelsExact": true,
+    "FrontendFontGeometry.inc": true,
+    "FrontendFontLayout.inc": true,
+    "FrontendFontRuntime.inc": true,
+    "RendererHdAtlas.inc": true,
+    "FrontendTextContext.h": true,
+    "FrontendWordLayout.inc": true
+  },
+  "actualMaintainedCRendererCompilationPassed": true,
+  "equivalentPrototypeRuntime": [
+    {
+      "player": 1,
+      "mode": "base",
+      "dimensions": [
+        640,
+        480
+      ],
+      "verifiedNamedCaptures": 74,
+      "carSteps": 12,
+      "transmissionAndGraphCyclesPassed": true,
+      "doneReopenAndEscapePassed": true,
+      "cleanShutdown": true,
+      "profileRestored": true,
+      "elapsedSeconds": 60.005,
+      "evidence": ".build\\wsl-player-remaster-p1-base-1\\result.json"
+    },
+    {
+      "player": 1,
+      "mode": "native",
+      "dimensions": [
+        2186,
+        1640
+      ],
+      "verifiedNamedCaptures": 64,
+      "carSteps": 12,
+      "transmissionAndGraphCyclesPassed": true,
+      "doneReopenAndEscapePassed": true,
+      "cleanShutdown": true,
+      "profileRestored": true,
+      "elapsedSeconds": 267.698,
+      "evidence": ".build\\wsl-player-remaster-p1-native-1\\result.json"
+    },
+    {
+      "player": 2,
+      "mode": "base",
+      "dimensions": [
+        640,
+        480
+      ],
+      "verifiedNamedCaptures": 73,
+      "carSteps": 12,
+      "transmissionAndGraphCyclesPassed": true,
+      "doneReopenAndEscapePassed": true,
+      "cleanShutdown": true,
+      "profileRestored": true,
+      "elapsedSeconds": 61.781,
+      "evidence": ".build\\wsl-player-remaster-p2-base-1\\result.json"
+    },
+    {
+      "player": 2,
+      "mode": "native",
+      "dimensions": [
+        2186,
+        1640
+      ],
+      "verifiedNamedCaptures": 66,
+      "carSteps": 12,
+      "transmissionAndGraphCyclesPassed": true,
+      "doneReopenAndEscapePassed": true,
+      "cleanShutdown": true,
+      "profileRestored": true,
+      "elapsedSeconds": 278.939,
+      "evidence": ".build\\wsl-player-remaster-p2-native-1\\result.json"
+    }
+  ],
+  "equivalentPrototypeGraphics": [
+    {
+      "variant": "normal",
+      "priorImages": 115,
+      "byteExact": 103,
+      "maximumColourDifference": 2,
+      "maximumChangedColourChannels": 363,
+      "allFramebufferAlphaExact": true,
+      "originalCapturedPlayerTriangleReplay": 1082,
+      "firstFrameUnknownSourceContextRestoreAndImmutableGuestChecksPassed": true
+    },
+    {
+      "variant": "sanitized",
+      "priorImages": 115,
+      "byteExact": 103,
+      "maximumColourDifference": 2,
+      "maximumChangedColourChannels": 363,
+      "allFramebufferAlphaExact": true,
+      "originalCapturedPlayerTriangleReplay": 1082,
+      "firstFrameUnknownSourceContextRestoreAndImmutableGuestChecksPassed": true
+    },
+    {
+      "variant": "fallback",
+      "priorImages": 115,
+      "byteExact": 115,
+      "maximumColourDifference": 0,
+      "maximumChangedColourChannels": 0,
+      "allFramebufferAlphaExact": true,
+      "originalCapturedPlayerTriangleReplay": 1082,
+      "firstFrameUnknownSourceContextRestoreAndImmutableGuestChecksPassed": true
+    }
+  ],
+  "graphicsRoundingCriterion": "Exact for every HUD/original/fallback reference; only relocated HD text permits <=2/255 RGB-channel difference across <=500channel values per14,340,160-byte image, exact framebuffer alpha; authored source rectangles and old text geometry unchanged",
+  "independentSourcePages": true,
+  "wholeAccentedWordDeferredUntilBothSourcesObserved": true,
+  "ownedQueuedTextContextPreserved": true,
+  "mainPerformanceSourceUnchanged": true,
+  "physicalAcceptance": false,
+  "completeUi": false,
+  "pushed": false,
+  "cloudBuildStarted": false
+}

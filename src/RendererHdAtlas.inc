@@ -48,7 +48,7 @@ static int nfs_hd_selected,nfs_hd_uniform_sent;
 static GLint nfs_hd_active_location;
 #include "SilverSlashRuntime.inc"
 #include "FrontendFontRuntime.inc"
-static void nfs_front_hit_refresh(void){int next=nfs_hd_builtin_enabled && nfs_hd_visible && nfs_hd_cell_layout_available && nfs_front_font_texture && nfs_front_source_matched;nfs_front_word_set_available(next!=0);}
+static void nfs_front_hit_refresh(void){int next=nfs_hd_builtin_enabled && nfs_hd_visible && nfs_hd_cell_layout_available && nfs_front_font_texture && nfs_front_source_matched[0];nfs_front_word_set_available(next!=0);}
 
 static void nfs_hd_program_created(GLuint program){
     GLint cell=glGetUniformLocation(program,"uHdCellLayout");nfs_hd_cell_layout_available=cell>=0;if(cell>=0)glUniform1f(cell,1);
@@ -57,7 +57,7 @@ static void nfs_hd_program_created(GLuint program){
     glUniform1f(nfs_hd_active_location,0);nfs_hd_uniform_sent=0;nfs_hd_selected=0;nfs_front_hit_refresh();
 }
 static void nfs_hd_sync_uniform(void){
-    GLuint auxiliary=nfs_hd_selected==41?nfs_front_font_texture:nfs_hd_aux_texture;
+    GLuint auxiliary=nfs_front_font_source_page(nfs_hd_selected)>=0?nfs_front_font_texture:nfs_hd_aux_texture;
     int active=nfs_hd_selected && nfs_hd_builtin_enabled && nfs_hd_visible && auxiliary;
     if(active && nfs_hd_bound_aux_texture!=auxiliary){glActiveTexture(GL_TEXTURE1);glBindTexture(GL_TEXTURE_2D,auxiliary);glActiveTexture(GL_TEXTURE0);nfs_hd_bound_aux_texture=auxiliary;}
     if(active!=nfs_hd_uniform_sent){glUniform1f(nfs_hd_active_location,(GLfloat)active);nfs_hd_uniform_sent=active;}
@@ -65,7 +65,7 @@ static void nfs_hd_sync_uniform(void){
 static void nfs_hd_context_retired(int bound){
     if(bound && nfs_hd_aux_texture)glDeleteTextures(1,&nfs_hd_aux_texture);
     if(bound && nfs_front_font_texture)glDeleteTextures(1,&nfs_front_font_texture);
-    nfs_front_font_texture=0;nfs_hd_bound_aux_texture=0;nfs_hd_aux_texture=0;nfs_hd_selected=0;nfs_hd_uniform_sent=-1;nfs_front_source_matched=0;nfs_front_source_owner=NULL;nfs_front_hit_refresh();
+    nfs_front_font_texture=0;nfs_hd_bound_aux_texture=0;nfs_hd_aux_texture=0;nfs_hd_selected=0;nfs_hd_uniform_sent=-1;for(unsigned p=0;p<2;++p){nfs_front_source_matched[p]=0;nfs_front_source_owner[p]=NULL;}nfs_front_extended_ready=0;nfs_front_hit_refresh();
 }
 
 #include "StartLightRuntime.inc"
@@ -76,7 +76,7 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         float q=vertices[i]->oow;if(!(q>0))return 0;
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
-    if(nfs_hd_selected==41)return 0;
+    if(nfs_front_font_source_page(nfs_hd_selected)>=0)return 0;
     if(nfs_hd_selected==1 && nfs_hd_cell_layout_available && nfs_start_light_triangle(a,b,c,uv))return 71;
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;if(nfs_hd_cell_layout_available && nfs_clock_punctuation_triangle(uv))return 69;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gauge=nfs_gauge_mask_triangle(uv);if(gauge)return gauge;}

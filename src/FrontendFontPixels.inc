@@ -14,6 +14,14 @@ static const unsigned char nfs_front_font_rle[]={
 #include "FrontendFontPixelsPart8.inc"
 #include "FrontendFontPixelsPart9.inc"
 #include "FrontendFontPixelsPart10.inc"
+#include "FrontendFontPixelsPart11.inc"
+#include "FrontendFontPixelsPart12.inc"
+#include "FrontendFontPixelsPart13.inc"
+#include "FrontendFontPixelsPart14.inc"
+#include "FrontendFontPixelsPart15.inc"
+#include "FrontendFontPixelsPart16.inc"
+#include "FrontendFontPixelsPart17.inc"
+#include "FrontendFontPixelsPart18.inc"
 };
 
 static int nfs_front_font_expand(unsigned char *rgba,size_t capacity){

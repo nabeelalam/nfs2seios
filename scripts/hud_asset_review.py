@@ -66,13 +66,18 @@ SETUP_WORDS = {
     'cancel': ('CANCEL', 46),
 }
 SETUP_SHARED = {'colon', 'done', 'cancel'}
+PLAYER_WORDS = {'car': ('car', 21), 'transmission': ('transmission', 80), 'color': ('color', 33), 'graph': ('graph', 37), 'colon': (':', 6), 'manual': ('manual', 47), 'automatic': ('automatic', 64), 'off': ('off', 20), 'on': ('on', 18), 'done': ('DONE', 32), 'cancel': ('CANCEL', 46), 'player-one-heading': ('PLAYER ONE', 71), 'player-two-heading': ('PLAYER TWO', 73), 'ford-indigo': ('Ford Indigo', 70), 'mustang-mach-iii': ('Mustang Mach III', 105), 'jaguar-xj220': ('Jaguar XJ220', 86), 'lotus-gt1': ('Lotus GT1', 63), 'lotus-esprit-v8': ('Lotus Esprit V8', 93), 'nazca-c2': ('Nazca C2', 58), 'italdesign-cala': ('Italdesign Calà', 91), 'isdera-112i': ('Isdera 112i', 68), 'mclaren-f1': ('McLaren F1', 72), 'ferrari-f50': ('Ferrari F50', 68), 'ferrari-355-f1': ('Ferrari 355 F1', 86), 'ford-gt90': ('Ford GT90', 65), 'class-a': ('class A', 44), 'class-b': ('class B', 44), 'class-c': ('class C', 44), 'acceleration': ('acceleration', 77), 'top-speed': ('top speed', 63), 'braking': ('braking', 48), 'handling': ('handling', 54), 'settings': ('settings...', 62), 'showcase': ('showcase...', 72)}
+PLAYER_SHARED = {'colon': 'location', 'done': 'location', 'cancel': 'location', 'off': 'setup', 'on': 'setup'}
+
 
 
 def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
-    if not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit|location/(?:track|colon|north-country|laps|lap-two|track-info|track-records|personal-statistics|done|cancel|pacific-spirit|mediterraneo|mystic-peaks|proving-grounds|outback|last-resort|lap-4|lap-8)|setup/(?:game-type|race-type|style|catch-up|backwards|mirrored|one-player|split-screen|modem|serial-link|network|single-race|tournament|knockout|wild|arcade|simulation|off|on)))\.svg',name):return False
+    player_match=re.fullmatch(r'assets/hud/frontend/player/([a-z0-9-]+)\.svg',name)
+    player_art=player_match is not None and player_match[1] in PLAYER_WORDS and player_match[1] not in PLAYER_SHARED
+    if not player_art and not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit|location/(?:track|colon|north-country|laps|lap-two|track-info|track-records|personal-statistics|done|cancel|pacific-spirit|mediterraneo|mystic-peaks|proving-grounds|outback|last-resort|lap-4|lap-8)|setup/(?:game-type|race-type|style|catch-up|backwards|mirrored|one-player|split-screen|modem|serial-link|network|single-race|tournament|knockout|wild|arcade|simulation|off|on)))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
@@ -83,6 +88,7 @@ def reviewed_remaster_svg(name,data):
         if '/gauge/' in name:
             x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
             origin=(x,y);size=(w,h)
+        elif '/frontend/player/' in name:size=(PLAYER_WORDS[Path(name).stem][1],51)
         elif '/frontend/setup/' in name:size=(SETUP_WORDS[Path(name).stem][1],51)
         elif '/frontend/location/' in name:size=(LOCATION_WORDS[Path(name).stem][1],51)
         elif '/frontend/' in name:size=(FRONTEND_WORDS[Path(name).stem][1],51)
@@ -114,7 +120,9 @@ def reviewed_remaster_svg(name,data):
             if (node.tail or '').strip():return False
             if (node.text or '').strip():
                 if tag!='text':return False
-                if '/frontend/setup/' in name:
+                if '/frontend/player/' in name:
+                    if node.text!=PLAYER_WORDS[Path(name).stem][0]:return False
+                elif '/frontend/setup/' in name:
                     if node.text!=SETUP_WORDS[Path(name).stem][0]:return False
                 elif '/frontend/location/' in name:
                     if node.text!=LOCATION_WORDS[Path(name).stem][0]:return False

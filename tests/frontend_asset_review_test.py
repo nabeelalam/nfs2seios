@@ -1,16 +1,20 @@
 """Only the exact reviewed condensed menu vectors may cross publication gates."""
 import hashlib
+import json
+import tempfile
+import copy
 import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
-from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, SETUP_WORDS, SETUP_SHARED, reviewed_remaster_svg
+from frontend_player_atlas import _player_words
+from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, SETUP_WORDS, SETUP_SHARED, PLAYER_WORDS, PLAYER_SHARED, reviewed_remaster_svg
 
 
 class FrontendAssetReview(unittest.TestCase):
     def test_reviewed_words(self):
-        for name in list(FRONTEND_WORDS)+['location/'+n for n in LOCATION_WORDS]+['setup/'+n for n in SETUP_WORDS if n not in SETUP_SHARED]:
+        for name in list(FRONTEND_WORDS)+['location/'+n for n in LOCATION_WORDS]+['setup/'+n for n in SETUP_WORDS if n not in SETUP_SHARED]+['player/'+n for n in PLAYER_WORDS if n not in PLAYER_SHARED]:
             relative='assets/hud/frontend/'+name+'.svg'
             with self.subTest(name=name):
                 self.assertTrue(reviewed_remaster_svg(relative,(ROOT/relative).read_bytes()))
@@ -60,6 +64,43 @@ class FrontendAssetReview(unittest.TestCase):
             data=(ROOT/existing).read_bytes()
             self.assertTrue(reviewed_remaster_svg(existing,data))
             self.assertFalse(reviewed_remaster_svg('assets/hud/frontend/setup/'+name+'.svg',data))
+
+
+    def test_player_schema_stays_bounded_even_with_pin(self):
+        relative='assets/hud/frontend/player/italdesign-cala.svg'
+        data=(ROOT/relative).read_bytes()
+        for mutated in (data.replace('Italdesign Calà'.encode(),b'private label'),
+                        data.replace(b'height="51"',b'height="52"'),
+                        data.replace(b'</svg>',b'<image href="private.png"/></svg>')):
+            self.assertNotEqual(data,mutated)
+            manifest={'reviewedSvgSha256':{relative:hashlib.sha256(mutated).hexdigest()}}
+            with patch('hud_asset_review.json.loads',return_value=manifest):
+                self.assertFalse(reviewed_remaster_svg(relative,mutated))
+
+    def test_player_shared_words_have_no_independent_alias(self):
+        for name,family in PLAYER_SHARED.items():
+            existing='assets/hud/frontend/'+family+'/'+name+'.svg'
+            data=(ROOT/existing).read_bytes()
+            self.assertTrue(reviewed_remaster_svg(existing,data))
+            self.assertFalse(reviewed_remaster_svg('assets/hud/frontend/player/'+name+'.svg',data))
+
+
+    def test_player_catalog_rejects_unknown_text_sharing_and_proportions(self):
+        catalog=json.loads((ROOT/'assets/hud/frontend/player/catalog.json').read_text())
+        changes=[('text','unreviewed'),('width',640),('sharedFamily','private'),
+                 ('font','unreviewed'),('size',48),('condensation',1),('baseline',0),
+                 ('kind','unreviewed'),('placements',[]),('placements',[{}]*33)]
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'player').mkdir();path=root/'player/catalog.json'
+            path.write_text(json.dumps(catalog))
+            self.assertEqual(len(_player_words(root)[0]),34)
+            for field,value in changes:
+                changed=copy.deepcopy(catalog);changed['words'][0][field]=value
+                path.write_text(json.dumps(changed))
+                with self.subTest(field=field),self.assertRaises(ValueError):_player_words(root)
+            changed=copy.deepcopy(catalog);changed['words'].reverse()
+            path.write_text(json.dumps(changed))
+            with self.assertRaises(ValueError):_player_words(root)
 
 
 if __name__=='__main__':unittest.main()

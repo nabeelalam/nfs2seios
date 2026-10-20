@@ -10,6 +10,7 @@ struct Tmu { float sow, tow, oow; };
 struct GrVertex { float x,y,z,r,g,b,ooz,a,oow; Tmu tmuvtx[2]; };
 static int nfs_hd_builtin_enabled=1, nfs_hd_visible=1, nfs_hd_selected=41;
 static int nfs_front_font_texture=1, nfs_hd_cell_layout_available=1;
+static int nfs_front_extended_ready=1;
 #include "FrontendFontPixels.inc"
 #include "FrontendFontLayout.inc"
 #include "FrontendFontGeometry.inc"
@@ -25,13 +26,14 @@ int main() {
     CHECK(!nfs_front_font_expand(pixels,size-1));
     for (auto c:memory) CHECK(c==0x5b);
     CHECK(nfs_front_font_expand(pixels,size));
-    const unsigned char expected[]={0x91,0x58,0xb9,0xd5,0xb4,0x7a,0x57,0x6b,0xde,0x6b,0x44,0x7f,0xee,0xc1,0x7b,0xf9,0xac,0xe4,0x81,0xb7,0x59,0x01,0xfe,0x61,0x7e,0x24,0x80,0x08,0x5e,0xd5,0x63,0x01};
+    const unsigned char expected[]={0x4a,0x7d,0xf6,0xc9,0x43,0xfe,0x54,0x48,0xca,0x3b,0x66,0x4c,0x47,0x0e,0xc0,0x05,0xa4,0x8e,0xc1,0x35,0x1c,0x7c,0xd7,0x91,0x28,0x96,0xd7,0xe5,0xb4,0x23,0x1e,0xa4};
     unsigned char digest[32];
     CHECK(nfs_texture_sha256(pixels,size,digest) && !std::memcmp(digest,expected,32));
     for (unsigned i=0;i<16;++i) CHECK(memory[i]==0x5b && memory[size+16+i]==0x5b);
     unsigned cases=0,ambiguous=0;
     for (const auto &glyph:nfs_front_word_glyphs) {
         nfs::FrontendTextScope scope(glyph.word);
+        nfs_hd_selected=glyph.cell==121?42:41;
         const auto &cell=nfs_front_cells[glyph.cell-1];
         const float bx=cell.large?1:(cell.code==69?.5f:1);
         const float by=cell.large?3:(cell.code>=65 && cell.code<=90?-.5f:0);
@@ -75,7 +77,10 @@ int main() {
             for (int *flag:{&nfs_hd_builtin_enabled,&nfs_hd_visible,&nfs_front_font_texture,&nfs_hd_cell_layout_available}) {
                 *flag=0; CHECK(!nfs_front_font_geometry(v,v+1,v+2,out)); *flag=1;
             }
-            nfs_hd_selected=1; CHECK(!nfs_front_font_geometry(v,v+1,v+2,out)); nfs_hd_selected=41;
+            nfs_hd_selected=1; CHECK(!nfs_front_font_geometry(v,v+1,v+2,out)); nfs_hd_selected=glyph.cell==121?42:41;
+            if (glyph.word==UINT64_C(0x385db5487d40488d)) {
+                nfs_front_extended_ready=0; CHECK(!nfs_front_font_geometry(v,v+1,v+2,out)); nfs_front_extended_ready=1;
+            }
             for (float bad:{0.0f,-1.0f,2.0f,std::numeric_limits<float>::quiet_NaN()}) {
                 v[0].oow=bad; CHECK(!nfs_front_font_geometry(v,v+1,v+2,out));
             }
@@ -90,6 +95,6 @@ int main() {
         for (const auto &other:nfs_front_word_glyphs)
             if(glyph.word && other.word && glyph.word!=other.word && glyph.cell==other.cell && glyph.x==other.x && glyph.y==other.y && glyph.w==other.w && glyph.h==other.h){++ambiguous;break;}
     }
-    CHECK(cases==2904 && ambiguous==28 && nfs_front_text_context()==0);
+    CHECK(cases==5068 && ambiguous==138 && nfs_front_text_context()==0);
     std::printf("PASS authored atlas digest/canaries, %u complete glyph triangles, %u ambiguous positions, immutable attributes and whole-label fallback guards\n",cases,ambiguous);
 }

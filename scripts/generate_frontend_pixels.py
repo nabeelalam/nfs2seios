@@ -8,10 +8,10 @@ from generate_remaster_pixels import rle, source
 
 
 def text_identity(text):
-    if not 1 <= len(text) < 96 or any(not 32 <= ord(c) <= 126 for c in text):
+    if not 1 <= len(text) < 96 or any(not (32 <= ord(c) <= 126 or ord(c)==224) for c in text):
         raise ValueError('Unsupported complete draw string')
     identity = 14695981039346656037
-    for c in text.encode('ascii'):
+    for c in text.encode('latin1'):
         identity = ((identity ^ c) * 1099511628211) & 0xffffffffffffffff
     return identity
 
@@ -166,7 +166,7 @@ def chunked_pixels(encoded):
         data = encoded[start:start+65520]
         outputs[name] = '// SPDX-License-Identifier: MIT\n'+',\n'.join(','.join(str(v) for v in data[j:j+24]) for j in range(0,len(data),24))+',\n'
         names.append(name)
-    if len(names) != 11:
+    if len(names) != 19:
         raise ValueError('Update the explicit prepared-renderer part allowlist')
     aggregate = 'static const unsigned char nfs_front_font_rle[]={\n'+''.join('#include "'+n+'"\n' for n in names)+'};'
     return aggregate, outputs
@@ -234,6 +234,9 @@ def generate_frontend(check=False):
         setup_placements, setup_catalog_hash = setup_words(directory,pixels,location_placements,hashes,rows)
     if len(rows) != 726:
         raise ValueError('Unexpected reviewed Setup coverage')
+    from frontend_player_atlas import compact_player_words
+    pixels, rows, compact = compact_player_words(directory,pixels,words,location_placements,setup_placements,hashes,rows,text_identity)
+    location_placements,setup_placements=compact['locationPlacements'],compact['setupPlacements']
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
     template = json.loads((ROOT/'scripts/hud_templates/FrontendFontPixels.json').read_text())['template']
     if template.count('@PIXEL_ARRAY@') != 1:
@@ -250,7 +253,9 @@ def generate_frontend(check=False):
                     rleBytes=len(encoded), glyphPartitions=len(rows), inkFit=ink,
                     locationCatalogSha256=location_catalog_hash, locationPlacements=location_placements,
                     setupCatalogSha256=setup_catalog_hash, setupPlacements=setup_placements,
-                    acceptedTopRasterSha256=top_hash, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304,
+                    previousAcceptedTopRasterSha256=top_hash,
+                    playerCatalogSha256=compact['playerCatalogSha256'],playerPlacements=compact['playerPlacements'],
+                    compactAtlas=compact['packing'],additionalCachedTextureBytesForPlayer=0, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304,
                     headerHashes={n:hashlib.sha256(s.encode()).hexdigest() for n,s in outputs.items()})
     for name, content in outputs.items():
         if len(content.encode()) > 1048576:

@@ -658,3 +658,37 @@ each recognition screenshot to be 2186x1640, not just a density request. Three
 GPU variants preserve 109 prior images each and replay 692 Setup/context pairs.
 Maintained generation reproduces that candidate's artwork, geometry and runtime.
 Remaining forms/artwork and physical iPad acceptance remain open.
+
+Player One and Player Two typography now has a maintained source generator:
+34 authored words, including 12 observed car choices, the legacy accented
+Italdesign Cala name, transmission, graph labels and the two screen headings.
+Twenty-nine new vectors explicitly reuse five Location/Setup word sources.
+The original backgrounds and car artwork remain separate, unfinished work.
+
+The same single 8 MiB menu texture now holds 82 logical words / 74 unique images.
+Bounded deterministic packing relocates earlier words without changing their
+source pixels, font proportions or original compatibility geometry. Nineteen
+literal include parts remain below the unchanged 1 MiB publication limit.
+Two independently owned original font pages share that texture. The accented
+whole word retains the original font until both pages have been observed and
+a complete frame has committed; unknown strings/pages keep the original font.
+Queued renderer commands still own the complete text identity.
+
+Maintained generation matches the exercised prototype's pixels and geometry;
+the prepared C renderer matches after newline normalization and compiles with the actual optimized
+project settings. Optimized and ASan/UBSan tests cover 5,068 glyph triangles,
+138 ambiguous placements, immutable inputs, bounded text identity and fallback.
+Equivalent-prototype original-game runs cover both players at 640x480 and
+2186x1640, all 12 observed cars, transmission/graph cycles, Done/reopen/Escape,
+clean shutdown and copied-profile restoration. This is not a newly executed
+maintained-binary game run or physical-device acceptance.
+
+Three equivalent-prototype graphics variants replay 1,082 observed triangles.
+HUD/original/fallback images remain exact. Atlas relocation changes interpolation
+rounding in 12 HD text images: at most 2/255 per RGB channel and 363 channel
+values per image, with exact framebuffer alpha. The strict exact/one-level
+failed attempts and immutable references are retained privately; the accepted
+bounded review is explicit, not a blanket pixel-exact claim.
+
+Remaining forms, map/artwork, full alignment review and physical iPad visual,
+performance and energy checks remain open. No UI IPA has been produced here.

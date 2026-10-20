@@ -127,7 +127,7 @@ def prepare_hd_atlas(text, dest):
     start = text.index('static void uploadTexture(TextureInfo *ti)')
     at = text.index(marker, start)
     text = text[:at] + '''\tvoid *originalData=ti->data;
-    if(ti->hdDigits==41 && nfs_front_font_valid && ti->size==256 && ti->fmt==GR_TEXFMT_ARGB_4444)ti->data=nfs_front_font_original;
+    ti->data=nfs_front_font_restore_source(ti);
     if(ti->hdDigits==40 && nfs_hd_builtin_enabled && nfs_pause_valid && ti->size==256 && ti->fmt==GR_TEXFMT_ARGB_1555)ti->data=nfs_pause_original;
     if(ti->hdDigits==39 && nfs_hd_builtin_enabled && nfs_logo_valid && ti->size==64 && ti->fmt==GR_TEXFMT_ARGB_4444)ti->data=nfs_logo_original;
     if(ti->hdDigits>=28 && ti->hdDigits<=38 && nfs_hd_builtin_enabled &&
@@ -149,7 +149,15 @@ def prepare_hd_atlas(text, dest):
     section = text[start:end]
     assert section.endswith('\n}\n')
     text = text[:start] + section[:-3] + '\n\tti->data=originalData;\n}\n' + text[end:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendTextContext.h', 'FrontendFontPixels.inc', 'FrontendFontPixelsPart0.inc', 'FrontendFontPixelsPart1.inc', 'FrontendFontPixelsPart2.inc', 'FrontendFontPixelsPart3.inc', 'FrontendFontPixelsPart4.inc', 'FrontendFontPixelsPart5.inc', 'FrontendFontPixelsPart6.inc', 'FrontendFontPixelsPart7.inc', 'FrontendFontPixelsPart8.inc', 'FrontendFontPixelsPart9.inc', 'FrontendFontPixelsPart10.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc'):
+    # A word spanning two source pages becomes eligible after one full frame.
+    frames=list(re.finditer(r'\b(?:native_)?grBufferSwap\([^)]*\)\s*\{',text))
+    if len(frames)!=1:raise ValueError('Unexpected original frame-commit entry')
+    close=frames[0].end();depth=1
+    while depth and close<len(text):
+        depth+=(text[close]=='{')-(text[close]=='}');close+=1
+    if depth:raise ValueError('Unterminated original frame-commit entry')
+    text=text[:close-1]+' nfs_front_frame_committed();\n'+text[close-1:]
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendTextContext.h', 'FrontendFontPixels.inc', 'FrontendFontPixelsPart0.inc', 'FrontendFontPixelsPart1.inc', 'FrontendFontPixelsPart2.inc', 'FrontendFontPixelsPart3.inc', 'FrontendFontPixelsPart4.inc', 'FrontendFontPixelsPart5.inc', 'FrontendFontPixelsPart6.inc', 'FrontendFontPixelsPart7.inc', 'FrontendFontPixelsPart8.inc', 'FrontendFontPixelsPart9.inc', 'FrontendFontPixelsPart10.inc', 'FrontendFontPixelsPart11.inc', 'FrontendFontPixelsPart12.inc', 'FrontendFontPixelsPart13.inc', 'FrontendFontPixelsPart14.inc', 'FrontendFontPixelsPart15.inc', 'FrontendFontPixelsPart16.inc', 'FrontendFontPixelsPart17.inc', 'FrontendFontPixelsPart18.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc'):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

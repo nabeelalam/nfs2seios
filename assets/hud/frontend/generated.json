@@ -45,16 +45,45 @@
     "assets/hud/frontend/setup/arcade.svg": "78f87b11aaa704fabf5b9cadd4cb15cf801a7cfbed717e921483731cc685838d",
     "assets/hud/frontend/setup/simulation.svg": "24fcc3f18a8d70cff6bf82affc0a07f5ddb9947c08db5556617d125a0f39452b",
     "assets/hud/frontend/setup/off.svg": "f668250e483b967bb6c36eeddd79a807d8a88b556f273f5a641a53bd57f8e2f9",
-    "assets/hud/frontend/setup/on.svg": "73d40fc15d4864e4a352975800c5ded70d51dc8d3516f9c1964026a24aa20dc2"
+    "assets/hud/frontend/setup/on.svg": "73d40fc15d4864e4a352975800c5ded70d51dc8d3516f9c1964026a24aa20dc2",
+    "assets/hud/frontend/player/car.svg": "0b96f11faa96f885fe9d79fe4b62d45ebd50813be630c588eab39d62aee703d5",
+    "assets/hud/frontend/player/transmission.svg": "44cd6280617ff8b4c14b294a91554e11716b73209a045c74801866878d1eb788",
+    "assets/hud/frontend/player/color.svg": "50b93711a05cfce3a91a8518dcda86efd11795c30ed6dceee636ffbde045eecb",
+    "assets/hud/frontend/player/graph.svg": "f9ee3431825d379c65decc3d0f9c60de78a80322bcdc72dc04bc7deb335d1aa3",
+    "assets/hud/frontend/player/manual.svg": "5bc641dbdec7209dba0afbe4500bcf0f1c88932e848988e45f03ff6518748dd6",
+    "assets/hud/frontend/player/automatic.svg": "02e933ee1c74b153289ed264973457ac491509cd5abb9d49f7253db5d2aac50f",
+    "assets/hud/frontend/player/player-one-heading.svg": "34ca960b0cb394f6d7bc29890bc9c1ef7017ab422ce3aa1d96b65a2792082d96",
+    "assets/hud/frontend/player/player-two-heading.svg": "a3e2c94a0c09b6279700f636987cb1a43d43c1739ad1dc65daf3d00b92d17d2c",
+    "assets/hud/frontend/player/ford-indigo.svg": "598d2aca8fdd6ab765366f33a9f102280624dd938eeb5fb99b439cefe43369ff",
+    "assets/hud/frontend/player/mustang-mach-iii.svg": "2959e6333179da59e95c8a496ef57fbea8e1335fc4d207178067ca4a8c1f9ea2",
+    "assets/hud/frontend/player/jaguar-xj220.svg": "4294322f60720807d2eebca684d4090cc01b4987cfadae513ff788e2cdbcfd28",
+    "assets/hud/frontend/player/lotus-gt1.svg": "3683b6ba84f287989fb31ef79a37de848e7f53a6da06a89e5b10c0d43db1b1db",
+    "assets/hud/frontend/player/lotus-esprit-v8.svg": "a8f468c6b42d3148418f61b76ab4695ac70e084bc105980fb9143330f80b6edc",
+    "assets/hud/frontend/player/nazca-c2.svg": "a6030505eb2610d9532edda44bad0849bc50ee31b60049fcb80082c0bdc2e5e0",
+    "assets/hud/frontend/player/italdesign-cala.svg": "88bb140da659dd596f75f307309d995ef8dea2bf100bcadfdfc2d5d42c685fc6",
+    "assets/hud/frontend/player/isdera-112i.svg": "5fdf5f442af4358008e637429b84348155db1cc90cd117713686ee7294412575",
+    "assets/hud/frontend/player/mclaren-f1.svg": "0a980ff415975f17406ab1c38789391abd87d117653e050eed164790ac3e6310",
+    "assets/hud/frontend/player/ferrari-f50.svg": "468a28882e3be6535377768de29f3f8ba48b05247b47b9ec85b432effadce573",
+    "assets/hud/frontend/player/ferrari-355-f1.svg": "581b95ad11e92dd241cb6c4f075dd2021e20773a9300270bd685482005c98472",
+    "assets/hud/frontend/player/ford-gt90.svg": "59269cc2cda0d313531399c8044390e3f71ae384941251d66a9be247cdb08ae5",
+    "assets/hud/frontend/player/class-a.svg": "62d8be97be116ab557198653ee09552e8495d20945cae950fc382590ea2d4543",
+    "assets/hud/frontend/player/class-b.svg": "b56ec4cae5aad88f97dfade5d9d4085c7fc5486f67ce0ffffe76d96bafdac3dc",
+    "assets/hud/frontend/player/class-c.svg": "a3b5ee3f85e7488b955ab9f8b68bfd9515988263583a78b75a0d937c4acaaced",
+    "assets/hud/frontend/player/acceleration.svg": "d3bcacaaaabe0e5e03cfd25a100b9d5c6303484726a962ca653607d74742bc7e",
+    "assets/hud/frontend/player/top-speed.svg": "72a29139cccc9000b83bb94467f0c6d71ba5db8977d058e943ef157001cb6896",
+    "assets/hud/frontend/player/braking.svg": "af5e86bfc9be4afcc8250cc6e508af51de141f6b8a6155d66ea77a327560d9c0",
+    "assets/hud/frontend/player/handling.svg": "3600746c14c1db64018329ef84e75985e816cf3730e515b74311623fd364a66a",
+    "assets/hud/frontend/player/settings.svg": "8848fac2bc5b7566c6f8758fea8a3e36ecb2aa2fde71d95cff7f3211921951f4",
+    "assets/hud/frontend/player/showcase.svg": "380b3eb45d865ff2867bbc3318634983531118a2a36bcf92bc5595c55b0376da"
   },
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "9158b9d5b47a576bde6b447feec17bf9ace481b75901fe617e2480085ed56301",
+  "rasterSha256": "4a7df6c943fe5448ca3b664c470ec005a48ec1351c7cd7912896d7e5b4231ea4",
   "raster": [
     1024,
     2048
   ],
-  "rleBytes": 719094,
-  "glyphPartitions": 726,
+  "rleBytes": 1228992,
+  "glyphPartitions": 1267,
   "inkFit": [
     {
       "text": "game setup",
@@ -102,8 +131,8 @@
     {
       "file": "track.svg",
       "atlas": [
-        384,
-        412,
+        500,
+        1915,
         132,
         76
       ],
@@ -113,14 +142,13 @@
         132,
         76
       ],
-      "outputX": 343.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "colon.svg",
       "atlas": [
-        520,
-        412,
+        996,
+        208,
         24,
         54
       ],
@@ -130,14 +158,13 @@
         24,
         54
       ],
-      "outputX": 382.25,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "north-country.svg",
       "atlas": [
-        548,
-        412,
+        664,
+        616,
         352,
         96
       ],
@@ -147,14 +174,13 @@
         352,
         96
       ],
-      "outputX": 395.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "laps.svg",
       "atlas": [
-        904,
-        412,
+        896,
+        1212,
         108,
         96
       ],
@@ -164,14 +190,13 @@
         108,
         96
       ],
-      "outputX": 349.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "lap-two.svg",
       "atlas": [
-        384,
-        492,
+        316,
+        818,
         40,
         71
       ],
@@ -181,14 +206,13 @@
         40,
         71
       ],
-      "outputX": 394.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "track-info.svg",
       "atlas": [
-        428,
-        512,
+        0,
+        1113,
         280,
         76
       ],
@@ -198,14 +222,13 @@
         280,
         76
       ],
-      "outputX": 318.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "track-records.svg",
       "atlas": [
-        384,
-        592,
+        316,
+        909,
         368,
         76
       ],
@@ -215,14 +238,13 @@
         368,
         76
       ],
-      "outputX": 296.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "personal-statistics.svg",
       "atlas": [
-        0,
-        672,
+        252,
+        416,
         496,
         96
       ],
@@ -232,14 +254,13 @@
         496,
         96
       ],
-      "outputX": 264.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "done.svg",
       "atlas": [
-        756,
-        512,
+        508,
+        1743,
         128,
         76
       ],
@@ -249,14 +270,13 @@
         128,
         76
       ],
-      "outputX": 342.5,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "cancel.svg",
       "atlas": [
-        756,
-        592,
+        0,
+        1935,
         184,
         76
       ],
@@ -266,14 +286,13 @@
         184,
         76
       ],
-      "outputX": 398.5,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "pacific-spirit.svg",
       "atlas": [
-        500,
-        672,
+        0,
+        818,
         312,
         96
       ],
@@ -283,14 +302,13 @@
         312,
         96
       ],
-      "outputX": 395.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "mediterraneo.svg",
       "atlas": [
-        0,
-        772,
+        416,
+        1014,
         336,
         76
       ],
@@ -300,14 +318,13 @@
         336,
         76
       ],
-      "outputX": 395.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "mystic-peaks.svg",
       "atlas": [
-        340,
-        772,
+        676,
+        516,
         328,
         96
       ],
@@ -317,14 +334,13 @@
         328,
         96
       ],
-      "outputX": 395.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "proving-grounds.svg",
       "atlas": [
-        0,
-        872,
+        252,
+        616,
         408,
         96
       ],
@@ -334,14 +350,13 @@
         408,
         96
       ],
-      "outputX": 395.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "outback.svg",
       "atlas": [
-        672,
-        772,
+        288,
+        1671,
         212,
         76
       ],
@@ -351,14 +366,13 @@
         212,
         76
       ],
-      "outputX": 395.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "last-resort.svg",
       "atlas": [
-        672,
-        852,
+        0,
+        1599,
         284,
         71
       ],
@@ -368,14 +382,13 @@
         284,
         71
       ],
-      "outputX": 395.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "lap-4.svg",
       "atlas": [
-        960,
-        512,
+        240,
+        1018,
         40,
         71
       ],
@@ -385,14 +398,13 @@
         40,
         71
       ],
-      "outputX": 394.0,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "lap-8.svg",
       "atlas": [
-        960,
-        587,
+        968,
+        1585,
         40,
         71
       ],
@@ -402,7 +414,6 @@
         40,
         71
       ],
-      "outputX": 394.0,
       "inkFitsOriginalHorizontalTextBounds": true
     }
   ],
@@ -411,8 +422,8 @@
     {
       "file": "game-type.svg",
       "atlas": [
-        0,
-        1024,
+        744,
+        716,
         264,
         91
       ],
@@ -422,14 +433,13 @@
         264,
         91
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "race-type.svg",
       "atlas": [
-        268,
-        1024,
+        0,
+        1018,
         236,
         91
       ],
@@ -439,14 +449,13 @@
         236,
         91
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "style.svg",
       "atlas": [
-        508,
-        1024,
+        368,
+        1915,
         128,
         96
       ],
@@ -456,14 +465,13 @@
         128,
         96
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "catch-up.svg",
       "atlas": [
-        640,
-        1024,
+        276,
+        1405,
         216,
         96
       ],
@@ -473,14 +481,13 @@
         216,
         96
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "backwards.svg",
       "atlas": [
         0,
-        1119,
+        1438,
         268,
         76
       ],
@@ -490,14 +497,13 @@
         268,
         76
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "mirrored.svg",
       "atlas": [
-        272,
-        1119,
+        784,
+        1663,
         220,
         76
       ],
@@ -507,14 +513,13 @@
         220,
         76
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "colon.svg",
       "atlas": [
-        520,
-        412,
+        996,
+        208,
         24,
         54
       ],
@@ -524,14 +529,13 @@
         24,
         54
       ],
-      "reusedImage": true,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "one-player.svg",
       "atlas": [
-        496,
-        1124,
+        752,
+        416,
         264,
         96
       ],
@@ -541,14 +545,13 @@
         264,
         96
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "split-screen.svg",
       "atlas": [
-        0,
-        1199,
+        716,
+        814,
         288,
         96
       ],
@@ -558,14 +561,13 @@
         288,
         96
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "modem.svg",
       "atlas": [
-        764,
-        1124,
+        0,
+        1674,
         192,
         76
       ],
@@ -575,14 +577,13 @@
         192,
         76
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "serial-link.svg",
       "atlas": [
-        764,
-        1204,
+        0,
+        624,
         240,
         77
       ],
@@ -592,14 +593,13 @@
         240,
         77
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "network.svg",
       "atlas": [
-        292,
-        1224,
+        808,
+        1505,
         212,
         76
       ],
@@ -609,14 +609,13 @@
         212,
         76
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "single-race.svg",
       "atlas": [
-        508,
-        1285,
+        688,
+        914,
         272,
         96
       ],
@@ -626,14 +625,13 @@
         272,
         96
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "tournament.svg",
       "atlas": [
-        0,
-        1304,
+        292,
+        1330,
         296,
         71
       ],
@@ -643,14 +641,13 @@
         296,
         71
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "knockout.svg",
       "atlas": [
-        784,
-        1285,
+        544,
+        1663,
         236,
         76
       ],
@@ -660,14 +657,13 @@
         236,
         76
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "wild.svg",
       "atlas": [
-        300,
-        1304,
+        508,
+        1823,
         108,
         77
       ],
@@ -677,14 +673,13 @@
         108,
         77
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "arcade.svg",
       "atlas": [
-        784,
-        1365,
+        332,
+        1835,
         172,
         76
       ],
@@ -694,14 +689,13 @@
         172,
         76
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "simulation.svg",
       "atlas": [
         0,
-        1379,
+        1518,
         264,
         77
       ],
@@ -711,14 +705,13 @@
         264,
         77
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "off.svg",
       "atlas": [
-        412,
-        1304,
+        196,
+        1674,
         80,
         76
       ],
@@ -728,14 +721,13 @@
         80,
         76
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "on.svg",
       "atlas": [
-        412,
-        1384,
+        892,
+        1585,
         72,
         55
       ],
@@ -745,14 +737,13 @@
         72,
         55
       ],
-      "reusedImage": false,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "done.svg",
       "atlas": [
-        756,
-        512,
+        508,
+        1743,
         128,
         76
       ],
@@ -762,14 +753,13 @@
         128,
         76
       ],
-      "reusedImage": true,
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "cancel.svg",
       "atlas": [
-        756,
-        592,
+        0,
+        1935,
         184,
         76
       ],
@@ -779,26 +769,600 @@
         184,
         76
       ],
-      "reusedImage": true,
       "inkFitsOriginalHorizontalTextBounds": true
     }
   ],
-  "acceptedTopRasterSha256": "e80a19bc2ef419d3e4138f63bf3e750c7f459c5cf621cc6d13c12aadcf0066c0",
+  "previousAcceptedTopRasterSha256": "e80a19bc2ef419d3e4138f63bf3e750c7f459c5cf621cc6d13c12aadcf0066c0",
+  "playerCatalogSha256": "6d153b909d94e670594a77a44a203a623ff6de5da0eec92756d46eaac9afbd2b",
+  "playerPlacements": [
+    {
+      "file": "car.svg",
+      "atlas": [
+        804,
+        1585,
+        84,
+        55
+      ],
+      "sourceCrop": [
+        0,
+        27,
+        84,
+        55
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "transmission.svg",
+      "atlas": [
+        416,
+        1172,
+        320,
+        74
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        320,
+        74
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "color.svg",
+      "atlas": [
+        372,
+        1751,
+        132,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        132,
+        77
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "graph.svg",
+      "atlas": [
+        0,
+        1835,
+        148,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        148,
+        96
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "colon.svg",
+      "atlas": [
+        996,
+        208,
+        24,
+        54
+      ],
+      "sourceCrop": [
+        0,
+        28,
+        24,
+        54
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "manual.svg",
+      "atlas": [
+        0,
+        1754,
+        188,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        188,
+        77
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "automatic.svg",
+      "atlas": [
+        544,
+        1585,
+        256,
+        74
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        256,
+        74
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "off.svg",
+      "atlas": [
+        196,
+        1674,
+        80,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        80,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "on.svg",
+      "atlas": [
+        892,
+        1585,
+        72,
+        55
+      ],
+      "sourceCrop": [
+        0,
+        27,
+        72,
+        55
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "done.svg",
+      "atlas": [
+        508,
+        1743,
+        128,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        128,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "cancel.svg",
+      "atlas": [
+        0,
+        1935,
+        184,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        184,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "player-one-heading.svg",
+      "atlas": [
+        608,
+        1250,
+        284,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        284,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "player-two-heading.svg",
+      "atlas": [
+        312,
+        1250,
+        292,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        292,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "ford-indigo.svg",
+      "atlas": [
+        0,
+        918,
+        280,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        280,
+        96
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "mustang-mach-iii.svg",
+      "atlas": [
+        252,
+        516,
+        420,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        420,
+        96
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "jaguar-xj220.svg",
+      "atlas": [
+        368,
+        814,
+        344,
+        91
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        344,
+        91
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "lotus-gt1.svg",
+      "atlas": [
+        288,
+        1596,
+        252,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        252,
+        71
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "lotus-esprit-v8.svg",
+      "atlas": [
+        368,
+        716,
+        372,
+        94
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        372,
+        94
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "nazca-c2.svg",
+      "atlas": [
+        788,
+        1430,
+        232,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        232,
+        71
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "italdesign-cala.svg",
+      "atlas": [
+        0,
+        716,
+        364,
+        98
+      ],
+      "sourceCrop": [
+        0,
+        4,
+        364,
+        98
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "isdera-112i.svg",
+      "atlas": [
+        0,
+        1358,
+        272,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        272,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "mclaren-f1.svg",
+      "atlas": [
+        496,
+        1430,
+        288,
+        71
+      ],
+      "sourceCrop": [
+        0,
+        11,
+        288,
+        71
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "ferrari-f50.svg",
+      "atlas": [
+        268,
+        1518,
+        272,
+        74
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        272,
+        74
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "ferrari-355-f1.svg",
+      "atlas": [
+        416,
+        1094,
+        344,
+        74
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        344,
+        74
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "ford-gt90.svg",
+      "atlas": [
+        544,
+        1505,
+        260,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        260,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "class-a.svg",
+      "atlas": [
+        152,
+        1835,
+        176,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        176,
+        77
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "class-b.svg",
+      "atlas": [
+        188,
+        1916,
+        176,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        176,
+        77
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "class-c.svg",
+      "atlas": [
+        192,
+        1754,
+        176,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        176,
+        77
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "acceleration.svg",
+      "atlas": [
+        0,
+        1197,
+        308,
+        77
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        308,
+        77
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "top-speed.svg",
+      "atlas": [
+        764,
+        1014,
+        252,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        252,
+        96
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "braking.svg",
+      "atlas": [
+        812,
+        1330,
+        192,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        192,
+        96
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "handling.svg",
+      "atlas": [
+        592,
+        1330,
+        216,
+        96
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        216,
+        96
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "settings.svg",
+      "atlas": [
+        764,
+        1114,
+        248,
+        94
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        248,
+        94
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    },
+    {
+      "file": "showcase.svg",
+      "atlas": [
+        0,
+        1278,
+        288,
+        76
+      ],
+      "sourceCrop": [
+        0,
+        6,
+        288,
+        76
+      ],
+      "inkFitsOriginalHorizontalTextBounds": true
+    }
+  ],
+  "compactAtlas": {
+    "logicalWords": 82,
+    "uniqueImages": 74,
+    "dimensions": [
+      1024,
+      2048
+    ],
+    "mainCropChanged": false,
+    "oldGlyphGeometryAndInkMetricsPreserved": 726,
+    "attempts": [
+      {
+        "order": "area",
+        "heuristic": "short",
+        "fit": true
+      }
+    ],
+    "paddedArea": 1874880,
+    "allocationsNonoverlapping": true
+  },
+  "additionalCachedTextureBytesForPlayer": 0,
   "rasterBytes": 8388608,
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
-    "FrontendFontPixels.inc": "46548a0bc077674f48ba2d50e86aee0224451bb94db575789daade581b43327f",
-    "FrontendWordLayout.inc": "12bf0abb0b900052d3e944565d2331ee296b6c1b0bd97134feed658cdc47423e",
-    "FrontendFontPixelsPart0.inc": "4cef23742b53be2795a03f2680891817845170e38ceba1d172c2a4cd092ff22a",
-    "FrontendFontPixelsPart1.inc": "5eb77ebe4d6e8f9bcdac70ad5b3e9a1169b0aeac2d71a753aa843149557ed5dd",
-    "FrontendFontPixelsPart2.inc": "0c342fdeec928f3bbce43fdd06dbf75ce69cdfffb804a2d5f2908b9609436195",
-    "FrontendFontPixelsPart3.inc": "ba63a60d9c050e781eb3142bd0cf38aee5431adcad7c0887fb6332bf821a8575",
-    "FrontendFontPixelsPart4.inc": "45d30bd1b60aa3be7d42df35e0b319360b037d53d593cfc578185e3f27b3b07f",
-    "FrontendFontPixelsPart5.inc": "6f425bef6a9d77b5b22b14bbb6cf7644c75e442e0d7429f9e201c7ff3bccc8a5",
-    "FrontendFontPixelsPart6.inc": "451a33cafa18f2548bbd11e5f02c84a896bc5b7676364b3a0c18aa0786dade69",
-    "FrontendFontPixelsPart7.inc": "c38a5706e72fb4b9c1df17bff30c620fdd1d0e4206b693a492d446c9c659d78e",
-    "FrontendFontPixelsPart8.inc": "060682b3ed2ecf7d87b4a85d95faecc98e7836a4d44cf22ae9500fe4d5b740f6",
-    "FrontendFontPixelsPart9.inc": "3c9d65a166e62ede9bb6326b295596dd7d235b6e610cb3e144cd34c672ef9e1c",
-    "FrontendFontPixelsPart10.inc": "82a5fae8e287c63e622382bfbcd31bb056bdee70b0b93b6dcd7f62ed1efe659c"
+    "FrontendFontPixels.inc": "827b396fd0db0f571f5fa3483e633c05a010a47d8184682ff095dc3733389ed7",
+    "FrontendWordLayout.inc": "03af2c43c8b65a7daf7382d4cdf10148894c9a48764f236281674eda9b12d7ee",
+    "FrontendFontPixelsPart0.inc": "d206da7a3161cbdadcb414034785a66c8631ad1a28b880525b542fec4e0ba21b",
+    "FrontendFontPixelsPart1.inc": "c087ee76b40f327efbfae0757a62e959a52567cc3658055fed3cc8db3c05335c",
+    "FrontendFontPixelsPart2.inc": "523183b91d5fc488df69f8880ef1b646358ced85d30720b6c96f81557f540188",
+    "FrontendFontPixelsPart3.inc": "0b6988fa40eec38421b62a53cc57f68c339bde63b79f39cca8751dc5037da812",
+    "FrontendFontPixelsPart4.inc": "51cd5d4f1f91a72d072f12cd496d6deec35b4d49e7e01dd30e74b39d7903ae26",
+    "FrontendFontPixelsPart5.inc": "5a149b0286d66a498dc1976fab8e5e6aac9024ff519bac3fcae7a1f334f64242",
+    "FrontendFontPixelsPart6.inc": "202517db95b12a0077b38bbd43bc836f180fc48d44eca60041195bc6e2c73148",
+    "FrontendFontPixelsPart7.inc": "ff98974579f59e897149f5f2540aa290b272d72d2b59c35672b6a60abe4a50a2",
+    "FrontendFontPixelsPart8.inc": "6741c5dcdaafbb092542f4c0396bbf643b59d1358c8065f7e2da8a991ab64583",
+    "FrontendFontPixelsPart9.inc": "885434c5ca0c857eff1fc57b59c1bcd0d13bb9cb0927ff31be03b7fd9e4a2903",
+    "FrontendFontPixelsPart10.inc": "52293cbd163903df1404726f08d790b2adb0f1b809ec98768676db7917442df4",
+    "FrontendFontPixelsPart11.inc": "14d41341919b81ca86a8452d4542991da7324f69eeb0126afbb8bd9023824dfb",
+    "FrontendFontPixelsPart12.inc": "4c1642e02ffcc4baf5ae554a9fb66c95af46ab5f757fc19fb9177f7a84ee6511",
+    "FrontendFontPixelsPart13.inc": "25990afadb368c11dd17d35947aec30c6c8932cee678cbde3af8165a6944de5e",
+    "FrontendFontPixelsPart14.inc": "3663cdd4634e2bdf60a980887f0c49bfa88bfd5c8f0d3e1a430dfc7a1e96c747",
+    "FrontendFontPixelsPart15.inc": "c49a319fd6f4a81a8aa679a4efb343685af2954d4ff6aaf0bff7e1c43632347c",
+    "FrontendFontPixelsPart16.inc": "e9057185c53ecf8d7a8f5fdb95b139520422a86ed63646c1df30f6e8a6bc59cb",
+    "FrontendFontPixelsPart17.inc": "98d3ab73d802601969d278019efadb763abfb88545e63b77ee023b6747bcbe10",
+    "FrontendFontPixelsPart18.inc": "f190f6e4525e564e972568e6cdcf8d0339484667f522b04bfa6f9f01ca585603"
   }
 }

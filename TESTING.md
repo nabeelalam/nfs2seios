@@ -756,3 +756,19 @@ Three graphics variants preserve 109 prior reference images each, replay 692
 Setup triangle/full-context pairs and exercise source/visibility/context/cache,
 wrong/missing-label fallback and no-per-draw-upload guards. Captures stay private;
 legacy connection behavior and physical iPad performance/energy remain unproven.
+
+Player integration expands `frontend_font_tests` to 5,068 triangles and 138
+ambiguous placements, including the independently selected accent page and
+whole-word first-frame fallback. `frontend_text_context_tests` accepts only
+the observed legacy accent byte in addition to bounded printable ASCII;
+unsupported bytes/UTF-8 retain the original font. Both targets pass optimized
+and ASan/UBSan runs. Nine asset-review cases cover exact Player source text,
+dimensions, font proportions, bounded placements and explicit shared aliases.
+
+`evidence/hd-player-maintained-integration.json` distinguishes source/renderer
+equivalence from actual prototype game/GLES runs. All 48 earlier authored
+source rectangles and 726 earlier glyph geometries are preserved, while their
+atlas UV locations move. The three-variant graphics review allows only the
+recorded bounded RGB rounding in relocated HD text; original/HUD/fallback and
+framebuffer alpha remain exact. No iPad performance, battery or complete-UI
+acceptance is implied by these local checks.

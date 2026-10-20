@@ -28,6 +28,11 @@ int main() {
     for (const auto &text:{std::string("A\nB"),std::string("A\x80"),std::string("A\x7f")}) {
         reads=0; CHECK(identity(text,reads)==0);
     }
+    reads=0; CHECK(identity(std::string("Italdesign Cal")+char(224),reads)==UINT64_C(0x385db5487d40488d) && reads==16);
+    for (unsigned c=127;c<=255;++c) if(c!=224) {
+        reads=0; CHECK(identity(std::string("A")+char(c),reads)==0);
+    }
+    reads=0; CHECK(identity(std::string("Italdesign Cal")+char(195)+char(160),reads)==0);
     CHECK(nfs::frontend_text_identity(1,[](uint32_t)->uint8_t { throw std::out_of_range("Invalid guest span"); })==0);
     reads=0;
     CHECK(nfs::frontend_text_identity(0,[&](uint32_t)->uint8_t { ++reads; return 'A'; })==0 && reads==0);
@@ -43,5 +48,5 @@ int main() {
         catch (const std::runtime_error &) { CHECK(nfs_front_text_context()==first); }
     }
     CHECK(nfs_front_text_context()==0);
-    std::puts("PASS complete ASCII text identity, bounded/invalid/overflow reads, thread isolation and nested normal/exception restoration");
+    std::puts("PASS bounded ASCII and observed legacy accent text identity, bounded/invalid/overflow reads, thread isolation and nested normal/exception restoration");
 }
