@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-#pragma once
+#ifndef NFS_FRONTEND_TEXT_CONTEXT_H
+#define NFS_FRONTEND_TEXT_CONTEXT_H
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -41,4 +42,5 @@ public:
     FrontendTextScope &operator=(const FrontendTextScope &) = delete;
 };
 }
+#endif
 #endif

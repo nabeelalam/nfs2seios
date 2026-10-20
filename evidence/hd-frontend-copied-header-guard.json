@@ -1,0 +1,11 @@
+{
+  "scope": "Prevent duplicate C++ definitions when both maintained and prepared physical copies of the same header enter one translation unit",
+  "originalHeaderBodyUnchanged": true,
+  "optimizedAndSanitizedContextTests": true,
+  "c11CppApiPassed": true,
+  "actualTwoCopyGeometryTranslationUnitTriangles": 2904,
+  "initialCompileFailurePreservedPrivately": true,
+  "apiOrBehaviorChanged": false,
+  "cloudBuild": false,
+  "physicalAcceptance": false
+}
