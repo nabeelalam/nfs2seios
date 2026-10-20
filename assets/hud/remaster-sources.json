@@ -153,7 +153,16 @@
     "assets/hud/frontend/player/braking.svg": "af5e86bfc9be4afcc8250cc6e508af51de141f6b8a6155d66ea77a327560d9c0",
     "assets/hud/frontend/player/handling.svg": "3600746c14c1db64018329ef84e75985e816cf3730e515b74311623fd364a66a",
     "assets/hud/frontend/player/settings.svg": "8848fac2bc5b7566c6f8758fea8a3e36ecb2aa2fde71d95cff7f3211921951f4",
-    "assets/hud/frontend/player/showcase.svg": "380b3eb45d865ff2867bbc3318634983531118a2a36bcf92bc5595c55b0376da"
+    "assets/hud/frontend/player/showcase.svg": "380b3eb45d865ff2867bbc3318634983531118a2a36bcf92bc5595c55b0376da",
+    "assets/hud/frontend/opponents/number.svg": "a065f13df86bacc66e433757d108d1df8073bcf86bc2b2058ade6404a05e8568",
+    "assets/hud/frontend/opponents/skill-level.svg": "0717b31d7c995b8bc2c66bb9b84f3ec2dd69786e6c48269bcbe51c0368c9aa8f",
+    "assets/hud/frontend/opponents/traffic.svg": "35b6d1cbf2052273f3c5aed5f30ed34907baf3d563a46436394b0f201f96a396",
+    "assets/hud/frontend/opponents/no-opponents.svg": "690241cec7cc9574cc290ba29cbc818863b09789c3ce8df9e6bf9add54d7dae4",
+    "assets/hud/frontend/opponents/full-grid.svg": "35737e995cf51ad75af7c2fcd7df6e90b37298bcbeb00214be25febb5ae5b4d3",
+    "assets/hud/frontend/opponents/none.svg": "1cdefff750b0934880734d49300c51b2ef37f258a79d66b9deaf7df6faae8b9d",
+    "assets/hud/frontend/opponents/one.svg": "6ff3594d6424d018e3a3c1834173021762a5df1090dcc9abda71d427126c36c5",
+    "assets/hud/frontend/opponents/beginner.svg": "cc0139003318e184d06373cfb7cf8b3cc1d7479a108767f1a514c9a9b5fbd8fc",
+    "assets/hud/frontend/opponents/advanced.svg": "6e04e5a3958e245b6b6cc9e9482cd9f15bee8a777b1f95ced7721e6da94f46b9"
   },
   "logoSource": "https://www.omegawatches.com/static/version1791865285/frontend/Omega/default/default/images/logo.svg",
   "logoGeometryUnchanged": true,

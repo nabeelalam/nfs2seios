@@ -1,0 +1,247 @@
+{
+  "scope": "Maintained authored Opponents form integration; isolated UI branch, source equivalence and local prototype validation, not full UI or physical acceptance",
+  "parentUiCommit": "3513e64dbeb82eab64241854b72f56a7545cf2c2",
+  "newReviewedSvgCount": 9,
+  "totalReviewedSvgCount": 162,
+  "authoredOpponentsWords": 30,
+  "sharedSourceCount": 21,
+  "newGlyphPlacements": 666,
+  "totalGlyphPlacements": 1933,
+  "generation": {
+    "originalGamePixelsIncluded": false,
+    "atlas": [
+      1024,
+      2048
+    ],
+    "rasterBytes": 8388608,
+    "additionalCachedTextureBytesForOpponents": 0,
+    "rasterSha256": "d5fd21e39225adf80dfba2f76d6a18fa0c498c69eb9db2c86d781d2bcea53134",
+    "rleBytes": 1359528,
+    "boundedLiteralParts": 21,
+    "maximumPartBytes": 201566,
+    "unchangedPublicFileLimitBytes": 1048576,
+    "logicalWords": 112,
+    "uniqueImages": 83,
+    "transparentRightAndBottomGutterPixels": 2,
+    "priorSourceRectanglesByteExact": 74,
+    "priorGlyphGeometryInkMetricsAndTextIdentitiesExact": 1267,
+    "mainCropChanged": false,
+    "reviewedFixedPackingPriority": true
+  },
+  "checks": {
+    "optimizedTriangles": 7732,
+    "sanitizedTriangles": 7732,
+    "ambiguousPositions": 294,
+    "assetPolicyCases": 12,
+    "malformedCatalogSubcases": 23,
+    "fontInspectionCases": 5,
+    "preparationCases": 5,
+    "workflowCoverageCases": 3,
+    "publicationPolicyCases": 7,
+    "allArtRegeneration": true,
+    "boundedTextIdentityAndOriginalFallback": true,
+    "actualMaintainedCRendererCompilationPassed": true
+  },
+  "sourceEquivalence": {
+    "preparedRendererExactAfterNewlineNormalization": true,
+    "encodedPixelsExact": true,
+    "FrontendFontGeometry.inc": true,
+    "FrontendFontLayout.inc": true,
+    "FrontendFontRuntime.inc": true,
+    "RendererHdAtlas.inc": true,
+    "FrontendTextContext.h": true,
+    "FrontendWordLayout.inc": true,
+    "SpeedShader.inc": true
+  },
+  "equivalentPrototypeRuntime": [
+    {
+      "mode": "base",
+      "resolution": [
+        640,
+        480
+      ],
+      "elapsedSeconds": 57.271,
+      "verifiedNamedCaptures": 65,
+      "carChoiceSteps": 16,
+      "cycles": [
+        {
+          "completedChoiceCycle": "car",
+          "values": [
+            "class A",
+            "class B",
+            "class C",
+            "no opponents",
+            "McLaren F1",
+            "Ferrari F50",
+            "Ferrari 355 F1",
+            "Ford GT90",
+            "Ford Indigo",
+            "Mustang Mach III",
+            "Jaguar XJ220",
+            "Lotus GT1",
+            "Lotus Esprit V8",
+            "Nazca C2",
+            "Isdera 112i"
+          ],
+          "returnedToInitialPixels": true
+        },
+        {
+          "completedChoiceCycle": "number",
+          "values": [
+            "full grid",
+            "none",
+            "one"
+          ],
+          "returnedToInitialPixels": true
+        },
+        {
+          "completedChoiceCycle": "skill level",
+          "values": [
+            "beginner",
+            "advanced"
+          ],
+          "returnedToInitialPixels": true
+        },
+        {
+          "completedChoiceCycle": "traffic",
+          "values": [
+            "off",
+            "on"
+          ],
+          "returnedToInitialPixels": true
+        }
+      ],
+      "doneReopenEscape": true,
+      "cleanShutdown": true,
+      "profileRestored": true
+    },
+    {
+      "mode": "native",
+      "resolution": [
+        2186,
+        1640
+      ],
+      "elapsedSeconds": 301.056,
+      "verifiedNamedCaptures": 74,
+      "carChoiceSteps": 16,
+      "cycles": [
+        {
+          "completedChoiceCycle": "car",
+          "values": [
+            "class A",
+            "class B",
+            "class C",
+            "no opponents",
+            "McLaren F1",
+            "Ferrari F50",
+            "Ferrari 355 F1",
+            "Ford GT90",
+            "Ford Indigo",
+            "Mustang Mach III",
+            "Jaguar XJ220",
+            "Lotus GT1",
+            "Lotus Esprit V8",
+            "Nazca C2",
+            "Isdera 112i"
+          ],
+          "returnedToInitialPixels": true
+        },
+        {
+          "completedChoiceCycle": "number",
+          "values": [
+            "full grid",
+            "none",
+            "one"
+          ],
+          "returnedToInitialPixels": true
+        },
+        {
+          "completedChoiceCycle": "skill level",
+          "values": [
+            "beginner",
+            "advanced"
+          ],
+          "returnedToInitialPixels": true
+        },
+        {
+          "completedChoiceCycle": "traffic",
+          "values": [
+            "off",
+            "on"
+          ],
+          "returnedToInitialPixels": true
+        }
+      ],
+      "doneReopenEscape": true,
+      "cleanShutdown": true,
+      "profileRestored": true
+    }
+  ],
+  "equivalentPrototypeGraphics": [
+    {
+      "variant": "normal",
+      "priorReferenceImages": 121,
+      "byteExact": 106,
+      "maximumRgbDifference": 2,
+      "maximumChangedRgbChannels": 763,
+      "allFramebufferAlphaExact": true,
+      "capturedOpponentsTriangles": 1332,
+      "capturedPlayerTriangles": 1082,
+      "onlyObservedWordRectanglesChanged": true,
+      "immutableGuestVerticesAndOwnedContextRestore": true,
+      "noPerDrawTextureUpload": true
+    },
+    {
+      "variant": "sanitized",
+      "priorReferenceImages": 121,
+      "byteExact": 106,
+      "maximumRgbDifference": 2,
+      "maximumChangedRgbChannels": 763,
+      "allFramebufferAlphaExact": true,
+      "capturedOpponentsTriangles": 1332,
+      "capturedPlayerTriangles": 1082,
+      "onlyObservedWordRectanglesChanged": true,
+      "immutableGuestVerticesAndOwnedContextRestore": true,
+      "noPerDrawTextureUpload": true
+    },
+    {
+      "variant": "fallback",
+      "priorReferenceImages": 121,
+      "byteExact": 121,
+      "maximumRgbDifference": 0,
+      "maximumChangedRgbChannels": 0,
+      "allFramebufferAlphaExact": true,
+      "capturedOpponentsTriangles": 1332,
+      "capturedPlayerTriangles": 1082,
+      "onlyObservedWordRectanglesChanged": true,
+      "immutableGuestVerticesAndOwnedContextRestore": true,
+      "noPerDrawTextureUpload": true
+    }
+  ],
+  "graphicsReview": {
+    "earlier115ImageLimit": {
+      "maximumHdRgbDifference": 2,
+      "maximumChangedHdChannels": 500,
+      "framebufferAlphaExact": true,
+      "otherHudOriginalImagesExact": true
+    },
+    "newDensePlayerImageLimit": {
+      "imageCount": 6,
+      "maximumHdRgbDifference": 2,
+      "maximumChangedRgbChannelFraction": 0.0001,
+      "framebufferAlphaExact": true,
+      "originalImagesExact": true
+    },
+    "forcedBasicAll121ImagesExact": true,
+    "blanketByteExactClaim": false
+  },
+  "startupObservationLimitation": "One private startup attempt opened Setup instead of remaining at main; cause unproven. A retry with independent image-recognized recovery passed; no app input fix is claimed.",
+  "mainPerformanceSourceUnchanged": true,
+  "noNewTextureObjectOrPerDrawUploads": true,
+  "originalEngineAndInputObjectsRetained": true,
+  "newMaintainedBinaryGameRunClaimed": false,
+  "physicalAcceptance": false,
+  "completeUi": false,
+  "pushed": false,
+  "cloudBuildStarted": false
+}

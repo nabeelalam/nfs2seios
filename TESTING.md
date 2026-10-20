@@ -772,3 +772,21 @@ atlas UV locations move. The three-variant graphics review allows only the
 recorded bounded RGB rounding in relocated HD text; original/HUD/fallback and
 framebuffer alpha remain exact. No iPad performance, battery or complete-UI
 acceptance is implied by these local checks.
+
+The maintained Opponents checkpoint has 1,933 guarded glyph placements.
+`frontend_font_tests` checks 7,732 complete triangle cases and 294 ambiguous
+positions in optimized and ASan/UBSan builds, including decoder digest/canaries,
+immutable attributes, whole-accented-word first-frame fallback and unknown
+context/source guards. `frontend_asset_review_test.py` has 12 cases, including
+23 malformed path/text/font/role/geometry/source-page mutations and all 21
+explicit shared-source aliases. The deterministic generator must reproduce the
+reviewed atlas using exactly 83 authored images and 21 bounded literal parts.
+
+`evidence/hd-opponents-maintained-integration.json` distinguishes maintained
+source/renderer equivalence from the actual prototype game/GLES runs. All 74
+prior source rectangles and 1,267 prior glyph geometries are exact; main quads
+are not cropped. The earlier 115 reference limits remain unchanged. Six new
+dense Player images have the separately documented narrow sampling limit;
+original/HUD/fallback and framebuffer alpha remain exact. Rejected crop and
+uniform-channel-limit attempts remain private. Physical iPad visual/performance/
+energy acceptance and complete frontend coverage are still required.

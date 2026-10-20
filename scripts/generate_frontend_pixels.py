@@ -166,7 +166,7 @@ def chunked_pixels(encoded):
         data = encoded[start:start+65520]
         outputs[name] = '// SPDX-License-Identifier: MIT\n'+',\n'.join(','.join(str(v) for v in data[j:j+24]) for j in range(0,len(data),24))+',\n'
         names.append(name)
-    if len(names) != 19:
+    if len(names) != 21:
         raise ValueError('Update the explicit prepared-renderer part allowlist')
     aggregate = 'static const unsigned char nfs_front_font_rle[]={\n'+''.join('#include "'+n+'"\n' for n in names)+'};'
     return aggregate, outputs
@@ -236,7 +236,9 @@ def generate_frontend(check=False):
         raise ValueError('Unexpected reviewed Setup coverage')
     from frontend_player_atlas import compact_player_words
     pixels, rows, compact = compact_player_words(directory,pixels,words,location_placements,setup_placements,hashes,rows,text_identity)
-    location_placements,setup_placements=compact['locationPlacements'],compact['setupPlacements']
+    from frontend_opponents_atlas import opponents_words
+    pixels, rows, opponents = opponents_words(directory,pixels,rows,hashes,text_identity)
+    location_placements,setup_placements=opponents['locationPlacements'],opponents['setupPlacements']
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
     template = json.loads((ROOT/'scripts/hud_templates/FrontendFontPixels.json').read_text())['template']
     if template.count('@PIXEL_ARRAY@') != 1:
@@ -254,8 +256,9 @@ def generate_frontend(check=False):
                     locationCatalogSha256=location_catalog_hash, locationPlacements=location_placements,
                     setupCatalogSha256=setup_catalog_hash, setupPlacements=setup_placements,
                     previousAcceptedTopRasterSha256=top_hash,
-                    playerCatalogSha256=compact['playerCatalogSha256'],playerPlacements=compact['playerPlacements'],
-                    compactAtlas=compact['packing'],additionalCachedTextureBytesForPlayer=0, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304,
+                    playerCatalogSha256=compact['playerCatalogSha256'],playerPlacements=opponents['playerPlacements'],
+                    opponentsCatalogSha256=opponents['catalogSha256'],opponentsPlacements=opponents['opponentsPlacements'],mainPlacements=opponents['mainPlacements'],
+                    packingRecipeSha256=opponents['recipeSha256'],compactAtlas=opponents['packing'],additionalCachedTextureBytesForOpponents=0,additionalCachedTextureBytesForPlayer=0, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304,
                     headerHashes={n:hashlib.sha256(s.encode()).hexdigest() for n,s in outputs.items()})
     for name, content in outputs.items():
         if len(content.encode()) > 1048576:

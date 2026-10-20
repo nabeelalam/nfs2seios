@@ -692,3 +692,43 @@ bounded review is explicit, not a blanket pixel-exact claim.
 
 Remaining forms, map/artwork, full alignment review and physical iPad visual,
 performance and energy checks remain open. No UI IPA has been produced here.
+
+Opponents now has a maintained authored-source generator for 30 words: the
+observed car/class choices, grid sizes, skill and traffic rows, buttons and
+opponent list. Nine new vectors explicitly share 21 existing word sources.
+Disabled/selected tints, original positions and complete-string fallback stay
+with the original draw path. Coverage is for the observed English profile,
+not every possible unlock, language or game mode.
+
+A fixed, reviewed 83-image packing priority fits all 112 logical words in the
+same single 8 MiB menu texture. Its two-pixel transparent right/bottom gutters
+are tested with the existing linear sampler. All 74 earlier authored source
+rectangles and 1,267 earlier glyph geometries, ink metrics and identities are
+preserved exactly; only atlas UV addresses move. Cropping main-menu quads was
+rejected after framebuffer comparisons, so it is absent from this integration.
+There are no random packing trials during generation. Twenty-one bounded
+literal include parts retain the unchanged 1 MiB public-file gate.
+
+Maintained source reproduces the exercised prototype's atlas and all 1,933
+glyph placements, and its prepared C renderer matches after newline
+normalization and compiles with the actual optimized project settings.
+Optimized and ASan/UBSan checks cover 7,732 triangles and 294 ambiguous positions.
+Twelve asset-policy cases include 23 malformed catalog mutations. The equivalent
+prototype completed observed car/grid/skill/traffic cycles and Done/reopen/Escape
+at per-capture-verified 640x480 and 2186x1640, with clean shutdown and restored
+copied settings. This is not a newly executed maintained-binary game test.
+
+Three equivalent-prototype graphics configurations replay 1,332 observed
+Opponents triangles and 1,082 Player triangles. Earlier 115-image limits remain:
+original/HUD images exact; relocated HD text at most 2/255 per RGB channel and
+500 changed channel values, with exact framebuffer alpha. The six newly added
+dense Player references use a separately reviewed 0.01 percent RGB-channel
+occupancy cap, still at most 2/255 and exact alpha. The uniform 500-channel
+attempt failed at 763 changed values in that larger fixture and is retained
+privately. Normal/sanitized runs have 106/121 byte-exact images; forced basic
+has 121/121 exact. This is explicitly scoped sampling review, not blanket
+pixel identity or proof of iPad battery/performance.
+
+Remaining Options/submenus, map/artwork, full alignment review and physical
+visual, performance and energy acceptance remain open. Main stays separate;
+no UI IPA was built for this checkpoint.
