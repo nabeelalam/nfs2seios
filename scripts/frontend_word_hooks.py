@@ -6,6 +6,15 @@ preserves the original trace/body, and never embeds original game source.
 
 
 def add_frontend_word_hooks(text, name):
+    if name == "Methods_01.cpp":
+        entry = ('Fn(void) Game::_sub_405CF0()\n{\n'
+                 '\tnfs_trace_guest_call(game_id_sub_405CF0,uint32_t(esp));')
+        if text.count(entry) != 1 or 'nfs_front_text_scope' in text:
+            raise ValueError("Original frontend text entry no longer matches")
+        scope = '''
+    nfs::FrontendTextScope nfs_front_text_scope(nfs::frontend_text_identity(
+        uint32_t(eax), [](uint32_t address) { return guest_load<uint8_t>(address); }));'''
+        return '#include "FrontendTextContext.h"\n' + text.replace(entry, entry+scope)
     if name != "Methods_03.cpp":
         return text
     entry = ('Fn(void) Game::_sub_423CA0()\n{\n'

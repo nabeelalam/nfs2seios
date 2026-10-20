@@ -35,6 +35,20 @@ class FrontendWordHooks(unittest.TestCase):
         with self.assertRaises(ValueError):
             add_frontend_word_hooks(updated, 'Methods_03.cpp')
 
+    def test_complete_text_scope_preserves_original_entry_and_tail(self):
+        entry=ENTRY.replace('423CA0','405CF0')
+        original=entry+BODY
+        updated=add_frontend_word_hooks(original,'Methods_01.cpp')
+        self.assertEqual(updated.count('nfs_trace_guest_call'),1)
+        self.assertTrue(updated.endswith(BODY))
+        self.assertIn('uint32_t(eax), [](uint32_t address) { return guest_load<uint8_t>(address); }',updated)
+        self.assertIn('nfs::FrontendTextScope nfs_front_text_scope',updated)
+        with self.assertRaises(ValueError):
+            add_frontend_word_hooks(updated,'Methods_01.cpp')
+        for drift in ('',original.replace('405CF0()','405CF1()'),original*2):
+            with self.assertRaises(ValueError):
+                add_frontend_word_hooks(drift,'Methods_01.cpp')
+
 
 if __name__ == '__main__':
     unittest.main()

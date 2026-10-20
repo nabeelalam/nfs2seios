@@ -7,11 +7,15 @@
 #include <cstring>
 #include <cstdio>
 #include <stdexcept>
+#include <vector>
 #include "MainThreadHarness.h"
+#include "FrontendTextContext.h"
 static_assert(sizeof(GrVertex)==60,"Original Glide vertex layout");
 static_assert(sizeof(GrTexInfo)==20 && sizeof(GrLfbInfo_t)==20,"Original Glide pointer layouts");
 static nfs::GameMemory memory;
 static bool saw_vertex, saw_texture, saw_palette;
+static std::vector<uint64_t> text_contexts;
+static bool fail_vertex;
 static uint8_t *framebuffer;
 extern "C" void *nfs_host_address(uint32_t address,size_t length) {
     void *p=memory.resolve(address,length);
@@ -25,6 +29,8 @@ extern "C" uint32_t nfs_guest_address(const void *pointer) {
 }
 // Native witnesses test the actual generated export bodies, without a GPU.
 extern "C" void native_grDrawTriangle(const GrVertex *a,const GrVertex *b,const GrVertex *c) {
+    text_contexts.push_back(nfs_front_text_context());
+    if(fail_vertex)throw std::runtime_error("Native vertex witness failure");
     saw_vertex=reinterpret_cast<uintptr_t>(a)>UINT32_MAX && a->x==77.0f && b->r==31.0f && c->tmuvtx[1].tow==9.0f;
 }
 extern "C" void native_grTexDownloadMipMap(GrChipID_t,uint32_t,uint32_t,GrTexInfo *info) {
@@ -56,6 +62,24 @@ int main() {
     CHECK(grDrawTriangle(int32_t(0x80000003u),int32_t(0x80000043u),int32_t(0x80000083u))==0 && !saw_vertex);
     // Queued vertices are snapshots, not pointers borrowed until presentation.
     std::memset(records+3,0,188);nfs::flush_renderer_commands();CHECK(saw_vertex);
+    CHECK(text_contexts.size()==1 && text_contexts[0]==0);
+    nfs::renderer_operation([]{nfs_front_text_context_set(99);return 0;});
+    for(uint64_t identity:{17,23}){
+        nfs::FrontendTextScope text(identity);
+        guest_store<GrVertex>(0x80000003u,vertex);guest_store<GrVertex>(0x80000043u,vertex);guest_store<GrVertex>(0x80000083u,vertex);
+        CHECK(grDrawTriangle(int32_t(0x80000003u),int32_t(0x80000043u),int32_t(0x80000083u))==0);
+    }
+    CHECK(nfs_front_text_context()==0 && text_contexts.size()==1);
+    std::memset(records+3,0,188);nfs::flush_renderer_commands();
+    CHECK(text_contexts.size()==3 && text_contexts[1]==17 && text_contexts[2]==23 && saw_vertex);
+    CHECK(nfs::renderer_operation([]{return nfs_front_text_context()==99;})==1);
+    {
+        nfs::FrontendTextScope text(37);fail_vertex=true;
+        CHECK(grDrawTriangle(int32_t(0x80000003u),int32_t(0x80000043u),int32_t(0x80000083u))==0);
+    }
+    bool failed=false;try{nfs::flush_renderer_commands();}catch(const std::runtime_error &){failed=true;}
+    CHECK(failed && nfs_front_text_context()==0 && text_contexts.back()==37);fail_vertex=false;
+    CHECK(nfs::renderer_operation([]{return nfs_front_text_context()==99;})==1);
     GrTexInfo texture{}; texture.smallLod=3; texture.largeLod=3; texture.format=GR_TEXFMT_P_8; texture.data=0x90000000;
     guest_store<GrTexInfo>(0x800000c3u,texture);
     CHECK(grTexDownloadMipMap(0,0,3,int32_t(0x800000c3u))==0 && saw_texture);

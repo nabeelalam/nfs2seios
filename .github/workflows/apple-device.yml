@@ -46,10 +46,14 @@ jobs:
       - name: Host regression tests
         run: |
           python3 tests/bundle_resources_test.py
+          python3 tests/frontend_word_hooks_test.py
+          python3 tests/frontend_asset_review_test.py
+          python3 tests/frontend_font_inspection_test.py
+          python3 tests/hd_workflow_coverage_test.py
           python3 tests/guest_copy_semantics_test.py
           if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
           cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
-          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests -j 3
+          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests -j 3
           ctest --test-dir .build/host --output-on-failure
       - name: Configure native iPadOS targets
         run: |

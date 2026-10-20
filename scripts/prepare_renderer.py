@@ -249,7 +249,7 @@ def prepare_glide_exports(source, dest):
         raise ValueError(f"Missing Glide implementations: {set(declarations)-set(implementations)}")
     header = '#pragma once\n#include "Glide2x.h"\n#ifdef __cplusplus\nextern "C" {\n#endif\n'
     header += 'void nfs_glide_palette_table_owned(GrChipID_t,GrTexTable_t,uint64_t,const GuTexPalette *);\nuint64_t nfs_glide_palette_upload_count(void);\n'
-    bridge = '#include "GuestAccess.h"\n#include "NativeGlide.h"\n#undef true\n#undef false\n#include "MainThreadBridge.h"\n#include "FramePresentation.h"\n'
+    bridge = '#include "GuestAccess.h"\n#include "NativeGlide.h"\n#undef true\n#undef false\n#include "MainThreadBridge.h"\n#include "FramePresentation.h"\n#include "FrontendTextContext.h"\n'
     pointer_bridge = bridge
     pointer_exports = {'grDrawTriangle','grTexDownloadMipMap','grTexSource','grLfbLock','grFogTable','guFogGenerateExp','grTexDownloadTable'}
     for name, (result, native_args) in sorted(implementations.items()):
@@ -290,6 +290,11 @@ def prepare_glide_exports(source, dest):
             bridge += ' nfs_wait_frame_slot();\n'
         invocation = f'native_{name}({", ".join(arguments)})'
         operation = f'{invocation}; return 0;' if result == 'void' else f'return static_cast<int32_t>({invocation});'
+        if name == 'grDrawTriangle':
+            # Text may return/change on the worker before this owned command
+            # executes. Snapshot its identity beside the copied vertices.
+            bridge += ' const uint64_t text_context = nfs_front_text_context();\n'
+            operation = 'nfs::FrontendTextScope text_scope(text_context); ' + operation
         if name == 'grTexDownloadTable':
             # Glide downloads table contents, so the caller may mutate/free its
             # palette after return. Admit the owned snapshot in global FIFO.

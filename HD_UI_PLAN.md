@@ -589,3 +589,24 @@ This remains local frontend evidence, not full-race or physical iPad acceptance.
 Next remaster the other frontend forms and fonts, then review remaining artwork
 and complete UI spacing. The main performance branch stays separate; no new
 cloud build or IPA was used for this source checkpoint.
+
+Changing labels require complete-string identity as well as glyph coordinates:
+otherwise a different track name can accidentally match only some replacement
+letters. The prepared text entry now hashes bounded printable ASCII input, and
+the existing owned triangle command snapshots that identity beside its vertices.
+Renderer-thread scope restoration protects both normal and exceptional exits.
+No text pointer is retained or text content logged. Unsupported strings use zero.
+This adds no renderer command, barrier or GPU operation.
+
+The private Location consumer prototype verifies recognized text, unknown-text
+fallback and the second-row colon. An actual run changes North Country to Pacific
+Spirit (original font throughout), then back to remastered North Country, with
+working Done/Escape/controller navigation at both reviewed resolutions. Its
+settings are restored. This is not physical iPad or performance acceptance.
+Location artwork/guarded geometry remain private pending broader graphics checks
+and deterministic source integration; the maintained main-menu art is unchanged.
+
+The existing Linux/Apple host workflow target lists now include all registered
+UI tests, including the generated deferred bridge witness. A small local policy
+test checks build/run coverage to catch omissions before Apple compilation.
+No new cloud jobs or builds were started.

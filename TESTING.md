@@ -703,3 +703,20 @@ An actual original frontend run with the maintained renderer and prepared hook
 checks new-edge clicking at 640x480 and 2186x1640, Escape and controller navigation,
 clean shutdown and copied-settings restoration. Other forms remain original;
 full-race, energy and physical iPad results are not established by these checks.
+
+`frontend_text_context_tests` checks bounded complete-string identity, empty and
+unsupported strings, invalid/overflowing guest reads, per-thread isolation and
+nested normal/exception restoration. The actual generated pointer bridge is
+tested by `glide_tests`: two labels and copied vertices are queued, caller state
+changes before execution, and the owner must see the original identities and
+vertices. A native witness exception must restore the owner's previous identity.
+Both targets participate in boundary sanitizers and need no game assets or GPU.
+
+Run `python tests/hd_workflow_coverage_test.py` to check that the existing Linux
+gate builds/runs registered UI tests and the Apple host list builds them before
+CTest. This checks local workflow coverage; it is not evidence of a cloud run.
+The private guarded Location consumer additionally exercises 1,430 captured
+triangles, with missing/different identities retaining original rendering, and
+an actual North Country/Pacific Spirit/back-to-North-Country runtime observation.
+Location art integration, broader pixel regressions and physical review remain
+open.

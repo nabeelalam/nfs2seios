@@ -57,6 +57,10 @@ jobs:
           python3 tests/guest_copy_batching_test.py
           python3 tests/rep_word_batching_test.py
           python3 tests/complete_helper_batching_test.py
+          python3 tests/frontend_word_hooks_test.py
+          python3 tests/frontend_asset_review_test.py
+          python3 tests/frontend_font_inspection_test.py
+          python3 tests/hd_workflow_coverage_test.py
           python3 scripts/setup_secret_scanner.py
           python3 scripts/publication_gate.py --mode history
           python3 scripts/publication_audit.py --mode worktree
@@ -73,7 +77,7 @@ jobs:
           python3 tests/guest_copy_semantics_test.py
           python3 scripts/check_runner_space.py
           cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON
-          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests -j 3
+          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests -j 3
       - name: Validate full native engine linkage and memory ownership
         run: |
           set -o pipefail
@@ -83,6 +87,9 @@ jobs:
           .build/pixels/texture_digest_tests
           .build/pixels/builtin_timing_tests
           .build/pixels/hd_glyph_select_tests
+          for test in small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests; do
+            .build/pixels/"$test"
+          done
           .build/pixels/shared_memory_tests
           timeout 10s .build/pixels/engine_thread_metrics_tests
           timeout 10s .build/pixels/engine_thread_clock_tests
