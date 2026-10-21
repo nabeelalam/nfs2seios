@@ -12,6 +12,9 @@ using MainTask=void(*)(void *);
 using MainScheduler=void(*)(MainTask,void *);
 // Construct and bind on the app's main thread before starting game workers.
 // A scheduler must execute synchronously, exactly once, on that owner thread.
+// Consumed includes queued ownership and intentional retirement discard.
+// UseExistingOwnerPath never queues or executes the supplied operation.
+enum class OwnedRendererAcceptance {Consumed,UseExistingOwnerPath};
 class MainThreadBridge {
     struct Command;
     const std::thread::id owner;
@@ -35,6 +38,11 @@ public:
     void retire_renderer();
     int32_t renderer_barrier(std::function<int32_t()> operation);
     void enqueue_renderer(std::function<int32_t()> operation);
+// Worker callers must own all captures and store Consumed before checking stop.
+// Consumed also covers retirement discard: never retry an accepted operation.
+// A worker exception means this operation was not accepted; prior work may have run.
+// Owner callers receive UseExistingOwnerPath without executing the operation.
+    OwnedRendererAcceptance enqueue_owned_renderer(std::function<int32_t()> operation);
 };
 void bind_main_thread_bridge(MainThreadBridge *bridge);
 void run_on_main(MainTask task,void *context);
@@ -42,6 +50,7 @@ void run_renderer_on_main(MainTask task,void *context);
 void suspend_renderer(bool suspended);
 int32_t renderer_barrier(std::function<int32_t()> operation);
 void enqueue_renderer(std::function<int32_t()> operation);
+OwnedRendererAcceptance enqueue_owned_renderer(std::function<int32_t()> operation);
 void flush_renderer_commands();
 MainScheduler sdl_main_thread_scheduler();
 MainScheduler apple_main_thread_scheduler();

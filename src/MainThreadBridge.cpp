@@ -117,6 +117,12 @@ void MainThreadBridge::enqueue_renderer(std::function<int32_t()> operation){
     }
     append_command(std::move(operation));
 }
+OwnedRendererAcceptance MainThreadBridge::enqueue_owned_renderer(std::function<int32_t()> operation){
+    if(std::this_thread::get_id()==owner)return OwnedRendererAcceptance::UseExistingOwnerPath;
+    append_command(std::move(operation));
+    // No stop check after append: ownership was consumed, including retirement.
+    return OwnedRendererAcceptance::Consumed;
+}
 void MainThreadBridge::execute(MainTask task,void *context){
     if(!task)throw std::invalid_argument("Missing main-thread operation");
     struct Request {MainTask task;void *context;std::thread::id owner;bool completed=false;std::exception_ptr failure;};
@@ -190,6 +196,10 @@ void bind_main_thread_bridge(MainThreadBridge *bridge){active=bridge;renderer_wo
 void run_on_main(MainTask task,void *context){if(!active)throw std::logic_error("Main-thread runtime unbound");active->execute(task,context);}
 int32_t renderer_barrier(std::function<int32_t()> operation){if(!active)throw std::logic_error("Main-thread runtime unbound");return active->renderer_barrier(std::move(operation));}
 void enqueue_renderer(std::function<int32_t()> operation){if(!active)throw std::logic_error("Main-thread runtime unbound");active->enqueue_renderer(std::move(operation));}
+OwnedRendererAcceptance enqueue_owned_renderer(std::function<int32_t()> operation){
+    if(!active)throw std::logic_error("Main-thread runtime unbound");
+    return active->enqueue_owned_renderer(std::move(operation));
+}
 void flush_renderer_commands(){renderer_barrier([]{return 0;});}
 void run_renderer_on_main(MainTask task,void *context){if(!task)throw std::invalid_argument("Missing renderer operation");renderer_barrier([=]{task(context);return 0;});}
 void suspend_renderer(bool value){if(!active)throw std::logic_error("Main-thread runtime unbound");active->suspend_renderer(value);}
