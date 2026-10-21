@@ -4,6 +4,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <deque>
+union SDL_Event;
 namespace nfs {
 struct GameMessage {uint32_t window,message,wparam,lparam,time,x,y;};
 static_assert(sizeof(GameMessage)==28,"Original 32-bit MSG layout");
@@ -31,6 +32,10 @@ public:
 };
 void bind_window_bridge(WindowBridge *bridge);
 WindowOperations sdl_window_operations();
+// Main-owner-only: refresh current window physical pixels for matching SDL events.
+// False leaves configuration unchanged (foreign/stale, failed query or same size).
+// This never changes the selected fixed/native rendering policy or calls GL.
+bool sdl_window_event(const SDL_Event &event);
 }
 extern "C" int32_t WrapperCreateWindow(int32_t);
 extern "C" int32_t GetMessageA_wrap(int32_t,int32_t,int32_t,int32_t);

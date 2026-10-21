@@ -178,6 +178,7 @@ void GameSession::poll(){
     nfs_diagnostics_activity(impl->foreground?1:0);
     SDL_Event event;while(SDL_PollEvent(&event)){
         if(event.type==SDL_EVENT_QUIT || event.type==SDL_EVENT_TERMINATING)impl->request_stop();
+        sdl_window_event(event);
         impl->lifecycle(event.type); // Fallback for events pushed from other threads; owner notifications were handled immediately.
         const auto now=uint32_t(SDL_GetTicks());
         if(event.type==SDL_EVENT_WINDOW_FOCUS_LOST){impl->pointer_focused=false;impl->touch.reset();impl->input.clear_pointer(now);impl->touch_keys.cancel(now,Impl::post_input,impl.get());}

@@ -25,6 +25,8 @@ extern "C" void native_grGlideShutdown(void);
 #include <exception>
 #include <future>
 #include <vector>
+#include <algorithm>
+#include <utility>
 extern "C" {
 int32_t keepAspectRatio=1,needRecreateGl=0,windowResized=0,linearFiltering=0,fixedFramebufferSize=1,framebufferLinearFiltering=1;
 int32_t vSync=0,winWidth=640,winHeight=480,initialWinWidth=640,initialWinHeight=480;
@@ -71,6 +73,43 @@ int main(int argc,char **argv){
     CHECK(records[2]==0xcc && records[3+sizeof(GrHwConfiguration)]==0xcc);
     CHECK(grSstWinOpen(1,0,0,0,0,2,1)==1);
     std::printf("GLES renderer: %s / %s\n",glGetString(GL_RENDERER),glGetString(GL_VERSION));
+    if(argc==2 && std::strcmp(argv[1],"--resize-only")==0){
+        const auto context=SDL_GL_GetCurrentContext();CHECK(context);
+        auto depth_size=[](){
+            GLint name=0,prior=0,w=0,h=0;
+            glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name);
+            glGetIntegerv(GL_RENDERBUFFER_BINDING,&prior);glBindRenderbuffer(GL_RENDERBUFFER,GLuint(name));
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER,GL_RENDERBUFFER_WIDTH,&w);glGetRenderbufferParameteriv(GL_RENDERBUFFER,GL_RENDERBUFFER_HEIGHT,&h);
+            glBindRenderbuffer(GL_RENDERBUFFER,GLuint(prior));return std::pair<int,int>(w,h);
+        };
+        CHECK(depth_size()==std::make_pair(640,480));
+        SDL_Event e{};e.type=SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;e.window.windowID=SDL_GetWindowID(sdlWin)+1;
+        windowResized=0;CHECK(!nfs::sdl_window_event(e)&&!windowResized);
+        e.window.windowID=SDL_GetWindowID(sdlWin);e.window.data1=3000;e.window.data2=2000;
+        CHECK(!nfs::sdl_window_event(e)&&!windowResized); // Event payload is not actual pixel authority.
+        bool workerRejected=false;std::thread wrong([&]{try{nfs::sdl_window_event(e);}catch(const std::logic_error&){workerRejected=true;}});wrong.join();CHECK(workerRejected&&!windowResized);
+        CHECK(SDL_SetWindowSize(sdlWin,960,720));
+        bool observed=false;const auto deadline=SDL_GetTicks()+3000;
+        while(SDL_GetTicks()<deadline&&!observed){while(SDL_PollEvent(&e)){if(nfs::sdl_window_event(e))observed=true;}SDL_Delay(1);}
+        int actualWidth=0,actualHeight=0;CHECK(SDL_GetWindowSizeInPixels(sdlWin,&actualWidth,&actualHeight));
+        CHECK(observed&&winWidth==actualWidth&&winHeight==actualHeight&&windowResized);
+        CHECK(depth_size()==std::make_pair(640,480)); // No GL rebuild from event handling.
+        grBufferSwap(0);CHECK(!windowResized&&fixedFramebufferSize==1&&depth_size()==std::make_pair(640,480));
+        fixedFramebufferSize=0;windowResized=1;grBufferSwap(0);
+        const int h=std::min(actualWidth,actualHeight),w=h*4/3;
+        CHECK(depth_size()==std::make_pair(w,h)&&nfs_render_width()==w&&nfs_render_height()==h&&SDL_GL_GetCurrentContext()==context);
+        grRenderBuffer(GR_BUFFER_BACKBUFFER);grBufferClear(0x1234ab,255,65535);nfs::flush_renderer_commands();
+        unsigned char pixel[4]={};for(const auto point:std::vector<std::pair<int,int>>{{0,0},{w-1,0},{0,h-1},{w-1,h-1},{w/2,h/2}}){
+            glReadPixels(point.first,point.second,1,1,GL_RGBA,GL_UNSIGNED_BYTE,pixel);
+            CHECK(pixel[0]==0x12&&pixel[1]==0x34&&pixel[2]==0xab); // Independent complete-FBO color oracle.
+        }
+        e={};e.type=SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;e.window.windowID=SDL_GetWindowID(sdlWin);
+        CHECK(!windowResized&&!nfs::sdl_window_event(e)&&!windowResized&&depth_size()==std::make_pair(w,h));
+        auto*owned=sdlWin;sdlWin=nullptr;CHECK(!nfs::sdl_window_event(e)&&!windowResized);sdlWin=owned;
+        CHECK(glGetError()==GL_NO_ERROR);grGlideShutdown();operations.destroy(sdlWin);sdlWin=nullptr;nfs::bind_main_thread_bridge(nullptr);SDL_Quit();
+        std::puts("PASS: actual SDL pixel event, foreign/payload/thread rejection, fixed/native swap boundary, depth attachment and five independent full-target RGB pixels, no game/assets");return 0;
+    }
+
     grGammaCorrectionValue(1.0f);grRenderBuffer(GR_BUFFER_BACKBUFFER);grBufferClear(0x0000ff,255,65535);
     const auto before=heap.available_bytes();
     auto info=lock(0x800000a3u,GR_LFB_WRITE_ONLY,GR_BUFFER_BACKBUFFER,GR_ORIGIN_UPPER_LEFT);

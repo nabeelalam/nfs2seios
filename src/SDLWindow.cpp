@@ -4,11 +4,25 @@
 #include <SDL3/SDL.h>
 #include <exception>
 #include <stdexcept>
+#include <cmath>
 #ifdef __APPLE__
 #include <TargetConditionals.h>
 #endif
-extern "C" {extern SDL_Window *sdlWin;extern int32_t winWidth,winHeight;extern float dpr;}
+extern "C" {extern SDL_Window *sdlWin;extern int32_t winWidth,winHeight,windowResized;extern float dpr;}
 namespace {
+// All configuration publication and renderer callbacks share the SDL main owner.
+// Query physical pixels; logical points are incorrect on high-density displays.
+bool refresh_pixels(SDL_Window *window,bool *changed=nullptr){
+    if(!SDL_IsMainThread())throw std::logic_error("Window pixel refresh needs SDL main thread");
+    int width=0,height=0;
+    if(!window || !SDL_GetWindowSizeInPixels(window,&width,&height) || width<=0 || height<=0)return false;
+    const float density=SDL_GetWindowPixelDensity(window);
+    if(!std::isfinite(density) || density<=0)return false;
+    const bool differs=winWidth!=width || winHeight!=height || dpr!=density;
+    if(differs){winWidth=width;winHeight=height;dpr=density;windowResized=1;}
+    if(changed)*changed=differs;
+    return true;
+}
 struct Request {SDL_Window *window=nullptr;bool create;std::exception_ptr failure;};
 void on_main(void *p){
     auto &request=*static_cast<Request *>(p);
@@ -21,10 +35,16 @@ void on_main(void *p){
 #if defined(__APPLE__) && TARGET_OS_IOS
             flags|=SDL_WINDOW_FULLSCREEN;
             SDL_SetHint(SDL_HINT_IOS_HIDE_HOME_INDICATOR,"2");
+#else
+            flags|=SDL_WINDOW_RESIZABLE;
 #endif
             request.window=SDL_CreateWindow("Need for Speed II SE",640,480,flags);
             if(!request.window)throw std::runtime_error(SDL_GetError());
-            sdlWin=request.window;SDL_GetWindowSize(request.window,&winWidth,&winHeight);dpr=SDL_GetWindowPixelDensity(request.window);
+            if(!refresh_pixels(request.window)){
+                SDL_DestroyWindow(request.window);request.window=nullptr;
+                throw std::runtime_error("Cannot query valid window pixel dimensions");
+            }
+            sdlWin=request.window;
         }else {SDL_DestroyWindow(request.window);if(sdlWin==request.window)sdlWin=nullptr;}
     }catch(...){request.failure=std::current_exception();}
 }
@@ -35,4 +55,13 @@ void run(Request &request){
 void *create(){Request request;request.create=true;run(request);return request.window;}
 void destroy(void *window){Request request;request.create=false;request.window=static_cast<SDL_Window *>(window);run(request);}
 }
-namespace nfs {WindowOperations sdl_window_operations(){return {create,destroy};}}
+namespace nfs {
+WindowOperations sdl_window_operations(){return {create,destroy};}
+bool sdl_window_event(const SDL_Event &event){
+    if(!SDL_IsMainThread())throw std::logic_error("Window events need SDL main thread");
+    if((event.type!=SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED && event.type!=SDL_EVENT_WINDOW_RESIZED) ||
+       !sdlWin || event.window.windowID!=SDL_GetWindowID(sdlWin))return false;
+    bool changed=false;
+    return refresh_pixels(sdlWin,&changed) && changed;
+}
+}
