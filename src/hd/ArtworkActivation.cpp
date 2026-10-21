@@ -3,6 +3,9 @@
 #include "BackgroundSceneCatalog.h"
 #include <cstdlib>
 #include <memory>
+#ifdef NFS_HD_ARTWORK_CONFIG_HEADER
+#include NFS_HD_ARTWORK_CONFIG_HEADER
+#endif
 #ifndef NFS_HD_ARTWORK_SHA256
 #define NFS_HD_ARTWORK_SHA256 ""
 #endif
