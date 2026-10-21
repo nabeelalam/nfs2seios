@@ -92,7 +92,7 @@
     2048
   ],
   "rleBytes": 1359528,
-  "glyphPartitions": 1933,
+  "glyphPartitions": 1975,
   "inkFit": [
     {
       "text": "game setup",
@@ -135,6 +135,8 @@
       "outsideMatchingHitRectangle": 0
     }
   ],
+  "baseWordLayoutSha256": "9386bf4c6e56bb8dfce18cd77e4bb4ff0e98155077e2885baf15dcce4396b251",
+  "rightLabelCatalogSha256": "78ca798c2819fd98b1b69d8b867f202c6d40f739bff941226c97806e05502cb3",
   "locationCatalogSha256": "034362df7d9b69e8f92f0cfb6a512799922b3adb9d3611f7f9fc977de3555816",
   "locationPlacements": [
     {
@@ -1963,7 +1965,7 @@
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
     "FrontendFontPixels.inc": "cbc40fbacb6b77c91cbfe5ab510334776b445ec513cf03d9b4c6c5253c651480",
-    "FrontendWordLayout.inc": "9386bf4c6e56bb8dfce18cd77e4bb4ff0e98155077e2885baf15dcce4396b251",
+    "FrontendWordLayout.inc": "28aa53f2cad572859855962cbc62c5504f23f920c35b767e7c937dbdca8c1a0a",
     "FrontendFontPixelsPart0.inc": "68578f86bf1b54e5cc82560ac8b610b5bac8e89b35200b7e9bbc4337f889404e",
     "FrontendFontPixelsPart1.inc": "b53cf525a0afbf2c74782c4572068c8fe2b84d44b2723a26d209d57fc584743d",
     "FrontendFontPixelsPart2.inc": "2f0ebc46f766558f0c2b4a66d88376cf612619665c2b3cab049848b98761b920",

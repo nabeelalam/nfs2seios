@@ -240,6 +240,11 @@ def generate_frontend(check=False):
     pixels, rows, opponents = opponents_words(directory,pixels,rows,hashes,text_identity)
     location_placements,setup_placements=opponents['locationPlacements'],opponents['setupPlacements']
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
+    base_layout_hash = hashlib.sha256(('// SPDX-License-Identifier: MIT\n// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.\n'+layout).encode()).hexdigest()
+    from frontend_right_labels import right_label_rows, extend_layout
+    right_path = directory/'right-labels/catalog.json'
+    right_rows = right_label_rows(json.loads(right_path.read_text()), setup_placements, text_identity)
+    layout = extend_layout(layout, right_rows)
     template = json.loads((ROOT/'scripts/hud_templates/FrontendFontPixels.json').read_text())['template']
     if template.count('@PIXEL_ARRAY@') != 1:
         raise ValueError('Invalid frontend decoder template')
@@ -252,7 +257,8 @@ def generate_frontend(check=False):
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
                     rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2048],
-                    rleBytes=len(encoded), glyphPartitions=len(rows), inkFit=ink,
+                    rleBytes=len(encoded), glyphPartitions=len(rows)+len(right_rows), inkFit=ink,
+                    baseWordLayoutSha256=base_layout_hash, rightLabelCatalogSha256=hashlib.sha256(right_path.read_bytes()).hexdigest(),
                     locationCatalogSha256=location_catalog_hash, locationPlacements=location_placements,
                     setupCatalogSha256=setup_catalog_hash, setupPlacements=setup_placements,
                     previousAcceptedTopRasterSha256=top_hash,
@@ -267,19 +273,79 @@ def generate_frontend(check=False):
         if check:
             if path.read_text() != content:
                 raise ValueError('Generated frontend artwork differs: '+name)
-        else:
+        elif not path.exists() or path.read_bytes() != content.encode():
             path.write_bytes(content.encode())
     receipt = directory/'generated.json'
     if check:
         if json.loads(receipt.read_text()) != metadata:
             raise ValueError('Generated frontend receipt differs')
-    else:
+    elif not receipt.exists() or json.loads(receipt.read_text()) != metadata:
         receipt.write_bytes((json.dumps(metadata,indent=2)+'\n').encode())
     return metadata
 
+
+
+def generate_frontend_layout(check=False):
+    """Update only word geometry using a verified existing atlas and packing receipt."""
+    from frontend_right_labels import right_label_rows, extend_layout, base_layout
+    directory = ROOT/'assets/hud/frontend'
+    receipt = directory/'generated.json'
+    metadata = json.loads(receipt.read_text())
+    # A stale or edited image, catalog, packing recipe or generated header requires
+    # full generation. Never silently reuse metadata from a different atlas.
+    for relative, expected in metadata['sourceHashes'].items():
+        path = ROOT/relative
+        if not relative.startswith('assets/hud/frontend/') or '..' in path.parts or path.suffix != '.svg':
+            raise ValueError('Unexpected authored source path')
+        if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+            raise ValueError('Stale authored artwork; run full generation')
+    catalogs = {'catalogSha256':'catalog.json', 'locationCatalogSha256':'location/catalog.json',
+                'setupCatalogSha256':'setup/catalog.json', 'playerCatalogSha256':'player/catalog.json',
+                'opponentsCatalogSha256':'opponents/catalog.json', 'packingRecipeSha256':'opponents/packing.json'}
+    for key, relative in catalogs.items():
+        if hashlib.sha256((directory/relative).read_bytes()).hexdigest() != metadata[key]:
+            raise ValueError('Stale catalog or packing; run full generation')
+    expected_names = {'FrontendFontPixels.inc','FrontendWordLayout.inc'} | {
+        'FrontendFontPixelsPart'+str(i)+'.inc' for i in range(21)}
+    if set(metadata['headerHashes']) != expected_names:
+        raise ValueError('Unexpected generated header inventory')
+    for name, expected in metadata['headerHashes'].items():
+        if hashlib.sha256((ROOT/'src'/name).read_bytes()).hexdigest() != expected:
+            raise ValueError('Modified generated header; run full generation')
+    table_path = ROOT/'src/FrontendWordLayout.inc'
+    base = base_layout(table_path.read_text())
+    if hashlib.sha256(base.encode()).hexdigest() != metadata['baseWordLayoutSha256']:
+        raise ValueError('Stale base word layout')
+    # Cross-check metadata regions against the already-authenticated base rows.
+    import re
+    for text, filename in [('one player','one-player.svg'),('single race','single-race.svg')]:
+        placements = [p for p in metadata['setupPlacements'] if p['file'] == filename]
+        if len(placements) != 1:
+            raise ValueError('Ambiguous packed label')
+        p = placements[0]; ax, ay, aw, ah = p['atlas']; top = p['sourceCrop'][1]
+        matches = re.findall(r'\{([^{}]+),UINT64_C\(0x'+format(text_identity(text),'016x')+r'\)\}', base)
+        if not matches or any([float(v) for v in row.split(',')][7:10] != [ax/4,ay/8,aw/4]
+                              or [float(v) for v in row.split(',')][11:13] != [top/4,ah/4] for row in matches):
+            raise ValueError('Packed label metadata disagrees with base atlas coordinates')
+    catalog_path = directory/'right-labels/catalog.json'
+    rows = right_label_rows(json.loads(catalog_path.read_text()), metadata['setupPlacements'], text_identity)
+    table = extend_layout(base, rows)
+    metadata['rightLabelCatalogSha256'] = hashlib.sha256(catalog_path.read_bytes()).hexdigest()
+    metadata['headerHashes']['FrontendWordLayout.inc'] = hashlib.sha256(table.encode()).hexdigest()
+    if check:
+        if table_path.read_text() != table or json.loads(receipt.read_text()) != metadata:
+            raise ValueError('Generated right-label layout differs')
+    else:
+        if table_path.read_bytes() != table.encode():
+            table_path.write_bytes(table.encode())
+        if json.loads(receipt.read_text()) != metadata:
+            receipt.write_bytes((json.dumps(metadata,indent=2)+'\n').encode())
+    return metadata
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
-    print(json.dumps(generate_frontend(parser.parse_args().check), indent=2))
+    parser.add_argument('--layout-only', action='store_true', help='Reuse verified atlas pixels; update caption geometry only')
+    args = parser.parse_args()
+    print(json.dumps((generate_frontend_layout if args.layout_only else generate_frontend)(args.check), indent=2))

@@ -40,7 +40,7 @@ static int nfs_front_font_geometry(const GrVertex *a,const GrVertex *b,const GrV
    if((!rx && fabsf(x-x0)>.01f) || (!ry && fabsf(y-y0)>.01f) || fabsf(legacy[i].tmuvtx[0].sow-(rx?u1:u0))>.01f || fabsf(legacy[i].tmuvtx[0].tow-(ry?v1:v0))>.01f)return 0;
    corner[i]=rx+2*ry;bits|=1u<<corner[i];}
   if(bits!=7 && bits!=11 && bits!=13 && bits!=14)return 0;
-  for(unsigned i=0;i<3;++i){unsigned rx=corner[i]&1,ry=corner[i]&2;float edge=rx?g->right:g->left;output[i]=*v[i];output[i].x=786432+g->outputX+edge*g->width;output[i].y=786432+g->y+g->inkTop+(ry?g->inkHeight:0);output[i].tmuvtx[0].sow=g->atlasX+edge*g->width;output[i].tmuvtx[0].tow=g->atlasY+(ry?g->inkHeight*nfs_front_font_v_scale:0);}
+  for(unsigned i=0;i<3;++i){unsigned rx=corner[i]&1,ry=corner[i]&2;float edge=rx?g->right:g->left;output[i]=*v[i];float sx=g->outputScaleX>0?g->outputScaleX:1,sy=g->outputScaleY>0?g->outputScaleY:1;output[i].x=786432+g->outputX+edge*g->width*sx;output[i].y=786432+g->y+g->inkTop*sy+(ry?g->inkHeight*sy:0);output[i].tmuvtx[0].sow=g->atlasX+edge*g->width;output[i].tmuvtx[0].tow=g->atlasY+(ry?g->inkHeight*nfs_front_font_v_scale:0);}
   return cell;
  }
  return 0;

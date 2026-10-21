@@ -59,8 +59,9 @@ int main() {
                 CHECK(out[i].tmuvtx[0].tow>=0 && out[i].tmuvtx[0].tow<=256);
                 const bool right=v[i].x>786432+glyph.x,bottom=v[i].y>786432+glyph.y;
                 const float edge=right?glyph.right:glyph.left;
-                CHECK(std::fabs(out[i].x-(786432+glyph.outputX+edge*glyph.width))<.063f);
-                CHECK(std::fabs(out[i].y-(786432+glyph.y+glyph.inkTop+(bottom?glyph.inkHeight:0)))<.063f);
+                const float sx=glyph.outputScaleX>0?glyph.outputScaleX:1,sy=glyph.outputScaleY>0?glyph.outputScaleY:1;
+                CHECK(std::fabs(out[i].x-(786432+glyph.outputX+edge*glyph.width*sx))<.063f);
+                CHECK(std::fabs(out[i].y-(786432+glyph.y+glyph.inkTop*sy+(bottom?glyph.inkHeight*sy:0)))<.063f);
                 CHECK(std::fabs(out[i].tmuvtx[0].sow-(glyph.atlasX+edge*glyph.width))<.001f);
                 CHECK(std::fabs(out[i].tmuvtx[0].tow-(glyph.atlasY+(bottom?glyph.inkHeight*nfs_front_font_v_scale:0)))<.001f);
                 out[i].x=v[i].x; out[i].y=v[i].y;
@@ -95,6 +96,6 @@ int main() {
         for (const auto &other:nfs_front_word_glyphs)
             if(glyph.word && other.word && glyph.word!=other.word && glyph.cell==other.cell && glyph.x==other.x && glyph.y==other.y && glyph.w==other.w && glyph.h==other.h){++ambiguous;break;}
     }
-    CHECK(cases==7732 && ambiguous==294 && nfs_front_text_context()==0);
+    CHECK(cases==7900 && ambiguous==294 && nfs_front_text_context()==0);
     std::printf("PASS authored atlas digest/canaries, %u complete glyph triangles, %u ambiguous positions, immutable attributes and whole-label fallback guards\n",cases,ambiguous);
 }
