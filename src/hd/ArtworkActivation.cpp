@@ -33,6 +33,10 @@ bool activateArtworkPack(const std::string&root,const Digest&expected)noexcept{
         if(!nfs_background_scene_runtime::installCatalog(pack->catalog()))return false;
         const auto provider=pack->provider();if(!nfs_hd_install_art_provider(&provider))return false;
         owner=std::move(pack);
+        // Retain ownership before publishing optional borrowed mark pixels.
+        // A missing/sealed mark registry preserves originals, not valid scenes.
+        const auto marks=owner->nativeMarkProvider();
+        if(marks.schema)(void)nfs_hd_install_native_mark_provider(&marks);
         return enableScene();
     }catch(...){return false;}
 }

@@ -2,6 +2,7 @@
 #pragma once
 #include "BackgroundScenePrepare.h"
 #include "HdArtProvider.h"
+#include "NativeMarkProvider.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -19,6 +20,8 @@ public:
     std::shared_ptr<const nfs_background_scene_cpu::SourceCatalog> catalog() const noexcept{return catalog_;}
     // Retain this pack for the entire provider lifetime before installing it.
     NfsHdArtProvider provider() const noexcept;
+    // Optional version2 marks share this same authenticated pack and owner.
+    NfsNativeMarkProvider nativeMarkProvider() const noexcept;
     const Digest& digest()const noexcept{return digest_;}
     size_t size()const noexcept{return bytes_.size();}
 private:
@@ -28,6 +31,11 @@ private:
     static int word(void*,uint32_t,NfsBackgroundSceneWord*);
     static int logo(void*,NfsSmallLogoArt*);
     static int region(void*,uint32_t,NfsSmallLogoRegion*);
+    static int nativeMark(void*,uint32_t,uint32_t,const uint8_t[32],NfsNativeMarkArt*);
+    struct NativeMarkBinding {uint32_t texture=0;Digest prepared{};};
+    std::array<NativeMarkBinding,NFS_NATIVE_MARK_MAX_BINDINGS> nativeBindings_{};
+    std::array<NfsNativeMarkArt,NFS_NATIVE_MARK_MAX_TEXTURES> nativeTextures_{};
+    uint32_t nativeBindingCount_=0,nativeTextureCount_=0;
     std::vector<uint8_t> bytes_;
     Digest digest_{};
     std::shared_ptr<const nfs_background_scene_cpu::SourceCatalog> catalog_;

@@ -40,11 +40,18 @@ std::shared_ptr<const ArtworkPack> ArtworkPack::loadOwned(std::vector<uint8_t>by
 }
 bool ArtworkPack::parse(){
     const auto*b=bytes_.data();
-    if(std::memcmp(b,"NFSHDPK1",8)||u32(b+8)!=1||u32(b+12)!=64||u64(b+16)!=bytes_.size()||u32(b+24)!=24||u32(b+28)!=32||u64(b+32)!=64||!zero(b+40,24))return false;
-    std::array<Section,24> sections{};size_t at=832;
-    for(unsigned k=0;k<24;++k){
+    const uint32_t version=u32(b+8),sectionCount=u32(b+24);
+    const bool legacy=version==1&&std::memcmp(b,"NFSHDPK1",8)==0;
+    const bool extended=version==2&&std::memcmp(b,"NFSHDPK2",8)==0;
+    if((!legacy&&!extended)||u32(b+12)!=64||u64(b+16)!=bytes_.size()||
+       u32(b+28)!=32||u64(b+32)!=64||!zero(b+40,24))return false;
+    if((legacy&&sectionCount!=24)||(extended&&(sectionCount<26||sectionCount>25+NFS_NATIVE_MARK_MAX_TEXTURES)))return false;
+    const uint32_t markTextures=extended?sectionCount-25:0;
+    std::array<Section,25+NFS_NATIVE_MARK_MAX_TEXTURES> sections{};
+    size_t at=64+32*size_t(sectionCount);if(at>bytes_.size())return false;
+    for(unsigned k=0;k<sectionCount;++k){
         const auto*t=b+64+32*k;uint32_t tag,id;
-        if(k==0){tag=1;id=0;}else if(k<=5){tag=2;id=k-1;}else if(k==6){tag=3;id=0;}else if(k<=18){tag=4;id=k-6;}else{tag=5;id=k-19;}
+        if(k==0){tag=1;id=0;}else if(k<=5){tag=2;id=k-1;}else if(k==6){tag=3;id=0;}else if(k<=18){tag=4;id=k-6;}else if(k<=23){tag=5;id=k-19;}else if(k==24){tag=6;id=0;}else{tag=7;id=k-25;}
         const auto n=u64(t+16);
         if(u32(t)!=tag||u32(t+4)!=id||u64(t+8)!=at||u64(t+24)||n>bytes_.size()-at)return false;
         sections[k]={tag,id,b+at,size_t(n)};at+=size_t(n);
@@ -101,9 +108,46 @@ bool ArtworkPack::parse(){
         if(t.sourceOriginX!=signed16(c->logos.identities[k].header[3])||t.sourceOriginY!=signed16(c->logos.identities[k].header[3]>>16))return false;
         if(t.role!=k||!t.scale||t.scale>16||t.logicalWidth!=int32_t(c->logos.identities[k].width)||t.logicalHeight!=int32_t(c->logos.identities[k].height)||uint64_t(uint32_t(t.logicalWidth))*t.scale!=t.width||uint64_t(uint32_t(t.logicalHeight))*t.scale!=t.height||uint64_t(t.x)+t.width>logo_.width||uint64_t(t.y)+t.height>logo_.height)return false;
     }
+    if(extended){
+        const auto&s=sections[24];if(s.size<16)return false;const auto*p=s.data;
+        const uint32_t count=u32(p+4);
+        if(u32(p)!=1||!count||count>NFS_NATIVE_MARK_MAX_BINDINGS||u32(p+8)!=64||u32(p+12)||
+           uint64_t(s.size)!=16+uint64_t(count)*64)return false;
+        for(unsigned k=0;k<count;++k){
+            const auto*q=p+16+size_t(k)*64;const uint32_t texture=u32(q+16);
+            if(u32(q)!=1||u32(q+4)!=NFS_NATIVE_MARK_SOURCE_RGBA5551_LE||
+               u32(q+8)!=NFS_NATIVE_MARK_SOURCE_EDGE||u32(q+12)!=32768||texture>=markTextures||
+               u32(q+20)!=128||u32(q+24)!=128||u32(q+28)||!nonzero(q+32,32))return false;
+            for(unsigned j=0;j<k;++j)if(std::memcmp(nativeBindings_[j].prepared.data(),q+32,32)==0)return false;
+            nativeBindings_[k].texture=texture;std::copy_n(q+32,32,nativeBindings_[k].prepared.begin());
+        }
+        for(unsigned k=0;k<markTextures;++k){
+            const auto&s=sections[25+k];if(s.size!=112+1048576)return false;const auto*p=s.data;
+            if(u32(p)!=512||u32(p+4)!=512||u32(p+8)!=1||u32(p+12)!=k||u32(p+16)!=1||
+               u32(p+20)||u32(p+24)||u32(p+28)||!u64(p+32)||u64(p+40)!=1048576||
+               !hash(p+112,1048576,p+48)||!zero(p+80,32)||!rgba(p+112,1048576,false))return false;
+            for(unsigned j=0;j<k;++j)if(nativeTextures_[j].identity==u64(p+32))return false;
+            auto&a=nativeTextures_[k];a.pixels=p+112;a.bytes=1048576;a.width=a.height=512;
+            a.logicalWidth=a.logicalHeight=128;a.schema=NFS_NATIVE_MARK_ART_SCHEMA;
+            a.premultiplied=1;a.opacityBaked=0;a.identity=u64(p+32);std::copy_n(p+48,32,a.sha256);
+        }
+        nativeBindingCount_=count;nativeTextureCount_=markTextures;
+    }
     catalog_=std::move(c);return true;
 }
 NfsHdArtProvider ArtworkPack::provider()const noexcept{return {NFS_HD_ART_PROVIDER_SCHEMA,const_cast<ArtworkPack*>(this),texture,word,logo,region};}
+NfsNativeMarkProvider ArtworkPack::nativeMarkProvider()const noexcept{
+    if(!nativeBindingCount_||!nativeTextureCount_)return {};
+    return {NFS_NATIVE_MARK_PROVIDER_SCHEMA,const_cast<ArtworkPack*>(this),nativeMark};
+}
+int ArtworkPack::nativeMark(void*p,uint32_t encoding,uint32_t edge,const uint8_t digest[32],NfsNativeMarkArt*out){
+    if(!p||!out||!digest||encoding!=NFS_NATIVE_MARK_SOURCE_RGBA5551_LE||edge!=NFS_NATIVE_MARK_SOURCE_EDGE)return 0;
+    const auto&pack=*static_cast<const ArtworkPack*>(p);
+    for(unsigned k=0;k<pack.nativeBindingCount_;++k)if(std::memcmp(pack.nativeBindings_[k].prepared.data(),digest,32)==0){
+        *out=pack.nativeTextures_[pack.nativeBindings_[k].texture];return 1;
+    }
+    return 0;
+}
 int ArtworkPack::texture(void*p,uint32_t role,NfsBackgroundSceneTexture*out){if(!p||!out||role>=5)return 0;*out=static_cast<const ArtworkPack*>(p)->textures_[role];return 1;}
 int ArtworkPack::word(void*p,uint32_t role,NfsBackgroundSceneWord*out){if(!p||!out||!role||role>12)return 0;*out=static_cast<const ArtworkPack*>(p)->words_[role-1];return 1;}
 int ArtworkPack::logo(void*p,NfsSmallLogoArt*out){if(!p||!out)return 0;*out=static_cast<const ArtworkPack*>(p)->logo_;return 1;}
