@@ -72,9 +72,80 @@ def prepare_renderer():
     marker = "static void setTextureFiltering()"
     if text.count(marker) != 1: raise ValueError("Cannot identify context abandonment insertion")
     text = text.replace(marker, 'BOOL nfs_glide_abandon_unbound(void){\n    if(SDL_GL_GetCurrentContext()!=NULL)return false;\n    nfs_glide_lfb_reset();\n    if(g_glCtx && !SDL_GL_DestroyContext(g_glCtx))return false;\n    nfs_hd_context_retired(0);g_glCtx=NULL;g_trianglesCount=0;g_palette=NULL;\n    return true;\n}\n' + marker)
+    text = prepare_background_scene(text, dest)
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
+
+
+
+def prepare_background_scene(text, dest):
+    # Add native pass witnesses; stripping tagged inserts restores every input byte.
+    original = text
+    def block(tag, body):
+        return '\n/* NFS_HD_SCENE_BEGIN:' + tag + ' */\n' + body + '\n/* NFS_HD_SCENE_END:' + tag + ' */\n'
+    def bounds(name):
+        pattern = (r'(?:native_)?' + re.escape(name[7:])) if name.startswith('native_') else re.escape(name)
+        matches = list(re.finditer(r'^[^\n;]*\b' + pattern + r'\([^;\n]*\)\s*\n\{', text, re.M))
+        if len(matches) != 1: raise ValueError('Missing or repeated native scene hook: ' + name)
+        m = matches[0]
+        start = text.index('{', m.start()); depth = 1; end = start + 1
+        while depth:
+            if end >= len(text): raise ValueError('Unbalanced renderer function')
+            depth += (text[end] == '{') - (text[end] == '}')
+            end += 1
+        return start, end
+    def insert(name, body, tail=False):
+        nonlocal text
+        a,b = bounds(name); at = b-1 if tail else a+1
+        text = text[:at] + block(name + ('-tail' if tail else '-head'), body) + text[at:]
+    def replace_once(needle, body, tag):
+        nonlocal text
+        if text.count(needle) != 1: raise ValueError('Unexpected scene source anchor: ' + tag)
+        text = text.replace(needle, needle + block(tag, body))
+    text = block('early-forward', 'static void nfs_logo_native_other(void);') + text
+    replace_once('} TextureInfo;', '''static void nfs_logo_native_created(void);
+static void nfs_logo_native_retired(int);
+static void nfs_logo_native_upload_begin(TextureInfo*);
+static void nfs_logo_native_upload_done(TextureInfo*);
+static void nfs_logo_native_state(void);
+static void nfs_logo_native_clear(uint16_t,float,float,float);
+static void nfs_logo_native_select(unsigned,uint32_t,uint32_t,const GrTexInfo*,TextureInfo*);
+static void nfs_logo_native_triangle(const GrVertex*,const GrVertex*,const GrVertex*);''', 'forward')
+    for name in ['destroyFrameBuffer','createFrameBuffer']:
+        insert(name, ' nfs_logo_native_other();')
+    insert('createContext',' nfs_logo_native_created();',True)
+    insert('destroyContext',' nfs_logo_native_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);')
+    replace_once('if(SDL_GL_GetCurrentContext()!=NULL)return false;', ' nfs_logo_native_retired(0);', 'unbound')
+    insert('uploadTexture',' nfs_logo_native_upload_begin(ti);')
+    insert('uploadTexture',' nfs_logo_native_upload_done(ti);',True)
+    for name in ['native_grAlphaBlendFunction','native_grClipWindow','native_grDepthBufferFunction',
+                 'native_grDepthMask','native_grFogColorValue','native_grFogMode',
+                 'native_grRenderBuffer','native_grTexDownloadTable']:
+        insert(name,' nfs_logo_native_state();')
+    insert('native_grAlphaCombine',' if(other!=GR_COMBINE_OTHER_TEXTURE || !g_textureEnabled)nfs_logo_native_state();')
+    insert('native_grBufferClear',' nfs_logo_native_clear(depth,r,g,b);',True)
+    for name in ['native_grBufferSwap','native_grDrawLine','native_grLfbLock','native_grLfbUnlock']:
+        insert(name,' nfs_logo_native_other();')
+    insert('native_grDrawTriangle',' nfs_logo_native_triangle(a,b,c);')
+    a,b = bounds('native_grTexSource'); part=text[a:b]
+    needle='\tglBindTexture(GL_TEXTURE_2D, ti->id);'
+    if part.count(needle)!=1: raise ValueError('Unexpected scene tile selection')
+    part=part.replace(needle,needle+block('selected',' nfs_logo_native_select(tmu,startAddress,evenOdd,info,ti);'))
+    needle='\t\tglTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size, size, 0, GL_RGBA, GL_UNSIGNED_BYTE, g_tmpTexture);'
+    if part.count(needle)!=1: raise ValueError('Unexpected scene palette upload')
+    part=part.replace(needle,block('palette',' nfs_logo_native_upload_begin(ti);')+needle)
+    text=text[:a]+part+text[b:]
+    text += block('implementation','#include "hd/BackgroundSceneRenderer.inc"')
+    restored = re.sub(r'\n/\* NFS_HD_SCENE_BEGIN:([^*]+) \*/\n.*?\n/\* NFS_HD_SCENE_END:\1 \*/\n', '', text, flags=re.S)
+    if restored != original: raise ValueError('Scene source reverse audit failed')
+    target=dest/'hd';target.mkdir(exist_ok=True)
+    names=['BackgroundSceneRenderer.inc','NativeSceneProvenance.h','BackgroundSceneCompositor.h',
+           'BackgroundSceneCompositor.c.inc','NativeSceneTarget.h','SceneGpuSupport.h',
+           'SceneGpuSupport.inc','SmallLogoGpu.h','SmallLogoGpu.c.inc','HdArtProvider.h',
+           'BackgroundSceneArt.h','SmallLogoArtAbi.h','BackgroundSceneRuntimeAbi.h','SmallLogoLayerAbi.h']
+    for name in names:shutil.copyfile(ROOT/'src/hd'/name,target/name)
+    return text
 
 
 def prepare_hd_atlas(text, dest):
