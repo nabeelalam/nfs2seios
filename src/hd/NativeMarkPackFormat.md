@@ -11,3 +11,16 @@ The final M sections have tag 7 and consecutive roles beginning at zero. Each co
 `ArtworkPack::nativeMarkProvider()` returns an empty descriptor for version 1. Version 2 exposes immutable borrowed artwork from the same retained pack. The independent native-mark provider ABI is copied at startup and sealed by its first getter. Missing, invalid and unknown lookups leave the caller's output unchanged. After startup, lookup is read-only and supports concurrent callers. Failure to install optional native marks leaves the valid background provider active.
 
 Original-derived keys and original or authored pixel payloads are external data, not constants in public source. Synthetic tests cover the format and provider behavior. Renderer and physical-device acceptance are separate requirements.
+
+## Mixed cursor and emblem packs
+
+Version 3 uses magic `NFSHDPK3` and version 3 with the same section layout, limits, authentication and reserved-field rules. Version 2 continues to accept only its original emblem profile. Version 3 accepts exactly these source/art pairs:
+
+| Encoding | Prepared square edge | Prepared bytes | Logical square edge | Authored RGBA8 square edge | Authored bytes |
+| --- | --- | --- | --- | --- | --- |
+| 1, RGBA5551 little-endian | 128 | 32768 | 128 | 512 | 1048576 |
+| 2, RGBA4444 little-endian | 32 | 2048 | 32 | 128 | 65536 |
+
+Each binding must reference artwork of its own profile. Binding uniqueness and lookup use the complete tuple of encoding, source edge and prepared-source SHA-256; the same opaque digest in different profiles cannot alias artwork. Texture identities remain unique across the complete pack. All payload hashes, premultiplied-alpha constraints and exact byte counts remain mandatory.
+
+The renderer recognizes the complete converted source upload. The cursor additionally requires square aspect, TMU 0 and matching LOD 3 on selection. Replacement retains the original draw geometry, UV endpoints, clipping, tint and blending, including the original cursor hotspot. Missing providers, unknown content, invalid profiles and unavailable resources retain original artwork. Host tests do not establish physical iPad acceptance.

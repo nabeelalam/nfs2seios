@@ -5,15 +5,15 @@
 static uint64_t read64(const Bytes&b,size_t p){uint64_t v=0;for(unsigned i=0;i<8;++i)v|=uint64_t(b.at(p+i))<<(8*i);return v;}
 struct NativeFixture {
  Bytes bytes;std::vector<size_t>at;
- NativeFixture(unsigned textures=2,unsigned bindings=3){
+ NativeFixture(unsigned textures=2,unsigned bindings=3,bool mixed=false){
   Fixture original;std::vector<Bytes>parts;
   for(unsigned i=0;i<24;++i){const auto off=read64(original.bytes,72+32*i),n=read64(original.bytes,80+32*i);parts.emplace_back(original.bytes.begin()+off,original.bytes.begin()+off+n);}
   Bytes keys(16+64*bindings);p32(keys,0,1);p32(keys,4,bindings);p32(keys,8,64);
-  for(unsigned i=0;i<bindings;++i){const size_t q=16+64*i;p32(keys,q,1);p32(keys,q+4,NFS_NATIVE_MARK_SOURCE_RGBA5551_LE);p32(keys,q+8,128);p32(keys,q+12,32768);p32(keys,q+16,i%textures);p32(keys,q+20,128);p32(keys,q+24,128);fill(keys,q+32,uint8_t(0x31+i));}parts.push_back(std::move(keys));
-  for(unsigned i=0;i<textures;++i){Bytes t(112+512*512*4);p32(t,0,512);p32(t,4,512);p32(t,8,1);p32(t,12,i);p32(t,16,1);p64(t,32,0xabc+i);p64(t,40,512*512*4);
+  for(unsigned i=0;i<bindings;++i){const size_t q=16+64*i;p32(keys,q,1);const bool cursor=mixed&&i%textures==1;p32(keys,q+4,cursor?2:1);p32(keys,q+8,cursor?32:128);p32(keys,q+12,cursor?2048:32768);p32(keys,q+16,i%textures);p32(keys,q+20,cursor?32:128);p32(keys,q+24,cursor?32:128);fill(keys,q+32,uint8_t(0x31+i));}parts.push_back(std::move(keys));
+  for(unsigned i=0;i<textures;++i){const unsigned edge=mixed&&i==1?128:512;Bytes t(112+edge*edge*4);p32(t,0,edge);p32(t,4,edge);p32(t,8,1);p32(t,12,i);p32(t,16,1);p64(t,32,0xabc+i);p64(t,40,edge*edge*4);
    // Synthetic PMA: distinct opaque pixel plus transparent padding.
    t[112]=uint8_t(20+i);t[113]=30;t[114]=40;t[115]=255;CHECK(nfs_texture_sha256(t.data()+112,t.size()-112,t.data()+48));parts.push_back(std::move(t));}
-  bytes.resize(64+32*parts.size());std::memcpy(bytes.data(),"NFSHDPK2",8);p32(bytes,8,2);p32(bytes,12,64);p32(bytes,24,unsigned(parts.size()));p32(bytes,28,32);p64(bytes,32,64);
+  bytes.resize(64+32*parts.size());std::memcpy(bytes.data(),mixed?"NFSHDPK3":"NFSHDPK2",8);p32(bytes,8,mixed?3:2);p32(bytes,12,64);p32(bytes,24,unsigned(parts.size()));p32(bytes,28,32);p64(bytes,32,64);
   for(unsigned i=0;i<parts.size();++i){const unsigned tag=i==0?1:i<=5?2:i==6?3:i<=18?4:i<=23?5:i==24?6:7;const unsigned role=i==0?0:i<=5?i-1:i==6?0:i<=18?i-6:i<=23?i-19:i==24?0:i-25;at.push_back(bytes.size());p32(bytes,64+32*i,tag);p32(bytes,68+32*i,role);p64(bytes,72+32*i,bytes.size());p64(bytes,80+32*i,parts[i].size());bytes.insert(bytes.end(),parts[i].begin(),parts[i].end());}p64(bytes,16,bytes.size());
  }
 };
@@ -31,5 +31,28 @@ int main(){try{
  mutate([&](Bytes&b){p32(b,f.at[24],2);});mutate([&](Bytes&b){p32(b,f.at[24]+4,0);});mutate([&](Bytes&b){p32(b,f.at[24]+4,65);});mutate([&](Bytes&b){p32(b,f.at[24]+8,63);});mutate([&](Bytes&b){p32(b,f.at[24]+12,1);});
  mutate([&](Bytes&b){p32(b,binding,0);});mutate([&](Bytes&b){p32(b,binding+4,2);});mutate([&](Bytes&b){p32(b,binding+8,64);});mutate([&](Bytes&b){p32(b,binding+12,UINT32_MAX);});mutate([&](Bytes&b){p32(b,binding+16,2);});mutate([&](Bytes&b){p32(b,binding+20,127);});mutate([&](Bytes&b){p32(b,binding+24,127);});mutate([&](Bytes&b){p32(b,binding+28,1);});mutate([&](Bytes&b){fill(b,binding+32,0);});mutate([&](Bytes&b){std::copy_n(b.begin()+binding+32,32,b.begin()+binding+64+32);});
  mutate([&](Bytes&b){p32(b,tex,UINT32_MAX);});mutate([&](Bytes&b){p32(b,tex+4,0);});mutate([&](Bytes&b){p32(b,tex+8,0);});mutate([&](Bytes&b){p32(b,tex+12,1);});mutate([&](Bytes&b){p32(b,tex+16,0);});mutate([&](Bytes&b){p32(b,tex+20,1);});mutate([&](Bytes&b){p32(b,tex+24,1);});mutate([&](Bytes&b){p32(b,tex+28,1);});mutate([&](Bytes&b){p64(b,tex+32,0);});mutate([&](Bytes&b){p64(b,tex2+32,0xabc);});mutate([&](Bytes&b){p64(b,tex+40,UINT64_MAX);});mutate([&](Bytes&b){b[tex+48]^=1;});mutate([&](Bytes&b){b[tex+80]=1;});mutate([&](Bytes&b){b[tex+112]^=1;});mutate([&](Bytes&b){b[tex+112]=255;b[tex+115]=1;CHECK(nfs_texture_sha256(b.data()+tex+112,1048576,b.data()+tex+48));});
- Digest wrong=sha(f.bytes);wrong[0]^=1;CHECK(!ArtworkPack::loadOwned(f.bytes,wrong,&error));Digest zero{};CHECK(!ArtworkPack::loadOwned(f.bytes,zero,&error));CHECK(pack->nativeMarkProvider().user==p.user);std::printf("PASS syntheticv1unchanged/v2twoassets/multiplekeys/concurrency/%u structuralnegatives/pins\n",rejected);return 0;
+ // Version 3 adds exactly the cursor profile; legacy sections stay untouched.
+ NativeFixture mixed(2,3,true);auto both=ArtworkPack::loadOwned(mixed.bytes,sha(mixed.bytes),&error);CHECK(both&&error.empty());auto mp=both->nativeMarkProvider();
+ for(unsigned i=0;i<3;++i){uint8_t key[32];std::memset(key,0x31+i,32);const bool cursor=i==1;NfsNativeMarkArt a{};CHECK(mp.lookup(mp.user,cursor?2:1,cursor?32:128,key,&a));CHECK(a.width==(cursor?128:512)&&a.height==a.width&&a.bytes==(cursor?65536:1048576)&&a.logicalWidth==(cursor?32:128)&&a.identity==0xabc+i%2);CHECK(!mp.lookup(mp.user,cursor?1:2,cursor?128:32,key,&out));CHECK(!std::memcmp(&out,&saved,sizeof out));}
+ for(unsigned i=0;i<24;++i){const auto n=read64(f.bytes,80+32*i);CHECK(n==read64(mixed.bytes,80+32*i)&&!std::memcmp(f.bytes.data()+f.at[i],mixed.bytes.data()+mixed.at[i],size_t(n)));}
+ const size_t mk=mixed.at[24]+16,ct=mixed.at[26];auto mutateMixed=[&](auto change){auto b=mixed.bytes;change(b);reject(std::move(b));};
+ // A digest alone cannot alias profiles: the complete tuple selects art.
+ auto shared=mixed.bytes;std::copy_n(shared.begin()+mk+32,32,shared.begin()+mk+64+32);auto sp=ArtworkPack::loadOwned(shared,sha(shared));CHECK(sp);auto spl=sp->nativeMarkProvider();uint8_t sk[32];std::memset(sk,0x31,32);NfsNativeMarkArt large{},small{};CHECK(spl.lookup(spl.user,1,128,sk,&large)&&spl.lookup(spl.user,2,32,sk,&small)&&large.width==512&&small.width==128&&large.identity!=small.identity);
+ mutateMixed([&](Bytes&b){b[7]='2';p32(b,8,2);}); // v2 never silently accepts cursors.
+ mutateMixed([&](Bytes&b){p32(b,mk+64+4,1);});
+ mutateMixed([&](Bytes&b){p32(b,mk+64+8,128);});
+ mutateMixed([&](Bytes&b){p32(b,mk+64+12,32768);});
+ mutateMixed([&](Bytes&b){p32(b,mk+64+16,0);}); // cross-profile reference
+ mutateMixed([&](Bytes&b){p32(b,mk+16,1);});
+ mutateMixed([&](Bytes&b){p32(b,mk+64+20,128);});
+ mutateMixed([&](Bytes&b){std::copy_n(b.begin()+mk+32,32,b.begin()+mk+128+32);}); // same tuple duplicate
+ mutateMixed([&](Bytes&b){p32(b,ct,512);});
+ mutateMixed([&](Bytes&b){p32(b,ct+4,512);});
+ mutateMixed([&](Bytes&b){p64(b,ct+40,1048576);});
+ mutateMixed([&](Bytes&b){b[ct+112]^=1;});
+ mutateMixed([&](Bytes&b){b[ct+80]=1;});
+ mutateMixed([&](Bytes&b){p64(b,ct+32,0xabc);});
+ mutateMixed([&](Bytes&b){b[ct+112]=255;b[ct+115]=1;CHECK(nfs_texture_sha256(b.data()+ct+112,65536,b.data()+ct+48));});
+ NfsNativeMarkProfile profile{},unchanged{};CHECK(nfs_native_mark_profile(2,32,&profile)&&profile.preparedBytes==2048&&profile.artBytes==65536&&profile.sourceLod==3);unchanged=profile;CHECK(!nfs_native_mark_profile(2,128,&profile)&&!std::memcmp(&profile,&unchanged,sizeof profile));CHECK(!nfs_native_mark_profile(1,32,&profile)&&!nfs_native_mark_profile(3,32,&profile)&&!nfs_native_mark_profile(2,32,nullptr));
+ Digest wrong=sha(f.bytes);wrong[0]^=1;CHECK(!ArtworkPack::loadOwned(f.bytes,wrong,&error));Digest zero{};CHECK(!ArtworkPack::loadOwned(f.bytes,zero,&error));CHECK(pack->nativeMarkProvider().user==p.user);std::printf("PASS syntheticv1unchanged/v2twoassets/v3mixedprofiles/tuplekeys/concurrency/%u structuralnegatives/pins\n",rejected);return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}}

@@ -6,13 +6,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
-#define NFS_MARK_PREPARED_BYTES 32768u
-#define NFS_MARK_ART_BYTES 1048576u
 typedef struct {
  GLuint texture;NfsNativeMarkArt art;uint64_t generation,uploads;unsigned heights[8];
 } NfsNativeMarkTexture;
 typedef struct {
- uint32_t address,nativeId,texture;uint64_t generation,revision;int valid;
+ uint32_t address,nativeId,texture,encoding,edge,preparedBytes;uint64_t generation,revision;int valid;
 } NfsNativeMarkBinding;
 static struct {
  uintptr_t context;GLuint program;uint64_t generation,revision;
@@ -49,34 +47,38 @@ static void nfs_native_mark_gpu_invalidate(uint32_t address,uint64_t bytes){
  nfs_native_marks.selected=-1;
  if(bytes>UINT64_MAX-(uint64_t)address)bytes=UINT64_MAX-(uint64_t)address;
  for(unsigned k=0;k<NFS_NATIVE_MARK_MAX_BINDINGS;++k){NfsNativeMarkBinding*b=&nfs_native_marks.bindings[k];
-  if(b->valid&&(uint64_t)address<(uint64_t)b->address+NFS_MARK_PREPARED_BYTES&&
+  if(b->valid&&(uint64_t)address<(uint64_t)b->address+b->preparedBytes&&
      (uint64_t)b->address<(uint64_t)address+bytes)b->valid=0;
  }
 }
-static int nfs_mark_art_shape(const NfsNativeMarkArt*a){
- if(!a->pixels||a->bytes!=NFS_MARK_ART_BYTES||a->width!=512||a->height!=512||
-    a->logicalWidth!=128||a->logicalHeight!=128||a->schema!=NFS_NATIVE_MARK_ART_SCHEMA||
+static int nfs_mark_art_shape(const NfsNativeMarkArt*a,const NfsNativeMarkProfile*p){
+ if(!a->pixels||a->bytes!=p->artBytes||a->width!=p->artEdge||a->height!=p->artEdge||
+    a->logicalWidth!=p->logicalEdge||a->logicalHeight!=p->logicalEdge||a->schema!=NFS_NATIVE_MARK_ART_SCHEMA||
     a->premultiplied!=1||a->opacityBaked||!a->identity)return 0;
  unsigned nonzero=0;for(unsigned k=0;k<32;++k)nonzero|=a->sha256[k];return nonzero!=0;
 }
-static int nfs_mark_prepare(const NfsNativeMarkArt*a){
- if(!nfs_mark_art_shape(a))return -1;
+static int nfs_mark_prepare(const NfsNativeMarkArt*a,const NfsNativeMarkProfile*p){
+ if(!nfs_mark_art_shape(a,p))return -1;
  int empty=-1;
  for(unsigned k=0;k<NFS_NATIVE_MARK_MAX_TEXTURES;++k){NfsNativeMarkTexture*t=&nfs_native_marks.textures[k];
   if(!t->texture){if(empty<0)empty=(int)k;continue;}
   if(t->art.identity==a->identity)return t->generation==nfs_native_marks.generation&&
-   !memcmp(t->art.sha256,a->sha256,32)?(int)k:-1;
+   !memcmp(t->art.sha256,a->sha256,32)&&t->art.bytes==a->bytes&&
+   t->art.width==a->width&&t->art.height==a->height&&
+   t->art.logicalWidth==a->logicalWidth&&t->art.logicalHeight==a->logicalHeight?(int)k:-1;
  }
  if(empty<0)return -1;
  unsigned char actual[32];if(!nfs_texture_sha256(a->pixels,a->bytes,actual)||memcmp(actual,a->sha256,32))return -1;
  for(size_t k=0;k<a->bytes;k+=4)if(a->pixels[k]>a->pixels[k+3]||a->pixels[k+1]>a->pixels[k+3]||a->pixels[k+2]>a->pixels[k+3])return -1;
  /* Fail closed on preexisting/optional GL errors. Error flags cannot be restored. */
  if(glGetError()!=GL_NO_ERROR)return -1;
+ GLint size=0;glGetIntegerv(GL_MAX_TEXTURE_SIZE,&size);
+ if(size<(GLint)p->artEdge||glGetError()!=GL_NO_ERROR)return -1;
  if(!nfs_native_marks.uniformsReady){
-  GLint units=0,size=0;glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&units);glGetIntegerv(GL_MAX_TEXTURE_SIZE,&size);
+  GLint units=0;glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&units);
   const GLint sampler=glGetUniformLocation(nfs_native_marks.program,"uMarkTextureSampler");
   const GLint enable=glGetUniformLocation(nfs_native_marks.program,"uMarkActive");
-  if(units<3||size<512||sampler<0||enable<0||glGetError()!=GL_NO_ERROR)return -1;
+  if(units<3||size<(GLint)p->artEdge||sampler<0||enable<0||glGetError()!=GL_NO_ERROR)return -1;
   nfs_native_marks.sampler=sampler;nfs_native_marks.enable=enable;nfs_native_marks.uniformsReady=1;
  }
  GLint active=0,binding=0,unpack=0;glGetIntegerv(GL_ACTIVE_TEXTURE,&active);glActiveTexture(GL_TEXTURE2);
@@ -84,7 +86,7 @@ static int nfs_mark_prepare(const NfsNativeMarkArt*a){
  GLuint id=0;glGenTextures(1,&id);glBindTexture(GL_TEXTURE_2D,id);
  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
- glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,512,512,0,GL_RGBA,GL_UNSIGNED_BYTE,a->pixels);
+ glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,(GLsizei)a->width,(GLsizei)a->height,0,GL_RGBA,GL_UNSIGNED_BYTE,a->pixels);
  const int okay=id&&glGetError()==GL_NO_ERROR;
  if(!okay&&id)glDeleteTextures(1,&id);
  glPixelStorei(GL_UNPACK_ALIGNMENT,unpack);glBindTexture(GL_TEXTURE_2D,(GLuint)binding);glActiveTexture((GLenum)active);
@@ -94,24 +96,27 @@ static int nfs_mark_prepare(const NfsNativeMarkArt*a){
 }
 static void nfs_native_mark_gpu_uploaded(uint32_t address,uint32_t nativeId,uint32_t edge,
  uint32_t encoding,uint32_t hdTag,const void*prepared){
+ NfsNativeMarkProfile profile;
  if(nfs_native_marks.disabled||!nfs_hd_native_mark_provider_available()||!nfs_mark_owner()||
-    !nativeId||!prepared||edge!=128||encoding!=NFS_NATIVE_MARK_SOURCE_RGBA5551_LE||hdTag||
-    (uint64_t)address+NFS_MARK_PREPARED_BYTES>UINT64_C(0x100000000))return;
+    !nativeId||!prepared||!nfs_native_mark_profile(encoding,edge,&profile)||hdTag||
+    (uint64_t)address+profile.preparedBytes>UINT64_C(0x100000000))return;
  unsigned char digest[32];NfsNativeMarkArt art={0};
- if(!nfs_texture_sha256(prepared,NFS_MARK_PREPARED_BYTES,digest)||!nfs_hd_native_mark_art(encoding,edge,digest,&art))return;
+ if(!nfs_texture_sha256(prepared,profile.preparedBytes,digest)||!nfs_hd_native_mark_art(encoding,edge,digest,&art))return;
  int binding=-1;for(unsigned k=0;k<NFS_NATIVE_MARK_MAX_BINDINGS;++k){NfsNativeMarkBinding*b=&nfs_native_marks.bindings[k];
   if(b->valid&&b->address==address){binding=(int)k;break;}if(!b->valid&&binding<0)binding=(int)k;
  }
  if(binding<0||nfs_native_marks.revision==UINT64_MAX)return;
- const int texture=nfs_mark_prepare(&art);if(texture<0)return;
- nfs_native_marks.bindings[binding]=(NfsNativeMarkBinding){address,nativeId,(uint32_t)texture,
+ const int texture=nfs_mark_prepare(&art,&profile);if(texture<0)return;
+ nfs_native_marks.bindings[binding]=(NfsNativeMarkBinding){address,nativeId,(uint32_t)texture,encoding,edge,profile.preparedBytes,
   nfs_native_marks.generation,++nfs_native_marks.revision,1};
  NfsNativeMarkTexture*t=&nfs_native_marks.textures[texture];if(t->uploads!=UINT64_MAX)++t->uploads;
 }
 static void nfs_native_mark_gpu_selected(uint32_t address,uint32_t nativeId,uint32_t edge,uint32_t encoding,uint32_t hdTag){
- nfs_native_marks.selected=-1;if(edge!=128||encoding!=NFS_NATIVE_MARK_SOURCE_RGBA5551_LE||hdTag)return;
+ NfsNativeMarkProfile profile;
+ nfs_native_marks.selected=-1;if(!nfs_native_mark_profile(encoding,edge,&profile)||hdTag)return;
  for(unsigned k=0;k<NFS_NATIVE_MARK_MAX_BINDINGS;++k){NfsNativeMarkBinding*b=&nfs_native_marks.bindings[k];
-  if(b->valid&&b->address==address&&b->nativeId==nativeId&&b->generation==nfs_native_marks.generation){nfs_native_marks.selected=(int)k;return;}
+  if(b->valid&&b->address==address&&b->nativeId==nativeId&&b->encoding==encoding&&b->edge==edge&&
+     b->preparedBytes==profile.preparedBytes&&b->generation==nfs_native_marks.generation){nfs_native_marks.selected=(int)k;return;}
  }
 }
 static void nfs_native_mark_gpu_sync(int triangles,float textured,int hdSelected,uintptr_t context,

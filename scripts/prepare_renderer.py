@@ -85,7 +85,7 @@ def prepare_renderer():
 def copy_native_mark_helpers(dest):
     target = dest / 'hd'
     target.mkdir(exist_ok=True)
-    for name in ('NativeMarkGpu.h', 'NativeMarkGpu.c.inc', 'NativeMarkArt.h', 'NativeMarkProvider.h'):
+    for name in ('NativeMarkGpu.h', 'NativeMarkGpu.c.inc', 'NativeMarkArt.h', 'NativeMarkProfile.h', 'NativeMarkProvider.h'):
         shutil.copyfile(ROOT / 'src/hd' / name, target / name)
 
 
@@ -125,9 +125,9 @@ def apply_native_mark_hooks(text):
     insert('destroyContext',' nfs_native_mark_gpu_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);')
     after('if(SDL_GL_GetCurrentContext()!=NULL)return false;', ' nfs_native_mark_gpu_retired(0);', 'unbound')
     insert('uploadTexture', ' if((uintptr_t)ti->data>=(uintptr_t)g_textureMem && (uintptr_t)ti->data-(uintptr_t)g_textureMem<sizeof(g_textureMem))nfs_native_mark_gpu_invalidate((uint32_t)((uintptr_t)ti->data-(uintptr_t)g_textureMem),(uint64_t)ti->size*ti->size*(ti->fmt==GR_TEXFMT_P_8?1u:2u));')
-    insert('uploadTexture', ' if((uintptr_t)ti->data>=(uintptr_t)g_textureMem && (uintptr_t)ti->data-(uintptr_t)g_textureMem<=sizeof(g_textureMem) && sizeof(g_textureMem)-((uintptr_t)ti->data-(uintptr_t)g_textureMem)>=32768u)nfs_native_mark_gpu_uploaded((uint32_t)((uintptr_t)ti->data-(uintptr_t)g_textureMem),ti->id,ti->size,ti->fmt==GR_TEXFMT_ARGB_1555?1u:0u,ti->hdDigits,ti->data);',True)
+    insert('uploadTexture', ' NfsNativeMarkProfile nfs_mark_profile; uint32_t nfs_mark_encoding=ti->fmt==GR_TEXFMT_ARGB_1555?NFS_NATIVE_MARK_SOURCE_RGBA5551_LE:(ti->fmt==GR_TEXFMT_ARGB_4444?NFS_NATIVE_MARK_SOURCE_RGBA4444_LE:0u); if(nfs_native_mark_profile(nfs_mark_encoding,ti->size,&nfs_mark_profile) && (uintptr_t)ti->data>=(uintptr_t)g_textureMem && (uintptr_t)ti->data-(uintptr_t)g_textureMem<=sizeof(g_textureMem) && sizeof(g_textureMem)-((uintptr_t)ti->data-(uintptr_t)g_textureMem)>=nfs_mark_profile.preparedBytes)nfs_native_mark_gpu_uploaded((uint32_t)((uintptr_t)ti->data-(uintptr_t)g_textureMem),ti->id,ti->size,nfs_mark_encoding,ti->hdDigits,ti->data);',True)
     after('\tdrawTriangles();', ' nfs_native_mark_gpu_invalidate(startAddress,(uint64_t)ti->size*ti->size*(ti->fmt==GR_TEXFMT_P_8?1u:2u));', 'download', 'native_grTexDownloadMipMap')
-    after('\tglBindTexture(GL_TEXTURE_2D, ti->id);', ' nfs_native_mark_gpu_selected(startAddress,ti->id,ti->size,(info->format==ti->fmt && info->largeLod==1 && info->smallLod==1 && ti->fmt==GR_TEXFMT_ARGB_1555)?1u:0u,ti->hdDigits);', 'selected','native_grTexSource')
+    after('\tglBindTexture(GL_TEXTURE_2D, ti->id);', ' NfsNativeMarkProfile nfs_mark_profile; uint32_t nfs_mark_encoding=ti->fmt==GR_TEXFMT_ARGB_1555?NFS_NATIVE_MARK_SOURCE_RGBA5551_LE:(ti->fmt==GR_TEXFMT_ARGB_4444?NFS_NATIVE_MARK_SOURCE_RGBA4444_LE:0u); if(!nfs_native_mark_profile(nfs_mark_encoding,ti->size,&nfs_mark_profile)||info->format!=ti->fmt||info->largeLod!=nfs_mark_profile.sourceLod||info->smallLod!=nfs_mark_profile.sourceLod||(nfs_mark_encoding==NFS_NATIVE_MARK_SOURCE_RGBA4444_LE&&(tmu!=0||info->aspectRatio!=GR_ASPECT_1x1)))nfs_mark_encoding=0; nfs_native_mark_gpu_selected(startAddress,ti->id,ti->size,nfs_mark_encoding,ti->hdDigits);', 'selected','native_grTexSource')
     common='g_textureEnabled,ti->hdDigits,(uintptr_t)g_glCtx,g_shaderProgram,nfs_hd_active_location,&nfs_hd_uniform_sent,g_framebufferHeight'
     # drawTriangles uses its current texture record, while lines always disable marks.
     after('nfs_hd_sync_uniform();', ' nfs_native_mark_gpu_sync(1,g_textureEnabled,nfs_hd_selected,(uintptr_t)g_glCtx,g_shaderProgram,nfs_hd_active_location,&nfs_hd_uniform_sent,g_framebufferHeight);','triangles-sync','drawTriangles')

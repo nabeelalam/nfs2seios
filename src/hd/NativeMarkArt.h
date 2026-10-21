@@ -3,12 +3,12 @@
 #define NFS_NATIVE_MARK_ART_H
 #include <stddef.h>
 #include <stdint.h>
+#include "NativeMarkProfile.h"
 #define NFS_NATIVE_MARK_ART_SCHEMA 1u
-#define NFS_NATIVE_MARK_SOURCE_RGBA5551_LE 1u
 #define NFS_NATIVE_MARK_SOURCE_EDGE 128u
 #define NFS_NATIVE_MARK_MAX_TEXTURES 8u
 #define NFS_NATIVE_MARK_MAX_BINDINGS 64u
-/* Immutable borrowed program-lifetime canonical128 canvas,512-square RGBA8 PMA.
+/* Immutable borrowed program-lifetime 4x RGBA8 PMA artwork for a reviewed profile.
    Opacity is not baked. Content authentication is the trusted loader's job. */
 typedef struct NfsNativeMarkArt {
  const unsigned char*pixels;size_t bytes;
