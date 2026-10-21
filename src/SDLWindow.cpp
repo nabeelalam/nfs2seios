@@ -44,8 +44,18 @@ void on_main(void *p){
                 SDL_DestroyWindow(request.window);request.window=nullptr;
                 throw std::runtime_error("Cannot query valid window pixel dimensions");
             }
+#if !defined(__APPLE__) || !TARGET_OS_IOS
+            // SDL3 does not enable committed text by default. Desktop physical
+            // keyboards need this character stream alongside their key edges.
+            // Platforms with a screen keyboard retain their explicit toggle.
+            if(!SDL_HasScreenKeyboardSupport() && !SDL_StartTextInput(request.window))
+                SDL_LogWarn(SDL_LOG_CATEGORY_INPUT,"Cannot enable desktop text input: %s",SDL_GetError());
+#endif
             sdlWin=request.window;
-        }else {SDL_DestroyWindow(request.window);if(sdlWin==request.window)sdlWin=nullptr;}
+        }else {
+            if(SDL_TextInputActive(request.window))SDL_StopTextInput(request.window);
+            SDL_DestroyWindow(request.window);if(sdlWin==request.window)sdlWin=nullptr;
+        }
     }catch(...){request.failure=std::current_exception();}
 }
 void run(Request &request){
