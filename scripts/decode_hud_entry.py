@@ -20,9 +20,7 @@ def decode(data, index):
     if entry["next_attachment_offset"] and entry["next_attachment_offset"] < 16 + pixels:
         raise ValueError("Attachment overlaps image pixels")
     palettes = [r for r in report["entries"] if r["format_code"] in (0x24, 0x2a) and not r["entry_compressed"]]
-    if len(palettes) != 1:
-        raise ValueError("Ambiguous or missing global palette")
-    palette = palettes[0]
+    palette = None
     offset = entry["offset"]
     end = offset + entry["span_bytes"]
     # Local palettes take precedence. Unknown attachments are metadata, not pixels.
@@ -41,6 +39,12 @@ def decode(data, index):
                            height_raw=rows, span_bytes=end-offset)
     else:
         raise ValueError("Too many attachments")
+    # An embedded palette is sufficient even when the archive has no global
+    # palette (or several unrelated ones). Resolve the fallback only if needed.
+    if palette is None:
+        if len(palettes) != 1:
+            raise ValueError("Ambiguous or missing global palette")
+        palette = palettes[0]
     count = palette["width_raw"]
     stride = 4 if palette["format_code"] == 0x2a else 3
     if not 0 < count <= 256 or palette["height_raw"] != 1 or 16 + count * stride > palette["span_bytes"]:

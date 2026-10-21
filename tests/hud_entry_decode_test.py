@@ -46,5 +46,29 @@ class DecodeTests(unittest.TestCase):
             decode(bad, 0)
 
 
+class LocalPaletteFallbackTests(unittest.TestCase):
+    @staticmethod
+    def fixture(local=True, global_count=0, palette_code=0x2a):
+        count=1+global_count;start=16+8*count
+        palette=struct.pack("<Ihh4h",palette_code,2,1,0,0,0,0)+(bytes([0,0,0,0,255,0]) if palette_code==0x24 else bytes([0,0,0,0,0,255,0,255]))
+        image=struct.pack("<Ihh4h",((20<<8) if local else 0)|0x7b,2,2,0,0,0,0)+bytes([0,1,1,0])
+        if local:image+=palette
+        directory=struct.pack("<4sI",b'demo',start)
+        for i in range(global_count):directory+=struct.pack("<4sI",b'!pal',start+len(image)+i*len(palette))
+        body=image+palette*global_count
+        return struct.pack("<4sII4s",b'SHPI',start+len(body),count,b'TEST')+directory+body
+    def test_local_palette_without_global(self):
+        self.assertEqual(decode(self.fixture(),0)[2][4:8],b'\0\xff\0\xff')
+    def test_local_rgb_palette_without_global(self):
+        self.assertEqual(decode(self.fixture(palette_code=0x24),0)[2][4:8],b"\0\xff\0\xff")
+    def test_local_palette_with_unrelated_ambiguous_globals(self):
+        self.assertEqual(decode(self.fixture(global_count=2),0)[2][4:8],b'\0\xff\0\xff')
+    def test_missing_or_ambiguous_fallback_still_rejected(self):
+        for count in [0,2]:
+            with self.assertRaises(ValueError):decode(self.fixture(local=False,global_count=count),0)
+    def test_unsupported_local_palette_does_not_use_valid_global(self):
+        with self.assertRaises(ValueError):decode(self.fixture(global_count=1,palette_code=0x22),0)
+
+
 if __name__ == "__main__":
     unittest.main()
