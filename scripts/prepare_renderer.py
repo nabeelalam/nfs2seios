@@ -73,11 +73,71 @@ def prepare_renderer():
     if text.count(marker) != 1: raise ValueError("Cannot identify context abandonment insertion")
     text = text.replace(marker, 'BOOL nfs_glide_abandon_unbound(void){\n    if(SDL_GL_GetCurrentContext()!=NULL)return false;\n    nfs_glide_lfb_reset();\n    if(g_glCtx && !SDL_GL_DestroyContext(g_glCtx))return false;\n    nfs_hd_context_retired(0);g_glCtx=NULL;g_trianglesCount=0;g_palette=NULL;\n    return true;\n}\n' + marker)
     text = prepare_background_scene(text, dest)
+    text = apply_native_mark_hooks(text)
+    copy_native_mark_helpers(dest)
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
 
 
+
+
+def copy_native_mark_helpers(dest):
+    target = dest / 'hd'
+    target.mkdir(exist_ok=True)
+    for name in ('NativeMarkGpu.h', 'NativeMarkGpu.c.inc', 'NativeMarkArt.h', 'NativeMarkProvider.h'):
+        shutil.copyfile(ROOT / 'src/hd' / name, target / name)
+
+
+def apply_native_mark_hooks(text):
+    """Add optional native-mark sampling without altering original renderer bytes."""
+    original = text
+    def block(tag, body):
+        return '\n/* NFS_HD_MARK_BEGIN:' + tag + ' */\n' + body + '\n/* NFS_HD_MARK_END:' + tag + ' */\n'
+    def bounds(name):
+        pattern = r'(?:native_)?' + re.escape(name[7:]) if name.startswith('native_') else re.escape(name)
+        matches = list(re.finditer(r'^[^\n;]*\b' + pattern + r'\([^;\n]*\)\s*\n?\{', text, re.M))
+        if len(matches) != 1: raise ValueError('Missing or repeated native mark hook: ' + name)
+        a = text.index('{', matches[0].start()); b = a + 1; depth = 1
+        while depth:
+            if b >= len(text): raise ValueError('Unbalanced native mark function')
+            depth += (text[b] == '{') - (text[b] == '}'); b += 1
+        return a,b
+    def insert(name, body, tail=False):
+        nonlocal text
+        a,b = bounds(name); at = b-1 if tail else a+1
+        text = text[:at] + block(name + ('-tail' if tail else '-head'), body) + text[at:]
+    def after(needle, body, tag, name=None):
+        nonlocal text
+        a,b = bounds(name) if name else (0,len(text)); part = text[a:b]
+        if part.count(needle) != 1: raise ValueError('Unexpected native mark anchor: ' + tag)
+        text = text[:a] + part.replace(needle, needle + block(tag,body)) + text[b:]
+    after('} TextureInfo;', '#include "hd/NativeMarkGpu.h"', 'declaration')
+    a = text.index('const char g_fShaderSrc[] ='); b = text.index('const char g_vShaderDispSrc[] =',a)
+    part = text[a:b]
+    for needle,body,tag in [
+      ('"uniform sampler2D uTextureSampler;"', '"uniform sampler2D uMarkTextureSampler;uniform float uMarkActive;"', 'shader-uniform'),
+      ('"vec4 texture = uTextureEnabled * sampled;"', '"if(uMarkActive>0.5){vec4 mark=texture2D(uMarkTextureSampler,vTexCoord.st/vTexCoord.q);sampled=vec4(mark.a>0.0?mark.rgb/mark.a:vec3(0.0),mark.a);}"', 'shader-sample')]:
+        if part.count(needle)!=1: raise ValueError('Unexpected native mark shader: '+tag)
+        part = part.replace(needle, block(tag,body)+needle)
+    text=text[:a]+part+text[b:]
+    insert('createContext',' nfs_native_mark_gpu_created((uintptr_t)g_glCtx,g_shaderProgram);',True)
+    insert('destroyContext',' nfs_native_mark_gpu_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);')
+    after('if(SDL_GL_GetCurrentContext()!=NULL)return false;', ' nfs_native_mark_gpu_retired(0);', 'unbound')
+    insert('uploadTexture', ' if((uintptr_t)ti->data>=(uintptr_t)g_textureMem && (uintptr_t)ti->data-(uintptr_t)g_textureMem<sizeof(g_textureMem))nfs_native_mark_gpu_invalidate((uint32_t)((uintptr_t)ti->data-(uintptr_t)g_textureMem),(uint64_t)ti->size*ti->size*(ti->fmt==GR_TEXFMT_P_8?1u:2u));')
+    insert('uploadTexture', ' if((uintptr_t)ti->data>=(uintptr_t)g_textureMem && (uintptr_t)ti->data-(uintptr_t)g_textureMem<=sizeof(g_textureMem) && sizeof(g_textureMem)-((uintptr_t)ti->data-(uintptr_t)g_textureMem)>=32768u)nfs_native_mark_gpu_uploaded((uint32_t)((uintptr_t)ti->data-(uintptr_t)g_textureMem),ti->id,ti->size,ti->fmt==GR_TEXFMT_ARGB_1555?1u:0u,ti->hdDigits,ti->data);',True)
+    after('\tdrawTriangles();', ' nfs_native_mark_gpu_invalidate(startAddress,(uint64_t)ti->size*ti->size*(ti->fmt==GR_TEXFMT_P_8?1u:2u));', 'download', 'native_grTexDownloadMipMap')
+    after('\tglBindTexture(GL_TEXTURE_2D, ti->id);', ' nfs_native_mark_gpu_selected(startAddress,ti->id,ti->size,(info->format==ti->fmt && info->largeLod==1 && info->smallLod==1 && ti->fmt==GR_TEXFMT_ARGB_1555)?1u:0u,ti->hdDigits);', 'selected','native_grTexSource')
+    common='g_textureEnabled,ti->hdDigits,(uintptr_t)g_glCtx,g_shaderProgram,nfs_hd_active_location,&nfs_hd_uniform_sent,g_framebufferHeight'
+    # drawTriangles uses its current texture record, while lines always disable marks.
+    after('nfs_hd_sync_uniform();', ' nfs_native_mark_gpu_sync(1,g_textureEnabled,nfs_hd_selected,(uintptr_t)g_glCtx,g_shaderProgram,nfs_hd_active_location,&nfs_hd_uniform_sent,g_framebufferHeight);','triangles-sync','drawTriangles')
+    after('\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);', ' nfs_native_mark_gpu_after_draw();','triangles-reset','drawTriangles')
+    after('nfs_hd_sync_uniform();',' nfs_native_mark_gpu_sync(0,0,0,(uintptr_t)g_glCtx,g_shaderProgram,nfs_hd_active_location,&nfs_hd_uniform_sent,g_framebufferHeight);','line-sync','native_grDrawLine')
+    insert('useGameProgram',' nfs_native_mark_gpu_sync(0,0,0,(uintptr_t)g_glCtx,g_shaderProgram,nfs_hd_active_location,&nfs_hd_uniform_sent,g_framebufferHeight);')
+    text += block('implementation','#include "hd/NativeMarkGpu.c.inc"')
+    restored = re.sub(r'\n/\* NFS_HD_MARK_BEGIN:([^*]+) \*/\n.*?\n/\* NFS_HD_MARK_END:\1 \*/\n', '', text, flags=re.S)
+    if restored != original: raise ValueError('Native mark source reverse audit failed')
+    return text
 
 def prepare_background_scene(text, dest):
     # Add native pass witnesses; stripping tagged inserts restores every input byte.
