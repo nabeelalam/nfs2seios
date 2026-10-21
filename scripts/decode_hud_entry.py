@@ -53,7 +53,11 @@ def decode(data, index):
     table = []
     for i in range(count):
         raw = data[start+i*stride:start+(i+1)*stride]
-        table.append(bytes((raw[2], raw[1], raw[0], raw[3])) if stride == 4 else raw+b"\xff")
+        if stride == 4:
+            table.append(bytes((raw[2], raw[1], raw[0], raw[3])))
+        else:
+            # The original RGB-palette conversion reserves entry 255 as transparent.
+            table.append(raw+bytes((0 if i == 255 else 255,)))
     indices = data[entry["offset"]+16:entry["offset"]+16+pixels]
     if any(value >= count for value in indices):
         raise ValueError("Palette index outside table")

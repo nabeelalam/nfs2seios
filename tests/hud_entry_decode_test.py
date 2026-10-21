@@ -66,6 +66,18 @@ class LocalPaletteFallbackTests(unittest.TestCase):
     def test_missing_or_ambiguous_fallback_still_rejected(self):
         for count in [0,2]:
             with self.assertRaises(ValueError):decode(self.fixture(local=False,global_count=count),0)
+    @staticmethod
+    def full_palette_fixture(code, table):
+        image=struct.pack("<Ihh4h",(20<<8)|0x7b,2,2,0,0,0,0)+bytes([254,255,255,0])
+        body=image+struct.pack("<Ihh4h",code,256,1,0,0,0,0)+table
+        return struct.pack("<4sII4s",b'SHPI',24+len(body),1,b'TEST')+struct.pack("<4sI",b'demo',24)+body
+    def test_rgb_palette_entry_255_is_transparent(self):
+        table=bytearray(256*3);table[:3]=bytes([5,7,9]);table[254*3:255*3]=bytes([4,5,6]);table[255*3:]=bytes([11,22,33])
+        self.assertEqual(decode(self.full_palette_fixture(0x24,table),0)[2],
+                         bytes([4,5,6,255])+bytes([11,22,33,0])*2+bytes([5,7,9,255]))
+    def test_bgra_palette_entry_255_keeps_explicit_alpha(self):
+        table=bytearray(256*4);table[255*4:]=bytes([3,2,1,137])
+        self.assertEqual(decode(self.full_palette_fixture(0x2a,table),0)[2][4:8],bytes([1,2,3,137]))
     def test_unsupported_local_palette_does_not_use_valid_global(self):
         with self.assertRaises(ValueError):decode(self.fixture(global_count=1,palette_code=0x22),0)
 
