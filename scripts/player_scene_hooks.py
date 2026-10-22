@@ -105,7 +105,15 @@ def add_player_scene_hooks(text, name):
             return part
         body("405580", measurements)
         def menu(part):
-            counts(part, {"405B30": 3, "405B60": 3, "40CD70": 2, "40CAB0": 1, "428250": 10, "427B30": 5})
+            counts(part, {"405B30": 3, "405B60": 3, "40CD70": 2, "40CAB0": 1, "40C110": 1, "428250": 10, "427B30": 5})
+            # Exact pre-map caller: selected343 has just been selected, ESI is
+            # current Player and EBP is the previous descriptor. Acquisition is
+            # sealed Main history; neither policy can grant itself an origin.
+            initial = "\t{ // checked copy transaction begin\n\tnfs::GuestCopyTransaction guest_transaction;\n\teax = guest_transaction.load<int32_t>(dword_4D2314+2); //mov\n\tsar(eax, (int32_t)0x10);\n\teax = guest_transaction.load<int32_t>(dword_4D231C+eax*4); //mov\n\t} // checked copy transaction end\n" + call("4825A8") + "\n" + call("40C110") + "\n" + call("4824BC")
+            if part.count(initial) != 1 or part.index(initial) > part.index("loc_40C25E:\n") or part[:part.index(initial)].count("\tebp = guest_transaction.load<int32_t>(dword_4D243C); //mov\n") != 1:
+                raise ValueError("Player initial caption caller changed")
+            initial_open = block("initial-caption-open", " { auto nfs_player_main_origin = nfs_main_sidebar_origin_live::acquireForInitialCaption(*this);\n nfs_player1_caption::InitialCallerScope nfs_player1_initial(*this,nfs_player_main_origin);\n nfs_player2_caption::InitialCallerScope nfs_player2_initial(*this,nfs_player_main_origin);")
+            part = replace(part, initial, initial.replace(call("40C110"), initial_open + call("40C110") + block("initial-caption-close", " }"), 1))
             for label, site in (("loc_40C3CC:\n", "Initial"), ("loc_40C5C6:\n", "Refresh")):
                 tag = site.lower()
                 part = wrap(part, label, "405B30", "base-" + tag, "nfs_player_scene_live::RoleScope nfs_player_base(*this,nfs_player_scene_live::Phase::Base,nfs_player_scene_live::BaseArgument::Blk4Direct);", ("guest_address(aBlk4)", "dword_4D4D24", "_sub_4825A8();"))
@@ -143,7 +151,8 @@ def add_player_scene_hooks(text, name):
     elif name == "Methods_09.cpp":
         entry("4824CC", " nfs_player1_caption::SelectionScope nfs_player1_selection(*this);\n nfs_player2_caption::SelectionScope nfs_player2_selection(*this);")
     elif name == "Methods_10.cpp":
-        entry("482DA0", " nfs_player_scene_live::retireSource(*this);\n nfs_player_scene_live::retire(*this);\n" + captions("beforeDescriptorRetire", "*this,uint32_t(eax)"))
+        entry("4848FC", " nfs_main_sidebar_origin_live::beforeAllocationFree(*this,uint32_t(eax));")
+        entry("482DA0", " nfs_main_sidebar_origin_live::beforeDescriptorRetire(*this,uint32_t(eax));\n nfs_player_scene_live::retireSource(*this);\n nfs_player_scene_live::retire(*this);\n" + captions("beforeDescriptorRetire", "*this,uint32_t(eax)"))
         entry("482BD4", " nfs_player_scene_live::row(*this,uint32_t(game_id_sub_482BD4));")
         entry("483070", " nfs_player_copy_live::row(*this,uint32_t(game_id_sub_483070));")
         entry("483438", " nfs_player_scene_live::row(*this,uint32_t(game_id_sub_483438));\n nfs_player_scene_live::CopyWrapperScope nfs_player_copy_wrapper(*this);")
@@ -161,8 +170,8 @@ def add_player_scene_hooks(text, name):
             return result
         body("4A10BC", dispatch)
     elif name == "Methods_14.cpp":
-        entry("4AC934", captions("beforeOwnerRetire", "*this,uint32_t(eax),true"))
-        entry("4AC9C8", captions("beforeDescriptorRetire", "*this,uint32_t(eax)"))
+        entry("4AC934", " nfs_main_sidebar_origin_live::beforeOwnerRetire(*this,uint32_t(eax),true);\n" + captions("beforeOwnerRetire", "*this,uint32_t(eax),true"))
+        entry("4AC9C8", " nfs_main_sidebar_origin_live::beforeDescriptorRetire(*this,uint32_t(eax));\n" + captions("beforeDescriptorRetire", "*this,uint32_t(eax)"))
     if name in ("Methods_13.cpp", "Methods_14.cpp"):
         symbol, count = ("4A5830", 4) if name == "Methods_13.cpp" else ("4B3EE0", 1)
         def words(part):

@@ -10,6 +10,7 @@
 #include <thread>
 #include <type_traits>
 #include "hd/OriginalUiRecords.h"
+#include "Main343OriginFixture.h"
 static std::array<uint8_t,2097152> memory{};static unsigned leaseDepth=0,reads=0;static uint32_t deniedRead=0;static std::atomic<unsigned> allocationsInLease{0},foreignAllocations{0};static thread_local bool foreignPath=false;
 void*operator new(size_t n){if(leaseDepth)++allocationsInLease;if(foreignPath)++foreignAllocations;if(void*p=std::malloc(n))return p;throw std::bad_alloc();}
 void operator delete(void*p)noexcept{std::free(p);}
@@ -19,6 +20,7 @@ void operator delete(void*p,const std::nothrow_t&)noexcept{std::free(p);}
 struct Game{int32_t eax=0,edx=0,ebx=0,ecx=0,ebp=0,esi=0;};
 static constexpr uint32_t off_4D3A88=0x100,dword_4D40B8=0x200,dword_4DD770=0x208,dword_4DD77C=0x210,dword_4DD774=0x218,dword_4DD714=0x220,dword_4D20A0=0x228,byte_4DB25E=0x230,byte_4DB25C=0x238,dword_4DD6F4=0x240,dword_4DD6F8=0x248,dword_4E54AC=0x250,dword_4DD6EC=0x258,dword_4DB240=0x1000,dword_4D243C=0x260,byte_4D3ECC=0x268,off_4D3ED0=0x280,dword_4D3E9C=0x2c0;
 static constexpr uint32_t off_4D2790=0x110,dword_4D3E24=0x2d0;
+static constexpr uint32_t off_4D3EC4=0x140,dword_4D2314=0x340,dword_4D231C=0x350,dword_4D2320=0x354;
 static constexpr uint32_t off_4D3050=0x120,off_4D3100=0x130,dword_4D3E4C=0x300,dword_4D3E60=0x320;
 #if defined(NFS_TEST_PLAYER1_CAPTION)
 static constexpr uint32_t testOwner=off_4D3050,testRecord=dword_4D3E4C;
@@ -42,7 +44,7 @@ inline uint32_t guest_address(uint32_t p){return p;}
 inline void*nfs_host_address(uint32_t p,size_t n){if(!leaseDepth||uint64_t(p)+n>memory.size()||(deniedRead&&uint64_t(p)<=deniedRead&&uint64_t(p)+n>deniedRead))throw 1;++reads;return memory.data()+p;}
 namespace nfs{struct GuestCopyTransaction{GuestCopyTransaction(){++leaseDepth;}~GuestCopyTransaction(){--leaseDepth;}template<class T>T load(uint32_t p){T v;std::memcpy(&v,nfs_host_address(p,sizeof(T)),sizeof(T));return v;}};}
 static nfs_logo_capture::Target selected{};static bool feature=true;
-namespace nfs_logo_publisher{inline bool enabled(){return feature;}inline int exceptions(){return std::uncaught_exception()?1:0;}inline void checked(uint32_t p,size_t n){(void)nfs_host_address(p,n);}inline void target(nfs::GuestCopyTransaction&,nfs_logo_capture::Target&t){++reads;t=selected;}}
+namespace nfs_logo_publisher{inline uintptr_t threadToken(){return 29;}inline bool enabled(){return feature;}inline int exceptions(){return std::uncaught_exception()?1:0;}inline void checked(uint32_t p,size_t n){(void)nfs_host_address(p,n);}inline void target(nfs::GuestCopyTransaction&,nfs_logo_capture::Target&t){++reads;t=selected;}}
 #define NFS_OPTIONS_CAPTION_TEXT_TEST 1
 #define NFS_SETUP_CAPTION_TEXT_TEST 1
 #define NFS_PLAYER1_CAPTION_TEXT_TEST 1
@@ -100,6 +102,40 @@ static void sealedProofCases(){
  prepare();Game g;g.eax=testOwner;g.ebp=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);stringBody(g,"normal");}assert(cap::lastPacket(g)&&!cap::lastProof(g)&&!cap::acquireCurrentProof(g));}
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);trackedString(g,"normal");}auto proof=cap::acquireCurrentProof(g);assert(proof);const auto before=reads;std::thread other([&]{foreignPath=true;Game foreign;foreign.eax=testOwner;assert(!cap::lastProof(foreign)&&!cap::acquireCurrentProof(foreign));foreignPath=false;});other.join();assert(reads==before&&foreignAllocations==0);cap::beforeOwnerRetire(g,selected.owner);assert(!cap::lastProof(g)&&!cap::acquireCurrentProof(g));assert(proof->packet()->original()[369*343+123]==0xffff);}
 }
+// The source fixture publishes through the actual Main verifier and Store.
+// Only guest reads/register execution are simulated here; no public metadata
+// or private constructor is used to manufacture Main origin authority.
+static void initialCaptionCases(){
+ if(testSelector!=2&&testSelector!=3)return;
+ using Origin=nfs_main_sidebar_origin::Proof;
+ auto fixture=std::unique_ptr<main343_origin_fixture::Fixture>(new main343_origin_fixture::Fixture);
+ const auto originalFixtureSide=fixture->scene.tailPost.target;
+ auto slots=[&](unsigned slot){
+  auto target=[&](rec::Target&t){t.ownerState[0]=slot<<16;t.ownerState[1]=slot?0x1c00:0x1800;t.ownerState[2]=slot?0x1800:0x1c00;};
+  target(fixture->base.post.target);for(auto*p:{&fixture->scene.preSide,&fixture->scene.postSide,&fixture->scene.postWords,&fixture->scene.tailPre,&fixture->scene.tailPost,&fixture->group.pre,&fixture->group.post,&fixture->copy.pre,&fixture->copy.post})target(p->target);target(fixture->copy.sourceOwner);
+  for(auto&d:fixture->scene.draws){target(d.before);target(d.after);}for(auto&d:fixture->group.draw){target(d.before);target(d.after);}
+ };
+ auto materialize=[&](const Origin&origin,unsigned slot){selected=origin.post().target;selected.ownerState[0]=slot<<16;std::memcpy(memory.data()+selected.w[8],selected.header.data(),16);std::memcpy(memory.data()+selected.w[8]+16,origin.post().pixels.data(),343*480*2);std::memcpy(memory.data()+selected.owner,selected.ownerWords.data(),56);put<uint32_t>(0x1c00+32,0xa0000);put<uint32_t>(dword_4D2314+2,slot<<16);put<uint32_t>(dword_4D231C,selected.ownerState[1]);put<uint32_t>(dword_4D2320,selected.ownerState[2]);put<uint32_t>(dword_4D243C,off_4D3EC4);};
+ for(const char*mode:{"normal","sentinel","sentinel-change","sentinel-two","sentinel-two-change","unknown-negative","unknown-previous","slot-one","ambient-before","null","wrong-game","wrong-thread","wrong-main","archive","revoked","wrong-esi","wrong-ebp","wrong-global","wrong-slot","chosen-handle","bitmap-alias","same-handle","pre-pixel","pre-header","pre-lut","pre-owner","missing-resource","resource-ebp","resource-global","nested-caller","tail-without-caller","during-origin-retire","post-global","post-pixel","post-owner","post-esi","caller-unwind"}){
+  prepare();Game g;g.eax=testOwner;g.esi=testOwner;g.ebp=off_4D3EC4;const unsigned slot=!std::strcmp(mode,"slot-one")?1:0;slots(slot);fixture->binding.game=!std::strcmp(mode,"wrong-game")?reinterpret_cast<uintptr_t>(&g)+1:reinterpret_cast<uintptr_t>(&g);fixture->binding.publisherThread=!std::strcmp(mode,"wrong-thread")?30:29;fixture->group.thread=fixture->copy.thread=fixture->binding.publisherThread;fixture->binding.formGuest=!std::strcmp(mode,"wrong-main")?off_4D3EC4+4:off_4D3EC4;fixture->binding.archive=!std::strcmp(mode,"archive")?0x1235:0x1234;
+  nfs_main_sidebar_origin::Store store;auto origin=fixture->publish(store);assert(origin&&origin->current());materialize(*origin,slot);const uint32_t previous=(!std::strcmp(mode,"sentinel")||!std::strcmp(mode,"sentinel-change"))?UINT32_MAX:((!std::strcmp(mode,"sentinel-two")||!std::strcmp(mode,"sentinel-two-change"))?UINT32_MAX-1:(!std::strcmp(mode,"unknown-negative")?UINT32_MAX-2:(!std::strcmp(mode,"unknown-previous")?0x12345678:off_4D3EC4)));g.ebp=int32_t(previous);put<uint32_t>(dword_4D243C,previous);
+  if(!std::strcmp(mode,"ambient-before")){selected.ownerState[0]=1;put<uint32_t>(dword_4D2314+2,1);} // low ambient bits, selected slot unchanged
+  if(!std::strcmp(mode,"revoked"))store.clear();if(!std::strcmp(mode,"wrong-esi"))g.esi=123;if(!std::strcmp(mode,"wrong-ebp"))g.ebp=testOwner;if(!std::strcmp(mode,"wrong-global"))put<uint32_t>(dword_4D243C,testOwner);
+  if(!std::strcmp(mode,"wrong-slot")){selected.ownerState[0]=1u<<16;put<uint32_t>(dword_4D2314+2,1u<<16);}if(!std::strcmp(mode,"chosen-handle"))put<uint32_t>(dword_4D231C,0x1c00);if(!std::strcmp(mode,"bitmap-alias"))put<uint32_t>(0x1c00+32,selected.w[8]);if(!std::strcmp(mode,"same-handle")){selected.ownerState[2]=selected.owner;put<uint32_t>(dword_4D2320,selected.owner);}
+  if(!std::strcmp(mode,"pre-pixel"))put<uint16_t>(selected.w[8]+16,1);if(!std::strcmp(mode,"pre-header"))selected.header[2]^=1;if(!std::strcmp(mode,"pre-lut"))selected.x[125]^=2;if(!std::strcmp(mode,"pre-owner"))selected.owner^=4;
+  std::shared_ptr<const nfs_compact_caption::Proof>escaped;
+  {cap::OwnerScope owner(g);
+   auto draw=[&]{if(!std::strcmp(mode,"sentinel-two-change")){g.ebp=-1;put<uint32_t>(dword_4D243C,UINT32_MAX);}if(!std::strcmp(mode,"sentinel-change")){g.ebp=off_4D3EC4;put<uint32_t>(dword_4D243C,off_4D3EC4);}if(!std::strcmp(mode,"resource-ebp"))g.ebp=testOwner;if(!std::strcmp(mode,"resource-global"))put<uint32_t>(dword_4D243C,testOwner);{cap::TailScope tail(g);if(!std::strcmp(mode,"missing-resource"))stringBody(g,"normal");else trackedString(g,"normal");}escaped=cap::lastProof(g);g.esi=testOwner;};
+   if(!std::strcmp(mode,"tail-without-caller")){draw();assert(!escaped);}
+   else try{cap::InitialCallerScope caller(g,!std::strcmp(mode,"null")?std::shared_ptr<const Origin>{}:origin);if(!std::strcmp(mode,"nested-caller")){cap::InitialCallerScope nested(g,origin);}if(!std::strcmp(mode,"during-origin-retire"))store.clear();draw();if(!std::strcmp(mode,"post-global"))put<uint32_t>(dword_4D243C,testOwner);if(!std::strcmp(mode,"post-pixel"))put<uint16_t>(selected.w[8]+16,1);if(!std::strcmp(mode,"post-owner"))selected.owner^=4;if(!std::strcmp(mode,"post-esi"))g.esi=123;if(!std::strcmp(mode,"caller-unwind"))throw 8;}catch(int){assert(!std::strcmp(mode,"caller-unwind"));}
+   const bool okay=!std::strcmp(mode,"normal")||!std::strcmp(mode,"sentinel")||!std::strcmp(mode,"sentinel-two")||!std::strcmp(mode,"slot-one")||!std::strcmp(mode,"ambient-before");auto proof=cap::acquireCurrentProof(g);if(bool(proof)!=okay)std::fprintf(stderr,"initial route mode=%s failure=%s\n",mode,cap::failureName(cap::current(g)->failure));assert(bool(proof)==okay);
+   if(okay){assert(proof->origin()==origin&&proof->current());const auto&e=proof->evidence();assert(e.route==nfs_compact_caption::Route::InitialMain&&e.incomingEbp==previous&&e.formGuest==testOwner);assert(origin->epoch()==1&&origin->scene().form==bg::MainForm);assert(proof->packet()->clean()[0]==origin->post().pixels[0]);assert(cap::lastPacket(g)==proof->packet());const auto before=reads;std::thread foreign([&]{foreignPath=true;assert(!cap::acquireCurrentProof(g));foreignPath=false;});foreign.join();assert(before==reads&&foreignAllocations==0);store.clear();assert(!proof->current()&&!cap::acquireCurrentProof(g));}
+   else if(escaped)assert(!escaped->current());
+  }
+  assert(!leaseDepth&&allocationsInLease==0);
+ }
+ assert(originalFixtureSide.owner==0x1800);
+}
 static void descriptorRetirement(){
  for(const char*mode:{"shared-x","shared-y","shared-both","final-x","final-y","zero-x","zero-y","negative-x","negative-y","read-x","read-y","bitmap","owner","unrelated","rebind-x"}){
   prepare();Game g;g.eax=testOwner;g.ebp=testOwner;cap::OwnerScope owner(g);auto*s=cap::current(g);assert(s);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);const auto lifetime=s->lifetime,serial=s->serial;const auto originalTarget=selected;const auto currentIdentity=s->current.identity;
@@ -145,6 +181,6 @@ int main(){prepare();Game g;g.eax=testOwner;g.ebp=testOwner;{cap::OwnerScope nof
  }
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);g.eax=testOwner;{cap::OwnerScope nested(g);assert(!cap::current(g));}}assert(!cap::lastPacket(g));}
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);put<uint32_t>(dword_4D243C,123);assert(cap::acquireCurrentPacket(g)==packet);put<uint32_t>(testRecord,((testResource+1)<<16)|2);assert(!cap::acquireCurrentPacket(g));assert(packet->original()[369*343+123]==0xffff);}
- descriptorRetirement();sealedProofCases();
+ descriptorRetirement();sealedProofCases();initialCaptionCases();
  assert(retained&&retained->pixels()==343*480&&retained->original()[369*343+123]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS cached menu caption (Options/Setup/Player1/Player2): compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
 }

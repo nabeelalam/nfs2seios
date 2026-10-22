@@ -18,6 +18,7 @@ def fn(symbol, code=""):
 
 
 def units():
+    initial_caption = "\t{ // checked copy transaction begin\n\tnfs::GuestCopyTransaction guest_transaction;\n\tebp = guest_transaction.load<int32_t>(dword_4D243C); //mov\n\t} // checked copy transaction end\n\t{ // checked copy transaction begin\n\tnfs::GuestCopyTransaction guest_transaction;\n\teax = guest_transaction.load<int32_t>(dword_4D2314+2); //mov\n\tsar(eax, (int32_t)0x10);\n\teax = guest_transaction.load<int32_t>(dword_4D231C+eax*4); //mov\n\t} // checked copy transaction end\n" + call("4825A8") + call("40C110") + call("4824BC") + "loc_40C25E:\n"
     initial = "loc_40C3CC:\n" + "dword_4D4D24\n" + call("4825A8") + "guest_address(aBlk4)\n" + call("405B30") + "eax = esi;\nedx = 0xD3;\nebx = 0x13C;\n" + call("40CD70") + "0x2800\n" + call("405B60") + "edx = 1;\n" + call("428250")
     refresh = initial.replace("loc_40C3CC:", "loc_40C5C6:").replace(call("428250"), call("40CAB0") + call("428250"))
     animation = "loc_40C792:\neax = to32i(esi+4);\n" + call("405B30") + "0x1000\n" + call("405B60")
@@ -36,10 +37,10 @@ def units():
     word = "guest_store<int16_t>(esi, static_cast<int16_t>(bx)); //mov\n"
     prefix = '#include "FunctionIds.h"\n// Preserved preexisting transformation and UTF-8: Î©\n'
     return {
-        "Methods_01.cpp": prefix + fn("40C160", initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
+        "Methods_01.cpp": prefix + fn("40C160", initial_caption + initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
         "Methods_03.cpp": prefix + fn("428250", " nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);\n { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n" + call("49755C") + " }\n") + fn("4284B0") + fn("4287F0") + fn("4289F0"),
         "Methods_09.cpp": prefix + fn("4824CC"),
-        "Methods_10.cpp": prefix + fn("482DA0") + fn("482BD4") + fn("483070") + fn("483438"),
+        "Methods_10.cpp": prefix + fn("482DA0") + fn("4848FC") + fn("482BD4") + fn("483070") + fn("483438"),
         "Methods_13.cpp": prefix + fn("4A5830", word * 4) + fn("4A14D4") + fn("4A10BC", "\tcall(to32i(esp+0x38));\n" * 4),
         "Methods_14.cpp": prefix + fn("4AC934") + fn("4AC9C8") + fn("4B3EE0", word),
     }
@@ -83,7 +84,23 @@ class PlayerHooksTests(unittest.TestCase):
         self.assertEqual(at, sorted(at))
         self.assertEqual(section.count(call("41B710")), 1)
         self.assertEqual(section.count("ResourceScope"), 2)
-        self.assertNotIn("InitialCaller", after)
+        self.assertEqual(after.count("InitialCallerScope"), 2)
+
+    def test_initial_caller_after_selection_before_restore(self):
+        after = hooks.add_player_scene_hooks(units()["Methods_01.cpp"], "Methods_01.cpp")
+        section = after[after.index("\tebp = guest_transaction.load<int32_t>(dword_4D243C)"):after.index("loc_40C25E:")]
+        tokens = ("guest_transaction.load<int32_t>(dword_4D2314+2)", "guest_transaction.load<int32_t>(dword_4D231C+eax*4)", "_sub_4825A8();", "acquireForInitialCaption(*this)", "nfs_player1_caption::InitialCallerScope", "nfs_player2_caption::InitialCallerScope", "_sub_40C110();", "NFS_PLAYER_SCENE_END:initial-caption-close", "_sub_4824BC();")
+        positions = [section.index(token) for token in tokens]
+        self.assertEqual(positions, sorted(positions))
+        selection_end = section.index("checked copy transaction end", section.index("guest_transaction.load<int32_t>(dword_4D231C+eax*4)"))
+        self.assertLess(selection_end, section.index("_sub_4825A8();"))
+        self.assertEqual(after.count("acquireForInitialCaption(*this)"), 1)
+        tail = after[after.index("Fn(void) Game::_sub_40C110()"):after.index("Fn(void) Game::_sub_405CF0()")]
+        self.assertNotIn("InitialCallerScope", tail)
+        self.assertIn("nfs_player1_caption::TailScope", tail)
+        self.assertIn("nfs_player2_caption::TailScope", tail)
+        for name, token in (("Methods_10.cpp", "beforeAllocationFree"), ("Methods_10.cpp", "beforeDescriptorRetire"), ("Methods_14.cpp", "beforeOwnerRetire"), ("Methods_14.cpp", "beforeDescriptorRetire")):
+            self.assertIn("nfs_main_sidebar_origin_live::" + token, hooks.add_player_scene_hooks(units()[name], name))
 
     def test_upload_construction_and_original_tile(self):
         before = units()["Methods_03.cpp"]
@@ -101,6 +118,13 @@ class PlayerHooksTests(unittest.TestCase):
 
     def test_changed_missing_extra_anchors_rejected(self):
         cases = [
+            ("Methods_01.cpp", "loc_40C25E:", "loc_changed:"),
+            ("Methods_01.cpp", "\tebp = guest_transaction.load<int32_t>(dword_4D243C); //mov\n", "\tebp = 0;\n"),
+            ("Methods_01.cpp", call("40C110"), call("40C110") * 2),
+            ("Methods_01.cpp", "\teax = guest_transaction.load<int32_t>(dword_4D231C+eax*4); //mov\n", "\teax = 0;\n"),
+            ("Methods_01.cpp", "\teax = guest_transaction.load<int32_t>(dword_4D2314+2); //mov\n", "\teax = to32i(dword_4D2314+2); //mov\n"),
+            ("Methods_01.cpp", call("4824BC"), ""),
+            ("Methods_01.cpp", "\t} // checked copy transaction end\n" + call("4825A8"), call("4825A8")),
             ("Methods_01.cpp", "loc_40C3CC:", "loc_wrong:"),
             ("Methods_01.cpp", "loc_40CDEB:", "loc_wrong:"),
             ("Methods_01.cpp", "ebx = 0x13C;", "ebx = 0;"),

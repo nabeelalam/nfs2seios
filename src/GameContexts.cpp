@@ -2,6 +2,7 @@
 #include "GameContexts.h"
 #include "Game.h"
 #include "GuestAccess.h"
+#include "hd/Main343OriginLifetime.h"
 #ifdef NFS_SDL_RUNTIME
 #include "SDLThreadCleanup.h"
 #endif
@@ -17,7 +18,7 @@ extern "C" void *nfs_resolve_game_context(uint32_t address) {
     return address?nfs_host_address(address,sizeof(Game)):nullptr;
 }
 extern "C" void nfs_destroy_game_context(void *context) {
-    if(context) {static_cast<Game *>(context)->~Game();free32(context);}
+    if(context) {nfs_main_sidebar_origin::retireGame(reinterpret_cast<uintptr_t>(context));static_cast<Game *>(context)->~Game();free32(context);}
 }
 extern "C" void nfs_prepare_game_worker(void *context,uint32_t function_id) {
     auto &game=*static_cast<Game *>(context);

@@ -1,0 +1,69 @@
+{
+  "scope": "Retained original Main343 origin and genuine early Player caption source foundation; final first-frame renderer handoff remains open",
+  "baseCommit": "a41f20b3a7555ddabece804ec23314f38a66439d",
+  "sourceSha256": {
+    "CMakeLists.txt": "a692cad1175741f1c60bb345c5cd69e8db482b259692788bf9437f5945445907",
+    "scripts/player_scene_hooks.py": "bee7494ca0bed913e62dddbc276f9d43856eaefbccccc128dcab08446d49b529",
+    "src/GameContexts.cpp": "8d9c45341dde8bdc0d5530c3824a2b2a5ef90c10abe58db2cde8c272f68c077f",
+    "src/hd/BackgroundSceneLiveGameHooks.inc": "99faca10380ea5ea59fb0d8c8330235af354bd39567cb39a018e85b6d03548b5",
+    "src/hd/CachedMenuCaptionGameHooks.inc": "88049c7e0cdf61f7aee157baa50d90b72226530a4ad6eb6c2eaf2d88e510bcb4",
+    "src/hd/CompactCaptionProof.h": "30dd78ed82c544726c26f1ab0f10f1c02288a27eafc7b1b6ec8b7d1626ddf644",
+    "tests/options_caption_runtime_tests.cpp": "c02e8778dcc38633b4cf7c932b211a1f797d14ad7b3553e1c8045e20c686aec9",
+    "tests/player_scene_hooks_test.py": "94611b2cc330d08c118bda74762bb82ec3787731bd9acb54a9e2e9f5664807ed",
+    "src/hd/Main343OriginGameHooks.inc": "3624dfd1a71713be9ba425269eff608f4fd8d607480662a8dc1b43fe6efab14c",
+    "src/hd/Main343OriginLifetime.h": "3a9df0da1602a7dfdbf580f4c3f8a5aa57b9df3c3f859fd97529a3a38ff1cee5",
+    "src/hd/Main343OriginProof.h": "fe187ccf862faf6b8013df613f3425c5a458bbe76d935809bc35ff9e425e2aec",
+    "tests/Main343OriginFixture.h": "a7ba6a1577ba246efd492e3ed19df71ca1d3a0fdbc719baef8610eb0b53b7e86",
+    "tests/main_sidebar_origin_tests.cpp": "2a3e4f4c869f3d1f83d01bee0ce91bea24d065e551b5ffad8486d84e7c124804"
+  },
+  "behavior": {
+    "historicalMainSceneAndEventsRetainedWithoutRelabeling": true,
+    "completeOriginalMainVerificationRequired": true,
+    "exactSelected343OwnerHeaderFullLutAndAllWordsRevalidated": true,
+    "archiveGameThreadStorageAndCatalogLifetimesChecked": true,
+    "crossThreadGameRetirementRevokesRetainedProof": true,
+    "initialCaptionUsesOriginalResourceMeasurementStringAndGlyphChain": true,
+    "ordinaryPlayerIncomingEbpGuardUnchanged": true,
+    "initialPreviousValueAcceptsExactlyMainMinusOneMinusTwo": true,
+    "previousValueMustStayEqualToEntrySnapshot": true,
+    "unknownAndMidCallChangedPreviousValuesRejected": true,
+    "initialRendererHandoffConnected": false
+  },
+  "validation": {
+    "focusedChecksPerMode": 20,
+    "optimizedPassed": true,
+    "asanUbsanPassed": true,
+    "testReceiptSha256": "513cd53f4f0ab844e7422c78ce87cfeb13821d9a1aae2513df06f34354a7ced4",
+    "productionCxx14CompiledUnits": 7,
+    "compilerInputs": 128,
+    "compilerInputsStable": true,
+    "insertionOnlyActualSixUnitReversalExact": true,
+    "candidateBinarySha256": "af2cfffc13e989a99619b38a2470079e69c7d85ee1bafd56ac4ba6a70f85df73",
+    "buildReceiptSha256": "eae6311520f527537bafeee8c1f7a15383bb7da6238269e290e80425a59d5ff1",
+    "maintained74ObjectsUnchanged": true,
+    "actualOriginalData": {
+      "readOnlyPrivateCallerTrace": true,
+      "observationBinarySha256": "98e36547d5f3d5d2ed45bb8f798f027892ce6fdce5addc1f34df7f95688789bd",
+      "resultSha256": "a1af9a391728e9576ef93cb64af172272196147eae71d5d632ff60e05b3f62d5",
+      "bothPlayersOriginAndInitialCaptionPassed": true,
+      "existingLazyNativeRenderingAfterCarChangePassed": true,
+      "nativeRenderSize": [
+        2186,
+        1640
+      ],
+      "cleanExitCopiedProfileAndArtworkRestored": true,
+      "ownedGameAndDisplayStopped": true,
+      "sharedLeaseAbsent": true
+    },
+    "diagnosedFailures": "Private failed runs retained. Actual original Done and Escape return markers were absent from the initial guard; source-confirmed exact values added with rejection tests."
+  },
+  "limitations": [
+    "No final initial Player scene-to-renderer handoff yet",
+    "Actual run used private read-only caller observations; separate unobserved candidate built but not runtime-accepted by this receipt",
+    "No physical iPad acceptance or performance claim",
+    "No production artwork adoption from this source foundation"
+  ],
+  "privateDataPublished": false,
+  "cloudBuildsStarted": 0,
+  "push": false
+}
