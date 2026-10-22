@@ -15,6 +15,7 @@ extern "C" void native_grGlideShutdown();
 #include "MenuInput.h"
 #include "SDLKeyboardInput.h"
 #include "SDLTouchInput.h"
+#include "SDLDesktopPointer.h"
 #include "FramePresentation.h"
 #include "EngineThreadMetrics.h"
 #include "GraphicsLifecycle.h"
@@ -51,6 +52,9 @@ struct GameSession::Impl {
     std::unique_ptr<SDLGamepadInput> gamepads;
     MenuInput menu;
     TouchPointer touch;
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+    DesktopPointer desktop_pointer;
+#endif
     TouchKeyPulse touch_keys;
     bool foreground=true,background_shutdown=false,pointer_focused=true;
     GraphicsLifecycle graphics;
@@ -69,6 +73,9 @@ struct GameSession::Impl {
         if(type==SDL_EVENT_WILL_ENTER_BACKGROUND && foreground){
             nfs_diagnostics_activity(0);
             touch.reset();input.clear_pointer(uint32_t(SDL_GetTicks()));pointer_focused=false;
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+            desktop_pointer.reset();
+#endif
             touch_keys.cancel(uint32_t(SDL_GetTicks()),post_input,this);
             foreground=false;graphics.set_suspended(true);audio.set_suspended(true);
             menu.update(0,SDL_GetTicks(),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},this);
@@ -181,7 +188,11 @@ void GameSession::poll(){
         sdl_window_event(event);
         impl->lifecycle(event.type); // Fallback for events pushed from other threads; owner notifications were handled immediately.
         const auto now=uint32_t(SDL_GetTicks());
-        if(event.type==SDL_EVENT_WINDOW_FOCUS_LOST){impl->pointer_focused=false;impl->touch.reset();impl->input.clear_pointer(now);impl->touch_keys.cancel(now,Impl::post_input,impl.get());}
+        if(event.type==SDL_EVENT_WINDOW_FOCUS_LOST){impl->pointer_focused=false;impl->touch.reset();impl->input.clear_pointer(now);impl->touch_keys.cancel(now,Impl::post_input,impl.get());
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+            impl->desktop_pointer.reset();
+#endif
+        }
         if(event.type==SDL_EVENT_WINDOW_FOCUS_GAINED)impl->pointer_focused=true;
         if(impl->foreground && impl->pointer_focused){
             const auto touch=original_touch_event(impl->touch,event,sdlWin?SDL_GetWindowID(sdlWin):0,now);
@@ -190,6 +201,14 @@ void GameSession::poll(){
             if(touch.action==TouchAction::click)impl->input.pointer_click(now);
             if(touch.action==TouchAction::diagnostics)nfs_toggle_diagnostics(sdlWin);
             impl->touch_keys.push(touch.action);
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+            if(sdlWin && (event.type==SDL_EVENT_MOUSE_MOTION || event.type==SDL_EVENT_MOUSE_BUTTON_DOWN || event.type==SDL_EVENT_MOUSE_BUTTON_UP)){
+                int width=0,height=0;SDL_GetWindowSize(sdlWin,&width,&height);
+                const auto mouse=impl->desktop_pointer.update(event,SDL_GetWindowID(sdlWin),width,height);
+                if(mouse.dx || mouse.dy)impl->input.pointer_motion(mouse.dx,mouse.dy,now);
+                if(mouse.click)impl->input.pointer_click(now);
+            }
+#endif
         }
         original_keyboard_event(event,uint32_t(SDL_GetTicks()),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},impl.get());
     }

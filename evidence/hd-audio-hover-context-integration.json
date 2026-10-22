@@ -1,0 +1,57 @@
+{
+  "scope": "Local desktop Audio hover and controlled graphics-context recovery; no physical-device or performance claim",
+  "sourceInputsStable": true,
+  "consumedBuildSourcePins": 395,
+  "binarySha256": "2b167d527af4fe31c41c053793834c19f8582659402ca0bb60327c9bb44c47c4",
+  "registeredTests": {
+    "optimizedPassed": 49,
+    "asanUbsanPassed": 49
+  },
+  "focusedColdResources": {
+    "checksPerMode": 852,
+    "actualContextLossPoints": 87,
+    "isolatedAudioAdapterChecksPerMode": 153,
+    "strictC11Passed": true
+  },
+  "desktopPointer": {
+    "focusedChecksPerMode": 32,
+    "iosAndTvOsPathExcluded": true,
+    "existingTouchPathPreserved": true
+  },
+  "actualHover": {
+    "minusDraws": 13,
+    "plusDraws": 13,
+    "outsideDraws": 12,
+    "matchedNativeFrames": 87,
+    "cancellations": 0,
+    "physicalButtonUsed": false
+  },
+  "actualContextRecovery": {
+    "test": "Harness explicitly requested the existing host-renderer reset flag; no original guest state was changed",
+    "generationBefore": 1,
+    "generationAfter": 2,
+    "mainWarmupBeforeRecoveredAudio": false,
+    "matchedNativeFrames": 64,
+    "cancellations": 0
+  },
+  "cleanup": {
+    "normalShutdown": true,
+    "copiedConfigurationAndArtworkRestored": true,
+    "ownedChildrenRemaining": false
+  },
+  "retainedNegativeTests": [
+    "Initial host mouse motion was unsupported by the maintained desktop input path; corrected with desktop-only queue forwarding",
+    "Initial short Enter press did not enter Audio; reset was never requested; repeated with a longer ordinary key press"
+  ],
+  "evidenceDigests": {
+    "registeredSuite": "a4ae96a02f34881f5bc1d8bf4d550e8bdd6c177be6201cd73ee339f6b9c9959a",
+    "hover": "247c9c5aa5166abd001b598d8afc2824e8c19563b3b1ae1be179ff46d8d2abac",
+    "contextRecovery": "c825b55219231671f574c0313f588e13f8a621a7eb36c2e08eabb07b79910002"
+  },
+  "remaining": [
+    "Final authored artwork and map-softness review",
+    "Other frontend and HUD remaster integration",
+    "Physical-device HD acceptance and battery/Low Power Mode performance"
+  ],
+  "goalComplete": false
+}
