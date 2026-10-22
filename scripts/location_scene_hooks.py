@@ -40,6 +40,13 @@ def add_location_scene_hooks(text,name):
             return wrap(part,"off_4D2474+ecx*4","405B30","word"," { nfs_location_scene_live::RoleScope nfs_location_word(*this,nfs_location_scene_live::Phase::Word);")
         body("40BBE0",redraw)
         def location(part):
+            for label,tag in (("loc_40C3CC:\n","normal-base-initial"),("loc_40C5C6:\n","normal-base-refresh")):
+                if part.count(label)!=1:raise ValueError("Location normal base label changed: "+tag)
+                start=part.index(label);end=part.find("\tesp -= 4; _sub_405B30(); esp += 4; //call",start)
+                selected=part[start:end] if end>=0 else ""
+                if selected.count("guest_address(aBlk4)")!=1 or "dword_4D4D24" not in selected or "_sub_4825A8();" not in selected:
+                    raise ValueError("Location normal base arguments changed: "+tag)
+                part=wrap(part,label,"405B30",tag," { nfs_location_scene_live::RoleScope nfs_location_normal_base(*this,nfs_location_scene_live::Phase::Base,nfs_location_scene_live::BaseArgument::Blk4Direct);")
             part=wrap(part,"loc_40C792:\n","405B30","base"," { nfs_location_scene_live::RoleScope nfs_location_base(*this,nfs_location_scene_live::Phase::Base);")
             # Exact current full-menu draw, not the grey/animation sibling calls.
             anchor="\tpush32(0xFFFFFFFF);\n\tecx = 0x20; //mov\n\teax = 1; //mov\n\txor_(edx, edx);\n"
