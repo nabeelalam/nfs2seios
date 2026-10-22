@@ -12,7 +12,8 @@ using Digest=std::array<uint8_t,32>;
 // Loading does not install a provider, enable replacements or prove GPU state.
 class ArtworkPack final {
 public:
-    static constexpr size_t MaxBytes=96u*1024u*1024u;
+    static constexpr size_t LegacyMaxBytes=96u*1024u*1024u;
+    static constexpr size_t MaxBytes=128u*1024u*1024u;
     static std::shared_ptr<const ArtworkPack> loadFile(const std::string& path,const Digest& expected,std::string* error=nullptr) noexcept;
     static std::shared_ptr<const ArtworkPack> loadOwned(std::vector<uint8_t> bytes,const Digest& expected,std::string* error=nullptr) noexcept;
     ArtworkPack(const ArtworkPack&)=delete;

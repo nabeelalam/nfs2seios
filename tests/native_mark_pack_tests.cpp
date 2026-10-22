@@ -5,9 +5,10 @@
 static uint64_t read64(const Bytes&b,size_t p){uint64_t v=0;for(unsigned i=0;i<8;++i)v|=uint64_t(b.at(p+i))<<(8*i);return v;}
 struct NativeFixture {
  Bytes bytes;std::vector<size_t>at;
- NativeFixture(unsigned textures=2,unsigned bindings=3,bool mixed=false){
+ NativeFixture(unsigned textures=2,unsigned bindings=3,bool mixed=false,unsigned mapEdge=0,unsigned secondMapEdge=0){
   Fixture original;std::vector<Bytes>parts;
   for(unsigned i=0;i<24;++i){const auto off=read64(original.bytes,72+32*i),n=read64(original.bytes,80+32*i);parts.emplace_back(original.bytes.begin()+off,original.bytes.begin()+off+n);}
+  for(unsigned i=0;i<2;++i){const unsigned edge=i?secondMapEdge:mapEdge;if(!edge)continue;auto&t=parts[i+1];t.resize(112+size_t(edge)*edge*4);p32(t,0,edge);p32(t,4,edge);p64(t,40,size_t(edge)*edge*4);for(size_t k=112;k<t.size();k+=4){t[k]=60;t[k+1]=30;t[k+2]=10;t[k+3]=255;}CHECK(nfs_texture_sha256(t.data()+112,t.size()-112,t.data()+48));}
   Bytes keys(16+64*bindings);p32(keys,0,1);p32(keys,4,bindings);p32(keys,8,64);
   for(unsigned i=0;i<bindings;++i){const size_t q=16+64*i;p32(keys,q,1);const bool cursor=mixed&&i%textures==1;p32(keys,q+4,cursor?2:1);p32(keys,q+8,cursor?32:128);p32(keys,q+12,cursor?2048:32768);p32(keys,q+16,i%textures);p32(keys,q+20,cursor?32:128);p32(keys,q+24,cursor?32:128);fill(keys,q+32,uint8_t(0x31+i));}parts.push_back(std::move(keys));
   for(unsigned i=0;i<textures;++i){const unsigned edge=mixed&&i==1?128:512;Bytes t(112+edge*edge*4);p32(t,0,edge);p32(t,4,edge);p32(t,8,1);p32(t,12,i);p32(t,16,1);p64(t,32,0xabc+i);p64(t,40,edge*edge*4);
@@ -17,7 +18,7 @@ struct NativeFixture {
   for(unsigned i=0;i<parts.size();++i){const unsigned tag=i==0?1:i<=5?2:i==6?3:i<=18?4:i<=23?5:i==24?6:7;const unsigned role=i==0?0:i<=5?i-1:i==6?0:i<=18?i-6:i<=23?i-19:i==24?0:i-25;at.push_back(bytes.size());p32(bytes,64+32*i,tag);p32(bytes,68+32*i,role);p64(bytes,72+32*i,bytes.size());p64(bytes,80+32*i,parts[i].size());bytes.insert(bytes.end(),parts[i].begin(),parts[i].end());}p64(bytes,16,bytes.size());
  }
 };
-int main(){try{
+int main(int argc,char**argv){try{
  Fixture old;auto v1=ArtworkPack::loadOwned(old.bytes,sha(old.bytes));CHECK(v1);auto absent=v1->nativeMarkProvider();CHECK(absent.schema==0&&!absent.lookup&&!absent.user);
  NativeFixture f;std::string error;auto pack=ArtworkPack::loadOwned(f.bytes,sha(f.bytes),&error);CHECK(pack&&error.empty());auto p=pack->nativeMarkProvider();CHECK(p.schema==1&&p.lookup&&p.user);
  // All legacy semantic outputs remain byte-identical with the same synthetic catalogue/art.
@@ -54,5 +55,18 @@ int main(){try{
  mutateMixed([&](Bytes&b){p64(b,ct+32,0xabc);});
  mutateMixed([&](Bytes&b){b[ct+112]=255;b[ct+115]=1;CHECK(nfs_texture_sha256(b.data()+ct+112,65536,b.data()+ct+48));});
  NfsNativeMarkProfile profile{},unchanged{};CHECK(nfs_native_mark_profile(2,32,&profile)&&profile.preparedBytes==2048&&profile.artBytes==65536&&profile.sourceLod==3);unchanged=profile;CHECK(!nfs_native_mark_profile(2,128,&profile)&&!std::memcmp(&profile,&unchanged,sizeof profile));CHECK(!nfs_native_mark_profile(1,32,&profile)&&!nfs_native_mark_profile(3,32,&profile)&&!nfs_native_mark_profile(2,32,nullptr));
+ // Capacity expansion is version-specific; exercise every resource and binding at the bound.
+ for(unsigned count:{9u,40u}){NativeFixture capacity(count,64,true);auto loaded=ArtworkPack::loadOwned(capacity.bytes,sha(capacity.bytes));CHECK(loaded);auto cp=loaded->nativeMarkProvider();for(unsigned i=0;i<64;++i){uint8_t key[32];std::memset(key,0x31+i,32);const auto role=i%count;const bool cursor=role==1;NfsNativeMarkArt a{},again{};CHECK(cp.lookup(cp.user,cursor?2:1,cursor?32:128,key,&a));CHECK(a.identity==0xabc+role&&a.width==(cursor?128:512)&&a.pixels[0]==20+role);CHECK(cp.lookup(cp.user,cursor?2:1,cursor?32:128,key,&again)&&again.pixels==a.pixels&&again.identity==a.identity);}}
+ {NativeFixture tooMany(41,41,true);reject(std::move(tooMany.bytes));}
+ {NativeFixture tooManyV2(9,9,false);reject(std::move(tooManyV2.bytes));}
+ {NativeFixture boundaryV2(8,64,false);CHECK(ArtworkPack::loadOwned(boundaryV2.bytes,sha(boundaryV2.bytes)));}
+ // A structurally valid full v3 pack crosses 96 MiB without padding or relaxed schemas.
+ {NativeFixture roomy(40,64,true,4096);CHECK(roomy.bytes.size()>ArtworkPack::LegacyMaxBytes&&roomy.bytes.size()<ArtworkPack::MaxBytes);auto pin=sha(roomy.bytes);auto loaded=ArtworkPack::loadOwned(roomy.bytes,pin);CHECK(loaded&&loaded->size()==roomy.bytes.size());
+  if(argc>1){std::ofstream file(argv[1],std::ios::binary);CHECK(bool(file.write(reinterpret_cast<const char*>(roomy.bytes.data()),roomy.bytes.size())));file.close();CHECK(ArtworkPack::loadFile(argv[1],pin));}
+  roomy.bytes[7]='2';p32(roomy.bytes,8,2);CHECK(!ArtworkPack::loadOwned(roomy.bytes,sha(roomy.bytes),&error)&&error=="HD artwork pack does not match its trusted content pin");
+  if(argc>1){std::ofstream file(argv[1],std::ios::binary);CHECK(bool(file.write(reinterpret_cast<const char*>(roomy.bytes.data()),roomy.bytes.size())));file.close();CHECK(!ArtworkPack::loadFile(argv[1],sha(roomy.bytes),&error)&&error=="HD artwork pack size is unsupported");CHECK(std::remove(argv[1])==0);}}
+ {NativeFixture oversized(40,64,true,4096,3072);CHECK(oversized.bytes.size()>ArtworkPack::MaxBytes);reject(std::move(oversized.bytes));}
+ // Original v2 and v1 byte caps reject even before parsing otherwise untrusted input.
+ {NativeFixture oldSize(8,8,false,4096,3072);CHECK(oldSize.bytes.size()>ArtworkPack::LegacyMaxBytes&&oldSize.bytes.size()<ArtworkPack::MaxBytes);CHECK(!ArtworkPack::loadOwned(oldSize.bytes,sha(oldSize.bytes),&error)&&error=="HD artwork pack does not match its trusted content pin");oldSize.bytes[7]='1';p32(oldSize.bytes,8,1);CHECK(!ArtworkPack::loadOwned(oldSize.bytes,sha(oldSize.bytes),&error));}
  Digest wrong=sha(f.bytes);wrong[0]^=1;CHECK(!ArtworkPack::loadOwned(f.bytes,wrong,&error));Digest zero{};CHECK(!ArtworkPack::loadOwned(f.bytes,zero,&error));CHECK(pack->nativeMarkProvider().user==p.user);std::printf("PASS syntheticv1unchanged/v2twoassets/v3mixedprofiles/tuplekeys/concurrency/%u structuralnegatives/pins\n",rejected);return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}}

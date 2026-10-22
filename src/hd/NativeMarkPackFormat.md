@@ -14,7 +14,7 @@ Original-derived keys and original or authored pixel payloads are external data,
 
 ## Mixed cursor and emblem packs
 
-Version 3 uses magic `NFSHDPK3` and version 3 with the same section layout, limits, authentication and reserved-field rules. Version 2 continues to accept only its original emblem profile. Version 3 accepts exactly these source/art pairs:
+Version 3 uses magic `NFSHDPK3` and version 3 with the same section layout, authentication and reserved-field rules. It permits 1–40 native textures (26–65 sections total) and a whole-file size of at most 128 MiB. Version 1 and version 2 retain their 96 MiB cap; version 2 retains its 1–8 texture cap. The file loader checks the exact magic/version before allocating the larger buffer. Binding count remains capped at 64. Renderer resources are created lazily and reused immutably within a context; 40 full-size emblem textures use at most 40 MiB of pixel storage before driver overhead. Exhausted resources keep original artwork; there is no eviction or change to drawing behavior. Version 2 continues to accept only its original emblem profile. Version 3 accepts exactly these source/art pairs:
 
 | Encoding | Prepared square edge | Prepared bytes | Logical square edge | Authored RGBA8 square edge | Authored bytes |
 | --- | --- | --- | --- | --- | --- |

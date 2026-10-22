@@ -6,7 +6,8 @@
 #include "NativeMarkProfile.h"
 #define NFS_NATIVE_MARK_ART_SCHEMA 1u
 #define NFS_NATIVE_MARK_SOURCE_EDGE 128u
-#define NFS_NATIVE_MARK_MAX_TEXTURES 8u
+#define NFS_NATIVE_MARK_V2_MAX_TEXTURES 8u
+#define NFS_NATIVE_MARK_MAX_TEXTURES 40u
 #define NFS_NATIVE_MARK_MAX_BINDINGS 64u
 /* Immutable borrowed program-lifetime 4x RGBA8 PMA artwork for a reviewed profile.
    Opacity is not baked. Content authentication is the trusted loader's job. */

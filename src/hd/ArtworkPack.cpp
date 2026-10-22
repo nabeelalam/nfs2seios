@@ -13,6 +13,7 @@ bool hash(const uint8_t*p,size_t n,const uint8_t*expected){uint8_t actual[32];re
 bool rgba(const uint8_t*p,size_t n,bool opaque){for(size_t k=0;k<n;k+=4)if(p[k]>p[k+3]||p[k+1]>p[k+3]||p[k+2]>p[k+3]||(opaque&&p[k+3]!=255))return false;return true;}
 struct Section {uint32_t tag,id;const uint8_t*data;size_t size;};
 bool dimensions(uint32_t w,uint32_t h,size_t n){return w&&h&&w<=4096&&h<=4096&&uint64_t(w)*h*4==n;}
+size_t byteLimit(const uint8_t*header){return u32(header+8)==3&&std::memcmp(header,"NFSHDPK3",8)==0?ArtworkPack::MaxBytes:ArtworkPack::LegacyMaxBytes;}
 void failure(std::string*out,const char*message)noexcept{if(out)try{*out=message;}catch(...){}}
 }
 std::shared_ptr<const ArtworkPack> ArtworkPack::loadFile(const std::string&path,const Digest&expected,std::string*error)noexcept{
@@ -21,6 +22,8 @@ std::shared_ptr<const ArtworkPack> ArtworkPack::loadFile(const std::string&path,
         if(!file){failure(error,"HD artwork pack could not be opened");return {};}
         const auto end=file.tellg();
         if(end<0||uint64_t(end)>MaxBytes||uint64_t(end)<832){failure(error,"HD artwork pack size is unsupported");return {};}
+        uint8_t header[12];file.seekg(0);
+        if(!file.read(reinterpret_cast<char*>(header),sizeof header)||uint64_t(end)>byteLimit(header)){failure(error,"HD artwork pack size is unsupported");return {};}
         std::vector<uint8_t> bytes(static_cast<size_t>(end));file.seekg(0);
         if(!file.read(reinterpret_cast<char*>(bytes.data()),std::streamsize(bytes.size()))||file.peek()!=std::char_traits<char>::eof()){
             failure(error,"HD artwork pack read was incomplete");return {};
@@ -30,7 +33,7 @@ std::shared_ptr<const ArtworkPack> ArtworkPack::loadFile(const std::string&path,
 }
 std::shared_ptr<const ArtworkPack> ArtworkPack::loadOwned(std::vector<uint8_t>bytes,const Digest&expected,std::string*error)noexcept{
     try{
-        if(bytes.size()<832||bytes.size()>MaxBytes||!nonzero(expected.data(),32)||!hash(bytes.data(),bytes.size(),expected.data())){
+        if(bytes.size()<832||bytes.size()>byteLimit(bytes.data())||!nonzero(expected.data(),32)||!hash(bytes.data(),bytes.size(),expected.data())){
             failure(error,"HD artwork pack does not match its trusted content pin");return {};
         }
         auto pack=std::shared_ptr<ArtworkPack>(new ArtworkPack(std::move(bytes)));pack->digest_=expected;
@@ -46,7 +49,7 @@ bool ArtworkPack::parse(){
     const bool extended=(version==2&&std::memcmp(b,"NFSHDPK2",8)==0)||mixed;
     if((!legacy&&!extended)||u32(b+12)!=64||u64(b+16)!=bytes_.size()||
        u32(b+28)!=32||u64(b+32)!=64||!zero(b+40,24))return false;
-    if((legacy&&sectionCount!=24)||(extended&&(sectionCount<26||sectionCount>25+NFS_NATIVE_MARK_MAX_TEXTURES)))return false;
+    if((legacy&&sectionCount!=24)||(extended&&(sectionCount<26||sectionCount>25+(mixed?NFS_NATIVE_MARK_MAX_TEXTURES:NFS_NATIVE_MARK_V2_MAX_TEXTURES))))return false;
     const uint32_t markTextures=extended?sectionCount-25:0;
     std::array<Section,25+NFS_NATIVE_MARK_MAX_TEXTURES> sections{};
     size_t at=64+32*size_t(sectionCount);if(at>bytes_.size())return false;
