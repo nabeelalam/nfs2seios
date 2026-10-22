@@ -12,7 +12,14 @@ struct SurfaceIdentity {
  uint64_t lifetime=0;
  std::array<uint32_t,20> geometry{};
  // Caller must additionally validate every interior LUT entry before constructing this identity.
- bool valid() const noexcept {return lifetime&&geometry[1]==640&&geometry[2]==480&&(geometry[7]&255)==16&&geometry[8]&&uint64_t(geometry[8])+16+640*480*2<=0x100000000ULL&&geometry[10]==1280&&geometry[11]&&geometry[12]&&geometry[3]<=geometry[5]&&geometry[4]<=geometry[6]&&geometry[5]<=640&&geometry[6]<=480&&geometry[14]==0&&geometry[15]==2&&geometry[16]==1278&&geometry[17]==16&&geometry[18]==1296&&geometry[19]==16+479*1280;}
+ bool valid() const noexcept {
+  const uint32_t width=geometry[1],pitch=width*2;
+  return lifetime&&(width==343||width==640)&&geometry[2]==480&&(geometry[7]&255)==16&&geometry[8]&&
+   uint64_t(geometry[8])+16+uint64_t(width)*480*2<=0x100000000ULL&&geometry[10]==pitch&&geometry[11]&&geometry[12]&&
+   geometry[3]<=geometry[5]&&geometry[4]<=geometry[6]&&geometry[5]<=width&&geometry[6]<=480&&
+   geometry[14]==0&&geometry[15]==2&&geometry[16]==2*(width-1)&&geometry[17]==16&&geometry[18]==16+pitch&&geometry[19]==16+479*pitch;
+ }
+ size_t pixelCount()const noexcept{return valid()?size_t(geometry[1])*480:0;}
  bool operator==(const SurfaceIdentity&o)const noexcept{return lifetime==o.lifetime&&geometry==o.geometry;}
 };
 struct TextCommand {
@@ -30,7 +37,9 @@ class FramePacket {
  friend class FramePacketBuilder;
  FramePacket(std::shared_ptr<const FontCatalog> font,SurfaceIdentity surface,uint64_t serial,std::vector<uint16_t>&&clean,std::vector<uint16_t>&&original,std::vector<Vertex>&&vertices,size_t commands,size_t writes):font_(std::move(font)),surface_(surface),serial_(serial),clean_(std::move(clean)),original_(std::move(original)),vertices_(std::move(vertices)),commands_(commands),writes_(writes){}
  public:
- static constexpr size_t pixelCount=640*480;
+ // Legacy constant remains the maximum plane capacity, not every packet size.
+ static constexpr size_t maxPixelCount=640*480,pixelCount=maxPixelCount;
+ size_t pixels()const noexcept{return original_.size();}
  const std::shared_ptr<const FontCatalog>&font()const noexcept{return font_;}
  const SurfaceIdentity&surface()const noexcept{return surface_;}
  uint64_t serial()const noexcept{return serial_;}
@@ -40,7 +49,7 @@ class FramePacket {
  size_t commands()const noexcept{return commands_;}
  size_t writes()const noexcept{return writes_;}
  bool matches(const SurfaceIdentity&current,uint64_t acceptedSerial,const uint16_t*source,size_t count)const noexcept{
-  return acceptedSerial==serial_&&surface_==current&&source&&count==pixelCount&&std::memcmp(original_.data(),source,pixelCount*sizeof(uint16_t))==0;
+  return acceptedSerial==serial_&&surface_==current&&source&&count==pixels()&&std::memcmp(original_.data(),source,pixels()*sizeof(uint16_t))==0;
  }
 };
 class FramePacketBuilder {
@@ -61,7 +70,7 @@ class FramePacketBuilder {
  bool active()const noexcept{return active_;}
  Failure failure()const noexcept{return failure_;}
  bool begin(SurfaceIdentity surface,uint64_t serial,const uint16_t*pre,size_t count)noexcept{
-  if(!font_||active_||!surface.valid()||!serial||serial<=lastSerial_||!pre||count!=FramePacket::pixelCount)return fail(Failure::invalidBegin);
+  if(!font_||active_||!surface.valid()||!serial||serial<=lastSerial_||!pre||count!=surface.pixelCount())return fail(Failure::invalidBegin);
   lastSerial_=serial;surface_=surface;serial_=serial;used_=commands_=writes_=0;stringActive_=false;
   try{clean_.assign(pre,pre+count);replay_=clean_;vertices_.resize(maxVertices);}catch(...){return fail(Failure::allocation);}
   active_=true;failure_=Failure::none;return true;
@@ -76,7 +85,7 @@ class FramePacketBuilder {
  bool word(size_t index,uint16_t before,uint16_t computed,uint16_t after)noexcept{
   if(!active_)return false;
   if(!stringActive_)return fail(Failure::unclosedString);
-  if(index>=FramePacket::pixelCount||writes_>=maxWrites)return fail(Failure::capacity);
+  if(index>=replay_.size()||writes_>=maxWrites)return fail(Failure::capacity);
   if(computed!=after||replay_[index]!=before)return fail(Failure::wordMismatch);
   replay_[index]=after;++writes_;return true;
  }
@@ -88,6 +97,9 @@ class FramePacketBuilder {
   for(size_t i=c.length;i<c.text.size();++i)if(c.text[i])return fail(Failure::command);
   const int64_t px=int64_t(c.x)+c.originX,py=int64_t(c.y)+c.originY+24-font_->description().baseline[c.role];
   if(px < -8192||px>8192||py < -8192||py>8192)return fail(Failure::command);
+  // Logical text coordinates stay unchanged; the actual surface clip is narrower
+  // for compact surfaces and must not be widened to the global layout ceiling.
+  if(c.clip.left<surface_.geometry[3]||c.clip.top<surface_.geometry[4]||c.clip.right>surface_.geometry[5]||c.clip.bottom>surface_.geometry[6])return fail(Failure::command);
   Layout shaped;
   if(!layout(*font_,c.text.data(),c.length+1,c.role,float(px),float(py),float(c.advance),c.alignment,c.clip,shaped))return fail(Failure::command);
   if(!append_vertices(shaped,c.color,vertices_.data(),vertices_.size(),used_))return fail(Failure::capacity);
@@ -98,7 +110,7 @@ class FramePacketBuilder {
   if(!active_)return {};
   if(stringActive_){fail(Failure::unclosedString);return {};}
   if(!(current==surface_)){fail(Failure::identity);return {};}
-  if(!post||count!=FramePacket::pixelCount||!commands_||!writes_||!used_){fail(Failure::sourceMismatch);return {};}
+  if(!post||count!=surface_.pixelCount()||!commands_||!writes_||!used_){fail(Failure::sourceMismatch);return {};}
   if(std::memcmp(replay_.data(),post,count*sizeof(uint16_t))){fail(Failure::sourceMismatch);return {};}
   try{
    vertices_.resize(used_);

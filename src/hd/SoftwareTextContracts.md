@@ -1,8 +1,9 @@
 # Owned software-menu text packets
 
 These helpers prepare optional replacement text for the original logical
-640 by 480 RGB565 software surface. They do not read guest memory, observe game
-calls, access files, queue renderer commands or activate replacements. A passing
+640 by 480 or compact 343 by 480 RGB565 software surface. They do not read
+guest memory, observe game calls, access files, queue renderer commands or
+activate replacements. A passing
 packet test does not establish game, graphics, device or performance acceptance.
 
 ## Font input and ownership
@@ -43,6 +44,23 @@ existing checked guest-memory interface. The endpoint geometry checks in
 `SurfaceIdentity` are not a replacement for that complete validation. Its
 numeric fields are correlation data, never permission to dereference addresses.
 Original game calls and stores must still execute normally.
+
+Only widths 640 and 343 at height 480 are supported. Each identity keeps the
+actual width, pitch of twice that width, clip, addresses and endpoint LUT
+samples. Every interior X entry must still equal twice its index and every Y
+entry must equal 16 plus its index times the actual pitch; the producer proves
+this and the real header/owner before construction and revalidates before use.
+A compact surface is not padded or relabelled as 640 pixels wide. Its snapshots
+contain exactly width times 480 words, and store indices use that actual width.
+Command clips must fit the surface's actual clip, although the shared layout
+and vertex helpers retain 640 by 480 as their outer coordinate ceiling.
+
+`SurfaceIdentity::pixelCount()` returns the supported plane size, or zero for an
+invalid identity. `FramePacket::pixels()` reports its owned plane size. The old
+static `FramePacket::pixelCount` constant remains an alias for `maxPixelCount`
+(640 times 480), for source compatibility; it must not size compact snapshots.
+Unsupported widths, pitch/geometry mismatches, widened clips and incorrect
+snapshot counts reject the optional replacement while leaving originals intact.
 
 Before consumption, compare the packet against the *current producer's*
 accepted serial, current surface identity and complete current original plane.
