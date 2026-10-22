@@ -3,6 +3,8 @@
 #include "BackgroundScenePrepare.h"
 #include "HdArtProvider.h"
 #include "NativeMarkProvider.h"
+#include "AudioArtProvider.h"
+#include "AudioDialogRecords.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -23,6 +25,10 @@ public:
     NfsHdArtProvider provider() const noexcept;
     // Optional version2/3 native artwork shares this authenticated pack and owner.
     NfsNativeMarkProvider nativeMarkProvider() const noexcept;
+    // Optional version4 Audio atlas and trusted source metadata. Original source
+    // pixels remain in the separately supplied game archive.
+    NfsAudioArtProvider audioArtProvider() const noexcept;
+    const std::array<nfs_audio_frame::SourceIdentity,6>* audioSourceIdentities() const noexcept{return audio_.pixels?&audioSources_:nullptr;}
     const Digest& digest()const noexcept{return digest_;}
     size_t size()const noexcept{return bytes_.size();}
 private:
@@ -33,6 +39,9 @@ private:
     static int logo(void*,NfsSmallLogoArt*);
     static int region(void*,uint32_t,NfsSmallLogoRegion*);
     static int nativeMark(void*,uint32_t,uint32_t,const uint8_t[32],NfsNativeMarkArt*);
+    static int audioAtlas(void*,NfsAudioArt*);
+    NfsAudioArt audio_{};
+    std::array<nfs_audio_frame::SourceIdentity,6> audioSources_{};
     struct NativeMarkBinding {uint32_t texture=0,encoding=0,edge=0;Digest prepared{};};
     std::array<NativeMarkBinding,NFS_NATIVE_MARK_MAX_BINDINGS> nativeBindings_{};
     std::array<NfsNativeMarkArt,NFS_NATIVE_MARK_MAX_TEXTURES> nativeTextures_{};
