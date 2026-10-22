@@ -1,0 +1,142 @@
+{
+  "scope": "Player1/2 immutable original-preview, colour-swatch and bounded composition foundations; maintained Player remaster not activated",
+  "source": {
+    "forms": [
+      "0x4D3050",
+      "0x4D3100"
+    ],
+    "locationFixedPolicyPreserved": true,
+    "playerCarPhotos": 15,
+    "graphDraws": 5,
+    "selectedCarAndConsumedCacheIndexSeparate": true,
+    "carPhotoAndGraphRowsPaletteAndFullPlaneReplay": true,
+    "swatchShadow": [
+      367,
+      142,
+      84,
+      21
+    ],
+    "swatchColour": [
+      366,
+      141,
+      84,
+      21
+    ],
+    "swatchUnion": [
+      366,
+      141,
+      85,
+      22
+    ],
+    "selected640SwatchClipping": "full, partial and empty write coverage",
+    "rgbArithmetic": "Original fixed-point SHR/ADC rounding and integer lighting; no generic HSV substitution",
+    "callbackPattern": "Global dword564140 consumed by f0001aa8; initialized before clipping even for zero rows",
+    "addressFields": "Canonical source identity tags; live relocation/readable-span/alias checks remain caller prerequisites"
+  },
+  "verification": {
+    "registeredTestsPerMode": 8,
+    "modes": [
+      "optimized",
+      "AddressSanitizer+UndefinedBehaviorSanitizer"
+    ],
+    "playerPreviewChecks": 324107,
+    "playerPreviewNegativeCases": 34,
+    "swatchChecks": 167,
+    "swatchNegativeCases": 41,
+    "boundedCompositionChecks": 287,
+    "boundedCompositionNegativeCases": 34,
+    "additionalValidClippedOrEmptyPacketsRefusedByComposer": 8,
+    "locationRegressionTestsIncluded": 5,
+    "locationExpandedImplementation": "Independent review found token identity after fixed wrapper expansion and equivalent negated equality normalization",
+    "combinedHeadersInActualProductionCxx14Unit": true,
+    "finalInputPinsStable": true
+  },
+  "privateOriginalGameObservation": {
+    "normalOriginalMenuInputOnly": true,
+    "captureDimensions": [
+      2186,
+      1640
+    ],
+    "sourceEventRecords": 6004,
+    "eventCapReached": false,
+    "players": [
+      {
+        "player": 1,
+        "carChanges": [
+          4,
+          5,
+          4
+        ],
+        "colourChangesOnTemporaryCar": [
+          56,
+          57,
+          56
+        ],
+        "graphChanges": [
+          0,
+          1,
+          0
+        ],
+        "captionAdvance": 68
+      },
+      {
+        "player": 2,
+        "carChanges": [
+          9,
+          10,
+          9
+        ],
+        "colourChangesOnTemporaryCar": [
+          77,
+          78,
+          77
+        ],
+        "graphChanges": [
+          0,
+          1,
+          0
+        ],
+        "captionAdvance": 70
+      }
+    ],
+    "cleanWindowManagerCloseExit": 0,
+    "copiedProfileAndArtworkRestoredAndIndependentlyHashVerified": true,
+    "ownedGameAndDisplayTerminal": true,
+    "originalLinkObjectsUnchanged": 68,
+    "maintainedBinaryUnchanged": true,
+    "observerOnlyBuild": {
+      "workers": 2,
+      "seconds": 70.97,
+      "sourceInputsStableAtBuild": 445,
+      "originalPreservingPrivateUnits": 6,
+      "changedPureHeadersExcludedFromSixCompilerDependencyClosures": true
+    }
+  },
+  "limits": [
+    "Pure packet tests use synthetic inputs, not actual live admission or physical-device acceptance.",
+    "Persistent swatch history across partial or zero-write calls is not implemented. The bounded composer rejects clipped swatch targets and any unexplained final pixels. Never trust a candidate Copy.PRE as history.",
+    "Current private observer cacheIndex uses a short read; the live producer must capture the original shifted 32-bit consumed index. Recorded photo names and graph geometry remain useful, but that index field is not authority.",
+    "Body selected-target snapshots are invalid in the current observer; unchanged full-plane hashes alone do not prove target, clipping or no-write authority.",
+    "Private observer firstPattern and lastPattern read unused row-source memory; only final patternGlobal is observed. Per-row global pattern capture remains required.",
+    "Initial/non-lazy upload source and post-upload source witnesses are incomplete. No full live upload proof is claimed.",
+    "Live caption, relocation, copy and upload binding plus renderer integration remain pending.",
+    "No new Apple build, physical iPad appearance, performance, battery or Low Power Mode acceptance."
+  ],
+  "publication": {
+    "originalAssetsRawCapturesAndPrivateObserverExcluded": true,
+    "cloudBuild": false,
+    "push": false,
+    "paidService": false
+  },
+  "publicSourceSha256": {
+    "CMakeLists.txt": "ca857a2d5d96d1c9496ed83cfd68392a8ca0db69abc1cbca3fb28980a6eccbb0",
+    "src/hd/PlayerBackgroundCompose.h": "d850bc6405ee4ca0fe1cc8d3ba8868eca6e1f8f93ae54c1dc37096694e74b59d",
+    "tests/player_background_compose_tests.cpp": "fb6d8503915fff4887ec727c2ad161ce42c90d6794a517856ee1ec84715c637e",
+    "src/hd/PreviewPacket.h": "72ad940379b792cd32839afe4d5fb086e884a27b554f05a32333519aa0f62377",
+    "src/hd/PreviewReplay.inc": "e7e8a080aa577b2c982d810b42011de17f4bf968dea179ebe1a6d7ae6c747216",
+    "src/hd/PlayerPreviewPacket.h": "01e1d6a86a4f5c96e0d3dc14e21d1c0ee50f9af98be58b966d216f380cc5ac86",
+    "src/hd/PlayerSwatchPacket.h": "6b5788b7ec9c7b8185d5b1c8e02d232c11e58c60877ad4ee32deac96afc3c8e5",
+    "tests/player_preview_packet_tests.cpp": "df9f1be03a1bd1e921a423c86b00fcddcc8fb86ab86e155d86c081140959dc63",
+    "tests/player_swatch_packet_tests.cpp": "9bc977f1beeb73ddec22117f67fda33f0b651fc41e3d2585fca94e2aae6019c1"
+  }
+}
