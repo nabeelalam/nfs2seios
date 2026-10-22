@@ -1,0 +1,47 @@
+{
+  "scope": "Game Setup compact caption foundation; background integration not activated",
+  "source": {
+    "setup": {
+      "descriptor": "0x4D2790",
+      "selector": 0,
+      "resource": 0,
+      "text": "game setup",
+      "originalAdvance": 75,
+      "rightAnchor": 168,
+      "left": 93,
+      "y": 126
+    },
+    "options": {
+      "descriptor": "0x4D3A88",
+      "selector": 6,
+      "resource": 7,
+      "text": "options",
+      "originalAdvance": 48,
+      "rightAnchor": 168,
+      "left": 120,
+      "y": 364
+    },
+    "sharedImplementation": "Fixed policy wrappers instantiate independent state; callers cannot submit owner or text policy",
+    "originalGameInputAndNativeBodyTypographyUnchanged": true
+  },
+  "verification": {
+    "registeredTestsPerMode": 3,
+    "modes": [
+      "optimized",
+      "AddressSanitizer+UndefinedBehaviorSanitizer"
+    ],
+    "sameTranslationUnitBothPolicies": true,
+    "independentOwnerAtomicsStatesAndGameIdentity": true,
+    "compactPlaneReplayOwnerFontPaletteOriginalStoreLutAndRetirementChecks": true,
+    "noAllocationInsideGuestReadLease": true,
+    "existingSourceHookReversalAndScopeOrderTests": 6,
+    "actualGeneratedProductionCxx14Syntax": true,
+    "productionSourceUnchanged": true,
+    "testInputPinsStable": true
+  },
+  "limits": [
+    "Setup scene capture, cached upload proof and renderer entry are not yet wired",
+    "No actual Setup native-background runtime acceptance in this milestone",
+    "No new Apple build, physical iPad or battery measurement"
+  ]
+}
