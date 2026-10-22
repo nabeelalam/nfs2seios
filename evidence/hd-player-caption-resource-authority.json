@@ -1,0 +1,42 @@
+{
+  "scope": "Supplemental sealed original Player caption resource/measurement evidence; initial route not implemented or activated",
+  "baseCommit": "4e0b2065d93462672624f091b8793f8fbe40ddcc",
+  "sourceSha256": {
+    "src/hd/CompactCaptionProof.h": "40d12fca4e76177e8e648bb162f52967c59e209f28311c8bdce3613cf3fc110e",
+    "src/hd/CachedMenuCaptionGameHooks.inc": "18e49acde73019f67604e7bac09a46b2606ef33ea681fd5fd9da80ac61e37343",
+    "scripts/player_scene_hooks.py": "1bb3d7db58abce76aa9864561e74ca61ee322aa152ce319ad2aa7c24ec9c97d7",
+    "tests/player_scene_hooks_test.py": "6c077b9f3c51592ee83b1f4b775359fc76111fccda62e35d6bafb943a43d3e3e",
+    "tests/options_caption_runtime_tests.cpp": "c47c33f787cb68a15649c8840e26a6812dfec2a97d941a9b9a1bb17e1c743d5e"
+  },
+  "behavior": {
+    "originalResourceToResolvedTextObserved": true,
+    "resolvedTextMeasurementAndStringOccurrenceMatched": true,
+    "boundedTextRevalidatedAtStringAndResourceExit": true,
+    "privateConstructorAndImmutableHistoricalEvidence": true,
+    "currentAcquisitionRevalidatesFullOriginal343Plane": true,
+    "ordinaryIncomingEbpGuardPreserved": true,
+    "missingSupplementalObservationKeepsLegacyPacketButNoNewProof": true,
+    "policyThreadTokenExplicitlyLocal": true
+  },
+  "validation": {
+    "focusedChecksPerMode": 19,
+    "optimizedPassed": true,
+    "asanUbsanPassed": true,
+    "testReceiptSha256": "e7e32a320cfa802ef561b2e7b5c4a305286cd8c6774ff397b4736837204600de",
+    "actualProductionCxx14UnitsPassed": 6,
+    "compilerDependencyInputs": 114,
+    "compilerInputsStable": true,
+    "productionReceiptSha256": "caa6102045f68aaef58cc4886e5f462a34a8223cf16973deef57ab036faccb40",
+    "actualSixUnitInsertionOnlyReversalExact": true,
+    "initialFixtureFailure": "Test text overlapped simulated image storage; full-plane validation correctly rejected mutations. Text moved to disjoint storage without relaxing checks. Failed receipt retained privately.",
+    "review": "Independent source review found no further concrete seal bypass"
+  },
+  "limitations": [
+    "No initial caller authority or first-frame handoff yet",
+    "No linked executable or actual game run for these caption changes",
+    "No physical iPad acceptance inferred"
+  ],
+  "privateDataPublished": false,
+  "cloudBuildsStarted": 0,
+  "paidServicesUsed": false
+}

@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "scope": "Main menu typography anatomy research and isolated actual-game whole-word preview; no production font replacement",
+  "baseCommit": "4e0b2065d93462672624f091b8793f8fbe40ddcc",
+  "references": [
+    {
+      "family": "Compacta",
+      "url": "https://www.myfonts.com/collections/compacta-font-itc",
+      "status": "Official enlarged Light/Regular specimens inspected; original game font attribution remains unproven"
+    },
+    {
+      "family": "League Gothic",
+      "url": "https://www.theleagueofmoveabletype.com/league-gothic",
+      "status": "Rejected for this role after lowercase g anatomy comparison"
+    },
+    {
+      "family": "Haettenschweiler",
+      "url": "https://learn.microsoft.com/en-us/typography/font-list/haettenschweiler",
+      "status": "Private complete-word graphics candidate; font file not copied or distributed"
+    },
+    {
+      "topic": "Complete-word graphics versus bitmap-font redistribution",
+      "url": "https://learn.microsoft.com/en-us/typography/fonts/font-faq",
+      "status": "Vendor guidance reviewed; preview contains static full words, not an alphabet font or font file"
+    },
+    {
+      "family": "Anton",
+      "url": "https://github.com/google/fonts/tree/main/ofl/anton",
+      "status": "Pinned official OFL font compared privately; not adopted"
+    }
+  ],
+  "findings": [
+    "Original lowercase g uses one storey; League Gothic uses two and is not a faithful replacement for that letter",
+    "Current compressed Oxanium retains a square technical anatomy unlike the reference",
+    "Private Haettenschweiler whole-word preview uses condensed proportions after matching letter construction, without changing original hit geometry"
+  ],
+  "preview": {
+    "wholeWords": 8,
+    "horizontalScaleLowercase": 0.78,
+    "horizontalScaleRace": 0.82,
+    "unrelatedAtlasPixelsUnchanged": true,
+    "oneChangedRendererCompileUnit": true,
+    "maintainedBuildAndAcceptedCandidatePreserved": true,
+    "binarySha256": "47542ce97a41020b525ad52d9b2b06df040d97a3519efc21d60fc9bb6f1b065d",
+    "actualOriginalDataMainMenuRunPassed": true,
+    "nativeSize": [
+      2186,
+      1640
+    ],
+    "allSevenEnabledSelectionsIndependentlyRecognizedFromCaptures": true,
+    "disabledPlayerTwoSkippedByOriginalNavigation": true,
+    "cleanShutdownAndCopiedDataRestored": true,
+    "physicalIPadAcceptance": false,
+    "productionArtReplaced": false,
+    "visualApproval": "User confirmed typeface match; requested lighter strokes and about two original UI pixels less condensation. Final weight and spacing not accepted yet."
+  },
+  "privateCapturesAndOriginalGlyphsPublished": false,
+  "fontFilePublished": false,
+  "paidServicesUsed": false,
+  "cloudBuildsStarted": 0,
+  "refinement": {
+    "privateWholeWordCandidateCreated": true,
+    "wordWidthIncreaseAtOriginalUiScale": 2,
+    "strokeInsetAtOriginalUiScale": 0.25,
+    "rightEdgeAndBaselinePreserved": true,
+    "integratedOrRuntimeValidated": false,
+    "previousPreviewPreserved": true
+  }
+}

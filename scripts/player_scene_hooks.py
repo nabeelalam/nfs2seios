@@ -80,6 +80,7 @@ def add_player_scene_hooks(text, name):
         entry("40C160", " nfs_logo_publisher::PlayerMenuOwnerScope nfs_player_menu(*this);\n nfs_player1_caption::OwnerScope nfs_player1_owner(*this);\n nfs_player2_caption::OwnerScope nfs_player2_owner(*this);\n nfs_player_scene_live::PlayerScope nfs_player_scene(*this);\n nfs_player_scene_live::SourceLifetimeScope nfs_player_source_lifetime(*this);")
         entry("40C110", " nfs_player_scene_live::TailScope nfs_player_tail(*this);\n nfs_player1_caption::TailScope nfs_player1_tail(*this);\n nfs_player2_caption::TailScope nfs_player2_tail(*this);")
         entry("405CF0", " nfs_player1_caption::StringScope nfs_player1_string(*this);\n nfs_player2_caption::StringScope nfs_player2_string(*this);")
+        entry("405580", " nfs_player1_caption::ResourceScope nfs_player1_resource(*this);\n nfs_player2_caption::ResourceScope nfs_player2_resource(*this);")
         entry("40BBE0", " nfs_player_scene_live::IterationScope nfs_player_iteration(*this);")
         entry("405B30", " nfs_player_preview_live::NameScope nfs_player_preview_name(*this);")
         entry("405B60", " nfs_player_scene_live::ResolvedScope nfs_player_resolved(*this);\n nfs_player_preview_live::ResolvedScope nfs_player_preview_resolved(*this);")
@@ -96,6 +97,7 @@ def add_player_scene_hooks(text, name):
             return wrap(part, "loc_40C0B6:\n", "428250", "upload-lazy", "nfs_player_scene_live::CachedUploadSiteScope nfs_player_upload_site(*this,nfs_player_scene_live::CachedUploadSite::Lazy);", ("dword_4D4D24", "edx = 1;"))
         body("40BBE0", lazy)
         def measurements(part):
+            part = replace(part, call("41B710"), call("41B710") + block("resource-resolved", captions("resolvedResource", "*this,uint32_t(eax)")))
             for alignment in ("right", "center"):
                 anchor = " nfs_audio_sidebar_text::measured(*this,uint32_t(ecx),int32_t(eax),nfs_audio_sidebar_text::SourceMeasureAlignment::" + alignment + ");"
                 code = "\n".join(" nfs_player" + str(p) + "_caption::measured(*this,uint32_t(ecx),int32_t(eax),nfs_player" + str(p) + "_caption::SourceMeasureAlignment::" + alignment + ");" for p in (1, 2))

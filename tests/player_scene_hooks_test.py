@@ -36,7 +36,7 @@ def units():
     word = "guest_store<int16_t>(esi, static_cast<int16_t>(bx)); //mov\n"
     prefix = '#include "FunctionIds.h"\n// Preserved preexisting transformation and UTF-8: Î©\n'
     return {
-        "Methods_01.cpp": prefix + fn("40C160", initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
+        "Methods_01.cpp": prefix + fn("40C160", initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
         "Methods_03.cpp": prefix + fn("428250", " nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);\n { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n" + call("49755C") + " }\n") + fn("4284B0") + fn("4287F0") + fn("4289F0"),
         "Methods_09.cpp": prefix + fn("4824CC"),
         "Methods_10.cpp": prefix + fn("482DA0") + fn("482BD4") + fn("483070") + fn("483438"),
@@ -75,6 +75,16 @@ class PlayerHooksTests(unittest.TestCase):
         self.assertNotIn("CachedUploadSiteScope", animated)
         self.assertIn("existing_location_route;", after)
 
+    def test_exact_resource_measure_occurrence(self):
+        after = hooks.add_player_scene_hooks(units()["Methods_01.cpp"], "Methods_01.cpp")
+        section = after[after.index("Fn(void) Game::_sub_405580()"):after.index("Fn(void) Game::_sub_40CD70()")]
+        tokens = ("nfs_player1_caption::ResourceScope", "nfs_player2_caption::ResourceScope", "_sub_41B710();", "nfs_player1_caption::resolvedResource", "nfs_player2_caption::resolvedResource", "ecx = eax; //mov", "nfs_player1_caption::measured")
+        at = [section.index(token) for token in tokens]
+        self.assertEqual(at, sorted(at))
+        self.assertEqual(section.count(call("41B710")), 1)
+        self.assertEqual(section.count("ResourceScope"), 2)
+        self.assertNotIn("InitialCaller", after)
+
     def test_upload_construction_and_original_tile(self):
         before = units()["Methods_03.cpp"]
         after = hooks.add_player_scene_hooks(before, "Methods_03.cpp")
@@ -99,6 +109,8 @@ class PlayerHooksTests(unittest.TestCase):
             ("Methods_01.cpp", " nfs_hd_scene_iteration.start();", ""),
             ("Methods_01.cpp", call("40CAB0"), call("40CAB0") * 2),
             ("Methods_01.cpp", call("48266C"), ""),
+            ("Methods_01.cpp", call("41B710"), ""),
+            ("Methods_01.cpp", call("41B710"), call("41B710") * 2),
             ("Methods_03.cpp", call("49755C"), call("49755C") * 2),
             ("Methods_03.cpp", "nfs_hd_upload(*this)", "changed(*this)"),
             ("Methods_13.cpp", "\tcall(to32i(esp+0x38));", ""),
