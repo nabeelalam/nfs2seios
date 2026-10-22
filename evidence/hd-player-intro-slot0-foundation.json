@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "scope": "Original normal Player entrance route observations and independent initial-sidebar upload foundation",
+  "baseCommit": "c3b09353078d873daf25216f1c3afa7571a03802",
+  "actualObservation": {
+    "binarySha256": "9e3aeb61280cf12a6453d9429ff3d32edd6b91db5dd636babe0cb451a2d6b4e9",
+    "baselineBinarySha256": "c93959d181a4fba69a7e1f94532db23546182042fbc29969c29070ae99d17176",
+    "sourceSha256": "25ff686dc7df591d00d397de299d56f8d18261971719e80e1c9c1d7ad915a829",
+    "resultSha256": "4f28c67d186ea1689ffc908332ad10b7a521c413c6d4642c7b35da6d7f6afb76",
+    "traceSha256": "d3af2296166a95bf60f9482d458ffd097b668dba1baccfb205d7333a8625ca4d",
+    "slideReceiptSha256": "515dd449a70273c45267079f22ce5e8081333c5542f2295165d940f87ffce691",
+    "oneChangedObservationUnit": true,
+    "allOriginalCallsAndBranchesRetained": true,
+    "insertionReversalAfterNewlineNormalization": true,
+    "bothPlayers": true,
+    "framesPerPlayer": 21,
+    "offsetStart": -240,
+    "offsetEnd": 0,
+    "offsetStep": 12,
+    "firstTwoFramesClearAndTintBackground": true,
+    "remaining19FramesRetainColorBuffers": true,
+    "genuineInheritedSidebarCurrentAllFrames": true,
+    "previewBankEndpointDescriptorsStable": true,
+    "alternateSoftwareIntroObserved": false,
+    "firstRefreshAndLaterCarChangesPass": true,
+    "cleanOwnedExit": true,
+    "copiedConfigurationAndArtworkRestored": true,
+    "ownedDisplayStopped": true,
+    "leaseAbsent": true
+  },
+  "sourceReviewed": {
+    "normalIntro": "40C301 -> 427ED0 -> 40C342/40C375",
+    "previewPerFrame": "100 selections and 200 triangles from paired 50-tile banks; original animation retained",
+    "sidebarPerFrame": "White slot0 427B30 after moving preview, before selected word and present",
+    "slot0Expansion": "Actual full-clip 16-bit temporary cleared to zero; raw 343-wide source copy at zero position; remaining columns zero; 300 ARGB1555 tile uploads",
+    "temporaryLifetime": "Expanded upload surface retired before 428250 returns; retain owned pixel evidence and keys, never a borrowed temporary guest surface",
+    "alternateIntro": "40C792 uses independent streamed full-frame presentation; not the normal Player1/2 slide"
+  },
+  "limits": {
+    "hdIntroRendererConnected": false,
+    "slot0OriginalDataPayloadWitnessed": false,
+    "retainedFrameAlphaCompositingAccepted": false,
+    "physicalIPadAcceptance": false,
+    "performanceOrBatteryClaim": false
+  },
+  "next": [
+    "Connect independent slot0 upload observer to genuine initial sidebar",
+    "Validate exact native slot0 pass without widening clear-based cached guards",
+    "Resolve retained-buffer alpha behavior and integrate faithful sidebar-only replacement"
+  ],
+  "cloudBuild": false,
+  "push": false,
+  "foundation": {
+    "scope": "CPU-only genuine initial sidebar-to-original-slot0 upload proof; not connected to live upload or GPU renderer",
+    "headerSha256": "7c20c35fb8969cd2b94c2687a2848c745a234e101e45333bb10dc506bd0e7142",
+    "testsSha256": "cafa6aff1bc165f923bc620baef441aa3c0b66f80ea5d4b7295dbbfdbbfcd3ca",
+    "captionRuntimeTestsSha256": "a5f8a2cd8f86b6df6942728b6c121ba8621061c4f493049fbad9e10ec952d295",
+    "full343SourceAnd640PaddedStage": true,
+    "all300OrderedTilePayloads": true,
+    "independentSlot0OverwriteGeneration": true,
+    "ownedHistoricalStageSurvivesExpectedCleanup": true,
+    "corruptionAliasBindingOverwriteRetirementAndOwnerExitCases": true,
+    "actualCaptionScopesAndMainVerifierCreateTestSource": true,
+    "checksPerMode": 20,
+    "optimizedAndAsanUbsanPassed": true,
+    "testAssertionsEnabled": true,
+    "cxx14HeaderSyntaxPassed": true,
+    "checksReceiptSha256": "d5959c8d89ee99fdcf238a0376ea6a6feb4dfe8980459b17d6a8441bdb118dd8",
+    "independentReadOnlyReview": "No concrete blocking CPU witness hole found; live observation and GPU admission remain separate"
+  }
+}
