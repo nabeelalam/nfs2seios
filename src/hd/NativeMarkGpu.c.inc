@@ -21,7 +21,8 @@ static struct {
 } nfs_native_marks={.sampler=-1,.enable=-1,.selected=-1};
 static int nfs_mark_diagnostics(void){static int checked,enabled;if(!checked){const char*p=getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");enabled=p&&p[0]=='1'&&!p[1];checked=1;}return enabled;}
 static void nfs_mark_log(const char*event,NfsNativeMarkTexture*t,const NfsNativeMarkBinding*b,int height){
- if(!nfs_mark_diagnostics()||nfs_native_marks.logs>=40)return;++nfs_native_marks.logs;
+ // Bound creation, eight supported draw heights and retirement per texture.
+ if(!nfs_mark_diagnostics()||nfs_native_marks.logs>=NFS_NATIVE_MARK_MAX_TEXTURES*10u)return;++nfs_native_marks.logs;
  fprintf(stderr,"NATIVE MARK %s context=%" PRIu64 " identity=%" PRIu64 " address=%u nativeId=%u artId=%u height=%d matchingUploads=%" PRIu64 "\n",event,nfs_native_marks.generation,t?t->art.identity:0,b?b->address:0,b?b->nativeId:0,t?t->texture:0,height,t?t->uploads:0);
 }
 static int nfs_mark_owner(void){return SDL_IsMainThread()&&nfs_native_marks.context&&
