@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "scope": "Player One and Player Two source collectors, pure source composition and independent CPU upload witness; not activated",
+  "sourceFiles": {
+    "CMakeLists.txt": "98ef8d6b89910e4faac10763e97cbeef4f918f8490afae8c21563026a1770432",
+    "src/hd/PlayerPreviewPacket.h": "1ca6c29581fbd3aeafe264ff52212baeabf58e078c17ff35783808d5ce08fa9f",
+    "src/hd/PlayerSwatchPacket.h": "d5870934651c19a3c557eb89d98a927145913d06a46e7ab8c8214665c8b4ad9f",
+    "tests/player_preview_packet_tests.cpp": "d4d3120caa4b19a1ead3c5fea9b5b73ebd52a0eace2a8887848bcb324d7d54c4",
+    "tests/player_swatch_packet_tests.cpp": "c9dfd7aaea4ce05b36877fe5215f8ba9cefc9c484a910015b2ce12773da0621f",
+    "src/hd/PlayerCopyGameHooks.inc": "cf93d2267d9bc8158df6700c22834c856c9d25d048ee31ea16e077b9f924653e",
+    "src/hd/PlayerNativeUploadWitness.h": "cd6a62696c65cc8395193ec1fe8de614a4f97328172f6b7e878e168623887b56",
+    "src/hd/PlayerPreviewGameHooks.inc": "4ba4cbe96c75fc7454ba2fbae71cda985c896e9bf40ba13ceb0547483762c1eb",
+    "src/hd/PlayerSceneLiveGameHooks.inc": "ba1706811746b8e433dbcb9a28f640a004ea9916ac8b1fedfe64baf73f5f24de",
+    "src/hd/PlayerScenePrepare.h": "dd58a9da37b5db095915b7eb4b78fa194f8f3e54af859aa293d2bef33406e5d6",
+    "src/hd/PlayerSceneRuntimeAbi.h": "930ddcbefe19dc10c928d809f9158dcc76d2f9460b91d5c1d28cf2ee2167cf68",
+    "src/hd/PlayerSwatchGameHooks.inc": "5cf78b168d163c058eba2a1487a54850fa99dfb23abb8d75ea7364e7551ab8db",
+    "tests/PlayerSceneFixture.h": "41a614eaf6f565b59832835371d6059350c1443ae736ec5b03a9c450407c66a4",
+    "tests/player_copy_runtime_tests.cpp": "c5c7db2f7f7cf221bc0c240f8d194e5c3a67e36b46157003e148cf7c22cce4cd",
+    "tests/player_native_upload_witness_tests.cpp": "a37eaabb01cbaa27977bb6fc2360c958ac6f3ca1f08a348428513a822831153b",
+    "tests/player_preview_runtime_tests.cpp": "544aec647d0d26b08d62a6d4c01eca62ce7d9d9d60772c8525fd9aabd4dea578",
+    "tests/player_scene_prepare_tests.cpp": "6a7e73286e79048289f26b8c182e6362072428fab8c8f3d1ef5c6b8333c3d7fb",
+    "tests/player_swatch_runtime_tests.cpp": "e3d7cb432afd8484623edd97503505c997ed2e128d319a461e4a6c43de0d3ecb"
+  },
+  "verification": {
+    "optimizedFocusedTests": 14,
+    "asanUbsanFocusedTests": 14,
+    "actualProductionCxx14Syntax": true,
+    "testInputsStable": true,
+    "compilerDependencyFilesPerConfiguration": 64,
+    "dependencyClosuresMatch": true,
+    "optimizedTestLogSha256": "28c34d8635a3a939f7eb0ce363a1236c15f7a27523d5ef2f4eaae86d1e6a0ccd",
+    "sanitizerTestLogSha256": "4c99fce5d72e34e8fd494caf2116a9ee9b4ee2528987ff9b2fc1b4d6b9050af5",
+    "productionSyntaxLogSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "implemented": [
+    "Exact Player form/owner/thread/epoch/archive and truthful direct/lazy event guards",
+    "Preview capture after original cached-car write; all fifteen car names and five graph draws",
+    "Original 343-to-640 copy source, header, tables, row payload and untouched PRE/POST evidence",
+    "Refresh-only color table, actual HSV/RGB/shade calls and two clipped fills; body scratch excluded",
+    "Immutable original swatch PRE binding and exact full-image reconstruction",
+    "Sealed native witness for all 300 actual tile payload observations, descriptors, overwrite/lifetime and proof-consumption guards"
+  ],
+  "sourceCorrection": "The consumed car index comes from the original DWORD load at 4E5924+2 shifted 16 after the low-word 4E5928 write. Entry cache may be stale; draw-consumed index must equal selected car. Earlier synthetic selected/cache mismatch positives are superseded.",
+  "limitations": [
+    "Checked-memory collector fixtures use explicitly documented scene owner/preview stubs",
+    "New scene live collector is syntax-checked but not yet installed into generated original methods",
+    "Final scene sealUpload still intentionally declines until actual source/native witness integration",
+    "CPU native-upload identity does not prove GPU context, live rendering or physical iPad acceptance",
+    "Current remastered overlay uses original sidebar occlusion; integrate preview below authored sidebar and validate actual pixels",
+    "Retirement and presentation must guard raw bitmap/owner and consume the current sealed native proof",
+    "No game run, IPA, cloud build, push, font replacement or visual acceptance in this milestone"
+  ],
+  "next": [
+    "Wire exact original lexical calls and truthful retained-sidebar revalidation",
+    "Join current source to real native upload callbacks and guarded presentation",
+    "Add exact Player renderer/queue path and validate actual menu changes and reentry",
+    "Replace unsuitable main-menu typography with a faithful Compacta-like choice and continue remaining remaster artwork",
+    "Physical UI, context recovery, Low Power Mode 60 FPS and battery validation remain open"
+  ]
+}

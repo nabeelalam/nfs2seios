@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+#ifndef NFS_PLAYER_COPY_RUNTIME_TEST
+#include "PlayerSceneLiveGameHooks.inc"
+#endif
+// Evidence for the original 405B60 calls only. This collector never redraws,
+// substitutes PRE, or manufactures a fresh sidebar draw/group on refresh.
+namespace nfs_player_copy_live {
+namespace live=nfs_player_scene_live;
+using Copy=nfs_logo_capture::Copy;using Target=nfs_logo_capture::Target;
+enum class Site:uint32_t{Initial=0x40c3cc,Refresh=0x40c5c6,Lazy=0x40bbe0};
+enum class Failure:uint32_t{None,Nested,Owner,Read,Source,Target,Table,Row,Unwind,Overflow,Allocation};
+struct State{std::shared_ptr<Copy>copy;live::State*owner=nullptr;uintptr_t game=0,thread=0;uint64_t epoch=0,serial=0,iteration=0;uint32_t form=0,formGuest=0,sourceOwner=0,archive=0;live::bg::Event baseEvent{};unsigned depth=0;bool invalid=false;Failure failure=Failure::None;Site site=Site::Initial;};
+inline std::atomic<uintptr_t>&ownerThread()noexcept{static std::atomic<uintptr_t>v{0};return v;}
+inline State*&slot()noexcept{struct Storage{State*p=nullptr;~Storage(){delete p;}};static thread_local Storage s;return s.p;}
+inline bool sameEvent(const live::bg::Event&a,const live::bg::Event&b)noexcept{return a.ownerEpoch==b.ownerEpoch&&a.sequence==b.sequence&&a.iteration==b.iteration;}
+inline void clear(live::State&s)noexcept{s.currentCopy.reset();s.currentCopyEvent={};s.copySerial=0;s.copyEvent={};s.published.reset();}
+inline void reject(State&s,Failure why)noexcept{s.invalid=true;s.failure=why;if(s.copy)s.copy->error=uint32_t(why);if(s.owner==live::slot()&&s.owner&&s.owner->on&&s.owner->game==s.game&&s.owner->thread==s.thread)clear(*s.owner);}
+inline State*current(Game&g)noexcept{if(ownerThread().load(std::memory_order_acquire)!=nfs_logo_publisher::threadToken())return nullptr;auto*s=slot();return s&&s->depth==1&&!s->invalid&&s->game==reinterpret_cast<uintptr_t>(&g)&&s->owner==live::current(g)?s:nullptr;}
+inline bool bound(State&s,Game&g)noexcept{auto*l=live::current(g);return l&&l==s.owner&&!l->invalid&&l->baseVerified&&l->ownerEpoch==s.epoch&&l->form==s.form&&l->formGuest==s.formGuest&&l->sourceOwner==s.sourceOwner&&l->archive==s.archive&&l->iteration==s.iteration&&l->nextCopySerial==s.serial&&sameEvent(l->base.event,s.baseEvent)&&live::archiveCurrent(*l);}
+// Resolve the source through original live handles, never an incoming pointer
+// dressed up as an owner. Distinct matching handles are ambiguous and decline.
+inline bool source(Copy&c,bool after)noexcept{try{Target owner{};{nfs::GuestCopyTransaction tx;const uint32_t handles[2]={tx.load<uint32_t>(dword_4D231C),tx.load<uint32_t>(dword_4D2320)};uint32_t selected=0;for(auto h:handles){if(!h)continue;nfs_logo_publisher::checked(h,56);if(tx.load<uint32_t>(h+32)!=c.args[0])continue;if(selected&&selected!=h)throw 1;selected=h;}if(!selected)throw 1;nfs_logo_publisher::target(tx,owner,selected);if(!nfs_small_logo_live::target(owner,343)||owner.w[8]!=c.args[0])throw 1;
+ if(after&&!nfs_logo_capture::same(owner,c.sourceOwner))throw 1;if(!after)c.sourceOwner=owner;c.span=16+343*480*2;if(nfs_small_logo_live::overlap(owner.w[8],c.span,c.pre.target.w[8],16+640*480*2))throw 1;nfs_logo_publisher::checked(c.args[0],c.span);auto&bytes=after?c.sourceAfter:c.sourceBefore;std::memcpy(bytes.data(),nfs_host_address(c.args[0],c.span),c.span);nfs_logo_publisher::table(tx,after?c.tableAfter:c.tableBefore,true);}
+ // Hashing and every allocation are deliberately outside guest-memory leases.
+ auto&bytes=after?c.sourceAfter:c.sourceBefore;auto&sha=after?c.shaAfter:c.shaBefore;return nfs_texture_sha256(bytes.data(),c.span,sha.data());}catch(...){return false;}}
+struct Scope{Game&g;State*s=nullptr;bool entered=false,claimed=false;int unwind=0;
+ Scope(Game&game,Site site)noexcept:g(game){auto*l=live::current(g);if(!l||l->invalid||!l->baseVerified||(l->form!=0x4d3050&&l->form!=0x4d3100)||g.edx!=0x2800||g.ebx||g.ecx||(site!=Site::Initial&&site!=Site::Refresh&&site!=Site::Lazy))return;
+  // A nested original copy invalidates the outer observation, even if its
+  // arguments later happen to match again. No previous publication survives.
+  if(ownerThread().load()==nfs_logo_publisher::threadToken()){auto*p=slot();if(p&&p->depth){reject(*p,Failure::Nested);return;}}
+  if((site==Site::Lazy?!l->iteration:l->iteration!=0)||!live::archiveCurrent(*l)){clear(*l);return;}const auto group=live::activeSidebarGroupSerial(*l);if(!group){clear(*l);return;}
+  uintptr_t expected=0,t=nfs_logo_publisher::threadToken();if(!ownerThread().compare_exchange_strong(expected,t)&&expected!=t)return;claimed=expected==0;
+  auto*&p=slot();if(!p)p=new(std::nothrow)State;if(!p){if(claimed)ownerThread().store(0);return;}s=p;clear(*l);s->copy.reset();s->owner=l;s->game=reinterpret_cast<uintptr_t>(&g);s->thread=t;s->epoch=l->ownerEpoch;s->form=l->form;s->formGuest=l->formGuest;s->sourceOwner=l->sourceOwner;s->archive=l->archive;s->iteration=l->iteration;s->baseEvent=l->base.event;s->depth=1;s->invalid=false;s->failure=Failure::None;s->site=site;entered=true;unwind=nfs_logo_publisher::exceptions();
+  if(l->nextCopySerial==UINT64_MAX){reject(*s,Failure::Overflow);return;}s->serial=++l->nextCopySerial;try{s->copy=std::make_shared<Copy>();}catch(...){reject(*s,Failure::Allocation);return;}auto&c=*s->copy;c.serial=s->serial;c.thread=t;c.linkedGroup=group;c.args={{uint32_t(g.eax),uint32_t(g.edx),uint32_t(g.ebx),uint32_t(g.ecx)}};
+  if(!live::readPlane(c.pre)||!nfs_small_logo_live::target(c.pre.target,640)||!nfs_logo_capture::same(c.pre.target,l->base.post.target)){reject(*s,Failure::Target);return;}if(!source(c,false))reject(*s,Failure::Source);
+ }
+ ~Scope(){if(!entered){if(claimed)ownerThread().store(0);return;}if(nfs_logo_publisher::exceptions()>unwind)reject(*s,Failure::Unwind);if(!s->invalid){auto&c=*s->copy;if(!bound(*s,g)||live::activeSidebarGroupSerial(*s->owner)!=c.linkedGroup)reject(*s,Failure::Owner);else if(!live::readPlane(c.post)||!nfs_logo_capture::same(c.pre.target,c.post.target))reject(*s,Failure::Target);else if(!source(c,true)||c.shaBefore!=c.shaAfter||c.sourceBefore!=c.sourceAfter)reject(*s,Failure::Source);else if(!nfs_small_logo_live::tables(c.tableBefore,c.tableAfter,true,0,0x7d))reject(*s,Failure::Table);else if(!c.rows)reject(*s,Failure::Row);else{auto event=s->owner->event(s->iteration);if(!event.sequence||s->owner->invalid)reject(*s,Failure::Overflow);else{c.complete=1;s->owner->currentCopy=s->copy;s->owner->currentCopyEvent=event;s->owner->copySerial=c.serial;s->owner->copyEvent=event;}}}s->depth=0;s->copy.reset();if(claimed)ownerThread().store(0);}
+};
+inline void row(Game&g,uint32_t callback)noexcept{auto*s=current(g);if(!s)return;auto&c=*s->copy;if(c.rows>=nfs_logo_capture::MaxRows){reject(*s,Failure::Overflow);return;}auto&r=c.row[c.rows++];r.row={callback,{{uint32_t(g.eax),uint32_t(g.edx),uint32_t(g.ebx),uint32_t(g.ecx)}}};const auto&a=r.row.args;if(callback!=0xf0001844||!a[2]||a[2]>640){reject(*s,Failure::Row);return;}r.bytes=a[2]*4;try{nfs::GuestCopyTransaction tx;r.converter=tx.load<uint32_t>(dword_571264);r.finalCallback=tx.load<uint32_t>(dword_571260);r.colorKey=tx.load<uint32_t>(dword_4DD03C);if(r.converter!=0xf0001f44||r.finalCallback!=callback)throw 1;nfs_logo_publisher::checked(a[0],r.bytes);nfs_logo_publisher::checked(a[1],a[2]*2);if(nfs_small_logo_live::overlap(a[0],r.bytes,c.pre.target.w[8],16+640*480*2)||nfs_small_logo_live::overlap(a[0],r.bytes,c.args[0],c.span))throw 1;std::memcpy(r.source.data(),nfs_host_address(a[0],r.bytes),r.bytes);Target now{};nfs_logo_publisher::target(tx,now);if(!nfs_logo_capture::same(now,c.pre.target))throw 1;}catch(...){reject(*s,Failure::Row);}}
+}

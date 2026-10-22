@@ -2,10 +2,13 @@
 #pragma once
 #include "PreviewPacket.h"
 namespace nfs_player_preview {
-// Source snapshots must be read independently before/after the exact40CD70 call.
+// Source snapshots bracket actual named draw consumption inside exact40CD70,
+// after40CE28 has written selectedcar into the word at4E5928. Entry cache may
+// be stale and must not be submitted as a consumed selection snapshot.
 // Pure records do not grant guest-read, original-owner or publication authority.
 // Read the consumed index from the original32-bit load at4E5924+2 then shift16;
-// a uint16 read at that address observes a different field, not this index.
+// a uint16 read at that address observes4E5926, not this consumed4E5928word.
+// The full32-bit read followed by shift16 therefore equals selectedcar.
 struct Selection {
  uint32_t selectedCar=0,cachedCarIndex=0,graphEnabled=0;
  std::array<uint32_t,4>graphValues{}; //236C,2330,23E4,23A8 at cached index.
@@ -48,7 +51,7 @@ inline std::array<uint32_t,4>statistics(unsigned index)noexcept{
 }
 inline bool binding(const Input&i)noexcept{
  if((i.form!=Player1Form&&i.form!=Player2Form)||!(i.selectionBefore==i.selectionAfter))return false;
- const auto&s=i.selectionBefore;if(s.selectedCar>=15||s.cachedCarIndex>=15||s.graphEnabled>255)return false;
+ const auto&s=i.selectionBefore;if(s.selectedCar>=15||s.cachedCarIndex>=15||s.cachedCarIndex!=s.selectedCar||s.graphEnabled>255)return false;
  const bool graph=s.graphEnabled&&s.selectedCar<=11;
  if(!graph){if(s.graphValues!=std::array<uint32_t,4>{}||i.draws.size()!=1)return false;const auto&d=i.draws[0];return d.name==carName(s.cachedCarIndex)&&d.args[2]==211&&d.args[3]==316;}
  if(s.graphValues!=statistics(s.cachedCarIndex)||i.draws.size()!=5)return false;

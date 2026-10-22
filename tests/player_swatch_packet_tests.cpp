@@ -37,6 +37,11 @@ int main(){try{
  CHECK(!sw::color({{256,0,0,0}},raw));CHECK(sw::pack(0xffff0000u)==0xf800&&sw::pack(0xff00ff00u)==0x07e0&&sw::pack(0xff0000ffu)==31);
  sw::Failure failure=sw::Failure::None;
  for(auto origin:{sw::Origin::Refresh,sw::Origin::Body})for(unsigned player:{1u,2u}){auto f=std::unique_ptr<Fixture>(new Fixture(player,origin));auto packet=sw::createPacket(f->in,f->authority,f->base,f->current,&failure);CHECK(packet&&failure==sw::Failure::None);CHECK(packet->post()==std::vector<uint16_t>(f->current.pixels.begin(),f->current.pixels.end()));CHECK(packet->pixels().size()==85*22&&packet->coverage().size()==85*22);CHECK(packet->pixels()[0]==0xf800&&packet->pixels()[21*85+84]==0);CHECK(packet->coverage()[84]==0&&packet->coverage()[21*85]==0);CHECK(packet->matches(f->authority,f->current.target,f->current.pixels.data(),sw::Full));
+  CHECK(packet->preMatches(f->base));CHECK(packet->preMatches(f->base.target,f->base.pixels.data(),sw::Full));
+  CHECK(!packet->preMatches(f->base.target,nullptr,sw::Full));CHECK(!packet->preMatches(f->base.target,f->base.pixels.data(),sw::Full-1));
+  f->base.pixels[0]^=1;CHECK(!packet->preMatches(f->base));f->base.pixels[0]^=1;
+  f->base.target.owner++;CHECK(!packet->preMatches(f->base));f->base.target.owner--;
+  CHECK(!packet->preMatches(f->current));
   auto old=f->authority;f->authority.binding.epoch++;CHECK(!packet->matches(f->authority,f->current.target,f->current.pixels.data(),sw::Full));f->authority=old;
   std::vector<uint8_t>other(sw::Full);CHECK(packet->disjoint(other.data(),other.size()));other[141*640+366]=1;CHECK(!packet->disjoint(other.data(),other.size()));other[141*640+366]=0;other[162*640+366]=1;CHECK(packet->disjoint(other.data(),other.size()));CHECK(!packet->disjoint(nullptr,sw::Full));
   const auto preserved=packet->post();f->in.post.pixels.fill(0);f->in.fills[1].rows.clear();f->current.pixels.fill(0);CHECK(packet->post()==preserved&&packet->pixels()[0]==0xf800);

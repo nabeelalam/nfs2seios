@@ -64,15 +64,24 @@ enum class Failure{None,Binding,Events,Color,Target,Fill,Rows,Pixels,Current,All
 // Full640 storage is required, with a valid selected clip (including empty).
 // The independently authenticated base remains mandatory for unwritten pixels.
 inline bool plane(const Plane&p)noexcept{return p.valid==1&&p.width==640&&p.height==480&&nfs_small_logo_live::target(p.target,640)&&p.target.header[3]==0;}
+// Canonical little-endian words bind the independently observed original PRE.
+inline bool wordsShaCanonical(const uint16_t*p,size_t n,std::array<unsigned char,32>&out)noexcept{
+ if(!p||n!=Full)return false;
+ try{std::vector<uint8_t>b(n*2);for(size_t k=0;k<n;++k){b[k*2]=uint8_t(p[k]);b[k*2+1]=uint8_t(p[k]>>8);}
+ return nfs_texture_sha256(b.data(),b.size(),out.data())!=0;}catch(...){return false;}
+}
 struct Rect{uint32_t left=366,top=141,width=85,height=22;};
 class Packet;
 inline std::shared_ptr<const Packet>createPacket(const Input&,const Authority&,const Plane&,const Plane&,Failure*failure=nullptr)noexcept;
 class Packet final{
- Binding binding_;Events events_;Target target_;std::vector<uint16_t>post_,pixels_;std::vector<uint8_t>coverage_;uint32_t raw_=0;
+ Binding binding_;Events events_;Target target_;std::array<unsigned char,32>preSha_{};std::vector<uint16_t>post_,pixels_;std::vector<uint8_t>coverage_;uint32_t raw_=0;
  Packet()=default;friend std::shared_ptr<const Packet>createPacket(const Input&,const Authority&,const Plane&,const Plane&,Failure*)noexcept;
 public:
  const Binding&binding()const noexcept{return binding_;}const Target&target()const noexcept{return target_;}
  uint64_t epoch()const noexcept{return binding_.epoch;}uint64_t serial()const noexcept{return binding_.serial;}uint64_t lifetime()const noexcept{return binding_.lifetime;}uint32_t archive()const noexcept{return binding_.archive;}uint32_t player()const noexcept{return binding_.player;}uint32_t form()const noexcept{return binding_.form;}Origin origin()const noexcept{return binding_.origin;}
+ const std::array<unsigned char,32>&preSha256()const noexcept{return preSha_;}
+ bool preMatches(const Target&t,const uint16_t*p,size_t n)const noexcept{std::array<unsigned char,32>sha{};return nfs_logo_capture::same(target_,t)&&wordsShaCanonical(p,n,sha)&&sha==preSha_;}
+ bool preMatches(const Plane&p)const noexcept{return plane(p)&&preMatches(p.target,p.pixels.data(),Full);}
  Rect bounds()const noexcept{return {};}uint16_t packedColor()const noexcept{return pack(raw_);}uint32_t rawColor()const noexcept{return raw_;}const std::vector<uint16_t>&post()const noexcept{return post_;}
  // Cropped85x22 overlay at366,141. Coverage includes black/unchanged writes.
  const std::vector<uint16_t>&pixels()const noexcept{return pixels_;}const std::vector<uint8_t>&coverage()const noexcept{return coverage_;}
@@ -102,7 +111,7 @@ inline std::shared_ptr<const Packet>createPacket(const Input&i,const Authority&a
   }
   if(!std::equal(replay.begin(),replay.end(),i.post.pixels.begin()))return reject(Failure::Pixels);
   if(i.post.pixels!=current.pixels)return reject(Failure::Current);
-  std::shared_ptr<Packet>p(new Packet);p->binding_=a.binding;p->events_=a.events;p->target_=t;p->raw_=raw;p->post_=std::move(replay);p->pixels_.reserve(85*22);p->coverage_.reserve(85*22);
+  std::shared_ptr<Packet>p(new Packet);if(!wordsShaCanonical(base.pixels.data(),Full,p->preSha_))return reject(Failure::Allocation);p->binding_=a.binding;p->events_=a.events;p->target_=t;p->raw_=raw;p->post_=std::move(replay);p->pixels_.reserve(85*22);p->coverage_.reserve(85*22);
   for(unsigned y=141;y<163;++y)for(unsigned x=366;x<451;++x){p->pixels_.push_back(p->post_[y*640+x]);p->coverage_.push_back(coverage[y*640+x]);}return p;
  }catch(...){return reject(Failure::Allocation);}
 }
