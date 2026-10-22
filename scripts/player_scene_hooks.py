@@ -75,9 +75,9 @@ def add_player_scene_hooks(text, name):
     def captions(kind, args="*this"):
         return "\n".join(" nfs_player" + str(p) + "_caption::" + kind + "(" + args + ");" for p in (1, 2))
     include = '#include "FunctionIds.h"\n'
-    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"'))
+    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"'))
     if name == "Methods_01.cpp":
-        entry("40C160", " nfs_logo_publisher::PlayerMenuOwnerScope nfs_player_menu(*this);\n nfs_player1_caption::OwnerScope nfs_player1_owner(*this);\n nfs_player2_caption::OwnerScope nfs_player2_owner(*this);\n nfs_player_scene_live::PlayerScope nfs_player_scene(*this);\n nfs_player_scene_live::SourceLifetimeScope nfs_player_source_lifetime(*this);")
+        entry("40C160", " nfs_logo_publisher::PlayerMenuOwnerScope nfs_player_menu(*this);\n nfs_player1_caption::OwnerScope nfs_player1_owner(*this);\n nfs_player2_caption::OwnerScope nfs_player2_owner(*this);\n nfs_player_scene_live::PlayerScope nfs_player_scene(*this);\n nfs_player_scene_live::SourceLifetimeScope nfs_player_source_lifetime(*this);\n nfs_player_initial_native_live::SourceLifetimeScope nfs_player_initial_source_lifetime(*this);")
         entry("40C110", " nfs_player_scene_live::TailScope nfs_player_tail(*this);\n nfs_player1_caption::TailScope nfs_player1_tail(*this);\n nfs_player2_caption::TailScope nfs_player2_tail(*this);")
         entry("405CF0", " nfs_player1_caption::StringScope nfs_player1_string(*this);\n nfs_player2_caption::StringScope nfs_player2_string(*this);")
         entry("405580", " nfs_player1_caption::ResourceScope nfs_player1_resource(*this);\n nfs_player2_caption::ResourceScope nfs_player2_resource(*this);")
@@ -142,16 +142,22 @@ def add_player_scene_hooks(text, name):
         body("410090", swatch)
     elif name == "Methods_03.cpp":
         anchor = " nfs_logo_publisher::UploadScope nfs_hd_upload(*this);"
-        unique(anchor, block("upload-end", " nfs_player_scene_live::UploadEndScope nfs_player_upload_end(*this);") + anchor + block("native-upload", " nfs_player_native_live::UploadScope nfs_player_native_upload(*this);"))
+        unique(anchor, block("upload-end", " nfs_player_scene_live::UploadEndScope nfs_player_upload_end(*this);") + anchor + block("native-upload", " nfs_player_native_live::UploadScope nfs_player_native_upload(*this);") + block("initial-native-upload", " nfs_player_initial_native_live::UploadScope nfs_player_initial_native_upload(*this);"))
         def tiles(part):
-            return wrap_all(part, "49755C", "native-tile", "nfs_player_native_live::UploadTileScope nfs_player_native_tile(*this);", 1)
+            counts(part, {"483470": 1, "49755C": 1, "482DA0": 1})
+            # Before the label: initial fallthrough only. Original outer-loop
+            # jumps target the following label and cannot repeat stageBegin.
+            label = "loc_4282FB:\n"
+            part = replace(part, label, block("initial-stage-begin", " nfs_player_initial_native_live::stageBegin(*this);") + label)
+            part = replace(part, call("482DA0"), block("initial-stage-finish", " nfs_player_initial_native_live::stageFinish(*this);") + call("482DA0"))
+            return wrap_all(part, "49755C", "native-tile", "nfs_player_native_live::UploadTileScope nfs_player_native_tile(*this);\n nfs_player_initial_native_live::UploadTileScope nfs_player_initial_native_tile(*this);", 1)
         body("428250", tiles)
         for symbol in ("4284B0", "4287F0", "4289F0"):
             entry(symbol, " nfs_player_scene_live::invalidateCache();\n nfs_player_scene_live::resetSources();")
     elif name == "Methods_09.cpp":
         entry("4824CC", " nfs_player1_caption::SelectionScope nfs_player1_selection(*this);\n nfs_player2_caption::SelectionScope nfs_player2_selection(*this);")
     elif name == "Methods_10.cpp":
-        entry("4848FC", " nfs_main_sidebar_origin_live::beforeAllocationFree(*this,uint32_t(eax));")
+        entry("4848FC", " nfs_main_sidebar_origin_live::beforeAllocationFree(*this,uint32_t(eax));\n nfs_player_initial_native_live::retireAllocation(uint32_t(eax));")
         entry("482DA0", " nfs_main_sidebar_origin_live::beforeDescriptorRetire(*this,uint32_t(eax));\n nfs_player_scene_live::retireSource(*this);\n nfs_player_scene_live::retire(*this);\n" + captions("beforeDescriptorRetire", "*this,uint32_t(eax)"))
         entry("482BD4", " nfs_player_scene_live::row(*this,uint32_t(game_id_sub_482BD4));")
         entry("483070", " nfs_player_copy_live::row(*this,uint32_t(game_id_sub_483070));")

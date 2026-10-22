@@ -38,7 +38,7 @@ def units():
     prefix = '#include "FunctionIds.h"\n// Preserved preexisting transformation and UTF-8: Î©\n'
     return {
         "Methods_01.cpp": prefix + fn("40C160", initial_caption + initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
-        "Methods_03.cpp": prefix + fn("428250", " nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);\n { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n" + call("49755C") + " }\n") + fn("4284B0") + fn("4287F0") + fn("4289F0"),
+        "Methods_03.cpp": prefix + fn("428250", " nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);\n" + call("483470") + "loc_4282FB:\n { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n" + call("49755C") + " }\n" + call("482DA0")) + fn("4284B0") + fn("4287F0") + fn("4289F0"),
         "Methods_09.cpp": prefix + fn("4824CC"),
         "Methods_10.cpp": prefix + fn("482DA0") + fn("4848FC") + fn("482BD4") + fn("483070") + fn("483438"),
         "Methods_13.cpp": prefix + fn("4A5830", word * 4) + fn("4A14D4") + fn("4A10BC", "\tcall(to32i(esp+0x38));\n" * 4),
@@ -105,10 +105,23 @@ class PlayerHooksTests(unittest.TestCase):
     def test_upload_construction_and_original_tile(self):
         before = units()["Methods_03.cpp"]
         after = hooks.add_player_scene_hooks(before, "Methods_03.cpp")
-        tokens = ("nfs_player_scene_live::UploadEndScope", "nfs_logo_publisher::UploadScope", "nfs_player_native_live::UploadScope", "nfs_logo_publisher::UploadTileScope", "nfs_player_native_live::UploadTileScope", "_sub_49755C();")
+        tokens = ("nfs_player_scene_live::UploadEndScope", "nfs_logo_publisher::UploadScope", "nfs_player_native_live::UploadScope", "nfs_player_initial_native_live::UploadScope", "nfs_player_initial_native_live::stageBegin", "nfs_logo_publisher::UploadTileScope", "nfs_player_native_live::UploadTileScope", "nfs_player_initial_native_live::UploadTileScope", "_sub_49755C();", "nfs_player_initial_native_live::stageFinish", "_sub_482DA0();")
         at = [after.index(token) for token in tokens]
         self.assertEqual(at, sorted(at))
         self.assertEqual(after.count(call("49755C")), 1)
+
+    def test_initial_upload_stage_lifetime(self):
+        after = hooks.add_player_scene_hooks(units()["Methods_03.cpp"], "Methods_03.cpp")
+        self.assertLess(after.index("_sub_483470();"), after.index("nfs_player_initial_native_live::stageBegin"))
+        self.assertLess(after.index("nfs_player_initial_native_live::stageBegin"), after.index("loc_4282FB:"))
+        self.assertLess(after.index("_sub_49755C();"), after.index("nfs_player_initial_native_live::stageFinish"))
+        self.assertLess(after.index("nfs_player_initial_native_live::stageFinish"), after.index("_sub_482DA0();"))
+        self.assertEqual(after.count("nfs_player_initial_native_live::stageBegin"), 1)
+        self.assertEqual(after.count("nfs_player_initial_native_live::stageFinish"), 1)
+        allocation = hooks.add_player_scene_hooks(units()["Methods_10.cpp"], "Methods_10.cpp")
+        self.assertIn("nfs_player_initial_native_live::retireAllocation(uint32_t(eax))", allocation)
+        owner = hooks.add_player_scene_hooks(units()["Methods_01.cpp"], "Methods_01.cpp")
+        self.assertIn("nfs_player_initial_native_live::SourceLifetimeScope", owner)
 
     def test_all_real_row_dispatches_and_both_captions(self):
         after = hooks.add_player_scene_hooks(units()["Methods_13.cpp"], "Methods_13.cpp")
@@ -136,6 +149,9 @@ class PlayerHooksTests(unittest.TestCase):
             ("Methods_01.cpp", call("41B710"), ""),
             ("Methods_01.cpp", call("41B710"), call("41B710") * 2),
             ("Methods_03.cpp", call("49755C"), call("49755C") * 2),
+            ("Methods_03.cpp", "loc_4282FB:", "loc_changed:"),
+            ("Methods_03.cpp", call("483470"), ""),
+            ("Methods_03.cpp", call("482DA0"), call("482DA0") * 2),
             ("Methods_03.cpp", "nfs_hd_upload(*this)", "changed(*this)"),
             ("Methods_13.cpp", "\tcall(to32i(esp+0x38));", ""),
             ("Methods_14.cpp", "guest_store<int16_t>(esi, static_cast<int16_t>(bx)); //mov", ""),

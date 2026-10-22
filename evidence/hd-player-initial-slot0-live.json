@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "scope": "Original Player entrance slot0 upload live observation; no new intro GPU rendering",
+  "baseCommit": "abecb84b4dd7b29dd9e04040b464a564a53e74d5",
+  "sourceSha256": {
+    "src/hd/PlayerInitialNativeUploadGameHooks.inc": "7e22cbe47bf2b5578787b1ec52c365a4dce0ee3942c62fb0844344bd53476f9d",
+    "scripts/player_scene_hooks.py": "e986e23f767131467c64cc2eabaeec91191f6b68a5b57932e0b41ced69812482",
+    "tests/PlayerInitialNativeLiveCases.h": "b28e7171baa75fc6f2243d9e940bc23f62539f7722659f3a4c466176a0d7f292",
+    "tests/options_caption_runtime_tests.cpp": "5727abee2b909f457c2db18e5cbed59f372552b26b223be94b84fe03e0c87a6b",
+    "tests/player_scene_hooks_test.py": "898c91c23202a2a8809b6a75ca367481fbc87cb71370df652d766cda1147a6f5"
+  },
+  "liveContract": {
+    "independentActualTemporaryOwner": true,
+    "persistentPublisherHandleRulesUnchanged": true,
+    "stageBeginOnceBeforeOuterLoopLabel": true,
+    "all300ActualDescriptorAndPayloadScopes": true,
+    "stageSealBeforeTemporaryDestruction": true,
+    "postReturnUsesOnlyLive343Source": true,
+    "everySlot0EntryOverwritesBeforeFeatureOrSourceMatching": true,
+    "sourceArchiveEpochCaptionThreadAndRetirementChecks": true,
+    "noGuestWritesOrOriginalCallsRemoved": true
+  },
+  "validation": {
+    "focusedChecksPerMode": 20,
+    "optimizedAndAsanUbsanPass": true,
+    "sourceHookPythonCases": 11,
+    "realGeneratedCxx14UnitsBuilt": 7,
+    "actualInsertionReversals": 6,
+    "runtimeCompilerInputsStable": 131,
+    "maintainedObjectsUnchanged": 74,
+    "unobservedCandidateSha256": "c384502b9f58f4f8dedc574613861ca0d9fe671b2f54f836dd03b415b9e47d7b",
+    "readOnlyObservationCandidateSha256": "b2a7461ef05a94e53606cf6b2ef6dc2bf8b309393d8d16607eb5d66188c070da",
+    "bothPlayersAll21Frames": true,
+    "actual300UploadsAndFullPaddedPlaneAccepted": true,
+    "live343SourceRereadAtEveryIntroFrame": true,
+    "actualInitialAndFirstRefreshNativeHandoffsPreserved": true,
+    "carChangeRestorationAndMainReturn": true,
+    "normalShutdown": true,
+    "overallHarnessReceiptPassed": false,
+    "cleanupRecoveryIndependentlyVerified": true,
+    "cleanupIssue": "Final trace aggregation shadowed canonical configuration hash with integer Player form; restored bytes were correct, display cleanup was completed after independent identity and hash verification; original receipt preserved",
+    "resultSha256": "c54389be613d52f6c6728cef884bfa1987b0c3af8ffcf6c4c69bbb0e0882a048",
+    "introObservationSha256": "21d3ec02607602d1db89c69ed7cc51a139816b9cbacdf67f1af850baeee87862",
+    "cleanupRecoverySha256": "2f16a64cf22639ab7672c494345fd581a972b8945813acf670affbd9ed67810d",
+    "checksReceiptSha256": "7099d1f2e8f36886cee4840d6545b897826d10232c36f9d3efee4e8316e9b580",
+    "independentReadOnlyReview": "No concrete blocking CPU live integration hole found"
+  },
+  "visualInspection": {
+    "settledBothPlayersInspected": true,
+    "completeArtworkAcceptance": false,
+    "remaining": "Mixed original/authored top-right emblem and inherited Main-context logos need separate identity/coverage audit"
+  },
+  "remaining": [
+    "Independent normalintro native slot0 GPU pass and faithful HDcomposition",
+    "Preserve complete retained color history including later original word and cursor draws; a pre-tail snapshot alone is insufficient",
+    "Artwork and font adoption across all menus and HUD",
+    "Physical iPad validation and LowPowerMode60/battery work"
+  ],
+  "hdIntroGpuConnected": false,
+  "physicalIPadAcceptance": false,
+  "performanceClaim": false,
+  "cloudBuild": false,
+  "push": false
+}
