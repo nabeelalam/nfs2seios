@@ -48,7 +48,7 @@
   "visualInspection": {
     "settledBothPlayersInspected": true,
     "completeArtworkAcceptance": false,
-    "remaining": "Mixed original/authored top-right emblem and inherited Main-context logos need separate identity/coverage audit"
+    "remaining": "Mixed-resolution upper-right mode/rules emblem needs per-draw coverage analysis; the simultaneous P1/P2 car marks are intentional original split-screen context."
   },
   "remaining": [
     "Independent normalintro native slot0 GPU pass and faithful HDcomposition",
@@ -60,5 +60,13 @@
   "physicalIPadAcceptance": false,
   "performanceClaim": false,
   "cloudBuild": false,
-  "push": false
+  "push": false,
+  "originalRightStripSourceReview": {
+    "separateFromInheritedMain343": true,
+    "originalFlow": "40C639 -> 40B6C4 -> 4281B0 -> 4276F0",
+    "playerCarSlots": "Slots3/4 snapshot separate P1/P2 car selections; split-screen draws both, including while editing Player2",
+    "modeAndRules": "Separate sin5/rac5 assets retain their different original placement and UV/clipping",
+    "noInventedCarLogoSubstitution": true,
+    "mixedResolutionCauseProven": false
+  }
 }
