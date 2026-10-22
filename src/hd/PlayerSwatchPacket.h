@@ -9,6 +9,10 @@ namespace nfs_player_swatch {
 using nfs_logo_capture::Target;using nfs_logo_capture::Plane;
 constexpr size_t Full=640*480;constexpr uint32_t FillCallback=0xf0001aa8;
 constexpr uint32_t Player1Row=0x4d2f80,Player2Row=0x4d2b68,Player2BodyRow=0x4d309c,ColorTable=0x4d62c8;
+// Body origin alone does not establish a cached write: regular40FA90 uses
+// separate scratch storage. The live caller must prove exact selected storage
+// and all write spans; disjoint Body writes stay original, overlap replays or
+// declines optional admission. Refresh40CAB0 has an explicit cached interval.
 enum class Origin{Refresh,Body};
 // Address-like fields below are canonical original-source identity tags, not
 // relocated guest pointers. A live caller must separately validate relocation,

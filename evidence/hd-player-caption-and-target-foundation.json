@@ -1,0 +1,117 @@
+{
+  "scope": "Player1/2 exact compact-caption foundation and corrected original source-target observations; maintained Player background not activated",
+  "captionPolicies": [
+    {
+      "form": "0x4D3050",
+      "selector": 2,
+      "resource": 2,
+      "entry": "0x4D3E4C",
+      "text": "player one",
+      "advance": 68,
+      "right": 168,
+      "left": 100,
+      "y": 198
+    },
+    {
+      "form": "0x4D3100",
+      "selector": 3,
+      "resource": 3,
+      "entry": "0x4D3E60",
+      "text": "player two",
+      "advance": 70,
+      "right": 168,
+      "left": 98,
+      "y": 234
+    }
+  ],
+  "verification": {
+    "registeredTestsPerMode": 9,
+    "modes": [
+      "optimized",
+      "AddressSanitizer+UndefinedBehaviorSanitizer"
+    ],
+    "fourCaptionPoliciesCoexist": "Options, Setup, Player1, Player2",
+    "independentOwnerThreadTlsStateAndCrossOwnerRejection": true,
+    "existingCompactPlaneReplayFontWordPaletteMeasurementDescriptorLifetimeAndLeaseTests": true,
+    "actualProductionCxx14CombinedSyntax": true,
+    "testInputsStable": true
+  },
+  "privateOriginalObservation": {
+    "events": 3784,
+    "eventCapReached": false,
+    "players": 2,
+    "originalInputsOnly": true,
+    "carColourGraphChangedAndRestored": true,
+    "captionMeasurements": [
+      68,
+      70
+    ],
+    "correctedConsumedCacheIndexMatchesPerformedCarAndGraphStates": true,
+    "perRowFillGlobalRead": true,
+    "observedRowGlobalPatternChanges": 0,
+    "bodyCalls": [
+      150,
+      153
+    ],
+    "bodyWrites": "Separate scratch storage in this performed session; full cached source unchanged",
+    "bodyStorageClasses": [
+      "640x480",
+      "384x160",
+      "zero-size/null with zero callbacks"
+    ],
+    "refreshCallsPerPlayer": 7,
+    "refreshTarget": "Actual cached full image, 21 shadow rows and 21 colour rows",
+    "uploadsCapturedBeforeAndAfter": [
+      134,
+      137
+    ],
+    "cachedSourcePointerAndPixelDigestMatchesBeforeAndAfter": [
+      133,
+      136
+    ],
+    "differentSourceSlot1UploadPerPlayer": 1,
+    "cleanCloseExit": 0,
+    "protectedCopiedDataAndMaintainedBinaryIndependentlyHashVerified": true,
+    "ownedProcessesTerminalAndLeaseAbsent": true
+  },
+  "sourceConclusion": {
+    "supersedes": "Earlier assumption that regular Body colour writes necessarily persist in the cached full background",
+    "refresh": "Explicit cached target selection encloses map, preview, sidebar copy and 40CAB0 before restoring default selection",
+    "body": "40FA90 uses ambient selected storage; width 640 or Body origin alone proves no cached identity",
+    "requiredExclusionGuard": "Authenticate selected storage and every write span as disjoint from both cached full image and current sidebar source. Overlap must be replayed or optional admission rejected. Preserve original Body calls.",
+    "requiredUploadGuard": "Exact cached-upload callsite and current bitmap provenance, not slot1 plus outer Player owner",
+    "fullPlaneRequirement": "Reconstruct every cached upload pixel from authenticated map, preview, current343 copy and relevant cached refresh swatch; no arbitrary Copy.PRE authority"
+  },
+  "privateDiagnosticBuild": {
+    "workers": 2,
+    "seconds": 77.45,
+    "actualSixUnitCompileClosureInputs": 100,
+    "sourceInputsStable": true,
+    "originalReversalsExactUnits": 6,
+    "originalLinkObjectsUnchanged": 68,
+    "maintainedBinaryUnchanged": true
+  },
+  "limits": [
+    "Diagnostic first/last row envelopes are not a maintained per-row packet authority. The live producer still needs full row-address or complete LUT binding.",
+    "Performed states cover two cars per player; they do not establish all selections, arbitrary target lifecycles or context recreation.",
+    "Caption policies are not yet connected to a maintained Player scene producer or renderer.",
+    "No new Apple build, physical iPad UI/performance acceptance, or battery/Low Power Mode measurement."
+  ],
+  "publication": {
+    "privateObserverOriginalAssetsCapturesAndHistoryPrototypeExcluded": true,
+    "cloudBuild": false,
+    "push": false,
+    "paidService": false
+  },
+  "publicSourceSha256": {
+    "CMakeLists.txt": "cba8d91865deae09cd043db1e7af06c1d0605c680219b5238000f413d49138a5",
+    "src/hd/Player1CaptionGameHooks.inc": "bf544bfeae09f28adbec4cf0425c313b8556046b9a71ef5155e8bb0b2b6a6ee8",
+    "src/hd/Player2CaptionGameHooks.inc": "3b695c36edcbe284942975e2ccc7f45aea16f94a589e125e39ac122af59f768c",
+    "src/hd/OptionsCaptionGameHooks.inc": "66f62e10cb6ca679745d2fd5e824d24cb3c64ab8d575e43dbba1bfc782e77c70",
+    "src/hd/SetupCaptionGameHooks.inc": "2f54f6dabe2c1d24481634486d19dbddc60beb00311e09f944b0e62350b957ad",
+    "src/hd/CachedMenuCaptionGameHooks.inc": "fe50cd7ccfe68d1d5763220428971eb5a87622359bbfca56be7b17e5c44324ea",
+    "tests/options_caption_runtime_tests.cpp": "44127cbb00f7793ed5434ee8a2945ae5862ff28bc09895a2a42d09221eddf702",
+    "src/hd/PlayerPreviewPacket.h": "47dc19731cb444a0bf2ba35911f3b03fe2fe8f8f3764379cb52710950e819ef5",
+    "src/hd/PlayerSwatchPacket.h": "e7a26ecbde1c3d7edc4f570257bbba852036df9f639aabea4f3b3e1aeec3a804"
+  }
+}

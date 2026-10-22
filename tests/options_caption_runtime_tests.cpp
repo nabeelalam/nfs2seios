@@ -18,7 +18,16 @@ void operator delete(void*p,const std::nothrow_t&)noexcept{std::free(p);}
 struct Game{int32_t eax=0,edx=0,ebx=0,ecx=0,ebp=0,esi=0;};
 static constexpr uint32_t off_4D3A88=0x100,dword_4D40B8=0x200,dword_4DD770=0x208,dword_4DD77C=0x210,dword_4DD774=0x218,dword_4DD714=0x220,dword_4D20A0=0x228,byte_4DB25E=0x230,byte_4DB25C=0x238,dword_4DD6F4=0x240,dword_4DD6F8=0x248,dword_4E54AC=0x250,dword_4DD6EC=0x258,dword_4DB240=0x1000,dword_4D243C=0x260,byte_4D3ECC=0x268,off_4D3ED0=0x280,dword_4D3E9C=0x2c0;
 static constexpr uint32_t off_4D2790=0x110,dword_4D3E24=0x2d0;
-#ifdef NFS_TEST_SETUP_CAPTION
+static constexpr uint32_t off_4D3050=0x120,off_4D3100=0x130,dword_4D3E4C=0x300,dword_4D3E60=0x320;
+#if defined(NFS_TEST_PLAYER1_CAPTION)
+static constexpr uint32_t testOwner=off_4D3050,testRecord=dword_4D3E4C;
+static constexpr unsigned testSelector=2,testResource=2,testWidth=68,testLeft=100,testY=198;
+static constexpr char testText[]="player one";
+#elif defined(NFS_TEST_PLAYER2_CAPTION)
+static constexpr uint32_t testOwner=off_4D3100,testRecord=dword_4D3E60;
+static constexpr unsigned testSelector=3,testResource=3,testWidth=70,testLeft=98,testY=234;
+static constexpr char testText[]="player two";
+#elif defined(NFS_TEST_SETUP_CAPTION)
 static constexpr uint32_t testOwner=off_4D2790,testRecord=dword_4D3E24;
 static constexpr unsigned testSelector=0,testResource=0,testWidth=75,testLeft=93,testY=126;
 static constexpr char testText[]="game setup";
@@ -35,12 +44,20 @@ static nfs_logo_capture::Target selected{};static bool feature=true;
 namespace nfs_logo_publisher{inline bool enabled(){return feature;}inline int exceptions(){return std::uncaught_exception()?1:0;}inline void checked(uint32_t p,size_t n){(void)nfs_host_address(p,n);}inline void target(nfs::GuestCopyTransaction&,nfs_logo_capture::Target&t){++reads;t=selected;}}
 #define NFS_OPTIONS_CAPTION_TEXT_TEST 1
 #define NFS_SETUP_CAPTION_TEXT_TEST 1
+#define NFS_PLAYER1_CAPTION_TEXT_TEST 1
+#define NFS_PLAYER2_CAPTION_TEXT_TEST 1
 #include "hd/OptionsCaptionGameHooks.inc"
 #include "hd/SetupCaptionGameHooks.inc"
+#include "hd/Player1CaptionGameHooks.inc"
+#include "hd/Player2CaptionGameHooks.inc"
 #ifdef NFS_CACHED_MENU_CAPTION_NAMESPACE
 #error "Caption wrapper leaked its namespace macro"
 #endif
-#ifdef NFS_TEST_SETUP_CAPTION
+#if defined(NFS_TEST_PLAYER1_CAPTION)
+namespace cap=nfs_player1_caption;
+#elif defined(NFS_TEST_PLAYER2_CAPTION)
+namespace cap=nfs_player2_caption;
+#elif defined(NFS_TEST_SETUP_CAPTION)
 namespace cap=nfs_setup_caption;
 #else
 namespace cap=nfs_options_caption;
@@ -68,15 +85,20 @@ static void descriptorRetirement(){
  }
 }
 static void policyIsolation(){
- assert(&nfs_options_caption::ownerThread()!=&nfs_setup_caption::ownerThread());
- Game options,setup;options.eax=off_4D3A88;setup.eax=off_4D2790;
- nfs_options_caption::OwnerScope first(options);
- auto*old=nfs_options_caption::current(options);assert(old&&!nfs_setup_caption::current(options));
- {nfs_setup_caption::OwnerScope second(setup);auto*other=nfs_setup_caption::current(setup);
-  assert(other&&static_cast<void*>(other)!=static_cast<void*>(old));
-  assert(nfs_options_caption::current(options)==old&&!nfs_options_caption::current(setup));
-  assert(!nfs_setup_caption::current(options));}
- assert(nfs_options_caption::current(options)==old&&!nfs_setup_caption::current(setup));
+ void*tls[]={&nfs_options_caption::ownerThread(),&nfs_setup_caption::ownerThread(),&nfs_player1_caption::ownerThread(),&nfs_player2_caption::ownerThread()};
+ for(unsigned i=0;i<4;++i)for(unsigned j=i+1;j<4;++j)assert(tls[i]!=tls[j]);
+ Game options,setup,player1,player2;options.eax=off_4D3A88;setup.eax=off_4D2790;player1.eax=off_4D3050;player2.eax=off_4D3100;
+ nfs_options_caption::OwnerScope first(options);auto*old=nfs_options_caption::current(options);assert(old);
+ {nfs_setup_caption::OwnerScope second(setup);auto*other=nfs_setup_caption::current(setup);assert(other&&static_cast<void*>(other)!=static_cast<void*>(old));
+  {nfs_player1_caption::OwnerScope third(player1);auto*one=nfs_player1_caption::current(player1);assert(one&&static_cast<void*>(one)!=static_cast<void*>(old)&&static_cast<void*>(one)!=static_cast<void*>(other));
+   {nfs_player2_caption::OwnerScope fourth(player2);auto*two=nfs_player2_caption::current(player2);assert(two&&static_cast<void*>(two)!=static_cast<void*>(one)&&static_cast<void*>(two)!=static_cast<void*>(old)&&static_cast<void*>(two)!=static_cast<void*>(other));
+    assert(nfs_options_caption::current(options)==old&&nfs_setup_caption::current(setup)==other&&nfs_player1_caption::current(player1)==one);
+    assert(!nfs_options_caption::current(player1)&&!nfs_options_caption::current(player2)&&!nfs_setup_caption::current(player1)&&!nfs_setup_caption::current(player2));
+    assert(!nfs_player1_caption::current(options)&&!nfs_player1_caption::current(setup)&&!nfs_player1_caption::current(player2));
+    assert(!nfs_player2_caption::current(options)&&!nfs_player2_caption::current(setup)&&!nfs_player2_caption::current(player1));
+   }assert(!nfs_player2_caption::current(player2)&&nfs_player1_caption::current(player1)==one);
+  }assert(!nfs_player1_caption::current(player1)&&nfs_setup_caption::current(setup)==other);
+ }assert(nfs_options_caption::current(options)==old&&!nfs_setup_caption::current(setup));
 }
 int main(){prepare();Game g;g.eax=testOwner;g.ebp=testOwner;{cap::OwnerScope nofont(g);assert(!cap::current(g));}assert(nfs_soft::installFontCatalog(font()));policyIsolation();feature=false;auto priorReads=reads;{cap::OwnerScope disabled(g);}assert(reads==priorReads);feature=true;g.eax=0x4d3348;{cap::OwnerScope wrong(g);assert(!cap::current(g));auto before=reads;cap::TailScope outside(g);assert(reads==before);}
  std::shared_ptr<const nfs_soft::FramePacket> retained;
@@ -91,5 +113,5 @@ int main(){prepare();Game g;g.eax=testOwner;g.ebp=testOwner;{cap::OwnerScope nof
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);g.eax=testOwner;{cap::OwnerScope nested(g);assert(!cap::current(g));}}assert(!cap::lastPacket(g));}
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);put<uint32_t>(dword_4D243C,123);assert(cap::acquireCurrentPacket(g)==packet);put<uint32_t>(testRecord,((testResource+1)<<16)|2);assert(!cap::acquireCurrentPacket(g));assert(packet->original()[369*343+123]==0xffff);}
  descriptorRetirement();
- assert(retained&&retained->pixels()==343*480&&retained->original()[369*343+123]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS cached menu caption (Options or Setup): compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
+ assert(retained&&retained->pixels()==343*480&&retained->original()[369*343+123]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS cached menu caption (Options/Setup/Player1/Player2): compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
 }

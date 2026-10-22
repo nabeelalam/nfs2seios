@@ -4,6 +4,8 @@
 namespace nfs_player_preview {
 // Source snapshots must be read independently before/after the exact40CD70 call.
 // Pure records do not grant guest-read, original-owner or publication authority.
+// Read the consumed index from the original32-bit load at4E5924+2 then shift16;
+// a uint16 read at that address observes a different field, not this index.
 struct Selection {
  uint32_t selectedCar=0,cachedCarIndex=0,graphEnabled=0;
  std::array<uint32_t,4>graphValues{}; //236C,2330,23E4,23A8 at cached index.

@@ -1,0 +1,81 @@
+{
+  "scope": "Main Menu typography comparison; no production font activation",
+  "userReference": "Compacta or very similar; exact original cut unconfirmed",
+  "currentRoles": {
+    "sevenLowercaseWords": "Oxanium 500, size26, horizontal scale0.65",
+    "RACE": "Bebas Neue, size52, horizontal scale0.9"
+  },
+  "comparison": {
+    "words": 8,
+    "method": "Private original glyph specimens, current fonts and two permitted candidates normalized per word to equal visible ink height. Candidates retain native width. PIL specimens are not exact Pango or game output.",
+    "candidates": [
+      "Oswald 400",
+      "League Gothic upright, standard width100"
+    ],
+    "visualAssessment": "League Gothic is closer in narrow upright proportions; exact letter anatomy, weight and spacing remain unapproved. Oswald is wider.",
+    "matchedHeightExampleWidths": {
+      "game setup": {
+        "original": 209,
+        "current": 243,
+        "Oswald": 270,
+        "LeagueGothic": 213
+      },
+      "location": {
+        "original": 166,
+        "current": 193,
+        "Oswald": 209,
+        "LeagueGothic": 170
+      },
+      "RACE": {
+        "original": 124,
+        "current": 136,
+        "Oswald": 160,
+        "LeagueGothic": 130
+      }
+    },
+    "comparisonPixelsExcludedFromPublicSource": true
+  },
+  "candidateSources": [
+    {
+      "family": "oswald",
+      "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+      "url": "https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/oswald/Oswald%5Bwght%5D.ttf",
+      "sha256": "5b38c246e255a12f5712d640d56bcced0472466fc68983d2d0410ec0457c2817"
+    },
+    {
+      "family": "oswald",
+      "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+      "url": "https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/oswald/OFL.txt",
+      "sha256": "0fd731a904b729a4e02eaf5e8ebd06783edd9abe400e8882760160230675b652"
+    },
+    {
+      "family": "oswald",
+      "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+      "url": "https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/oswald/DESCRIPTION.en_us.html",
+      "sha256": "4fd9b1b78476167f488cb96328127206a6207bc37164a4578e50c5381a19a933"
+    },
+    {
+      "family": "leaguegothic",
+      "commit": "e2332cf862ac3145c0ee5f24f04f4c1819b2410b",
+      "url": "https://raw.githubusercontent.com/google/fonts/e2332cf862ac3145c0ee5f24f04f4c1819b2410b/ofl/leaguegothic/LeagueGothic%5Bwdth%5D.ttf",
+      "sha256": "3b0e998c9a0034222394ffecdd383e6948259ad037b95555b139a217629ce1d0"
+    },
+    {
+      "family": "leaguegothic",
+      "commit": "e2332cf862ac3145c0ee5f24f04f4c1819b2410b",
+      "url": "https://raw.githubusercontent.com/google/fonts/e2332cf862ac3145c0ee5f24f04f4c1819b2410b/ofl/leaguegothic/OFL.txt",
+      "sha256": "44778c339892f79188c60b7471485dd5af92c59351c7f9629a00fc625c6cae5d"
+    },
+    {
+      "family": "leaguegothic",
+      "commit": "e2332cf862ac3145c0ee5f24f04f4c1819b2410b",
+      "url": "https://raw.githubusercontent.com/google/fonts/e2332cf862ac3145c0ee5f24f04f4c1819b2410b/ofl/leaguegothic/DESCRIPTION.en_us.html",
+      "sha256": "978b87699ceef73bf4c45db469fce22966fd444efdb815b1bf3d2f3988e05972"
+    }
+  ],
+  "license": "Both source families retain SIL OFL1.1; six downloaded source/license/description hashes independently verified",
+  "productionFontOrAtlasChanged": false,
+  "exactCompactaFontAcquired": false,
+  "paidService": false,
+  "remaining": "Choose a faithful visual treatment, preserve separate lowercase/heading/sidebar roles, then regenerate and validate the atlas and actual menu."
+}
