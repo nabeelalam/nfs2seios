@@ -1,0 +1,127 @@
+{
+  "scope": "Maintained Game Setup native cached background integration; local original-game menu acceptance",
+  "date": "2026-10-22",
+  "source": {
+    "setupDescriptor": "0x4D2790",
+    "caption": {
+      "selector": 0,
+      "resource": 0,
+      "text": "game setup",
+      "advance": 75,
+      "right": 168,
+      "left": 93,
+      "y": 126
+    },
+    "separateSetupTail": 4,
+    "exactExistingOptionsTail": 3,
+    "schema": 1,
+    "sharedCpuAndLiveImplementationFixedPolicies": true,
+    "originalOptionsExpandedTokensUnchanged": true,
+    "full307200WordPostReconstructionAndIndependentOriginalCopyReplay": true,
+    "oldOpaquePreCopyPixelsMayBeOverwritten": true,
+    "transparentAndOutsidePixelsConstrained": true,
+    "existingSingleGenericPresentationArmReused": true,
+    "originalCachedFormat": 11,
+    "original300Selects600TrianglesPreserved": true,
+    "nativeBodyTextAfterBackgroundColorCommitPreserved": true
+  },
+  "renderer": {
+    "separateTypedPublicEntryGuards": true,
+    "crossKindFinishCannotCommitOrStealPendingFrame": true,
+    "nestedBeginCancelsAndRefuses": true,
+    "oneSharedCaptionAndStagingTargetLifecycle": true,
+    "noRawFrameBorrowAfterBegin": true
+  },
+  "verification": {
+    "registeredTestsPerMode": 7,
+    "modes": [
+      "optimized",
+      "AddressSanitizer+UndefinedBehaviorSanitizer"
+    ],
+    "packetNegativesPerPolicy": 55,
+    "sourceHookTestsPerPolicy": 6,
+    "gpu": [
+      {
+        "mode": "opt",
+        "adapterChecks": 11177,
+        "helperLossPoints": 1852
+      },
+      {
+        "mode": "san",
+        "adapterChecks": 11177,
+        "helperLossPoints": 1852
+      }
+    ],
+    "gpuFixtureScope": "Real GLES with synthetic frame/source observations and explicit no-GL original flush stub. Shared helper owner-loss tests do not prove original backend recovery.",
+    "sixActualGeneratedCxx14Units": true,
+    "actualUnitSourceReversalByteExact": true,
+    "productionRendererC99": true,
+    "independentSourceAndGpuReviewsPassed": true
+  },
+  "build": {
+    "scope": "Maintained exact Setup shared cached background candidate; actual runtime and iPad acceptance pending",
+    "exit": 0,
+    "seconds": 100.71,
+    "workers": 2,
+    "sourcePinsStable": true,
+    "inputCount": 439,
+    "inputManifestSha256": "cef70aa6e0200b474c1e0b959b668acebffaa7470d9ab84f1d87c245b1d2f880",
+    "logSha256": "b40d000784ce53e3b42a767c22ae784dee7e7eac13c7bdb04cb79e2333296b79",
+    "binarySha256": "d8ffc5710b8ebe6edce08035ed80ec7b7f1f5f38ae98e5d326a2d29aba7cadeb",
+    "previousBinarySha256": "b96fa214574ae6c16f3429a49a2add6300a1b5fdf83627459b82898ebed92854",
+    "cloud": false,
+    "postBuildChange": "Original LF restored in generator only; normalized bytes identical, generated runtime units and binary unchanged"
+  },
+  "actualGame": {
+    "actualNativeSize": [
+      2186,
+      1640
+    ],
+    "frames": {
+      "setup": {
+        "completeNativeFrames": 542,
+        "beginFinishBalanced": true,
+        "refusalsOrCancellations": 0
+      },
+      "options": {
+        "completeNativeFrames": 325,
+        "beginFinishBalanced": true,
+        "refusalsOrCancellations": 0
+      },
+      "graphics": {
+        "completeNativeFrames": 83,
+        "beginFinishBalanced": true,
+        "refusalsOrCancellations": 0
+      }
+    },
+    "onePlayerSplitScreenOnePlayer": true,
+    "mirroredOffOnOff": true,
+    "sameProcessSetupReentry": true,
+    "optionsMphKmhMphAndStatsOnOffOn": true,
+    "graphicsRoundtripAndStableMainReturn": true,
+    "normalWindowCloseExit": 0,
+    "profileAndArtworkRestored": true,
+    "ownedGameProcessesRemaining": 0,
+    "ownedDisplayStopped": true
+  },
+  "visualReview": {
+    "actualSetupInitialAndReentryViewed": true,
+    "finalArtworkApproval": false,
+    "actualSplitScreenChoiceAndReturnedOptionsViewed": true,
+    "knownRemainingArt": "Some animated logo/manufacturer frames still use original-resolution artwork; final artwork coverage and approval remain open"
+  },
+  "preservedFailure": {
+    "kind": "Private harness recognizer",
+    "reason": "Applied selected-value brightness threshold to unselected mirrored row after reentry",
+    "correctedBy": "Observe original selected row before applying unchanged recognizer",
+    "sameBinaryReused": true,
+    "cleanShutdownAndRestoration": true
+  },
+  "remaining": [
+    "Player/opponents forms and their actual preview source ownership",
+    "Complete HUD and artwork refinement with user acceptance",
+    "Actual original renderer context recreation and fresh-cache recovery",
+    "Physical iPad HD appearance/performance and measured battery/Low Power Mode 60 FPS acceptance"
+  ],
+  "cloudBuildOrPush": false
+}
