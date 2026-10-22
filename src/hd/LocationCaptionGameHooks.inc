@@ -53,6 +53,18 @@ struct WordCapture {State*s=nullptr;uint64_t string=0;uint32_t address=0;size_t 
  ~WordCapture(){if(!string||!s||!s->recording||s->string!=string||s->glyph!=string)return;if(nfs_logo_publisher::exceptions()>unwind){s->reject(Failure::unwind);return;}uint16_t after=0;try{nfs::GuestCopyTransaction tx;after=tx.load<uint16_t>(address);}catch(...){s->reject(Failure::read);return;}if(!s->builder.word(index,before,computed,after))s->reject(Failure::word);}};
 inline bool related(State&s,uint32_t at,bool nullIsSelected)noexcept{if(!s.ownerWindow||(!at&&!nullIsSelected))return false;if(at==s.ownerWindow)return true;try{nfs::GuestCopyTransaction tx;uint32_t p=at?at:uint32_t(guest_address(dword_4DB240));if(uint64_t(p)+56>0x100000000ULL)return false;nfs_logo_publisher::checked(p,56);const auto&w=s.current.target.w;return tx.load<uint32_t>(p+32)==w[8]||tx.load<uint32_t>(p+44)==w[11]||tx.load<uint32_t>(p+48)==w[12];}catch(...){return false;}}
 inline void beforeOwnerRetire(Game&g,uint32_t at,bool nullIsSelected=false)noexcept{auto*s=current(g);if(!s||!related(*s,at,nullIsSelected))return;s->reject(Failure::retired);(void)s->advance(s->lifetime);s->ownerWindow=0;}
+// Descriptor destruction releases refcounted LUT references. A distinct scratch
+// descriptor sharing a table does not retire the still-owned caption table.
+// Bitmap aliases remain conservative because some descriptors coallocate pixels.
+inline bool descriptorRetires(State&s,uint32_t at)noexcept{
+ if(!s.ownerWindow||!at)return false;if(at==s.ownerWindow)return true;
+ try{nfs::GuestCopyTransaction tx;if(uint64_t(at)+56>0x100000000ULL)return true;nfs_logo_publisher::checked(at,56);const auto&w=s.current.target.w;
+  if(tx.load<uint32_t>(at+32)==w[8])return true;
+  for(unsigned k:{11u,12u})if(tx.load<uint32_t>(at+4*k)==w[k]){if(w[k]<4)return true;const uint32_t refs=tx.load<uint32_t>(w[k]-4);if(refs<=1||refs>uint32_t(INT32_MAX))return true;}
+  return false;
+ }catch(...){return true;}
+}
+inline void beforeDescriptorRetire(Game&g,uint32_t at)noexcept{auto*s=current(g);if(!s||!descriptorRetires(*s,at))return;s->reject(Failure::retired);(void)s->advance(s->lifetime);s->ownerWindow=0;}
 struct SelectionScope {Game&g;State*s=nullptr;explicit SelectionScope(Game&game)noexcept:g(game){s=current(g);if(!s||!s->recording)s=nullptr;}~SelectionScope(){if(!s||s!=current(g)||!s->recording)return;Current c;if(!capture(*s,c,false,false)||!sameTarget(c,s->current))s->reject(Failure::selection);}};
 // Immutable artifact only: caller must separately join current base/copy/upload/GPU proofs.
 inline std::shared_ptr<const nfs_soft::FramePacket> lastPacket(Game&g)noexcept{auto*s=current(g);return s&&!s->recording&&!s->tailDepth?s->packet:std::shared_ptr<const nfs_soft::FramePacket>{};}

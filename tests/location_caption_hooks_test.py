@@ -39,6 +39,13 @@ class Hooks(unittest.TestCase):
         for name in ('Methods_13.cpp','Methods_14.cpp'):
             with self.assertRaises(ValueError):add_location_caption_hooks(original(name).replace('static_cast<int16_t>(bx)','static_cast<int16_t>(ax)',1),name)
 
+    def test_descriptor_release_and_selected_rebind_remain_distinct(self):
+        a=add_location_caption_hooks(original("Methods_10.cpp"),"Methods_10.cpp")
+        self.assertIn("beforeDescriptorRetire(*this,uint32_t(eax));",a)
+        b=add_location_caption_hooks(original("Methods_14.cpp"),"Methods_14.cpp")
+        self.assertEqual(b.count("beforeDescriptorRetire(*this,uint32_t(eax));"),1)
+        self.assertEqual(b.count("beforeOwnerRetire(*this,uint32_t(eax),true);"),1)
+
     def test_unrelated_untouched(self):
         self.assertEqual(add_location_caption_hooks('anything','Methods_02.cpp'),'anything')
 

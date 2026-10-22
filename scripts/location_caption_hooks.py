@@ -9,9 +9,9 @@ MARKER = "NFS_LOCATION_CAPTION"
 ENTRIES = {
     "Methods_01.cpp": {"40C160": "OwnerScope", "40C110": "TailScope", "405CF0": "StringScope"},
     "Methods_09.cpp": {"4824CC": "SelectionScope"},
-    "Methods_10.cpp": {"482DA0": "retire"},
+    "Methods_10.cpp": {"482DA0": "retire-descriptor"},
     "Methods_13.cpp": {"4A5830": "GlyphScope"},
-    "Methods_14.cpp": {"4AC934": "retire-selected", "4AC9C8": "retire"},
+    "Methods_14.cpp": {"4AC934": "retire-selected", "4AC9C8": "retire-descriptor"},
 }
 
 
@@ -32,7 +32,9 @@ def add_location_caption_hooks(text, name):
         anchor = "Fn(void) Game::_sub_" + symbol + "()\n{\n"
         if text.count(anchor) != 1:
             raise ValueError("Location caption entry changed: " + symbol)
-        if role == "retire" or role == "retire-selected":
+        if role == "retire-descriptor":
+            code = " nfs_location_caption::beforeDescriptorRetire(*this,uint32_t(eax));"
+        elif role == "retire" or role == "retire-selected":
             code = " nfs_location_caption::beforeOwnerRetire(*this,uint32_t(eax)" + (",true" if role == "retire-selected" else "") + ");"
         else:
             code = " nfs_location_caption::" + role + " nfs_location_" + symbol.lower() + "(*this);"

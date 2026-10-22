@@ -13,11 +13,13 @@ typedef struct NfsBackgroundSceneImageKey {
  unsigned width,height;NfsFrameLegacySampling sampling;
  uint32_t mapRole,wordCount,tailKind;
  GLuint captionProgram,captionTexture;uint64_t captionIdentity;size_t captionVertices;
+ GLuint previewTexture;int32_t previewLeft,previewTop;uint32_t previewWidth,previewHeight;unsigned char previewSha256[32],previewCoverageSha256[32];
  unsigned char captionFontSha256[32],captionVerticesSha256[32];int32_t panelClip[4];NfsBackgroundSceneWordLayer words[4];NfsSmallLogoLayer logos[3];
 } NfsBackgroundSceneImageKey;
 typedef struct NfsBackgroundSceneCompositor {
  NfsSmallLogoGpu logo;
  NfsSoftwareTextGpu caption;
+ GLuint previewTexture;uint32_t previewWidth,previewHeight;unsigned previewReady;unsigned char previewSha256[32],previewCoverageSha256[32];
  uint64_t generation,lastGeneration,ownerGeneration,lastSerial,pendingSerial,nextImageRevision,pendingImageRevision,lastImageRevision,cacheHits,cacheMisses;
  GLuint program,copyProgram,textures[5],color[2],fbo[2];GLint matrix,sampler,opacity,copySampler;
  NfsBackgroundSceneTexture art[5];NfsBackgroundSceneWord regions[12];
