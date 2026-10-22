@@ -1,0 +1,144 @@
+{
+  "scope": "Independent exact Options cached background and retained sidebar caption; actual local host integration only",
+  "date": "2026-10-22",
+  "follows": "hd-options-typography-maintained-integration.json",
+  "sourceProof": {
+    "exactOptionsDescriptor": "0x4D3A88",
+    "mainAndLocationOwnerGuardsUnchanged": true,
+    "noLocationPreviewInvented": true,
+    "nativeMode1OptionsTextPreservedAfterBackground": true,
+    "captionOriginalMeasurement": {
+      "text": "options",
+      "resource": 7,
+      "selector": 6,
+      "width": 48,
+      "rightAnchor": 168,
+      "left": 120,
+      "y": 364
+    },
+    "all307200PostWordsReconstructedFromAuthenticatedMapAndCurrentSidebar": true,
+    "independentOriginalCopyReplayRequired": true,
+    "oldOpaquePreCopyPixelsMayBeOverwritten": true,
+    "transparentAndOutsidePreCopyPixelsRemainConstrainedByCompletePostProof": true,
+    "actualLazyRedrawRequiredBeforeAdmission": true,
+    "retainedCaptionCurrentOwnerSerialLifetimeRequired": true,
+    "cachedFormat": 11,
+    "currentOriginalUploadPayloadKeysIdsFiltersAndContextRequired": true,
+    "original300SelectionsAnd600TrianglesPreserved": true,
+    "commit": "COLOR only after original cached background and before native text/status/cursor"
+  },
+  "verification": {
+    "sourceHookTests": 6,
+    "registeredTestsPerMode": 4,
+    "modes": [
+      "optimized",
+      "AddressSanitizer+UndefinedBehaviorSanitizer"
+    ],
+    "packetNegatives": 55,
+    "nativeCaptionOwnershipFontPaletteAndOriginalStoreChecks": true,
+    "nativeCaptionNoAllocationsInGuestReadLeases": true,
+    "gpu": [
+      {
+        "mode": "opt",
+        "adapterChecks": 11048,
+        "helperContextLossPoints": 1852
+      },
+      {
+        "mode": "san",
+        "adapterChecks": 11048,
+        "helperContextLossPoints": 1852
+      }
+    ],
+    "gpuScope": "Real GLES with synthetic art and original-call observations; original drawTriangles flush explicitly no-GL stub. Helper context-loss enumeration covers font/stage-target preparation, target reader, cached tile filters and COLOR commit; not proof of original backend recovery.",
+    "actualGeneratedCxx14Units": 6,
+    "originalSourceReversalByteExact": true,
+    "productionRendererC99": true,
+    "independentReadOnlyAuditPassed": true
+  },
+  "build": {
+    "binarySha256": "b96fa214574ae6c16f3429a49a2add6300a1b5fdf83627459b82898ebed92854",
+    "seconds": 99.59,
+    "workers": 2,
+    "sourceInputPins": 429,
+    "sourcePinsStable": true,
+    "previousVerifiedBinaryPreserved": true,
+    "cloud": false
+  },
+  "actualGame": [
+    {
+      "run": "run-01-options-background",
+      "nativeFrames": 324,
+      "framesBySize": {
+        "640x480": 0,
+        "2186x1640": 324
+      },
+      "nativeRefusalsOrCancellations": 0,
+      "valueSequence": [
+        "mph",
+        "kmh",
+        "mph",
+        "on",
+        "off",
+        "on"
+      ],
+      "resizeAndReentry": [],
+      "cleanExit": 0,
+      "copiedConfigurationRestored": true,
+      "copiedArtworkRestored": true,
+      "ownedGameProcessesRemaining": false,
+      "ownedDisplayStopped": true
+    },
+    {
+      "run": "run-02-options-resize-reentry",
+      "nativeFrames": 283,
+      "framesBySize": {
+        "640x480": 40,
+        "2186x1640": 243
+      },
+      "nativeRefusalsOrCancellations": 0,
+      "valueSequence": [],
+      "resizeAndReentry": [
+        {
+          "scope": "Options same-owner native resize",
+          "dimensions": [
+            640,
+            480
+          ],
+          "freshCompleteNativeFrames": 38
+        },
+        {
+          "scope": "Options same-owner native resize",
+          "dimensions": [
+            2186,
+            1640
+          ],
+          "freshCompleteNativeFrames": 22
+        },
+        {
+          "OptionsReentrySameProcess": true,
+          "freshCompleteNativeFrames": 84
+        }
+      ],
+      "cleanExit": 0,
+      "copiedConfigurationRestored": true,
+      "copiedArtworkRestored": true,
+      "ownedGameProcessesRemaining": false,
+      "ownedDisplayStopped": true
+    }
+  ],
+  "visualReview": {
+    "actualOptionsBackgroundCaptionAndNativeTextViewed": true,
+    "nativeDimensions": [
+      2186,
+      1640
+    ],
+    "resized640x480Viewed": true,
+    "finalArtUserApproval": false
+  },
+  "remainingAcceptance": [
+    "Original renderer context recreation and fresh source-cache upload recovery",
+    "Remaining Setup/Player/other frontend forms and complete HUD/artwork polish",
+    "Physical iPad appearance and busy split-screen performance",
+    "Measured battery and Low Power Mode 60 FPS target"
+  ]
+}
