@@ -106,12 +106,13 @@ static void nfs_bg_trace(const char*event,const char*reason,uint64_t serial,cons
  fprintf(stderr,"BG NATIVE %s reason=%s serial=%llu content=%llu map=%u words=%u context=%llu uploads=%llu clear=%llu fbo=%u size=%ux%u selections=%u triangles=%u image=%llu cache=%u\n",event,reason,(unsigned long long)serial,(unsigned long long)nfs_bg_content,nfs_bg_map,nfs_bg_words,(unsigned long long)nfs_logo_provenance.context,(unsigned long long)nfs_logo_provenance.uploads,(unsigned long long)nfs_logo_provenance.clearEvent,t?t->framebuffer:0,t?t->width:0,t?t->height:0,nfs_logo_provenance.selects,nfs_logo_provenance.triangles,(unsigned long long)nfs_bg_compositor.lastImageRevision,nfs_bg_compositor.lastBeginKind);
 }
 static int nfs_bg_refuse(const char*why,uint64_t serial,const NfsNativeLogoTargetProof*t){nfs_bg_trace("begin-refused",why,serial,t);return 0;}
-int nfs_private_background_scene_begin(const NfsBackgroundSceneFrameView*v){
+static int nfs_bg_native_begin(const NfsBackgroundSceneFrameView*v,const NfsLocationSceneFrameView*location){
  uint32_t ids[300];unsigned i,x,y;NfsNativeLogoTargetProof target;
  if(!nfs_bg_feature())return 0;
  nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);
  nfs_bg_content=v?v->contentRevision:0;nfs_bg_map=v?v->mapRole:0;nfs_bg_words=v?v->wordCount:0;
- if(!v||v->schema!=NFS_BACKGROUND_SCENE_RUNTIME_SCHEMA||v->width!=640||v->height!=480||v->planeWords!=307200||!v->original565||!v->serial||!v->contentRevision||v->mapRole>1||v->wordCount>4||v->tailKind!=NFS_BACKGROUND_TAIL_MAIN_SKIP)return nfs_bg_refuse("frame",v?v->serial:0,0);
+ if(!v||v->schema!=NFS_BACKGROUND_SCENE_RUNTIME_SCHEMA||v->width!=640||v->height!=480||v->planeWords!=307200||!v->original565||!v->serial||!v->contentRevision||v->mapRole>1||v->wordCount>4||(location?v->tailKind!=NFS_BACKGROUND_TAIL_LOCATION_CAPTION:v->tailKind!=NFS_BACKGROUND_TAIL_MAIN_SKIP))return nfs_bg_refuse("frame",v?v->serial:0,0);
+ if(location&&!nfs_bg_location_view(location))return nfs_bg_refuse("location-frame",v->serial,0);
  if(!nfs_logo_target(&target,v->serial))return nfs_bg_refuse("target",v->serial,0);
  for(i=0;i<300;++i){uint32_t a=v->rendererAddress[i];TextureInfo*ti;const uint8_t*bytes;if((a&3)||a>TextureMem-2048)return nfs_bg_refuse("key-range",v->serial,&target);ti=&g_textures[a>>2];if(!ti->id||ti->size!=32||ti->fmt!=GR_TEXFMT_ARGB_1555||ti->hdDigits||ti->data!=g_textureMem+a)return nfs_bg_refuse("native-texture",v->serial,&target);if(!nfs_logo_native_upload_valid(a,ti))return nfs_bg_refuse("upload-witness",v->serial,&target);ids[i]=ti->id;bytes=(const uint8_t*)ti->data;
  for(y=0;y<32;++y)for(x=0;x<32;++x){uint16_t s=v->original565[((i%15)*32+y)*640+(i/15)*32+x],a1555=(uint16_t)(((s&0xf800)>>1)|((s&0x7c0)>>1)|(s&31)),want,got;a1555=a1555?(uint16_t)(a1555|0x8000):0;want=(uint16_t)((a1555<<1)|(a1555>>15));memcpy(&got,bytes+(y*32+x)*2,2);if(got!=want)return nfs_bg_refuse("converted-payload",v->serial,&target);}}
@@ -119,17 +120,22 @@ int nfs_private_background_scene_begin(const NfsBackgroundSceneFrameView*v){
  if(!nfs_logo_texture_filters(ids,target.sampling.magFilter))return nfs_bg_refuse("tile-filter",v->serial,&target);
  if(!nfs_logo_p_begin(&nfs_logo_provenance,v->serial,target.framebuffer,v->rendererAddress,ids))return nfs_bg_refuse("context-clear-key-serial",v->serial,&target);
  drawTriangles();
- if(!nfs_bg_scene_prepare(&nfs_bg_compositor)||!nfs_bg_scene_begin(&nfs_bg_compositor,v,&target)){
+ if(!nfs_bg_scene_prepare(&nfs_bg_compositor)||(location?!nfs_bg_scene_begin_location(&nfs_bg_compositor,location,&target):!nfs_bg_scene_begin(&nfs_bg_compositor,v,&target))){
   nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);return nfs_bg_refuse("art-or-core",v->serial,&target);
  }
- nfs_bg_pending_target=target;nfs_bg_trace("begin-accepted","staging-only",v->serial,&target);return 1;
+ nfs_bg_pending_target=target;nfs_bg_trace("begin-accepted",location?"location-staging-only":"staging-only",v->serial,&target);return 1;
 }
-int nfs_private_background_scene_finish(uint64_t serial){
+static int nfs_bg_native_finish(uint64_t serial,unsigned tailKind){
  NfsNativeLogoTargetProof target;int ok;if(!nfs_bg_feature())return 0;drawTriangles();
- if(!nfs_logo_target(&target,serial))goto fail;
+ if(nfs_bg_compositor.pendingTailKind!=tailKind||!nfs_logo_target(&target,serial))goto fail;
  target.sampling.magFilter=nfs_bg_pending_target.sampling.magFilter;
  if(memcmp(&target,&nfs_bg_pending_target,sizeof target))goto fail;
  if(!nfs_logo_p_finish(&nfs_logo_provenance,serial,target.framebuffer))goto fail;
- ok=nfs_bg_scene_finish(&nfs_bg_compositor,serial,&target);nfs_bg_trace(ok?"finish-published":"finish-refused",ok?"core-commit":"core",serial,&target);return ok;
+ ok=tailKind==NFS_BACKGROUND_TAIL_LOCATION_CAPTION?nfs_bg_scene_finish_location(&nfs_bg_compositor,serial,&target):nfs_bg_scene_finish(&nfs_bg_compositor,serial,&target);nfs_bg_trace(ok?"finish-published":"finish-refused",ok?"core-commit":"core",serial,&target);return ok;
  fail:nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);nfs_bg_trace("finish-refused","target-or-original-pass",serial,0);return 0;
 }
+
+int nfs_private_background_scene_begin(const NfsBackgroundSceneFrameView*v){return nfs_bg_native_begin(v,NULL);}
+int nfs_private_background_scene_finish(uint64_t serial){return nfs_bg_native_finish(serial,NFS_BACKGROUND_TAIL_MAIN_SKIP);}
+int nfs_private_location_scene_begin(const NfsLocationSceneFrameView*v){if(!v)return 0;return nfs_bg_native_begin(&v->scene,v);}
+int nfs_private_location_scene_finish(uint64_t serial){return nfs_bg_native_finish(serial,NFS_BACKGROUND_TAIL_LOCATION_CAPTION);}

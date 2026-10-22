@@ -27,12 +27,27 @@ constexpr uint32_t game_id_sub_4831A8 = 0xf000184cu;
 constexpr uint32_t game_id_sub_483288 = 0xf0001850u;
 constexpr uint32_t game_id_sub_483438 = 0xf0001878u;
 constexpr uint32_t game_id_sub_4A14D4 = 0xf0002124u;
+// Additional synthetic declarations needed by the real Location queue header.
+static constexpr uint32_t off_4D2A20=0x404abd,dword_4DD770=0xc000,dword_4DD77C=0xc004,dword_4DD774=0xc008,dword_4DD714=0xc00c,dword_4D20A0=0xc010,byte_4DB25E=0xc014,dword_4DD6F4=0xc018,dword_4DD6F8=0xc01c,dword_4E54AC=0xc020,dword_4DD6EC=0xc024;
+static constexpr uint32_t game_id_sub_4A5830=0xfade0010;
 #include "hd/BackgroundSceneQueueAdapter.inc"
+#include "hd/LocationSceneQueueAdapter.inc"
 namespace live=nfs_background_scene_live;
 namespace pub=nfs_logo_publisher;
 static unsigned gpuBegins=0,gpuEnds=0;static uint64_t lastBegin=0;
 extern "C" int nfs_private_background_scene_begin(const NfsBackgroundSceneFrameView*v){CHECK(!leaseDepth&&v&&v->serial&&v->original565);++gpuBegins;lastBegin=v->serial;return 1;}
 extern "C" int nfs_private_background_scene_finish(uint64_t serial){CHECK(serial==lastBegin);++gpuEnds;return 1;}
+static void sharedRequestSequence(){
+ namespace location=nfs_location_scene_live;
+ CHECK(!live::activeRequest()&&!location::activeRequest());
+ const auto first=live::nextRequest(),second=location::nextRequest(),third=live::nextRequest(),fourth=location::nextRequest();
+ CHECK(first&&second>first&&third>second&&fourth>third);
+ live::activeRequest()=first;CHECK(location::activeRequest()==first);
+ location::activeRequest()=second;CHECK(live::activeRequest()==second);
+ live::activeRequest()=0;CHECK(!location::activeRequest());
+ location::activeRequest()=fourth;CHECK(live::activeRequest()==fourth);
+ location::activeRequest()=0;CHECK(!live::activeRequest());
+}
 static void m32(uint32_t at,uint32_t v){put32(memory.data()+at,v);}
 static void m16(uint32_t at,uint16_t v){put16(memory.data()+at,v);}
 static void select(const rec::Target&t){for(unsigned k=0;k<14;++k){m32(t.owner+4*k,t.w[k]);m32(dword_4DB240+4*k,t.w[k]);}for(unsigned k=0;k<4;++k)m32(t.w[8]+4*k,t.header[k]);for(unsigned k=0;k<t.w[1];++k)m32(t.w[12]+4*k,t.x[k]);for(unsigned k=0;k<480;++k)m32(t.w[11]+4*k,t.y[k]);m32(dword_4D231C,0x51000);m32(dword_4D2320,0);m32(dword_4D4D24,0x41000);m32(dword_4DABE4,0);m32(dword_4D2314+2,0);}
@@ -46,6 +61,7 @@ static void present(Game&g){g.eax=1;g.edx=g.ebx=0;g.ecx=32;m32(g.esp,UINT32_MAX)
 int main(int argc,char**argv){try{CHECK(argc==2);std::string mode=argv[1];if(mode=="unset")unsetenv("NFS_PRIVATE_BACKGROUND_SCENE_HD");else setenv("NFS_PRIVATE_BACKGROUND_SCENE_HD",mode=="off"?"0":mode=="wrong"?"10":mode=="suffix"?"1x":"1",1);Game g;g.eax=off_4D3EC4;
  if(mode=="wrong"||mode=="suffix"){auto f=std::unique_ptr<Fixture>(new Fixture{});CHECK(nfs_background_scene_runtime::installCatalog(std::make_shared<const bg::SourceCatalog>(f->catalog)));}
  if(mode=="off"||mode=="unset"||mode=="missing"||mode=="wrong"||mode=="suffix"){const auto before=reads,alloc=allocationCount.load();{pub::MenuOwnerScope menu(g);live::MainScope scene(g);pub::OwnerScope iteration(g,1);live::IterationScope sceneIteration(g);iteration.start();sceneIteration.start();live::RoleScope role(g,live::Phase::Side);pub::ResolvedScope logo(g);live::ResolvedScope input(g);live::row(g,game_id_sub_482BD4);live::IndexedSideCallScope indexed(g,live::indexedSideCallee(g));live::UploadEndScope after(g);pub::UploadScope uploadScope(g);live::Intent i;live::begin(g,i);live::finish(i);live::cancel(i);}CHECK(reads==before&&allocationCount==alloc&&!pub::stateSlot()&&!live::slot());std::printf("PASS %s zero reads/allocations\n",mode.c_str());return 0;}
+ sharedRequestSequence();
  auto fixture=std::unique_ptr<Fixture>(new Fixture{});auto trusted=std::make_shared<const bg::SourceCatalog>(fixture->catalog);CHECK(!nfs_background_scene_runtime::installCatalog({}));CHECK(nfs_background_scene_runtime::installCatalog(trusted));prepareMemory(*fixture);MainThreadHarness renderer;
  {pub::MenuOwnerScope menu(g);live::MainScope scene(g);CHECK(pub::owner()&&live::current(g));CHECK(!nfs_background_scene_runtime::installCatalog(trusted));
   {pub::OwnerScope warmup(g,1);live::IterationScope pending(g);warmup.start();pending.start();live::invalidateCache();pub::resetNativeCache();live::postGroup(g);g.ebp=off_4D3EC4;live::tailBegin(g);live::tailEnd(g);live::copyEnd(g);CHECK(!live::slot()->invalid&&!live::slot()->iteration);}
@@ -57,5 +73,5 @@ int main(int argc,char**argv){try{CHECK(argc==2);std::string mode=argv[1];if(mod
   live::invalidateCache();pub::resetNativeCache();CHECK(live::slot()->invalid&&!live::slot()->published&&!pub::store()->bound);CHECK(owned->valid&&owned->contentRevision==revision);
  }
  CHECK(!live::slot()->on&&!pub::store()->inMenu&&!leaseDepth&&allocationInLease==0);
- std::puts("PASS actual-reader synthetic base/side/word, original-record collector,300tile uploads,12cached ownedFIFO publications,retirement");return 0;
+ std::puts("PASS actual shared Main/Location allocator and active path; actual-reader synthetic base/side/word, original-record collector,300tile uploads,12cached ownedFIFO publications,retirement");return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}}

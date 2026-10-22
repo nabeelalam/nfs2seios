@@ -1,0 +1,182 @@
+{
+  "scope": "Authored software-menu glyph coverage; no original game pixels",
+  "fonts": [
+    {
+      "family": "Bebas Neue",
+      "fontFile": "BebasNeue-Regular.ttf",
+      "licenseFile": "BebasNeue-OFL.txt",
+      "commit": "47d54ca1ebb14fd864695f1d39dc734f39017c33",
+      "sourceFiles": [
+        {
+          "file": "BebasNeue-Regular.ttf",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bebasneue/BebasNeue-Regular.ttf",
+          "sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73"
+        },
+        {
+          "file": "OFL.txt",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bebasneue/OFL.txt",
+          "sha256": "72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341"
+        },
+        {
+          "file": "METADATA.pb",
+          "source": "https://github.com/google/fonts/blob/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bebasneue/METADATA.pb",
+          "sha256": "180da4f2ee7757e589eb5cb82f32c58b64c49f015e504ccab6b21401e7f5d43a"
+        }
+      ],
+      "unmodifiedFont": true
+    },
+    {
+      "family": "Oxanium",
+      "fontFile": "Oxanium-Variable.ttf",
+      "licenseFile": "Oxanium-OFL.txt",
+      "commit": "47d54ca1ebb14fd864695f1d39dc734f39017c33",
+      "sourceFiles": [
+        {
+          "file": "METADATA.pb",
+          "source": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/oxanium/METADATA.pb",
+          "sha256": "adf6faeb4238003d1d5eb8d15f59c940e145672e3f78bcf82b1802afe9f7c4d2"
+        },
+        {
+          "file": "Oxanium[wght].ttf",
+          "source": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/oxanium/Oxanium%5Bwght%5D.ttf",
+          "sha256": "2ce01d946e1e1ffc8d7eecfffbda8623bedd63eaf811a20488c4b69af45babb0"
+        },
+        {
+          "file": "OFL.txt",
+          "source": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/oxanium/OFL.txt",
+          "sha256": "fe17c0f2581d71b4e1ea7e636e7f4877c29223e11bb1dd1a871e8c3f2a86336b"
+        }
+      ],
+      "unmodifiedFont": true
+    }
+  ],
+  "roles": [
+    {
+      "role": "heading",
+      "family": "Bebas Neue",
+      "size": 25,
+      "weight": 400,
+      "condensation": 0.75,
+      "baseline": 23
+    },
+    {
+      "role": "body",
+      "family": "Oxanium",
+      "size": 24,
+      "weight": 500,
+      "condensation": 0.54,
+      "baseline": 20
+    }
+  ],
+  "pangoVersion": "1.52.1",
+  "features": "kern=1,liga=0,clig=0,dlig=0,calt=0",
+  "glyphPositionsRounded": false,
+  "atlasSize": [
+    1024,
+    512
+  ],
+  "codes": [
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    224
+  ],
+  "coverageSha256": "d391f0cf791c5f22bf4aa98be0f62ce6dc6ee06c9f4762fb418ed2956e3774b9",
+  "metadataSha256": "0b458d206772e9483c5b6d049cbcbe122e0ad907bf11d6a29b50a18d185578bb",
+  "metadataEncoding": "LE role-major96*(six int16 + int32 advance), role-major9216 int32 kern, two int32 baselines",
+  "coverageRleBytes": 181953,
+  "identity": 13992032872926792265,
+  "originalGameDataRead": false
+}

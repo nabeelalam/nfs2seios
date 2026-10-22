@@ -9,7 +9,7 @@
 /* Values match immutable BackgroundSceneArt texture roles. */
 enum {NFS_BACKGROUND_MAP_BLK4=0,NFS_BACKGROUND_MAP_BLK6=1};
 /* Only the exact original40C047 off4D3EC4 branch is supported initially. */
-enum {NFS_BACKGROUND_TAIL_MAIN_SKIP=1};
+enum {NFS_BACKGROUND_TAIL_MAIN_SKIP=1,NFS_BACKGROUND_TAIL_LOCATION_CAPTION=2};
 typedef struct NfsBackgroundSceneWordLayer {
  uint32_t sourceRole,scalar256;
  int32_t left,top,clip[4];

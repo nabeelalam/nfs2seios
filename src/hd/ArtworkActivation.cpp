@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 #include "ArtworkActivation.h"
 #include "BackgroundSceneCatalog.h"
+#include "SoftwareFontBuiltin.h"
 #include <cstdlib>
 #include <memory>
 #ifdef NFS_HD_ARTWORK_CONFIG_HEADER
@@ -40,5 +41,10 @@ bool activateArtworkPack(const std::string&root,const Digest&expected)noexcept{
         return enableScene();
     }catch(...){return false;}
 }
-bool activateConfiguredArtwork(const std::string&root)noexcept{Digest d{};if(!pin(d))return false;return activateArtworkPack(root,d);}
+bool activateConfiguredArtwork(const std::string&root)noexcept{
+ // Called by app startup before GameSession creates a worker. Font failure is
+ // optional and cannot change existing artwork-pack or original-rendering paths.
+ (void)nfs_soft::installFontCatalog(nfs_soft::createBuiltinFontCatalog());
+ Digest d{};if(!pin(d))return false;return activateArtworkPack(root,d);
+}
 }
