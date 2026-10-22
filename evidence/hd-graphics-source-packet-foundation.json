@@ -1,0 +1,72 @@
+{
+  "scope": "Graphics original-source observation and separately verified portable complete-frame packet foundation",
+  "actualOriginalGameObservation": {
+    "dimensions": [
+      2186,
+      1640
+    ],
+    "redraws": 4,
+    "stringsPerRedraw": 32,
+    "originalWordWritesPerRedraw": 17688,
+    "completeOriginalWordReplayExact": true,
+    "completeMapResetTransformExact": true,
+    "completeTransparentSidebarTransformExact": true,
+    "actualPresentationInputMatchesTextPost": true,
+    "sidebarIterations": 64,
+    "sidebarRedraws": 63,
+    "sidebarLazySkips": 1,
+    "normalReturnAndShutdown": true,
+    "copiedConfigurationAndArtworkRestored": true,
+    "ownedProcessesRemaining": false
+  },
+  "pureGraphicsPacket": {
+    "optimizedChecks": 94,
+    "asanUbsanChecks": 94,
+    "cxx14Checks": 94,
+    "focusedRegisteredTestsPerMode": 5,
+    "finalAddedNegativeRegisteredRetestPerMode": 1,
+    "immutableSourceAndOwnerRetention": true,
+    "independentlyReviewed": true,
+    "sourceInputsStableDuringTests": true
+  },
+  "sourcePolicy": {
+    "originalCallsPreserved": true,
+    "existingAudioMainLocationGuardsChanged": false,
+    "graphicsRuntimeReplacementEnabled": false,
+    "originalPixelsPublished": false,
+    "cloudBuildStarted": false
+  },
+  "retainedNegativeHarnessRuns": [
+    {
+      "cause": "Undefined test-harness variable in Escape method",
+      "gameExitedNormallyAndCopiedStateRestored": true,
+      "graphicsEntered": false
+    },
+    {
+      "cause": "Historical initial reference showed a transition without Graphics labels; reference preflight rejected it",
+      "gameExitedNormallyAndCopiedStateRestored": true,
+      "graphicsEntered": false
+    }
+  ],
+  "evidenceDigests": {
+    "actualRun": "5ed5da747e401ce1a1eb6c2d5d3b0209a840ccfebbf6d4d73d169326428a82b8",
+    "offlineReplay": "c4ba2a32b8bef4561eec2785e82c8ff37d27239daae4ed7ba545dcfc8b8c725d",
+    "independentRuntimeReview": "ac530a11951b8adda5cf44ffda44d471253c2f3017261576d20755bf55eaf75f",
+    "focusedRegisteredSuite": "6c44af48e827b522fa606e9ea2a6b74e14d6f21197b7dff904956a87fb48be25",
+    "finalPacketNegatives": "914c889ac3addfe036434ccf42663dca6b539f7b24e7d00731e7fc428df43521",
+    "cxx14": "3997af42937292d4770d471abbc6263a3942fafc06f3649e9737c00a6d31f4d8",
+    "independentPacketReview": "4d31dd2dfdd8acbc9f65b04950d3d17d03d286df521e2aaa1c39350224b9ca07"
+  },
+  "remaining": [
+    "Graphics-owned live packet producer and authenticated retained sidebar/caption join",
+    "Source-derived text layout policy",
+    "Native Graphics queue/renderer admission with complete RGB565 upload/selection/triangle and context proof",
+    "Changed values/selection, lazy reuse and context recovery integration",
+    "Other frontend/HUD and final artwork work",
+    "Physical iPad HD and battery/Low Power Mode validation"
+  ],
+  "rowCallbackHistoryProven": false,
+  "nativeGpuWitnessForGraphicsProven": false,
+  "physicalDeviceValidated": false,
+  "goalComplete": false
+}
