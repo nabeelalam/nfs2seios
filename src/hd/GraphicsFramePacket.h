@@ -16,11 +16,17 @@ struct SidebarBinding {
  uint32_t handle=0,tableEntry=0,word=0;
  std::vector<uint8_t>source;
  bool valid()const noexcept {
+  // Slots1/2 own the retained sidebar windows; slot3 is the full640 owner.
+  // The ambient selector may flip after the caption; current tableEntry is independent.
+  if((int32_t(word)>>16)<0||(int32_t(word)>>16)>1)return false;
   if(!lifetime||!handle||tableEntry!=handle||target.owner!=handle||
-     !nfs_small_logo_live::target(target,343)||target.ownerState[3]!=target.owner||
+     !nfs_small_logo_live::target(target,343)||
+     (target.ownerState[1]!=target.owner&&target.ownerState[2]!=target.owner)||
+     target.ownerState[0]!=word||
+     target.ownerState[1+(uint32_t(word)>>16)]!=handle||
      target.w[3]||target.w[4]||target.w[5]!=343||target.w[6]!=480||
      target.header!=std::array<uint32_t,4>{{0x78,343u|(480u<<16),0,0}}||
-     source.size()!=SidebarBytes||(int32_t(word)>>16)<0||(int32_t(word)>>16)>1)return false;
+     source.size()!=SidebarBytes)return false;
   for(unsigned k=0;k<4;++k)if(nfs_small_logo_live::le32(source.data()+4*k)!=target.header[k])return false;
   return true;
  }

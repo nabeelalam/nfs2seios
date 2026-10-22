@@ -33,7 +33,7 @@ struct Fixture {
   current.ownerEpoch=2;current.pass=3;current.lifetime=current.surface.lifetime=4;
   std::copy(full.w.begin(),full.w.end(),current.surface.geometry.begin());
   auto&g=current.surface.geometry;g[15]=2;g[16]=1278;g[17]=16;g[18]=1296;g[19]=613136;
-  side.target=target(343,0x300000,0x50000);side.handle=side.tableEntry=side.target.owner;side.lifetime=7;side.word=1u<<16;
+  side.target=target(343,0x300000,0x50000);side.target.ownerState[1]=side.target.owner;side.target.ownerState[2]=0x60000;side.target.ownerState[3]=current.owner;side.handle=side.tableEntry=side.target.owner;side.lifetime=7;side.word=0;
   side.source.resize(gf::SidebarBytes);put32(side.source.data(),0x78);put32(side.source.data()+4,343u|(480u<<16));
   map.resize(614416);put32(map.data(),0x78);put32(map.data()+4,640u|(480u<<16));
   record.preReset.resize(gf::Pixels);record.postReset.resize(gf::Pixels);record.postSidebar.resize(gf::Pixels);
@@ -70,6 +70,26 @@ int main(){
  static_assert(!std::is_default_constructible<gf::GraphicsFramePacket>::value,"verified join only");
  try{
   auto f=std::unique_ptr<Fixture>(new Fixture);CHECK(f->current.valid()&&f->side.valid()&&f->catalog&&f->font);
+  // Exercise the binding itself: equality against a recorded witness cannot
+  // substitute for proving membership in the CURRENT selected retained slot.
+  for(unsigned index=0;index<2;++index){
+   auto side=f->side;side.word=index<<16;side.target.ownerState[0]=side.word;
+   side.target.ownerState[1]=0x60000;side.target.ownerState[2]=0x70000;
+   side.target.ownerState[1+index]=side.handle;
+   CHECK(side.target.ownerState[3]!=side.handle&&side.valid());
+   {auto wrong=side;wrong.target.ownerState[1+index]=0x80000;
+    wrong.target.ownerState[2-index]=wrong.handle;
+    // Owner still occurs in a sidebar slot, but not the selected one.
+    CHECK(!wrong.valid());}
+   {auto wrong=side;wrong.target.ownerState[1]=wrong.target.ownerState[2]=wrong.handle;
+    wrong.target.ownerState[0]=(index^1u)<<16;
+    // Both table entries match, isolating the selector/state0 mismatch.
+    CHECK(!wrong.valid());}
+   {auto wrong=side;wrong.target.ownerState[1]=0x60000;wrong.target.ownerState[2]=0x70000;
+    wrong.target.ownerState[3]=wrong.handle;
+    // A full640 slot cannot authorize a retained343 sidebar descriptor.
+    CHECK(!wrong.valid());}
+  }
   auto background=f->verify();CHECK(background);
   CHECK(background->pixels()==f->record.postSidebar&&background->sidebar()==f->side);
   CHECK(background->pixels()[0]==f->record.postReset[0]);
@@ -122,7 +142,7 @@ int main(){
   {auto r=f->record;auto side=f->side;side.target.w[8]=f->current.surface.geometry[8];side.target.ownerWords[8]=side.target.w[8];
    CHECK(side.valid());r.sidebarBefore=r.sidebarAfter=side;r.sidebar.args[0]=side.target.w[8];
    CHECK(!gf::BackgroundVerifier::verify(r,f->current,side,f->catalog));}
-  {auto r=f->record;auto side=f->side;side.target.owner=f->current.owner;side.target.ownerState[3]=side.target.owner;
+  {auto r=f->record;auto side=f->side;side.target.owner=f->current.owner;side.target.ownerState[1]=side.target.owner;
    side.handle=side.tableEntry=side.target.owner;CHECK(side.valid());r.sidebarBefore=r.sidebarAfter=side;
    CHECK(!gf::BackgroundVerifier::verify(r,f->current,side,f->catalog));}
   reject([](gf::BackgroundRecord&r){r.sidebar.end=r.sidebar.begin;});

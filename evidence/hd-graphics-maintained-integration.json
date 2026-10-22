@@ -1,0 +1,117 @@
+{
+  "scope": "Maintained Graphics menu original-source capture, immutable scene join and native ordered rendering; local host validation only",
+  "date": "2026-10-22",
+  "ownershipCorrection": {
+    "sidebarSlots": [
+      1,
+      2
+    ],
+    "fullScreenSlot": 3,
+    "selectedSlotAndSelectorIndependentlyChecked": true,
+    "bothSelectedSlotsTested": true
+  },
+  "verification": {
+    "focusedTestsPerMode": 10,
+    "modes": [
+      "optimized",
+      "AddressSanitizer+UndefinedBehaviorSanitizer"
+    ],
+    "sharedAudioSoftwareRegressionTestsPerMode": 4,
+    "productionGameUnitsCxx14": 6,
+    "productionRendererC99": true,
+    "productionLayerC99AndCxx14": true,
+    "immutableJoinCxx14": true,
+    "testSourcePinsStable": true,
+    "sourceHookReversalPreservesActualGeneratedUnits": true,
+    "actualAdapterTestsPerMode": 1,
+    "actualAdapterChecksPerMode": 3875,
+    "actualAdapterOptionalContextLossPointsPerMode": 547,
+    "actualAdapterSyntheticAssetsAndNativeObservations": true,
+    "actualAdapterOriginalBackendIsExplicitNoGlStub": true
+  },
+  "build": {
+    "seconds": 79.51,
+    "workers": 2,
+    "consumedInputPins": 413,
+    "sourcePinsStable": true,
+    "binarySha256": "3c45382c8029fb8328be4b37c95f558b7fd207e12f982fe7b43629b7014a037e",
+    "previousVerifiedBinaryPreserved": true,
+    "cloud": false,
+    "postBuildChanges": "Only test registration was added after the game build; game code and renderer inputs remain unchanged."
+  },
+  "actualGame": {
+    "dimensions": [
+      2186,
+      1640
+    ],
+    "route": [
+      "Main",
+      "Options",
+      "Graphics",
+      "Options",
+      "Main"
+    ],
+    "completeNativeFrames": 83,
+    "eachOriginalUploads": 300,
+    "eachOriginalSelections": 300,
+    "eachOriginalTriangles": 600,
+    "nativeCancellations": 0,
+    "initialIncompleteSidebarUsesOriginalFallback": true,
+    "normalSelectionChangeViewed": true,
+    "nativeScreenshotViewed": true,
+    "returnToStableMain": true,
+    "exit": 0,
+    "copiedConfigurationRestored": true,
+    "copiedArtworkRestored": true,
+    "ownedProcessesRemaining": false,
+    "ownedDisplayStopped": true,
+    "settingValueChangesVerified": true
+  },
+  "limits": [
+    "Legacy original drawTriangles backend is unchanged and is not covered by optional-operation context checks.",
+    "No depth-clear witness is asserted; Graphics commit writes color only.",
+    "Physical iPad HD appearance, stability, performance, battery and Low Power Mode acceptance remain open.",
+    "Remaining front-end forms and HUD work are not complete.",
+    "Repeated entry within one process and actual context recreation remain additional validation gates."
+  ],
+  "evidenceDigests": {
+    "focusedResults": "35d00ebd36157d127a48c5d53edfa0370fe8fd1ff7d2e79d9417a90c8d9727c7",
+    "actualGeneratedSyntax": "e56edc3953b8e8e8f9aa8be88dacc1d8c7dd32e14c4d1f84d60baa5723df72af",
+    "rendererSyntax": "272b9705c8e8a1a8259b7b19c6fdaa9274bf0c559b922b0349f54965c935c41d",
+    "buildReceipt": "a837ec6b055fc44ca666c37a69763a7544d615896cc79871ab6ae1f0dc8846fe",
+    "actualRun": "5cdca6b8592b318c8081af29649fab81429269a052ceda9ec8271f8104546fa1",
+    "actualValueRun": "ebf04be9536c8556df290e529c9ac38342dc5f0594069fd7b5df536754131cff",
+    "actualValueRoi": "311961344082e3004c10a3db554b6800849137b1bf564c2b83c5886309d52051",
+    "adapterRegisteredResults": "577ca89dabbb6c8b93665b086d28d20ec50a01da62699909493008bed184e488"
+  },
+  "publication": {
+    "originalAssetsIncluded": false,
+    "originalAssetsModified": false,
+    "privatePathsIncluded": false,
+    "pushStarted": false,
+    "cloudBuildStarted": false
+  },
+  "actualValueRun": {
+    "dimensions": [
+      2186,
+      1640
+    ],
+    "completeNativeFrames": 107,
+    "nativeCancellations": 0,
+    "brightnessValuesObserved": [
+      6,
+      4,
+      6
+    ],
+    "normalLeftRightInputOnly": true,
+    "numericRegionPixels": 2664,
+    "changedPixelsAfterLeft": 2588,
+    "changedPixelsAfterRightComparedToBefore": 0,
+    "returnToStableMain": true,
+    "exit": 0,
+    "copiedConfigurationRestored": true,
+    "copiedArtworkRestored": true,
+    "ownedProcessesRemaining": false,
+    "ownedDisplayStopped": true
+  }
+}

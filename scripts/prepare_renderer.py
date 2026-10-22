@@ -209,7 +209,9 @@ static void nfs_logo_native_triangle(const GrVertex*,const GrVertex*,const GrVer
            'BackgroundSceneLayersAbi.h','AudioArtProvider.h','AudioLayerAbi.h','AudioBarGpu.h','AudioBarGpu.c.inc',
            'AudioSceneLayerAbi.h','AudioSceneLayers.h','AudioSceneLayers.c.inc',
            'AudioSceneRuntimeAbi.h','AudioNativePass.h','AudioSceneRenderer.inc',
-           'BackgroundSceneResourcePrepare.h','BackgroundSceneResourcePrepare.c.inc']
+           'BackgroundSceneResourcePrepare.h','BackgroundSceneResourcePrepare.c.inc',
+           'GraphicsSceneRuntimeAbi.h','GraphicsSceneLayerAbi.h','GraphicsSceneLayers.h',
+           'GraphicsSceneLayers.c.inc','GraphicsSceneRenderer.inc']
     for name in names:shutil.copyfile(ROOT/'src/hd'/name,target/name)
     return text
 
