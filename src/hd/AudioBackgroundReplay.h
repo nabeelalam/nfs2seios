@@ -17,7 +17,7 @@ class BackgroundReplayVerifier {
 public:
  static std::shared_ptr<const VerifiedPreBars>verify(const BackgroundRecord&r,const Binding&current,const std::shared_ptr<const BackgroundCatalog>&catalog)noexcept{
   if(!current.valid()||!(r.binding==current)||!catalog||r.complete!=1||r.error||r.preReset.size()!=Pixels||r.postReset.size()!=Pixels||r.preBars.size()!=Pixels||r.reset.sourceBefore!=catalog->source())return {};
-  try{auto replay=r.preReset;if(!draw(r.reset,false,current,replay)||replay!=r.postReset||!draw(r.sidebar,true,current,replay)||replay!=r.preBars)return {};auto p=std::shared_ptr<VerifiedPreBars>(new VerifiedPreBars);p->binding_=current;p->catalog_=catalog;p->pixels_=std::move(replay);return p;}catch(...){return {};}
+  try{auto replay=r.preReset;if(!draw(r.reset,false,current,replay)||replay!=r.postReset||!draw(r.sidebar,true,current,replay)||replay!=r.preBars)return {};auto p=std::shared_ptr<VerifiedPreBars>(new VerifiedPreBars);p->binding_=current;p->catalog_=catalog;p->sidebar_=r.sidebar.sourceBefore;p->sidebarHandle_=r.sidebar.sidebarHandle;p->sidebarBitmap_=r.sidebar.sidebarBitmap;p->sidebarWord_=r.sidebar.sidebarWord;p->pixels_=std::move(replay);return p;}catch(...){return {};}
  }
 };
 }

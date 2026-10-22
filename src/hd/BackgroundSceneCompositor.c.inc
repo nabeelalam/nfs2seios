@@ -85,3 +85,32 @@ int nfs_bg_scene_begin(NfsBackgroundSceneCompositor*s,const NfsBackgroundSceneFr
 int nfs_bg_scene_finish(NfsBackgroundSceneCompositor*s,uint64_t serial,const NfsNativeLogoTargetProof*p){return nfs_bg_scene_finish_owned(s,serial,NFS_BACKGROUND_TAIL_MAIN_SKIP,p);}
 int nfs_bg_scene_begin_location(NfsBackgroundSceneCompositor*s,const NfsLocationSceneFrameView*v,const NfsNativeLogoTargetProof*p){if(!v)return 0;return nfs_bg_scene_begin_owned(s,&v->scene,v,p);}
 int nfs_bg_scene_finish_location(NfsBackgroundSceneCompositor*s,uint64_t serial,const NfsNativeLogoTargetProof*p){return nfs_bg_scene_finish_owned(s,serial,NFS_BACKGROUND_TAIL_LOCATION_CAPTION,p);}
+
+/* Independent prepared-only staging path. Main/Location internals above are
+   intentionally unchanged, including their resource/cache/publication keys. */
+static int nfs_bg_stage_owner(const NfsBackgroundSceneStage*t){return t&&t->generation&&t->contextIdentity&&t->framebuffer&&t->ownerCurrent&&t->ownerCurrent(t->ownerUser,t);}
+static int nfs_bg_stage_target(const NfsBackgroundSceneStage*t){
+ GLint fbo=0,vp[4],sc[4];if(!nfs_bg_stage_owner(t)||!nfs_frame_dimensions(t->width,t->height)||!nfs_frame_sampling_valid(t->width,t->height,&t->sampling))return 0;
+ glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);glGetIntegerv(GL_VIEWPORT,vp);if((GLuint)fbo!=t->framebuffer||memcmp(vp,t->sampling.viewport,sizeof vp))return 0;
+ if(glIsEnabled(GL_SCISSOR_TEST)){glGetIntegerv(GL_SCISSOR_BOX,sc);if(sc[0]>0||sc[1]>0||sc[2]<0||sc[3]<0||(int64_t)sc[0]+sc[2]<t->width||(int64_t)sc[1]+sc[3]<t->height)return 0;}
+ return glCheckFramebufferStatus(GL_FRAMEBUFFER)==GL_FRAMEBUFFER_COMPLETE&&glGetError()==GL_NO_ERROR;
+}
+static int nfs_bg_stage_layers(const NfsBackgroundSceneLayers*v){
+ NfsLogoVertex vertices[18];size_t used;float bounds[4];if(!v||v->mapRole>1||v->wordCount>4||!nfs_bg_clip(v->panelClip)||!nfs_logo_layers(v->logos,3,vertices,&used,bounds))return 0;
+ for(unsigned i=0;i<4;++i){const NfsBackgroundSceneWordLayer*w=v->words+i;if(i>=v->wordCount){if(!nfs_bg_zero(w,sizeof*w))return 0;continue;}if(w->sourceRole<1||w->sourceRole>12||w->scalar256>256||w->left<-32768||w->left>32767||w->top<-32768||w->top>32767||!nfs_bg_clip(w->clip))return 0;}return 1;
+}
+static int nfs_bg_stage_quad(NfsBackgroundSceneCompositor*s,const NfsBackgroundSceneStage*stage,unsigned role,float left,float top,float width,float height,unsigned x,unsigned y,unsigned tw,unsigned th,const int32_t clip[4],unsigned scalar,int blend){float l=fmaxf(left,(float)clip[0]),t=fmaxf(top,(float)clip[1]),r=fminf(left+width,(float)clip[2]),b=fminf(top+height,(float)clip[3]);GLfloat verts[24],u0,u1,v0,v1;if(l>=r||t>=b||!scalar)return 1;u0=(x+(l-left)*tw/width)/s->art[role].width;u1=(x+(r-left)*tw/width)/s->art[role].width;v0=(y+(t-top)*th/height)/s->art[role].height;v1=(y+(b-top)*th/height)/s->art[role].height;{const GLfloat made[]={l,t,u0,v0,r,t,u1,v0,l,b,u0,v1,l,b,u0,v1,r,t,u1,v0,r,b,u1,v1};memcpy(verts,made,sizeof verts);}glUseProgram(s->program);glUniform1i(s->sampler,0);glUniform1f(s->opacity,scalar/256.f);glBindTexture(GL_TEXTURE_2D,s->textures[role]);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,verts);if(blend){glEnable(GL_BLEND);glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);}else glDisable(GL_BLEND);glDrawArrays(GL_TRIANGLES,0,6);return nfs_bg_stage_owner(stage)&&glGetError()==GL_NO_ERROR;}
+int nfs_bg_scene_draw_layers_into_staging(NfsBackgroundSceneCompositor*s,const NfsBackgroundSceneStage*stage,const NfsBackgroundSceneLayers*input){
+ NfsBackgroundSceneLayers v;NfsBgSaved saved;NfsLogoVertex logos[18];size_t count=0;float bounds[4];GLint type=0,name=0;int ok=0;static const int32_t full[4]={0,0,640,480};
+ if(!s||!nfs_bg_stage_owner(stage)||stage->generation!=s->generation||!nfs_bg_stage_layers(input)||!nfs_bg_ready(s)||!nfs_bg_stage_target(stage)||stage->framebuffer==s->fbo[0]||stage->framebuffer==s->fbo[1])return 0;
+ v=*input;glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type);glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name);if(type!=GL_TEXTURE||!name||glGetError()!=GL_NO_ERROR)return 0;for(unsigned i=0;i<5;++i)if((GLuint)name==s->textures[i])return 0;if((GLuint)name==s->logo.texture)return 0;
+ if(!nfs_logo_layers(v.logos,3,logos,&count,bounds))return 0;
+ nfs_bg_save(&saved);nfs_frame_draw_state();glDepthMask(GL_FALSE);
+ /* Bind the scene program before its matrix, independent of inherited program. */
+ glUseProgram(s->program);glUniformMatrix4fv(s->matrix,1,GL_FALSE,stage->sampling.projection);
+ if(!nfs_bg_stage_quad(s,stage,v.mapRole,0,0,640,480,0,0,s->art[v.mapRole].width,s->art[v.mapRole].height,full,256,0))goto done;
+ if(!nfs_bg_stage_quad(s,stage,2,0,0,343,480,0,0,1372,1920,v.panelClip,256,1))goto done;
+ for(unsigned i=0;i<v.wordCount;++i){const NfsBackgroundSceneWordLayer*w=v.words+i;const NfsBackgroundSceneWord*r=s->regions+w->sourceRole-1;if(!nfs_bg_stage_quad(s,stage,r->textureRole,(float)w->left,(float)w->top,(float)r->logicalWidth,(float)r->logicalHeight,r->x,r->y,r->width,r->height,w->clip,w->scalar256,1))goto done;}
+ if(count){glUseProgram(s->logo.program);glUniformMatrix4fv(s->logo.matrix,1,GL_FALSE,stage->sampling.projection);glUniform1i(s->logo.sampler,0);glBindTexture(GL_TEXTURE_2D,s->logo.texture);glEnableVertexAttribArray(0);glEnableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),logos);glVertexAttribPointer(1,1,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),&logos[0].coefficient);glEnable(GL_BLEND);glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);glDrawArrays(GL_TRIANGLES,0,(GLsizei)count);if(!nfs_bg_stage_owner(stage))goto done;if(glGetError()!=GL_NO_ERROR)goto done;}ok=1;
+ done:if(!nfs_bg_stage_owner(stage)){nfs_bg_scene_context_retired(s,s->generation,0);return 0;}nfs_bg_restore(&saved);if(!nfs_bg_stage_owner(stage)){nfs_bg_scene_context_retired(s,s->generation,0);return 0;}return ok;
+}

@@ -2,6 +2,7 @@
 #include "ArtworkActivation.h"
 #include "BackgroundSceneCatalog.h"
 #include "SoftwareFontBuiltin.h"
+#include "AudioRuntimeCatalog.h"
 #include <cstdlib>
 #include <memory>
 #ifdef NFS_HD_ARTWORK_CONFIG_HEADER
@@ -39,7 +40,14 @@ bool activateArtworkPack(const std::string&root,const Digest&expected)noexcept{
         const auto marks=owner->nativeMarkProvider();
         if(marks.schema)(void)nfs_hd_install_native_mark_provider(&marks);
         const auto audio=owner->audioArtProvider();
-        if(audio.schema)(void)nfs_hd_install_audio_art_provider(&audio);
+        if(audio.schema&&nfs_hd_install_audio_art_provider(&audio)){
+            NfsAudioArt art{};const auto*metadata=owner->audioSourceIdentities();
+            if(metadata&&audio.atlas(audio.user,&art)){
+                nfs_audio_runtime::Digest expectedArt{};std::copy_n(art.sha256,32,expectedArt.begin());
+                auto trusted=nfs_audio_runtime::TrustedAssets::create(*metadata,owner->catalog()->mapSha,art,expectedArt);
+                if(trusted)(void)nfs_audio_runtime::installTrustedAssets(std::move(trusted));
+            }
+        }
         return enableScene();
     }catch(...){return false;}
 }

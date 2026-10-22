@@ -68,8 +68,7 @@ inline bool tables(const std::array<uint32_t,9>&a,const std::array<uint32_t,9>&b
 }
 // No Store/sample flags, file I/O, allocation, guest reads or retained input pointers.
 // Caller supplies coherent immutable native-owned records and nonaliasing workspace/output.
-inline Failure verifyAndPrepare(const Group&g,const Copy&c,Workspace&ws,Prepared&out,const SourceCatalog&catalog) noexcept {
- out.valid=false;out.width=out.height=out.layerCount=0;
+inline Failure verifyGroup(const Group&g,Workspace&ws,const SourceCatalog&catalog) noexcept {
  if(!validCatalog(catalog))return Failure::Source;
  if(!g.serial||!g.thread||g.kind!=1||g.error||g.complete!=1||g.stage!=2||g.draws!=3)return Failure::Group;
  if(g.pre.valid!=1||g.post.valid!=1||g.pre.width!=343||g.post.width!=343||g.pre.height!=480||g.post.height!=480||!nfs_logo_capture::same(g.pre.target,g.post.target)||!target(g.pre.target,343))return Failure::Target;
@@ -97,6 +96,11 @@ inline Failure verifyAndPrepare(const Group&g,const Copy&c,Workspace&ws,Prepared
   }
  }
  if(!std::equal(ws.groupReplay.begin(),ws.groupReplay.end(),g.post.pixels.begin()))return Failure::GroupPixels;
+ return Failure::None;
+}
+inline Failure verifyAndPrepare(const Group&g,const Copy&c,Workspace&ws,Prepared&out,const SourceCatalog&catalog) noexcept {
+ out.valid=false;out.width=out.height=out.layerCount=0;
+ const Failure groupFailure=verifyGroup(g,ws,catalog);if(groupFailure!=Failure::None)return groupFailure;
  if(!c.serial||c.thread!=g.thread||c.linkedGroup!=g.serial||c.error||c.complete!=1||c.span!=16+SourcePixels*2||c.pre.valid!=1||c.post.valid!=1||c.pre.width!=640||c.post.width!=640||c.pre.height!=480||c.post.height!=480||!nfs_logo_capture::same(c.pre.target,c.post.target)||!target(c.pre.target,640)||!target(c.sourceOwner,343))return Failure::Copy;
  const auto&st=c.sourceOwner;const auto&gt=g.post.target;const auto&dw=c.pre.target.w;
  if(c.args[0]!=st.w[8]||c.args[1]!=0x2800||c.args[2]||c.args[3]||st.owner!=gt.owner||st.x!=gt.x||st.y!=gt.y||st.w[8]!=gt.w[8])return Failure::Copy;

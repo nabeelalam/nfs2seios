@@ -2,6 +2,7 @@
 #ifndef NFS_BACKGROUND_SCENE_COMPOSITOR_H
 #define NFS_BACKGROUND_SCENE_COMPOSITOR_H
 #include "BackgroundSceneRuntimeAbi.h"
+#include "BackgroundSceneLayersAbi.h"
 #include "BackgroundSceneArt.h"
 #include "NativeSceneTarget.h"
 #include "SmallLogoGpu.h"
@@ -26,9 +27,25 @@ typedef struct NfsBackgroundSceneCompositor {
  unsigned width[2],height[2],imageReady[2],pendingSlot,nextSlot,lastBeginKind,pendingTailKind;
  uint64_t imageRevision[2];NfsBackgroundSceneImageKey keys[2];NfsNativeLogoTargetProof pendingTarget;
 } NfsBackgroundSceneCompositor;
+/* Prepared-resource draw only. This trusted callback must independently check
+   actual context/thread AND a registered owned unpublished staging target.
+   Shape and a matching numeric FBO are not ownership or publication authority. */
+typedef struct NfsBackgroundSceneStage NfsBackgroundSceneStage;
+typedef int (*NfsBackgroundStageOwnerCurrent)(void*,const NfsBackgroundSceneStage*);
+struct NfsBackgroundSceneStage {
+ uint64_t generation;uintptr_t contextIdentity;GLuint framebuffer;
+ unsigned width,height;NfsFrameLegacySampling sampling;
+ NfsBackgroundStageOwnerCurrent ownerCurrent;void*ownerUser;
+};
 #ifdef __cplusplus
 extern "C" {
 #endif
+/* Existing resources must already have been cold-prepared by the renderer owner.
+   No original565 plane, native upload keys or Main/Location epochs are accepted.
+   No resource/FBO allocation, pending cache mutation or presentation occurs.
+   On late failure discard staging; owner loss abandons resource metadata with
+   no foreign GL cleanup. Existing Main/Location begin/finish remain separate. */
+int nfs_bg_scene_draw_layers_into_staging(NfsBackgroundSceneCompositor*,const NfsBackgroundSceneStage*,const NfsBackgroundSceneLayers*);
 int nfs_bg_scene_context_created(NfsBackgroundSceneCompositor*,uint64_t generation);
 void nfs_bg_scene_context_retired(NfsBackgroundSceneCompositor*,uint64_t generation,int ownerCurrent);
 int nfs_bg_scene_prepare(NfsBackgroundSceneCompositor*);

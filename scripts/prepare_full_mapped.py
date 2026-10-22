@@ -10,6 +10,9 @@ from background_scene_hooks import add_background_scene_hooks
 from location_caption_hooks import add_location_caption_hooks
 from location_scene_hooks import add_location_scene_hooks
 from location_preview_hooks import add_location_preview_hooks
+from audio_live_hooks import add_audio_live_hooks
+from audio_sidebar_cache_hooks import add_audio_sidebar_cache_hooks
+from audio_scene_hooks import add_audio_scene_hooks
 from batch_rep_words import batch_rep_words
 from batch_complete_helpers import batch_complete_helpers
 
@@ -201,6 +204,9 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         text = add_location_caption_hooks(text, path.name)
         text = add_location_scene_hooks(text, path.name)
         text = add_location_preview_hooks(text, path.name)
+        text = add_audio_live_hooks(text, path.name)
+        text = add_audio_sidebar_cache_hooks(text, path.name)
+        text = add_audio_scene_hooks(text, path.name)
         (dest / path.name).write_text(text)
     stubs = (source / "Stubs.cpp").read_text()
     dispatch = '#include "Game.h"\n#include "FunctionIds.h"\nextern "C" bool nfs_register_guest_function(uint32_t, NativeGameFunction);\n'
