@@ -1,0 +1,50 @@
+{
+  "scope": "Actual maintained Linux native-resolution paired map artwork integration; no physical iPad or performance claim",
+  "dimensions": [
+    2186,
+    1640
+  ],
+  "mapArtworkSelection": {
+    "role": 0,
+    "sha256": "d41a9f1f60dbea0feb6277f9204cdd85a801ce49a645775e7e64d82e9308cddf",
+    "directlyTraced": true
+  },
+  "pack": {
+    "sha256": "d34a944b902052b38b48d4f54a55d768948cb1d4116e3e7c0af623a47321369a",
+    "changedSections": 1,
+    "unchangedSections": 38,
+    "sourceIdentityPreserved": true,
+    "optimizedAndAsanUbsanLoaderPassed": true
+  },
+  "nativeFrames": {
+    "matchedCompletePairs": 88,
+    "uploadsPerFrame": 300,
+    "selectionsPerFrame": 300,
+    "trianglesPerFrame": 600,
+    "cancellations": 0
+  },
+  "hoverOriginalDraws": {
+    "minus": 13,
+    "plus": 13,
+    "outside": 12
+  },
+  "visualReview": "Corrected soft-focus map with crisp authored panel, logo, bars, text and cursor; hover highlight and normal Main return observed",
+  "normalShutdownAndRestoration": true,
+  "remainingOwnedChildren": false,
+  "build": {
+    "binarySha256": "5e6bac57868a05cbc89081f73254707a0b62cc7e17f8bd13dbe8700879c959f7",
+    "stableConsumedSourcePins": 395,
+    "seconds": 70.99382601099998,
+    "workers": 2,
+    "cloud": false
+  },
+  "evidenceDigests": {
+    "actualRun": "83d224f99625f4d940c02d47baad1e4219c9531d2223f82190164581fa20f60f",
+    "actualLog": "3b9a965df8fe47084081700432cdb4491b218f82a5dfa8b50eb15b91e48a9639",
+    "candidateConstruction": "25fd1033f37e59ead795aca8e59b87f3b1301c7bfae8d96d0d219df45bd81eb3",
+    "independentReview": "72983a80ed4e74da210dea7fd321373c98a7bc99ca514dbc106083acd7be3bbd",
+    "independentRuntimeReview": "60d287f7827a06f4c4c210e527c12d262852ce862af0f43de637a88dda426329"
+  },
+  "physicalDeviceValidated": false,
+  "goalComplete": false
+}
