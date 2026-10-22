@@ -72,7 +72,7 @@
     "No depth-clear witness is asserted; Graphics commit writes color only.",
     "Physical iPad HD appearance, stability, performance, battery and Low Power Mode acceptance remain open.",
     "Remaining front-end forms and HUD work are not complete.",
-    "Repeated entry within one process and actual context recreation remain additional validation gates."
+    "Actual original-backend context recreation remains unverified; resize and same-process menu reentry are separately verified."
   ],
   "evidenceDigests": {
     "focusedResults": "35d00ebd36157d127a48c5d53edfa0370fe8fd1ff7d2e79d9417a90c8d9727c7",
@@ -82,7 +82,8 @@
     "actualRun": "5cdca6b8592b318c8081af29649fab81429269a052ceda9ec8271f8104546fa1",
     "actualValueRun": "ebf04be9536c8556df290e529c9ac38342dc5f0594069fd7b5df536754131cff",
     "actualValueRoi": "311961344082e3004c10a3db554b6800849137b1bf564c2b83c5886309d52051",
-    "adapterRegisteredResults": "577ca89dabbb6c8b93665b086d28d20ec50a01da62699909493008bed184e488"
+    "adapterRegisteredResults": "577ca89dabbb6c8b93665b086d28d20ec50a01da62699909493008bed184e488",
+    "actualReentryResizeRun": "e68020e0c680a78cff3b3c4aa951367ef4852787d1beb87d7bcc5a3044db4471"
   },
   "publication": {
     "originalAssetsIncluded": false,
@@ -108,6 +109,33 @@
     "changedPixelsAfterLeft": 2588,
     "changedPixelsAfterRightComparedToBefore": 0,
     "returnToStableMain": true,
+    "exit": 0,
+    "copiedConfigurationRestored": true,
+    "copiedArtworkRestored": true,
+    "ownedProcessesRemaining": false,
+    "ownedDisplayStopped": true
+  },
+  "actualReentryAndResizeRun": {
+    "completeFrames": 154,
+    "frames640x480": 7,
+    "frames2186x1640": 147,
+    "sameProcessReentry": true,
+    "freshNativeFramesAfterReentryAtCapture": 51,
+    "resizeSequence": [
+      [
+        2186,
+        1640
+      ],
+      [
+        640,
+        480
+      ],
+      [
+        2186,
+        1640
+      ]
+    ],
+    "originalContextRecreated": false,
     "exit": 0,
     "copiedConfigurationRestored": true,
     "copiedArtworkRestored": true,

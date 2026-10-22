@@ -12,6 +12,14 @@ SDL_PIN = "829a65d769d935c4852f8159e964312c0957260a"
 SDL_TAG = "release-3.4.18"
 
 
+def frontend_pixel_parts(text):
+    parts=re.findall(r'^#include "(FrontendFontPixelsPart[0-9]+\.inc)"$',text,re.M)
+    includes=re.findall(r'^\s*#include\b[^\n]*$',text,re.M)
+    if not 1<=len(parts)<=64 or len(parts)!=len(includes) or parts!=['FrontendFontPixelsPart'+str(i)+'.inc' for i in range(len(parts))]:
+        raise ValueError('Unexpected authored frontend pixel header inventory')
+    return parts
+
+
 def prepare_renderer():
     vendor = ROOT / ".build/vendor/SDL"
     if not vendor.exists():
@@ -296,7 +304,8 @@ def prepare_hd_atlas(text, dest):
         depth+=(text[close]=='{')-(text[close]=='}');close+=1
     if depth:raise ValueError('Unterminated original frame-commit entry')
     text=text[:close-1]+' nfs_front_frame_committed();\n'+text[close-1:]
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendTextContext.h', 'FrontendFontPixels.inc', 'FrontendFontPixelsPart0.inc', 'FrontendFontPixelsPart1.inc', 'FrontendFontPixelsPart2.inc', 'FrontendFontPixelsPart3.inc', 'FrontendFontPixelsPart4.inc', 'FrontendFontPixelsPart5.inc', 'FrontendFontPixelsPart6.inc', 'FrontendFontPixelsPart7.inc', 'FrontendFontPixelsPart8.inc', 'FrontendFontPixelsPart9.inc', 'FrontendFontPixelsPart10.inc', 'FrontendFontPixelsPart11.inc', 'FrontendFontPixelsPart12.inc', 'FrontendFontPixelsPart13.inc', 'FrontendFontPixelsPart14.inc', 'FrontendFontPixelsPart15.inc', 'FrontendFontPixelsPart16.inc', 'FrontendFontPixelsPart17.inc', 'FrontendFontPixelsPart18.inc', 'FrontendFontPixelsPart19.inc', 'FrontendFontPixelsPart20.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc'):
+    font_parts=frontend_pixel_parts((ROOT/'src/FrontendFontPixels.inc').read_text())
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendTextContext.h', 'FrontendFontPixels.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc',*font_parts):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

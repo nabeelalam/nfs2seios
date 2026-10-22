@@ -159,6 +159,8 @@ def setup_words(directory, pixels, location_placements, hashes, rows):
 
 def chunked_pixels(encoded):
     # Run-aligned decimal literals; keep every source below the unchanged 1 MiB gate.
+    if not encoded or len(encoded)%6 or len(encoded)>64*65520:
+        raise ValueError('Unbounded or unaligned authored frontend pixel runs')
     outputs = {}
     names = []
     for i, start in enumerate(range(0,len(encoded),65520)):
@@ -166,8 +168,6 @@ def chunked_pixels(encoded):
         data = encoded[start:start+65520]
         outputs[name] = '// SPDX-License-Identifier: MIT\n'+',\n'.join(','.join(str(v) for v in data[j:j+24]) for j in range(0,len(data),24))+',\n'
         names.append(name)
-    if len(names) != 21:
-        raise ValueError('Update the explicit prepared-renderer part allowlist')
     aggregate = 'static const unsigned char nfs_front_font_rle[]={\n'+''.join('#include "'+n+'"\n' for n in names)+'};'
     return aggregate, outputs
 
@@ -238,6 +238,10 @@ def generate_frontend(check=False):
     pixels, rows, compact = compact_player_words(directory,pixels,words,location_placements,setup_placements,hashes,rows,text_identity)
     from frontend_opponents_atlas import opponents_words
     pixels, rows, opponents = opponents_words(directory,pixels,rows,hashes,text_identity)
+    from frontend_options_atlas import options_words
+    pixels, rows, options = options_words(directory,pixels,rows,opponents,hashes,text_identity)
+    for family in ('main','location','setup','player','opponents'):
+        opponents[family+'Placements']=options[family+'Placements']
     location_placements,setup_placements=opponents['locationPlacements'],opponents['setupPlacements']
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
     base_layout_hash = hashlib.sha256(('// SPDX-License-Identifier: MIT\n// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.\n'+layout).encode()).hexdigest()
@@ -264,6 +268,7 @@ def generate_frontend(check=False):
                     previousAcceptedTopRasterSha256=top_hash,
                     playerCatalogSha256=compact['playerCatalogSha256'],playerPlacements=opponents['playerPlacements'],
                     opponentsCatalogSha256=opponents['catalogSha256'],opponentsPlacements=opponents['opponentsPlacements'],mainPlacements=opponents['mainPlacements'],
+                    optionsAtlas=options,
                     packingRecipeSha256=opponents['recipeSha256'],compactAtlas=opponents['packing'],additionalCachedTextureBytesForOpponents=0,additionalCachedTextureBytesForPlayer=0, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304,
                     headerHashes={n:hashlib.sha256(s.encode()).hexdigest() for n,s in outputs.items()})
     for name, content in outputs.items():
@@ -302,11 +307,17 @@ def generate_frontend_layout(check=False):
     catalogs = {'catalogSha256':'catalog.json', 'locationCatalogSha256':'location/catalog.json',
                 'setupCatalogSha256':'setup/catalog.json', 'playerCatalogSha256':'player/catalog.json',
                 'opponentsCatalogSha256':'opponents/catalog.json', 'packingRecipeSha256':'opponents/packing.json'}
+    option_meta=metadata['optionsAtlas']
+    for relative,key in [('options/catalog.json','catalogSha256'),('options/packing.json','recipeSha256')]:
+        if hashlib.sha256((directory/relative).read_bytes()).hexdigest()!=option_meta[key]:
+            raise ValueError('Stale Options catalog or packing; run full generation')
     for key, relative in catalogs.items():
         if hashlib.sha256((directory/relative).read_bytes()).hexdigest() != metadata[key]:
             raise ValueError('Stale catalog or packing; run full generation')
+    part_count=len(metadata['headerHashes'])-2
+    if not 1<=part_count<=64:raise ValueError('Unbounded generated frontend header inventory')
     expected_names = {'FrontendFontPixels.inc','FrontendWordLayout.inc'} | {
-        'FrontendFontPixelsPart'+str(i)+'.inc' for i in range(21)}
+        'FrontendFontPixelsPart'+str(i)+'.inc' for i in range(part_count)}
     if set(metadata['headerHashes']) != expected_names:
         raise ValueError('Unexpected generated header inventory')
     for name, expected in metadata['headerHashes'].items():

@@ -1,0 +1,119 @@
+{
+  "scope": "Maintained Options typography via source-authenticated native font geometry; local host validation, not physical iPad acceptance",
+  "date": "2026-10-22",
+  "originalPath": {
+    "nativeMode": 1,
+    "originalSettingsInputPreserved": true,
+    "sourceFontIdentityAndWholeDrawStringRequired": true,
+    "originalHitAreasAndGlyphInputGeometryPreserved": true,
+    "unsupportedGeometryRetainsOriginal": true,
+    "backgroundRemasterCompleted": false
+  },
+  "artwork": {
+    "newAuthoredWordImages": 9,
+    "reusedSharedWords": 4,
+    "newSourceDerivedGlyphRows": 188,
+    "totalGlyphRows": 2163,
+    "textureDimensions": [
+      1024,
+      2048
+    ],
+    "textureBytes": 8388608,
+    "additionalCachedTextureBytes": 0,
+    "preservedExistingVisibleImages": 83,
+    "transparentMainTailsCropped": 8,
+    "allRemovedBytesZero": true,
+    "priorRowsInputGeometryPreserved": 1975,
+    "atlasSha256": "4c32e721676fb8a23b60218a13c01e04136101a7ca6a16135d3eb97b94983e29",
+    "generatedPixelPartCount": 23,
+    "generatedHeaderCount": 25,
+    "boundedContiguousChunkInventory": true
+  },
+  "verification": {
+    "pythonTests": 29,
+    "registeredTestsPerMode": 3,
+    "modes": [
+      "optimized",
+      "AddressSanitizer+UndefinedBehaviorSanitizer"
+    ],
+    "enumeratedTriangleCases": 8652,
+    "ambiguousPositionCases": 302,
+    "fullGenerationCheckPassed": true,
+    "authenticatedLayoutOnlyNoopHashesAndMtimesPreserved": true
+  },
+  "filteredSampling": {
+    "backend": "Mesa llvmpipe OpenGL ES; not Apple GPU",
+    "existingRows": 1975,
+    "heights": [
+      480,
+      1640
+    ],
+    "tints": 2,
+    "samples": 7900,
+    "pixels": 11098208,
+    "differentPixels": 3155,
+    "maximumChannelDifference": 2,
+    "pixelsOverTwoChannelLevels": 0,
+    "byteExactRenderedOutput": false,
+    "sourceVisibleRgbaPreservedExactly": true,
+    "scope": "Actual GL_LINEAR sampling of old and repacked authored rows, including cropped Main quads; small measured output differences retained"
+  },
+  "build": {
+    "binarySha256": "660db3d2c08b18c4c94429fc9e8371e9ddfaec90f2410a89aba0668ad377c104",
+    "seconds": 87.25,
+    "workers": 2,
+    "consumedInputPins": 418,
+    "sourcePinsStable": true,
+    "previousBinaryPreserved": true,
+    "cloud": false
+  },
+  "actualGame": {
+    "dimensions": [
+      2186,
+      1640
+    ],
+    "normalInputOnly": true,
+    "valueSequence": [
+      "mph",
+      "kmh",
+      "mph",
+      "on",
+      "off",
+      "on"
+    ],
+    "authoredValueScores": [
+      0.811189,
+      0.955102,
+      0.811189,
+      0.96063,
+      0.885965,
+      0.96063
+    ],
+    "selectionObservedBeforeStatsEdit": true,
+    "enteredGraphicsAndReturnedThroughOptionsToStableMain": true,
+    "completeGraphicsNativeFrames": 84,
+    "cleanExit": 0,
+    "copiedConfigurationRestored": true,
+    "copiedArtworkRestored": true,
+    "ownedProcessesRemaining": false,
+    "ownedDisplayStopped": true,
+    "screenshotsViewed": true
+  },
+  "negativeHarnessRuns": {
+    "count": 4,
+    "reasons": [
+      "Original-font screen mask rejected the remastered heading",
+      "Integer-only reference misplaced half-unit km/h text",
+      "Blind key count did not prove Personal stats selection; dim background also polluted the value mask",
+      "One unacknowledged Enter left the game in Options; retried only after observing the unchanged selected source row"
+    ],
+    "allCleanlyClosedAndRestoredCopiedState": true,
+    "correction": "Authored subpixel-aware reference and observed current selection before editing; no game code changes or rebuild needed"
+  },
+  "remainingAcceptance": [
+    "Options background native remaster",
+    "Remaining forms and complete HUD/artwork polish",
+    "Physical iPad appearance, context recovery and performance",
+    "Measured battery and Low Power Mode 60 FPS target"
+  ]
+}

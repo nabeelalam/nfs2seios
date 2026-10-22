@@ -74,15 +74,19 @@ PLAYER_SHARED = {'colon': 'location', 'done': 'location', 'cancel': 'location', 
 OPPONENTS_WORDS = {'car': ('car', 21), 'number': ('number', 49), 'skill-level': ('skill level', 59), 'traffic': ('traffic', 40), 'colon': (':', 6), 'done': ('DONE', 32), 'cancel': ('CANCEL', 46), 'class-a': ('class A', 44), 'class-b': ('class B', 44), 'class-c': ('class C', 44), 'no-opponents': ('no opponents', 86), 'ford-indigo': ('Ford Indigo', 70), 'mustang-mach-iii': ('Mustang Mach III', 105), 'jaguar-xj220': ('Jaguar XJ220', 86), 'lotus-gt1': ('Lotus GT1', 63), 'lotus-esprit-v8': ('Lotus Esprit V8', 93), 'nazca-c2': ('Nazca C2', 58), 'italdesign-cala': ('Italdesign Cal\xe0', 91), 'isdera-112i': ('Isdera 112i', 68), 'mclaren-f1': ('McLaren F1', 72), 'ferrari-f50': ('Ferrari F50', 68), 'ferrari-355-f1': ('Ferrari 355 F1', 86), 'ford-gt90': ('Ford GT90', 65), 'full-grid': ('full grid', 49), 'none': ('none', 33), 'one': ('one', 25), 'beginner': ('beginner', 56), 'advanced': ('advanced', 60), 'off': ('off', 20), 'on': ('on', 18)}
 OPPONENTS_SHARED = {'car': 'player', 'colon': 'location', 'done': 'location', 'cancel': 'location', 'class-a': 'player', 'class-b': 'player', 'class-c': 'player', 'ford-indigo': 'player', 'mustang-mach-iii': 'player', 'jaguar-xj220': 'player', 'lotus-gt1': 'player', 'lotus-esprit-v8': 'player', 'nazca-c2': 'player', 'italdesign-cala': 'player', 'isdera-112i': 'player', 'mclaren-f1': 'player', 'ferrari-f50': 'player', 'ferrari-355-f1': 'player', 'ford-gt90': 'player', 'off': 'setup', 'on': 'setup'}
 
+OPTIONS_WORDS = {'speedometer': ('speedometer',83), 'mph': ('mph',29), 'kmh': ('kmh',29), 'personal-stats': ('personal stats',88), 'audio': ('audio...',46), 'controls': ('controls...',63), 'load-save': ('load/save...',72), 'graphics': ('graphics...',64), 'credits': ('credits...',54)}
+
 def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
+    options_match=re.fullmatch(r'assets/hud/frontend/options/([a-z0-9-]+)\.svg',name)
+    options_art=options_match is not None and options_match[1] in OPTIONS_WORDS
     opponents_match=re.fullmatch(r'assets/hud/frontend/opponents/([a-z0-9-]+)\.svg',name)
     opponents_art=opponents_match is not None and opponents_match[1] in OPPONENTS_WORDS and opponents_match[1] not in OPPONENTS_SHARED
     player_match=re.fullmatch(r'assets/hud/frontend/player/([a-z0-9-]+)\.svg',name)
     player_art=player_match is not None and player_match[1] in PLAYER_WORDS and player_match[1] not in PLAYER_SHARED
-    if not opponents_art and not player_art and not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit|location/(?:track|colon|north-country|laps|lap-two|track-info|track-records|personal-statistics|done|cancel|pacific-spirit|mediterraneo|mystic-peaks|proving-grounds|outback|last-resort|lap-4|lap-8)|setup/(?:game-type|race-type|style|catch-up|backwards|mirrored|one-player|split-screen|modem|serial-link|network|single-race|tournament|knockout|wild|arcade|simulation|off|on)))\.svg',name):return False
+    if not options_art and not opponents_art and not player_art and not re.fullmatch(r'assets/hud/(?:(?:timing|speed)-[0-9]|small-[A-Z]|record-(?:[1-9]|dot|colon)|punctuation/(?:clock|slash)|start/sphere|omega|pause/(?:continue|restart|racing-music|sound-effects|quit|quit-to-system)|gauge/(?:lower|middle|right)|gear/(?:N|R|[1-6]|face)|frontend/(?:game-setup|location|player-one|player-two|opponents|race|options|exit|location/(?:track|colon|north-country|laps|lap-two|track-info|track-records|personal-statistics|done|cancel|pacific-spirit|mediterraneo|mystic-peaks|proving-grounds|outback|last-resort|lap-4|lap-8)|setup/(?:game-type|race-type|style|catch-up|backwards|mirrored|one-player|split-screen|modem|serial-link|network|single-race|tournament|knockout|wild|arcade|simulation|off|on)))\.svg',name):return False
     if len(data)>65536 or any(x in data.lower() for x in (b'<!',b'<?',b'href',b'data:')):return False
     try:
         approved=json.loads((ROOT/'assets/hud/remaster-sources.json').read_text())['reviewedSvgSha256']
@@ -93,6 +97,7 @@ def reviewed_remaster_svg(name,data):
         if '/gauge/' in name:
             x,y,w,h={'lower':(10,32,43,26),'middle':(32,8,73,24),'right':(105,7,71,12)}[Path(name).stem]
             origin=(x,y);size=(w,h)
+        elif '/frontend/options/' in name:size=(OPTIONS_WORDS[Path(name).stem][1],51)
         elif '/frontend/opponents/' in name:size=(OPPONENTS_WORDS[Path(name).stem][1],51)
         elif '/frontend/player/' in name:size=(PLAYER_WORDS[Path(name).stem][1],51)
         elif '/frontend/setup/' in name:size=(SETUP_WORDS[Path(name).stem][1],51)
@@ -126,7 +131,9 @@ def reviewed_remaster_svg(name,data):
             if (node.tail or '').strip():return False
             if (node.text or '').strip():
                 if tag!='text':return False
-                if '/frontend/opponents/' in name:
+                if '/frontend/options/' in name:
+                    if node.text!=OPTIONS_WORDS[Path(name).stem][0]:return False
+                elif '/frontend/opponents/' in name:
                     if node.text!=OPPONENTS_WORDS[Path(name).stem][0]:return False
                 elif '/frontend/player/' in name:
                     if node.text!=PLAYER_WORDS[Path(name).stem][0]:return False

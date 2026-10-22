@@ -14,6 +14,21 @@ from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, SETUP_WORDS, 
 
 
 class FrontendAssetReview(unittest.TestCase):
+    def test_options_words_and_strict_pinned_schema(self):
+        from hud_asset_review import OPTIONS_WORDS
+        for name in OPTIONS_WORDS:
+            relative='assets/hud/frontend/options/'+name+'.svg'
+            data=(ROOT/relative).read_bytes()
+            self.assertTrue(reviewed_remaster_svg(relative,data))
+            for mutated in (data.replace(b'height="51"',b'height="52"'),
+                            data.replace(b'</svg>',b'<text x="0">unrelated</text></svg>'),
+                            data.replace(b'</svg>',b'<image href="private.png"/></svg>')):
+                manifest={'reviewedSvgSha256':{relative:hashlib.sha256(mutated).hexdigest()}}
+                with self.subTest(name=name),patch('hud_asset_review.json.loads',return_value=manifest):
+                    self.assertFalse(reviewed_remaster_svg(relative,mutated))
+        for name in ['on','off','done','colon','unrelated']:
+            self.assertFalse(reviewed_remaster_svg('assets/hud/frontend/options/'+name+'.svg',data))
+
     def test_reviewed_words(self):
         for name in list(FRONTEND_WORDS)+['location/'+n for n in LOCATION_WORDS]+['setup/'+n for n in SETUP_WORDS if n not in SETUP_SHARED]+['player/'+n for n in PLAYER_WORDS if n not in PLAYER_SHARED]+['opponents/'+n for n in OPPONENTS_WORDS if n not in OPPONENTS_SHARED]:
             relative='assets/hud/frontend/'+name+'.svg'

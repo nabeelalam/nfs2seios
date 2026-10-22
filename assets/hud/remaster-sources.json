@@ -162,7 +162,16 @@
     "assets/hud/frontend/opponents/none.svg": "1cdefff750b0934880734d49300c51b2ef37f258a79d66b9deaf7df6faae8b9d",
     "assets/hud/frontend/opponents/one.svg": "6ff3594d6424d018e3a3c1834173021762a5df1090dcc9abda71d427126c36c5",
     "assets/hud/frontend/opponents/beginner.svg": "cc0139003318e184d06373cfb7cf8b3cc1d7479a108767f1a514c9a9b5fbd8fc",
-    "assets/hud/frontend/opponents/advanced.svg": "6e04e5a3958e245b6b6cc9e9482cd9f15bee8a777b1f95ced7721e6da94f46b9"
+    "assets/hud/frontend/opponents/advanced.svg": "6e04e5a3958e245b6b6cc9e9482cd9f15bee8a777b1f95ced7721e6da94f46b9",
+    "assets/hud/frontend/options/speedometer.svg": "ab273d2d62f944952f7836587e21abec5c0caa85ef56ea78d83db18d33e7b927",
+    "assets/hud/frontend/options/mph.svg": "bc075f4afdd37dba81f20c47c347e82b9034e6940b1408b70bfd3fe62a5cbc59",
+    "assets/hud/frontend/options/kmh.svg": "fd24b4f794c9bcdf36588463cad348ab1145aa7ad46f78e3495cbae466ade97c",
+    "assets/hud/frontend/options/personal-stats.svg": "a177a2b0a06455bd8b99b7bd0655273fd440ac15eaf0cf4fe2946a0ebf92fcef",
+    "assets/hud/frontend/options/audio.svg": "ff438f40f4cf4c156d13b59ed6a75e00aef1574f2ca7dc752b634820f5f60721",
+    "assets/hud/frontend/options/controls.svg": "00855c77848b067d400148ba58de0895aa02463081233f8508d7be1bc18fe267",
+    "assets/hud/frontend/options/load-save.svg": "d5ef1d8bbc90d09d617f09c5241796a9fd723727033a4fe9b100a4ab5d0b85e7",
+    "assets/hud/frontend/options/graphics.svg": "9dad3110480217eabb479fc3fca5c92d25a2410d86853a926951bb4f682b22b9",
+    "assets/hud/frontend/options/credits.svg": "fefe76964e169cad2120ddd07381380d172d3c11a1d3418d797970bc2da75961"
   },
   "logoSource": "https://www.omegawatches.com/static/version1791865285/frontend/Omega/default/default/images/logo.svg",
   "logoGeometryUnchanged": true,

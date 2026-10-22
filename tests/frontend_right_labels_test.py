@@ -60,7 +60,7 @@ class RightLabels(unittest.TestCase):
         relatives=set(metadata['sourceHashes']) | {'src/'+name for name in metadata['headerHashes']}
         relatives.update('assets/hud/frontend/'+name for name in ['generated.json','catalog.json',
             'location/catalog.json','setup/catalog.json','player/catalog.json','opponents/catalog.json',
-            'opponents/packing.json','right-labels/catalog.json'])
+            'opponents/packing.json','options/catalog.json','options/packing.json','right-labels/catalog.json'])
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
             for relative in relatives:
@@ -71,7 +71,9 @@ class RightLabels(unittest.TestCase):
                 generate_frontend_layout(check=True);generate_frontend_layout();generate_frontend_layout()
                 self.assertEqual(pins,{relative:(root/relative).stat().st_mtime_ns for relative in relatives})
                 for relative in [next(iter(metadata['sourceHashes'])),
-                                 'assets/hud/frontend/opponents/packing.json','src/FrontendFontPixelsPart0.inc']:
+                                 'assets/hud/frontend/opponents/packing.json',
+                                 'assets/hud/frontend/options/catalog.json','assets/hud/frontend/options/packing.json',
+                                 'src/FrontendFontPixelsPart0.inc']:
                     target=root/relative;old=target.read_bytes();target.write_bytes(old+b' ')
                     with self.assertRaises(ValueError):generate_frontend_layout()
                     target.write_bytes(old)

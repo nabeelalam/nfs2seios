@@ -26,7 +26,7 @@ int main() {
     CHECK(!nfs_front_font_expand(pixels,size-1));
     for (auto c:memory) CHECK(c==0x5b);
     CHECK(nfs_front_font_expand(pixels,size));
-    const unsigned char expected[]={0xd5,0xfd,0x21,0xe3,0x92,0x25,0xad,0xf8,0x0d,0xfb,0xa2,0xf7,0x6d,0x6a,0x18,0xfa,0x0c,0x49,0x8c,0x69,0xeb,0x9d,0xb2,0xc8,0x6d,0x78,0x1d,0x2b,0xce,0xa5,0x31,0x34};
+    const unsigned char expected[]={0x4c,0x32,0xe7,0x21,0x67,0x6f,0xb8,0xa2,0x3b,0x60,0x21,0x8a,0x13,0xc0,0x1e,0x04,0x13,0x61,0x01,0xa7,0xca,0x6a,0x16,0x13,0x5d,0x3e,0xb9,0x7b,0x94,0x98,0x3e,0x29};
     unsigned char digest[32];
     CHECK(nfs_texture_sha256(pixels,size,digest) && !std::memcmp(digest,expected,32));
     for (unsigned i=0;i<16;++i) CHECK(memory[i]==0x5b && memory[size+16+i]==0x5b);
@@ -96,6 +96,6 @@ int main() {
         for (const auto &other:nfs_front_word_glyphs)
             if(glyph.word && other.word && glyph.word!=other.word && glyph.cell==other.cell && glyph.x==other.x && glyph.y==other.y && glyph.w==other.w && glyph.h==other.h){++ambiguous;break;}
     }
-    CHECK(cases==7900 && ambiguous==294 && nfs_front_text_context()==0);
+    CHECK(cases==8652 && ambiguous==302 && nfs_front_text_context()==0);
     std::printf("PASS authored atlas digest/canaries, %u complete glyph triangles, %u ambiguous positions, immutable attributes and whole-label fallback guards\n",cases,ambiguous);
 }

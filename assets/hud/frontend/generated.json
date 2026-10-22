@@ -83,16 +83,25 @@
     "assets/hud/frontend/opponents/none.svg": "1cdefff750b0934880734d49300c51b2ef37f258a79d66b9deaf7df6faae8b9d",
     "assets/hud/frontend/opponents/one.svg": "6ff3594d6424d018e3a3c1834173021762a5df1090dcc9abda71d427126c36c5",
     "assets/hud/frontend/opponents/beginner.svg": "cc0139003318e184d06373cfb7cf8b3cc1d7479a108767f1a514c9a9b5fbd8fc",
-    "assets/hud/frontend/opponents/advanced.svg": "6e04e5a3958e245b6b6cc9e9482cd9f15bee8a777b1f95ced7721e6da94f46b9"
+    "assets/hud/frontend/opponents/advanced.svg": "6e04e5a3958e245b6b6cc9e9482cd9f15bee8a777b1f95ced7721e6da94f46b9",
+    "assets/hud/frontend/options/speedometer.svg": "ab273d2d62f944952f7836587e21abec5c0caa85ef56ea78d83db18d33e7b927",
+    "assets/hud/frontend/options/mph.svg": "bc075f4afdd37dba81f20c47c347e82b9034e6940b1408b70bfd3fe62a5cbc59",
+    "assets/hud/frontend/options/kmh.svg": "fd24b4f794c9bcdf36588463cad348ab1145aa7ad46f78e3495cbae466ade97c",
+    "assets/hud/frontend/options/personal-stats.svg": "a177a2b0a06455bd8b99b7bd0655273fd440ac15eaf0cf4fe2946a0ebf92fcef",
+    "assets/hud/frontend/options/audio.svg": "ff438f40f4cf4c156d13b59ed6a75e00aef1574f2ca7dc752b634820f5f60721",
+    "assets/hud/frontend/options/controls.svg": "00855c77848b067d400148ba58de0895aa02463081233f8508d7be1bc18fe267",
+    "assets/hud/frontend/options/load-save.svg": "d5ef1d8bbc90d09d617f09c5241796a9fd723727033a4fe9b100a4ab5d0b85e7",
+    "assets/hud/frontend/options/graphics.svg": "9dad3110480217eabb479fc3fca5c92d25a2410d86853a926951bb4f682b22b9",
+    "assets/hud/frontend/options/credits.svg": "fefe76964e169cad2120ddd07381380d172d3c11a1d3418d797970bc2da75961"
   },
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "d5fd21e39225adf80dfba2f76d6a18fa0c498c69eb9db2c86d781d2bcea53134",
+  "rasterSha256": "4c32e721676fb8a23b60218a13c01e04136101a7ca6a16135d3eb97b94983e29",
   "raster": [
     1024,
     2048
   ],
-  "rleBytes": 1359528,
-  "glyphPartitions": 1975,
+  "rleBytes": 1497396,
+  "glyphPartitions": 2163,
   "inkFit": [
     {
       "text": "game setup",
@@ -135,15 +144,15 @@
       "outsideMatchingHitRectangle": 0
     }
   ],
-  "baseWordLayoutSha256": "9386bf4c6e56bb8dfce18cd77e4bb4ff0e98155077e2885baf15dcce4396b251",
+  "baseWordLayoutSha256": "c602f1613a57dc6d33970fded087c78345fba725da3be8db5f566dc4e3d0df53",
   "rightLabelCatalogSha256": "78ca798c2819fd98b1b69d8b867f202c6d40f739bff941226c97806e05502cb3",
   "locationCatalogSha256": "034362df7d9b69e8f92f0cfb6a512799922b3adb9d3611f7f9fc977de3555816",
   "locationPlacements": [
     {
       "file": "track.svg",
       "atlas": [
-        886,
-        1302,
+        878,
+        961,
         132,
         76
       ],
@@ -158,8 +167,8 @@
     {
       "file": "colon.svg",
       "atlas": [
-        998,
-        1770,
+        964,
+        1529,
         24,
         54
       ],
@@ -174,8 +183,8 @@
     {
       "file": "north-country.svg",
       "atlas": [
-        516,
-        703,
+        366,
+        297,
         352,
         96
       ],
@@ -190,8 +199,8 @@
     {
       "file": "laps.svg",
       "atlas": [
-        908,
-        412,
+        898,
+        1938,
         108,
         96
       ],
@@ -206,8 +215,8 @@
     {
       "file": "lap-two.svg",
       "atlas": [
-        508,
-        1635,
+        960,
+        1607,
         40,
         71
       ],
@@ -222,8 +231,8 @@
     {
       "file": "track-info.svg",
       "atlas": [
-        552,
-        1556,
+        576,
+        1039,
         280,
         76
       ],
@@ -238,8 +247,8 @@
     {
       "file": "track-records.svg",
       "atlas": [
-        286,
-        1073,
+        374,
+        219,
         368,
         76
       ],
@@ -254,8 +263,8 @@
     {
       "file": "personal-statistics.svg",
       "atlas": [
-        410,
-        412,
+        0,
+        0,
         496,
         96
       ],
@@ -270,8 +279,8 @@
     {
       "file": "done.svg",
       "atlas": [
-        868,
-        1792,
+        538,
+        1882,
         128,
         76
       ],
@@ -286,8 +295,8 @@
     {
       "file": "cancel.svg",
       "atlas": [
-        634,
-        1865,
+        0,
+        1835,
         184,
         76
       ],
@@ -302,8 +311,8 @@
     {
       "file": "pacific-spirit.svg",
       "atlas": [
-        596,
-        801,
+        704,
+        395,
         312,
         96
       ],
@@ -318,8 +327,8 @@
     {
       "file": "mediterraneo.svg",
       "atlas": [
-        568,
-        1380,
+        342,
+        702,
         336,
         76
       ],
@@ -334,8 +343,8 @@
     {
       "file": "mystic-peaks.svg",
       "atlas": [
-        0,
-        1378,
+        692,
+        516,
         328,
         96
       ],
@@ -351,7 +360,7 @@
       "file": "proving-grounds.svg",
       "atlas": [
         0,
-        412,
+        98,
         408,
         96
       ],
@@ -366,8 +375,8 @@
     {
       "file": "outback.svg",
       "atlas": [
-        802,
-        1224,
+        0,
+        1757,
         212,
         76
       ],
@@ -382,8 +391,8 @@
     {
       "file": "last-resort.svg",
       "atlas": [
-        0,
-        1574,
+        290,
+        1035,
         284,
         71
       ],
@@ -398,8 +407,8 @@
     {
       "file": "lap-4.svg",
       "atlas": [
-        982,
-        510,
+        698,
+        1617,
         40,
         71
       ],
@@ -414,8 +423,8 @@
     {
       "file": "lap-8.svg",
       "atlas": [
-        826,
-        1151,
+        646,
+        1715,
         40,
         71
       ],
@@ -433,8 +442,8 @@
     {
       "file": "game-type.svg",
       "atlas": [
-        250,
-        708,
+        0,
+        1234,
         264,
         91
       ],
@@ -449,8 +458,8 @@
     {
       "file": "race-type.svg",
       "atlas": [
-        0,
-        1903,
+        504,
+        1524,
         236,
         91
       ],
@@ -465,8 +474,8 @@
     {
       "file": "style.svg",
       "atlas": [
-        894,
-        1458,
+        892,
+        1705,
         128,
         96
       ],
@@ -481,8 +490,8 @@
     {
       "file": "catch-up.svg",
       "atlas": [
-        238,
-        1824,
+        480,
+        1617,
         216,
         96
       ],
@@ -497,8 +506,8 @@
     {
       "file": "backwards.svg",
       "atlas": [
-        0,
-        1146,
+        556,
+        1117,
         268,
         76
       ],
@@ -513,8 +522,8 @@
     {
       "file": "mirrored.svg",
       "atlas": [
-        238,
-        1922,
+        742,
+        1529,
         220,
         76
       ],
@@ -529,8 +538,8 @@
     {
       "file": "colon.svg",
       "atlas": [
-        998,
-        1770,
+        964,
+        1529,
         24,
         54
       ],
@@ -545,8 +554,8 @@
     {
       "file": "one-player.svg",
       "atlas": [
-        250,
-        610,
+        274,
+        1206,
         264,
         96
       ],
@@ -561,8 +570,8 @@
     {
       "file": "split-screen.svg",
       "atlas": [
-        604,
-        1458,
+        302,
+        859,
         288,
         96
       ],
@@ -577,8 +586,8 @@
     {
       "file": "modem.svg",
       "atlas": [
-        460,
-        1968,
+        452,
+        1715,
         192,
         76
       ],
@@ -594,7 +603,7 @@
       "file": "serial-link.svg",
       "atlas": [
         0,
-        910,
+        1600,
         240,
         77
       ],
@@ -609,8 +618,8 @@
     {
       "file": "network.svg",
       "atlas": [
-        656,
-        1073,
+        238,
+        1680,
         212,
         76
       ],
@@ -625,8 +634,8 @@
     {
       "file": "single-race.svg",
       "atlas": [
-        330,
-        1458,
+        282,
+        1108,
         272,
         96
       ],
@@ -641,8 +650,8 @@
     {
       "file": "tournament.svg",
       "atlas": [
-        528,
-        1151,
+        720,
+        297,
         296,
         71
       ],
@@ -657,8 +666,8 @@
     {
       "file": "knockout.svg",
       "atlas": [
-        330,
-        1378,
+        0,
+        1679,
         236,
         76
       ],
@@ -673,8 +682,8 @@
     {
       "file": "wild.svg",
       "atlas": [
-        910,
-        785,
+        446,
+        1960,
         108,
         77
       ],
@@ -689,8 +698,8 @@
     {
       "file": "arcade.svg",
       "atlas": [
-        460,
-        1890,
+        364,
+        1871,
         172,
         76
       ],
@@ -705,8 +714,8 @@
     {
       "file": "simulation.svg",
       "atlas": [
-        286,
-        1556,
+        540,
+        1296,
         264,
         77
       ],
@@ -721,8 +730,8 @@
     {
       "file": "off.svg",
       "atlas": [
-        816,
-        1943,
+        668,
+        1882,
         80,
         76
       ],
@@ -737,8 +746,8 @@
     {
       "file": "on.svg",
       "atlas": [
-        948,
-        1713,
+        946,
+        800,
         72,
         55
       ],
@@ -753,8 +762,8 @@
     {
       "file": "done.svg",
       "atlas": [
-        868,
-        1792,
+        538,
+        1882,
         128,
         76
       ],
@@ -769,8 +778,8 @@
     {
       "file": "cancel.svg",
       "atlas": [
-        634,
-        1865,
+        0,
+        1835,
         184,
         76
       ],
@@ -789,8 +798,8 @@
     {
       "file": "car.svg",
       "atlas": [
-        820,
-        1870,
+        920,
+        0,
         84,
         55
       ],
@@ -805,8 +814,8 @@
     {
       "file": "transmission.svg",
       "atlas": [
-        0,
-        1302,
+        692,
+        614,
         320,
         74
       ],
@@ -821,8 +830,8 @@
     {
       "file": "color.svg",
       "atlas": [
-        870,
-        706,
+        882,
+        878,
         132,
         77
       ],
@@ -837,8 +846,8 @@
     {
       "file": "graph.svg",
       "atlas": [
-        870,
-        608,
+        178,
+        1916,
         148,
         96
       ],
@@ -853,8 +862,8 @@
     {
       "file": "colon.svg",
       "atlas": [
-        998,
-        1770,
+        964,
+        1529,
         24,
         54
       ],
@@ -869,8 +878,8 @@
     {
       "file": "manual.svg",
       "atlas": [
-        834,
-        1556,
+        214,
+        1758,
         188,
         77
       ],
@@ -885,8 +894,8 @@
     {
       "file": "automatic.svg",
       "atlas": [
-        270,
-        1151,
+        528,
+        1375,
         256,
         74
       ],
@@ -901,8 +910,8 @@
     {
       "file": "off.svg",
       "atlas": [
-        816,
-        1943,
+        668,
+        1882,
         80,
         76
       ],
@@ -917,8 +926,8 @@
     {
       "file": "on.svg",
       "atlas": [
-        948,
-        1713,
+        946,
+        800,
         72,
         55
       ],
@@ -933,8 +942,8 @@
     {
       "file": "done.svg",
       "atlas": [
-        868,
-        1792,
+        538,
+        1882,
         128,
         76
       ],
@@ -949,8 +958,8 @@
     {
       "file": "cancel.svg",
       "atlas": [
-        634,
-        1865,
+        0,
+        1835,
         184,
         76
       ],
@@ -965,8 +974,8 @@
     {
       "file": "player-one-heading.svg",
       "atlas": [
-        0,
-        1068,
+        592,
+        961,
         284,
         76
       ],
@@ -981,8 +990,8 @@
     {
       "file": "player-two-heading.svg",
       "atlas": [
-        290,
-        995,
+        652,
+        800,
         292,
         76
       ],
@@ -998,7 +1007,7 @@
       "file": "ford-indigo.svg",
       "atlas": [
         0,
-        1476,
+        1060,
         280,
         96
       ],
@@ -1013,8 +1022,8 @@
     {
       "file": "mustang-mach-iii.svg",
       "atlas": [
+        498,
         0,
-        510,
         420,
         96
       ],
@@ -1029,8 +1038,8 @@
     {
       "file": "jaguar-xj220.svg",
       "atlas": [
+        346,
         516,
-        610,
         344,
         91
       ],
@@ -1045,8 +1054,8 @@
     {
       "file": "lotus-gt1.svg",
       "atlas": [
-        262,
-        1227,
+        512,
+        1451,
         252,
         71
       ],
@@ -1061,8 +1070,8 @@
     {
       "file": "lotus-esprit-v8.svg",
       "atlas": [
-        250,
-        899,
+        0,
+        196,
         372,
         94
       ],
@@ -1077,8 +1086,8 @@
     {
       "file": "nazca-c2.svg",
       "atlas": [
-        634,
-        1792,
+        786,
+        1375,
         232,
         71
       ],
@@ -1093,8 +1102,8 @@
     {
       "file": "italdesign-cala.svg",
       "atlas": [
-        422,
-        510,
+        0,
+        292,
         364,
         98
       ],
@@ -1109,8 +1118,8 @@
     {
       "file": "isdera-112i.svg",
       "atlas": [
-        528,
-        1224,
+        744,
+        219,
         272,
         76
       ],
@@ -1126,7 +1135,7 @@
       "file": "mclaren-f1.svg",
       "atlas": [
         0,
-        995,
+        987,
         288,
         71
       ],
@@ -1141,8 +1150,8 @@
     {
       "file": "ferrari-f50.svg",
       "atlas": [
-        322,
-        1302,
+        0,
+        1158,
         272,
         74
       ],
@@ -1157,8 +1166,8 @@
     {
       "file": "ferrari-355-f1.svg",
       "atlas": [
-        624,
-        899,
+        0,
+        611,
         344,
         74
       ],
@@ -1173,8 +1182,8 @@
     {
       "file": "ford-gt90.svg",
       "atlas": [
-        0,
-        1224,
+        266,
+        1304,
         260,
         76
       ],
@@ -1189,8 +1198,8 @@
     {
       "file": "class-a.svg",
       "atlas": [
-        770,
-        1713,
+        186,
+        1837,
         176,
         77
       ],
@@ -1205,8 +1214,8 @@
     {
       "file": "class-b.svg",
       "atlas": [
-        424,
-        1732,
+        590,
+        1803,
         176,
         77
       ],
@@ -1221,8 +1230,8 @@
     {
       "file": "class-c.svg",
       "atlas": [
-        456,
-        1811,
+        0,
+        1913,
         176,
         77
       ],
@@ -1237,8 +1246,8 @@
     {
       "file": "acceleration.svg",
       "atlas": [
-        0,
-        1647,
+        342,
+        780,
         308,
         77
       ],
@@ -1253,8 +1262,8 @@
     {
       "file": "top-speed.svg",
       "atlas": [
-        624,
-        975,
+        258,
+        1382,
         252,
         96
       ],
@@ -1269,8 +1278,8 @@
     {
       "file": "braking.svg",
       "atlas": [
-        788,
-        510,
+        698,
+        1705,
         192,
         96
       ],
@@ -1285,8 +1294,8 @@
     {
       "file": "handling.svg",
       "atlas": [
-        552,
-        1634,
+        742,
+        1607,
         216,
         96
       ],
@@ -1302,7 +1311,7 @@
       "file": "settings.svg",
       "atlas": [
         0,
-        814,
+        1504,
         248,
         94
       ],
@@ -1317,8 +1326,8 @@
     {
       "file": "showcase.svg",
       "atlas": [
-        596,
-        1302,
+        302,
+        957,
         288,
         76
       ],
@@ -1336,8 +1345,8 @@
     {
       "file": "car.svg",
       "atlas": [
-        820,
-        1870,
+        920,
+        0,
         84,
         55
       ],
@@ -1352,8 +1361,8 @@
     {
       "file": "number.svg",
       "atlas": [
-        310,
-        1635,
+        826,
+        1117,
         196,
         76
       ],
@@ -1368,8 +1377,8 @@
     {
       "file": "skill-level.svg",
       "atlas": [
-        0,
-        1824,
+        242,
+        1601,
         236,
         77
       ],
@@ -1384,8 +1393,8 @@
     {
       "file": "traffic.svg",
       "atlas": [
-        654,
-        1943,
+        858,
+        1039,
         160,
         76
       ],
@@ -1400,8 +1409,8 @@
     {
       "file": "colon.svg",
       "atlas": [
-        998,
-        1770,
+        964,
+        1529,
         24,
         54
       ],
@@ -1416,8 +1425,8 @@
     {
       "file": "done.svg",
       "atlas": [
-        868,
-        1792,
+        538,
+        1882,
         128,
         76
       ],
@@ -1432,8 +1441,8 @@
     {
       "file": "cancel.svg",
       "atlas": [
-        634,
-        1865,
+        0,
+        1835,
         184,
         76
       ],
@@ -1448,8 +1457,8 @@
     {
       "file": "class-a.svg",
       "atlas": [
-        770,
-        1713,
+        186,
+        1837,
         176,
         77
       ],
@@ -1464,8 +1473,8 @@
     {
       "file": "class-b.svg",
       "atlas": [
-        424,
-        1732,
+        590,
+        1803,
         176,
         77
       ],
@@ -1480,8 +1489,8 @@
     {
       "file": "class-c.svg",
       "atlas": [
-        456,
-        1811,
+        0,
+        1913,
         176,
         77
       ],
@@ -1496,8 +1505,8 @@
     {
       "file": "no-opponents.svg",
       "atlas": [
-        250,
-        801,
+        346,
+        609,
         344,
         91
       ],
@@ -1513,7 +1522,7 @@
       "file": "ford-indigo.svg",
       "atlas": [
         0,
-        1476,
+        1060,
         280,
         96
       ],
@@ -1528,8 +1537,8 @@
     {
       "file": "mustang-mach-iii.svg",
       "atlas": [
+        498,
         0,
-        510,
         420,
         96
       ],
@@ -1544,8 +1553,8 @@
     {
       "file": "jaguar-xj220.svg",
       "atlas": [
+        346,
         516,
-        610,
         344,
         91
       ],
@@ -1560,8 +1569,8 @@
     {
       "file": "lotus-gt1.svg",
       "atlas": [
-        262,
-        1227,
+        512,
+        1451,
         252,
         71
       ],
@@ -1576,8 +1585,8 @@
     {
       "file": "lotus-esprit-v8.svg",
       "atlas": [
-        250,
-        899,
+        0,
+        196,
         372,
         94
       ],
@@ -1592,8 +1601,8 @@
     {
       "file": "nazca-c2.svg",
       "atlas": [
-        634,
-        1792,
+        786,
+        1375,
         232,
         71
       ],
@@ -1608,8 +1617,8 @@
     {
       "file": "italdesign-cala.svg",
       "atlas": [
-        422,
-        510,
+        0,
+        292,
         364,
         98
       ],
@@ -1624,8 +1633,8 @@
     {
       "file": "isdera-112i.svg",
       "atlas": [
-        528,
-        1224,
+        744,
+        219,
         272,
         76
       ],
@@ -1641,7 +1650,7 @@
       "file": "mclaren-f1.svg",
       "atlas": [
         0,
-        995,
+        987,
         288,
         71
       ],
@@ -1656,8 +1665,8 @@
     {
       "file": "ferrari-f50.svg",
       "atlas": [
-        322,
-        1302,
+        0,
+        1158,
         272,
         74
       ],
@@ -1672,8 +1681,8 @@
     {
       "file": "ferrari-355-f1.svg",
       "atlas": [
-        624,
-        899,
+        0,
+        611,
         344,
         74
       ],
@@ -1688,8 +1697,8 @@
     {
       "file": "ford-gt90.svg",
       "atlas": [
-        0,
-        1224,
+        266,
+        1304,
         260,
         76
       ],
@@ -1704,8 +1713,8 @@
     {
       "file": "full-grid.svg",
       "atlas": [
-        0,
-        1726,
+        822,
+        1195,
         196,
         96
       ],
@@ -1720,8 +1729,8 @@
     {
       "file": "none.svg",
       "atlas": [
-        602,
-        1732,
+        768,
+        1803,
         132,
         55
       ],
@@ -1736,8 +1745,8 @@
     {
       "file": "one.svg",
       "atlas": [
-        906,
-        1380,
+        902,
+        1803,
         100,
         55
       ],
@@ -1752,8 +1761,8 @@
     {
       "file": "beginner.svg",
       "atlas": [
-        198,
-        1726,
+        792,
+        98,
         224,
         96
       ],
@@ -1768,8 +1777,8 @@
     {
       "file": "advanced.svg",
       "atlas": [
-        770,
-        1635,
+        766,
+        1451,
         240,
         76
       ],
@@ -1784,8 +1793,8 @@
     {
       "file": "off.svg",
       "atlas": [
-        816,
-        1943,
+        668,
+        1882,
         80,
         76
       ],
@@ -1800,8 +1809,8 @@
     {
       "file": "on.svg",
       "atlas": [
-        948,
-        1713,
+        946,
+        800,
         72,
         55
       ],
@@ -1818,80 +1827,80 @@
     {
       "file": "game-setup.svg",
       "atlas": [
-        0,
-        0,
+        410,
+        98,
         380,
-        204
+        119
       ],
       "sourceCrop": [
         0,
         0,
         380,
-        204
+        119
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "location.svg",
       "atlas": [
-        728,
-        0,
+        556,
+        1195,
         264,
-        204
+        99
       ],
       "sourceCrop": [
         0,
         0,
         264,
-        204
+        99
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "player-one.svg",
       "atlas": [
-        652,
-        206,
+        0,
+        687,
         340,
-        204
+        119
       ],
       "sourceCrop": [
         0,
         0,
         340,
-        204
+        119
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "player-two.svg",
       "atlas": [
-        382,
         0,
+        490,
         344,
-        204
+        119
       ],
       "sourceCrop": [
         0,
         0,
         344,
-        204
+        119
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "opponents.svg",
       "atlas": [
-        302,
-        206,
+        354,
+        395,
         348,
-        204
+        119
       ],
       "sourceCrop": [
         0,
         0,
         348,
-        204
+        119
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     },
@@ -1899,51 +1908,2896 @@
       "file": "race.svg",
       "atlas": [
         0,
-        206,
+        808,
         300,
-        204
+        177
       ],
       "sourceCrop": [
         0,
         0,
         300,
-        204
+        177
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "options.svg",
       "atlas": [
-        0,
-        608,
+        254,
+        1480,
         248,
-        204
+        119
       ],
       "sourceCrop": [
         0,
         0,
         248,
-        204
+        119
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     },
     {
       "file": "exit.svg",
       "atlas": [
-        878,
-        975,
+        768,
+        1860,
         128,
-        204
+        98
       ],
       "sourceCrop": [
         0,
         0,
         128,
-        204
+        98
       ],
       "inkFitsOriginalHorizontalTextBounds": true
     }
   ],
+  "optionsAtlas": {
+    "mainPlacements": [
+      {
+        "file": "game-setup.svg",
+        "atlas": [
+          410,
+          98,
+          380,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          380,
+          119
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "location.svg",
+        "atlas": [
+          556,
+          1195,
+          264,
+          99
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          264,
+          99
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "player-one.svg",
+        "atlas": [
+          0,
+          687,
+          340,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          340,
+          119
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "player-two.svg",
+        "atlas": [
+          0,
+          490,
+          344,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          344,
+          119
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "opponents.svg",
+        "atlas": [
+          354,
+          395,
+          348,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          348,
+          119
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "race.svg",
+        "atlas": [
+          0,
+          808,
+          300,
+          177
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          300,
+          177
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "options.svg",
+        "atlas": [
+          254,
+          1480,
+          248,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          248,
+          119
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "exit.svg",
+        "atlas": [
+          768,
+          1860,
+          128,
+          98
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          128,
+          98
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      }
+    ],
+    "locationPlacements": [
+      {
+        "file": "track.svg",
+        "atlas": [
+          878,
+          961,
+          132,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          132,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "colon.svg",
+        "atlas": [
+          964,
+          1529,
+          24,
+          54
+        ],
+        "sourceCrop": [
+          0,
+          28,
+          24,
+          54
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "north-country.svg",
+        "atlas": [
+          366,
+          297,
+          352,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          352,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "laps.svg",
+        "atlas": [
+          898,
+          1938,
+          108,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          108,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "lap-two.svg",
+        "atlas": [
+          960,
+          1607,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "track-info.svg",
+        "atlas": [
+          576,
+          1039,
+          280,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          280,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "track-records.svg",
+        "atlas": [
+          374,
+          219,
+          368,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          368,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "personal-statistics.svg",
+        "atlas": [
+          0,
+          0,
+          496,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          496,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "done.svg",
+        "atlas": [
+          538,
+          1882,
+          128,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          128,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "cancel.svg",
+        "atlas": [
+          0,
+          1835,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          184,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "pacific-spirit.svg",
+        "atlas": [
+          704,
+          395,
+          312,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          312,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mediterraneo.svg",
+        "atlas": [
+          342,
+          702,
+          336,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          336,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mystic-peaks.svg",
+        "atlas": [
+          692,
+          516,
+          328,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          328,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "proving-grounds.svg",
+        "atlas": [
+          0,
+          98,
+          408,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          408,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "outback.svg",
+        "atlas": [
+          0,
+          1757,
+          212,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          212,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "last-resort.svg",
+        "atlas": [
+          290,
+          1035,
+          284,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          284,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "lap-4.svg",
+        "atlas": [
+          698,
+          1617,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "lap-8.svg",
+        "atlas": [
+          646,
+          1715,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      }
+    ],
+    "setupPlacements": [
+      {
+        "file": "game-type.svg",
+        "atlas": [
+          0,
+          1234,
+          264,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          264,
+          91
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "race-type.svg",
+        "atlas": [
+          504,
+          1524,
+          236,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          236,
+          91
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "style.svg",
+        "atlas": [
+          892,
+          1705,
+          128,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          128,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "catch-up.svg",
+        "atlas": [
+          480,
+          1617,
+          216,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "backwards.svg",
+        "atlas": [
+          556,
+          1117,
+          268,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          268,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mirrored.svg",
+        "atlas": [
+          742,
+          1529,
+          220,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          220,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "colon.svg",
+        "atlas": [
+          964,
+          1529,
+          24,
+          54
+        ],
+        "sourceCrop": [
+          0,
+          28,
+          24,
+          54
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "one-player.svg",
+        "atlas": [
+          274,
+          1206,
+          264,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          264,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "split-screen.svg",
+        "atlas": [
+          302,
+          859,
+          288,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "modem.svg",
+        "atlas": [
+          452,
+          1715,
+          192,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          192,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "serial-link.svg",
+        "atlas": [
+          0,
+          1600,
+          240,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          240,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "network.svg",
+        "atlas": [
+          238,
+          1680,
+          212,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          212,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "single-race.svg",
+        "atlas": [
+          282,
+          1108,
+          272,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          272,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "tournament.svg",
+        "atlas": [
+          720,
+          297,
+          296,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          296,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "knockout.svg",
+        "atlas": [
+          0,
+          1679,
+          236,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          236,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "wild.svg",
+        "atlas": [
+          446,
+          1960,
+          108,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          108,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "arcade.svg",
+        "atlas": [
+          364,
+          1871,
+          172,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          172,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "simulation.svg",
+        "atlas": [
+          540,
+          1296,
+          264,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          264,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "off.svg",
+        "atlas": [
+          668,
+          1882,
+          80,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          80,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "on.svg",
+        "atlas": [
+          946,
+          800,
+          72,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          72,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "done.svg",
+        "atlas": [
+          538,
+          1882,
+          128,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          128,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "cancel.svg",
+        "atlas": [
+          0,
+          1835,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          184,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      }
+    ],
+    "playerPlacements": [
+      {
+        "file": "car.svg",
+        "atlas": [
+          920,
+          0,
+          84,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          84,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "transmission.svg",
+        "atlas": [
+          692,
+          614,
+          320,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          320,
+          74
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "color.svg",
+        "atlas": [
+          882,
+          878,
+          132,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          132,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "graph.svg",
+        "atlas": [
+          178,
+          1916,
+          148,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          148,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "colon.svg",
+        "atlas": [
+          964,
+          1529,
+          24,
+          54
+        ],
+        "sourceCrop": [
+          0,
+          28,
+          24,
+          54
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "manual.svg",
+        "atlas": [
+          214,
+          1758,
+          188,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          188,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "automatic.svg",
+        "atlas": [
+          528,
+          1375,
+          256,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          256,
+          74
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "off.svg",
+        "atlas": [
+          668,
+          1882,
+          80,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          80,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "on.svg",
+        "atlas": [
+          946,
+          800,
+          72,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          72,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "done.svg",
+        "atlas": [
+          538,
+          1882,
+          128,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          128,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "cancel.svg",
+        "atlas": [
+          0,
+          1835,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          184,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "player-one-heading.svg",
+        "atlas": [
+          592,
+          961,
+          284,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          284,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "player-two-heading.svg",
+        "atlas": [
+          652,
+          800,
+          292,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          292,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ford-indigo.svg",
+        "atlas": [
+          0,
+          1060,
+          280,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          280,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mustang-mach-iii.svg",
+        "atlas": [
+          498,
+          0,
+          420,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          420,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "jaguar-xj220.svg",
+        "atlas": [
+          346,
+          516,
+          344,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          344,
+          91
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "lotus-gt1.svg",
+        "atlas": [
+          512,
+          1451,
+          252,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          252,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "lotus-esprit-v8.svg",
+        "atlas": [
+          0,
+          196,
+          372,
+          94
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          372,
+          94
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "nazca-c2.svg",
+        "atlas": [
+          786,
+          1375,
+          232,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          232,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "italdesign-cala.svg",
+        "atlas": [
+          0,
+          292,
+          364,
+          98
+        ],
+        "sourceCrop": [
+          0,
+          4,
+          364,
+          98
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "isdera-112i.svg",
+        "atlas": [
+          744,
+          219,
+          272,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          272,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mclaren-f1.svg",
+        "atlas": [
+          0,
+          987,
+          288,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          288,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ferrari-f50.svg",
+        "atlas": [
+          0,
+          1158,
+          272,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          272,
+          74
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ferrari-355-f1.svg",
+        "atlas": [
+          0,
+          611,
+          344,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          344,
+          74
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ford-gt90.svg",
+        "atlas": [
+          266,
+          1304,
+          260,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          260,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "class-a.svg",
+        "atlas": [
+          186,
+          1837,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "class-b.svg",
+        "atlas": [
+          590,
+          1803,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "class-c.svg",
+        "atlas": [
+          0,
+          1913,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "acceleration.svg",
+        "atlas": [
+          342,
+          780,
+          308,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          308,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "top-speed.svg",
+        "atlas": [
+          258,
+          1382,
+          252,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          252,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "braking.svg",
+        "atlas": [
+          698,
+          1705,
+          192,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          192,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "handling.svg",
+        "atlas": [
+          742,
+          1607,
+          216,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "settings.svg",
+        "atlas": [
+          0,
+          1504,
+          248,
+          94
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          248,
+          94
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "showcase.svg",
+        "atlas": [
+          302,
+          957,
+          288,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      }
+    ],
+    "opponentsPlacements": [
+      {
+        "file": "car.svg",
+        "atlas": [
+          920,
+          0,
+          84,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          84,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "number.svg",
+        "atlas": [
+          826,
+          1117,
+          196,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          196,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "skill-level.svg",
+        "atlas": [
+          242,
+          1601,
+          236,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          236,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "traffic.svg",
+        "atlas": [
+          858,
+          1039,
+          160,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          160,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "colon.svg",
+        "atlas": [
+          964,
+          1529,
+          24,
+          54
+        ],
+        "sourceCrop": [
+          0,
+          28,
+          24,
+          54
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "done.svg",
+        "atlas": [
+          538,
+          1882,
+          128,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          128,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "cancel.svg",
+        "atlas": [
+          0,
+          1835,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          184,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "class-a.svg",
+        "atlas": [
+          186,
+          1837,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "class-b.svg",
+        "atlas": [
+          590,
+          1803,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "class-c.svg",
+        "atlas": [
+          0,
+          1913,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "no-opponents.svg",
+        "atlas": [
+          346,
+          609,
+          344,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          344,
+          91
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ford-indigo.svg",
+        "atlas": [
+          0,
+          1060,
+          280,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          280,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mustang-mach-iii.svg",
+        "atlas": [
+          498,
+          0,
+          420,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          420,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "jaguar-xj220.svg",
+        "atlas": [
+          346,
+          516,
+          344,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          344,
+          91
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "lotus-gt1.svg",
+        "atlas": [
+          512,
+          1451,
+          252,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          252,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "lotus-esprit-v8.svg",
+        "atlas": [
+          0,
+          196,
+          372,
+          94
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          372,
+          94
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "nazca-c2.svg",
+        "atlas": [
+          786,
+          1375,
+          232,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          232,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "italdesign-cala.svg",
+        "atlas": [
+          0,
+          292,
+          364,
+          98
+        ],
+        "sourceCrop": [
+          0,
+          4,
+          364,
+          98
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "isdera-112i.svg",
+        "atlas": [
+          744,
+          219,
+          272,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          272,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mclaren-f1.svg",
+        "atlas": [
+          0,
+          987,
+          288,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          288,
+          71
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ferrari-f50.svg",
+        "atlas": [
+          0,
+          1158,
+          272,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          272,
+          74
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ferrari-355-f1.svg",
+        "atlas": [
+          0,
+          611,
+          344,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          344,
+          74
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "ford-gt90.svg",
+        "atlas": [
+          266,
+          1304,
+          260,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          260,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "full-grid.svg",
+        "atlas": [
+          822,
+          1195,
+          196,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          196,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "none.svg",
+        "atlas": [
+          768,
+          1803,
+          132,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          132,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "one.svg",
+        "atlas": [
+          902,
+          1803,
+          100,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          100,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "beginner.svg",
+        "atlas": [
+          792,
+          98,
+          224,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          224,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "advanced.svg",
+        "atlas": [
+          766,
+          1451,
+          240,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          240,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "off.svg",
+        "atlas": [
+          668,
+          1882,
+          80,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          80,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "on.svg",
+        "atlas": [
+          946,
+          800,
+          72,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          72,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      }
+    ],
+    "optionsPlacements": [
+      {
+        "file": "speedometer.svg",
+        "atlas": [
+          680,
+          702,
+          332,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          332,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "colon.svg",
+        "atlas": [
+          964,
+          1529,
+          24,
+          54
+        ],
+        "sourceCrop": [
+          0,
+          28,
+          24,
+          54
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "mph.svg",
+        "atlas": [
+          328,
+          1949,
+          116,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          116,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "kmh.svg",
+        "atlas": [
+          898,
+          1860,
+          116,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          116,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "personal-stats.svg",
+        "atlas": [
+          0,
+          392,
+          352,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          352,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "on.svg",
+        "atlas": [
+          946,
+          800,
+          72,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          72,
+          55
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "off.svg",
+        "atlas": [
+          668,
+          1882,
+          80,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          80,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "done.svg",
+        "atlas": [
+          538,
+          1882,
+          128,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          128,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "audio.svg",
+        "atlas": [
+          404,
+          1793,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          184,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "controls.svg",
+        "atlas": [
+          0,
+          1425,
+          252,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          252,
+          77
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "load-save.svg",
+        "atlas": [
+          592,
+          878,
+          288,
+          81
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          81
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "graphics.svg",
+        "atlas": [
+          0,
+          1327,
+          256,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          256,
+          96
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      },
+      {
+        "file": "credits.svg",
+        "atlas": [
+          806,
+          1296,
+          216,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          76
+        ],
+        "inkFitsOriginalHorizontalTextBounds": true
+      }
+    ],
+    "packing": {
+      "logicalWords": 125,
+      "uniqueImages": 92,
+      "dimensions": [
+        1024,
+        2048
+      ],
+      "gutterPixels": 2,
+      "reviewedFixedPriority": true,
+      "allocationsNonoverlapping": true,
+      "originalGlyphGeometryPreserved": 1933,
+      "mainTransparentTrailingCrop": [
+        {
+          "sourceSha256": "287b7b41637b1aee3d4943df0afbc6c5da2f15794ec22e517b867386201d0960",
+          "oldHeight": 204,
+          "newHeight": 119,
+          "removedRgbaBytes": 129200,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        },
+        {
+          "sourceSha256": "6b27c30a441963d321a06067df6251f3d026e4e61d52195db52bfcd16ebddd1b",
+          "oldHeight": 204,
+          "newHeight": 99,
+          "removedRgbaBytes": 110880,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        },
+        {
+          "sourceSha256": "6b719551646834c72970e81a22d6dfe91e5d6983b41c2ccfb0f2194e7b80d410",
+          "oldHeight": 204,
+          "newHeight": 177,
+          "removedRgbaBytes": 32400,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        },
+        {
+          "sourceSha256": "8edd25281b676d108c6b00e2fca5ea7e8ab0043b98cdb6350f26bf06f5eb313b",
+          "oldHeight": 204,
+          "newHeight": 119,
+          "removedRgbaBytes": 84320,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        },
+        {
+          "sourceSha256": "cd0db600787635696cdef2d9c2ff59745b893e568883ca19041362f5e1b2a383",
+          "oldHeight": 204,
+          "newHeight": 119,
+          "removedRgbaBytes": 118320,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        },
+        {
+          "sourceSha256": "d281a5b44f8ac1b90a7a50ac0c047030a754f648d361df9721938475b8f18fb2",
+          "oldHeight": 204,
+          "newHeight": 98,
+          "removedRgbaBytes": 54272,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        },
+        {
+          "sourceSha256": "d4bdafc331739b36879ee711bd1adb596fd286c314f2c51a87c0cd03b2ceb815",
+          "oldHeight": 204,
+          "newHeight": 119,
+          "removedRgbaBytes": 116960,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        },
+        {
+          "sourceSha256": "fc79f86886b8da42a288cbc7e36f344c1b82de4676ef944565c3f2a940f865bb",
+          "oldHeight": 204,
+          "newHeight": 119,
+          "removedRgbaBytes": 115600,
+          "allRemovedZero": true,
+          "clearRowsAfterLastAlpha": 2
+        }
+      ],
+      "allPriorVisiblePixelsExact": 83
+    },
+    "preservedImageProofs": [
+      {
+        "sourceSha256": "287b7b41637b1aee3d4943df0afbc6c5da2f15794ec22e517b867386201d0960",
+        "oldRgbaSha256": "d4e2f83c24a6eb7b15f7580c5d514544a87cee5776ca366a673977b4dee0afb5",
+        "retainedRgbaSha256": "97e6a666c7304dcb41daa9a5fd16823d98cf9a0bf07a20c710aafe930699f289",
+        "oldHeight": 204,
+        "height": 119,
+        "width": 380,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "6b27c30a441963d321a06067df6251f3d026e4e61d52195db52bfcd16ebddd1b",
+        "oldRgbaSha256": "7b2fc3183972d4b6fe55c0cb2070fc9cd91bbb09bd535c52efb87bf1703c7161",
+        "retainedRgbaSha256": "ee5dca72ba44312d8e80a1665c0e0ec2f190a141c4d48d6222277c116f688349",
+        "oldHeight": 204,
+        "height": 99,
+        "width": 264,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "fc79f86886b8da42a288cbc7e36f344c1b82de4676ef944565c3f2a940f865bb",
+        "oldRgbaSha256": "ce8318d3282ef586fc3f1e3664760e0562fa47d7d2f8471a76a9b75c3e662ecb",
+        "retainedRgbaSha256": "6e60c65c1549c4021383ec914e2285482220bcd0ead3b5c0433548b150bf9a1f",
+        "oldHeight": 204,
+        "height": 119,
+        "width": 340,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "d4bdafc331739b36879ee711bd1adb596fd286c314f2c51a87c0cd03b2ceb815",
+        "oldRgbaSha256": "32754064064b3a0d63b60099c43b723a6ca3bd4e40830905ce9293a77f369c24",
+        "retainedRgbaSha256": "f545d7f9c1af5e96a87e47b1f56bceaef5c5783eaf3dae6d58326636e81053f1",
+        "oldHeight": 204,
+        "height": 119,
+        "width": 344,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "cd0db600787635696cdef2d9c2ff59745b893e568883ca19041362f5e1b2a383",
+        "oldRgbaSha256": "fb4b2c8a1b45a436dad356435c9edb47e7a032b7396d76d93165ec09255cc86e",
+        "retainedRgbaSha256": "cd3bab2f5c39ac9b094bddb9161bdc82797c0004088d439b2c48850c7925eb71",
+        "oldHeight": 204,
+        "height": 119,
+        "width": 348,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "6b719551646834c72970e81a22d6dfe91e5d6983b41c2ccfb0f2194e7b80d410",
+        "oldRgbaSha256": "5588da10d9807977183002fb2ed84ff166ed69fa560f1f98103b9b2b00c5ef90",
+        "retainedRgbaSha256": "65fc184d73cb4ed22887f253fbc75dd037ce24803fb79d1a00b80fe206f431ae",
+        "oldHeight": 204,
+        "height": 177,
+        "width": 300,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "8edd25281b676d108c6b00e2fca5ea7e8ab0043b98cdb6350f26bf06f5eb313b",
+        "oldRgbaSha256": "537eb74c61b4b96cd2401b70c70624811bcda0aa14719f1dc898f66ba913fd51",
+        "retainedRgbaSha256": "dab546f5a234ebe1e354be959efd551d4231684638b8c4cfe4dcf4eee30fe86a",
+        "oldHeight": 204,
+        "height": 119,
+        "width": 248,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "d281a5b44f8ac1b90a7a50ac0c047030a754f648d361df9721938475b8f18fb2",
+        "oldRgbaSha256": "69ff40d98b548763b5b52b1db7bd0b9e91604b3013d4ce9b6e613f47ce49609e",
+        "retainedRgbaSha256": "e335a7aa087e45082eb06342d1fa43c27ad358eff769ea3e9d4ae6c18b5200db",
+        "oldHeight": 204,
+        "height": 98,
+        "width": 128,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "bc0e296a11aaf1e2b091ef03ca690b8624c7186dc92ed0ac5edf5acf1da2a24e",
+        "oldRgbaSha256": "747b0d2ffcb138cabc8efa98a7df8cc519737599cd53142c1b7ed1dce12c241d",
+        "retainedRgbaSha256": "747b0d2ffcb138cabc8efa98a7df8cc519737599cd53142c1b7ed1dce12c241d",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 132,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "73d84244d0c76ae2758fc54b0e1dfb7e1a623120ce8e1b6d57bb5a0c319d6d37",
+        "oldRgbaSha256": "a084a315508e8d394ce3a3f185d1f1470a8424f5baf5e6ebe8bd7d9d386499d9",
+        "retainedRgbaSha256": "a084a315508e8d394ce3a3f185d1f1470a8424f5baf5e6ebe8bd7d9d386499d9",
+        "oldHeight": 54,
+        "height": 54,
+        "width": 24,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "14aaac7a8b7eea3621a087761ed459fa20318bc178a65f72633ac2f946df4172",
+        "oldRgbaSha256": "c23c525acbc421377996104e8a101a8efd88e9a6d0e83d9739833cb9b3ff666b",
+        "retainedRgbaSha256": "c23c525acbc421377996104e8a101a8efd88e9a6d0e83d9739833cb9b3ff666b",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 352,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "3fe95f6270caacad129df8130dddaf37019df8c5200e63c225cb02d0e4070a36",
+        "oldRgbaSha256": "b7bc92691d1f9e2bf05592b5af2f23279d0ec75b57d51ed1fee3a9f74942a1d8",
+        "retainedRgbaSha256": "b7bc92691d1f9e2bf05592b5af2f23279d0ec75b57d51ed1fee3a9f74942a1d8",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 108,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "673c7802b86c46da6356466157865c6356d241faa58e4a56e4997f378f231e10",
+        "oldRgbaSha256": "d43ce94463281132b86fbcf4f83be4298da64a327b1370f5815471fd1c8b1c97",
+        "retainedRgbaSha256": "d43ce94463281132b86fbcf4f83be4298da64a327b1370f5815471fd1c8b1c97",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 40,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "b1c75a4d17aaa9735cf6ec2cdc7863853ba9aeafc823457679bb8c033afab8f6",
+        "oldRgbaSha256": "cda8245ba3153e241e183d32cd12fffa431728a00a90724d93f499b08d291a33",
+        "retainedRgbaSha256": "cda8245ba3153e241e183d32cd12fffa431728a00a90724d93f499b08d291a33",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 280,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "5f24978b988d8ef5af5a1a14f56900e74d3379f7073a01dce6bb46b204688980",
+        "oldRgbaSha256": "cf1c258c38404484e38e7396b61366fb2ec0b5e992949dc4c61ab33513b9f01c",
+        "retainedRgbaSha256": "cf1c258c38404484e38e7396b61366fb2ec0b5e992949dc4c61ab33513b9f01c",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 368,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "6c6a2637cecca55029bb852af1a0dbb02b4c6b24c7381addcbfbb52a21e14ed5",
+        "oldRgbaSha256": "81d1bcd6e58aab09c30848c2bff2b94d205a92ea0778f2b4d3df5a43051e42a5",
+        "retainedRgbaSha256": "81d1bcd6e58aab09c30848c2bff2b94d205a92ea0778f2b4d3df5a43051e42a5",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 496,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "149ef1645b2ba35cc34a8fd93bcaf87c6f01d790cf3e92a19756c235c01b61cb",
+        "oldRgbaSha256": "48153508276683902cc9596029d392097e0f462bceca60af87a0903619da3551",
+        "retainedRgbaSha256": "48153508276683902cc9596029d392097e0f462bceca60af87a0903619da3551",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 128,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "1c741c0cb4282153082c6d17fc53dd00e07d34208c05f25bef89da3bfab02068",
+        "oldRgbaSha256": "568d7ebc3ba93440ad05b22aa05155c204d59bbf3c76b6c6ee0c82447186ccfd",
+        "retainedRgbaSha256": "568d7ebc3ba93440ad05b22aa05155c204d59bbf3c76b6c6ee0c82447186ccfd",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 184,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "a84ade8ee5209ae0890d0e5617c023f0a893a8fc45c0836cd79b31f1735d9f2b",
+        "oldRgbaSha256": "99fd186dcf19ceb45fcd5cc79ab6690448d5c83ea6f6a06ddc049166647097bf",
+        "retainedRgbaSha256": "99fd186dcf19ceb45fcd5cc79ab6690448d5c83ea6f6a06ddc049166647097bf",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 312,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "729cbf591ca9b4c7802b57a584302703e548b37972842fea03eb42a91ec764b0",
+        "oldRgbaSha256": "de27cc203af848e5c61d65233abe48ed7610987e52abd20db759cd569c904303",
+        "retainedRgbaSha256": "de27cc203af848e5c61d65233abe48ed7610987e52abd20db759cd569c904303",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 336,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "cb6d6922eef1b358d805977d5cac8ee247bf787f5da0299a6b41d513f37be987",
+        "oldRgbaSha256": "49844b33bd592d99a1aa1c05a097594043badff59d47148afa3ce23bde07d933",
+        "retainedRgbaSha256": "49844b33bd592d99a1aa1c05a097594043badff59d47148afa3ce23bde07d933",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 328,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "dd2b87039b20b6b546ff49bf9f792206c7d872f0689f9700c91946f330143a1f",
+        "oldRgbaSha256": "71806220d40aa5ffd03c1533acc5886401c3071fc6ef16bba4d596d73caf2a3b",
+        "retainedRgbaSha256": "71806220d40aa5ffd03c1533acc5886401c3071fc6ef16bba4d596d73caf2a3b",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 408,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "49f798119d1ff803d9b1701c2c794a126a7d8fbbb2cc04ddb35a0f871149337b",
+        "oldRgbaSha256": "8eb6104bd77ee1e69fcbaafbe3908759dc7ae5582caf2c73d16831d12de01777",
+        "retainedRgbaSha256": "8eb6104bd77ee1e69fcbaafbe3908759dc7ae5582caf2c73d16831d12de01777",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 212,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "68e8034e99ca69da1d379f952ca858ffff8e06eb9dc5d681dd6a9b6f96061823",
+        "oldRgbaSha256": "0d5f941da8b887b27c6c963ea6dca34d6425e0e7235ba229678129863b5d8b27",
+        "retainedRgbaSha256": "0d5f941da8b887b27c6c963ea6dca34d6425e0e7235ba229678129863b5d8b27",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 284,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "115a7d26fe0b9e043b316abdfda54219970077b9cc184b1b1c0a8ef01f087d24",
+        "oldRgbaSha256": "e0a20f50b12c79263de9e9750b756d724db33730af990b25bd25b08b0c06dd5e",
+        "retainedRgbaSha256": "e0a20f50b12c79263de9e9750b756d724db33730af990b25bd25b08b0c06dd5e",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 40,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "443a10b29969bedc10e859aa549427207823c0c4dce4f0662aa4ac8e2b1f6965",
+        "oldRgbaSha256": "85c11ec6b8cb0eab49c99e49acba2d31317d3de700002095722917f1f42febc0",
+        "retainedRgbaSha256": "85c11ec6b8cb0eab49c99e49acba2d31317d3de700002095722917f1f42febc0",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 40,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "7a73279fda8228d9f2b0b4f902efcf486d1c911aaefd85fe2e660c910c690dc9",
+        "oldRgbaSha256": "048271351220b29ef9d71a09508a410bac82e38f5cba3a80c026c86551771336",
+        "retainedRgbaSha256": "048271351220b29ef9d71a09508a410bac82e38f5cba3a80c026c86551771336",
+        "oldHeight": 91,
+        "height": 91,
+        "width": 264,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "641b8cbde8a2d0a73d7c8e8828172cf7abee2979f8f0d11545c757fad7a2f224",
+        "oldRgbaSha256": "24eb21e8beb0d5a6181191e46a7d8e5e88e999fb0412fa7a8e1ff92b65c7779e",
+        "retainedRgbaSha256": "24eb21e8beb0d5a6181191e46a7d8e5e88e999fb0412fa7a8e1ff92b65c7779e",
+        "oldHeight": 91,
+        "height": 91,
+        "width": 236,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "811bdf762dcec247cc8193e28e6ac5a60787b2b2ba8555c094aa322695511a5f",
+        "oldRgbaSha256": "9cbb9714c2be2be3ac64811456d49fbf3f724eab660920112e5b98e01e1478e5",
+        "retainedRgbaSha256": "9cbb9714c2be2be3ac64811456d49fbf3f724eab660920112e5b98e01e1478e5",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 128,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "3be51f3483b7e3907f55d6d7bf341b2f1eee3d3c706a9f2659b4a0dc232624c4",
+        "oldRgbaSha256": "9c85245bb71da5eca828143a28aac74e0f11e58bb2a26138927f52427057c793",
+        "retainedRgbaSha256": "9c85245bb71da5eca828143a28aac74e0f11e58bb2a26138927f52427057c793",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 216,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "0e0b29b447e03fdae1394a1708b221a3bd73a46385ccde73deaa5971228a8f0b",
+        "oldRgbaSha256": "4d950583724f8925a2c8ee212ae4335714f47b98deffa8440222cfd790ac8f7d",
+        "retainedRgbaSha256": "4d950583724f8925a2c8ee212ae4335714f47b98deffa8440222cfd790ac8f7d",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 268,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "0604773c6c3a6ac216c683c8986201ec1868d344feac439879260dae5813c32e",
+        "oldRgbaSha256": "5c62a8fec75dae44132938dea20530ac16f6ee80aa727a05809668c40e90af34",
+        "retainedRgbaSha256": "5c62a8fec75dae44132938dea20530ac16f6ee80aa727a05809668c40e90af34",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 220,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "47891efa130872ed0a7e264615de4d7d14160337b8da74f4f5d44bd373832977",
+        "oldRgbaSha256": "50c02600761530be800c8ee81aa1c1d490f9722bd0f7084ac250be81a44677f8",
+        "retainedRgbaSha256": "50c02600761530be800c8ee81aa1c1d490f9722bd0f7084ac250be81a44677f8",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 264,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "ebd1f36d1f678b5b7ffede5adb6ff81a61857f3f52610d1cbda219f63f8a6d2d",
+        "oldRgbaSha256": "7b38f3c95f6ba9c23df1a7cb98d86be9b3240b252b9f39a450d2dc032c9fd05f",
+        "retainedRgbaSha256": "7b38f3c95f6ba9c23df1a7cb98d86be9b3240b252b9f39a450d2dc032c9fd05f",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 288,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "595bc5d3e49a4d5aed2525c4c985f1019293389ec4d3a0c7c948ab2514fe0b40",
+        "oldRgbaSha256": "fe838f91f987f6f9e4f672eba0c6c3824030ec63c2432ab2c90d405b1f68ee75",
+        "retainedRgbaSha256": "fe838f91f987f6f9e4f672eba0c6c3824030ec63c2432ab2c90d405b1f68ee75",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 192,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "1659292d6989d1f60ee6671d63a5ec370bc171a71bf2776f4b12576799c1d937",
+        "oldRgbaSha256": "50b62f675fdca6a70fae7c7bd4f2f096c4054ffe2be65bc9340272e915750e63",
+        "retainedRgbaSha256": "50b62f675fdca6a70fae7c7bd4f2f096c4054ffe2be65bc9340272e915750e63",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 240,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "1ce476f9954d625ff7624bf1c9208a4c6e04b06aafeec44ef60bde9283906829",
+        "oldRgbaSha256": "804aa00d5305e836d96e0b6bc5590b276e9e59f79d2f4784cf396929142eb4e1",
+        "retainedRgbaSha256": "804aa00d5305e836d96e0b6bc5590b276e9e59f79d2f4784cf396929142eb4e1",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 212,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "88c857b9634c063e737ef8902726271865a73ec56a658b1f13e19b972c964bb2",
+        "oldRgbaSha256": "5be504184278b7bf45a64dbc37e5ed7bb8b1a44fa7151dd9a231b5a21db5e010",
+        "retainedRgbaSha256": "5be504184278b7bf45a64dbc37e5ed7bb8b1a44fa7151dd9a231b5a21db5e010",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 272,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "2fb0de9764007d066908299cf81e85d7de18b60c7f49af534958d961c4a82a68",
+        "oldRgbaSha256": "d41a47200d94c74763b0414088ca14fbd85afab9e4a6f741855483b844349320",
+        "retainedRgbaSha256": "d41a47200d94c74763b0414088ca14fbd85afab9e4a6f741855483b844349320",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 296,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "9f47c04077ce69b7b17bd6d4dcdd98718f02f7b95358e96363f8734fe4e247bd",
+        "oldRgbaSha256": "d931870f323a3573c68164f9874535beabcb1275238d71c59ba3709936edb369",
+        "retainedRgbaSha256": "d931870f323a3573c68164f9874535beabcb1275238d71c59ba3709936edb369",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 236,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "2b86d9eeee42faddb3669a71b05fed9be6398407db315e7e66833ebfc9765898",
+        "oldRgbaSha256": "85cf52753ab193d9f6df99bc9892358bb7802d1782b4e658db42bde82cb92b31",
+        "retainedRgbaSha256": "85cf52753ab193d9f6df99bc9892358bb7802d1782b4e658db42bde82cb92b31",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 108,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "78f87b11aaa704fabf5b9cadd4cb15cf801a7cfbed717e921483731cc685838d",
+        "oldRgbaSha256": "eff49852a227ccb0f761133c682111beeacfca742bfcb41f9e6f4c9f63f2cc0e",
+        "retainedRgbaSha256": "eff49852a227ccb0f761133c682111beeacfca742bfcb41f9e6f4c9f63f2cc0e",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 172,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "24fcc3f18a8d70cff6bf82affc0a07f5ddb9947c08db5556617d125a0f39452b",
+        "oldRgbaSha256": "f323096671bc6723f4eab1a5dbbe8d39cdc7bcca5f5027d990b8de08309f619c",
+        "retainedRgbaSha256": "f323096671bc6723f4eab1a5dbbe8d39cdc7bcca5f5027d990b8de08309f619c",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 264,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "f668250e483b967bb6c36eeddd79a807d8a88b556f273f5a641a53bd57f8e2f9",
+        "oldRgbaSha256": "ea23d45ada94d56794ada3aa500b4fef851534aec95cdc5d3334c3961a379a83",
+        "retainedRgbaSha256": "ea23d45ada94d56794ada3aa500b4fef851534aec95cdc5d3334c3961a379a83",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 80,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "73d40fc15d4864e4a352975800c5ded70d51dc8d3516f9c1964026a24aa20dc2",
+        "oldRgbaSha256": "7cc3e4374899df2a65298f40667c68ba97c8246edc0aaf8a6110feecba19fa85",
+        "retainedRgbaSha256": "7cc3e4374899df2a65298f40667c68ba97c8246edc0aaf8a6110feecba19fa85",
+        "oldHeight": 55,
+        "height": 55,
+        "width": 72,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "0b96f11faa96f885fe9d79fe4b62d45ebd50813be630c588eab39d62aee703d5",
+        "oldRgbaSha256": "26e630c31a23ac3a31d881236c920bf31acd79a141a59142923b6f4710eb437a",
+        "retainedRgbaSha256": "26e630c31a23ac3a31d881236c920bf31acd79a141a59142923b6f4710eb437a",
+        "oldHeight": 55,
+        "height": 55,
+        "width": 84,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "44cd6280617ff8b4c14b294a91554e11716b73209a045c74801866878d1eb788",
+        "oldRgbaSha256": "09536567c51f67c39589f9d461cfa01f8843f254a630431654735b539d14bb82",
+        "retainedRgbaSha256": "09536567c51f67c39589f9d461cfa01f8843f254a630431654735b539d14bb82",
+        "oldHeight": 74,
+        "height": 74,
+        "width": 320,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "50b93711a05cfce3a91a8518dcda86efd11795c30ed6dceee636ffbde045eecb",
+        "oldRgbaSha256": "f7ff152fdcbae1842c0e2a06d0bb36cfb844dbeb64813b10df1895ab467c6622",
+        "retainedRgbaSha256": "f7ff152fdcbae1842c0e2a06d0bb36cfb844dbeb64813b10df1895ab467c6622",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 132,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "f9ee3431825d379c65decc3d0f9c60de78a80322bcdc72dc04bc7deb335d1aa3",
+        "oldRgbaSha256": "815b9d308d4426b1b14fac88939b947ebbf19fd75d5fb32febc597f5e8ca654f",
+        "retainedRgbaSha256": "815b9d308d4426b1b14fac88939b947ebbf19fd75d5fb32febc597f5e8ca654f",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 148,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "5bc641dbdec7209dba0afbe4500bcf0f1c88932e848988e45f03ff6518748dd6",
+        "oldRgbaSha256": "afd90ebe50631bd806e66aff51bbc1d6e816802228e154b56c1a4f2a62a804fe",
+        "retainedRgbaSha256": "afd90ebe50631bd806e66aff51bbc1d6e816802228e154b56c1a4f2a62a804fe",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 188,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "02e933ee1c74b153289ed264973457ac491509cd5abb9d49f7253db5d2aac50f",
+        "oldRgbaSha256": "eb672a230cae5e421b8f58cab2973bd4ac5e078b65a8e78721d0ea4669e0ba21",
+        "retainedRgbaSha256": "eb672a230cae5e421b8f58cab2973bd4ac5e078b65a8e78721d0ea4669e0ba21",
+        "oldHeight": 74,
+        "height": 74,
+        "width": 256,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "34ca960b0cb394f6d7bc29890bc9c1ef7017ab422ce3aa1d96b65a2792082d96",
+        "oldRgbaSha256": "a488d44093075e8c30ee528bdca0a951ca313772f76462caebddad3f2c621c40",
+        "retainedRgbaSha256": "a488d44093075e8c30ee528bdca0a951ca313772f76462caebddad3f2c621c40",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 284,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "a3e2c94a0c09b6279700f636987cb1a43d43c1739ad1dc65daf3d00b92d17d2c",
+        "oldRgbaSha256": "5648603bf7903fc3071334b0ad7e0a5695845a7ced9257fc0017f786ba76e48a",
+        "retainedRgbaSha256": "5648603bf7903fc3071334b0ad7e0a5695845a7ced9257fc0017f786ba76e48a",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 292,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "598d2aca8fdd6ab765366f33a9f102280624dd938eeb5fb99b439cefe43369ff",
+        "oldRgbaSha256": "483a3b6c9abe3e9355924cf26c5a7ccb9b85dd36242d8b25589f14debfa59151",
+        "retainedRgbaSha256": "483a3b6c9abe3e9355924cf26c5a7ccb9b85dd36242d8b25589f14debfa59151",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 280,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "2959e6333179da59e95c8a496ef57fbea8e1335fc4d207178067ca4a8c1f9ea2",
+        "oldRgbaSha256": "5dd9d4d4b9345ff6317ce83a6ee47ae1138fb9ec7b867f2015c845eff87ee1da",
+        "retainedRgbaSha256": "5dd9d4d4b9345ff6317ce83a6ee47ae1138fb9ec7b867f2015c845eff87ee1da",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 420,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "4294322f60720807d2eebca684d4090cc01b4987cfadae513ff788e2cdbcfd28",
+        "oldRgbaSha256": "6fc7b47597678a862bfc64828a18c93754f02c4f5d22d37a61f8046e39651830",
+        "retainedRgbaSha256": "6fc7b47597678a862bfc64828a18c93754f02c4f5d22d37a61f8046e39651830",
+        "oldHeight": 91,
+        "height": 91,
+        "width": 344,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "3683b6ba84f287989fb31ef79a37de848e7f53a6da06a89e5b10c0d43db1b1db",
+        "oldRgbaSha256": "caeda29347b8b0952df431ae502f7352e83efe182705eaa21a773970586ac0c7",
+        "retainedRgbaSha256": "caeda29347b8b0952df431ae502f7352e83efe182705eaa21a773970586ac0c7",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 252,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "a8f468c6b42d3148418f61b76ab4695ac70e084bc105980fb9143330f80b6edc",
+        "oldRgbaSha256": "ed0696f40fa4389503a69026d6f08a06b39edc2da90b054bab9ae5102fcb701b",
+        "retainedRgbaSha256": "ed0696f40fa4389503a69026d6f08a06b39edc2da90b054bab9ae5102fcb701b",
+        "oldHeight": 94,
+        "height": 94,
+        "width": 372,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "a6030505eb2610d9532edda44bad0849bc50ee31b60049fcb80082c0bdc2e5e0",
+        "oldRgbaSha256": "15737ecacb49699bad9be10468fb30a96117efe8800a3a25db7e4cde0453727d",
+        "retainedRgbaSha256": "15737ecacb49699bad9be10468fb30a96117efe8800a3a25db7e4cde0453727d",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 232,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "88bb140da659dd596f75f307309d995ef8dea2bf100bcadfdfc2d5d42c685fc6",
+        "oldRgbaSha256": "5afe23a585e2e5144ac856f66b81243448fa6562b471e4d6179c2569f96273fc",
+        "retainedRgbaSha256": "5afe23a585e2e5144ac856f66b81243448fa6562b471e4d6179c2569f96273fc",
+        "oldHeight": 98,
+        "height": 98,
+        "width": 364,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "5fdf5f442af4358008e637429b84348155db1cc90cd117713686ee7294412575",
+        "oldRgbaSha256": "1d7deeb5ea9ff0e38a6b8a7109419b22c17b932af819935698885c1a314cfb01",
+        "retainedRgbaSha256": "1d7deeb5ea9ff0e38a6b8a7109419b22c17b932af819935698885c1a314cfb01",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 272,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "0a980ff415975f17406ab1c38789391abd87d117653e050eed164790ac3e6310",
+        "oldRgbaSha256": "66f25b52e3a858d2fc75c9a21351169107db56806c05757aeb31c5b549b61575",
+        "retainedRgbaSha256": "66f25b52e3a858d2fc75c9a21351169107db56806c05757aeb31c5b549b61575",
+        "oldHeight": 71,
+        "height": 71,
+        "width": 288,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "468a28882e3be6535377768de29f3f8ba48b05247b47b9ec85b432effadce573",
+        "oldRgbaSha256": "57c366830e06d6b2e135292f192eebec90b0537165fd54d2083e2d2ea8ed4fbd",
+        "retainedRgbaSha256": "57c366830e06d6b2e135292f192eebec90b0537165fd54d2083e2d2ea8ed4fbd",
+        "oldHeight": 74,
+        "height": 74,
+        "width": 272,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "581b95ad11e92dd241cb6c4f075dd2021e20773a9300270bd685482005c98472",
+        "oldRgbaSha256": "6269e7a5df099727fa70f9d773f2bc01707098f8b2a494bc609e55404f441954",
+        "retainedRgbaSha256": "6269e7a5df099727fa70f9d773f2bc01707098f8b2a494bc609e55404f441954",
+        "oldHeight": 74,
+        "height": 74,
+        "width": 344,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "59269cc2cda0d313531399c8044390e3f71ae384941251d66a9be247cdb08ae5",
+        "oldRgbaSha256": "6facbd24ff5a79cc200a7473ed9e4ecb9d6c06ce2a2cb7ed98f60750543f29e7",
+        "retainedRgbaSha256": "6facbd24ff5a79cc200a7473ed9e4ecb9d6c06ce2a2cb7ed98f60750543f29e7",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 260,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "62d8be97be116ab557198653ee09552e8495d20945cae950fc382590ea2d4543",
+        "oldRgbaSha256": "0a1330097c27065841b8d07785d0e2967d32ffdfc2abd5fd13a651c5de2be871",
+        "retainedRgbaSha256": "0a1330097c27065841b8d07785d0e2967d32ffdfc2abd5fd13a651c5de2be871",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 176,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "b56ec4cae5aad88f97dfade5d9d4085c7fc5486f67ce0ffffe76d96bafdac3dc",
+        "oldRgbaSha256": "a01d320bbbc717ec7bc2220d0d7a910ff32978d2ab209d77802682b0f2660175",
+        "retainedRgbaSha256": "a01d320bbbc717ec7bc2220d0d7a910ff32978d2ab209d77802682b0f2660175",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 176,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "a3b5ee3f85e7488b955ab9f8b68bfd9515988263583a78b75a0d937c4acaaced",
+        "oldRgbaSha256": "691d1cf1b9d774a877cbc76b9fa8ac9902505f18693e806adc0cfe750f1492f4",
+        "retainedRgbaSha256": "691d1cf1b9d774a877cbc76b9fa8ac9902505f18693e806adc0cfe750f1492f4",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 176,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "d3bcacaaaabe0e5e03cfd25a100b9d5c6303484726a962ca653607d74742bc7e",
+        "oldRgbaSha256": "56a158f774861b9c76bca97cfc9b682eb1bb79125d7a34bb466e93fa692fcd4e",
+        "retainedRgbaSha256": "56a158f774861b9c76bca97cfc9b682eb1bb79125d7a34bb466e93fa692fcd4e",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 308,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "72a29139cccc9000b83bb94467f0c6d71ba5db8977d058e943ef157001cb6896",
+        "oldRgbaSha256": "2a81a0caa9890e88fea9a52e7cd6469f80a8fd8ddb5c1fe5ceb74df0e610b1e9",
+        "retainedRgbaSha256": "2a81a0caa9890e88fea9a52e7cd6469f80a8fd8ddb5c1fe5ceb74df0e610b1e9",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 252,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "af5e86bfc9be4afcc8250cc6e508af51de141f6b8a6155d66ea77a327560d9c0",
+        "oldRgbaSha256": "cb2f75728b92540f1d2faa8fa3069028844e1cc0f6207fe00915cb2f4f593288",
+        "retainedRgbaSha256": "cb2f75728b92540f1d2faa8fa3069028844e1cc0f6207fe00915cb2f4f593288",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 192,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "3600746c14c1db64018329ef84e75985e816cf3730e515b74311623fd364a66a",
+        "oldRgbaSha256": "fca5ec425d30402eec5b6ff62620d641ddca6752d6128d30c07c9f820e8ca65c",
+        "retainedRgbaSha256": "fca5ec425d30402eec5b6ff62620d641ddca6752d6128d30c07c9f820e8ca65c",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 216,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "8848fac2bc5b7566c6f8758fea8a3e36ecb2aa2fde71d95cff7f3211921951f4",
+        "oldRgbaSha256": "e5c2b92ed8faf54b9ec05b399491ae04582dcb9427c7bec4a4b64aefb3c5684b",
+        "retainedRgbaSha256": "e5c2b92ed8faf54b9ec05b399491ae04582dcb9427c7bec4a4b64aefb3c5684b",
+        "oldHeight": 94,
+        "height": 94,
+        "width": 248,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "380b3eb45d865ff2867bbc3318634983531118a2a36bcf92bc5595c55b0376da",
+        "oldRgbaSha256": "4dc784c0ae41426325a637eb252185c8a84fcdce1cf49b2e1e4affc416cbbeb2",
+        "retainedRgbaSha256": "4dc784c0ae41426325a637eb252185c8a84fcdce1cf49b2e1e4affc416cbbeb2",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 288,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "a065f13df86bacc66e433757d108d1df8073bcf86bc2b2058ade6404a05e8568",
+        "oldRgbaSha256": "87983ae9ad5ccf15d22a3e15e17c8c3884559db0c491c8b38c08a3c41cd798eb",
+        "retainedRgbaSha256": "87983ae9ad5ccf15d22a3e15e17c8c3884559db0c491c8b38c08a3c41cd798eb",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 196,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "0717b31d7c995b8bc2c66bb9b84f3ec2dd69786e6c48269bcbe51c0368c9aa8f",
+        "oldRgbaSha256": "28a5acd6fac02f9f90f5d132298b540ab3b3977a00a68c4765e2d9ec22dadbaf",
+        "retainedRgbaSha256": "28a5acd6fac02f9f90f5d132298b540ab3b3977a00a68c4765e2d9ec22dadbaf",
+        "oldHeight": 77,
+        "height": 77,
+        "width": 236,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "35b6d1cbf2052273f3c5aed5f30ed34907baf3d563a46436394b0f201f96a396",
+        "oldRgbaSha256": "c687eb7a1ec927c37ffe836c4f2f4a93dab6dc0eb8e92dae332220a907a81d6a",
+        "retainedRgbaSha256": "c687eb7a1ec927c37ffe836c4f2f4a93dab6dc0eb8e92dae332220a907a81d6a",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 160,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "690241cec7cc9574cc290ba29cbc818863b09789c3ce8df9e6bf9add54d7dae4",
+        "oldRgbaSha256": "4a8e10d7e009f44deb0ac46349e9954695d3d6d4a70b3bd94dff757a14632a04",
+        "retainedRgbaSha256": "4a8e10d7e009f44deb0ac46349e9954695d3d6d4a70b3bd94dff757a14632a04",
+        "oldHeight": 91,
+        "height": 91,
+        "width": 344,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "35737e995cf51ad75af7c2fcd7df6e90b37298bcbeb00214be25febb5ae5b4d3",
+        "oldRgbaSha256": "bd9dbb8e44a3741841f7b27470cb129f83a8acd2693883b87aa969e09774cb1f",
+        "retainedRgbaSha256": "bd9dbb8e44a3741841f7b27470cb129f83a8acd2693883b87aa969e09774cb1f",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 196,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "1cdefff750b0934880734d49300c51b2ef37f258a79d66b9deaf7df6faae8b9d",
+        "oldRgbaSha256": "ac65b920ed8b94f0f09b4a15936f23ba716789c076d74d04973e13390dd2aad9",
+        "retainedRgbaSha256": "ac65b920ed8b94f0f09b4a15936f23ba716789c076d74d04973e13390dd2aad9",
+        "oldHeight": 55,
+        "height": 55,
+        "width": 132,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "6ff3594d6424d018e3a3c1834173021762a5df1090dcc9abda71d427126c36c5",
+        "oldRgbaSha256": "381109700258bd609a086615bf62cce74ef5eedd4677c3324164619d16828e73",
+        "retainedRgbaSha256": "381109700258bd609a086615bf62cce74ef5eedd4677c3324164619d16828e73",
+        "oldHeight": 55,
+        "height": 55,
+        "width": 100,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "cc0139003318e184d06373cfb7cf8b3cc1d7479a108767f1a514c9a9b5fbd8fc",
+        "oldRgbaSha256": "147d37753399c1dd8559cd8b00fd1d6b8c88ac094f29b685023615bdaf141e18",
+        "retainedRgbaSha256": "147d37753399c1dd8559cd8b00fd1d6b8c88ac094f29b685023615bdaf141e18",
+        "oldHeight": 96,
+        "height": 96,
+        "width": 224,
+        "reconstructedOldRgbaExact": true
+      },
+      {
+        "sourceSha256": "6e04e5a3958e245b6b6cc9e9482cd9f15bee8a777b1f95ced7721e6da94f46b9",
+        "oldRgbaSha256": "a7798c87aa290453abfed4150864b811511278b90ce2458ff619392e7448cfe4",
+        "retainedRgbaSha256": "a7798c87aa290453abfed4150864b811511278b90ce2458ff619392e7448cfe4",
+        "oldHeight": 76,
+        "height": 76,
+        "width": 240,
+        "reconstructedOldRgbaExact": true
+      }
+    ],
+    "additionalCachedTextureBytesForOptions": 0,
+    "catalogSha256": "1cdafb1a723ce9d48bd862619edde73ef57379595986d18488dd401d05d94f38",
+    "recipeSha256": "ea0001edfa5c9fab96de98e3f87563801622f287cdbffab279ab71476638da27"
+  },
   "packingRecipeSha256": "8f27173502246177f73327a2ab31b7312abaff7b41778e7eef6e06741a7cb261",
   "compactAtlas": {
     "logicalWords": 112,
@@ -1964,28 +4818,30 @@
   "rasterBytes": 8388608,
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
-    "FrontendFontPixels.inc": "cbc40fbacb6b77c91cbfe5ab510334776b445ec513cf03d9b4c6c5253c651480",
-    "FrontendWordLayout.inc": "28aa53f2cad572859855962cbc62c5504f23f920c35b767e7c937dbdca8c1a0a",
-    "FrontendFontPixelsPart0.inc": "68578f86bf1b54e5cc82560ac8b610b5bac8e89b35200b7e9bbc4337f889404e",
-    "FrontendFontPixelsPart1.inc": "b53cf525a0afbf2c74782c4572068c8fe2b84d44b2723a26d209d57fc584743d",
-    "FrontendFontPixelsPart2.inc": "2f0ebc46f766558f0c2b4a66d88376cf612619665c2b3cab049848b98761b920",
-    "FrontendFontPixelsPart3.inc": "2246cfe2034dc054db5c5bb10b399ba34d58d5375f6b0036f34fa0de0e76c6da",
-    "FrontendFontPixelsPart4.inc": "f5d4e6a3b85baaca6f06f1c70dc2cbd8fe53d3fd40295b0d24cb4a67e47af1ed",
-    "FrontendFontPixelsPart5.inc": "a5bc52392059f8e788de4e5403192b6dfa4390156bfa681a5cece76c8953f64b",
-    "FrontendFontPixelsPart6.inc": "55bee338cd62dee42220b130c01b6360d6f504b9c32e76e58bb0bfa874a2e033",
-    "FrontendFontPixelsPart7.inc": "29d37f016fc891ee04412608e3474856000866d301518676e01d5d8c998bcc8d",
-    "FrontendFontPixelsPart8.inc": "574b2642a0328a16d69f71cd7409dabef6c997a15df5a427d1b893148c685cf3",
-    "FrontendFontPixelsPart9.inc": "b3e8f2b8604c46cb5f69ea65362e2fee384278d832573b41ad9e275541fbf3f6",
-    "FrontendFontPixelsPart10.inc": "6dfad7998602d49d64a3e2b4a199f983f43b799fb38cc11d007b71950a3c2945",
-    "FrontendFontPixelsPart11.inc": "80a7d03a2f271e1cc8e5dce1f17827a40cf1b4f3fe4f41b712c8c47184f8c7d9",
-    "FrontendFontPixelsPart12.inc": "22773fea6e749935a877ca65c3a29af71acd14aae23315cc6ccadd01d5bc0ab0",
-    "FrontendFontPixelsPart13.inc": "9aa5dc4263410821dd0a0d4f4b4b703338fb546c08a854746fa5e002af8c62c9",
-    "FrontendFontPixelsPart14.inc": "2585a79738fe67bd7b8cc8d5990b3ac31eb2b8e4f61c9fa8d33a4f58b9d415e4",
-    "FrontendFontPixelsPart15.inc": "374f1b513ece19d7baed56a4b3c727b9e09c59a8ded442f96a148e7f96a3f591",
-    "FrontendFontPixelsPart16.inc": "adab360c69a9a9e28dbed423e118308e6a35ff1e8cfcc27ef04cb02c45ca80b0",
-    "FrontendFontPixelsPart17.inc": "35eb53d00506cf9927a88cdf5a2ff8eb6e7b3db90e02c9192a0c4cb143872b57",
-    "FrontendFontPixelsPart18.inc": "facdc103da43c26ac918f743395d043612d2d176144b88acfb902c06050516ec",
-    "FrontendFontPixelsPart19.inc": "1bbad7836ec395f4359c3820aebbecae9b06948f9b2c8fe98454a089ff4996f1",
-    "FrontendFontPixelsPart20.inc": "41f39c7f3ac5d363ac9810085a26e594f7f729f3573d5e1f16cff1f1dc82de62"
+    "FrontendFontPixels.inc": "4f7545a03145761b54fe545d461abc8e09a891c840a290b01b4cc69f399019ef",
+    "FrontendWordLayout.inc": "6c2f2ff7ed30542a7be4227f2e94cce110b47b549625bf13d572c94d7b48331f",
+    "FrontendFontPixelsPart0.inc": "ac0fcd90e806a375d52c9d539ce6f6de11f7759d97d199da47f185e37ecf6399",
+    "FrontendFontPixelsPart1.inc": "ae1c46b72de6566ca5846430be164300eca6d052d2b3b1ea2270c5263a3e1a4e",
+    "FrontendFontPixelsPart2.inc": "21ba8c1d870f71ef6dd00ac6d0144b954a9ec6c20d6394c970f5b8d263e8932e",
+    "FrontendFontPixelsPart3.inc": "f4c0ce3e19e8acad1cd0d3297cad8e6857d1916665192f5ce82c81acf4f20d65",
+    "FrontendFontPixelsPart4.inc": "e9a5f6134cccd35f4416f0ce47010b878dde101d3814a51a622171ecc336e8ef",
+    "FrontendFontPixelsPart5.inc": "df9ce637dc5f87bae87a98f10eb422c04c83938d5dd62b143dbd584c0fca691b",
+    "FrontendFontPixelsPart6.inc": "a04cc9dc37f76657c00b1d874f0f75e1fc014c4f2f835dfb20d83804d464ceb6",
+    "FrontendFontPixelsPart7.inc": "3ac63dd25b41eb42c698337a48af5788b3a5152ba63cf5fd599829b174e6700f",
+    "FrontendFontPixelsPart8.inc": "50dd18699209f9a0b6796ddf5f95d2b927acf4a207e198cb3da251be28b3a49c",
+    "FrontendFontPixelsPart9.inc": "57d6b72793a44d1f6e0c262d52ade034969bd5be0e8f00ea4d78c9ee2ef848a1",
+    "FrontendFontPixelsPart10.inc": "8c4c2a7bf81a98c933daabe292503b248b0e99ea3a3a4a3aea048a577d296db6",
+    "FrontendFontPixelsPart11.inc": "d733ad6305e86574b2929778f24bb4d666ea8869cd1bfcea476a655b2d4d97ab",
+    "FrontendFontPixelsPart12.inc": "4f8ed98a0beb38cd06eccc2b4a8167e090ba54839d2bcf9f3a41a7cad49027b8",
+    "FrontendFontPixelsPart13.inc": "fe687e181d45d12ee0a97483268e37e32e8bcd242e69e0af9aa179c2550c6a6b",
+    "FrontendFontPixelsPart14.inc": "31b2aca366fc506a8372d7a33e7e335ebe6827d0f2a844345dc1672df908f8d8",
+    "FrontendFontPixelsPart15.inc": "71dae72dd2d134848bcb6c10a4cb44668e37576384f831981883fc7789840f2e",
+    "FrontendFontPixelsPart16.inc": "a2dccbb90c3f266682a73a7720f4185eb896f03998e6d1457c4fbb46bff44606",
+    "FrontendFontPixelsPart17.inc": "09a6ceb2696fb03cb25b91e15b5c30f8bb291f5ccbde4940d7e1790ba47395d5",
+    "FrontendFontPixelsPart18.inc": "c22bc51c93fae30c954404e1590977fae466894ed062de47b90c87d126ae7c51",
+    "FrontendFontPixelsPart19.inc": "7b2d3c0495693394136566459e075bf2cf92813d12b92f7f5b184db4e71650e3",
+    "FrontendFontPixelsPart20.inc": "b3b13ca9679e85a515875f1d07bcb3b884b7a3b11c738e33e16b41dccaf18bb5",
+    "FrontendFontPixelsPart21.inc": "09ab525c7b269afde791c820321beff17979f6d489934b03aee7d16e34009625",
+    "FrontendFontPixelsPart22.inc": "22e6a00413428ff11d8b941c7c61c3749c9fbe498a39578633aba9f36ee57be5"
   }
 }
