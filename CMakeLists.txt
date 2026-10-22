@@ -671,3 +671,17 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NFS_HD_CPU_TESTS AND TARGET SDL3::SD
     target_link_options(hd_native_mark_gpu_tests PRIVATE -fsanitize=address,undefined)
   endif()
 endif()
+
+# Optional software-menu packets use owned synthetic fonts and pixels in host tests.
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NFS_HD_CPU_TESTS)
+  add_executable(hd_software_frame_packet_tests tests/software_frame_packet_tests.cpp)
+  target_include_directories(hd_software_frame_packet_tests PRIVATE src)
+  target_compile_features(hd_software_frame_packet_tests PRIVATE cxx_std_17)
+  target_link_libraries(hd_software_frame_packet_tests PRIVATE Threads::Threads)
+  add_test(NAME hd_software_frame_packets COMMAND hd_software_frame_packet_tests)
+  set_tests_properties(hd_software_frame_packets PROPERTIES TIMEOUT 30)
+  if(BOUNDARY_SANITIZERS)
+    target_compile_options(hd_software_frame_packet_tests PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=all)
+    target_link_options(hd_software_frame_packet_tests PRIVATE -fsanitize=address,undefined)
+  endif()
+endif()
