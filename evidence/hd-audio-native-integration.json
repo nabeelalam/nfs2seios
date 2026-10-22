@@ -1,0 +1,65 @@
+{
+  "scope": "Local maintained native Audio UI integration on isolated UI branch; no physical-device performance acceptance",
+  "sourceCommits": [
+    "c3d0a94",
+    "4a8c6b4"
+  ],
+  "originalAssetsIncluded": false,
+  "changes": [
+    "Observe exact original right-aligned options caption width without changing original drawing",
+    "Validate Audio scratch uploads as source-proven RGB565, distinct from Main ARGB1555",
+    "Retain immutable scene owners across queued native rendering and validate complete original tile pass before color-only replacement"
+  ],
+  "localBuild": {
+    "consumedInputs": 390,
+    "inputPinsStable": true,
+    "workers": 2,
+    "binarySha256": "4a2d93eb26be4a5b41828fa72ebbad2deaa209cae61dd368710ced4cd2fa6abb",
+    "cloudBuild": false
+  },
+  "verification": {
+    "optimizedRegisteredTests": 43,
+    "asanUbsanRegisteredTests": 43,
+    "pureNativeWitnessChecksPerMode": 868827,
+    "isolatedGlesAdapterChecksPerMode": 156,
+    "strictC11": true,
+    "actualNativeDimensions": [
+      2186,
+      1640
+    ],
+    "initialDisplayNavigationNativePairs": 55,
+    "targetedHeldResumeNativePairs": 251,
+    "uploadsPerPublishedFrame": 300,
+    "selectionsPerPublishedFrame": 300,
+    "trianglesPerPublishedFrame": 600,
+    "nativeCancellationsInBothPassingRuns": 0,
+    "normalMenuNavigationReturn": true,
+    "threeVolumeRowsVisiblyDecreaseAndIncrease": true,
+    "heldKeyThenMutatingInputResumesNativeDrawing": true,
+    "normalShutdownAndCopiedStateRestoration": true
+  },
+  "retainedFailedTest": {
+    "kind": "Overstrict fresh-publication requirement during held-key observation",
+    "allThreeVolumeRowsChangedBeforeTimeout": true,
+    "fullRunPassed": false,
+    "originalHasLegitimateNoRedrawPaths": true,
+    "exactSkipBranchTakenWasObserved": false,
+    "rendererFailureWasEstablished": false,
+    "independentFocusedHeldResumeRetestPassed": true
+  },
+  "evidenceDigests": {
+    "actualDisplayRun": "35b63bbf29d2017c693d85e149c03fe6e04cd35f50ea09efeede242fdb789c60",
+    "actualDisplayReview": "ab87bd9896683dc109250a3798739858faf7a83b0632a62fa418552c1c04924f",
+    "heldResumeRun": "a9618bacc2c9dbfeeb8c7cf7374968880d7dcab0532e30eff75ed05c4f73ce33",
+    "heldResumeReview": "0efce4a7dd12b8715b4c46220444de667b52a3f7ec1a18c66c000159b703478e",
+    "registeredSuite": "ac574af9ffbae8e799b87c042e0b266eea798347f9e6e63f57240a54882705af"
+  },
+  "remaining": [
+    "Actual pointer-hover highlight integration",
+    "Guarded resource preparation after context recreation while Audio is open",
+    "Consistent intended map softness and final artwork review",
+    "Physical-device HD acceptance and battery/Low Power Mode performance"
+  ],
+  "physicalIpadValidatedForTheseUiChanges": false,
+  "goalComplete": false
+}
