@@ -4,8 +4,10 @@
 namespace fx=player_scene_fixture;namespace ps=nfs_player_scene_cpu;
 int main(){try{unsigned negatives=0;
  for(unsigned player:{1u,2u})for(unsigned mode:{0u,1u,2u}){auto f=std::unique_ptr<fx::Fixture>(new fx::Fixture(player,mode));CHECK(f->source&&f->source->form()==f->binding.form&&f->source->player()==player);CHECK(f->source->original()==f->actualUpload.pixels);ps::Prepared out;CHECK(ps::untrustedPreparedLayout(f->source,f->keys,out));auto v=out.view();CHECK(v.schema==1&&v.form==f->binding.form&&v.scene.tailKind==ps::tail(f->binding.form)&&v.scene.planeWords==bg::Full);CHECK(out.caption==f->caption&&out.preview==f->preview&&out.swatch==f->swatch&&out.overlay);CHECK(v.preview.pixelCount==v.preview.coverageCount&&v.preview.pixelCount==size_t(v.preview.width)*v.preview.height);
- // The last union overlay may not cover original opaque343 source words.
- for(unsigned y=0;y<v.preview.height;++y)for(unsigned x=0;x<v.preview.width;++x){unsigned xx=v.preview.left+x,yy=v.preview.top+y,k=y*v.preview.width+x;if(xx<343&&f->scene.tailPost.pixels[yy*343+xx])CHECK(!v.preview.coverage[k]);}
+ // Full preview coverage belongs BELOW the remastered sidebar.
+ const auto pb=f->preview->bounds();for(unsigned y=0;y<pb.height;++y)for(unsigned x=0;x<pb.width;++x){unsigned xx=pb.left+x,yy=pb.top+y;if(f->preview->coverage()[y*pb.width+x])CHECK(v.preview.coverage[(yy-v.preview.top)*v.preview.width+xx-v.preview.left]);}
+ // Storage beyond343x480 is outside this sidebar image's semantic domain.
+ f->scene.tailPost.pixels[bg::Side+1]^=1;auto semantic=f->input();CHECK(ps::verifySource(semantic,f->workspace,f->catalog));f->scene.tailPost.pixels[bg::Side+1]^=1;
  const auto retained=out.original;f->actualUpload.pixels.fill(0);f->caption.reset();f->preview.reset();f->swatch.reset();CHECK(out.original==retained&&out.caption&&out.preview);
  }
  // A genuine later Lazy copy may have no retained Refresh (e.g. initial

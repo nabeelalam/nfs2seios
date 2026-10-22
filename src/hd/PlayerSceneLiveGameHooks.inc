@@ -37,7 +37,7 @@ struct State{
  std::shared_ptr<const SidebarCapture>retainedSidebar;bool retainedSidebarVerified=false;bg::Event retainedSidebarValidationEvent{};
  CachedUploadSite cachedUploadSite=CachedUploadSite::None;unsigned cachedUploadDepth=0;
  std::shared_ptr<const nfs_logo_capture::Copy>currentCopy;bg::Event currentCopyEvent{};uint64_t nextCopySerial=0;
- Plane actualPreviewPost{},swatchCopyPost{},actualSwatchPost{};bg::Event swatchCopyEvent{};uint64_t acceptedSwatchCopySerial=0;
+ Plane actualSidebarPost{},actualPreviewPost{},swatchCopyPost{},actualSwatchPost{};bg::Event sidebarValidationEvent{};bg::Event swatchCopyEvent{};uint64_t acceptedSwatchCopySerial=0;
  bg::Base base;bg::Scene scene;bg::Workspace workspace;
  std::shared_ptr<const bg::Prepared>published;
  std::shared_ptr<const nfs_soft::FramePacket>caption;uint64_t captionSerial=0,captionLifetime=0;
@@ -57,7 +57,7 @@ struct State{
  std::array<uint32_t,4>capturedArgs{};Reason reason=Reason::None;
  bg::Draw*draw()noexcept{return pending>=0&&unsigned(pending)<scene.draws.size()?&scene.draws[unsigned(pending)]:nullptr;}
  void clearSwatch()noexcept{swatch.reset();swatchAuthority={};swatchEvent={};swatchCurrent=false;swatchCopyEvent={};acceptedSwatchCopySerial=0;swatchCopyPost.valid=actualSwatchPost.valid=0;}
- void clearPreview()noexcept{currentCopy.reset();currentCopyEvent={};clearSwatch();actualPreviewPost.valid=0;previewSelection={};preview.reset();previewSerial=previewLifetime=0;previewEvent=previewBaseEvent={};}
+ void clearPreview()noexcept{currentCopy.reset();currentCopyEvent={};actualSidebarPost.valid=0;sidebarValidationEvent={};clearSwatch();actualPreviewPost.valid=0;previewSelection={};preview.reset();previewSerial=previewLifetime=0;previewEvent=previewBaseEvent={};}
  void fail(Reason why,bool baseToo=false)noexcept{reason=why;invalid=true;retainedSidebarVerified=false;retainedSidebarValidationEvent={};currentCopy.reset();currentCopyEvent={};published.reset();clearPreview();if(baseToo)baseVerified=false;}
  bg::Event event(uint64_t redraw)noexcept{if(sequence==UINT64_MAX){fail(Reason::Overflow,true);return {};}return {ownerEpoch,++sequence,redraw};}
  void freshScene()noexcept{published.reset();caption.reset();captionSerial=captionLifetime=0;scene.draws.clear();scene.form=form;scene.complete=scene.error=scene.tailKind=scene.tailPredicate=scene.tailSymbol=0;scene.preSide.valid=scene.postSide.valid=scene.postWords.valid=scene.tailPre.valid=scene.tailPost.valid=0;pending=-1;phase=Phase::None;resolved=false;groupSerial=copySerial=nativeUploadEvent=0;groupEvent=tailEvent=copyEvent=uploadEvent={};captured483438=false;copyWrapperDepth=0;}
@@ -83,8 +83,8 @@ struct TailScope {Game&g;State*s=nullptr;bool entered=false;int unwind=0;
  explicit TailScope(Game&game)noexcept:g(game){s=current(g);if(!s||s->invalid||unarmed(s))return;entered=true;unwind=nfs_logo_publisher::exceptions();if(s->invocationDepth!=1||!readPlane(s->scene.tailPre)||!bg::plane(s->scene.tailPre,343)){s->fail(Reason::Target);return;}s->scene.tailKind=s->form==0x4d3050?NFS_BACKGROUND_TAIL_PLAYER1_CAPTION:NFS_BACKGROUND_TAIL_PLAYER2_CAPTION;s->scene.tailPredicate=s->scene.tailSymbol=s->form;s->tailEvent=s->event(s->iteration);}
  ~TailScope(){if(!entered||s->invalid)return;if(nfs_logo_publisher::exceptions()>unwind){s->fail(Reason::Unwind);return;}if(!captureCaption(g,*s)||!readPlane(s->scene.tailPost)||!bg::plane(s->scene.tailPost,343)||!nfs_logo_capture::same(s->scene.tailPre.target,s->scene.tailPost.target)){s->fail(Reason::Missing);return;}}
 };
-inline void copyEnd(Game&g)noexcept{auto*s=current(g);auto*c=nfs_logo_publisher::store();if(!s||s->invalid)return;if(unarmed(s))return;if(!c||!c->copy.complete||c->copy.linkedGroup!=s->groupSerial||!s->tailEvent.sequence){s->fail(Reason::Order);return;}s->copySerial=c->copy.serial;s->copyEvent=s->event(s->iteration);s->scene.complete=1;
- try{std::shared_ptr<SidebarCapture>r(new SidebarCapture);r->scene=s->scene;r->group=c->group;r->originalCopy=c->copy;r->caption=s->caption;r->catalogue=s->catalogue;r->captionSerial=s->captionSerial;r->captionLifetime=s->captionLifetime;r->groupSerial=s->groupSerial;r->copySerial=s->copySerial;r->groupEvent=s->groupEvent;r->tailEvent=s->tailEvent;r->copyEvent=s->copyEvent;r->archive=s->archive;r->form=s->form;s->retainedSidebar=std::move(r);s->retainedSidebarVerified=false;s->retainedSidebarValidationEvent={};}catch(...){s->fail(Reason::Allocation);}}
+inline void copyEnd(Game&g)noexcept{auto*s=current(g);auto*c=nfs_logo_publisher::store();if(!s||s->invalid)return;if(unarmed(s))return;if(!c||!c->copy.complete||c->copy.linkedGroup!=s->groupSerial||!s->tailEvent.sequence){s->fail(Reason::Order);return;}const auto captureEvent=s->event(s->iteration);s->scene.complete=1;
+ try{std::shared_ptr<SidebarCapture>r(new SidebarCapture);r->scene=s->scene;r->group=c->group;r->originalCopy=c->copy;r->caption=s->caption;r->catalogue=s->catalogue;r->captionSerial=s->captionSerial;r->captionLifetime=s->captionLifetime;r->groupSerial=s->groupSerial;r->copySerial=s->copySerial;r->groupEvent=s->groupEvent;r->tailEvent=s->tailEvent;r->copyEvent=captureEvent;r->archive=s->archive;r->form=s->form;s->retainedSidebar=std::move(r);s->retainedSidebarVerified=false;s->retainedSidebarValidationEvent={};}catch(...){s->fail(Reason::Allocation);}}
 
 // Correlation only: the pure side proof must still vet every retained record.
 inline const SidebarCapture*retainedSidebarCapture(const State&s)noexcept{const auto&r=s.retainedSidebar;return r&&r->form==s.form&&r->archive==s.archive&&r->groupEvent.ownerEpoch==s.ownerEpoch?r.get():nullptr;}
@@ -136,6 +136,6 @@ inline bool previewCurrent(const State&s)noexcept{const auto&p=s.preview;if(s.in
 struct CachedUploadSiteScope{State*s=nullptr;bool entered=false;explicit CachedUploadSiteScope(Game&g,CachedUploadSite site)noexcept{s=current(g);if(!s||s->invalid||!s->baseVerified||(site!=CachedUploadSite::Initial&&site!=CachedUploadSite::Refresh&&site!=CachedUploadSite::Lazy)||uint32_t(g.edx)!=1||uint32_t(g.eax)!=s->base.post.target.w[8]){s=nullptr;return;}if(s->cachedUploadDepth){s->fail(Reason::Nested);s=nullptr;return;}s->cachedUploadDepth=1;s->cachedUploadSite=site;entered=true;}~CachedUploadSiteScope(){if(entered){s->cachedUploadDepth=0;s->cachedUploadSite=CachedUploadSite::None;}}};
 // Deliberately no publication until root wires actual direct343copy capture,
 // post-copy Refresh swatch and separate original native upload witness.
-inline void sealUpload(Game&g)noexcept{auto*s=current(g);if(!s)return;s->published.reset();s->stage=13;if(s->cachedUploadDepth!=1||s->cachedUploadSite==CachedUploadSite::None)return;/* Final source join intentionally declines. */}
+inline void sealUpload(Game&g)noexcept;
 struct UploadEndScope{Game*g=nullptr;State*s=nullptr;bool active=false;int unwind=0;explicit UploadEndScope(Game&game)noexcept{if(uint32_t(game.edx)!=1)return;s=current(game);if(!s||s->cachedUploadDepth!=1||s->cachedUploadSite==CachedUploadSite::None)return;g=&game;active=true;unwind=nfs_logo_publisher::exceptions();s->published.reset();}~UploadEndScope(){if(!active)return;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind);else sealUpload(*g);}};
 } // namespace nfs_player_scene_live

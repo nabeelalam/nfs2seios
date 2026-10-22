@@ -19,6 +19,7 @@ from graphics_sidebar_hooks import add_graphics_sidebar_hooks
 from graphics_scene_hooks import add_graphics_scene_hooks
 from options_scene_hooks import add_options_scene_hooks
 from setup_scene_hooks import add_setup_scene_hooks
+from player_scene_hooks import add_player_scene_hooks
 from batch_rep_words import batch_rep_words
 from batch_complete_helpers import batch_complete_helpers
 
@@ -219,6 +220,7 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         text = add_graphics_scene_hooks(text, path.name)
         text = add_options_scene_hooks(text, path.name)
         text = add_setup_scene_hooks(text, path.name)
+        text = add_player_scene_hooks(text, path.name)
         (dest / path.name).write_text(text)
     stubs = (source / "Stubs.cpp").read_text()
     dispatch = '#include "Game.h"\n#include "FunctionIds.h"\nextern "C" bool nfs_register_guest_function(uint32_t, NativeGameFunction);\n'

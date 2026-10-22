@@ -19,6 +19,8 @@ extern "C" {
 #endif
 int nfs_private_player_scene_begin(const NfsPlayerSceneFrameView*);
 int nfs_private_player_scene_finish(uint64_t serial);
+/* Exact pending serial, current owner only; CPU-only, no GL calls. */
+int nfs_private_player_scene_cancel(uint64_t serial);
 #ifdef __cplusplus
 }
 #endif

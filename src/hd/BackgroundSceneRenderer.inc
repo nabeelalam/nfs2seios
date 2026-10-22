@@ -5,6 +5,11 @@
 #include "NativeSceneProvenance.h"
 #include "BackgroundSceneCompositor.c.inc"
 static NfsBackgroundSceneCompositor nfs_bg_compositor;
+/* NFS_PLAYER_RENDERER_BEGIN:forward */
+static void nfs_player_renderer_created(void);
+static void nfs_player_renderer_retired(int);
+static void nfs_player_renderer_other(void);
+/* NFS_PLAYER_RENDERER_END:forward */
 /* NFS_AUDIO_RENDERER_BEGIN:forward */
 static void nfs_audio_renderer_created(void);
 static void nfs_audio_renderer_retired(int);
@@ -33,7 +38,7 @@ static int nfs_logo_trace_enabled(void);
 static unsigned nfs_logo_trace_lines;
 static void nfs_logo_native_upload(void);
 static NfsLogoProvenance nfs_logo_provenance;
-static void nfs_logo_cancel_all(void){if(nfs_bg_feature())nfs_bg_scene_cancel(&nfs_bg_compositor);}
+static void nfs_logo_cancel_all(void){/* NFS_PLAYER_RENDERER_BEGIN:cancel */nfs_player_renderer_other();/* NFS_PLAYER_RENDERER_END:cancel */if(nfs_bg_feature())nfs_bg_scene_cancel(&nfs_bg_compositor);}
 /* Current native RGB-black fact is consumed by ANY native triangle. Pending pass proof is separate. */
 static struct {uint64_t context,epoch;uint32_t fbo;unsigned valid;} nfs_logo_black_clear;
 /* Bounded current native-upload cache. Eviction declines optional HD; no sampled-run authority. */
@@ -42,8 +47,8 @@ static NfsLogoUploadWitness nfs_logo_uploads[1024];static unsigned nfs_logo_uplo
 static void nfs_logo_native_state(void){/* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_other();/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_other();/* NFS_GRAPHICS_RENDERER_END:hook */if(!nfs_logo_feature())return;if(nfs_logo_provenance.active&&nfs_logo_provenance.triangles)nfs_logo_p_contaminate(&nfs_logo_provenance);else nfs_logo_p_cancel(&nfs_logo_provenance);nfs_logo_cancel_all();}
 
 static int nfs_logo_feature(void){return nfs_bg_feature();}
-static void nfs_logo_native_created(void){if(!nfs_logo_feature())return;nfs_logo_black_clear.valid=0;nfs_logo_p_created(&nfs_logo_provenance);if(nfs_bg_feature()&&nfs_logo_provenance.alive)nfs_bg_scene_context_created(&nfs_bg_compositor,nfs_logo_provenance.context);/* NFS_AUDIO_RENDERER_BEGIN:created */nfs_audio_renderer_created();/* NFS_AUDIO_RENDERER_END:created *//* NFS_GRAPHICS_RENDERER_BEGIN:created */nfs_graphics_renderer_created();/* NFS_GRAPHICS_RENDERER_END:created *//* NFS_OPTIONS_RENDERER_BEGIN:created */nfs_options_renderer_created();/* NFS_OPTIONS_RENDERER_END:created */}
-static void nfs_logo_native_retired(int owner){/* NFS_OPTIONS_RENDERER_BEGIN:retired */nfs_options_renderer_retired(owner);/* NFS_OPTIONS_RENDERER_END:retired *//* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_retired(owner);/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_retired(owner);/* NFS_GRAPHICS_RENDERER_END:hook */if(!nfs_logo_feature())return;nfs_logo_black_clear.valid=0;if(nfs_bg_feature())nfs_bg_scene_context_retired(&nfs_bg_compositor,nfs_logo_provenance.context,owner);nfs_logo_p_retired(&nfs_logo_provenance);}
+static void nfs_logo_native_created(void){if(!nfs_logo_feature())return;nfs_logo_black_clear.valid=0;nfs_logo_p_created(&nfs_logo_provenance);if(nfs_bg_feature()&&nfs_logo_provenance.alive)nfs_bg_scene_context_created(&nfs_bg_compositor,nfs_logo_provenance.context);/* NFS_AUDIO_RENDERER_BEGIN:created */nfs_audio_renderer_created();/* NFS_AUDIO_RENDERER_END:created *//* NFS_GRAPHICS_RENDERER_BEGIN:created */nfs_graphics_renderer_created();/* NFS_GRAPHICS_RENDERER_END:created *//* NFS_OPTIONS_RENDERER_BEGIN:created */nfs_options_renderer_created();/* NFS_OPTIONS_RENDERER_END:created *//* NFS_PLAYER_RENDERER_BEGIN:created */nfs_player_renderer_created();/* NFS_PLAYER_RENDERER_END:created */}
+static void nfs_logo_native_retired(int owner){/* NFS_PLAYER_RENDERER_BEGIN:retired */nfs_player_renderer_retired(owner);/* NFS_PLAYER_RENDERER_END:retired *//* NFS_OPTIONS_RENDERER_BEGIN:retired */nfs_options_renderer_retired(owner);/* NFS_OPTIONS_RENDERER_END:retired *//* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_retired(owner);/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_retired(owner);/* NFS_GRAPHICS_RENDERER_END:hook */if(!nfs_logo_feature())return;nfs_logo_black_clear.valid=0;if(nfs_bg_feature())nfs_bg_scene_context_retired(&nfs_bg_compositor,nfs_logo_provenance.context,owner);nfs_logo_p_retired(&nfs_logo_provenance);}
 static uint32_t nfs_logo_texture_address(const TextureInfo*ti){return(uint32_t)(ti-g_textures)*4u;}
 static void nfs_logo_native_upload_begin(TextureInfo*ti){/* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_upload_begin(ti);/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_upload_begin(ti);/* NFS_GRAPHICS_RENDERER_END:hook */unsigned i;uint32_t address;if(!nfs_logo_feature())return;address=nfs_logo_texture_address(ti);for(i=0;i<1024;++i)if(nfs_logo_uploads[i].valid&&nfs_logo_uploads[i].address==address)nfs_logo_uploads[i].valid=0;nfs_logo_native_upload();}
 static void nfs_logo_native_upload_done(TextureInfo*ti){/* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_upload_done(ti);/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_upload_done(ti);/* NFS_GRAPHICS_RENDERER_END:hook */
@@ -131,6 +136,7 @@ static int nfs_bg_refuse(const char*why,uint64_t serial,const NfsNativeLogoTarge
 static int nfs_bg_native_begin(const NfsBackgroundSceneFrameView*v,const NfsLocationSceneFrameView*location){
  uint32_t ids[300];unsigned i,x,y;NfsNativeLogoTargetProof target;
  if(!nfs_bg_feature())return 0;
+ /* NFS_PLAYER_RENDERER_BEGIN:other-scene */nfs_player_renderer_other();/* NFS_PLAYER_RENDERER_END:other-scene */
  nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);
  nfs_bg_content=v?v->contentRevision:0;nfs_bg_map=v?v->mapRole:0;nfs_bg_words=v?v->wordCount:0;
  if(!v||v->schema!=NFS_BACKGROUND_SCENE_RUNTIME_SCHEMA||v->width!=640||v->height!=480||v->planeWords!=307200||!v->original565||!v->serial||!v->contentRevision||v->mapRole>1||v->wordCount>4||(location?v->tailKind!=NFS_BACKGROUND_TAIL_LOCATION_CAPTION:v->tailKind!=NFS_BACKGROUND_TAIL_MAIN_SKIP))return nfs_bg_refuse("frame",v?v->serial:0,0);
@@ -171,3 +177,7 @@ int nfs_private_location_scene_finish(uint64_t serial){return nfs_bg_native_fini
 /* NFS_OPTIONS_RENDERER_BEGIN:implementation */
 #include "OptionsSceneRenderer.inc"
 /* NFS_OPTIONS_RENDERER_END:implementation */
+
+/* NFS_PLAYER_RENDERER_BEGIN:implementation */
+#include "PlayerSceneRenderer.inc"
+/* NFS_PLAYER_RENDERER_END:implementation */

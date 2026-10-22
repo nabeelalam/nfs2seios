@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "scope": "Player One and Two original cached-menu source, upload witness, owned queue and separate GPU renderer integration",
+  "verification": {
+    "focusedChecks": {
+      "optimized": 19,
+      "asanUbsan": 19,
+      "passed": true,
+      "actualGlesResizeFixturePassed": true,
+      "fixtureLimit": "Synthetic art and protocol; original native triangle calls are a fixture stub"
+    },
+    "productionBuild": {
+      "binarySha256": "ef8ea0b26b63d21f502764f5a93e44a07eabbf207d0263d958f9f77d85b5a1b7",
+      "changedCompileUnits": 1,
+      "unchangedCandidateUnitsReused": 6,
+      "reusedUnitDependenciesVerified": true,
+      "sourceInputsStable": true,
+      "maintainedObjectsUnchanged": 74,
+      "originalHookReversalsExact": true
+    },
+    "originalDataRuntimeBeforeResizeCorrection": {
+      "bothPlayerMenus": true,
+      "carColorGraphChangesAndRestoration": true,
+      "nativeSize": [
+        2186,
+        1640
+      ],
+      "ordinaryWindowInput": true,
+      "exactLogicalFieldValuesObserved": false,
+      "completeNativeTileSelections": 300,
+      "completeNativeTriangles": 600,
+      "cleanShutdown": true,
+      "copiedProfileAndArtworkRestored": true
+    },
+    "finalCandidateOriginalDataRuntime": {
+      "bothPlayerCarColorGraphChangesAndRestoration": true,
+      "bothPlayerResizeRecovery": true,
+      "sizes": [
+        [
+          2186,
+          1640
+        ],
+        [
+          640,
+          480
+        ],
+        [
+          2186,
+          1640
+        ]
+      ],
+      "sameContextWithinEachPlayerResizeVerified": true,
+      "contextGenerations": {
+        "1": [
+          1
+        ],
+        "2": [
+          1
+        ]
+      },
+      "completeTileSelections": 300,
+      "completeTriangles": 600,
+      "complementaryRunsUsed": 2,
+      "fullRunReachedBoundedTraceLimit": 2048,
+      "playerTwoResizeComplementaryRunPassed": true,
+      "bothRunsCleanShutdownAndCopiedDataRestored": true,
+      "physicalDeviceAcceptance": false
+    },
+    "privacyAssertion": "Generic drive/home path matcher; no literal user directory",
+    "finalHookTestsAfterPrivacyLiteralRemoval": 7
+  },
+  "fixes": [
+    "Record actual pre-copy sidebar pixels and preserve independent copy/upload occurrence authority",
+    "Permit documented ambient state changes between retained map and current copy, retaining strict checks within the copy",
+    "Retain preview texture when rebuilding the staging framebuffer for a new resolution",
+    "Guard immutable queue ownership, cancellation and renderer context transitions"
+  ],
+  "limits": [
+    "Initial upload safely retains original rendering until a complete lazy redraw supplies sidebar proof",
+    "WSL original-data results do not prove iPad UI behavior, performance, battery use or Low Power Mode 60 FPS",
+    "Main menu font replacement and remaining artwork acceptance are unfinished"
+  ],
+  "sourceSha256": {
+    "CMakeLists.txt": "c9f3c82e15247e367294b3bead76c7328d3ab470c215aea47d47cb0d9c8de7cb",
+    "scripts/prepare_full_mapped.py": "668d5aa464379516065ba4198556ec2df77e38e58052c49e0fc463f048f6e515",
+    "scripts/player_scene_hooks.py": "203e1cd80cf78cb6b778ab284d62d07b4982098f2d2c767a499799c4e0576663",
+    "src/hd/BackgroundSceneRenderer.inc": "d7b85cfc9e7acf6843a5bae46d537547479820d9db287a94aed076daef27d017",
+    "src/hd/PlayerCopyGameHooks.inc": "3b195adbf3c7724bb446e64c108d72833d1b248c3d55e55e589c044aa2f97915",
+    "src/hd/PlayerSceneLiveGameHooks.inc": "dc221b9d3973ca6c343ddf5cb09a74d8d0e2efc5d26e930a2fe9412b3a1f5f4a",
+    "src/hd/PlayerScenePrepare.h": "19ce3b7fdf3ec599c4299e121a3f39747cc627288e3406604df92f574037ef45",
+    "src/hd/PlayerSceneRuntimeAbi.h": "ce3b1820aba4c6eeb7cc511b91bb601e4d636c5326e83c5febbbf782d1dec8a3",
+    "src/hd/PlayerNativeUploadGameHooks.inc": "011dcec4460dd5552629a7e046898a9bbe7dae4d61aa62e69054c1c0a7c33fbb",
+    "src/hd/PlayerSceneQueueAdapter.inc": "ce579f50745112c00b3685abfc0e10c774f76efaa770b2f166359b8537dcbcbb",
+    "src/hd/PlayerSceneRenderer.inc": "64c623a1621ad8f6db524a8397b9dea48c1da2be6e8db01ea2982310247b29f9",
+    "src/hd/PlayerSourceGameHooks.inc": "43d801a7862d618c28c99f2e8ab098e2f92221a98170567b67dcbd15a458ca6d",
+    "tests/player_copy_runtime_tests.cpp": "98b79fb786728e4c3c1f0bf548a13dbc96b1ef856d770b1f8869efc94612e84d",
+    "tests/player_scene_prepare_tests.cpp": "13ec5ebfd454575ec99778eddca984b6e3e9831d13a93ae3fa63bc86157006ad",
+    "tests/player_native_upload_runtime_tests.cpp": "5969a02deb8ea19febe86f0bb30c9853d8f0e1a326ffcda843ad6e7fe5b155b7",
+    "tests/player_queue_runtime_tests.cpp": "53d1a8c8bf34285bdde0b088a2db4b89301928df57b652c107f9c448f6588084",
+    "tests/player_renderer_runtime_tests.cpp": "15dd5e13e251cc5faa9de1e697c3a6e90d73bec205ffc52f445056d495ce8548",
+    "tests/player_scene_hooks_test.py": "bf4475a95772a1c5e8c4e5b18200cc13841c6a2677a48392a0deb5624fad99f5",
+    "tests/player_source_runtime_tests.cpp": "92f22d9f2a1d6ad0d04349d615505f877e12f544e9f4fdede325b503f8620289"
+  },
+  "privateArtifactsPublished": false,
+  "cloudBuildsStarted": 0,
+  "paidServicesUsed": false
+}
