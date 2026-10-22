@@ -63,7 +63,23 @@
     "wordWidthIncreaseAtOriginalUiScale": 2,
     "strokeInsetAtOriginalUiScale": 0.25,
     "rightEdgeAndBaselinePreserved": true,
-    "integratedOrRuntimeValidated": false,
-    "previousPreviewPreserved": true
+    "integratedOrRuntimeValidated": true,
+    "previousPreviewPreserved": true,
+    "privateCandidateOnly": true,
+    "productionArtReplaced": false,
+    "binarySha256": "b70f9dc68691d09bbb3c9b21ad1cb3b89359549eb68e406c55d045daf6d36275",
+    "actualNativeResolution": [
+      2186,
+      1640
+    ],
+    "allSevenEnabledSelectionsIndependentlyRecognizedFromCaptures": true,
+    "cleanShutdownAndCopiedDataRestored": true,
+    "unrelatedAtlasPixelsUnchanged": true,
+    "oneRendererCompileUnit": true,
+    "compiledRendererInputsStable": true,
+    "compiledRendererInputCount": 158,
+    "intentionalGameObjectBaseline": "Prior accepted 4e0b2065 objects; supplemental caption metadata279b28b intentionally not linked",
+    "visualAcceptance": "Further critique remains open",
+    "physicalIPadAcceptance": false
   }
 }
