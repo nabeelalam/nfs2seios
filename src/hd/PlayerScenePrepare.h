@@ -5,6 +5,7 @@
 #include "SoftwareFramePacket.h"
 #include "PlayerPreviewPacket.h"
 #include "PlayerSwatchPacket.h"
+#include "PlayerInitialSidebarProof.h"
 #include <new>
 namespace nfs_player_scene_cpu {
 namespace bg=nfs_background_scene_cpu;namespace pv=nfs_player_preview;namespace sw=nfs_player_swatch;
@@ -85,6 +86,7 @@ public:
 };
 struct JoinedInput {
  const Base&base;const nfs_logo_capture::Copy&copy;SourceBinding binding;
+ std::shared_ptr<const nfs_player_initial_sidebar::Proof>initialSidebar;
  std::shared_ptr<const SidebarProof>sidebar;uint64_t acceptedSidebarSerial=0,sidebarLifetime=0;const Plane*actualSidebarPost=nullptr;Event sidebarValidationEvent{};
  std::shared_ptr<const pv::Packet>preview;uint64_t acceptedPreviewSerial=0,previewLifetime=0;uint32_t previewArchive=0;Event previewBaseEvent{},previewEvent{};const Plane*actualPreviewPost=nullptr;
  Event copyEvent{},uploadEvent{};const Plane*actualUploadPost=nullptr;
@@ -94,10 +96,11 @@ struct JoinedInput {
 class VerifiedSource;
 inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&,Workspace&,const SourceCatalog&,Failure*failure=nullptr)noexcept;
 class VerifiedSource final {
- Prepared data_;SourceBinding binding_;Target target_;
+ Prepared data_;SourceBinding binding_;Target target_;std::shared_ptr<const nfs_player_initial_sidebar::Proof>initialSidebar_;
  VerifiedSource()=default;friend std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&,Workspace&,const SourceCatalog&,Failure*)noexcept;
  friend bool untrustedPreparedLayout(const std::shared_ptr<const VerifiedSource>&,const std::array<uint32_t,300>&,Prepared&)noexcept;
 public:
+ bool current()const noexcept{return !initialSidebar_||initialSidebar_->current();}
  const SourceBinding&binding()const noexcept{return binding_;}const Target&target()const noexcept{return target_;}
  const std::array<uint16_t,Full>&original()const noexcept{return data_.original;}
  uint32_t form()const noexcept{return binding_.form;}uint32_t player()const noexcept{return binding_.form==Player1Form?1:2;}
@@ -105,7 +108,7 @@ public:
 // Pure layout conversion ONLY. Raw keys confer no native upload/presentation
 // authority. Queue admission must consume the separate sealed native proof
 // holding this exact shared source and independently CURRENT global event.
-inline bool untrustedPreparedLayout(const std::shared_ptr<const VerifiedSource>&s,const std::array<uint32_t,300>&keys,Prepared&o)noexcept{if(!s)return false;for(unsigned k=0;k<300;++k){if(uint64_t(keys[k])+2048>0x100000000ULL)return false;for(unsigned j=0;j<k;++j)if(uint64_t(keys[k])<uint64_t(keys[j])+2048&&uint64_t(keys[j])<uint64_t(keys[k])+2048)return false;}try{o=s->data_;o.keys=keys;return o.valid;}catch(...){o.valid=false;return false;}}
+inline bool untrustedPreparedLayout(const std::shared_ptr<const VerifiedSource>&s,const std::array<uint32_t,300>&keys,Prepared&o)noexcept{if(!s||!s->current())return false;for(unsigned k=0;k<300;++k){if(uint64_t(keys[k])+2048>0x100000000ULL)return false;for(unsigned j=0;j<k;++j)if(uint64_t(keys[k])<uint64_t(keys[j])+2048&&uint64_t(keys[j])<uint64_t(keys[k])+2048)return false;}try{o=s->data_;o.keys=keys;if(!s->current()){o.valid=false;return false;}return o.valid;}catch(...){o.valid=false;return false;}}
 inline std::shared_ptr<const OriginalOverlay>makeOverlay(const pv::Packet&preview,const sw::Packet*swatch,const nfs_logo_capture::Copy&){
  std::vector<uint16_t>whole(Full);std::vector<uint8_t>coverage(Full);auto add=[&](unsigned left,unsigned top,unsigned width,unsigned height,const std::vector<uint16_t>&pixels,const std::vector<uint8_t>&mask){if(!width||!height||uint64_t(left)+width>640||uint64_t(top)+height>480||pixels.size()!=size_t(width)*height||mask.size()!=pixels.size())return false;for(unsigned y=0;y<height;++y)for(unsigned x=0;x<width;++x){size_t from=y*width+x,to=(top+y)*640+left+x;if(mask[from]){whole[to]=pixels[from];coverage[to]=255;}}return true;};
  const auto&b=preview.bounds();if(!add(b.left,b.top,b.width,b.height,preview.pixels(),preview.coverage()))return {};
@@ -146,10 +149,25 @@ inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&i,Wor
  for(unsigned k=0;k<Full;++k)if(b.post.pixels[k]!=le16(b.sourceBefore.data()+16+2*k))return reject(Failure::Base);
  if(!i.preview||!i.acceptedPreviewSerial||i.previewLifetime!=a.lifetime||i.previewArchive!=a.archive||i.preview->form()!=form||!sameEvent(i.previewBaseEvent,b.event)||i.previewEvent.ownerEpoch!=a.epoch||i.previewEvent.iteration||i.previewEvent.sequence<=b.event.sequence||!i.actualPreviewPost||!pv::planeValid(*i.actualPreviewPost)||!i.preview->baseMatches(b.post)||!i.preview->matches(i.actualPreviewPost->target,i.acceptedPreviewSerial,a.lifetime,a.archive,i.actualPreviewPost->pixels.data(),Full))return reject(Failure::Binding);
  const auto&ve=i.sidebarValidationEvent;const auto&ce=i.copyEvent;const auto&ue=i.uploadEvent;
- if(!i.sidebar||!i.sidebar->catalogMatches(catalog)||i.sidebar->form()!=form||i.sidebar->serial()!=i.acceptedSidebarSerial||!i.acceptedSidebarSerial||i.sidebar->lifetime()!=i.sidebarLifetime||!i.sidebarLifetime||i.sidebar->sceneEvent().ownerEpoch!=a.epoch||i.sidebar->tailEvent().sequence>=ve.sequence||ve.ownerEpoch!=a.epoch||ce.ownerEpoch!=a.epoch||ue.ownerEpoch!=a.epoch||ve.iteration!=ce.iteration||ue.iteration!=ce.iteration||ve.sequence<=i.previewEvent.sequence||ve.sequence>=ce.sequence||ce.sequence>=ue.sequence||!i.actualSidebarPost||!plane(*i.actualSidebarPost,343)||!sameCaptionOwner(i.sidebar->post().target,i.actualSidebarPost->target)||!std::equal(i.sidebar->post().pixels.begin(),i.sidebar->post().pixels.begin()+Side,i.actualSidebarPost->pixels.begin()))return reject(Failure::Binding);
+ // Initial caption provenance may survive into a genuine direct Initial
+ // or Refresh copy. It is distinct from ordinary lazy sidebar provenance;
+ // historical Main epochs/events and actual copy kinds are never relabelled.
+ if(bool(i.initialSidebar)==bool(i.sidebar)||ve.ownerEpoch!=a.epoch||ce.ownerEpoch!=a.epoch||ue.ownerEpoch!=a.epoch||ve.iteration!=ce.iteration||ue.iteration!=ce.iteration||ve.sequence<=i.previewEvent.sequence||ve.sequence>=ce.sequence||ce.sequence>=ue.sequence||!i.actualSidebarPost||!plane(*i.actualSidebarPost,343))return reject(Failure::Binding);
+ const nfs_logo_capture::Group*sidebarGroup=nullptr;const Plane*sidebarPost=nullptr;
+ std::shared_ptr<const nfs_soft::FramePacket>caption;uint64_t captionSerial=0,captionLifetime=0;
+ unsigned wordCount=0;std::array<NfsBackgroundSceneWordLayer,4>words{};std::array<NfsSmallLogoLayer,3>logos{};
+ if(i.initialSidebar){const auto&p=*i.initialSidebar;const auto&ib=p.binding();const auto&event=ib.captionEvent;
+  if((a.kind!=SourceKind::Initial&&a.kind!=SourceKind::Refresh)||i.acceptedSidebarSerial||i.sidebarLifetime||!p.current()||!p.catalogMatches(catalog)||ib.form!=form||ib.formGuest!=a.formGuest||ib.archive!=a.archive||ib.game!=a.gameOwner||ib.thread!=a.thread||ib.epoch!=a.epoch||event.ownerEpoch!=a.epoch||event.iteration||!event.sequence||event.sequence>=b.event.sequence||!p.origin()||!p.origin()->current()||!p.origin()->frame()||!p.origin()->frame()->valid||p.origin()->game()!=a.gameOwner||p.origin()->publisherThread()!=a.thread||p.origin()->archive()!=a.archive||!p.captionProof()||!p.caption()||!p.captionSerial()||!p.captionLifetime())return reject(Failure::Binding);
+  sidebarGroup=&p.origin()->group();sidebarPost=&p.post();caption=p.caption();captionSerial=p.captionSerial();captionLifetime=p.captionLifetime();
+  const auto&inherited=*p.origin()->frame();wordCount=inherited.wordCount;words=inherited.words;logos=inherited.logos;
+ }else{const auto&p=*i.sidebar;
+  if(!p.catalogMatches(catalog)||p.form()!=form||p.serial()!=i.acceptedSidebarSerial||!i.acceptedSidebarSerial||p.lifetime()!=i.sidebarLifetime||!i.sidebarLifetime||p.sceneEvent().ownerEpoch!=a.epoch||p.tailEvent().sequence>=ve.sequence)return reject(Failure::Binding);
+  sidebarGroup=&p.group();sidebarPost=&p.post();caption=p.caption();captionSerial=p.captionSerial();captionLifetime=i.sidebarLifetime;wordCount=p.wordCount();words=p.words();logos=p.logos();
+ }
+ if(!sidebarGroup||!sidebarPost||!plane(*sidebarPost,343)||!sameCaptionOwner(sidebarPost->target,i.actualSidebarPost->target)||!std::equal(sidebarPost->pixels.begin(),sidebarPost->pixels.begin()+Side,i.actualSidebarPost->pixels.begin()))return reject(Failure::Binding);
  if(!sameCaptionOwner(c.sourceOwner,i.actualSidebarPost->target)||c.sourceOwner.owner==c.pre.target.owner||c.sourceOwner.ownerState[3]!=c.pre.target.owner||!retainedBaseTarget(b.post.target,c.pre.target)||!i.actualUploadPost||!pv::planeValid(*i.actualUploadPost)||!retainedBaseTarget(b.post.target,i.actualUploadPost->target))return reject(Failure::Target);
  for(unsigned k=0;k<Side;++k)if(le16(c.sourceBefore.data()+16+2*k)!=i.actualSidebarPost->pixels[k])return reject(Failure::Copy);
- std::unique_ptr<nfs_small_logo_live::Prepared>copyProof(new(std::nothrow)nfs_small_logo_live::Prepared);if(!copyProof)return reject(Failure::Source);if(nfs_small_logo_live::verifyAndPrepare(i.sidebar->group(),c,w.logo,*copyProof,catalog.logos)!=nfs_small_logo_live::Failure::None)return reject(Failure::Logos);
+ std::unique_ptr<nfs_small_logo_live::Prepared>copyProof(new(std::nothrow)nfs_small_logo_live::Prepared);if(!copyProof)return reject(Failure::Source);if(nfs_small_logo_live::verifyAndPrepare(*sidebarGroup,c,w.logo,*copyProof,catalog.logos)!=nfs_small_logo_live::Failure::None)return reject(Failure::Logos);
  if(i.swatch){const auto&sa=i.swatchAuthority;const auto&se=i.swatchEvent;const auto&sc=i.swatchCopyEvent;
   if(!sw::valid(sa)||!i.acceptedSwatchCopySerial||sa.binding.origin!=sw::Origin::Refresh||sa.binding.form!=form||sa.binding.owner!=a.formGuest||sa.binding.epoch!=a.epoch||sa.binding.lifetime!=a.lifetime||sa.binding.archive!=a.archive||sa.binding.car!=i.preview->selection().selectedCar||sc.ownerEpoch!=a.epoch||sc.iteration||se.iteration||sc.sequence<=i.previewEvent.sequence||sc.sequence>ce.sequence||sa.events.enter<=sc.sequence||se.ownerEpoch!=a.epoch||se.sequence!=sa.events.exit||se.sequence>=ue.sequence||!i.swatchCopyPost||!i.actualSwatchPost||!sw::plane(*i.swatchCopyPost)||!sw::plane(*i.actualSwatchPost)||!retainedBaseTarget(b.post.target,i.swatchCopyPost->target)||!retainedBaseTarget(b.post.target,i.actualSwatchPost->target)||!i.swatch->preMatches(*i.swatchCopyPost)||!i.swatch->matches(sa,i.actualSwatchPost->target,i.actualSwatchPost->pixels.data(),Full))return reject(Failure::Binding);
   // A Refresh is bound to this exact original copy. Lazy may retain only
@@ -162,6 +180,6 @@ inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&i,Wor
  std::copy(i.preview->post().begin(),i.preview->post().end(),w.whole.begin());const uint32_t key=c.row[0].colorKey;for(unsigned y=0;y<480;++y)for(unsigned x=0;x<343;++x){unsigned at=y*640+x;w.whole[at]=nfs_small_logo_live::pixel(w.whole[at],nfs_small_logo_live::expanded(le16(c.sourceBefore.data()+16+2*(y*343+x)),key),false);}
  if(i.swatch){const auto r=i.swatch->bounds();if(r.left!=366||r.top!=141||r.width!=85||r.height!=22||i.swatch->pixels().size()!=85*22||i.swatch->coverage().size()!=85*22)return reject(Failure::Pixels);for(unsigned y=0;y<22;++y)for(unsigned x=0;x<85;++x){unsigned k=y*85+x;if(i.swatch->coverage()[k])w.whole[(y+141)*640+x+366]=i.swatch->pixels()[k];}}
  if(!std::equal(w.whole.begin(),w.whole.end(),i.actualUploadPost->pixels.begin()))return reject(Failure::Pixels);
- try{std::shared_ptr<VerifiedSource>source(new VerifiedSource);auto&o=source->data_;o.overlay=makeOverlay(*i.preview,i.swatch.get(),c);if(!o.overlay)return reject(Failure::Pixels);o.form=form;o.caption=i.sidebar->caption();o.captionSerial=i.sidebar->captionSerial();o.captionLifetime=i.sidebarLifetime;o.preview=i.preview;o.previewSerial=i.acceptedPreviewSerial;o.previewLifetime=a.lifetime;o.previewArchive=a.archive;o.previewBaseEvent=b.event;o.previewEvent=i.previewEvent;o.swatch=i.swatch;o.swatchCopySerial=i.acceptedSwatchCopySerial;o.swatchCopyEvent=i.swatchCopyEvent;o.swatchEvent=i.swatchEvent;o.mapRole=b.mapRole;o.wordCount=i.sidebar->wordCount();o.words=i.sidebar->words();o.logos=i.sidebar->logos();o.serial=a.generation;o.contentRevision=a.contentSerial;o.original=i.actualUploadPost->pixels;o.valid=true;source->binding_=a;source->target_=i.actualUploadPost->target;return source;}catch(...){return reject(Failure::Source);}
+ try{std::shared_ptr<VerifiedSource>source(new VerifiedSource);auto&o=source->data_;o.overlay=makeOverlay(*i.preview,i.swatch.get(),c);if(!o.overlay)return reject(Failure::Pixels);o.form=form;o.caption=caption;o.captionSerial=captionSerial;o.captionLifetime=captionLifetime;o.preview=i.preview;o.previewSerial=i.acceptedPreviewSerial;o.previewLifetime=a.lifetime;o.previewArchive=a.archive;o.previewBaseEvent=b.event;o.previewEvent=i.previewEvent;o.swatch=i.swatch;o.swatchCopySerial=i.acceptedSwatchCopySerial;o.swatchCopyEvent=i.swatchCopyEvent;o.swatchEvent=i.swatchEvent;o.mapRole=b.mapRole;o.wordCount=wordCount;o.words=words;o.logos=logos;o.serial=a.generation;o.contentRevision=a.contentSerial;o.original=i.actualUploadPost->pixels;o.valid=true;source->binding_=a;source->target_=i.actualUploadPost->target;source->initialSidebar_=i.initialSidebar;if(!source->current())return reject(Failure::Binding);return source;}catch(...){return reject(Failure::Source);}
 }
 } // namespace nfs_player_scene_cpu

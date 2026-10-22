@@ -113,7 +113,7 @@ def add_player_scene_hooks(text, name):
             if part.count(initial) != 1 or part.index(initial) > part.index("loc_40C25E:\n") or part[:part.index(initial)].count("\tebp = guest_transaction.load<int32_t>(dword_4D243C); //mov\n") != 1:
                 raise ValueError("Player initial caption caller changed")
             initial_open = block("initial-caption-open", " { auto nfs_player_main_origin = nfs_main_sidebar_origin_live::acquireForInitialCaption(*this);\n nfs_player1_caption::InitialCallerScope nfs_player1_initial(*this,nfs_player_main_origin);\n nfs_player2_caption::InitialCallerScope nfs_player2_initial(*this,nfs_player_main_origin);")
-            part = replace(part, initial, initial.replace(call("40C110"), initial_open + call("40C110") + block("initial-caption-close", " }"), 1))
+            part = replace(part, initial, initial.replace(call("40C110"), initial_open + call("40C110") + block("initial-caption-close", " }") + block("initial-caption-seal", " nfs_player_scene_live::completeInitialCaption(*this);"), 1))
             for label, site in (("loc_40C3CC:\n", "Initial"), ("loc_40C5C6:\n", "Refresh")):
                 tag = site.lower()
                 part = wrap(part, label, "405B30", "base-" + tag, "nfs_player_scene_live::RoleScope nfs_player_base(*this,nfs_player_scene_live::Phase::Base,nfs_player_scene_live::BaseArgument::Blk4Direct);", ("guest_address(aBlk4)", "dword_4D4D24", "_sub_4825A8();"))

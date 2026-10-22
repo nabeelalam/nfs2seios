@@ -20,7 +20,7 @@ inline bool sameBinding(const SourceBinding&a,const SourceBinding&b)noexcept{
  return a.form==b.form&&a.formGuest==b.formGuest&&a.sourceOwner==b.sourceOwner&&a.archive==b.archive&&a.gameOwner==b.gameOwner&&a.thread==b.thread&&a.epoch==b.epoch&&a.lifetime==b.lifetime&&a.generation==b.generation&&a.contentSerial==b.contentSerial&&a.copySerial==b.copySerial&&a.kind==b.kind;
 }
 inline bool bindingMatches(const Source&s,const CurrentBinding&c)noexcept{
- const auto&b=s.binding();return nfs_player_native::sameBinding(b,c.source)&&b.gameOwner&&b.thread&&b.epoch&&b.lifetime&&b.generation&&b.contentSerial&&b.copySerial&&b.archive&&b.formGuest&&b.sourceOwner==b.formGuest&&c.sourceOwner==b.sourceOwner&&c.fullTargetOwner==s.target().owner&&c.sourceBitmap==s.target().w[8]&&c.fullTargetOwner&&c.sourceBitmap&&s.form()==b.form&&(s.player()==1||s.player()==2);
+ const auto&b=s.binding();return s.current()&&nfs_player_native::sameBinding(b,c.source)&&b.gameOwner&&b.thread&&b.epoch&&b.lifetime&&b.generation&&b.contentSerial&&b.copySerial&&b.archive&&b.formGuest&&b.sourceOwner==b.formGuest&&c.sourceOwner==b.sourceOwner&&c.fullTargetOwner==s.target().owner&&c.sourceBitmap==s.target().w[8]&&c.fullTargetOwner&&c.sourceBitmap&&s.form()==b.form&&(s.player()==1||s.player()==2);
 }
 inline bool planeMatches(const Source&s,const Plane&p)noexcept{return p.valid==1&&p.width==640&&p.height==480&&nfs_logo_capture::same(p.target,s.target())&&s.original().size()==640u*480u&&std::equal(s.original().begin(),s.original().end(),p.pixels.begin());}
 inline uint16_t to1555(uint16_t p)noexcept{const uint16_t rgb=uint16_t(((p&0xf800u)>>1)|((p&0x7c0u)>>1)|(p&31u));return rgb?uint16_t(rgb|0x8000):0;}

@@ -1,0 +1,75 @@
+{
+  "scope": "Genuine original initial Player sidebar, new copy, full-frame source and independent native upload handoff; physical iPad acceptance separate",
+  "baseCommit": "a165c25f2aee31076c64a6d28621997291bd68f9",
+  "sourceSha256": {
+    "scripts/player_scene_hooks.py": "426e82c558644d4b50a9917a4179eaf68832e394f2bb377bcda878016f3827d0",
+    "src/hd/PlayerCopyGameHooks.inc": "d73bdddda7778610aad5f6b6401c3a9af6898c29a224f52f4197e5faf6274422",
+    "src/hd/PlayerNativeUploadWitness.h": "7c9c6b867060bebb3e703dcdfb96a779d3e5687946cb270ab1c40eab6e65cd99",
+    "src/hd/PlayerSceneLiveGameHooks.inc": "d2cbe31874bb87988504764ed8a7ae20f47512579ea3efcdb5569990cfbb1076",
+    "src/hd/PlayerScenePrepare.h": "b17b98e8e891b4d3fc338722960670770c4c11c7035834b76f487dff720d0a61",
+    "src/hd/PlayerSourceGameHooks.inc": "70a916a46d63c6784f6261095ca97141d5f10106a391b53127ea379fc5455040",
+    "src/hd/PlayerInitialSidebarProof.h": "c52c5f3ac848ee37c77df2824090909e22f06f27931f736bada5056ce0690c03",
+    "tests/options_caption_runtime_tests.cpp": "517f5ff64766f9e9e08870ecd11bfdc5a30df2639ba29538e54d321129723a37",
+    "tests/player_copy_runtime_tests.cpp": "1bfefacc3cabe3721559f253909b8af304dace4ea676ae91790ea8a3c04564dc",
+    "tests/player_scene_hooks_test.py": "9733dfede1d29af9e8f6df9c0846b1c224acd5fcf3705a0d60ecd8af566e8ee3",
+    "tests/player_source_runtime_tests.cpp": "93984983875fe5c10ee9690b29640c735043b1be7ace2768fd83b58122396091"
+  },
+  "behavior": {
+    "privateTypedInitialSidebarProofUsesGenuineMainAndCaption": true,
+    "mainHistoryAndNewPlayerEpochRemainSeparate": true,
+    "pendingSurvivesOriginalBasePreviewReset": true,
+    "failureOwnerExitRetirementAndReplacementRevokePending": true,
+    "onlyActualInitialOrRefreshCopiesMayReuseHistoricalMainGroupSerial": true,
+    "ordinarySidebarAndInitialProofAreMutuallyExclusive": true,
+    "actualNewCopyRowsAndAll307200FrameWordsVerified": true,
+    "independent300TileNativeUploadProofStillRequired": true,
+    "sourceAndNativeProofsPropagateInitialLifetimeRevocation": true,
+    "noPaintLazyCaptureResetPreservesVerifiedCachedSource": true,
+    "originalOperationsAndGuestStatePreserved": true
+  },
+  "validation": {
+    "focusedChecksPerMode": 20,
+    "optimizedPassed": true,
+    "asanUbsanPassed": true,
+    "testReceiptSha256": "d4f3eedb0e5137e4288381781b9e62c82b2c16b0455fbf386e390ed4715fc1f5",
+    "genuineBothPlayerInitialAndRefreshSwatchSourceAnd300TileFixturesPassed": true,
+    "fixtureMainEpochOnePlayerEpochNineAndCaptionLifetimeIndependent": true,
+    "realProductionCxx14UnitsCompiled": 7,
+    "actualSixUnitInsertionOnlyReversalExact": true,
+    "compilerInputCount": 129,
+    "compilerInputsStable": true,
+    "maintained74ObjectsUnchanged": true,
+    "candidateBinarySha256": "c93959d181a4fba69a7e1f94532db23546182042fbc29969c29070ae99d17176",
+    "buildReceiptSha256": "47b9c4b3b1a04670e7a2cccfb3510c7da21b82456e8a3605fffdd759e21c6798",
+    "independentSourceReview": "No concrete live capture, provenance-domain or no-paint cached-lifetime gap found",
+    "diagnosedFailedRuns": "Strict Initial GPU assertion was inconsistent with original Initial then first-display Refresh flow. Actual traces proved valid Initial source/300 tiles followed by unchanged-sidebar Refresh; typed provenance now participates in that real Refresh. Failed receipts retained privately.",
+    "actualOriginalData": {
+      "readOnlyPrivateObservationBinarySha256": "6a23c033d61cf0ae1c09233ba98ac1dc966e513518db1bb53a0e658b9b74625e",
+      "observationInsertionOnlyReversalExact": true,
+      "resultSha256": "206bd66d684897232871cd61496efd74f7ba48c6c9120212195c105e72e8d363",
+      "bothPlayersInitialSidebarAndRealCopyPassed": true,
+      "bothPlayersInitialSourceAnd300TileProofPassed": true,
+      "realFirstDisplayRefreshQueueAndMatchingGpuFinishPassed": true,
+      "nativeSize": [
+        2186,
+        1640
+      ],
+      "laterOriginalCarChangesAndRestorationPassed": true,
+      "cleanShutdownCopiedProfileAndArtworkRestored": true,
+      "ownedGameDisplayTerminalAndLeaseAbsent": true,
+      "noPaintLazyReuseObserved": false
+    }
+  },
+  "limitations": [
+    "Observed actual run uses read-only private diagnostics; separate unobserved candidate is build-verified",
+    "No physical iPad performance or visual acceptance inferred",
+    "No production artwork adoption or font-file distribution from this source patch",
+    "Remaining semantic UI/HUD remaster and Low Power Mode performance requirements remain open",
+    "Intro-animation coverage remains separate; the initial-entry capture is transitional, so this receipt does not claim every intro frame is remastered",
+    "Existing authored logo/font/UI appearance is not asserted final by this producer and presentation validation",
+    "No-paint cached preservation was source-reviewed; this run did not independently demonstrate that exact lazy early-return branch"
+  ],
+  "privateDataPublished": false,
+  "cloudBuildsStarted": 0,
+  "push": false
+}

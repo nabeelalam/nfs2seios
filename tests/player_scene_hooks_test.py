@@ -170,5 +170,16 @@ class PlayerHooksTests(unittest.TestCase):
         self.assertNotRegex(public, r"(?i)(?:(?<![a-z0-9_])[a-z]:[\\/]|/mnt/[a-z]/|/home/)")
 
 
+    def test_initial_caption_seal_follows_closed_caller_before_target_restore(self):
+        text = hooks.add_player_scene_hooks(units()["Methods_01.cpp"], "Methods_01.cpp")
+        closed = text.index("// NFS_PLAYER_SCENE_END:initial-caption-close")
+        sealed = text.index(" nfs_player_scene_live::completeInitialCaption(*this);")
+        restore = text.index(call("4824BC"), closed)
+        self.assertLess(closed, sealed)
+        self.assertLess(sealed, restore)
+        self.assertEqual(text.count("completeInitialCaption(*this)"), 1)
+        self.assertEqual(hooks.reverse_player_scene_hooks(text), units()["Methods_01.cpp"])
+
+
 if __name__ == "__main__":
     unittest.main()
