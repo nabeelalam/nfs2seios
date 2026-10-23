@@ -13,11 +13,11 @@ struct Artwork {
  std::vector<unsigned char>rgba;
  std::array<unsigned char,32>sha{};
 };
-// Only eight authenticated complete-word images are admitted. Caller-provided
+// Only eleven authenticated complete-word images are admitted. Caller-provided
 // RLE is copied; no source span or mutable image is retained after publication.
 inline std::shared_ptr<const Artwork>decode(unsigned word,const unsigned short*runs,size_t count)noexcept{
- if(word<1||word>8||!runs||!count||count%2)return {};
- static constexpr unsigned widths[8]={304,324,352,440,292,376,300,336};
+ if(word<1||word>11||!runs||!count||count%2)return {};
+ static constexpr unsigned widths[11]={304,324,352,440,292,376,300,336,140,204,164};
  const unsigned width=widths[word-1],height=128;
  const size_t pixels=size_t(width)*height;
  if(count>pixels*2)return {};
@@ -45,8 +45,8 @@ inline std::shared_ptr<const Artwork>decode(unsigned word,const unsigned short*r
  }catch(...){return {};}
 }
 inline std::shared_ptr<const Artwork>artwork(unsigned word)noexcept{
- if(word<1||word>8)return {};
- static const std::shared_ptr<const Artwork>images[8]={
+ if(word<1||word>11)return {};
+ static const std::shared_ptr<const Artwork>images[11]={
   decode(1,nfs_audio_dialog_word_alpha_rle_1,sizeof(nfs_audio_dialog_word_alpha_rle_1)/sizeof(unsigned short)),
   decode(2,nfs_audio_dialog_word_alpha_rle_2,sizeof(nfs_audio_dialog_word_alpha_rle_2)/sizeof(unsigned short)),
   decode(3,nfs_audio_dialog_word_alpha_rle_3,sizeof(nfs_audio_dialog_word_alpha_rle_3)/sizeof(unsigned short)),
@@ -54,7 +54,10 @@ inline std::shared_ptr<const Artwork>artwork(unsigned word)noexcept{
   decode(5,nfs_audio_dialog_word_alpha_rle_5,sizeof(nfs_audio_dialog_word_alpha_rle_5)/sizeof(unsigned short)),
   decode(6,nfs_audio_dialog_word_alpha_rle_6,sizeof(nfs_audio_dialog_word_alpha_rle_6)/sizeof(unsigned short)),
   decode(7,nfs_audio_dialog_word_alpha_rle_7,sizeof(nfs_audio_dialog_word_alpha_rle_7)/sizeof(unsigned short)),
-  decode(8,nfs_audio_dialog_word_alpha_rle_8,sizeof(nfs_audio_dialog_word_alpha_rle_8)/sizeof(unsigned short))};
+  decode(8,nfs_audio_dialog_word_alpha_rle_8,sizeof(nfs_audio_dialog_word_alpha_rle_8)/sizeof(unsigned short)),
+  decode(9,nfs_audio_dialog_word_alpha_rle_9,sizeof(nfs_audio_dialog_word_alpha_rle_9)/sizeof(unsigned short)),
+  decode(10,nfs_audio_dialog_word_alpha_rle_10,sizeof(nfs_audio_dialog_word_alpha_rle_10)/sizeof(unsigned short)),
+  decode(11,nfs_audio_dialog_word_alpha_rle_11,sizeof(nfs_audio_dialog_word_alpha_rle_11)/sizeof(unsigned short))};
  return images[word-1];
 }
 } // namespace nfs_audio_dialog_display

@@ -20,10 +20,10 @@ inline void trace(unsigned reason,const char*name,const live::State*s)noexcept{
 // Bounded existing private diagnostic: immutable source metadata only.
 inline void traceDialog(uint64_t request,const nfs_audio_dialog_word::Proof&proof)noexcept{
  static const bool on=[](){const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");return p&&p[0]=='1'&&!p[1];}();
- static thread_local unsigned count=0,lastSelected=UINT32_MAX;static thread_local std::array<uint16_t,8>lastColors{};
- if(!on||count>=32)return;const auto&e=proof.evidence();std::array<uint16_t,8>colors{};for(unsigned k=0;k<8;++k)colors[k]=proof.packet()->records()[nfs_audio_dialog_word::record(k)+1].command.color;
+ static thread_local unsigned count=0,lastSelected=UINT32_MAX;static thread_local std::array<uint16_t,nfs_audio_dialog_word::Words>lastColors{};
+ if(!on||count>=32)return;const auto&e=proof.evidence();std::array<uint16_t,nfs_audio_dialog_word::Words>colors{};for(unsigned k=0;k<nfs_audio_dialog_word::Words;++k)colors[k]=proof.packet()->records()[nfs_audio_dialog_word::record(k)+1].command.color;
  if(lastSelected==e.authority.selectedIndex&&lastColors==colors)return;lastSelected=e.authority.selectedIndex;lastColors=colors;++count;
- std::fprintf(stderr,"AUDIO DIALOG source request=%llu selected=%u serial=%llu colors=",(unsigned long long)request,e.authority.selectedIndex,(unsigned long long)e.serial);for(unsigned k=0;k<8;++k)std::fprintf(stderr,"%s%u",k?",":"",unsigned(colors[k]));std::fprintf(stderr,"\n");
+ std::fprintf(stderr,"AUDIO DIALOG source request=%llu selected=%u serial=%llu colors=",(unsigned long long)request,e.authority.selectedIndex,(unsigned long long)e.serial);for(unsigned k=0;k<nfs_audio_dialog_word::Words;++k)std::fprintf(stderr,"%s%u",k?",":"",unsigned(colors[k]));std::fprintf(stderr,"\n");
 }
 inline void begin(Game&g,Intent&i){
  if(!nfs_background_scene_live::enabled()||activeRequest()||i.serial||i.beginConsumed)return;

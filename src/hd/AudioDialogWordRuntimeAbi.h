@@ -3,9 +3,9 @@
 #define NFS_AUDIO_DIALOG_WORD_RUNTIME_ABI_H
 #include <stdint.h>
 #include <stddef.h>
-#define NFS_AUDIO_DIALOG_WORD_SCHEMA 1u
-#define NFS_AUDIO_DIALOG_WORD_IMAGES 8u
-#define NFS_AUDIO_DIALOG_WORD_PLACEMENTS 16u
+#define NFS_AUDIO_DIALOG_WORD_SCHEMA 2u
+#define NFS_AUDIO_DIALOG_WORD_IMAGES 11u
+#define NFS_AUDIO_DIALOG_WORD_PLACEMENTS 22u
 /* Finite whole-word images only. All zero retains original full640 text.
    Ordered placements replace exact original vertex spans, preserving all
    intervening dynamic text and original shadow/foreground order. */

@@ -2,7 +2,7 @@
 #ifndef NFS_AUDIO_SCENE_RUNTIME_ABI_H
 #define NFS_AUDIO_SCENE_RUNTIME_ABI_H
 #include "AudioSceneLayerAbi.h"
-#define NFS_AUDIO_SCENE_RUNTIME_SCHEMA 3u
+#define NFS_AUDIO_SCENE_RUNTIME_SCHEMA 4u
 /* Native immutable packet borrows. Required paired lifetime callbacks retain
    every scene/source/font/art allocation independently of queue consumption.
    Begin retains once before storing borrows; finish/cancel/retire releases once.

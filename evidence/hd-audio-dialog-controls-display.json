@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "scope": "All eleven fixed English Audio title, button and body words",
+  "supersedesBodyOnlyMilestone": "hd-audio-dialog-word-display.json",
+  "artwork": {
+    "firstEightImageRecordsAndRgbaIdentitiesUnchanged": true,
+    "originalHorizontalAllocationsPreserved": true,
+    "baseline": 24,
+    "rasterScale": 4,
+    "titleCenterDoneRightCancelLeft": true,
+    "fontFilesAndOriginalPixelsIncluded": false,
+    "dynamicValuesAndColonsRemainOriginal": true
+  },
+  "source": {
+    "original48CommandPacketRetained": true,
+    "twentyTwoExactOrderedShadowForegroundSpans": true,
+    "doneOriginalRightMeasure": true,
+    "cancelOriginalUnmeasuredLeftPolicy": true,
+    "audioOriginalCenterMeasure": true,
+    "recordedAlignmentHintsNeverSubstituteResourcePolicy": true,
+    "all11DescriptorsHeadersPointersAndResourceTextsRechecked": true,
+    "currentGameThreadArchiveFontTargetSerialLifetimeReacquired": true,
+    "immutableArtAndExactTextPacketOwnersRetained": true,
+    "originalFull640BarSceneCopyUploadAndLeaseJoinsPreserved": true
+  },
+  "renderer": {
+    "audioRuntimeSchema": 4,
+    "dialogWordSchema": 2,
+    "ownedImages": 11,
+    "orderedPlacements": 22,
+    "priorSchemasRejectedBeforeNewBorrow": true,
+    "allOriginalTextVerticesStillValidated": true,
+    "originalDynamicTextInterleavingPreserved": true,
+    "boundsAndAliasesCheckedBeforeDrawing": true,
+    "originalSourceColorsAndPresentationGammaPreserved": true,
+    "foreignOwnerLossForgetsWithoutCleanup": true,
+    "original300Selections600TrianglesAndColorOnlyCommitPreserved": true
+  },
+  "validation": {
+    "registeredChecksPerMode": 21,
+    "modes": [
+      "optimized",
+      "ASan+UBSan"
+    ],
+    "sourceAndGenerationModules": 9,
+    "genuineFullAudioSceneSourceProofFixture": true,
+    "selectedDoneCancelAndNoSelectionStatesCovered": true,
+    "wrongResourceAlignmentMeasurePointerHeaderAndCurrentnessRefusals": true,
+    "actualGlesNewWordBoxesComparedAtLogicalAndNativeOutput": true,
+    "exactLayerProgramOrderVerified": true,
+    "firstEightRegressionAndUnrelatedFallbackPixelsChecked": true,
+    "resourceAliasAndMalformedSchemaCoverage": true,
+    "representativeActualForeignContextLossCases": 2,
+    "independentCpuGpuReviewsFoundNoConcreteBlocker": true
+  },
+  "actualGame": {
+    "outputSize": [
+      2186,
+      1640
+    ],
+    "originalInputOnly": true,
+    "settledCaptures": 13,
+    "labelComparisons": 143,
+    "selectedIndices": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      9,
+      100
+    ],
+    "fixedGlyphDiceThreshold": 0.8,
+    "glyphDiceRange": [
+      0.8297841518180501,
+      0.9489773950484391
+    ],
+    "fixedAlphaThreshold": 248,
+    "fixedColorDistance": 3,
+    "verifiedOriginalPresentationGamma": 1.5,
+    "oldOriginalFontNegativeDice": [
+      0.12720422004521478,
+      0.15762273901808785,
+      0.2539641614026041,
+      0.2658947142703978,
+      0.30444444444444446,
+      0.2525371725277319,
+      0.5631180919139034,
+      0.35385629531970997,
+      0.3745541022592152,
+      0.45071740486587647,
+      0.47324818778046257
+    ],
+    "allCurrentPassed": true,
+    "allPriorFontNegativesDeclined": true,
+    "originalDoneAndCancelActivated": true,
+    "audioExitedAndReentered": true,
+    "returnedToMain": true,
+    "cleanShutdownAndCopiedConfigArtworkRestoration": true,
+    "allAudioValueAndDisabledVariantsExercised": false
+  },
+  "build": {
+    "maxCompilerWorkers": 2,
+    "compilerInputFilesPinned": 361,
+    "baselineObjectsUnchanged": true,
+    "originalMethodBodiesPreserved": true
+  },
+  "limits": {
+    "allNewGlCallLossPointsExhaustivelyInjected": false,
+    "allAliasCategoriesExercisedForEachNewSlot": false,
+    "dedicatedActualAudioAdapterFaultFixture": false,
+    "gpuWordStreamIsSyntheticWithSeparateGenuineCpuSceneFixture": true,
+    "wholeUiAccepted": false,
+    "physicalIPadAppearanceOrPerformanceVerified": false,
+    "newFpsLowPowerBatteryClaim": false,
+    "cloudBuild": false,
+    "push": false
+  }
+}

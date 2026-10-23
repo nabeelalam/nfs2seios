@@ -13,7 +13,7 @@ static_assert(std::is_same<decltype(art::artwork(1)),std::shared_ptr<const art::
 static_assert(std::is_same<decltype(*art::artwork(1)),const art::Artwork&>::value,"shared aliases cannot mutate artwork");
 static_assert(std::is_same<decltype(std::declval<const art::Artwork&>().rgba.data()),const unsigned char*>::value,"published pixel spans are const");
 struct Runs {const unsigned short*data;size_t count;};
-static const Runs sources[8]={
+static const Runs sources[11]={
  {nfs_audio_dialog_word_alpha_rle_1,sizeof(nfs_audio_dialog_word_alpha_rle_1)/sizeof(unsigned short)},
  {nfs_audio_dialog_word_alpha_rle_2,sizeof(nfs_audio_dialog_word_alpha_rle_2)/sizeof(unsigned short)},
  {nfs_audio_dialog_word_alpha_rle_3,sizeof(nfs_audio_dialog_word_alpha_rle_3)/sizeof(unsigned short)},
@@ -21,10 +21,13 @@ static const Runs sources[8]={
  {nfs_audio_dialog_word_alpha_rle_5,sizeof(nfs_audio_dialog_word_alpha_rle_5)/sizeof(unsigned short)},
  {nfs_audio_dialog_word_alpha_rle_6,sizeof(nfs_audio_dialog_word_alpha_rle_6)/sizeof(unsigned short)},
  {nfs_audio_dialog_word_alpha_rle_7,sizeof(nfs_audio_dialog_word_alpha_rle_7)/sizeof(unsigned short)},
- {nfs_audio_dialog_word_alpha_rle_8,sizeof(nfs_audio_dialog_word_alpha_rle_8)/sizeof(unsigned short)}};
+ {nfs_audio_dialog_word_alpha_rle_8,sizeof(nfs_audio_dialog_word_alpha_rle_8)/sizeof(unsigned short)},
+ {nfs_audio_dialog_word_alpha_rle_9,sizeof(nfs_audio_dialog_word_alpha_rle_9)/sizeof(unsigned short)},
+ {nfs_audio_dialog_word_alpha_rle_10,sizeof(nfs_audio_dialog_word_alpha_rle_10)/sizeof(unsigned short)},
+ {nfs_audio_dialog_word_alpha_rle_11,sizeof(nfs_audio_dialog_word_alpha_rle_11)/sizeof(unsigned short)}};
 static void imageChecks(unsigned word){
  auto image=art::artwork(word);CHECK(image);
- static const unsigned widths[8]={304,324,352,440,292,376,300,336};
+ static const unsigned widths[11]={304,324,352,440,292,376,300,336,140,204,164};
  const unsigned width=widths[word-1];
  CHECK(image->word==word&&image->width==width&&image->height==128&&image->rgba.size()==size_t(width)*128*4);
  unsigned char digest[32];CHECK(nfs_texture_sha256(image->rgba.data(),image->rgba.size(),digest));
@@ -63,17 +66,17 @@ static void imageChecks(unsigned word){
   CHECK(!art::decode(word,bad.data(),bad.size()));
  }
  // An authentic image for another fixed identity is still not interchangeable.
- const unsigned other=word%8+1;const Runs wrong=sources[other-1];
+ const unsigned other=word%11+1;const Runs wrong=sources[other-1];
  CHECK(!art::decode(word,wrong.data,wrong.count));
  CHECK(image->rgba==bytes&&alias->rgba==bytes&&image->sha==sha&&decoded->rgba==decodedBytes);
  CHECK(art::artwork(word)==image);
 }
 int main(){
- for(unsigned word:{0u,9u,std::numeric_limits<unsigned>::max()}){
+ for(unsigned word:{0u,12u,std::numeric_limits<unsigned>::max()}){
   CHECK(!art::artwork(word));
   CHECK(!art::decode(word,reinterpret_cast<const unsigned short*>(uintptr_t(1)),2));
  }
- for(unsigned word=1;word<=8;++word)imageChecks(word);
+ for(unsigned word=1;word<=11;++word)imageChecks(word);
  CHECK(art::artwork(1)!=art::artwork(2)&&art::artwork(2)!=art::artwork(3));
- std::puts("PASS eight pinned Audio dialog images, geometry, full RGBA digests, four padded edges, immutable shared/copied ownership and inert malformed RLE rejection");
+ std::puts("PASS eleven pinned Audio dialog images, geometry, full RGBA digests, four padded edges, immutable shared/copied ownership and inert malformed RLE rejection");
 }

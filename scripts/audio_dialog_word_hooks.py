@@ -24,10 +24,11 @@ def add_audio_dialog_word_hooks(text,name):
         if prefix.count("// checked copy transaction begin")!=prefix.count("// checked copy transaction end"):raise ValueError("Audio dialog observation inside guest lease")
     outside_lease(body.index(call))
     body=body.replace(call,call+block('resolved',' nfs_audio_text::dialogResolvedResource(*this,uint32_t(eax));'),1)
-    anchor='// NFS_AUDIO_SIDEBAR_MEASURE_END:measured-right'+nl
-    if body.count(anchor)!=1:raise ValueError("Audio original right-measure hook absent")
-    outside_lease(body.index(anchor))
-    body=body.replace(anchor,anchor+block('measured',' nfs_audio_text::dialogMeasured(*this,uint32_t(ecx),int32_t(eax),int32_t(esi));'),1)
+    for label,kind in (("right",2),("center",1)):
+        anchor='// NFS_AUDIO_SIDEBAR_MEASURE_END:measured-'+label+nl
+        if body.count(anchor)!=1:raise ValueError("Audio original measure hook absent: "+label)
+        outside_lease(body.index(anchor))
+        body=body.replace(anchor,anchor+block('measured-'+label,' nfs_audio_text::dialogMeasured(*this,uint32_t(ecx),int32_t(eax),int32_t(esi),'+str(kind)+');'),1)
     # Original register subtraction must remain after the observation and outside
     # every checked-copy block. Existing Audio/Setup/Options/Player hooks remain.
     if body.index('nfs_audio_text::dialogMeasured')>body.index('\tsub(esi, eax);'):raise ValueError("Audio measurement no longer precedes alignment")
