@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Actual original game Controls menu after one native-flag-triggered SDL context destroy/create, then all four selections and owner re-entry",
+  "observerBinarySha256": "0df3f6d61ca74e7feaba29f4b3ddfc3d0bccf2645629dd3c3c7881e83a079a71",
+  "privateLogSha256": "bc24d796d2877e5c57b89b13267f64c3f04f83da1226739a4311b592a988fdfe",
+  "privateResultSha256": "b59155d3b3ca3c3b005c927503bf9e8f7adfdf9c5655e887ad108bc7112a9d8c",
+  "realSdlDestroyCreate": true,
+  "oldGeneration": 1,
+  "newGeneration": 2,
+  "freshNativeTextureUploads": 609,
+  "allResidentTexturesReloaded": true,
+  "nativeSize": [
+    2186,
+    1640
+  ],
+  "completeControlsPublicationsAfterReset": 77,
+  "fourFreshMatchedNativePassesPerSelectionAndReentry": true,
+  "sourceAndReusedInputsStable": true,
+  "textAndCaptionShapeChecks": [
+    {
+      "region": "title",
+      "beforePixels": 5241,
+      "afterPixels": 5241,
+      "shapeDice": 1.0
+    },
+    {
+      "region": "setup",
+      "beforePixels": 2379,
+      "afterPixels": 2379,
+      "shapeDice": 1.0
+    },
+    {
+      "region": "steering",
+      "beforePixels": 8504,
+      "afterPixels": 8504,
+      "shapeDice": 1.0
+    },
+    {
+      "region": "feedback",
+      "beforePixels": 6633,
+      "afterPixels": 6633,
+      "shapeDice": 1.0
+    },
+    {
+      "region": "done",
+      "beforePixels": 3079,
+      "afterPixels": 3079,
+      "shapeDice": 1.0
+    },
+    {
+      "region": "caption",
+      "beforePixels": 3233,
+      "afterPixels": 3265,
+      "shapeDice": 0.9839950754078178
+    }
+  ],
+  "captureHashes": {
+    "controls-hd-initial.bmp": "b80255752e2bfd382ca7aa7f56ad6e915b00f982c4729aebac9910cfa94c31d2",
+    "controls-hd-context-2.bmp": "6f5b205471c973c82c0d3047b1ff74ef2a95e77b7e9c460456306403e8ecb648",
+    "controls-hd-reentry.bmp": "34cffeaaf95289f8bef1ed5a2ca2cb11447e449dcd1f772496f9ee973750ea35"
+  },
+  "restoration": {
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "brightnessConfigRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedGamePids": [],
+    "displayStoppedAfterTerminalAndRestore": true
+  },
+  "limitations": [
+    "Private one-shot native flag triggers original recovery path; actual operating-system context loss is not claimed.",
+    "Local software GLES test; physical iPad appearance, performance and battery remain unverified.",
+    "Controls child dialogs and normal engine preparation registration remain pending."
+  ]
+}
