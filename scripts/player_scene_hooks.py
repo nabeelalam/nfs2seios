@@ -75,7 +75,7 @@ def add_player_scene_hooks(text, name):
     def captions(kind, args="*this"):
         return "\n".join(" nfs_player" + str(p) + "_caption::" + kind + "(" + args + ");" for p in (1, 2))
     include = '#include "FunctionIds.h"\n'
-    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"'))
+    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"\n#include "hd/PlayerIntroQueueAdapter.inc"'))
     if name == "Methods_01.cpp":
         entry("40C160", " nfs_logo_publisher::PlayerMenuOwnerScope nfs_player_menu(*this);\n nfs_player1_caption::OwnerScope nfs_player1_owner(*this);\n nfs_player2_caption::OwnerScope nfs_player2_owner(*this);\n nfs_player_scene_live::PlayerScope nfs_player_scene(*this);\n nfs_player_scene_live::SourceLifetimeScope nfs_player_source_lifetime(*this);\n nfs_player_initial_native_live::SourceLifetimeScope nfs_player_initial_source_lifetime(*this);")
         entry("40C110", " nfs_player_scene_live::TailScope nfs_player_tail(*this);\n nfs_player1_caption::TailScope nfs_player1_tail(*this);\n nfs_player2_caption::TailScope nfs_player2_tail(*this);")
@@ -121,6 +121,23 @@ def add_player_scene_hooks(text, name):
                 part = wrap(part, label, "405B60", "copy-" + tag, "nfs_player_copy_live::Scope nfs_player_copy(*this,nfs_player_copy_live::Site::" + site + ");", ("0x2800",))
                 part = wrap(part, label, "428250", "upload-" + tag, "nfs_player_scene_live::CachedUploadSiteScope nfs_player_upload_site(*this,nfs_player_scene_live::CachedUploadSite::" + site + ");", ("dword_4D4D24", "edx = 1;"))
             part = wrap(part, "loc_40C792:\n", "405B30", "base-animation", "nfs_player_scene_live::RoleScope nfs_player_base(*this,nfs_player_scene_live::Phase::Base);", ("eax = to32i(esi+4)",))
+            # The normal 21-frame entrance has a distinct slot0 pass. Keep
+            # the original moving preview, slot0, six-mark tail and swap intact.
+            # No RAII scope crosses the loop label or its backward branch.
+            slide_start = "loc_40C375:\n"
+            slide_end = "loc_40C3CC:\n"
+            if part.count(slide_start) != 1 or part.count(slide_end) != 1:
+                raise ValueError("Player normal intro labels changed")
+            first, last = part.index(slide_start), part.index(slide_end)
+            slide = part[first:last]
+            counts(slide, {"4279E0": 1, "427B30": 1, "4276F0": 1, "4976B8": 1})
+            slot = "\tpush32(0xFFFFFFFF);\n\txor_(edx, edx);\n\txor_(eax, eax);\n" + call("427B30")
+            if slide.count(slot) != 1 or slide.index(call("4279E0")) > slide.index(slot) or slide.index(call("4276F0")) < slide.index(slot) or slide.index(call("4976B8")) < slide.index(call("4276F0")):
+                raise ValueError("Player normal intro draw order/arguments changed")
+            slide = replace(slide, slot, slot[:-len(call("427B30"))] + block("intro-open", " { nfs_player_intro_live::IntroFrameScope nfs_player_intro(*this);") + call("427B30") + block("intro-slot0-finish", " nfs_player_intro.slot0Finished();"))
+            slide = replace(slide, call("4276F0"), call("4276F0") + block("intro-tail-finish", " nfs_player_intro.tailFinished();"))
+            slide = replace(slide, call("4976B8"), call("4976B8") + block("intro-close", " }"))
+            part = part[:first] + slide + part[last:]
             anchor = "\tpush32(0xFFFFFFFF);\n\tecx = 0x20; //mov\n\teax = 1; //mov\n\txor_(edx, edx);\n"
             return wrap(part, anchor, "427B30", "presentation", "nfs_player_scene_live::PresentationScope nfs_player_presentation(*this);")
         body("40C160", menu)

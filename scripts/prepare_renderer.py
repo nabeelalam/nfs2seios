@@ -83,6 +83,10 @@ def prepare_renderer():
     text = prepare_background_scene(text, dest)
     text = apply_native_mark_hooks(text)
     copy_native_mark_helpers(dest)
+    from player_intro_renderer_hooks import add_player_intro_renderer_hooks, HELPERS
+    text = add_player_intro_renderer_hooks(text)
+    for name in HELPERS:
+        shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")

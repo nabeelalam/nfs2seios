@@ -1,0 +1,87 @@
+{
+  "scope": "Normal Player1/Player2 entrance: genuine current sidebar/native upload evidence, independent no-clear cached pass, display-only remaster with original preview and six-mark tail preserved. Local Linux GLES evidence only.",
+  "architecture": {
+    "cpu": "Owned immutable Main history, genuine Initial caption and current343/native300-upload proof; actual343 revalidated worker-side before each FIFO operation. No synthetic full Player source/Copy/Preview.",
+    "drawOrder": "Original moving dual-bank preview; begin captures pre-slot0 native color; original300slot0 tiles/600triangles; originalsix-mark tail mirrored before native mark uniforms reset; physicalfront/back swap; display-only texture selection; exact request cleanup.",
+    "nativeHistory": "HD color is written only to a separate color texture. Shared native depth attachment is read-only during supported flat UI tail mirroring. Original native front/back color stays the game history.",
+    "admission": "Independent actual owner/context/generation/physicalFBO+color+depth/dimensions/payload and fullcached tile sequence. No fake fresh-clear authority or broadened existing whole-scene admission.",
+    "fallback": "Stale proof/owner, wrong order/arguments, unsupported state/tail, upload/target retirement or context loss rejects the optional layer and preserves original rendering.",
+    "retirementReview": "Independent review caught cleanup after provenance teardown. Fixed intro retirement before logo retirement; regression assertions cover both owned and unbound paths."
+  },
+  "checks": {
+    "optimizedAndAsanUbsan": true,
+    "focusedTestsPerMode": 23,
+    "sourceHookCases": 12,
+    "rendererHookCases": 4,
+    "nativePass": "Complete300tiles/600triangles and rejection of source/order/geometry/owner/revision errors.",
+    "ownedQueue": "Actual MainThreadHarness transport with genuine CPU source/native seals; explicit live-owner/transport stubs and C renderer mocks. Phase/order/cancellation/currentness/immutable borrows/unwind/WorkerStop checked.",
+    "actualPreparedSourceReversal": "Six original generated units and renderer reverse byte-for-byte; original LF inputs confirmed.",
+    "actualGlesReadback": {
+      "passedOptimizedAndAsanUbsan": true,
+      "syntheticArtAndSimulatedOriginalDispatcher": true,
+      "realNativeGlesDraws": 3008,
+      "assertionsPerMode": 6326,
+      "frames": 4,
+      "physicalNativeColorBuffers": 2,
+      "retainedAlphaHistory": true,
+      "nativeColorEqualsIndependentOriginalDrawBaseline": true,
+      "sharedDepthProbeEqualsOriginalBaseline": true,
+      "separateStagePixelOracleAndRealDisplayQuad": true,
+      "tailUniformsMirroredBeforeReset": true,
+      "wrongKeyIncompletePassNonflatTailCancellationAndRetirement": true,
+      "exhaustiveContextLossInjection": false
+    },
+    "readbackReceiptSha256": "7b29439805274a4602aacd0d242cdacf0143a115eafaa14392becd180d535b38"
+  },
+  "build": {
+    "nativeCpp14Units": 8,
+    "maxCompilerWorkers": 2,
+    "rendererRebuiltFromCurrentClosure": true,
+    "protectedMaintainedObjects": 74,
+    "protectedObjectsUnchanged": true,
+    "binarySha256": "e3e9724bf70e8a1945278f3a38c7dfbfeb0d03e4ab884a56f8c345495195d0a4",
+    "readOnlyObserverSha256": "961a8c61c00757d1e75c9cf597394f18b85d3b65ee99bf8a8cb9367a6ba7a702",
+    "firstBuildRetained": "First candidate compiled before retirement-order correction; not the accepted local observation candidate."
+  },
+  "actualOriginalDataObservation": {
+    "passed": true,
+    "bothPlayers": true,
+    "framesPerPlayer": 21,
+    "offsets": "-240 through0, step12",
+    "sourceUploadEvents": [
+      355,
+      422
+    ],
+    "genuineSource343RevalidatedEveryFrame": true,
+    "nativeTilesPerFrame": 300,
+    "nativeTrianglesPerFrame": 600,
+    "gpuPhaseEvents": 168,
+    "eachPhaseCount": 42,
+    "originalTailTrianglesPerFrame": 12,
+    "carChangesRestorationAndMainReturn": true,
+    "windowDimensions": [
+      2186,
+      1640
+    ],
+    "quit": "Original WM_DELETE_WINDOW, status0",
+    "ownedGameAndDisplayTerminal": true,
+    "copiedConfigAndArtworkRestored": true,
+    "leaseAbsent": true,
+    "resultSha256": "d3feb2bfe0e85c6913cbf5388a811030cda1a373b8655eadf93c20c0459aff1a",
+    "gpuEventsSha256": "a120d7e5f29b0270bca36819716cbd77c9955bcba6e02ec8504276708c5e2f42",
+    "sourceObservationsSha256": "b037776393eef23b1d97f2600dc8d941a0a2a4fee62771af381215f9553bfebc"
+  },
+  "limitations": [
+    "Intermediate entrance frames not yet visually reviewed frame-by-frame.",
+    "Alternate softwareintro route not covered.",
+    "Mixed original/authored right-side artwork coverage and final semantic art/font/UI/HUD acceptance remain open.",
+    "Lighter/wider approved typography preview remains separate from production artwork.",
+    "No physical iPad, performance, battery or LPM60 claim.",
+    "Dedicated Intro per-operation context-loss injection matrix remains open.",
+    "Strict malformed GrTexInfo.format mismatch rejection needs an additional guard; actual observed original selects used the accepted cached path."
+  ],
+  "cloudBuild": false,
+  "push": false,
+  "paidService": false,
+  "fullGoalActive": true
+}

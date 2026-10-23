@@ -23,7 +23,8 @@ def units():
     refresh = initial.replace("loc_40C3CC:", "loc_40C5C6:").replace(call("428250"), call("40CAB0") + call("428250"))
     animation = "loc_40C792:\neax = to32i(esi+4);\n" + call("405B30") + "0x1000\n" + call("405B60")
     native = "loc_40C64C:\n\tpush32(0xFFFFFFFF);\n\tecx = 0x20; //mov\n\teax = 1; //mov\n\txor_(edx, edx);\nexisting_location_route;\n" + call("427B30")
-    unused = "loc_unused:\n" + call("428250") * 8 + call("427B30") * 4
+    slide = "loc_40C375:\n" + call("4279E0") + "\tpush32(0xFFFFFFFF);\n\txor_(edx, edx);\n\txor_(eax, eax);\n" + call("427B30") + call("4276F0") + call("4976B8") + "\tif (jle())\n\t\tgoto loc_40C342;\n"
+    unused = "loc_unused:\n" + call("428250") * 8 + call("427B30") * 3
     lazy = " nfs_hd_scene_iteration.start();\n" + "loc_side:\nguest_address(aSide)\n" + call("405B30") + "loc_word:\noff_4D2474+ecx*4\n" + call("405B30") + call("405B30") * 3
     # Word is uniquely selected by the argument lookup, but its region must not
     # accidentally include following logo calls before a label. Real source
@@ -37,7 +38,7 @@ def units():
     word = "guest_store<int16_t>(esi, static_cast<int16_t>(bx)); //mov\n"
     prefix = '#include "FunctionIds.h"\n// Preserved preexisting transformation and UTF-8: Î©\n'
     return {
-        "Methods_01.cpp": prefix + fn("40C160", initial_caption + initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
+        "Methods_01.cpp": prefix + fn("40C160", initial_caption + slide + initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
         "Methods_03.cpp": prefix + fn("428250", " nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);\n" + call("483470") + "loc_4282FB:\n { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n" + call("49755C") + " }\n" + call("482DA0")) + fn("4284B0") + fn("4287F0") + fn("4289F0"),
         "Methods_09.cpp": prefix + fn("4824CC"),
         "Methods_10.cpp": prefix + fn("482DA0") + fn("4848FC") + fn("482BD4") + fn("483070") + fn("483438"),
@@ -75,6 +76,24 @@ class PlayerHooksTests(unittest.TestCase):
         self.assertNotIn("nfs_player_copy_live::Scope", animated)
         self.assertNotIn("CachedUploadSiteScope", animated)
         self.assertIn("existing_location_route;", after)
+
+    def test_normal_intro_scope_preserves_original_draws_and_swap(self):
+        before = units()["Methods_01.cpp"]
+        after = hooks.add_player_scene_hooks(before, "Methods_01.cpp")
+        slide = after[after.index("loc_40C375:"):after.index("loc_40C3CC:")]
+        order = ("_sub_4279E0();", "push32(0xFFFFFFFF)", "IntroFrameScope", "_sub_427B30();", "nfs_player_intro.slot0Finished();", "_sub_4276F0();", "nfs_player_intro.tailFinished();", "_sub_4976B8();", "NFS_PLAYER_SCENE_BEGIN:intro-close", "goto loc_40C342;")
+        positions = [slide.index(token) for token in order]
+        self.assertEqual(positions, sorted(positions))
+        for symbol in ("4279E0", "427B30", "4276F0", "4976B8"):
+            self.assertEqual(slide.count(call(symbol)), 1)
+        self.assertEqual(after.count("IntroFrameScope"), 1)
+        self.assertIn('#include "hd/PlayerIntroQueueAdapter.inc"', after)
+        alternate = after[after.index("loc_40C792:"):after.index("loc_unused:")]
+        self.assertNotIn("nfs_player_intro", alternate)
+        for old, new in (("loc_40C375:", "loc_changed:"), ("\txor_(eax, eax);\n" + call("427B30"), "\teax = 1;\n" + call("427B30")), (call("4276F0"), ""), (call("4976B8"), call("4976B8") * 2)):
+            with self.subTest(anchor=old):
+                with self.assertRaises(ValueError):
+                    hooks.add_player_scene_hooks(before.replace(old, new, 1), "Methods_01.cpp")
 
     def test_exact_resource_measure_occurrence(self):
         after = hooks.add_player_scene_hooks(units()["Methods_01.cpp"], "Methods_01.cpp")
