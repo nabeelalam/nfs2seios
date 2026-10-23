@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "scope": "Desktop physical-keyboard observation of Graphics dialog reentry, not a controller or iPad acceptance test",
+  "maintainedInputChanged": false,
+  "quarterSecondHeldEnter": {
+    "completedRoutePassed": true,
+    "hostRepeatEvents": 0,
+    "doneAndCancelActivated": true,
+    "graphicsReentered": true,
+    "returnedToMain": true
+  },
+  "nineTenthsSecondHeldEnter": {
+    "completedRoutePassed": true,
+    "hostRepeatEvents": 7,
+    "graphicsReentered": true,
+    "doneAndCancelActivated": true,
+    "returnedToMain": true,
+    "brightnessOrAllSettingsVariantsClaimed": false,
+    "repeatedEnterCharacterMessagesAcceptedByWindowBridge": true
+  },
+  "priorIntermittentReentryFailure": {
+    "retained": true,
+    "reproducedByTheseCompletedRuns": false,
+    "causeProven": false,
+    "fixed": false
+  },
+  "privateCandidate": {
+    "repeatSuppressionPolicyCheckedAgainstUnchangedNegativeControl": true,
+    "optimizedAndSanitizedBehaviorChecksPassed": true,
+    "gameCandidateExecuted": false,
+    "activated": false
+  },
+  "retainedHarnessFailures": [
+    "Copied harness initially lacked its visual reference",
+    "Initial movie playback exceeded the original startup observation bound"
+  ],
+  "restoration": {
+    "allFourRunsCleanExit": true,
+    "copiedSettingsAndArtworkRestored": true,
+    "ownedGameAndDisplayTerminal": true
+  },
+  "limits": [
+    "Repeated Enter was observed but did not establish the earlier failure cause",
+    "No production fix or whole controller/input acceptance claimed",
+    "No physical iPad validation or performance/energy claim"
+  ],
+  "cloudBuild": false
+}

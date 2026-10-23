@@ -116,5 +116,11 @@
     "heldKeyboardConfirmBehaviourFullyResolved": false,
     "cloudBuild": false,
     "push": false
+  },
+  "subsequentKeyboardObservation": {
+    "evidence": "hd-menu-keyboard-reentry-observation.json",
+    "quarterSecondAndNineTenthsSecondHoldsPassed": true,
+    "earlierFailureCauseUnproven": true,
+    "inputChangeActivated": false
   }
 }
