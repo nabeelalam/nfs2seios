@@ -28,6 +28,7 @@ inline void begin(Game&g,Intent&i){
  nfs_graphics_frame::SidebarBinding currentSidebar;
  if(!live::sidebarBinding(*s,currentSidebar)){trace(15,"current-sidebar-binding",s);return;}
  auto sidebar=cache::acquireForSidebar(g,s->background.sidebar,currentSidebar,&cacheTarget);if(!sidebar){trace(8,"current-sidebar",s);return;}
+ const auto&word=sidebar->captionWord();if(!word||!word->current()||word->packet()!=sidebar->caption()||!word->proof()||word->proof()->evidence().policy!=nfs_nested_sidebar_caption::Policy::Graphics){trace(16,"current-sidebar-word",s);return;}
  const auto binding=s->binding;const auto cacheBinding=c->binding;
  auto owned=Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),currentSidebar,cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size());
  if(!owned){trace(9,"immutable-scene-join",s);return;}nfs_graphics_frame::SidebarBinding repeatSidebar;

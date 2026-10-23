@@ -26,6 +26,7 @@ inline void begin(Game&g,Intent&i){
  nfs_logo_capture::Target target{},cacheTarget{};std::vector<uint16_t>post;
  if(!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(s->binding,s->acceptedTextSerial,post.data(),post.size())){trace(7,"current-full-plane",s);return;}
  auto sidebar=cache::acquireForSidebar(g,s->background.sidebar,&cacheTarget);if(!sidebar){trace(8,"current-sidebar",s);return;}
+ const auto&word=sidebar->captionWord();if(!word||!word->current()||word->packet()!=sidebar->caption()||!word->proof()||word->proof()->evidence().policy!=nfs_nested_sidebar_caption::Policy::Audio){trace(16,"current-sidebar-word",s);return;}
  const auto binding=s->binding;const auto cacheBinding=c->binding;
  auto owned=Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size());
  if(!owned){trace(9,"immutable-scene-join",s);return;}if(!live::bound(*s,g,true)||!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(binding,s->acceptedTextSerial,post.data(),post.size())){trace(10,"repeat-full-plane",s);return;}

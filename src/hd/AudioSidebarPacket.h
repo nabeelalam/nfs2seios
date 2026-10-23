@@ -5,6 +5,7 @@
 #pragma once
 #include "BackgroundScenePrepare.h"
 #include "SoftwareFramePacket.h"
+#include "NestedSidebarCaptionDisplay.h"
 #include <memory>
 #include <vector>
 namespace nfs_audio_sidebar {
@@ -25,6 +26,7 @@ struct Input {
  uint64_t acceptedCaptionSerial=0,acceptedCaptionLifetime=0;
  const std::vector<uint8_t>&sourceBefore;
  const std::vector<uint8_t>&sourceAfter;
+ std::shared_ptr<const nfs_nested_sidebar_caption::Proof>captionProof{};nfs_nested_sidebar_caption::Binding captionBinding{};
 };
 inline nfs_soft::SurfaceIdentity surface(const Target&t,uint64_t lifetime)noexcept{
  nfs_soft::SurfaceIdentity s;s.lifetime=lifetime;std::copy(t.w.begin(),t.w.end(),s.geometry.begin());auto&a=s.geometry;a[14]=t.x[0];a[15]=t.x[1];a[16]=t.x[342];a[17]=t.y[0];a[18]=t.y[1];a[19]=t.y[479];return s;
@@ -39,10 +41,12 @@ class Packet {
  Binding binding_;Target target_;std::vector<uint8_t>raw_;
  std::shared_ptr<const Catalog>catalog_;
  std::shared_ptr<const nfs_soft::FramePacket>caption_;
+ std::shared_ptr<const nfs_nested_sidebar_caption::Display>captionWord_;
  std::array<NfsBackgroundSceneWordLayer,4>words_{};
  std::array<NfsSmallLogoLayer,3>logos_{};unsigned wordCount_=0;
  Packet()=default;
  public:
+ const std::shared_ptr<const nfs_nested_sidebar_caption::Display>&captionWord()const noexcept{return captionWord_;}
  const Binding&binding()const noexcept{return binding_;}
  const Target&target()const noexcept{return target_;}
  const std::vector<uint8_t>&raw()const noexcept{return raw_;}
@@ -68,7 +72,12 @@ class Packet {
    if(!std::equal(work->side.begin(),work->side.end(),s.postWords.pixels.begin())||!bg::samePlane(s.postWords,g.pre,343)||sl::verifyGroup(g,work->logo,catalog->logos)!=sl::Failure::None||!std::equal(i.caption->clean().begin(),i.caption->clean().end(),g.post.pixels.begin()))return {};
    for(unsigned k=0;k<Pixels;++k)work->side[k]=sl::le16(i.sourceBefore.data()+16+2*k);
    if(!i.caption->matches(identity,i.acceptedCaptionSerial,work->side.data(),Pixels))return {};
-   auto out=std::shared_ptr<Packet>(new Packet);out->binding_=i.binding;out->target_=t;out->raw_=i.sourceBefore;out->catalog_=std::make_shared<const Catalog>(*catalog);out->caption_=i.caption;out->words_=words;out->wordCount_=unsigned(s.draws.size()-1);
+   std::shared_ptr<const nfs_nested_sidebar_caption::Display>captionWord;
+   if(i.captionProof||!i.captionBinding.empty()){
+    if(!i.captionProof||i.captionBinding.form!=i.binding.form||i.captionBinding.archive!=i.binding.archive||i.captionBinding.serial!=i.acceptedCaptionSerial||i.captionBinding.lifetime!=i.acceptedCaptionLifetime||!retainedTarget(i.captionProof->evidence().post.target,t))return {};
+    captionWord=nfs_nested_sidebar_caption::Display::create(i.captionProof,i.caption,i.captionBinding);if(!captionWord)return {};
+   }
+   auto out=std::shared_ptr<Packet>(new Packet);out->binding_=i.binding;out->target_=t;out->raw_=i.sourceBefore;out->catalog_=std::make_shared<const Catalog>(*catalog);out->caption_=i.caption;out->captionWord_=std::move(captionWord);out->words_=words;out->wordCount_=unsigned(s.draws.size()-1);
    for(unsigned k=0;k<3;++k){const auto&d=g.draw[k];const auto&a=catalog->logos.identities[d.role];auto&l=out->logos_[k];l.role=d.role;l.scalar256=k==1?(d.args[1]&511):256;l.left=float(sl::signed12(a.header[3]));l.top=float(sl::signed12(a.header[3]>>16));l.right=l.left+float(a.width);l.bottom=l.top+float(a.height);l.clip[0]=float(t.w[3]);l.clip[1]=float(t.w[4]);l.clip[2]=float(t.w[5]);l.clip[3]=float(t.w[6]);}
    return out;
   }catch(...){return {};}

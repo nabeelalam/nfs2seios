@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "scope": "Fixed options caption display in the independent Audio and Graphics menus",
+  "word": {
+    "id": 3,
+    "text": "options",
+    "logicalRectangle": [
+      120,
+      364,
+      168,
+      396
+    ],
+    "rgbaSize": [
+      192,
+      128
+    ],
+    "audioRuntimeViewSchema": 2,
+    "graphicsRuntimeViewSchema": 2,
+    "fontFileOrOriginalGamePixelsIncluded": false
+  },
+  "ownership": {
+    "separatePrivateAudioAndGraphicsLexicalProofs": true,
+    "actualDescriptorAndPolicyMustMatchCurrentForm": true,
+    "currentGameThreadArchiveLiteralSerialLifetimeAndResourceRechecked": true,
+    "actualFullCopiedOwnerHeaderCoordinateTablesPixelsAndLutCompared": true,
+    "ambientTargetMaySwitch343To640": true,
+    "historicalProofAloneNeverAuthorizesLiveDisplay": true,
+    "originalFull640TextBarSceneCopyUploadAndLeaseJoinsPreserved": true,
+    "liveGenuineNonemptyWordRequired": true,
+    "legacyEmptyWordFallbackRetained": true,
+    "invalidNonemptyWordNeverDowngrades": true
+  },
+  "renderer": {
+    "separateActualContextThreadGenerationAndOwnedWordResources": true,
+    "sharedMechanicalWord3HelperOnly": true,
+    "oldSchemaRejectedBeforeTrailingBorrow": true,
+    "wordIdentityGeometryAndResourcesInImageCacheKey": true,
+    "originalSoftwareCaptionFontAndVerticesStillValidated": true,
+    "wordReplacesOnlySidebarCaptionDraw": true,
+    "audioBarsAndFull640DialogTextOrderPreserved": true,
+    "stagingColorAliasRefusedBeforeAnyLayerDraw": true,
+    "newHelperOperationsGuardedIncludingRestoreAndRetire": true,
+    "ownerLossAbandonsMetadataWithoutForeignCleanup": true,
+    "original300Selections600TrianglesAndColorOnlyCommitPreserved": true
+  },
+  "validation": {
+    "registeredChecksPerMode": 20,
+    "modes": [
+      "optimized",
+      "ASan+UBSan"
+    ],
+    "sourceAndGenerationModules": 8,
+    "genuineLexicalProofAndFullSidebarPacketJoin": true,
+    "genuineFullAudioSceneProofFixture": false,
+    "legacyPreparedAndRetainedLeaseFixturesPreserved": true,
+    "actualGlesWordPixelsAtLogicalAndNativeOutput": true,
+    "unrelatedLayerPixelsComparedWithLegacyFallback": true,
+    "resourceAliasesMalformedSchemaPayloadCacheLifetimeAndHelperOwnerLossCovered": true,
+    "graphicsActualAdapterSchemaLifetimeAndOwnerLossCoverage": true,
+    "audioActualAdapterDedicatedSchemaLifetimeOwnerLossFaultFixture": false,
+    "exactDepthBitsReadbackProven": false,
+    "wholeLegacyCompositorContextLossCoverageExpanded": false
+  },
+  "actualGame": {
+    "outputSize": [
+      2186,
+      1640
+    ],
+    "bothMenusPublishCompleteOriginalPasses": true,
+    "normalMenuSelectionChangedAndRestored": true,
+    "bothMenusLeftAndReopened": true,
+    "returnedToMain": true,
+    "allDialogValuesExercised": false,
+    "sourceValuesWrittenByHarness": false,
+    "settledCaptionCaptures": 8,
+    "glyphDiceRange": [
+      0.9482410028305701,
+      0.9507399148591121
+    ],
+    "glyphDiceFixedThreshold": 0.8,
+    "priorOriginalFontNegativeDice": [
+      0.4171382376717866,
+      0.4085667215815486
+    ],
+    "independentCaptionVisualReviewFoundNoBlocker": true,
+    "cleanShutdownAndCopiedConfigArtworkRestoration": true
+  },
+  "build": {
+    "maxCompilerWorkers": 2,
+    "maintainedObjectsUnchanged": 74,
+    "compilerInputFilesPinned": 353,
+    "lineEndingOnlyCleanupProducedIdenticalProductionAndObserverBinaries": true,
+    "duplicateActualRunAvoidedAfterExactBinaryEquality": true,
+    "originalGameMethodBodiesPreserved": true
+  },
+  "retainedFailures": [
+    "Graphics word texture alias to staging color was first checked after a background draw; the actual GLES test failed. Pre-draw owner/resource/attachment validation now refuses it before drawing.",
+    "Navigation recognition combined an authored value mask with an old color-based heading mask. A second white-mask attempt was also wrong for the yellow value. Actual Options publication, unchanged body recognition and stable original yellow value now establish navigation; the new sidebar glyph shape is checked independently."
+  ],
+  "limits": {
+    "remainingAudioGraphicsDialogWordsAndUiPending": true,
+    "wholeUiAccepted": false,
+    "physicalIPadAppearanceOrPerformanceVerified": false,
+    "newFpsLowPowerOrBatteryClaim": false,
+    "cloudBuild": false,
+    "push": false
+  }
+}

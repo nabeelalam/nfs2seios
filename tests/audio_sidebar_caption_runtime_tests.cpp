@@ -9,7 +9,7 @@
 #include <new>
 #include <thread>
 #include "hd/OriginalUiRecords.h"
-static std::array<uint8_t,2097152> memory{};static unsigned leaseDepth=0,reads=0;static uint32_t deniedRead=0;static std::atomic<unsigned> allocationsInLease{0},foreignAllocations{0};static thread_local bool foreignPath=false;
+static std::array<uint8_t,4194304> memory{};static unsigned leaseDepth=0,reads=0;static uint32_t deniedRead=0;static std::atomic<unsigned> allocationsInLease{0},foreignAllocations{0};static thread_local bool foreignPath=false;
 void*operator new(size_t n){if(leaseDepth)++allocationsInLease;if(foreignPath)++foreignAllocations;if(void*p=std::malloc(n))return p;throw std::bad_alloc();}
 void operator delete(void*p)noexcept{std::free(p);}
 void operator delete(void*p,size_t)noexcept{std::free(p);}
@@ -48,6 +48,11 @@ static void descriptorRetirement(){
   assert(packet->original()[369*343+123]==0xffff&&packet->clean()[369*343+123]==0&&packet->pixels()==343*480);assert(!leaseDepth&&allocationsInLease==0);
  }
 }
+#define NFS_NESTED_TEST_FORM off_4D3348
+#define NFS_NESTED_TEST_POLICY nfs_nested_sidebar_caption::Policy::Audio
+#include "NestedSidebarCaptionProofCases.h"
+#undef NFS_NESTED_TEST_POLICY
+#undef NFS_NESTED_TEST_FORM
 int main(){prepare();Game g;g.eax=off_4D3348;g.ebp=off_4D3348;{cap::OwnerScope nofont(g);assert(!cap::current(g));}assert(nfs_soft::installFontCatalog(font()));feature=false;auto priorReads=reads;{cap::OwnerScope disabled(g);}assert(reads==priorReads);feature=true;g.eax=0x999;{cap::OwnerScope wrong(g);assert(!cap::current(g));auto before=reads;cap::TailScope outside(g);assert(reads==before);}
  std::shared_ptr<const nfs_soft::FramePacket> retained;
  for(const char*mode:{"normal","right","center","measure-anchor","missing-measure","measure-pointer","measure-zero","measure-duplicate","measure-font","measure-color","bad-word","extra-write","palette","font","font-header","wrong-mode","wrong-callback","wrong-size","unknown-text","unrelated-global","wrong-tail","ordinal-seven","wrong-resource","aliased-resource","wrong-category","wrong-color","wrong-position","lut","y-lut","header","selection","nested","retire","unrelated"}){prepare();g.eax=off_4D3348;g.ebp=off_4D3348;auto original=g;cap::OwnerScope owner(g);auto*s=cap::current(g);assert(s&&s->font);assert(!std::memcmp(&g,&original,sizeof g));if(!std::strcmp(mode,"wrong-mode"))put<uint32_t>(dword_4D20A0,1);if(!std::strcmp(mode,"wrong-callback"))put<uint32_t>(dword_4DD77C,123);if(!std::strcmp(mode,"wrong-size"))put<int32_t>(dword_4E54AC,17);if(!std::strcmp(mode,"unknown-text"))memory[0x90000]=uint8_t(88);if(!std::strcmp(mode,"lut"))selected.x[100]^=2;if(!std::strcmp(mode,"y-lut"))selected.y[250]^=2;if(!std::strcmp(mode,"header"))selected.header[1]^=1;if(!std::strcmp(mode,"unrelated-global"))put<uint32_t>(dword_4D243C,123);if(!std::strcmp(mode,"wrong-tail"))g.ebp=123;if(!std::strcmp(mode,"ordinal-seven"))put<uint32_t>(byte_4D3ECC,7u<<16);if(!std::strcmp(mode,"wrong-resource"))put<uint32_t>(dword_4D3E9C,0x80002);if(!std::strcmp(mode,"aliased-resource")){put<uint32_t>(off_4D3ED0+6*4,0x2e0);put<uint32_t>(0x2e0,0x70002);}if(!std::strcmp(mode,"wrong-category"))put<uint32_t>(byte_4D3ECC,1u<<16);if(!std::strcmp(mode,"wrong-color"))put<uint32_t>(dword_4DD714,123);
@@ -60,6 +65,6 @@ int main(){prepare();Game g;g.eax=off_4D3348;g.ebp=off_4D3348;{cap::OwnerScope n
  }
  prepare();g.eax=off_4D3348;{cap::OwnerScope owner(g);{cap::TailScope tail(g);g.eax=off_4D3348;{cap::OwnerScope nested(g);assert(!cap::current(g));}}assert(!cap::lastPacket(g));}
  prepare();g.eax=off_4D3348;{cap::OwnerScope owner(g);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);put<uint32_t>(dword_4D243C,123);assert(cap::acquireCurrentPacket(g)==packet);put<uint32_t>(dword_4D3E9C,0x80002);assert(!cap::acquireCurrentPacket(g));assert(packet->original()[369*343+123]==0xffff);}
- descriptorRetirement();
+ descriptorRetirement();nestedProofCases();
  assert(retained&&retained->pixels()==343*480&&retained->original()[369*343+123]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS Audio sidebar options caption: compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
 }

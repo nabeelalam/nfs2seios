@@ -2,15 +2,17 @@
 #ifndef NFS_GRAPHICS_SCENE_LAYERS_H
 #define NFS_GRAPHICS_SCENE_LAYERS_H
 #include "BackgroundSceneCompositor.h"
+#include "NestedCaptionGpu.h"
 #include "GraphicsSceneLayerAbi.h"
 typedef struct NfsGraphicsSceneGpu {
  NfsBackgroundSceneCompositor*background;
  NfsSoftwareTextGpu*sidebarCaption,*text;
+ NfsNestedCaptionGpu*sidebarWord;
 } NfsGraphicsSceneGpu;
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Prepared-only ordered background, 343 caption, full640 text. Owner callback
+/* Prepared-only ordered background, 343 caption (or exact authored word3), full640 text. Owner callback
    independently authenticates actual context/thread/generation and unpublished
    staging target. No allocation, original target write, cache or presentation.
    Same-owner failure restores GL state; owner loss forgets metadata without GL.

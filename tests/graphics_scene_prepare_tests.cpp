@@ -45,7 +45,7 @@ static void differentCaption(SidebarFixture&s){
 }
 int main(){try{
  static_assert(!std::is_default_constructible<gc::Prepared>::value,"verified join issuer only");
- auto x=std::unique_ptr<JoinFixture>(new JoinFixture);auto p=x->verify();CHECK(p);auto v=p->view(19);
+ auto x=std::unique_ptr<JoinFixture>(new JoinFixture);auto p=x->verify();CHECK(p);auto v=p->view(19);CHECK(!v.layers.sidebarWord.schema);
  CHECK(v.schema==NFS_GRAPHICS_SCENE_RUNTIME_SCHEMA&&v.serial==19&&v.contentRevision==7&&v.width==640&&v.height==480);
  CHECK(v.original565==x->frame->text()->original().data()&&v.planeWords==gf::Pixels);
  CHECK(v.layers.background.mapRole==0&&v.layers.background.wordCount==1&&v.layers.sidebarCaption.logicalWidth==343&&v.layers.text.logicalWidth==640);
@@ -69,7 +69,7 @@ int main(){try{
  CHECK(x->verify());const auto originalMap=p->frame()->background()->catalog()->source();const auto originalSidebar=p->frame()->background()->sidebar().source;
  x->map[16]^=1;x->record.sidebar.sourceBefore[600]^=1;x->selected.source[601]^=1;x->s.before[602]^=1;
  CHECK(p->frame()->background()->catalog()->source()==originalMap&&p->frame()->background()->sidebar().source==originalSidebar&&p->sidebar()->raw()==originalSidebar);
- auto bytes=p->sidebar()->raw();other.reset();role1.reset();x.reset();v=p->view(20);CHECK(v.schema==1&&p->sidebar()->raw()==bytes);
+ auto bytes=p->sidebar()->raw();other.reset();role1.reset();x.reset();v=p->view(20);CHECK(v.schema==NFS_GRAPHICS_SCENE_RUNTIME_SCHEMA&&p->sidebar()->raw()==bytes);
  CHECK(v.layers.sidebarCaption.logicalHeight==480&&v.layers.text.logicalHeight==480);
  CHECK(v.layers.background.panelClip[0]==0&&v.layers.background.panelClip[1]==0&&v.layers.background.panelClip[2]==343&&v.layers.background.panelClip[3]==480);
  CHECK(v.layers.sidebarCaption.font.schema==1&&v.layers.text.font.schema==1&&v.layers.sidebarCaption.font.width==1024&&v.layers.text.font.width==1024&&v.layers.sidebarCaption.font.bytes==1024*512&&v.layers.text.font.bytes==1024*512);
