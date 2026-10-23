@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "scope": "Setup and Options fixed compact caption display; Location lexical source proof only",
+  "display": {
+    "Setup": {
+      "word": 1,
+      "logicalRectangle": [
+        93,
+        126,
+        168,
+        158
+      ]
+    },
+    "Options": {
+      "word": 3,
+      "logicalRectangle": [
+        120,
+        364,
+        168,
+        396
+      ]
+    },
+    "runtimeViewSchema": 2,
+    "originalSourceMeasurementsAndDrawCallsPreserved": true,
+    "originalFontProviderUnchanged": true,
+    "legacyEmptyWordFallbackRetained": true,
+    "liveGenuineNonemptyBindingRequired": true,
+    "invalidNonemptyBindingNeverDowngrades": true
+  },
+  "ownership": {
+    "genuineOriginalLexicalProofRetained": true,
+    "copiedSourceFullHeaderCoordinateTablesAndPixelsChecked": true,
+    "currentArchiveSelectorEntryAndResourceChecked": true,
+    "ambientDoubleBufferSelectionNotSourceAuthority": true,
+    "independentCurrentSceneCopyUploadAndRendererJoinsRequired": true,
+    "immutableQueuedWordOwnerRetained": true,
+    "crossOwnerFinishRejected": true
+  },
+  "Location": {
+    "sealedOriginalLexicalSourceProof": true,
+    "logicalFormDistinctFromDescriptor": true,
+    "displayActivated": false
+  },
+  "validation": {
+    "registeredCpuChecksPerMode": 8,
+    "registeredActualGlesChecksPerMode": 2,
+    "modes": [
+      "optimized",
+      "ASan+UBSan"
+    ],
+    "originalFullMenuPassSelections": 300,
+    "originalFullMenuPassTriangles": 600,
+    "representativeNewHelperContextLossPoints": 4,
+    "exhaustiveContextLossCoverage": false,
+    "glesOriginalDrawFunctionStubbed": true,
+    "nativeColorAndDepthComparisonProbePreserved": true,
+    "exactDepthBitsReadbackProven": false,
+    "actualOriginalGameObservationSeparate": true
+  },
+  "actualGame": {
+    "outputSize": [
+      2186,
+      1640
+    ],
+    "SetupWordDrawObserved": true,
+    "OptionsWordDrawObserved": true,
+    "bothPlayerMenusAndAll21IntroFramesObserved": true,
+    "playerIntroGpuEvents": 168,
+    "carChangesAndRestorationObserved": true,
+    "originalMenuInputOnly": true,
+    "completedPublicationBeforeOptionsCaptureRequired": true,
+    "setupGlyphDice": 0.9517063747585319,
+    "optionsSettledGlyphDice": [
+      0.9506072874493927,
+      0.9499696171764229,
+      0.950354609929078
+    ],
+    "fixedGlyphDiceThreshold": 0.8,
+    "priorFontNegativeDice": {
+      "Setup": 0.4377650746819104,
+      "Options": 0.3761596851279168
+    },
+    "cleanShutdownAndCopiedConfigArtworkRestoration": true
+  },
+  "retainedFailures": [
+    "Initial ambient full-output target check rejected the valid copied sidebar; corrected against the independently collected source.",
+    "Two queue call sites initially omitted the copied-source argument; full game compilation caught them before linking.",
+    "A shared 64-line trace budget hid later Options draws; a separate Options-first run confirmed them without changing rendering.",
+    "Fixed three-second captures preceded completed Options display; publication-confirmed settled captures passed the unchanged glyph check."
+  ],
+  "limits": {
+    "LocationAndNestedAudioGraphicsDisplayPending": true,
+    "allStaticValuesExercised": false,
+    "wholeUiAccepted": false,
+    "physicalIPadAcceptance": false,
+    "newIPadFpsOrBatteryClaim": false,
+    "cloudBuild": false,
+    "push": false,
+    "fontFileOrOriginalGamePixelsIncluded": false
+  }
+}

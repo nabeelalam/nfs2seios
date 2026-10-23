@@ -84,6 +84,8 @@ static void trackedString(Game&g,const char*mode){
  if(!std::strcmp(mode,"proof-text-after"))memory[0x94000]^=1;
  if(!std::strcmp(mode,"proof-unwind"))throw 7;
 }
+#include "CompactCaptionDisplayCases.h"
+#include "CompactCaptionCopiedProofCases.h"
 // Genuine source proof remains intact; complete word graphics are display only.
 static std::shared_ptr<const nfs_player_caption_display::Prepared>captionDisplayCases(const std::shared_ptr<const nfs_compact_caption::Proof>&proof,uint32_t form,uint32_t archive){
  namespace display=nfs_player_caption_display;assert(proof&&proof->current());const auto&e=proof->evidence();const auto packet=proof->packet();display::Binding binding{form,e.formGuest,archive,e.game,e.serial,e.lifetime};const auto original=packet->original(),clean=packet->clean();const auto font=packet->font();const auto vertices=packet->vertices().data();
@@ -327,6 +329,6 @@ int main(){prepare();Game g;g.eax=testOwner;g.ebp=testOwner;{cap::OwnerScope nof
  }
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);g.eax=testOwner;{cap::OwnerScope nested(g);assert(!cap::current(g));}}assert(!cap::lastPacket(g));}
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);put<uint32_t>(dword_4D243C,123);assert(cap::acquireCurrentPacket(g)==packet);put<uint32_t>(testRecord,((testResource+1)<<16)|2);assert(!cap::acquireCurrentPacket(g));assert(packet->original()[369*343+123]==0xffff);}
- descriptorRetirement();fixedOrdinaryBoundaryCases();sealedProofCases();ordinarySidebarProofCases();initialCaptionCases();
+ descriptorRetirement();fixedOrdinaryBoundaryCases();sealedProofCases();compactCaptionCopiedProofCases();compactCaptionDisplayAndJoinCases();ordinarySidebarProofCases();initialCaptionCases();
  assert(retained&&retained->pixels()==343*480&&retained->original()[369*343+123]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS cached menu caption (Options/Setup/Player1/Player2): compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
 }

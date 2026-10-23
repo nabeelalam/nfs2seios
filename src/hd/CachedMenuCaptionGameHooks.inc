@@ -2,6 +2,7 @@
 // Repeated only through exact fixed-policy wrappers. Intentionally no once guard:
 // each namespace gets independent types, owner atomic, TLS and source lifetime.
 #include "CompactCaptionProof.h"
+#include <algorithm>
 #ifndef NFS_CACHED_MENU_CAPTION_NAMESPACE
 #error "Include the exact Options or Setup caption wrapper"
 #endif
@@ -131,5 +132,40 @@ inline std::shared_ptr<const nfs_compact_caption::Proof>acquireCurrentProof(Game
  // historical seal; preserve the existing packet-only acquisition contract.
  if(!capture(*s,source,false,false)||source.archive!=s->current.archive||source.archive!=e.resolved.archive||source.selector!=e.resolved.selector||source.entry!=e.resolved.entry||source.entryWord!=e.resolved.entryWord||source.resource!=e.resolved.resource)return {};
  if(acquireCurrentPacket(g)!=proof->packet()||s!=current(g)||s->proof!=proof)return {};return proof;
+}
+// A normal full640 copy/upload may already be selected here. The actual
+// original Copy collector supplies its independently observed343 source owner
+// and raw bytes; never change guest selection or reinterpret640 as343.
+inline std::shared_ptr<const nfs_compact_caption::Proof>acquireCopiedProof(Game&g,const std::shared_ptr<const nfs_compact_caption::Proof>&expected,const std::shared_ptr<const nfs_soft::FramePacket>&packet,uint64_t serial,uint64_t lifetime,const nfs_logo_capture::Target&owner,const uint8_t*source,size_t bytes)noexcept{
+ auto*s=current(g);
+ if(!s||!ordinaryProofPolicy()||!expected||!packet||s->recording||s->tailDepth||s->string||s->glyph||s->glyphDepth||s->proof!=expected||s->packet!=packet||expected->packet()!=packet||!expected->current()||!serial||!lifetime||s->serial!=serial||s->lifetime!=lifetime||packet->serial()!=serial||packet->surface().lifetime!=lifetime||packet->pixels()!=Pixels||!source||bytes!=16+Pixels*2)return {};
+ const auto&e=expected->evidence();
+ if(e.route!=nfs_compact_caption::Route::OrdinaryEbp||e.policy!=proofPolicy()||e.game!=reinterpret_cast<uintptr_t>(&g)||e.game!=s->game||e.policyThread!=token()||e.formGuest!=CaptionPolicy::formAddress()||e.incomingEbp!=e.formGuest||e.serial!=serial||e.lifetime!=lifetime||!e.resourceSerial||e.resolved.archive!=s->current.archive)return {};
+ // Resource identity is independent of the ambient selected surface. Read the
+// real current archive and exact selector/table entry under a bounded lease.
+ try{nfs::GuestCopyTransaction tx;
+  const uint32_t archive=tx.load<uint32_t>(dword_4D40B8);
+  const uint32_t selector=tx.load<uint32_t>(byte_4D3ECC)>>16;
+  if(!archive||archive!=s->current.archive||archive!=e.resolved.archive||selector!=CaptionPolicy::selector||selector!=e.resolved.selector)return {};
+  const uint32_t entry=tx.load<uint32_t>(uint32_t(guest_address(off_4D3ED0))+CaptionPolicy::selector*4);
+  if(entry!=CaptionPolicy::entryAddress()||entry!=e.resolved.entry)return {};
+  const uint32_t word=tx.load<uint32_t>(entry);
+  if(word!=e.resolved.entryWord||(word>>16)!=CaptionPolicy::resource||(word>>16)!=e.resolved.resource)return {};
+ }catch(...){return {};}
+ const auto&sealed=e.stringAfter.target;
+ if(owner.owner!=sealed.owner||owner.w!=sealed.w||owner.header!=sealed.header||owner.x!=sealed.x||owner.y!=sealed.y||owner.ownerWords!=sealed.ownerWords)return {};
+ // ownerState0 is the ambient double-buffer word, not ownership. The other
+// four independently captured source bindings must remain exact.
+ for(unsigned k=1;k<5;++k)if(owner.ownerState[k]!=sealed.ownerState[k])return {};
+ if(owner.w[1]!=343||owner.w[2]!=480)return {};
+ nfs_soft::SurfaceIdentity identity{};identity.lifetime=lifetime;
+ std::copy(owner.w.begin(),owner.w.end(),identity.geometry.begin());
+ auto&shape=identity.geometry;shape[14]=owner.x[0];shape[15]=owner.x[1];shape[16]=owner.x[342];shape[17]=owner.y[0];shape[18]=owner.y[1];shape[19]=owner.y[479];
+ if(!identity.valid()||!(identity==packet->surface())||!(e.stringAfter.identity==identity))return {};
+ // Compare all16 descriptor bytes and every original RGB565 word. A matching
+// digest, text string or serial alone cannot authorize this copied source.
+ for(unsigned k=0;k<4;++k){const size_t at=4*k;const uint32_t value=uint32_t(source[at])|(uint32_t(source[at+1])<<8)|(uint32_t(source[at+2])<<16)|(uint32_t(source[at+3])<<24);if(value!=owner.header[k])return {};}
+ for(size_t k=0;k<Pixels;++k)if(uint16_t(uint16_t(source[16+2*k])|(uint16_t(source[17+2*k])<<8))!=packet->original()[k])return {};
+ return s==current(g)&&s->proof==expected&&s->packet==packet&&expected->current()?expected:std::shared_ptr<const nfs_compact_caption::Proof>{};
 }
 } // namespace NFS_CACHED_MENU_CAPTION_NAMESPACE

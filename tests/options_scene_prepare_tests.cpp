@@ -4,12 +4,14 @@
 #include "hd/SetupScenePrepare.h"
 namespace opt=nfs_setup_scene_cpu;
 static constexpr uint32_t testForm=opt::SetupForm,testTail=NFS_BACKGROUND_TAIL_SETUP_CAPTION;
+static constexpr uint32_t testSchema=NFS_SETUP_SCENE_RUNTIME_SCHEMA;
 static constexpr unsigned textLength=10,textLeft=93,textY=126,textAdvance=75;
 static constexpr char testText[]="game setup";
 #else
 #include "hd/OptionsScenePrepare.h"
 namespace opt=nfs_options_scene_cpu;
 static constexpr uint32_t testForm=opt::OptionsForm,testTail=NFS_BACKGROUND_TAIL_OPTIONS_CAPTION;
+static constexpr uint32_t testSchema=NFS_OPTIONS_SCENE_RUNTIME_SCHEMA;
 static constexpr unsigned textLength=7,textLeft=120,textY=364,textAdvance=48;
 static constexpr char testText[]="options";
 #endif
@@ -51,7 +53,7 @@ int main(){try{
  auto verify=[&](){return opt::verifyAndPrepare(input,f->workspace,*f->prepared,f->catalog);};
  CHECK(verify()==bg::Failure::None&&f->prepared->valid&&f->prepared->caption==f->caption);
  for(unsigned y=0;y<480;++y)for(unsigned x=0;x<640;++x){const unsigned at=y*640+x,sideAt=y*343+x;uint16_t expected=x>=343?uint16_t(0x2a55):sideAt==OptionsFixture::TransparentAt?uint16_t(0x2a55):sideAt==0?f->frameColor:sideAt==OptionsFixture::CaptionAt?uint16_t(65535):f->sideColor;CHECK(f->prepared->original[at]==expected);}
- auto view=f->prepared->view();CHECK(view.schema==1&&view.scene.tailKind==testTail&&view.scene.serial==19&&view.scene.contentRevision==23&&view.scene.planeWords==307200&&view.caption.logicalWidth==343&&view.caption.logicalHeight==480&&view.caption.vertexCount==textLength*6&&view.caption.font.identity==77&&view.caption.font.alpha==f->font->alpha().data());
+ auto view=f->prepared->view();CHECK(view.schema==testSchema&&view.scene.tailKind==testTail&&view.scene.serial==19&&view.scene.contentRevision==23&&view.scene.planeWords==307200&&view.caption.logicalWidth==343&&view.caption.logicalHeight==480&&view.caption.vertexCount==textLength*6&&view.caption.font.identity==77&&view.caption.font.alpha==f->font->alpha().data());
  auto repeated=f->prepared->view();CHECK(!std::memcmp(view.caption.font.sha256,repeated.caption.font.sha256,32));
  // Strong font ownership, rather than numeric identity/address, keys the digest.
  auto otherAlpha=f->alpha;otherAlpha[4096]=17;auto otherFont=nfs_soft::FontCatalog::create(f->description,otherAlpha.data(),otherAlpha.size(),77);CHECK(otherFont);auto other=f->packet(otherFont,5);CHECK(other);input.caption=other;CHECK(verify()==bg::Failure::None);auto otherView=f->prepared->view();CHECK(otherView.caption.font.alpha==otherFont->alpha().data()&&std::memcmp(view.caption.font.sha256,otherView.caption.font.sha256,32));input.caption=f->caption;CHECK(verify()==bg::Failure::None);
@@ -105,6 +107,6 @@ int main(){try{
  // A separately authenticated second map is allowed with a verified actual
  // copy and matching transparent/outside pixels, not by role tag alone.
  f->base.mapRole=1;f->base.sourceBefore[16]^=1;f->base.sourceAfter=f->base.sourceBefore;f->base.post.pixels[0]^=1;f->syncCopy();CHECK(verify()==bg::Failure::None&&f->prepared->mapRole==1);f->base.mapRole=0;f->base.sourceBefore[16]^=1;f->base.sourceAfter=f->base.sourceBefore;f->base.post.pixels[0]^=1;f->syncCopy();CHECK(verify()==bg::Failure::None);
- auto retained=f->prepared->caption;f->prepared->caption.reset();CHECK(f->prepared->view().schema==0);f->prepared->caption=retained;CHECK(f->prepared->view().schema==1);
- CHECK(f->prepared->captionSerial==5&&f->prepared->captionLifetime==7&&retained->original()[OptionsFixture::CaptionAt]==65535);auto owner=std::shared_ptr<opt::Prepared>(f->prepared.release());const auto savedPixel=owner->original[OptionsFixture::TransparentAt];f.reset();auto lifetimeView=owner->view();CHECK(lifetimeView.schema==1&&lifetimeView.caption.font.alpha&&lifetimeView.scene.original565[OptionsFixture::TransparentAt]==savedPixel);std::printf("PASS cached-menu current full307200 oracle, transparent343 + caption, %u stale/source/order/alias/LUT/current-owner negatives\n",negatives);return 0;
+ auto retained=f->prepared->caption;f->prepared->caption.reset();CHECK(f->prepared->view().schema==0);f->prepared->caption=retained;CHECK(f->prepared->view().schema==testSchema);
+ CHECK(f->prepared->captionSerial==5&&f->prepared->captionLifetime==7&&retained->original()[OptionsFixture::CaptionAt]==65535);auto owner=std::shared_ptr<opt::Prepared>(f->prepared.release());const auto savedPixel=owner->original[OptionsFixture::TransparentAt];f.reset();auto lifetimeView=owner->view();CHECK(lifetimeView.schema==testSchema&&lifetimeView.caption.font.alpha&&lifetimeView.scene.original565[OptionsFixture::TransparentAt]==savedPixel);std::printf("PASS cached-menu current full307200 oracle, transparent343 + caption, %u stale/source/order/alias/LUT/current-owner negatives\n",negatives);return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}}
