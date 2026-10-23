@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "scope": "Original Graphics dynamic values and bounded minimum-brightness menu navigation; local observation only",
+  "productionChanged": false,
+  "dynamicText": {
+    "existingGeneralBodyFont": "Oxanium",
+    "originalTextCommandsPreserved": true,
+    "finiteValueReplacementActivated": false,
+    "sourceFramesReconciled": 38,
+    "stableSamplesReconciled": 33,
+    "commandsPerFrame": 32,
+    "descriptorStateListResolverHeaderAndCurrentPacketJoinsChecked": true,
+    "sourceValuesObserved": {
+      "carDetail": [
+        "on",
+        "off"
+      ],
+      "viewDistance": [
+        "far",
+        "medium",
+        "close"
+      ],
+      "horizon": [
+        "on",
+        "off"
+      ],
+      "brightnessDigits": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    "completeObservedRawStateCycles": true,
+    "brightnessInitialRawStateNotReturned": true,
+    "brightnessRounding": "Original Right stores rounded binary32 without popping its wider register; wrap comparison uses that unrounded register. Two distinct raw states can display11.",
+    "roundedFirstComparisonNegativeControlRejected": true,
+    "arbitraryBrightnessConfigurationsCovered": false
+  },
+  "initialCollection": {
+    "sourceValidationPassed": true,
+    "overallRoutePassed": false,
+    "failure": "Options visual stabilization predicate rejected the correctly reached low-brightness screen. Initial failure is retained.",
+    "cleanShutdownAndCopiedSettingsArtworkRestoration": true
+  },
+  "visualRecognizer": {
+    "neutralLetterShapeRegion": [
+      250,
+      170,
+      370,
+      332
+    ],
+    "fixedMinimumDice": 0.8,
+    "minimumMaskPoints": 400,
+    "savedLowBrightnessOptionsPositives": 4,
+    "savedGraphicsNegatives": 42,
+    "blankAndShiftedNegatives": 2,
+    "universalScreenRecognitionClaimed": false
+  },
+  "shortNavigation": {
+    "passed": true,
+    "route": "Main -> Options -> Graphics -> original minimum brightness -> Options -> Main",
+    "freshOriginalOptionsPublicationsRequired": 2,
+    "carDistanceHorizonCyclesRetested": false,
+    "fullBrightnessOrbitRetested": false,
+    "manifestScopeCorrectionRecordedSeparately": true,
+    "exitStatus": 0,
+    "copiedConfigBrightnessAndArtworkRestored": true,
+    "ownedGameAndDisplayTerminalIndependentlyChecked": true,
+    "sharedLeaseAbsent": true
+  },
+  "privateEvidenceDigests": {
+    "graphics-dynamic-inventory.json": "43e35aabf90d6aec636f394ea1800cca323132d2b911d74515332ca616999a36",
+    "brightness-register-model-validation.json": "b653eb2da809234e5f7b0ff91d28e04a4f4e0608ea2e9d7d4e787e7083dd91d7",
+    "visual-recognizer-validation.json": "8a5a55d13cfbceaee79f18e0df5ccfebc9305ed650dba66eab9244f93f37981f",
+    "navigation-run-02/result.json": "5dfb8f0620111e8532afede411b247efa26f674ce70ac7b816fb1de78ae42e80",
+    "navigation-run-02/scoped-protocol.json": "7d2cc519b61eac6647d7efb3f77215d488d90de43e18d952f2a6addad1ff5001"
+  },
+  "limitations": [
+    "Read-only original-source observation is not a new live rendering authority.",
+    "Only captured English resources and original-input brightness orbit are covered.",
+    "No speculative keyboard repeat filter or new dynamic font was activated.",
+    "No new compiler build, cloud build, IPA, physical iPad appearance, FPS or battery acceptance."
+  ]
+}
