@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Complete Controls source joining, immutable scene ownership, ordered GPU layers, native renderer adapter and real FIFO fixtures; game renderer activation is still separate",
+  "originalGameSource": {
+    "actualCurrentWholeSceneViews": 5,
+    "observedSelections": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "distinctLexicalOwnerEpochs": 2,
+    "preCacheReadyDeclinesObserved": 2,
+    "freshSourceAndSidebarAndDialogAcceptedTogether": true,
+    "retainedSceneCallbacksPaired": true,
+    "sourceAndReusedLinkPinsStable": true,
+    "cleanShutdownAndResourcesRestored": true,
+    "observerBinarySha256": "00bdfbf7d002cf2e59713514308abfc7d88ce9f5aae51962bf8a0e1f8bc72f3d",
+    "privateLogSha256": "69564facb5c5d6013d0d262443fb636705aa9addf91a3f3a137ace3cc7f70901",
+    "privateResultSha256": "547b3e406bfac01c69eaf61850bcf43127738da8750abfad2a89e2cbbd6a09dd"
+  },
+  "sourceContract": {
+    "lexicalOwnerSeparateFromSurfaceLifetime": true,
+    "newControlsCollectorsUseCanonicalNeutralSourceThreadIdentity": true,
+    "collectorsKeepSeparateStateAndRegistry": true,
+    "captionPolicyControlsAndWord3Required": true,
+    "dialogFiveImagesTenPlacementsRequired": true,
+    "originalFullTextVertices": 696,
+    "originalSidebarTextVertices": 42,
+    "sourceCurrentGettersRepeatedBeforeAndAfterQueuePreparation": true,
+    "borrowedLifetimeCallbacksPaired": true,
+    "originalDrawingAndControlsUnchanged": true
+  },
+  "wholeLayerFixture": {
+    "actualEglGles": true,
+    "sourceProofExplicitlySynthetic": true,
+    "maintainedSidebarAndFiveWordArtwork": true,
+    "orderedDraws": 19,
+    "originalEllipsisPairsPreserved": 3,
+    "independentBilinearPixelOracle": true,
+    "checks": 666186,
+    "stateDepthAndUnrelatedPixelsPreserved": true,
+    "unpublishedStagingFailuresAndAliasesRefused": true,
+    "actualForeignContextLossAfterRepresentativeDraws": true,
+    "generationResetUsesSameOwnerEglContext": true,
+    "fixtureUnbindsItsOwnedProgramBeforeRetirement": true
+  },
+  "nativeRendererFixture": {
+    "actualEglGles": true,
+    "syntheticSourceAndNativeCallbacks": true,
+    "originalGlDrawFunctionStubbed": true,
+    "checks": 36725,
+    "guardedOwnershipLossPoints": 853,
+    "uploads": 300,
+    "selections": 300,
+    "nativeTriangleCallbacks": 600,
+    "sceneDraws": 19,
+    "colorCommitDraws": 1,
+    "original565TilesIndependentlyReconstructedAndHashed": true,
+    "mandatoryEmptyArtworkRefusedBeforeRetain": true,
+    "stagingColorEqualsPublishedColorAndDepthPreserved": true,
+    "native1280x960Case": true,
+    "malformedSchemaPoisonBorrowAndForeignThreadRefusals": true
+  },
+  "queueFixture": {
+    "realMainThreadBridgeAndFifo": true,
+    "sourceAndCurrentOwnersExplicitlySynthetic": true,
+    "preAdmissionNegatives": 25,
+    "repeatCurrentNegatives": 7,
+    "originalNativeCommandOrderingPreserved": true,
+    "callbackRetentionAndForeignFinalRelease": true,
+    "cancellationCpuLifetimeAndOwnerFallbackCovered": true,
+    "automaticGpuCancellationClaimed": false
+  },
+  "validation": {
+    "optimizedRegisteredChecksPassed": 15,
+    "sanitizerBuildRegisteredChecksPassed": 15,
+    "instrumentedCppChecks": 10,
+    "pythonChecksInEachBuild": 5,
+    "privateTestLogSha256": {
+      "opt": "6c1f03ba3227a6b03ef6349ee8af10a3e9cb42cfeb652c124e6cde07d7b60f3d",
+      "san": "8cd2cff4a8561d4ccd7e66db74a990eee0537b3764c16c80c0f5b2bd63e73324"
+    }
+  },
+  "runtimeControlsRenderingActivated": false,
+  "limitations": [
+    "Original-game complete source joining and renderer/FIFO fixtures are separate executions; no complete game renderer publication is claimed yet.",
+    "Renderer fixtures use real EGL and authored finite artwork but synthetic source/native observations and an original drawing stub.",
+    "GPU lifecycle generation-reset coverage does not recreate the owner EGL context; actual foreign-context refusal is tested independently.",
+    "Control child dialogs, remapping and other remaining UI/HUD, genuine Controls context recreation and physical iPad UI/FPS/battery acceptance remain open.",
+    "No cloud build, push, installable package, original assets, font files, captures or private paths included."
+  ]
+}

@@ -26,7 +26,8 @@ struct State {
  void reject(Failure f)noexcept{failure=f;if(f!=Failure::none&&failures!=UINT64_MAX)++failures;builder.invalidate();packet.reset();dialogProof.reset();dialogValid=false;recording=false;string=glyph=0;glyphDepth=0;}
  bool advance(uint64_t&v)noexcept{if(v==UINT64_MAX){reject(Failure::capacity);return false;}++v;return true;}
 };
-inline uintptr_t token()noexcept{static thread_local unsigned char t;return reinterpret_cast<uintptr_t>(&t);}
+// Shared source-thread identity; each collector still owns its own state and registry.
+inline uintptr_t token()noexcept{return nfs_logo_publisher::threadToken();}
 inline std::atomic<uintptr_t>&ownerThread()noexcept{static std::atomic<uintptr_t> t{0};return t;}
 struct Storage{State*p=nullptr;~Storage(){delete p;if(ownerThread().load()==token())ownerThread().store(0);}};
 inline Storage&storage(){static thread_local Storage s;return s;}
