@@ -1,0 +1,65 @@
+// SPDX-License-Identifier: MIT
+#ifndef NFS_CONTROLS_DIALOG_WORD_GPU_IMPLEMENTATION
+#define NFS_CONTROLS_DIALOG_WORD_GPU_IMPLEMENTATION
+#include "ControlsDialogWordGpu.h"
+#include "ControlsDialogWordIdentity.h"
+/* Mechanical Controls only: the caller supplies the independently owned Controls
+   context/staging guard. No source-pass, FIFO, native-upload, FBO or publication
+   authority is created here. Caller must first join genuine current Controls
+   source proof, retained packet/art and the actual original native witness;
+   validate original software-font vertices; preflight all resource aliases;
+   and supply a current unpublished staging guard. Zero view retains original
+   text. Any refusal or late error requires original fallback/discard of the
+   entire staging transaction, never publication of a partial replacement.
+   Prerequisites: neutral stage, text/background GPU types, digest implementation
+   and guarded nfs_nested_caption_{current,save,restore,blend} helpers included. */
+static int nfs_controls_dialog_empty(const NfsControlsDialogWordsView*v){unsigned i,j;if(!v||v->schema||v->count)return 0;for(i=0;i<5;++i){const NfsControlsDialogWordImageView*a=v->images+i;if(a->word||a->width||a->height||a->rgba||a->bytes)return 0;for(j=0;j<32;++j)if(a->sha256[j])return 0;}for(i=0;i<10;++i){const NfsControlsDialogWordPlacement*a=v->placements+i;if(a->word||a->color565||a->vertexFirst||a->vertexCount||a->left||a->top||a->right||a->bottom)return 0;}return 1;}
+static int nfs_controls_dialog_valid(const NfsControlsDialogWordsView*v,const NfsSoftwareTextLayerView*text){
+ static const unsigned widths[5]={68,36,123,96,35},sourceWidths[5]={36,123,96,35,68},counts[5]={30,114,78,24,48},lefts[5]={380,293,320,381,382},tops[5]={170,196,224,267,105},words[5]={2,3,4,5,1};
+ static const size_t first[10]={0,30,96,210,360,438,552,576,600,648};
+ unsigned i,j,selected=0;unsigned char sha[32];
+ if(nfs_controls_dialog_empty(v))return 1;
+ /* Schema precedes all new borrowed image/text data. Whole original Controls
+    packet is exactly 696 vertices; intervening six ellipses are not replaced. */
+ if(!v||v->schema!=NFS_CONTROLS_DIALOG_WORD_SCHEMA||v->count!=10||!text||!text->vertices||text->vertexCount!=696)return 0;
+ for(i=0;i<5;++i){const NfsControlsDialogWordImageView*a=v->images+i;
+  if(a->word!=i+1||a->width!=widths[i]*4||a->height!=128||a->bytes!=(size_t)a->width*128*4||!a->rgba||memcmp(a->sha256,nfs_controls_dialog_word_sha256[i],32)||!nfs_texture_sha256(a->rgba,a->bytes,sha)||memcmp(sha,a->sha256,32))return 0;
+ }
+ for(i=0;i<5;++i)for(j=0;j<2;++j){const NfsControlsDialogWordPlacement*b=v->placements+2*i+j;unsigned shadow=j==0;
+  if(b->word!=words[i]||b->vertexFirst!=first[2*i+j]||b->vertexCount!=counts[i]||b->left!=(float)(lefts[i]+shadow)||b->top!=(float)(tops[i]+shadow)||b->right!=(float)(lefts[i]+sourceWidths[i]+shadow)||b->bottom!=(float)(tops[i]+32+shadow)||(shadow?b->color565!=1:(i==4?b->color565!=3998:(b->color565!=37904&&b->color565!=65535))))return 0;
+  if(!shadow&&i<4&&b->color565==65535)++selected;
+ }
+ return selected==1;
+}
+static void nfs_controls_dialog_key(const NfsControlsDialogWordsView*v,const NfsSoftwareTextLayerView*text,unsigned char out[32]){unsigned char b[2048];size_t used=0;unsigned i;
+#define NFS_CD_KEY(x) do{memcpy(b+used,&(x),sizeof(x));used+=sizeof(x);}while(0)
+ NFS_CD_KEY(text->vertexCount);for(i=0;i<5;++i){const NfsControlsDialogWordImageView*a=v->images+i;NFS_CD_KEY(a->word);NFS_CD_KEY(a->width);NFS_CD_KEY(a->height);memcpy(b+used,a->sha256,32);used+=32;}for(i=0;i<10;++i){const NfsControlsDialogWordPlacement*a=v->placements+i;NFS_CD_KEY(a->word);NFS_CD_KEY(a->color565);NFS_CD_KEY(a->vertexFirst);NFS_CD_KEY(a->vertexCount);NFS_CD_KEY(a->left);NFS_CD_KEY(a->top);NFS_CD_KEY(a->right);NFS_CD_KEY(a->bottom);}nfs_texture_sha256(b,used,out);
+#undef NFS_CD_KEY
+}
+static void nfs_controls_dialog_forget(NfsControlsDialogWordGpu*s){if(s)memset(s,0,sizeof *s);}
+#define NFS_CD_GL(call) do{if(!nfs_nested_caption_current(t))goto lost;call;if(!nfs_nested_caption_current(t))goto lost;}while(0)
+static int nfs_controls_dialog_retire(NfsControlsDialogWordGpu*s,const NfsBackgroundSceneStage*t,int owner){unsigned i;if(!s)return 0;if(owner&&t&&s->generation==t->generation&&nfs_nested_caption_current(t)){if(s->program){NFS_CD_GL(glDeleteProgram(s->program));}for(i=0;i<5;++i)if(s->textures[i]){NFS_CD_GL(glDeleteTextures(1,s->textures+i));}}nfs_controls_dialog_forget(s);return 1;lost:nfs_controls_dialog_forget(s);return 0;}
+static int nfs_controls_dialog_ready(NfsControlsDialogWordGpu*s,const NfsControlsDialogWordsView*v,const NfsSoftwareTextLayerView*text,const NfsBackgroundSceneStage*t){unsigned i;GLboolean alive;unsigned char key[32];if(!s||!nfs_nested_caption_current(t)||!nfs_controls_dialog_valid(v,text)||nfs_controls_dialog_empty(v)||s->generation!=t->generation||!s->program||s->matrix<0||s->sampler<0)return 0;nfs_controls_dialog_key(v,text,key);if(memcmp(key,s->key,32))return 0;NFS_CD_GL(alive=glIsProgram(s->program));if(!alive)return 0;for(i=0;i<5;++i){if(!s->textures[i])return 0;NFS_CD_GL(alive=glIsTexture(s->textures[i]));if(!alive)return 0;}return 1;lost:nfs_controls_dialog_forget(s);return 0;}
+static int nfs_controls_dialog_alias(const NfsControlsDialogWordGpu*s,const NfsBackgroundSceneCompositor*b,const NfsSoftwareTextGpu*c,const NfsSoftwareTextGpu*f,const NfsNestedCaptionGpu*side,GLuint color,GLuint original){unsigned i,j;if(!s||!b||!c||!f)return 1;if(s->program&&(s->program==b->program||s->program==b->copyProgram||s->program==b->logo.program||s->program==c->program||s->program==f->program||(side&&s->program==side->program)))return 1;for(i=0;i<5;++i)if(s->textures[i]){GLuint a=s->textures[i];if(a==color||a==original||a==b->logo.texture||a==b->previewTexture||a==c->texture||a==f->texture||(side&&a==side->texture))return 1;for(j=0;j<5;++j)if(a==b->textures[j])return 1;for(j=0;j<2;++j)if(a==b->color[j])return 1;for(j=0;j<i;++j)if(a==s->textures[j])return 1;}return 0;}
+static int nfs_controls_dialog_prepare(NfsControlsDialogWordGpu*s,const NfsControlsDialogWordsView*v,const NfsSoftwareTextLayerView*text,const NfsBackgroundSceneStage*t){GLuint vs=0,fs=0,program=0,textures[5]={0};GLint linked=0,matrix=-1,sampler=-1;GLboolean alive;GLenum error;NfsBgSaved saved;unsigned i;int ok=0;
+ static const char vertex[]="attribute vec4 vertex;attribute vec4 color;uniform mat4 matrix;varying highp vec2 uv;varying highp vec4 tint;void main(){gl_Position=matrix*vec4(vertex.xy,1.0,1.0);uv=vertex.zw;tint=color;}";
+ static const char fragment[]="precision highp float;uniform sampler2D image;varying highp vec2 uv;varying highp vec4 tint;void main(){gl_FragColor=tint*texture2D(image,uv).a;}";const char*vp=vertex,*fp=fragment;
+ if(!s||!nfs_controls_dialog_valid(v,text)||!nfs_nested_caption_current(t))return 0;if(nfs_controls_dialog_empty(v))return 1;if(s->generation&&s->generation!=t->generation)return 0;
+ if(!s->program){for(i=0;i<5;++i)if(s->textures[i])return 0;}
+ if(s->program){if(s->matrix<0||s->sampler<0)return 0;NFS_CD_GL(alive=glIsProgram(s->program));if(!alive)return 0;for(i=0;i<5;++i){if(!s->textures[i])return 0;NFS_CD_GL(alive=glIsTexture(s->textures[i]));if(!alive)return 0;}nfs_controls_dialog_key(v,text,s->key);return 1;}
+ if(!nfs_nested_caption_save(&saved,t))goto lost;
+ NFS_CD_GL(vs=glCreateShader(GL_VERTEX_SHADER));if(!vs)goto done;NFS_CD_GL(glShaderSource(vs,1,&vp,NULL));NFS_CD_GL(glCompileShader(vs));NFS_CD_GL(glGetShaderiv(vs,GL_COMPILE_STATUS,&linked));if(!linked)goto done;
+ NFS_CD_GL(fs=glCreateShader(GL_FRAGMENT_SHADER));if(!fs)goto done;NFS_CD_GL(glShaderSource(fs,1,&fp,NULL));NFS_CD_GL(glCompileShader(fs));NFS_CD_GL(glGetShaderiv(fs,GL_COMPILE_STATUS,&linked));if(!linked)goto done;
+ NFS_CD_GL(program=glCreateProgram());if(!program)goto done;NFS_CD_GL(glAttachShader(program,vs));NFS_CD_GL(glAttachShader(program,fs));NFS_CD_GL(glBindAttribLocation(program,0,"vertex"));NFS_CD_GL(glBindAttribLocation(program,1,"color"));NFS_CD_GL(glLinkProgram(program));NFS_CD_GL(glGetProgramiv(program,GL_LINK_STATUS,&linked));if(!linked)goto done;NFS_CD_GL(matrix=glGetUniformLocation(program,"matrix"));NFS_CD_GL(sampler=glGetUniformLocation(program,"image"));if(matrix<0||sampler<0)goto done;
+ NFS_CD_GL(glActiveTexture(GL_TEXTURE0));NFS_CD_GL(glPixelStorei(GL_UNPACK_ALIGNMENT,1));for(i=0;i<5;++i){NFS_CD_GL(glGenTextures(1,textures+i));if(!textures[i])goto done;NFS_CD_GL(glBindTexture(GL_TEXTURE_2D,textures[i]));NFS_CD_GL(glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR));NFS_CD_GL(glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR));NFS_CD_GL(glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE));NFS_CD_GL(glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE));NFS_CD_GL(glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,v->images[i].width,128,0,GL_RGBA,GL_UNSIGNED_BYTE,v->images[i].rgba));NFS_CD_GL(error=glGetError());if(error!=GL_NO_ERROR)goto done;}ok=1;
+ done:if(vs){NFS_CD_GL(glDeleteShader(vs));}if(fs){NFS_CD_GL(glDeleteShader(fs));}if(!ok){if(program){NFS_CD_GL(glDeleteProgram(program));}for(i=0;i<5;++i)if(textures[i]){NFS_CD_GL(glDeleteTextures(1,textures+i));}}if(!nfs_nested_caption_restore(&saved,t))goto lost;if(!ok)return 0;s->program=program;memcpy(s->textures,textures,sizeof textures);s->matrix=matrix;s->sampler=sampler;s->generation=t->generation;nfs_controls_dialog_key(v,text,s->key);return 1;
+ lost:nfs_controls_dialog_forget(s);return 0;
+}
+/* Original font slices and authored words use the same premultiplied tint math. */
+static int nfs_controls_dialog_vertices(GLuint program,GLuint texture,GLint matrix,GLint sampler,const NfsSoftwareTextVertex*vertices,size_t count,const NfsBackgroundSceneStage*t){unsigned i;GLenum error;if(!count)return 1;for(i=0;i<8;++i){NFS_CD_GL(glDisable(nfs_frame_caps[i]));}NFS_CD_GL(glColorMask(1,1,1,1));NFS_CD_GL(glDepthMask(GL_FALSE));NFS_CD_GL(glActiveTexture(GL_TEXTURE0));NFS_CD_GL(glBindBuffer(GL_ARRAY_BUFFER,0));NFS_CD_GL(glUseProgram(program));NFS_CD_GL(glUniformMatrix4fv(matrix,1,GL_FALSE,t->sampling.projection));NFS_CD_GL(glUniform1i(sampler,0));NFS_CD_GL(glBindTexture(GL_TEXTURE_2D,texture));NFS_CD_GL(glEnableVertexAttribArray(0));NFS_CD_GL(glEnableVertexAttribArray(1));NFS_CD_GL(glDisableVertexAttribArray(2));NFS_CD_GL(glDisableVertexAttribArray(3));NFS_CD_GL(glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(NfsSoftwareTextVertex),vertices));NFS_CD_GL(glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,sizeof(NfsSoftwareTextVertex),&vertices[0].r));if(!nfs_nested_caption_blend(t,1))return -1;NFS_CD_GL(glDrawArrays(GL_TRIANGLES,0,(GLsizei)count));NFS_CD_GL(error=glGetError());return error==GL_NO_ERROR;lost:return -1;}
+static int nfs_controls_dialog_draw(NfsControlsDialogWordGpu*s,const NfsControlsDialogWordsView*v,NfsSoftwareTextGpu*font,const NfsSoftwareTextLayerView*text,const NfsBackgroundSceneStage*t){NfsBgSaved saved;size_t cursor=0;unsigned i;int ok=1;GLint fbo=0,type=0,name=0,viewport[4];if(!font||!font->program||!font->texture||font->matrix<0||font->sampler<0||!nfs_controls_dialog_ready(s,v,text,t)||font->generation!=t->generation||!t->framebuffer||!nfs_frame_sampling_valid(t->width,t->height,&t->sampling))return 0;NFS_CD_GL(glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo));NFS_CD_GL(glGetIntegerv(GL_VIEWPORT,viewport));if((GLuint)fbo!=t->framebuffer||memcmp(viewport,t->sampling.viewport,sizeof viewport))return 0;NFS_CD_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type));NFS_CD_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name));if(type!=GL_TEXTURE||!name||(GLuint)name==font->texture)return 0;for(i=0;i<5;++i)if((GLuint)name==s->textures[i])return 0;if(!nfs_nested_caption_save(&saved,t))goto lost;for(i=0;i<10&&ok;++i){const NfsControlsDialogWordPlacement*p=v->placements+i;NfsSoftwareTextVertex q[6];float r=(float)(((p->color565>>11)<<3)|((p->color565>>11)>>2))/255.f;unsigned g=(p->color565>>5)&63,b=p->color565&31;float green=(float)((g<<2)|(g>>4))/255.f,blue=(float)((b<<3)|(b>>2))/255.f;
+ if(p->vertexFirst>cursor)ok=nfs_controls_dialog_vertices(font->program,font->texture,font->matrix,font->sampler,text->vertices+cursor,p->vertexFirst-cursor,t);if(ok<0)goto lost;if(!ok)break;
+ {const NfsSoftwareTextVertex a={p->left,p->top,0,0,r,green,blue,1},b0={p->left,p->bottom,0,1,r,green,blue,1},c={p->right,p->top,1,0,r,green,blue,1},d={p->right,p->bottom,1,1,r,green,blue,1};q[0]=a;q[1]=b0;q[2]=c;q[3]=c;q[4]=b0;q[5]=d;}
+ ok=nfs_controls_dialog_vertices(s->program,s->textures[p->word-1],s->matrix,s->sampler,q,6,t);if(ok<0)goto lost;cursor=p->vertexFirst+p->vertexCount;}if(ok&&cursor<text->vertexCount)ok=nfs_controls_dialog_vertices(font->program,font->texture,font->matrix,font->sampler,text->vertices+cursor,text->vertexCount-cursor,t);if(ok<0)goto lost;if(!nfs_nested_caption_restore(&saved,t))goto lost;return ok;lost:nfs_controls_dialog_forget(s);return 0;}
+#undef NFS_CD_GL
+#endif

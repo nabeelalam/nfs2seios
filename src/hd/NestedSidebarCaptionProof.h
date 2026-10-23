@@ -4,8 +4,9 @@
 #include "OriginalUiRecords.h"
 namespace nfs_audio_sidebar_text {struct TailScope;}
 namespace nfs_graphics_sidebar_text {struct TailScope;}
+namespace nfs_controls_sidebar_text {struct TailScope;}
 namespace nfs_nested_sidebar_caption {
-enum class Policy:uint32_t {None=0,Audio=1,Graphics=2};
+enum class Policy:uint32_t {None=0,Audio=1,Graphics=2,Controls=3};
 struct Snapshot {
  nfs_logo_capture::Target target{};nfs_soft::SurfaceIdentity identity{};
  uint32_t archive=0,selector=0,entry=0,entryWord=0,font=0,callback=0,palette=0,color=0,mode=0,flags=0,format=0;
@@ -19,7 +20,7 @@ struct Evidence {
 class Proof final {
  std::shared_ptr<const nfs_soft::FramePacket>packet_;Evidence evidence_;
  Proof(std::shared_ptr<const nfs_soft::FramePacket>p,const Evidence&e):packet_(std::move(p)),evidence_(e){}
- friend struct ::nfs_audio_sidebar_text::TailScope;friend struct ::nfs_graphics_sidebar_text::TailScope;
+ friend struct ::nfs_audio_sidebar_text::TailScope;friend struct ::nfs_graphics_sidebar_text::TailScope;friend struct ::nfs_controls_sidebar_text::TailScope;
 public:
  const Evidence&evidence()const noexcept{return evidence_;}
  const std::shared_ptr<const nfs_soft::FramePacket>&packet()const noexcept{return packet_;}

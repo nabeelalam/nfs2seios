@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Controls retained-sidebar source and isolated word GPU mechanics; whole Controls scene publication remains pending",
+  "originalGame": {
+    "genuineRetained343Frames": 4,
+    "distinctLexicalOwnerEpochs": 2,
+    "eachRawHeaderAndOriginalPlaneMatched": true,
+    "allSourceAndReusedLinkPinsStable": true,
+    "originalInputNavigationAndReentryPassed": true,
+    "cleanShutdownAndRestoration": true,
+    "observerBinarySha256": "02e2dc6e626fcedbeba0914bf2b607c0b9fcfaf65bdd1f373ac99937e084917e",
+    "privateLogSha256": "addc520ab804e6d6f30ae5d541edc99ee96dcf58903a6aa211aa6178c31a2113",
+    "privateResultSha256": "923004fce40f995df7f2167d96cc3b2ff7cd128881569399141918df5f5a9a7b"
+  },
+  "actualCaption": {
+    "text": "options",
+    "logicalPosition": [
+      120,
+      364
+    ],
+    "measuredAdvance": 48,
+    "rightAnchor": 168,
+    "sourceSize": 18,
+    "rgb565": 65535,
+    "clip": [
+      0,
+      0,
+      343,
+      480
+    ],
+    "originalPixelWrites": 674,
+    "backgroundWordLayers": 4,
+    "logos": 3,
+    "authoredCaptionWord": 3,
+    "authoredPixels": [
+      192,
+      128
+    ]
+  },
+  "cacheFix": {
+    "originalSameOwnerRebuildCanClearRetiredCacheFailure": true,
+    "failedArchiveAuthenticationCannotBeClearedByPixelRebuild": true,
+    "lexicalOwnerEpochSeparateFromSurfaceRetirementLifetime": true,
+    "unknownWritesArchiveHeaderDirectoryAndBindingsRefused": true,
+    "originalInputAndDrawingUnchanged": true
+  },
+  "gpuFixture": {
+    "actualEglGles": true,
+    "maintainedAuthoredImages": 5,
+    "placements": 10,
+    "drawCalls": 13,
+    "ellipsisPairsPreserved": 3,
+    "independentPixelOracleAndStateDepthChecks": true,
+    "warmGpuResourcesReusedWithoutUploads": true,
+    "malformedPreflightsWithoutHelperGl": 25,
+    "lateStagingErrorsNeverPublish": true,
+    "sourceProofExplicitlySynthetic": true,
+    "nativeConsumerIntegrated": false,
+    "generationTwoResetUsesSameEglContext": true,
+    "checksPerRun": 329926
+  },
+  "checks": {
+    "optimizedRegisteredTestsPassed": 10,
+    "sanitizerBuildRegisteredTestsPassed": 10,
+    "sanitizerInstrumentedCppTests": 6,
+    "pythonTestsInEachBuild": 4,
+    "audioAndGraphicsCaptionCrossPolicyChecksPassed": true,
+    "privateTestLogSha256": {
+      "opt": "93644950f2dd839f6ce238f54037d094ba660f65d3a818362081c1a1b116da03",
+      "san": "1132c8cd0c79c189305dbdcc686273bdd5beeb460513615a7c3d10cbc4edc3d9"
+    }
+  },
+  "runtimeUiActivated": false,
+  "limitations": [
+    "The real Controls sidebar source observation and synthetic-source GPU fixture are separate evidence.",
+    "Controls whole-scene preparation, actual FIFO/native publication and genuine Controls context-recreation validation remain pending.",
+    "The isolated GPU generation-reset case does not recreate an EGL context.",
+    "Original game data and fonts, captures, private paths and logs are excluded from this source checkpoint.",
+    "Child control dialogs, remaining artwork and physical iPad UI, performance and battery acceptance remain open.",
+    "No cloud build, push or installable package."
+  ]
+}
