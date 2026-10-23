@@ -10,7 +10,8 @@
 #include <thread>
 #include <type_traits>
 #include "hd/OriginalUiRecords.h"
-static std::array<uint8_t,2097152> memory{};static unsigned leaseDepth=0,reads=0;static uint32_t deniedRead=0;static std::atomic<unsigned> allocationsInLease{0},foreignAllocations{0};static thread_local bool foreignPath=false;
+#include "hd/LocationCaptionDisplay.h"
+static std::array<uint8_t,4194304> memory{};static unsigned leaseDepth=0,reads=0;static uint32_t deniedRead=0;static std::atomic<unsigned> allocationsInLease{0},foreignAllocations{0};static thread_local bool foreignPath=false;
 void*operator new(size_t n){if(leaseDepth)++allocationsInLease;if(foreignPath)++foreignAllocations;if(void*p=std::malloc(n))return p;throw std::bad_alloc();}
 void operator delete(void*p)noexcept{std::free(p);}
 void*operator new(size_t n,const std::nothrow_t&)noexcept{try{return ::operator new(n);}catch(...){return nullptr;}}
@@ -71,7 +72,23 @@ static void proofCases(){
    for(const auto*p:{&e.pre,&e.stringBefore,&e.stringAfter,&e.post})assert(p->archive==0x1234&&p->target.owner==selected.owner&&p->identity.lifetime==s->lifetime);
    assert(e.stringBefore.font==0x98000&&e.stringAfter.font==0x98000&&e.stringBefore.fontHeader==e.stringAfter.fontHeader&&e.stringBefore.paletteWords==e.stringAfter.paletteWords);
    assert(packet->records().size()==1&&packet->records()[0].command.text==e.command.text);
+   nfs_location_caption_display::Binding binding{0x404abd,off_4D2A20,0x1234,reinterpret_cast<uintptr_t>(&g),s->serial,s->lifetime};
+   auto display=nfs_location_caption_display::Prepared::create(proof,packet,binding);assert(display&&display->current());auto word=display->view();assert(word.schema==1&&word.word==2&&word.width==208&&word.height==128&&word.left==116&&word.top==162&&word.right==168&&word.bottom==194&&word.bytes==208*128*4);
+   assert(!std::memcmp(word.sha256,nfs_compact_caption_word_sha256[1],32));
+   for(unsigned k=0;k<6;++k){auto bad=binding;if(k==0)bad.form=off_4D2A20;if(k==1)bad.formGuest=0x404abd;if(k==2)++bad.archive;if(k==3)++bad.game;if(k==4)++bad.serial;if(k==5)++bad.lifetime;assert(!nfs_location_caption_display::Prepared::create(proof,packet,bad));}
+   assert(!nfs_location_caption_display::Prepared::create({},packet,binding)&&!nfs_location_caption_display::Prepared::create(proof,{},binding));
    const auto actual=selected;const auto captured=packet->original();
+   std::vector<uint8_t>copied(16+cap::Pixels*2);std::memcpy(copied.data(),actual.header.data(),16);std::memcpy(copied.data()+16,captured.data(),cap::Pixels*2);
+   auto sourceOwner=actual;sourceOwner.ownerState[0]^=1;
+   auto copiedProof=[&](){return cap::acquireCopiedProof(g,proof,packet,s->serial,s->lifetime,sourceOwner,copied.data(),copied.size());};
+   assert(copiedProof()==proof);selected.w[1]=640;selected.w[10]=1280;assert(!cap::acquireCurrentProof(g)&&copiedProof()==proof);selected=actual;
+   sourceOwner.owner+=4;assert(!copiedProof());sourceOwner=actual;sourceOwner.x[100]^=2;assert(!copiedProof());sourceOwner=actual;sourceOwner.y[200]^=2;assert(!copiedProof());sourceOwner=actual;sourceOwner.ownerWords[8]^=4;assert(!copiedProof());sourceOwner=actual;sourceOwner.ownerState[1]^=4;assert(!copiedProof());sourceOwner=actual;
+   for(size_t k:{size_t(0),size_t(15),size_t(16),copied.size()-1}){copied[k]^=1;assert(!copiedProof());copied[k]^=1;}assert(copiedProof()==proof);
+   assert(!cap::acquireCopiedProof(g,proof,packet,s->serial,s->lifetime,sourceOwner,copied.data(),copied.size()-1));assert(!cap::acquireCopiedProof(g,proof,packet,s->serial+1,s->lifetime,sourceOwner,copied.data(),copied.size()));
+   put<uint32_t>(dword_4D40B8,0x1235);assert(!copiedProof());put<uint32_t>(dword_4D40B8,0x1234);memory[e.textGuest]^=1;assert(!copiedProof());memory[e.textGuest]^=1;feature=false;assert(!copiedProof());feature=true;assert(copiedProof()==proof);
+   Game alien=g;assert(!cap::acquireCopiedProof(alien,proof,packet,s->serial,s->lifetime,sourceOwner,copied.data(),copied.size()));
+   std::thread copiedForeign([&]{foreignPath=true;assert(!copiedProof());foreignPath=false;});copiedForeign.join();assert(foreignAllocations==0);
+
    put<uint32_t>(dword_4D40B8,0x1235);assert(!cap::acquireCurrentProof(g)&&cap::acquireCurrentPacket(g)==packet);put<uint32_t>(dword_4D40B8,0x1234);assert(cap::acquireCurrentProof(g)==proof);
    selected.owner+=4;assert(!cap::acquireCurrentProof(g)&&cap::acquireCurrentPacket(g)==packet);selected=actual;assert(cap::acquireCurrentProof(g)==proof);
    selected.ownerWords[3]^=1;assert(!cap::acquireCurrentProof(g));selected=actual;assert(cap::acquireCurrentProof(g)==proof);
@@ -80,7 +97,7 @@ static void proofCases(){
    feature=false;assert(!cap::acquireCurrentProof(g));feature=true;assert(cap::acquireCurrentProof(g)==proof);
    put<uint16_t>(selected.w[8]+16,1);assert(!cap::acquireCurrentProof(g));put<uint16_t>(selected.w[8]+16,captured[0]);assert(cap::acquireCurrentProof(g)==proof);
    const auto beforeReads=reads;std::thread foreign([&]{foreignPath=true;assert(!cap::lastProof(g)&&!cap::acquireCurrentProof(g));foreignPath=false;});foreign.join();assert(reads==beforeReads&&foreignAllocations==0);
-   retained=proof;cap::beforeOwnerRetire(g,selected.owner);assert(!cap::lastProof(g)&&!cap::acquireCurrentProof(g));assert(proof->current()&&proof->packet()->original()==captured);
+   retained=proof;cap::beforeOwnerRetire(g,selected.owner);assert(!cap::lastProof(g)&&!cap::acquireCurrentProof(g));assert(proof->current()&&proof->packet()->original()==captured&&display->current()&&!copiedProof());
   }
   assert(!cap::lastProof(g)&&!cap::acquireCurrentProof(g));
  }
@@ -88,6 +105,7 @@ static void proofCases(){
  // Logical scene handler identity must never be admitted as the lexical descriptor.
  prepare();Game logical;logical.eax=0x404abd;{cap::OwnerScope wrong(logical);assert(!cap::current(logical)&&!cap::lastProof(logical));}
 }
+#include "LocationCaptionSceneProofCases.h"
 int main(){prepare();Game g;g.eax=off_4D2A20;{cap::OwnerScope nofont(g);assert(!cap::current(g));}assert(nfs_soft::installFontCatalog(font()));feature=false;auto priorReads=reads;{cap::OwnerScope disabled(g);}assert(reads==priorReads);feature=true;g.eax=0x999;{cap::OwnerScope wrong(g);assert(!cap::current(g));}
  std::shared_ptr<const nfs_soft::FramePacket> retained;
  for(const char*mode:{"normal","bad-word","extra-write","palette","font","font-header","wrong-mode","wrong-callback","wrong-size","unknown-text","lut","selection","nested","retire","unrelated"}){prepare();g.eax=off_4D2A20;auto original=g;cap::OwnerScope owner(g);auto*s=cap::current(g);assert(s&&s->font);assert(!std::memcmp(&g,&original,sizeof g));if(!std::strcmp(mode,"wrong-mode"))put<uint32_t>(dword_4D20A0,1);if(!std::strcmp(mode,"wrong-callback"))put<uint32_t>(dword_4DD77C,123);if(!std::strcmp(mode,"wrong-size"))put<int32_t>(dword_4E54AC,17);if(!std::strcmp(mode,"unknown-text"))memory[0x90000]=uint8_t(88);if(!std::strcmp(mode,"lut"))selected.x[100]^=2;
@@ -98,6 +116,6 @@ int main(){prepare();Game g;g.eax=off_4D2A20;{cap::OwnerScope nofont(g);assert(!
   }else assert(s->failure!=cap::Failure::none);
   if(!std::strcmp(mode,"normal")){std::thread foreign([&]{foreignPath=true;Game other;other.eax=off_4D2A20;{cap::OwnerScope foreignOwner(other);assert(!cap::current(other));}foreignPath=false;});foreign.join();assert(foreignAllocations==0);}
  }
- descriptorRetirement();proofCases();
+ descriptorRetirement();proofCases();genuineSceneCases();
  assert(retained&&retained->pixels()==343*480&&retained->original()[167*343+117]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS Location caption: compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
 }

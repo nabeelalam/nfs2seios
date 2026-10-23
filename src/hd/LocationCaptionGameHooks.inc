@@ -103,4 +103,16 @@ inline std::shared_ptr<const nfs_location_caption_source::Proof>acquireCurrentPr
  Current c;if(!capture(*s,c,true,false)||c.archive!=e.post.archive||c.archive!=e.stringAfter.archive||c.archive!=s->current.archive||c.target.owner!=s->ownerWindow||!nfs_logo_capture::same(c.target,e.post.target)||!nfs_logo_capture::same(c.target,s->current.target)||!s->packet->matches(c.identity,s->serial,s->pixels.data(),Pixels))return {};
  return s==current(g)&&s->proof==proof?proof:std::shared_ptr<const nfs_location_caption_source::Proof>{};
 }
+// Independently observed Copy source permits only the ambient selected-target word to change.
+inline std::shared_ptr<const nfs_location_caption_source::Proof>acquireCopiedProof(Game&g,const std::shared_ptr<const nfs_location_caption_source::Proof>&expected,const std::shared_ptr<const nfs_soft::FramePacket>&packet,uint64_t serial,uint64_t lifetime,const nfs_logo_capture::Target&owner,const uint8_t*source,size_t bytes)noexcept{
+ auto*s=current(g);if(!s||!nfs_logo_publisher::enabled()||!expected||!packet||s->recording||s->tailDepth||s->string||s->glyph||s->glyphDepth||s->proof!=expected||s->packet!=packet||expected->packet()!=packet||!expected->current()||!serial||!lifetime||s->serial!=serial||s->lifetime!=lifetime||packet->serial()!=serial||packet->surface().lifetime!=lifetime||packet->pixels()!=Pixels||!source||bytes!=16+Pixels*2)return {};
+ const auto&e=expected->evidence();if(e.logicalForm!=nfs_location_caption_source::LogicalForm||e.formGuest!=uint32_t(guest_address(off_4D2A20))||s->formGuest!=e.formGuest||e.game!=reinterpret_cast<uintptr_t>(&g)||e.game!=s->game||e.policyThread!=token()||e.serial!=serial||e.lifetime!=lifetime||!exactSourceText(e.textGuest))return {};
+ try{nfs::GuestCopyTransaction tx;const auto archive=tx.load<uint32_t>(dword_4D40B8);if(!archive||archive!=s->current.archive||archive!=e.post.archive||archive!=e.stringAfter.archive)return {};}catch(...){return {};}
+ const auto&sealed=e.post.target;if(owner.owner!=sealed.owner||owner.owner!=s->ownerWindow||owner.w!=sealed.w||owner.header!=sealed.header||owner.x!=sealed.x||owner.y!=sealed.y||owner.ownerWords!=sealed.ownerWords)return {};
+ for(unsigned k=1;k<5;++k)if(owner.ownerState[k]!=sealed.ownerState[k])return {};
+ nfs_soft::SurfaceIdentity identity{};identity.lifetime=lifetime;std::copy(owner.w.begin(),owner.w.end(),identity.geometry.begin());auto&a=identity.geometry;a[14]=owner.x[0];a[15]=owner.x[1];a[16]=owner.x[342];a[17]=owner.y[0];a[18]=owner.y[1];a[19]=owner.y[479];if(!identity.valid()||!(identity==packet->surface())||!(identity==e.post.identity))return {};
+ for(unsigned k=0;k<4;++k){const size_t at=4*k;const uint32_t value=uint32_t(source[at])|(uint32_t(source[at+1])<<8)|(uint32_t(source[at+2])<<16)|(uint32_t(source[at+3])<<24);if(value!=owner.header[k])return {};}
+ for(size_t k=0;k<Pixels;++k)if(uint16_t(uint16_t(source[16+2*k])|(uint16_t(source[17+2*k])<<8))!=packet->original()[k])return {};
+ return s==current(g)&&s->proof==expected&&s->packet==packet?expected:std::shared_ptr<const nfs_location_caption_source::Proof>{};
+}
 } // namespace nfs_location_caption

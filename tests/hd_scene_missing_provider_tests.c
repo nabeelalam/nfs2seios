@@ -17,6 +17,7 @@ static int g_framebufferHeight,linearFiltering,g_renderBuffer,g_depthMask,g_text
 static unsigned g_framebuffer,g_shaderProgram,g_framebufferTexture,g_framebufferDepth;static float g_matrix[16];
 static unsigned optionalQueries,flushes;
 static void*SDL_GL_GetCurrentContext(void){++optionalQueries;return g_glCtx;}
+static uintptr_t SDL_GetCurrentThreadID(void){++optionalQueries;return 1;}
 static void drawTriangles(void){++flushes;}
 static void countedGet(GLenum key,GLint*out){++optionalQueries;glGetIntegerv(key,out);}
 #define glGetIntegerv countedGet

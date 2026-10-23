@@ -23,7 +23,7 @@ int main(){try{
  auto verify=[&](){return loc::verifyAndPrepare(input,f->workspace,*out,f->catalog);};CHECK(verify()==bg::Failure::None);CHECK(out->valid&&out->caption==caption&&out->preview==preview);
  // Independent full original oracle, including the changed caption pixel.
  for(unsigned y=0;y<480;++y)for(unsigned x=0;x<640;++x){uint16_t expected=x>=343?original->oracle[y*640+x]:(x==0&&y==0?f->frameColor:f->sideColor);if(y==170&&x==120)expected=65535;CHECK(out->original[y*640+x]==expected);}
- auto v=out->view();CHECK(v.schema==2&&v.preview.schema==1&&v.preview.pixels565==preview->pixels().data()&&v.preview.coverage==preview->coverage().data()&&v.scene.tailKind==NFS_BACKGROUND_TAIL_LOCATION_CAPTION&&v.caption.logicalWidth==343&&v.caption.vertexCount&&v.caption.font.identity==77);CHECK(v.caption.font.alpha==font->alpha().data());
+ auto v=out->view();CHECK(v.schema==NFS_LOCATION_SCENE_RUNTIME_SCHEMA&&v.preview.schema==1&&v.preview.pixels565==preview->pixels().data()&&v.preview.coverage==preview->coverage().data()&&v.scene.tailKind==NFS_BACKGROUND_TAIL_LOCATION_CAPTION&&v.caption.logicalWidth==343&&v.caption.vertexCount&&v.caption.font.identity==77);CHECK(v.caption.font.alpha==font->alpha().data());
  auto firstView=out->view();CHECK(!std::memcmp(firstView.caption.font.sha256,v.caption.font.sha256,32));
  // A different immutable owner (even same numeric identity) must rehash, then returning to first owner restores its digest.
  auto otherAlpha=alpha;otherAlpha[4096]=17;auto otherFont=nfs_soft::FontCatalog::create(fd,otherAlpha.data(),otherAlpha.size(),77);CHECK(otherFont);
@@ -66,6 +66,8 @@ int main(){try{
  auto staleOriginal=std::unique_ptr<nfs_location_preview_test::Fixture>(new nfs_location_preview_test::Fixture(f->base.post,12));auto stale=staleOriginal->packet(f->base.post);CHECK(stale);input.preview=stale;reject();input.preview=preview;
  // A self-consistent old Copy.PRE/POST outside the343 copy cannot substitute
  // for the independently replayed current preview.
+ // Supplied partial display evidence must reject instead of taking legacy fallback.
+ input.captionBinding={loc::LocationForm,0x100,0x20000,1,5,7};reject();input.captionBinding={};CHECK(verify()==bg::Failure::None&&!out->captionWord&&!out->view().captionWord.schema);
  const unsigned previewAt=320*640+500;auto oldPre=f->copy.pre.pixels[previewAt],oldPost=f->copy.post.pixels[previewAt];f->copy.pre.pixels[previewAt]=f->copy.post.pixels[previewAt]=f->base.post.pixels[previewAt];reject();f->copy.pre.pixels[previewAt]=oldPre;f->copy.post.pixels[previewAt]=oldPost;
  input.previewBaseEvent.iteration=1;reject();input.previewBaseEvent.iteration=0;
  f->base.post.target.ownerState[0]^=1;reject();f->base.post.target.ownerState[0]^=1;

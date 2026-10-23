@@ -29,15 +29,39 @@ constexpr uint32_t game_id_sub_483438 = 0xf0001878u;
 constexpr uint32_t game_id_sub_4A14D4 = 0xf0002124u;
 // Additional synthetic declarations needed by the real Location queue header.
 static constexpr uint32_t aBlk4=0x7850;
-static constexpr uint32_t off_4D2A20=0x404abd,dword_4DD770=0xc000,dword_4DD77C=0xc004,dword_4DD774=0xc008,dword_4DD714=0xc00c,dword_4D20A0=0xc010,byte_4DB25E=0xc014,dword_4DD6F4=0xc018,dword_4DD6F8=0xc01c,dword_4E54AC=0xc020,dword_4DD6EC=0xc024;
+static constexpr uint32_t off_4D2A20=0x8000,dword_4DD770=0xc000,dword_4DD77C=0xc004,dword_4DD774=0xc008,dword_4DD714=0xc00c,dword_4D20A0=0xc010,byte_4DB25E=0xc014,dword_4DD6F4=0xc018,dword_4DD6F8=0xc01c,dword_4E54AC=0xc020,dword_4DD6EC=0xc024;
 static constexpr uint32_t game_id_sub_4A5830=0xfade0010;
 #include "hd/BackgroundSceneQueueAdapter.inc"
 #include "hd/LocationSceneQueueAdapter.inc"
+#include "LocationPreviewFixture.h"
 namespace live=nfs_background_scene_live;
 namespace pub=nfs_logo_publisher;
 static unsigned gpuBegins=0,gpuEnds=0;static uint64_t lastBegin=0;
 extern "C" int nfs_private_background_scene_begin(const NfsBackgroundSceneFrameView*v){CHECK(!leaseDepth&&v&&v->serial&&v->original565);++gpuBegins;lastBegin=v->serial;return 1;}
 extern "C" int nfs_private_background_scene_finish(uint64_t serial){CHECK(serial==lastBegin);++gpuEnds;return 1;}
+static unsigned locationBegins=0,locationEnds=0;static uint64_t lastLocationBegin=0;
+extern "C" int nfs_private_location_scene_begin(const NfsLocationSceneFrameView*v){CHECK(!leaseDepth&&v&&v->schema==NFS_LOCATION_SCENE_RUNTIME_SCHEMA&&v->scene.serial&&v->scene.original565&&v->caption.vertexCount&&v->caption.vertices&&v->caption.font.alpha&&v->preview.schema==1&&v->preview.pixels565&&v->preview.coverage);CHECK(!v->captionWord.schema);++locationBegins;lastLocationBegin=v->scene.serial;return 1;}
+extern "C" int nfs_private_location_scene_finish(uint64_t serial){CHECK(serial==lastLocationBegin);++locationEnds;return 1;}
+// Transport-only legacy fixture: this bypasses no live source join and does not
+// claim a genuine caption seal. Actual nonempty word admission is tested separately.
+static void locationQueueLifetime(Fixture&f){
+ namespace location=nfs_location_scene_live;namespace loc=nfs_location_scene_cpu;
+ nfs_soft::FontDescription fd{};std::vector<uint8_t>alpha(1024*512);alpha[1025]=255;
+ for(auto&role:fd.glyphs)for(auto&glyph:role){glyph.x=glyph.y=glyph.w=glyph.h=1;glyph.advance=65536;}
+ auto font=nfs_soft::FontCatalog::create(fd,alpha.data(),alpha.size(),77);CHECK(font);
+ nfs_soft::SurfaceIdentity identity;CHECK(loc::captionIdentity(f.copy.sourceOwner,7,identity));
+ nfs_soft::FramePacketBuilder builder(font);CHECK(builder.begin(identity,5,f.scene.tailPre.pixels.data(),bg::Side));
+ nfs_soft::TextCommand command{};command.length=8;std::memcpy(command.text.data(),"location",8);command.role=1;command.x=116;command.y=162;command.sourceSize=18;command.advance=8;command.color=65535;command.clip={0,0,343,480};CHECK(builder.beginString(command));
+ auto post=f.scene.tailPre.pixels;const unsigned at=170*343+120;CHECK(builder.word(at,post[at],65535,65535));post[at]=65535;CHECK(builder.endString(command));auto caption=builder.finish(identity,post.data(),bg::Side);CHECK(caption);
+ auto original=std::unique_ptr<nfs_location_preview_test::Fixture>(new nfs_location_preview_test::Fixture(f.base.post));auto preview=original->packet(f.base.post);CHECK(preview);
+ std::shared_ptr<loc::Prepared>owned(new loc::Prepared);owned->valid=true;owned->caption=caption;owned->preview=preview;owned->contentRevision=1;
+ std::weak_ptr<const loc::Prepared>weak=owned;std::weak_ptr<const nfs_soft::FramePacket>weakCaption=caption;std::weak_ptr<const nfs_location_preview::Packet>weakPreview=preview;
+ location::Intent intent;location::enqueueBegin(owned,intent);CHECK(intent.beginConsumed&&intent.serial&&location::activeRequest()==intent.serial);location::finish(intent);CHECK(intent.finishConsumed&&!location::activeRequest());location::cancel(intent);owned.reset();caption.reset();preview.reset();CHECK(!weak.expired()&&!weakCaption.expired()&&!weakPreview.expired()&&!locationBegins&&!locationEnds);
+ nfs::flush_renderer_commands();CHECK(locationBegins==1&&locationEnds==1&&weak.expired()&&weakCaption.expired()&&weakPreview.expired());
+ // Calling the queue entry on its owner thread returns to the existing path.
+ std::shared_ptr<loc::Prepared>ownerPacket(new loc::Prepared);ownerPacket->valid=true;std::shared_ptr<const loc::Prepared>ownerView=ownerPacket;
+ nfs::run_renderer_on_main([](void*p){auto&packet=*static_cast<std::shared_ptr<const loc::Prepared>*>(p);location::Intent ownerIntent;location::enqueueBegin(packet,ownerIntent);CHECK(!ownerIntent.beginConsumed&&!ownerIntent.serial&&!ownerIntent.owned&&!location::activeRequest());},&ownerView);
+}
 static void sharedRequestSequence(){
  namespace location=nfs_location_scene_live;
  CHECK(!live::activeRequest()&&!location::activeRequest());
@@ -74,5 +98,7 @@ int main(int argc,char**argv){try{CHECK(argc==2);std::string mode=argv[1];if(mod
   live::invalidateCache();pub::resetNativeCache();CHECK(live::slot()->invalid&&!live::slot()->published&&!pub::store()->bound);CHECK(owned->valid&&owned->contentRevision==revision);
  }
  CHECK(!live::slot()->on&&!pub::store()->inMenu&&!leaseDepth&&allocationInLease==0);
+ locationQueueLifetime(*fixture);
+ CHECK(!nfs_location_scene_live::activeRequest());
  std::puts("PASS actual shared Main/Location allocator and active path; actual-reader synthetic base/side/word, original-record collector,300tile uploads,12cached ownedFIFO publications,retirement");return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}}

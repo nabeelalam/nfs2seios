@@ -38,6 +38,21 @@ static int nfs_logo_trace_enabled(void);
 static unsigned nfs_logo_trace_lines;
 static void nfs_logo_native_upload(void);
 static NfsLogoProvenance nfs_logo_provenance;
+/* The Location word owns neither Options nor Graphics state. Its registered
+   callback proves the actual context/thread/generation independently of packets. */
+static uintptr_t nfs_bg_location_thread_token(void){
+#ifdef __cplusplus
+ static thread_local unsigned char token;
+#else
+ static _Thread_local unsigned char token;
+#endif
+ return (uintptr_t)&token;
+}
+static uintptr_t nfs_bg_location_owner_thread,nfs_bg_location_owner_context;
+static int nfs_bg_location_context_live(const NfsBackgroundSceneStage*t){return t&&t->generation&&t->generation==nfs_bg_compositor.generation&&t->generation==nfs_logo_provenance.context&&nfs_logo_provenance.alive&&!nfs_logo_provenance.disabled&&t->contextIdentity==nfs_bg_location_owner_context&&nfs_bg_location_owner_thread==nfs_bg_location_thread_token()&&g_glCtx&&(uintptr_t)g_glCtx==t->contextIdentity&&SDL_GL_GetCurrentContext()==g_glCtx;}
+static int nfs_bg_location_caption_owner_current(void*user,const NfsBackgroundSceneStage*t){GLint fbo=0,type=0,name=0;unsigned slot;if(user!=&nfs_bg_compositor||!nfs_bg_location_context_live(t))return 0;if(!t->framebuffer)return 1;for(slot=0;slot<2;++slot)if(t->framebuffer==nfs_bg_compositor.fbo[slot]&&nfs_bg_compositor.color[slot]&&t->width==nfs_bg_compositor.width[slot]&&t->height==nfs_bg_compositor.height[slot])break;if(slot==2)return 0;glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);if(!nfs_bg_location_context_live(t)||(GLuint)fbo!=t->framebuffer)return 0;glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type);if(!nfs_bg_location_context_live(t))return 0;glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name);return nfs_bg_location_context_live(t)&&type==GL_TEXTURE&&(GLuint)name==nfs_bg_compositor.color[slot];}
+static void nfs_bg_location_caption_created(void){nfs_bg_location_owner_thread=nfs_bg_location_thread_token();nfs_bg_location_owner_context=(uintptr_t)g_glCtx;if(nfs_bg_compositor.generation)(void)nfs_bg_scene_location_caption_owner(&nfs_bg_compositor,nfs_bg_location_owner_context,nfs_bg_location_caption_owner_current,&nfs_bg_compositor);}
+
 static void nfs_logo_cancel_all(void){/* NFS_PLAYER_RENDERER_BEGIN:cancel */nfs_player_renderer_other();/* NFS_PLAYER_RENDERER_END:cancel */if(nfs_bg_feature())nfs_bg_scene_cancel(&nfs_bg_compositor);}
 /* Current native RGB-black fact is consumed by ANY native triangle. Pending pass proof is separate. */
 static struct {uint64_t context,epoch;uint32_t fbo;unsigned valid;} nfs_logo_black_clear;
@@ -47,7 +62,7 @@ static NfsLogoUploadWitness nfs_logo_uploads[1024];static unsigned nfs_logo_uplo
 static void nfs_logo_native_state(void){/* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_other();/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_other();/* NFS_GRAPHICS_RENDERER_END:hook */if(!nfs_logo_feature())return;if(nfs_logo_provenance.active&&nfs_logo_provenance.triangles)nfs_logo_p_contaminate(&nfs_logo_provenance);else nfs_logo_p_cancel(&nfs_logo_provenance);nfs_logo_cancel_all();}
 
 static int nfs_logo_feature(void){return nfs_bg_feature();}
-static void nfs_logo_native_created(void){if(!nfs_logo_feature())return;nfs_logo_black_clear.valid=0;nfs_logo_p_created(&nfs_logo_provenance);if(nfs_bg_feature()&&nfs_logo_provenance.alive)nfs_bg_scene_context_created(&nfs_bg_compositor,nfs_logo_provenance.context);/* NFS_AUDIO_RENDERER_BEGIN:created */nfs_audio_renderer_created();/* NFS_AUDIO_RENDERER_END:created *//* NFS_GRAPHICS_RENDERER_BEGIN:created */nfs_graphics_renderer_created();/* NFS_GRAPHICS_RENDERER_END:created *//* NFS_OPTIONS_RENDERER_BEGIN:created */nfs_options_renderer_created();/* NFS_OPTIONS_RENDERER_END:created *//* NFS_PLAYER_RENDERER_BEGIN:created */nfs_player_renderer_created();/* NFS_PLAYER_RENDERER_END:created */}
+static void nfs_logo_native_created(void){if(!nfs_logo_feature())return;nfs_logo_black_clear.valid=0;nfs_logo_p_created(&nfs_logo_provenance);if(nfs_bg_feature()&&nfs_logo_provenance.alive){nfs_bg_scene_context_created(&nfs_bg_compositor,nfs_logo_provenance.context);nfs_bg_location_caption_created();}/* NFS_AUDIO_RENDERER_BEGIN:created */nfs_audio_renderer_created();/* NFS_AUDIO_RENDERER_END:created *//* NFS_GRAPHICS_RENDERER_BEGIN:created */nfs_graphics_renderer_created();/* NFS_GRAPHICS_RENDERER_END:created *//* NFS_OPTIONS_RENDERER_BEGIN:created */nfs_options_renderer_created();/* NFS_OPTIONS_RENDERER_END:created *//* NFS_PLAYER_RENDERER_BEGIN:created */nfs_player_renderer_created();/* NFS_PLAYER_RENDERER_END:created */}
 static void nfs_logo_native_retired(int owner){/* NFS_PLAYER_RENDERER_BEGIN:retired */nfs_player_renderer_retired(owner);/* NFS_PLAYER_RENDERER_END:retired *//* NFS_OPTIONS_RENDERER_BEGIN:retired */nfs_options_renderer_retired(owner);/* NFS_OPTIONS_RENDERER_END:retired *//* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_retired(owner);/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_retired(owner);/* NFS_GRAPHICS_RENDERER_END:hook */if(!nfs_logo_feature())return;nfs_logo_black_clear.valid=0;if(nfs_bg_feature())nfs_bg_scene_context_retired(&nfs_bg_compositor,nfs_logo_provenance.context,owner);nfs_logo_p_retired(&nfs_logo_provenance);}
 static uint32_t nfs_logo_texture_address(const TextureInfo*ti){return(uint32_t)(ti-g_textures)*4u;}
 static void nfs_logo_native_upload_begin(TextureInfo*ti){/* NFS_AUDIO_RENDERER_BEGIN:hook */nfs_audio_renderer_upload_begin(ti);/* NFS_AUDIO_RENDERER_END:hook *//* NFS_GRAPHICS_RENDERER_BEGIN:hook */nfs_graphics_renderer_upload_begin(ti);/* NFS_GRAPHICS_RENDERER_END:hook */unsigned i;uint32_t address;if(!nfs_logo_feature())return;address=nfs_logo_texture_address(ti);for(i=0;i<1024;++i)if(nfs_logo_uploads[i].valid&&nfs_logo_uploads[i].address==address)nfs_logo_uploads[i].valid=0;nfs_logo_native_upload();}
@@ -165,7 +180,7 @@ static int nfs_bg_native_finish(uint64_t serial,unsigned tailKind){
 
 int nfs_private_background_scene_begin(const NfsBackgroundSceneFrameView*v){return nfs_bg_native_begin(v,NULL);}
 int nfs_private_background_scene_finish(uint64_t serial){return nfs_bg_native_finish(serial,NFS_BACKGROUND_TAIL_MAIN_SKIP);}
-int nfs_private_location_scene_begin(const NfsLocationSceneFrameView*v){if(!v)return 0;return nfs_bg_native_begin(&v->scene,v);}
+int nfs_private_location_scene_begin(const NfsLocationSceneFrameView*v){if(!v||v->schema!=NFS_LOCATION_SCENE_RUNTIME_SCHEMA)return 0;return nfs_bg_native_begin(&v->scene,v);}
 int nfs_private_location_scene_finish(uint64_t serial){return nfs_bg_native_finish(serial,NFS_BACKGROUND_TAIL_LOCATION_CAPTION);}
 
 /* NFS_AUDIO_RENDERER_BEGIN:implementation */

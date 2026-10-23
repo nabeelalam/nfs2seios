@@ -4,7 +4,8 @@
 #include "BackgroundSceneRuntimeAbi.h"
 #include "SoftwareTextLayerAbi.h"
 #include "OriginalPreviewLayerAbi.h"
-#define NFS_LOCATION_SCENE_RUNTIME_SCHEMA 2u
+#include "CompactCaptionWordRuntimeAbi.h"
+#define NFS_LOCATION_SCENE_RUNTIME_SCHEMA 3u
 /* Explicit Location-only tail. The original Main entry still requires MAIN_SKIP.
    All pointers are retained by a native immutable owner for one synchronous
    renderer callback. No field supplies GPU context/upload/target authority. */
@@ -13,6 +14,7 @@ typedef struct NfsLocationSceneFrameView {
  NfsBackgroundSceneFrameView scene;
  NfsSoftwareTextLayerView caption;
  NfsOriginalPreviewLayerView preview;
+ NfsCompactCaptionWordView captionWord;
 } NfsLocationSceneFrameView;
 #ifdef __cplusplus
 extern "C" {

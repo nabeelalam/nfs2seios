@@ -620,7 +620,7 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NFS_HD_CPU_TESTS)
     add_test(NAME hd_scene_actual_gles COMMAND hd_scene_gpu_tests)
     set_tests_properties(hd_scene_actual_gles PROPERTIES TIMEOUT 60
       ENVIRONMENT "EGL_PLATFORM=surfaceless;LIBGL_ALWAYS_SOFTWARE=1;MESA_GLES_VERSION_OVERRIDE=2.0;ASAN_OPTIONS=detect_leaks=0")
-    add_executable(hd_scene_missing_provider_tests tests/hd_scene_missing_provider_tests.c src/hd/HdArtProvider.c)
+    add_executable(hd_scene_missing_provider_tests tests/hd_scene_missing_provider_tests.c src/hd/HdArtProvider.c src/hd/AudioArtProvider.c)
     target_include_directories(hd_scene_missing_provider_tests PRIVATE src)
     target_compile_features(hd_scene_missing_provider_tests PRIVATE c_std_11)
     target_link_libraries(hd_scene_missing_provider_tests PRIVATE "${NFS_HD_GLES_LIBRARY}" m)

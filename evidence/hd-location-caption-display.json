@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "scope": "Fixed Location caption display with independent original preview and current copied-source binding",
+  "word": {
+    "id": 2,
+    "text": "location",
+    "logicalRectangle": [
+      116,
+      162,
+      168,
+      194
+    ],
+    "rgbaSize": [
+      208,
+      128
+    ],
+    "runtimeViewSchema": 3,
+    "fontFileOrOriginalGamePixelsIncluded": false
+  },
+  "ownership": {
+    "privateLexicalProofRetained": true,
+    "logicalFormDescriptorAndBitmapOwnerRemainDistinct": true,
+    "currentGameThreadArchiveLiteralSerialAndLifetimeRechecked": true,
+    "actualFullCopiedOwnerHeaderCoordinateTablesAndPixelsCompared": true,
+    "ambientSelectedTargetMaySwitch343To640": true,
+    "independentPreviewBaseSceneCopyUploadAndRendererJoinsPreserved": true,
+    "historicalProofAloneNeverAuthorizesDisplay": true,
+    "queuedImmutableCaptionPreviewAndArtworkRetained": true,
+    "liveGenuineNonemptyWordRequired": true,
+    "legacyEmptyWordFallbackRetained": true,
+    "invalidNonemptyWordNeverDowngrades": true
+  },
+  "renderer": {
+    "independentActualContextThreadGenerationAndRegisteredStagingAttachmentGuard": true,
+    "oldSchemaRejectedBeforeTrailingBorrow": true,
+    "wordContentGeometryAndOwnedResourcesInImageCacheKey": true,
+    "originalCaptionFontStillValidated": true,
+    "originalPreviewAndLayerOrderPreserved": true,
+    "original300Selections600TrianglesAndColorOnlyCommitPreserved": true,
+    "newHelperOperationsGuardedIncludingRestoreAndRetire": true,
+    "foreignOwnerLossAbandonsWithoutCleanup": true
+  },
+  "validation": {
+    "registeredChecksPerMode": 17,
+    "modes": [
+      "optimized",
+      "ASan+UBSan"
+    ],
+    "genuinePrivateProofFullPreviewCopySceneJoin": true,
+    "ownedQueueCaptionPreviewLifetimeAndOwnerThreadFallback": true,
+    "actualGlesWordPixelsAtLogicalAndNativeOutput": true,
+    "representativeMidHelperOwnerLossCases": 4,
+    "resourceAliasAndMalformedSchemaPayloadCacheFailuresCovered": true,
+    "nativeColorAndDepthClearComparisonPreserved": true,
+    "exactDepthBitsReadbackProven": false,
+    "exhaustiveGlQueryTrace": false,
+    "wholeLegacyCompositorContextLossCoverageExpanded": false
+  },
+  "actualGame": {
+    "outputSize": [
+      2186,
+      1640
+    ],
+    "word2DrawAndCompleteOriginalPassesObserved": true,
+    "availableTrackChoicesCycled": 7,
+    "secretOrUnavailableTracksClaimed": false,
+    "exactTrackNamesAutomaticallyRecognized": false,
+    "returnedToInitialSelectionAndPreview": true,
+    "leftAndReopenedLocation": true,
+    "settledCaptionCaptures": 9,
+    "glyphDiceRange": [
+      0.951106352605282,
+      0.9549290716466152
+    ],
+    "glyphDiceFixedThreshold": 0.8,
+    "priorFontNegativeDice": 0.49730838246603437,
+    "visiblePreviewAdjacentRgbDifferenceRange": [
+      44.68482905982906,
+      69.52390044943236
+    ],
+    "initialPreviewReturnRgbDifference": 0.0,
+    "cleanShutdownAndCopiedConfigArtworkRestoration": true
+  },
+  "retainedFailures": [
+    "Native renderer callback initially preceded its original provenance declaration; full game compile caught it before link.",
+    "Broader missing-provider fixture lacked a counted thread query and actual unset audio-provider link dependency; fixture completed.",
+    "New GLES fixture initially requested a different immutable font identity; corrected to its existing sealed font.",
+    "A test attempted to force an image-cache miss using a revision counter deliberately excluded from visual identity; corrected to a real preview placement change."
+  ],
+  "limits": {
+    "nestedAudioGraphicsAndRemainingUiPending": true,
+    "wholeUiAccepted": false,
+    "physicalIPadAppearanceOrPerformanceVerified": false,
+    "newFpsLowPowerOrBatteryClaim": false,
+    "cloudBuild": false,
+    "push": false
+  }
+}
