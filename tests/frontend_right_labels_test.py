@@ -61,7 +61,7 @@ class RightLabels(unittest.TestCase):
         relatives.update('assets/hud/frontend/'+name for name in ['generated.json','catalog.json',
             'location/catalog.json','setup/catalog.json','player/catalog.json','opponents/catalog.json',
             'opponents/packing.json','options/catalog.json','options/packing.json','right-labels/catalog.json',
-            'main-word-art.json'])
+            'main-word-art.json','player-word-art-0.json','player-word-art-1.json'])
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
             for relative in relatives:
@@ -75,6 +75,7 @@ class RightLabels(unittest.TestCase):
                                  'assets/hud/frontend/opponents/packing.json',
                                  'assets/hud/frontend/options/catalog.json','assets/hud/frontend/options/packing.json',
                                  'assets/hud/frontend/main-word-art.json',
+                                 'assets/hud/frontend/player-word-art-0.json','assets/hud/frontend/player-word-art-1.json',
                                  'src/FrontendFontPixelsPart0.inc']:
                     target=root/relative;old=target.read_bytes();target.write_bytes(old+b' ')
                     with self.assertRaises(ValueError):generate_frontend_layout()

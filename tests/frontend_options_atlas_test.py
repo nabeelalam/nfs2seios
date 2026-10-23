@@ -37,15 +37,15 @@ def decode_current():
     return pixels
 
 def fixture():
-    """Reconstruct the historical83-image input BEFORE the final Main override.
+    """Reconstruct historical packing input before the fixed text overrides.
 
-    Current pixels already contain the eight complete-word Main graphics. Render
-    only their historical SVG base images with the project's pinned fonts; all
-    other75 images still come byte-for-byte from the current authored atlas.
-    The independent old recipe hashes/geometry below remain unchanged. Separate
-    Main word-art tests verify the later override phase.
+    Re-render only overridden Main/Player/shared SVG sources with pinned fonts;
+    retain every independent old recipe digest and geometry assertion. Separate
+    fixed-art tests verify the later overrides and alias inventory.
     """
     current=decode_current();meta=json.loads((DIR/'generated.json').read_text());assert sha(current)==meta['rasterSha256']
+    from frontend_player_word_art import WORDS
+    overridden = {alias for word in WORDS for alias in word[-1]}
     historical_main={}
     with project_fonts():
         for word in json.loads((DIR/'catalog.json').read_text())['words']:
@@ -65,6 +65,11 @@ def fixture():
             x,y,w,h=place['atlas'];raw=b''.join(current[((y+j)*1024+x)*4:((y+j)*1024+x+w)*4]for j in range(h));top=place['sourceCrop'][1]
             if family=='main':
                 raw=historical_main[word['file']];h=204
+                assert len(raw)==w*h*4
+            elif family+'/'+word['file'] in overridden:
+                with project_fonts():
+                    original = rasterize(path.read_bytes(), w, 204)
+                raw = original[top*w*4:(top+h)*w*4]
                 assert len(raw)==w*h*4
             item=dict(width=w,height=h,top=top,rgba=raw)
             if key in images:assert images[key]==item

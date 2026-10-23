@@ -172,6 +172,41 @@ def chunked_pixels(encoded):
     return aggregate, outputs
 
 
+def player_ink_fit(directory, pixels, rows, placements):
+    """Check adopted ink against every original Player horizontal text bound."""
+    words = json.loads((directory/'player/catalog.json').read_text())['words']
+    if len(words) != 34 or len(placements) != 34 or len(pixels) != 8388608:
+        raise ValueError('Incomplete Player ink-fit inputs')
+    parsed = [list(map(float, row.strip('{}').split(',')[:13])) for row in rows]
+    index, result = 726, []
+    for word, packed in zip(words, placements):
+        if word['file'] != packed['file']:
+            raise ValueError('Player ink-fit image order changed')
+        x, y, width, height = packed['atlas']
+        ink = [(xx, yy) for yy in range(height) for xx in range(width)
+               if pixels[((y+yy)*1024+x+xx)*4+3]]
+        if not ink:
+            raise ValueError('Empty adopted Player text')
+        low, high = min(xx for xx, _ in ink), max(xx for xx, _ in ink)
+        for placement in word['placements']:
+            count = len(placement['glyphs'])
+            group = parsed[index:index+count]
+            index += count
+            if len(group) != count or not group or any(
+                    row[7:10] != [x/4, y/8, width/4]
+                    or row[10:13] != group[0][10:13] for row in group):
+                raise ValueError('Player ink-fit layout differs from packed word')
+            left = group[0][10]
+            if not (placement['x'] < left+(low+.5)/4
+                    <= left+(high+.5)/4 < placement['right']):
+                raise ValueError('Adopted Player ink leaves original interaction bounds: '+word['file'])
+        result.append(dict(file=word['file'], placements=len(word['placements']),
+                           nontransparentPixels=len(ink), outsideMatchingHorizontalBounds=0))
+    if index != 1267 or sum(row['placements'] for row in result) != 67:
+        raise ValueError('Incomplete Player ink-fit placement coverage')
+    return result
+
+
 def generate_frontend(check=False):
     directory = ROOT/'assets/hud/frontend'
     catalog = json.loads((directory/'catalog.json').read_text())
@@ -242,9 +277,15 @@ def generate_frontend(check=False):
     pixels, rows, options = options_words(directory,pixels,rows,opponents,hashes,text_identity)
     from frontend_main_word_art import apply_main_word_art
     main_word_art = apply_main_word_art(pixels, options['mainPlacements'], source_path=directory/'main-word-art.json')
+    from frontend_player_word_art import apply_player_word_art
+    player_word_art = apply_player_word_art(
+        pixels, {family: options[family+'Placements'] for family in
+                 ('main','location','setup','player','opponents','options')},
+        source_dir=directory)
+    player_ink = player_ink_fit(directory, pixels, rows, options['playerPlacements'])
     # Fit evidence must describe the adopted complete words, not the historical
     # SVG images used to reproduce the unchanged base packing recipe.
-    options['packingPhase'] = 'before-main-word-art-override'
+    options['packingPhase'] = 'before-main-and-player-text-art-overrides'
     ink = []
     for word, placement in zip(words, options['mainPlacements']):
         if word['file'] != placement['file']:
@@ -267,7 +308,7 @@ def generate_frontend(check=False):
         opponents[family+'Placements']=options[family+'Placements']
     location_placements,setup_placements=opponents['locationPlacements'],opponents['setupPlacements']
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
-    base_layout_hash = hashlib.sha256(('// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus complete Main word graphics; see assets/hud/frontend/MAIN_WORD_ART.md.\n'+layout).encode()).hexdigest()
+    base_layout_hash = hashlib.sha256(('// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.\n'+layout).encode()).hexdigest()
     from frontend_right_labels import right_label_rows, extend_layout
     right_path = directory/'right-labels/catalog.json'
     right_rows = right_label_rows(json.loads(right_path.read_text()), setup_placements, text_identity)
@@ -279,10 +320,10 @@ def generate_frontend(check=False):
     aggregate, parts = chunked_pixels(encoded)
     dimensions = 'enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2048,NFS_FRONT_FONT_PIXELS=2097152,NFS_FRONT_FONT_RGBA_BYTES=8388608};\nstatic const float nfs_front_font_v_scale=.5f;\n'
     header = dimensions+template.replace('@PIXEL_ARRAY@', aggregate)
-    notice = '// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus complete Main word graphics; see assets/hud/frontend/MAIN_WORD_ART.md.\n'
+    notice = '// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.\n'
     outputs = {'FrontendFontPixels.inc': notice+header, 'FrontendWordLayout.inc': notice+layout, **parts}
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
-                    mainWordArt=main_word_art,
+                    mainWordArt=main_word_art, playerWordArt=player_word_art, playerInkFit=player_ink,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
                     rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2048],
                     rleBytes=len(encoded), glyphPartitions=len(rows)+len(right_rows), inkFit=ink,
@@ -324,6 +365,13 @@ def generate_frontend_layout(check=False):
     verify_main_word_art(metadata['mainWordArt'], source_path=directory/'main-word-art.json')
     if metadata['mainWordArt']['placements'] != [{k:p[k] for k in ('file','atlas','sourceCrop')} for p in metadata['mainPlacements']]:
         raise ValueError('Whole-word artwork placements differ from generated atlas')
+    from frontend_player_word_art import verify_player_word_art
+    verify_player_word_art(
+        metadata['playerWordArt'],
+        dict([(family, metadata[family+'Placements']) for family in
+              ('main','location','setup','player','opponents')] +
+             [('options', metadata['optionsAtlas']['optionsPlacements'])]),
+        source_dir=directory)
     # A stale or edited image, catalog, packing recipe or generated header requires
     # full generation. Never silently reuse metadata from a different atlas.
     for relative, expected in metadata['sourceHashes'].items():

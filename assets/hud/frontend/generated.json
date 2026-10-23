@@ -278,13 +278,1422 @@
     ],
     "changedPixels": 271086
   },
+  "playerWordArt": {
+    "sourceHashes": {
+      "player-word-art-0.json": "03338501fd1da1caf81da6d16f8775ef8accd1ffaf35a0965040d7732ffbaa29",
+      "player-word-art-1.json": "6b204dfc6f0b8b184a7e56c72e92e542b997c124f4cb914563f5a68b32e81a34"
+    },
+    "newRgba": [
+      {
+        "file": "car.svg",
+        "text": "car",
+        "atlas": [
+          920,
+          0,
+          84,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          84,
+          55
+        ],
+        "rgbaSha256": "6832ec3fa00396215a4e10c9a272154aa06986213088d404c90735eb6df4129b",
+        "sharedUses": [
+          "player/car.svg",
+          "opponents/car.svg"
+        ]
+      },
+      {
+        "file": "transmission.svg",
+        "text": "transmission",
+        "atlas": [
+          692,
+          614,
+          320,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          320,
+          74
+        ],
+        "rgbaSha256": "f5298a5bcf94fffe7bc3a0a37d1f9b185862de89ab8bd2a81c9ecf1737cb4ef1",
+        "sharedUses": [
+          "player/transmission.svg"
+        ]
+      },
+      {
+        "file": "color.svg",
+        "text": "color",
+        "atlas": [
+          882,
+          878,
+          132,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          132,
+          77
+        ],
+        "rgbaSha256": "b235db83482b60b8ec1df6bd8ac109742fec0c623f275a318772bdca3620ecf8",
+        "sharedUses": [
+          "player/color.svg"
+        ]
+      },
+      {
+        "file": "graph.svg",
+        "text": "graph",
+        "atlas": [
+          178,
+          1916,
+          148,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          148,
+          96
+        ],
+        "rgbaSha256": "477c63d52cad9d46c14c8a1abc0102cc4a8808594564e2fa256f1fe0bdf38a4c",
+        "sharedUses": [
+          "player/graph.svg"
+        ]
+      },
+      {
+        "file": "colon.svg",
+        "text": ":",
+        "atlas": [
+          964,
+          1529,
+          24,
+          54
+        ],
+        "sourceCrop": [
+          0,
+          28,
+          24,
+          54
+        ],
+        "rgbaSha256": "8a6a9aaeb74025aa02b44cfe9c28a9fcbe3adb2c08754130f40d7b5b48b566be",
+        "sharedUses": [
+          "location/colon.svg",
+          "setup/colon.svg",
+          "player/colon.svg",
+          "opponents/colon.svg",
+          "options/colon.svg"
+        ]
+      },
+      {
+        "file": "manual.svg",
+        "text": "manual",
+        "atlas": [
+          214,
+          1758,
+          188,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          188,
+          77
+        ],
+        "rgbaSha256": "fc525465f76710c15d800fab7b1b4bb768d28f7bb4989915f68667fd93b2c697",
+        "sharedUses": [
+          "player/manual.svg"
+        ]
+      },
+      {
+        "file": "automatic.svg",
+        "text": "automatic",
+        "atlas": [
+          528,
+          1375,
+          256,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          256,
+          74
+        ],
+        "rgbaSha256": "116824336e8019ab2ad1f1e1db2195051a8aae7eebb0087fa5c171325c8e9c19",
+        "sharedUses": [
+          "player/automatic.svg"
+        ]
+      },
+      {
+        "file": "off.svg",
+        "text": "off",
+        "atlas": [
+          668,
+          1882,
+          80,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          80,
+          76
+        ],
+        "rgbaSha256": "8ce237c1b2d828ade2a8b03716bc241d63bf6358adda03724b269046205a7404",
+        "sharedUses": [
+          "setup/off.svg",
+          "player/off.svg",
+          "opponents/off.svg",
+          "options/off.svg"
+        ]
+      },
+      {
+        "file": "on.svg",
+        "text": "on",
+        "atlas": [
+          946,
+          800,
+          72,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          72,
+          55
+        ],
+        "rgbaSha256": "7fd1b8f6715efdda5eb4457c51eb6a55fdffd2aec02c49960cb9d1a0f78ea8ce",
+        "sharedUses": [
+          "setup/on.svg",
+          "player/on.svg",
+          "opponents/on.svg",
+          "options/on.svg"
+        ]
+      },
+      {
+        "file": "ford-indigo.svg",
+        "text": "Ford Indigo",
+        "atlas": [
+          0,
+          1060,
+          280,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          280,
+          96
+        ],
+        "rgbaSha256": "ea2313eb8b3bec984a67681bd7dfdca060b83fe88d99ff0ef3b4ba083717b46c",
+        "sharedUses": [
+          "player/ford-indigo.svg",
+          "opponents/ford-indigo.svg"
+        ]
+      },
+      {
+        "file": "mustang-mach-iii.svg",
+        "text": "Mustang Mach III",
+        "atlas": [
+          498,
+          0,
+          420,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          420,
+          96
+        ],
+        "rgbaSha256": "a95998e2c3c8aa991831350429686b1eda1a49f79d5834f20c7df3054edab367",
+        "sharedUses": [
+          "player/mustang-mach-iii.svg",
+          "opponents/mustang-mach-iii.svg"
+        ]
+      },
+      {
+        "file": "jaguar-xj220.svg",
+        "text": "Jaguar XJ220",
+        "atlas": [
+          346,
+          516,
+          344,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          344,
+          91
+        ],
+        "rgbaSha256": "0c3323db001e79f2377f1466cda533d7ed45d6d3d75398c4df2b7f071627b847",
+        "sharedUses": [
+          "player/jaguar-xj220.svg",
+          "opponents/jaguar-xj220.svg"
+        ]
+      },
+      {
+        "file": "lotus-gt1.svg",
+        "text": "Lotus GT1",
+        "atlas": [
+          512,
+          1451,
+          252,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          252,
+          71
+        ],
+        "rgbaSha256": "bd90147c7d344e162468cfb9110c7e3a8c5dee6f61e9721e7280361649757adc",
+        "sharedUses": [
+          "player/lotus-gt1.svg",
+          "opponents/lotus-gt1.svg"
+        ]
+      },
+      {
+        "file": "lotus-esprit-v8.svg",
+        "text": "Lotus Esprit V8",
+        "atlas": [
+          0,
+          196,
+          372,
+          94
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          372,
+          94
+        ],
+        "rgbaSha256": "07eeb24201d0e730599c47d4cba430ad4a38ed45817beaad085102e852c944f3",
+        "sharedUses": [
+          "player/lotus-esprit-v8.svg",
+          "opponents/lotus-esprit-v8.svg"
+        ]
+      },
+      {
+        "file": "nazca-c2.svg",
+        "text": "Nazca C2",
+        "atlas": [
+          786,
+          1375,
+          232,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          232,
+          71
+        ],
+        "rgbaSha256": "ca113bcc486ae3292196d1f726ccf9a50b701324df5e60db73abfc80fae02b09",
+        "sharedUses": [
+          "player/nazca-c2.svg",
+          "opponents/nazca-c2.svg"
+        ]
+      },
+      {
+        "file": "italdesign-cala.svg",
+        "text": "Italdesign Cal\u00e0",
+        "atlas": [
+          0,
+          292,
+          364,
+          98
+        ],
+        "sourceCrop": [
+          0,
+          4,
+          364,
+          98
+        ],
+        "rgbaSha256": "aa936151bdb90add357cd87da09a28da9c0e759a5b772e93cea7aae6573a608e",
+        "sharedUses": [
+          "player/italdesign-cala.svg",
+          "opponents/italdesign-cala.svg"
+        ]
+      },
+      {
+        "file": "isdera-112i.svg",
+        "text": "Isdera 112i",
+        "atlas": [
+          744,
+          219,
+          272,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          272,
+          76
+        ],
+        "rgbaSha256": "ef9f3181e808d8460d7463938f46fa50fa60345e2334b15fcb437ba6a7d49b99",
+        "sharedUses": [
+          "player/isdera-112i.svg",
+          "opponents/isdera-112i.svg"
+        ]
+      },
+      {
+        "file": "mclaren-f1.svg",
+        "text": "McLaren F1",
+        "atlas": [
+          0,
+          987,
+          288,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          288,
+          71
+        ],
+        "rgbaSha256": "ee16f01be7d7ba2014703203b33d0f642cd5d93cb62dccd63f562146fda66833",
+        "sharedUses": [
+          "player/mclaren-f1.svg",
+          "opponents/mclaren-f1.svg"
+        ]
+      },
+      {
+        "file": "ferrari-f50.svg",
+        "text": "Ferrari F50",
+        "atlas": [
+          0,
+          1158,
+          272,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          272,
+          74
+        ],
+        "rgbaSha256": "3b42108377f72e6fe0d7a47f3fd92e5ee42f1d01b9fdce77552b39bbfc184843",
+        "sharedUses": [
+          "player/ferrari-f50.svg",
+          "opponents/ferrari-f50.svg"
+        ]
+      },
+      {
+        "file": "ferrari-355-f1.svg",
+        "text": "Ferrari 355 F1",
+        "atlas": [
+          0,
+          611,
+          344,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          344,
+          74
+        ],
+        "rgbaSha256": "0a869f503f3087f539e4d3b6b5d059ed2ab6a90a040ffbaa3755fbbe16f97086",
+        "sharedUses": [
+          "player/ferrari-355-f1.svg",
+          "opponents/ferrari-355-f1.svg"
+        ]
+      },
+      {
+        "file": "ford-gt90.svg",
+        "text": "Ford GT90",
+        "atlas": [
+          266,
+          1304,
+          260,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          260,
+          76
+        ],
+        "rgbaSha256": "e4e44a1e4844b7e3869574d5a5ba978e522f92f43029d373c4ea8a7edd200a55",
+        "sharedUses": [
+          "player/ford-gt90.svg",
+          "opponents/ford-gt90.svg"
+        ]
+      },
+      {
+        "file": "class-a.svg",
+        "text": "class A",
+        "atlas": [
+          186,
+          1837,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "rgbaSha256": "ea0c0bd71eec52ff80c132ccaac927646261b50f72e01aa73f739a190f1d4198",
+        "sharedUses": [
+          "player/class-a.svg",
+          "opponents/class-a.svg"
+        ]
+      },
+      {
+        "file": "class-b.svg",
+        "text": "class B",
+        "atlas": [
+          590,
+          1803,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "rgbaSha256": "80ee0b61134ba6857f61fe54b75f7ab8f6255343691d54d257c605e9b18080bd",
+        "sharedUses": [
+          "player/class-b.svg",
+          "opponents/class-b.svg"
+        ]
+      },
+      {
+        "file": "class-c.svg",
+        "text": "class C",
+        "atlas": [
+          0,
+          1913,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "rgbaSha256": "02579b934d99bf448d091139dfd8906321af114888e62c92df9a8acd0af81d47",
+        "sharedUses": [
+          "player/class-c.svg",
+          "opponents/class-c.svg"
+        ]
+      },
+      {
+        "file": "acceleration.svg",
+        "text": "acceleration",
+        "atlas": [
+          342,
+          780,
+          308,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          308,
+          77
+        ],
+        "rgbaSha256": "9d67857dea3f33172e6f9efc75b081494e2d003a55dcaccb0f24bd3d34c1babc",
+        "sharedUses": [
+          "player/acceleration.svg"
+        ]
+      },
+      {
+        "file": "top-speed.svg",
+        "text": "top speed",
+        "atlas": [
+          258,
+          1382,
+          252,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          252,
+          96
+        ],
+        "rgbaSha256": "c6cf93eff7ba65fc255e4272f9d23adbc3b5ddb9b558712ced620b7f01f6f4c9",
+        "sharedUses": [
+          "player/top-speed.svg"
+        ]
+      },
+      {
+        "file": "braking.svg",
+        "text": "braking",
+        "atlas": [
+          698,
+          1705,
+          192,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          192,
+          96
+        ],
+        "rgbaSha256": "3101fdd3007a829063af01563a69ee5e5e88977a1b9a86335cca9526a1e91fa4",
+        "sharedUses": [
+          "player/braking.svg"
+        ]
+      },
+      {
+        "file": "handling.svg",
+        "text": "handling",
+        "atlas": [
+          742,
+          1607,
+          216,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          96
+        ],
+        "rgbaSha256": "2bb422508c09f4eb95144a0f31963489f9b119fed71439b72352e56f0cd9b2a9",
+        "sharedUses": [
+          "player/handling.svg"
+        ]
+      },
+      {
+        "file": "settings.svg",
+        "text": "settings...",
+        "atlas": [
+          0,
+          1504,
+          248,
+          94
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          248,
+          94
+        ],
+        "rgbaSha256": "f2aecbcac90812fe08c945d0c3db25f87edb7e35606601365b8a9516d2aa9c0a",
+        "sharedUses": [
+          "player/settings.svg"
+        ]
+      },
+      {
+        "file": "showcase.svg",
+        "text": "showcase...",
+        "atlas": [
+          302,
+          957,
+          288,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          76
+        ],
+        "rgbaSha256": "f8a312b5b672d9221714be9236554edfe9d722070fa60767c98b7a0180a46793",
+        "sharedUses": [
+          "player/showcase.svg"
+        ]
+      }
+    ],
+    "placements": [
+      {
+        "file": "car.svg",
+        "atlas": [
+          920,
+          0,
+          84,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          84,
+          55
+        ],
+        "sharedUses": [
+          "player/car.svg",
+          "opponents/car.svg"
+        ]
+      },
+      {
+        "file": "transmission.svg",
+        "atlas": [
+          692,
+          614,
+          320,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          320,
+          74
+        ],
+        "sharedUses": [
+          "player/transmission.svg"
+        ]
+      },
+      {
+        "file": "color.svg",
+        "atlas": [
+          882,
+          878,
+          132,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          132,
+          77
+        ],
+        "sharedUses": [
+          "player/color.svg"
+        ]
+      },
+      {
+        "file": "graph.svg",
+        "atlas": [
+          178,
+          1916,
+          148,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          148,
+          96
+        ],
+        "sharedUses": [
+          "player/graph.svg"
+        ]
+      },
+      {
+        "file": "colon.svg",
+        "atlas": [
+          964,
+          1529,
+          24,
+          54
+        ],
+        "sourceCrop": [
+          0,
+          28,
+          24,
+          54
+        ],
+        "sharedUses": [
+          "location/colon.svg",
+          "setup/colon.svg",
+          "player/colon.svg",
+          "opponents/colon.svg",
+          "options/colon.svg"
+        ]
+      },
+      {
+        "file": "manual.svg",
+        "atlas": [
+          214,
+          1758,
+          188,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          188,
+          77
+        ],
+        "sharedUses": [
+          "player/manual.svg"
+        ]
+      },
+      {
+        "file": "automatic.svg",
+        "atlas": [
+          528,
+          1375,
+          256,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          256,
+          74
+        ],
+        "sharedUses": [
+          "player/automatic.svg"
+        ]
+      },
+      {
+        "file": "off.svg",
+        "atlas": [
+          668,
+          1882,
+          80,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          80,
+          76
+        ],
+        "sharedUses": [
+          "setup/off.svg",
+          "player/off.svg",
+          "opponents/off.svg",
+          "options/off.svg"
+        ]
+      },
+      {
+        "file": "on.svg",
+        "atlas": [
+          946,
+          800,
+          72,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          72,
+          55
+        ],
+        "sharedUses": [
+          "setup/on.svg",
+          "player/on.svg",
+          "opponents/on.svg",
+          "options/on.svg"
+        ]
+      },
+      {
+        "file": "ford-indigo.svg",
+        "atlas": [
+          0,
+          1060,
+          280,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          280,
+          96
+        ],
+        "sharedUses": [
+          "player/ford-indigo.svg",
+          "opponents/ford-indigo.svg"
+        ]
+      },
+      {
+        "file": "mustang-mach-iii.svg",
+        "atlas": [
+          498,
+          0,
+          420,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          420,
+          96
+        ],
+        "sharedUses": [
+          "player/mustang-mach-iii.svg",
+          "opponents/mustang-mach-iii.svg"
+        ]
+      },
+      {
+        "file": "jaguar-xj220.svg",
+        "atlas": [
+          346,
+          516,
+          344,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          344,
+          91
+        ],
+        "sharedUses": [
+          "player/jaguar-xj220.svg",
+          "opponents/jaguar-xj220.svg"
+        ]
+      },
+      {
+        "file": "lotus-gt1.svg",
+        "atlas": [
+          512,
+          1451,
+          252,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          252,
+          71
+        ],
+        "sharedUses": [
+          "player/lotus-gt1.svg",
+          "opponents/lotus-gt1.svg"
+        ]
+      },
+      {
+        "file": "lotus-esprit-v8.svg",
+        "atlas": [
+          0,
+          196,
+          372,
+          94
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          372,
+          94
+        ],
+        "sharedUses": [
+          "player/lotus-esprit-v8.svg",
+          "opponents/lotus-esprit-v8.svg"
+        ]
+      },
+      {
+        "file": "nazca-c2.svg",
+        "atlas": [
+          786,
+          1375,
+          232,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          232,
+          71
+        ],
+        "sharedUses": [
+          "player/nazca-c2.svg",
+          "opponents/nazca-c2.svg"
+        ]
+      },
+      {
+        "file": "italdesign-cala.svg",
+        "atlas": [
+          0,
+          292,
+          364,
+          98
+        ],
+        "sourceCrop": [
+          0,
+          4,
+          364,
+          98
+        ],
+        "sharedUses": [
+          "player/italdesign-cala.svg",
+          "opponents/italdesign-cala.svg"
+        ]
+      },
+      {
+        "file": "isdera-112i.svg",
+        "atlas": [
+          744,
+          219,
+          272,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          272,
+          76
+        ],
+        "sharedUses": [
+          "player/isdera-112i.svg",
+          "opponents/isdera-112i.svg"
+        ]
+      },
+      {
+        "file": "mclaren-f1.svg",
+        "atlas": [
+          0,
+          987,
+          288,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          288,
+          71
+        ],
+        "sharedUses": [
+          "player/mclaren-f1.svg",
+          "opponents/mclaren-f1.svg"
+        ]
+      },
+      {
+        "file": "ferrari-f50.svg",
+        "atlas": [
+          0,
+          1158,
+          272,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          272,
+          74
+        ],
+        "sharedUses": [
+          "player/ferrari-f50.svg",
+          "opponents/ferrari-f50.svg"
+        ]
+      },
+      {
+        "file": "ferrari-355-f1.svg",
+        "atlas": [
+          0,
+          611,
+          344,
+          74
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          344,
+          74
+        ],
+        "sharedUses": [
+          "player/ferrari-355-f1.svg",
+          "opponents/ferrari-355-f1.svg"
+        ]
+      },
+      {
+        "file": "ford-gt90.svg",
+        "atlas": [
+          266,
+          1304,
+          260,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          260,
+          76
+        ],
+        "sharedUses": [
+          "player/ford-gt90.svg",
+          "opponents/ford-gt90.svg"
+        ]
+      },
+      {
+        "file": "class-a.svg",
+        "atlas": [
+          186,
+          1837,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "sharedUses": [
+          "player/class-a.svg",
+          "opponents/class-a.svg"
+        ]
+      },
+      {
+        "file": "class-b.svg",
+        "atlas": [
+          590,
+          1803,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "sharedUses": [
+          "player/class-b.svg",
+          "opponents/class-b.svg"
+        ]
+      },
+      {
+        "file": "class-c.svg",
+        "atlas": [
+          0,
+          1913,
+          176,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          176,
+          77
+        ],
+        "sharedUses": [
+          "player/class-c.svg",
+          "opponents/class-c.svg"
+        ]
+      },
+      {
+        "file": "acceleration.svg",
+        "atlas": [
+          342,
+          780,
+          308,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          308,
+          77
+        ],
+        "sharedUses": [
+          "player/acceleration.svg"
+        ]
+      },
+      {
+        "file": "top-speed.svg",
+        "atlas": [
+          258,
+          1382,
+          252,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          252,
+          96
+        ],
+        "sharedUses": [
+          "player/top-speed.svg"
+        ]
+      },
+      {
+        "file": "braking.svg",
+        "atlas": [
+          698,
+          1705,
+          192,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          192,
+          96
+        ],
+        "sharedUses": [
+          "player/braking.svg"
+        ]
+      },
+      {
+        "file": "handling.svg",
+        "atlas": [
+          742,
+          1607,
+          216,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          96
+        ],
+        "sharedUses": [
+          "player/handling.svg"
+        ]
+      },
+      {
+        "file": "settings.svg",
+        "atlas": [
+          0,
+          1504,
+          248,
+          94
+        ],
+        "sourceCrop": [
+          0,
+          8,
+          248,
+          94
+        ],
+        "sharedUses": [
+          "player/settings.svg"
+        ]
+      },
+      {
+        "file": "showcase.svg",
+        "atlas": [
+          302,
+          957,
+          288,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          76
+        ],
+        "sharedUses": [
+          "player/showcase.svg"
+        ]
+      }
+    ],
+    "changedPixels": 556022
+  },
+  "playerInkFit": [
+    {
+      "file": "car.svg",
+      "placements": 2,
+      "nontransparentPixels": 2974,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "transmission.svg",
+      "placements": 2,
+      "nontransparentPixels": 12553,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "color.svg",
+      "placements": 2,
+      "nontransparentPixels": 5066,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "graph.svg",
+      "placements": 2,
+      "nontransparentPixels": 5776,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "colon.svg",
+      "placements": 8,
+      "nontransparentPixels": 128,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "manual.svg",
+      "placements": 2,
+      "nontransparentPixels": 6837,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "automatic.svg",
+      "placements": 2,
+      "nontransparentPixels": 10049,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "off.svg",
+      "placements": 2,
+      "nontransparentPixels": 2695,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "on.svg",
+      "placements": 2,
+      "nontransparentPixels": 2178,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "done.svg",
+      "placements": 2,
+      "nontransparentPixels": 5329,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "cancel.svg",
+      "placements": 2,
+      "nontransparentPixels": 7008,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "player-one-heading.svg",
+      "placements": 2,
+      "nontransparentPixels": 10499,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "player-two-heading.svg",
+      "placements": 2,
+      "nontransparentPixels": 10616,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "ford-indigo.svg",
+      "placements": 2,
+      "nontransparentPixels": 10680,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "mustang-mach-iii.svg",
+      "placements": 2,
+      "nontransparentPixels": 17423,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "jaguar-xj220.svg",
+      "placements": 2,
+      "nontransparentPixels": 13145,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "lotus-gt1.svg",
+      "placements": 2,
+      "nontransparentPixels": 7874,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "lotus-esprit-v8.svg",
+      "placements": 2,
+      "nontransparentPixels": 13877,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "nazca-c2.svg",
+      "placements": 2,
+      "nontransparentPixels": 8088,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "italdesign-cala.svg",
+      "placements": 2,
+      "nontransparentPixels": 15144,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "isdera-112i.svg",
+      "placements": 2,
+      "nontransparentPixels": 9420,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "mclaren-f1.svg",
+      "placements": 2,
+      "nontransparentPixels": 10088,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "ferrari-f50.svg",
+      "placements": 2,
+      "nontransparentPixels": 9901,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "ferrari-355-f1.svg",
+      "placements": 2,
+      "nontransparentPixels": 12076,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "ford-gt90.svg",
+      "placements": 2,
+      "nontransparentPixels": 9391,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "class-a.svg",
+      "placements": 1,
+      "nontransparentPixels": 6297,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "class-b.svg",
+      "placements": 1,
+      "nontransparentPixels": 6524,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "class-c.svg",
+      "placements": 1,
+      "nontransparentPixels": 6395,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "acceleration.svg",
+      "placements": 1,
+      "nontransparentPixels": 11974,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "top-speed.svg",
+      "placements": 1,
+      "nontransparentPixels": 9204,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "braking.svg",
+      "placements": 1,
+      "nontransparentPixels": 7895,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "handling.svg",
+      "placements": 1,
+      "nontransparentPixels": 8709,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "settings.svg",
+      "placements": 2,
+      "nontransparentPixels": 8654,
+      "outsideMatchingHorizontalBounds": 0
+    },
+    {
+      "file": "showcase.svg",
+      "placements": 2,
+      "nontransparentPixels": 10024,
+      "outsideMatchingHorizontalBounds": 0
+    }
+  ],
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "dd6030860b1b5ec24c7bce0ec6fa7b495bc88fb61a7fadd802557053a611b6b7",
+  "rasterSha256": "51064bd8b2ee5638b1a575525177cb2ad7869bee099de54cdab79cbd1a795931",
   "raster": [
     1024,
     2048
   ],
-  "rleBytes": 1816116,
+  "rleBytes": 3009024,
   "glyphPartitions": 2163,
   "inkFit": [
     {
@@ -328,7 +1737,7 @@
       "outsideMatchingHitRectangle": 0
     }
   ],
-  "baseWordLayoutSha256": "8da82a900865eb24411ee52423148cecd781eb3f3393aa4e64adaaef9d4a6836",
+  "baseWordLayoutSha256": "f2b03a61146497ea227829390ed053a0eb976fdb1137c6cf9aa86583a868a664",
   "rightLabelCatalogSha256": "78ca798c2819fd98b1b69d8b867f202c6d40f739bff941226c97806e05502cb3",
   "locationCatalogSha256": "034362df7d9b69e8f92f0cfb6a512799922b3adb9d3611f7f9fc977de3555816",
   "locationPlacements": [
@@ -4981,7 +6390,7 @@
     "additionalCachedTextureBytesForOptions": 0,
     "catalogSha256": "1cdafb1a723ce9d48bd862619edde73ef57379595986d18488dd401d05d94f38",
     "recipeSha256": "ea0001edfa5c9fab96de98e3f87563801622f287cdbffab279ab71476638da27",
-    "packingPhase": "before-main-word-art-override"
+    "packingPhase": "before-main-and-player-text-art-overrides"
   },
   "packingRecipeSha256": "8f27173502246177f73327a2ab31b7312abaff7b41778e7eef6e06741a7cb261",
   "compactAtlas": {
@@ -5003,35 +6412,53 @@
   "rasterBytes": 8388608,
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
-    "FrontendFontPixels.inc": "f775098e1b93cf21d9e48c285d0e1a8438611cacdaf8e84a862f819cbe37346d",
-    "FrontendWordLayout.inc": "c80eec355e8d04cc87e3c5f3f429f110c0fb83cbc7baab2db6b9753115cb1c4c",
-    "FrontendFontPixelsPart0.inc": "ac0fcd90e806a375d52c9d539ce6f6de11f7759d97d199da47f185e37ecf6399",
-    "FrontendFontPixelsPart1.inc": "5cc76eb7e2f925c4c3eb3d10cdc5a698f6fcccd68bca9e800746153f8c8e6ce8",
-    "FrontendFontPixelsPart2.inc": "697784f8efcfe641614f63a92af057ad54afd06151d4653d9a982a2c534a80fe",
-    "FrontendFontPixelsPart3.inc": "9a6ec14d08a7b4ba4d6c7d49b5fb9acf18b452dbfcd0715d03c3506fe06ecd3b",
-    "FrontendFontPixelsPart4.inc": "c28482819c9362b7d48458a1a5faff7c8829a3aec396c4f9c8217d63465e7438",
-    "FrontendFontPixelsPart5.inc": "d0e9fa52638f7b9c3ab601256304f27f9fd13814b3f362186b492b31f3f8ad98",
-    "FrontendFontPixelsPart6.inc": "8ebab443dd4399741e38037db649782d4391518c666c0cc034109b96ff6b2b80",
-    "FrontendFontPixelsPart7.inc": "31de805cc524cd167154ae95129b5ec2d1c949f660eb8649dba2b5135b9ae4a4",
-    "FrontendFontPixelsPart8.inc": "381a2c57f2fce8b3578c940e212d66799357d8920b2df5f9f831bc1bf47f05ab",
-    "FrontendFontPixelsPart9.inc": "0c630e573c7fb0d70994039054ee442e3b7c39721b64f9c0a950c82e4e641daf",
-    "FrontendFontPixelsPart10.inc": "1503a2f1cd38ef9d79921979c67cf46a5b1bd8b3c2e4e40e7b491efb6e1b3d97",
-    "FrontendFontPixelsPart11.inc": "4d1e9c41349421ad86caa09ccb8f4df0d9a41d82b6deae6ee4c0c6a188909d86",
-    "FrontendFontPixelsPart12.inc": "81c0aea0bfb0a88b8d32735ad2e0bfc9853211db990c2fdc66009ce2ff400ee0",
-    "FrontendFontPixelsPart13.inc": "76fca79b4024d274601d999f24ee29786477268adfc0f3588a7e2c4d25e01591",
-    "FrontendFontPixelsPart14.inc": "9e98fba5a5a1e2d1f2c298efc902549551fadca6c8da8cf1c8c02e3083258790",
-    "FrontendFontPixelsPart15.inc": "3db574485bf5d75b81d01cb0d498e75dc1a165aff9c869672e2311c1fe4845be",
-    "FrontendFontPixelsPart16.inc": "84e5c569fcef342dadad4bbe2a349cecb823d75994eed323db4580c0167417ce",
-    "FrontendFontPixelsPart17.inc": "5ed65225952b93d7a7b40412f38ad7e2da87b7c16ef41335b7a9368852d2de14",
-    "FrontendFontPixelsPart18.inc": "7b2a7aa291fd13c9e7b6466d721160236971f5f3e2193928a2935f8e1ba9e000",
-    "FrontendFontPixelsPart19.inc": "a55c82651bcf9e6de15165126e25d7bf1a04c5b0664e5d107733ba0c889ee2d1",
-    "FrontendFontPixelsPart20.inc": "059a070e922289ad1670b7f7fb8298e8e3d033d4d5bf403852e7cda5d9afe59e",
-    "FrontendFontPixelsPart21.inc": "2d3439aa53f1e14c0cf4af5e7102ff01a54845e959b07079e992ceef9ca80198",
-    "FrontendFontPixelsPart22.inc": "800a2f98eca0127984ce8e5ebffeecb5b4099f5a86553c2ec1cb4784c7fd0845",
-    "FrontendFontPixelsPart23.inc": "16dc43c9f4cac797832d8386ba633386188f29188c3679fbd0de6aadc7564bb6",
-    "FrontendFontPixelsPart24.inc": "c181d9e44542c07398f22aa397cd9b1f5f3a49c7fade71e45378de871a935bd6",
-    "FrontendFontPixelsPart25.inc": "67948caf6590d8174eff5f708e71b81b84a3540ee2a96d599015fd07f1597df8",
-    "FrontendFontPixelsPart26.inc": "261e2b54eb53ca9211574c8ddd5856db038c1e3877bcff3ffd697f9efed333aa",
-    "FrontendFontPixelsPart27.inc": "0bccdda03bf258bff9a5691a3454bec75b24dc6eff46f3b87f878f4c79aaa145"
+    "FrontendFontPixels.inc": "ec598636290bdf1516431d20ababd6b67d408e171267cf5f7d11f43f58d2fe31",
+    "FrontendWordLayout.inc": "7f426333f1dfaed6435f3382e6c34866a0cb42ad9035f2953dd56104e6cafa68",
+    "FrontendFontPixelsPart0.inc": "53a7419c8a661f3a1e3adfd1f0019471c9af4e25f7fdc41f308639944e88e5ad",
+    "FrontendFontPixelsPart1.inc": "76283051a54339e760664126cc0885fe3e5a39ffedbe5dad6734195d974cb337",
+    "FrontendFontPixelsPart2.inc": "d4cc2254c328c1a9ac703da5cd1c682b4e251b9068df638907ae2afce1d365bf",
+    "FrontendFontPixelsPart3.inc": "6e2e85a0b96453c4672ffcfbf72e25322580742417872aa0da9c0d92a6a93c00",
+    "FrontendFontPixelsPart4.inc": "3e411bfe2b15670fd69cbbb1360d70f2365b44c77635a56d08922794089c66d4",
+    "FrontendFontPixelsPart5.inc": "f8d01326eea7604a59545c1df91a88608e1852d3133c46c3d21eed0cd1afe5c0",
+    "FrontendFontPixelsPart6.inc": "46318e41cd17dd967d10f44dd3f7051a6fa3b5a69af350527963a47f1aa14e42",
+    "FrontendFontPixelsPart7.inc": "b1d1555b1bdde394d144c8e9193bdf5c8eec4fb07952b280e95db10eaaf73861",
+    "FrontendFontPixelsPart8.inc": "1362dc1a19acd927928b1529327fc18d946e1b9411517922ac6f4e4a84c79ee5",
+    "FrontendFontPixelsPart9.inc": "433316ddcc79348eff67b884583c683a2e283fb75320cca2702363e3b303b66f",
+    "FrontendFontPixelsPart10.inc": "1a55aa732a37983ae2c5f4aa5735cbbe16cd23ccd8708ee4ca09de17f1e5416e",
+    "FrontendFontPixelsPart11.inc": "0db7cc53f1118472c98b487bb5c6fab45331a55092f916261c43e019082dbc6c",
+    "FrontendFontPixelsPart12.inc": "3b557b1e30e8cabde8b4cdc6847073eea37d4fde7cde070232e90d9bbc83b76b",
+    "FrontendFontPixelsPart13.inc": "578c7245b046a681f0fdb4313ddc26d3cc33ba79f4c79d68e156f587daff719d",
+    "FrontendFontPixelsPart14.inc": "d61abe76868a4e898f73eba115be08796d51af8240a1e87946baff3452b5cc32",
+    "FrontendFontPixelsPart15.inc": "415263a3b1fb8e4f0c88a235834ffdc99eb4a59b09c7e3e2d1bdd0e702732bd4",
+    "FrontendFontPixelsPart16.inc": "5c9b354367463c7f262473f4ace272780defeca8b86ef49973c6f0d637229a67",
+    "FrontendFontPixelsPart17.inc": "d615bed5d00fca2c3b98577868b2f6a32c03ed5f86478e80c83c06b51defca40",
+    "FrontendFontPixelsPart18.inc": "033c5aefb70f78990c7e5e1137119ae7a3c729743233bf3c06a41bdc77070774",
+    "FrontendFontPixelsPart19.inc": "bf268010ea4ab0d4caca9d477b15a3c1e9b08b19a3ce73ef72bf14b3e74bd086",
+    "FrontendFontPixelsPart20.inc": "1bf595acd25bdb799cb018e63d081c8ece4412da08f1c2a52179c937f618d666",
+    "FrontendFontPixelsPart21.inc": "341f246998b38c1a40d3256ffc1bb0256ef532ad7cc9d304b1eab332bd3a2bc2",
+    "FrontendFontPixelsPart22.inc": "5cb4a36a1f3f47b05b6126a3a831239fb9478999b82b426b30079a858deb8c38",
+    "FrontendFontPixelsPart23.inc": "069c2c35d8a519f55220c3fa9d964bff088fe75d93848b646e410199014f3f49",
+    "FrontendFontPixelsPart24.inc": "41246192c6427a65d3e6ce6a31e75f9ebebe633209f868c8a3c03d04f507b942",
+    "FrontendFontPixelsPart25.inc": "579576414b632ebf0276f90ff62bd6545241445685e6bfa885935ab4be0fa025",
+    "FrontendFontPixelsPart26.inc": "b71c9b22a14db6dbdd5b5ca61cf4272fb4b1fb41ad9c901f25590010df2bcfff",
+    "FrontendFontPixelsPart27.inc": "ff8ca83665185d4cdaa4317cc766b9b261970c92d256e01e92007a5bf86a6eca",
+    "FrontendFontPixelsPart28.inc": "e3cd397e7875e9dda5fa81f22ef5ae77290c103322f0e7d705f6c441dcc7b8e1",
+    "FrontendFontPixelsPart29.inc": "3778933feded683ddfa514f74997a0dbccf59644acbe2ab40985288aaeb9f294",
+    "FrontendFontPixelsPart30.inc": "88a3212e874cec31dc42643916a370e2d74a8764c690065d2d7c5ea79a4125f0",
+    "FrontendFontPixelsPart31.inc": "fb466a767e8a7dfcd4a33ce34c10ed06c1476cc485897622907fb0650586de29",
+    "FrontendFontPixelsPart32.inc": "942d68fc37d9a79e02e47461f22a80bbcd222630b2a940d30feba6ca88d9b7a0",
+    "FrontendFontPixelsPart33.inc": "690cf4c111c5a57a43c18ce6c8b0e2d4e2944ae351deed65237c7197a1d1f047",
+    "FrontendFontPixelsPart34.inc": "aa0db16817d9c68e5a43e56e1d0960fe341dbda9085528deafc99c2e50df3d58",
+    "FrontendFontPixelsPart35.inc": "3e7f603759e5286d4f741a43546f744e023aeb13d8c862d1ee66b746f3c6cab7",
+    "FrontendFontPixelsPart36.inc": "8c40d941796817c92c38db4679f0ef94eadad3d555409478e98b7f59d442b8ff",
+    "FrontendFontPixelsPart37.inc": "9ef0f5190ebc46edaf98e757994c10f2eb012558139a8ec05f622349248265bd",
+    "FrontendFontPixelsPart38.inc": "6a9d7bec6a068b1a27a9dbff139b9256bf426254fd2132f3ea1c75c812c15467",
+    "FrontendFontPixelsPart39.inc": "20d2a19ad5d83e50ecf77ad5891498c1b652adb6f724cce4051a1aa103c332b5",
+    "FrontendFontPixelsPart40.inc": "c9a7d8068abfaae03ef360f74e65200ac3ca04cb3fb87c2eada832ef424affa6",
+    "FrontendFontPixelsPart41.inc": "52bc79c5b59f51405d745b772d6c76d751667e936b1c745fa5871ee710c8d8f8",
+    "FrontendFontPixelsPart42.inc": "6526b81f6f359858e54af7948f769d3d234293f906e7bd7de9d83c04b3f6269d",
+    "FrontendFontPixelsPart43.inc": "abb12e9ede0b856ec541b29f08775066949707dc4f5f0a04816f53242ac3267b",
+    "FrontendFontPixelsPart44.inc": "c3453c37d6028ddf4136ac5c818fc9846783297724b299668d99fb0f24a2a6b4",
+    "FrontendFontPixelsPart45.inc": "bc63940acfba6172e05d2951f8dd0bc7a4b4965c668508a8422e4e62cc865094"
   }
 }

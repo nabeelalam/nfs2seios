@@ -1,0 +1,93 @@
+{
+  "scope": "Reproducible fixed Player/shared menu typography in UI branch; remaining UI and physical acceptance open.",
+  "typeface": "Haettenschweiler fixed text graphics",
+  "fixedGraphics": 30,
+  "unchangedUppercasePlayerGraphics": 4,
+  "sharedGraphics": 19,
+  "approvedUses": 56,
+  "additionalAliasUses": 26,
+  "fontFileOrReusableAlphabetDistributed": false,
+  "sourceArtifacts": [
+    {
+      "path": "assets/hud/frontend/player-word-art-0.json",
+      "bytes": 652605,
+      "sha256": "03338501fd1da1caf81da6d16f8775ef8accd1ffaf35a0965040d7732ffbaa29"
+    },
+    {
+      "path": "assets/hud/frontend/player-word-art-1.json",
+      "bytes": 767535,
+      "sha256": "6b204dfc6f0b8b184a7e56c72e92e542b997c124f4cb914563f5a68b32e81a34"
+    }
+  ],
+  "generation": {
+    "fullAndLayoutOnlyChecksPassed": true,
+    "selectedProjectSourcesAndAllSixFamilyPlacementsVerified": true,
+    "all67OriginalPlayerHorizontalTextBoundsPassed": true,
+    "threeInkFitRegressionsPassed": true,
+    "focusedPythonTestsPassed": 44,
+    "rgbaSha256": "51064bd8b2ee5638b1a575525177cb2ad7869bee099de54cdab79cbd1a795931",
+    "changedPixels": 556022,
+    "onlyThirtyExistingAllocationsChanged": true,
+    "originalCompatibilityRowsAndMainGraphicsUnchanged": true,
+    "textureBytes": 8388608,
+    "textureBytesIncrease": 0,
+    "generatedHeaderCount": 48,
+    "packingProofPhase": "before-main-and-player-text-art-overrides"
+  },
+  "alignmentCorrection": {
+    "graphics": [
+      "car.svg",
+      "color.svg"
+    ],
+    "shiftAtlasPixels": 2,
+    "originalLayoutChanged": false,
+    "inkDiscarded": false
+  },
+  "build": {
+    "scope": "Current reproducible Main and Player/shared fixed text graphics; physical acceptance unverified",
+    "binarySha256": "1b0602e78db9b69c191eaa0a9400f7cae20745373001526100ec62b1b5b88b18",
+    "observerSha256": "883b8f09cb2cb99686a186ae696e04422a6a755cdcba93170a4ee1b51980a5f2",
+    "oneRendererCompileUnit": true,
+    "sourceInputsStable": true,
+    "usedAllCurrentGeneratedFontHeaders": true,
+    "generatedFontHeaderCount": 48,
+    "reusedSevenCpuUnitsUnchanged": true,
+    "reusedReadOnlyProbeObjectUnchanged": true,
+    "maintained74ObjectsUnchanged": true,
+    "rendererInputCount": 181,
+    "seconds": 139.42,
+    "cloud": false
+  },
+  "actualRun": {
+    "passed": true,
+    "bothPlayersAll21IntroFrames": true,
+    "nativeGpuPhaseEvents": 168,
+    "carChangeRestoreAndMainReturn": true,
+    "sharedMenuCaptures": [
+      "Location",
+      "Opponents"
+    ],
+    "allSharedValuesExercised": false,
+    "cleanShutdown": true,
+    "copiedConfigAndArtworkRestored": true,
+    "ownedProcessesTerminalAndLeaseAbsent": true,
+    "resultSha256": "d5c6ed2ecddc1e4d3906dbfd5373fcfb0150d8b186d0d98516dd764fcca7a1e6"
+  },
+  "retainedFailures": [
+    "Initial identity check caught an encoded accented-name mismatch; fixed with explicit Unicode escape.",
+    "Full generation rejected three overlooked Options aliases; all three explicitly pinned and real metadata regression added.",
+    "Temporary-project fixture needed both source parts; missing-source failure retained.",
+    "Initial candidate overhung two Player text areas; corrected without changing geometry and regression added.",
+    "Earlier integrated run remained in Player after a60ms Escape pulse, then exited/restored cleanly; final owned run uses200ms ordinary Escape with unchanged visual thresholds."
+  ],
+  "limitations": [
+    "Weight/spacing remain open to user critique.",
+    "Separate software sidebar caption and other remaining fonts/artwork/HUD are unfinished.",
+    "No new physical iPad, performance, energy or LowPower60 claim."
+  ],
+  "capturesOriginalDataAndFontFilesPublished": false,
+  "cloudBuild": false,
+  "push": false,
+  "paidService": false,
+  "fullGoalActive": true
+}

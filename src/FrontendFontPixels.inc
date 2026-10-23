@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Font artwork: OFL Bebas Neue/Oxanium plus complete Main word graphics; see assets/hud/frontend/MAIN_WORD_ART.md.
+// Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.
 enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2048,NFS_FRONT_FONT_PIXELS=2097152,NFS_FRONT_FONT_RGBA_BYTES=8388608};
 static const float nfs_front_font_v_scale=.5f;
 static const unsigned char nfs_front_font_rle[]={
@@ -31,6 +31,24 @@ static const unsigned char nfs_front_font_rle[]={
 #include "FrontendFontPixelsPart25.inc"
 #include "FrontendFontPixelsPart26.inc"
 #include "FrontendFontPixelsPart27.inc"
+#include "FrontendFontPixelsPart28.inc"
+#include "FrontendFontPixelsPart29.inc"
+#include "FrontendFontPixelsPart30.inc"
+#include "FrontendFontPixelsPart31.inc"
+#include "FrontendFontPixelsPart32.inc"
+#include "FrontendFontPixelsPart33.inc"
+#include "FrontendFontPixelsPart34.inc"
+#include "FrontendFontPixelsPart35.inc"
+#include "FrontendFontPixelsPart36.inc"
+#include "FrontendFontPixelsPart37.inc"
+#include "FrontendFontPixelsPart38.inc"
+#include "FrontendFontPixelsPart39.inc"
+#include "FrontendFontPixelsPart40.inc"
+#include "FrontendFontPixelsPart41.inc"
+#include "FrontendFontPixelsPart42.inc"
+#include "FrontendFontPixelsPart43.inc"
+#include "FrontendFontPixelsPart44.inc"
+#include "FrontendFontPixelsPart45.inc"
 };
 
 static int nfs_front_font_expand(unsigned char *rgba,size_t capacity){
