@@ -46,6 +46,8 @@ def fixture():
     current=decode_current();meta=json.loads((DIR/'generated.json').read_text());assert sha(current)==meta['rasterSha256']
     from frontend_player_word_art import WORDS
     overridden = {alias for word in WORDS for alias in word[-1]}
+    from frontend_player_heading_art import WORDS as HEADINGS
+    overridden.update(alias for word in HEADINGS for alias in word[-1])
     historical_main={}
     with project_fonts():
         for word in json.loads((DIR/'catalog.json').read_text())['words']:

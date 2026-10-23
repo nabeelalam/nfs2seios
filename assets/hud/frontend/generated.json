@@ -1481,6 +1481,338 @@
     ],
     "changedPixels": 556022
   },
+  "playerHeadingArt": {
+    "sourceHashes": {
+      "player-heading-art.json": "d61620832e1e27f8257f09d102c39d1fc60da8c4c8e7666c9a2d34b2e511cd55"
+    },
+    "newRgba": [
+      {
+        "file": "done.svg",
+        "text": "DONE",
+        "atlas": [
+          538,
+          1882,
+          128,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          128,
+          76
+        ],
+        "rgbaSha256": "217a110df4a5b2bb6116e7575b9568d2a892b248d6e2d57c6f023f89c9fb3933",
+        "sharedUses": [
+          "location/done.svg",
+          "setup/done.svg",
+          "player/done.svg",
+          "opponents/done.svg",
+          "options/done.svg"
+        ]
+      },
+      {
+        "file": "cancel.svg",
+        "text": "CANCEL",
+        "atlas": [
+          0,
+          1835,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          184,
+          76
+        ],
+        "rgbaSha256": "80c4aa81ca550ffcb667b6c556cce454beeff2d640522ceb9a57939fff3c314f",
+        "sharedUses": [
+          "location/cancel.svg",
+          "setup/cancel.svg",
+          "player/cancel.svg",
+          "opponents/cancel.svg"
+        ]
+      },
+      {
+        "file": "player-one-heading.svg",
+        "text": "PLAYER ONE",
+        "atlas": [
+          592,
+          961,
+          284,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          284,
+          76
+        ],
+        "rgbaSha256": "6aa0f1bcb37601c25e67dd0e822185b21a54c24aca5f4216063d6e36bb7ea632",
+        "sharedUses": [
+          "player/player-one-heading.svg"
+        ]
+      },
+      {
+        "file": "player-two-heading.svg",
+        "text": "PLAYER TWO",
+        "atlas": [
+          652,
+          800,
+          292,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          292,
+          76
+        ],
+        "rgbaSha256": "82bb3db4a9dee018996f36f7e1f99a81dbd7a5ceebb687b668f21e5cf438f586",
+        "sharedUses": [
+          "player/player-two-heading.svg"
+        ]
+      }
+    ],
+    "placements": [
+      {
+        "file": "done.svg",
+        "atlas": [
+          538,
+          1882,
+          128,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          128,
+          76
+        ],
+        "sharedUses": [
+          "location/done.svg",
+          "setup/done.svg",
+          "player/done.svg",
+          "opponents/done.svg",
+          "options/done.svg"
+        ]
+      },
+      {
+        "file": "cancel.svg",
+        "atlas": [
+          0,
+          1835,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          184,
+          76
+        ],
+        "sharedUses": [
+          "location/cancel.svg",
+          "setup/cancel.svg",
+          "player/cancel.svg",
+          "opponents/cancel.svg"
+        ]
+      },
+      {
+        "file": "player-one-heading.svg",
+        "atlas": [
+          592,
+          961,
+          284,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          284,
+          76
+        ],
+        "sharedUses": [
+          "player/player-one-heading.svg"
+        ]
+      },
+      {
+        "file": "player-two-heading.svg",
+        "atlas": [
+          652,
+          800,
+          292,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          292,
+          76
+        ],
+        "sharedUses": [
+          "player/player-two-heading.svg"
+        ]
+      }
+    ],
+    "changedPixels": 59667
+  },
+  "headingInkFit": [
+    {
+      "use": "location/done.svg",
+      "x": 341,
+      "y": 254,
+      "right": 376.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "location/done.svg",
+      "x": 342,
+      "y": 255,
+      "right": 377.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "location/cancel.svg",
+      "x": 396,
+      "y": 254,
+      "right": 447.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "location/cancel.svg",
+      "x": 397,
+      "y": 255,
+      "right": 448.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "setup/done.svg",
+      "x": 316,
+      "y": 325,
+      "right": 351.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "setup/done.svg",
+      "x": 317,
+      "y": 326,
+      "right": 352.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "setup/cancel.svg",
+      "x": 371,
+      "y": 325,
+      "right": 422.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "setup/cancel.svg",
+      "x": 372,
+      "y": 326,
+      "right": 423.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/done.svg",
+      "x": 312,
+      "y": 258,
+      "right": 347.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/done.svg",
+      "x": 311,
+      "y": 257,
+      "right": 346.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/cancel.svg",
+      "x": 367,
+      "y": 258,
+      "right": 418.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/cancel.svg",
+      "x": 366,
+      "y": 257,
+      "right": 417.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/player-one-heading.svg",
+      "x": 307,
+      "y": 51,
+      "right": 387.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/player-one-heading.svg",
+      "x": 306,
+      "y": 50,
+      "right": 386.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/player-two-heading.svg",
+      "x": 306,
+      "y": 51,
+      "right": 389.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "player/player-two-heading.svg",
+      "x": 305,
+      "y": 50,
+      "right": 388.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "opponents/done.svg",
+      "x": 312,
+      "y": 266,
+      "right": 347.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "opponents/done.svg",
+      "x": 311,
+      "y": 265,
+      "right": 346.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "opponents/cancel.svg",
+      "x": 367,
+      "y": 266,
+      "right": 418.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "opponents/cancel.svg",
+      "x": 366,
+      "y": 265,
+      "right": 417.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "options/done.svg",
+      "x": 312,
+      "y": 344,
+      "right": 347.0,
+      "outsideOriginalBounds": 0
+    },
+    {
+      "use": "options/done.svg",
+      "x": 311,
+      "y": 343,
+      "right": 346.0,
+      "outsideOriginalBounds": 0
+    }
+  ],
   "playerInkFit": [
     {
       "file": "car.svg",
@@ -1539,25 +1871,25 @@
     {
       "file": "done.svg",
       "placements": 2,
-      "nontransparentPixels": 5329,
+      "nontransparentPixels": 5440,
       "outsideMatchingHorizontalBounds": 0
     },
     {
       "file": "cancel.svg",
       "placements": 2,
-      "nontransparentPixels": 7008,
+      "nontransparentPixels": 7020,
       "outsideMatchingHorizontalBounds": 0
     },
     {
       "file": "player-one-heading.svg",
       "placements": 2,
-      "nontransparentPixels": 10499,
+      "nontransparentPixels": 10540,
       "outsideMatchingHorizontalBounds": 0
     },
     {
       "file": "player-two-heading.svg",
       "placements": 2,
-      "nontransparentPixels": 10616,
+      "nontransparentPixels": 10746,
       "outsideMatchingHorizontalBounds": 0
     },
     {
@@ -1688,12 +2020,12 @@
     }
   ],
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "51064bd8b2ee5638b1a575525177cb2ad7869bee099de54cdab79cbd1a795931",
+  "rasterSha256": "1e39b5eb1e21582cbb9a270f03ff6724ee09ae9739d526ef69959c1b54c13464",
   "raster": [
     1024,
     2048
   ],
-  "rleBytes": 3009024,
+  "rleBytes": 3142608,
   "glyphPartitions": 2163,
   "inkFit": [
     {
@@ -6412,7 +6744,7 @@
   "rasterBytes": 8388608,
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
-    "FrontendFontPixels.inc": "ec598636290bdf1516431d20ababd6b67d408e171267cf5f7d11f43f58d2fe31",
+    "FrontendFontPixels.inc": "b18ba252da4d39c5e050204f41bd7c1eb45aa0d546f9393b6a095cd823213164",
     "FrontendWordLayout.inc": "7f426333f1dfaed6435f3382e6c34866a0cb42ad9035f2953dd56104e6cafa68",
     "FrontendFontPixelsPart0.inc": "53a7419c8a661f3a1e3adfd1f0019471c9af4e25f7fdc41f308639944e88e5ad",
     "FrontendFontPixelsPart1.inc": "76283051a54339e760664126cc0885fe3e5a39ffedbe5dad6734195d974cb337",
@@ -6431,34 +6763,36 @@
     "FrontendFontPixelsPart14.inc": "d61abe76868a4e898f73eba115be08796d51af8240a1e87946baff3452b5cc32",
     "FrontendFontPixelsPart15.inc": "415263a3b1fb8e4f0c88a235834ffdc99eb4a59b09c7e3e2d1bdd0e702732bd4",
     "FrontendFontPixelsPart16.inc": "5c9b354367463c7f262473f4ace272780defeca8b86ef49973c6f0d637229a67",
-    "FrontendFontPixelsPart17.inc": "d615bed5d00fca2c3b98577868b2f6a32c03ed5f86478e80c83c06b51defca40",
-    "FrontendFontPixelsPart18.inc": "033c5aefb70f78990c7e5e1137119ae7a3c729743233bf3c06a41bdc77070774",
-    "FrontendFontPixelsPart19.inc": "bf268010ea4ab0d4caca9d477b15a3c1e9b08b19a3ce73ef72bf14b3e74bd086",
-    "FrontendFontPixelsPart20.inc": "1bf595acd25bdb799cb018e63d081c8ece4412da08f1c2a52179c937f618d666",
-    "FrontendFontPixelsPart21.inc": "341f246998b38c1a40d3256ffc1bb0256ef532ad7cc9d304b1eab332bd3a2bc2",
-    "FrontendFontPixelsPart22.inc": "5cb4a36a1f3f47b05b6126a3a831239fb9478999b82b426b30079a858deb8c38",
-    "FrontendFontPixelsPart23.inc": "069c2c35d8a519f55220c3fa9d964bff088fe75d93848b646e410199014f3f49",
-    "FrontendFontPixelsPart24.inc": "41246192c6427a65d3e6ce6a31e75f9ebebe633209f868c8a3c03d04f507b942",
-    "FrontendFontPixelsPart25.inc": "579576414b632ebf0276f90ff62bd6545241445685e6bfa885935ab4be0fa025",
-    "FrontendFontPixelsPart26.inc": "b71c9b22a14db6dbdd5b5ca61cf4272fb4b1fb41ad9c901f25590010df2bcfff",
-    "FrontendFontPixelsPart27.inc": "ff8ca83665185d4cdaa4317cc766b9b261970c92d256e01e92007a5bf86a6eca",
-    "FrontendFontPixelsPart28.inc": "e3cd397e7875e9dda5fa81f22ef5ae77290c103322f0e7d705f6c441dcc7b8e1",
-    "FrontendFontPixelsPart29.inc": "3778933feded683ddfa514f74997a0dbccf59644acbe2ab40985288aaeb9f294",
-    "FrontendFontPixelsPart30.inc": "88a3212e874cec31dc42643916a370e2d74a8764c690065d2d7c5ea79a4125f0",
-    "FrontendFontPixelsPart31.inc": "fb466a767e8a7dfcd4a33ce34c10ed06c1476cc485897622907fb0650586de29",
-    "FrontendFontPixelsPart32.inc": "942d68fc37d9a79e02e47461f22a80bbcd222630b2a940d30feba6ca88d9b7a0",
-    "FrontendFontPixelsPart33.inc": "690cf4c111c5a57a43c18ce6c8b0e2d4e2944ae351deed65237c7197a1d1f047",
-    "FrontendFontPixelsPart34.inc": "aa0db16817d9c68e5a43e56e1d0960fe341dbda9085528deafc99c2e50df3d58",
-    "FrontendFontPixelsPart35.inc": "3e7f603759e5286d4f741a43546f744e023aeb13d8c862d1ee66b746f3c6cab7",
-    "FrontendFontPixelsPart36.inc": "8c40d941796817c92c38db4679f0ef94eadad3d555409478e98b7f59d442b8ff",
-    "FrontendFontPixelsPart37.inc": "9ef0f5190ebc46edaf98e757994c10f2eb012558139a8ec05f622349248265bd",
-    "FrontendFontPixelsPart38.inc": "6a9d7bec6a068b1a27a9dbff139b9256bf426254fd2132f3ea1c75c812c15467",
-    "FrontendFontPixelsPart39.inc": "20d2a19ad5d83e50ecf77ad5891498c1b652adb6f724cce4051a1aa103c332b5",
-    "FrontendFontPixelsPart40.inc": "c9a7d8068abfaae03ef360f74e65200ac3ca04cb3fb87c2eada832ef424affa6",
-    "FrontendFontPixelsPart41.inc": "52bc79c5b59f51405d745b772d6c76d751667e936b1c745fa5871ee710c8d8f8",
-    "FrontendFontPixelsPart42.inc": "6526b81f6f359858e54af7948f769d3d234293f906e7bd7de9d83c04b3f6269d",
-    "FrontendFontPixelsPart43.inc": "abb12e9ede0b856ec541b29f08775066949707dc4f5f0a04816f53242ac3267b",
-    "FrontendFontPixelsPart44.inc": "c3453c37d6028ddf4136ac5c818fc9846783297724b299668d99fb0f24a2a6b4",
-    "FrontendFontPixelsPart45.inc": "bc63940acfba6172e05d2951f8dd0bc7a4b4965c668508a8422e4e62cc865094"
+    "FrontendFontPixelsPart17.inc": "5812058557bcc44a37d4efc5d71e3082a2fff81491a4b8b746e4cf0c927f992e",
+    "FrontendFontPixelsPart18.inc": "b97d0a96914f06e6e61566c25ae829ba501d0fd4b347a0b80937e0e065b3743d",
+    "FrontendFontPixelsPart19.inc": "60681e63ba94941776e3942c3c2927a1f878f017412ae581ec19a2930c7c2ed9",
+    "FrontendFontPixelsPart20.inc": "108ac3867fe960529e221ae393e48cd6229d550345673560719b5c3b5d0f8bcf",
+    "FrontendFontPixelsPart21.inc": "c8695ac07e8b50690838dc80cc625c4ced2e8620f51e90a7d10a450f6067b61d",
+    "FrontendFontPixelsPart22.inc": "6cf7212b0f615650370b438649c8738320e4e48d66041218ce1c5a1a8fc091ee",
+    "FrontendFontPixelsPart23.inc": "40d2d5cb1c1b2881b932f29222b0fb3fc444d54d42fb90e901fc767760414082",
+    "FrontendFontPixelsPart24.inc": "b44bbeac51a6e5d83a5588e284203c305574ebb7fc268ee8703af8fc4f5f79c2",
+    "FrontendFontPixelsPart25.inc": "3f83ea3f0897b917f9e89dd1383d5b7a48082a8b87497ce96e3fcd1480e36728",
+    "FrontendFontPixelsPart26.inc": "45281ef73a4566d83e3dc0dbb0e322d01c60b02400a7bf92ecfc419875e48b04",
+    "FrontendFontPixelsPart27.inc": "323fc85534b675d43685802167ae5f61f229a6b03a48ecd43004562789f1cabf",
+    "FrontendFontPixelsPart28.inc": "e7d4ab5496016fd4323fa5600138bf2ea4aab9e5feec3e5107dc35a056a2e6ea",
+    "FrontendFontPixelsPart29.inc": "9c81551918d5e63bfc3da83fdd793a2b1cacadb1217c11e3bcd50d6f80a1ffbf",
+    "FrontendFontPixelsPart30.inc": "547bdea01f3c23ffe1fcff1962f8f838966f13a5079f2770f4d6374167fcd683",
+    "FrontendFontPixelsPart31.inc": "8a5aff93faa0f358ed3b683e99b5379cd39bdd92355c3cff0e45a73360a597db",
+    "FrontendFontPixelsPart32.inc": "29c340bc69b62c1e0f0b08ce688818cb6af4870ef1cda34261a743bf81294540",
+    "FrontendFontPixelsPart33.inc": "33059cb9f7f7ef13e1316888158d67b2814d01d5d05c2124efe87d350bf96b84",
+    "FrontendFontPixelsPart34.inc": "7fc1df761706723d572ea1d661df40242d1bd9f2ac802e9aa3f65eac01a3ab1a",
+    "FrontendFontPixelsPart35.inc": "bee60898edb79e7ded03c8de2a11760ab659e8fea632bb1376897f396962f8e1",
+    "FrontendFontPixelsPart36.inc": "e4c1c44aee6ea19f733b3db7fe5598110121d382b692d336402d2baa78d990a9",
+    "FrontendFontPixelsPart37.inc": "af9b3502f2f40bce3644a7d4cb730cebb2f3711fc921b06651f54be528d1dca6",
+    "FrontendFontPixelsPart38.inc": "69e09a8e4a66001821082cd574e66281437678403e3b8f12ef4e4bc9d495f5a6",
+    "FrontendFontPixelsPart39.inc": "da8c53a04cfeab6cb2cac48576ec89ad08dd1a5f366b0774c933b946948f5415",
+    "FrontendFontPixelsPart40.inc": "335a47836f6dec5572850345f028b32d872e0dc6f18fc8d3827b54498a5f0b0f",
+    "FrontendFontPixelsPart41.inc": "499cbbd6d29b51e3ae89017802a93b2d4a1b27f963e80f549b437b66723130a4",
+    "FrontendFontPixelsPart42.inc": "d6bfb5ce3a72b84fb3653630bf3a95bdb1877388e4393bb6bb1a4ba61f7ab46b",
+    "FrontendFontPixelsPart43.inc": "5429ca711e3caf89c9d3629b4b8551952afa4a750920b53e313c90a36a7de1da",
+    "FrontendFontPixelsPart44.inc": "35983eadbd4aecc901278a142b6dcc6b2741430de734fc3b91da24c20e3b87cc",
+    "FrontendFontPixelsPart45.inc": "7ddc5e8916e916b3196922f21aec07da8b12f56bb10be9d99cb0dbd238ed0d7a",
+    "FrontendFontPixelsPart46.inc": "22a1eb3e2249f1ac2f74b7bc8eaae9544c96d94702521808330a2d7bd7f57eab",
+    "FrontendFontPixelsPart47.inc": "3eae875af3486d35878b391d58946a1e9e310fcb3573f9f0629e083cb1baae71"
   }
 }

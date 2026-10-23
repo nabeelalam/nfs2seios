@@ -1,0 +1,9 @@
+# Classic Player headings and buttons
+
+Four fixed complete-word graphics replace the Player headings and the shared DONE/CANCEL buttons. They use the same classic typeface family as the adopted Main and Player body graphics, with lighter strokes. Their existing allocations, baseline, original glyph partitions, independently drawn shadows and interaction bounds stay unchanged. DONE appears in five menu families; CANCEL appears in four. The two Player headings are independent, giving eleven approved image uses and twenty-two original placements including shadows.
+
+`player-heading-art.json` contains the finite authored white alpha images and exact identities, crops, shared uses, decoded hashes and bounded alpha runs. It contains no font file, reusable alphabet, original game pixels or captures. The images were authored locally with Haettenschweiler; build hosts do not need that typeface. See the [Microsoft font FAQ](https://learn.microsoft.com/en-us/typography/fonts/font-faq#redistribution-and-extended-rights) for graphics produced with fonts.
+
+The separate decoder authenticates the selected source before any writes and admits only the four existing allocations with their exact eleven aliases. Full generation applies it after the independent Main and thirty body-word overrides, then checks horizontal bounds and padded vertical bands for every affected original placement. Layout-only generation authenticates the same explicitly selected source and metadata alongside the existing generated headers. Historical packing tests reconstruct these four old SVG images before testing the unchanged packing recipe.
+
+Other menu fonts, artwork, HUD and physical iPad acceptance remain separate work. This checkpoint does not add a font renderer, change menu logic, or demonstrate device performance.

@@ -1,0 +1,92 @@
+{
+  "scope": "Four classic Player/shared uppercase heading and button graphics; separate UI branch, local validation only.",
+  "source": {
+    "path": "assets/hud/frontend/player-heading-art.json",
+    "bytes": 177782,
+    "sha256": "d61620832e1e27f8257f09d102c39d1fc60da8c4c8e7666c9a2d34b2e511cd55",
+    "fontFileOrAlphabetIncluded": false,
+    "originalGamePixelsIncluded": false
+  },
+  "atlas": {
+    "baselineRasterSha256": "51064bd8b2ee5638b1a575525177cb2ad7869bee099de54cdab79cbd1a795931",
+    "rasterSha256": "1e39b5eb1e21582cbb9a270f03ff6724ee09ae9739d526ef69959c1b54c13464",
+    "changedPixels": 59667,
+    "onlyFourAllocationsChanged": true,
+    "originalWordLayoutByteIdentical": true,
+    "mainAndThirtyBodyGraphicsUnchanged": true,
+    "atlasBytesUnchanged": 8388608,
+    "approvedSharedUses": 11,
+    "originalPlacementsVerified": 22
+  },
+  "validation": {
+    "focusedPythonChecks": 54,
+    "fullGenerationCheck": true,
+    "layoutOnlySelectedSourceCheck": true,
+    "registeredChecksPerMode": 6,
+    "optimizedPassed": true,
+    "asanUbsanPassed": true,
+    "cppGlyphTriangleCases": 8652,
+    "cppAmbiguousPositions": 302,
+    "exactCropRegressionFailsBeforeFixAndPassesAfter": true,
+    "independentReviewNoRemainingConcreteConcern": true
+  },
+  "build": {
+    "scope": "Four uppercase Player/shared fixed word graphics; local proof, physical acceptance unverified",
+    "binarySha256": "108164a1d62cf1ca9c168faeaeb22826f6436220b757e2e90e32b60dbbd90e4d",
+    "observerSha256": "c7d81be6642c5300514358175ce9e47ec8198f4685b2526542a29768606dea8d",
+    "oneRendererCompileUnit": true,
+    "reusedEightCpuAndObserverObjectsUnchanged": true,
+    "maintained74ObjectsUnchanged": true,
+    "sourceInputsStable": true,
+    "rendererInputCount": 186,
+    "generatedFontHeaderCount": 50,
+    "seconds": 116.96,
+    "cloud": false
+  },
+  "actualGame": {
+    "passed": true,
+    "bothPlayersAll21NormalIntroFrames": true,
+    "nativeGpuPhaseEvents": 168,
+    "carChangesRestorationAndMainReturn": true,
+    "wordImageDice": [
+      0.9105359252497046,
+      0.9539330725771403,
+      0.9912716070511723,
+      0.9076410618754416,
+      0.9539330725771403,
+      0.9912716070511723
+    ],
+    "priorFontNegativeDice": [
+      0.4711078395288922,
+      0.7396795475966069,
+      0.5147167578760539,
+      0.5122542418529491,
+      0.7396795475966069,
+      0.5147167578760539
+    ],
+    "fixedShapeThreshold": 0.8,
+    "nativeCaptures": [
+      2186,
+      1640
+    ],
+    "cleanExitZero": true,
+    "copiedConfigAndArtworkRestored": true,
+    "ownedProcessesTerminalAndLeaseAbsent": true,
+    "resultSha256": "4325cad8808138e801497d7afdc997a5db6e8e2cc546cc897995df2d12b079cd"
+  },
+  "retainedFailures": [
+    "Selected-project test fixture initially omitted the new source; added explicitly, with corruption rejection retained.",
+    "C++ atlas digest fixture predated the adopted Main/body images; updated only the digest from the independent whole-raster scope proof; all geometry checks retained.",
+    "Read-only review found uniform layout crop mutation could pass; genuine regression reproduced failure before the fix."
+  ],
+  "limitations": [
+    "Actual shape checks cover both Player headings and DONE/CANCEL in both Player screens; all eleven image aliases and twenty-two placements are checked by source/generation fixtures, not individually observed menu captures.",
+    "Other menu/static/dynamic typography, semantic artwork, HUD and physical iPad UI acceptance remain open.",
+    "No physical iPad FPS, LowPower60 or battery result from this local UI check."
+  ],
+  "capturesPublished": false,
+  "push": false,
+  "cloudBuild": false,
+  "paidService": false,
+  "fullGoalActive": true
+}

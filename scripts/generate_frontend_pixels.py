@@ -207,6 +207,57 @@ def player_ink_fit(directory, pixels, rows, placements):
     return result
 
 
+def heading_ink_fit(directory, pixels, rows, placements):
+    """Check all shared heading/button placements against original geometry."""
+    from frontend_player_heading_art import WORDS, FAMILIES
+    if len(pixels) != 8388608:
+        raise ValueError('Incomplete heading ink-fit pixels')
+    allowed = {alias: record for record in WORDS for alias in record[-1]}
+    parsed = [list(map(float, row.strip('{}').split(',')[:13])) for row in rows]
+    index, result = 0, []
+    for family in FAMILIES:
+        catalog = json.loads((directory/('catalog.json' if family == 'main'
+                                        else family+'/catalog.json')).read_text())['words']
+        packed = placements[family+'Placements']
+        if len(catalog) != len(packed):
+            raise ValueError('Incomplete heading placement family')
+        for word, place in zip(catalog, packed):
+            if word['file'] != place['file']:
+                raise ValueError('Heading placement identity changed')
+            groups = [dict(glyphs=word['glyphs'])] if family == 'main' else word['placements']
+            alias = family+'/'+word['file']
+            for group in groups:
+                count = len(group['glyphs']); batch = parsed[index:index+count]; index += count
+                if alias not in allowed:
+                    continue
+                _, _, atlas, crop, _, _ = allowed[alias]
+                if place['atlas'] != list(atlas) or place['sourceCrop'] != list(crop):
+                    raise ValueError('Heading ink-fit allocation changed')
+                x, y, width, height = atlas
+                ink = [(xx, yy) for yy in range(height) for xx in range(width)
+                       if pixels[((y+yy)*1024+x+xx)*4+3]]
+                if not ink or len(batch) != count or any(
+                        row[7:10] != [x/4, y/8, width/4]
+                        or row[10:13] != batch[0][10:13]
+                        or row[11:13] != [crop[1]/4, height/4] for row in batch):
+                    raise ValueError('Heading ink-fit layout/ink changed')
+                low, high = min(xx for xx, _ in ink), max(xx for xx, _ in ink)
+                top, bottom = min(yy for _, yy in ink), max(yy for _, yy in ink)
+                if not (group['x'] < batch[0][10]+(low+.5)/4
+                        <= batch[0][10]+(high+.5)/4 < group['right']):
+                    raise ValueError('Heading ink leaves original horizontal bounds')
+                if not (0 < top <= bottom < height-1
+                        and group['y'] < group['y']+(crop[1]+top+.5)/4
+                        <= group['y']+(crop[1]+bottom+.5)/4
+                        < group['y']+min(g['h'] for g in group['glyphs'])):
+                    raise ValueError('Heading ink leaves padded original vertical band')
+                result.append(dict(use=alias, x=group['x'], y=group['y'],
+                                   right=group['right'], outsideOriginalBounds=0))
+    if index != len(rows) or len(result) != 22 or set(r['use'] for r in result) != set(allowed):
+        raise ValueError('Incomplete heading ink-fit coverage')
+    return result
+
+
 def generate_frontend(check=False):
     directory = ROOT/'assets/hud/frontend'
     catalog = json.loads((directory/'catalog.json').read_text())
@@ -282,6 +333,12 @@ def generate_frontend(check=False):
         pixels, {family: options[family+'Placements'] for family in
                  ('main','location','setup','player','opponents','options')},
         source_dir=directory)
+    from frontend_player_heading_art import apply_player_heading_art
+    heading_art = apply_player_heading_art(
+        pixels, {family: options[family+'Placements'] for family in
+                 ('main','location','setup','player','opponents','options')},
+        source_dir=directory)
+    heading_ink = heading_ink_fit(directory, pixels, rows, options)
     player_ink = player_ink_fit(directory, pixels, rows, options['playerPlacements'])
     # Fit evidence must describe the adopted complete words, not the historical
     # SVG images used to reproduce the unchanged base packing recipe.
@@ -323,7 +380,8 @@ def generate_frontend(check=False):
     notice = '// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.\n'
     outputs = {'FrontendFontPixels.inc': notice+header, 'FrontendWordLayout.inc': notice+layout, **parts}
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
-                    mainWordArt=main_word_art, playerWordArt=player_word_art, playerInkFit=player_ink,
+                    mainWordArt=main_word_art, playerWordArt=player_word_art,
+                    playerHeadingArt=heading_art, headingInkFit=heading_ink, playerInkFit=player_ink,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
                     rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2048],
                     rleBytes=len(encoded), glyphPartitions=len(rows)+len(right_rows), inkFit=ink,
@@ -368,6 +426,13 @@ def generate_frontend_layout(check=False):
     from frontend_player_word_art import verify_player_word_art
     verify_player_word_art(
         metadata['playerWordArt'],
+        dict([(family, metadata[family+'Placements']) for family in
+              ('main','location','setup','player','opponents')] +
+             [('options', metadata['optionsAtlas']['optionsPlacements'])]),
+        source_dir=directory)
+    from frontend_player_heading_art import verify_player_heading_art
+    verify_player_heading_art(
+        metadata['playerHeadingArt'],
         dict([(family, metadata[family+'Placements']) for family in
               ('main','location','setup','player','opponents')] +
              [('options', metadata['optionsAtlas']['optionsPlacements'])]),
