@@ -17,6 +17,14 @@ inline void trace(unsigned reason,const char*name,const live::State*s)noexcept{
  static thread_local uint32_t seen=0;if(!on||reason>=32||(seen&(1u<<reason)))return;seen|=1u<<reason;
  std::fprintf(stderr,"GRAPHICS QUEUE admission reason=%s pass=%llu serial=%llu\n",name,(unsigned long long)(s?s->binding.pass:0),(unsigned long long)(s?s->acceptedTextSerial:0));
 }
+// Bounded existing private diagnostic: immutable source metadata only.
+inline void traceDialog(uint64_t request,const nfs_graphics_dialog_word::Proof&proof)noexcept{
+ static const bool on=[](){const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");return p&&p[0]=='1'&&!p[1];}();
+ static thread_local unsigned count=0,lastSelected=UINT32_MAX;static thread_local std::array<uint16_t,nfs_graphics_dialog_word::Words>lastColors{};
+ if(!on||count>=32)return;const auto&e=proof.evidence();std::array<uint16_t,nfs_graphics_dialog_word::Words>colors{};for(unsigned k=0;k<nfs_graphics_dialog_word::Words;++k)colors[k]=proof.packet()->records()[nfs_graphics_dialog_word::record(k)+1].command.color;
+ if(lastSelected==e.authority.selectedIndex&&lastColors==colors)return;lastSelected=e.authority.selectedIndex;lastColors=colors;++count;
+ std::fprintf(stderr,"GRAPHICS DIALOG source request=%llu selected=%u serial=%llu colors=",(unsigned long long)request,e.authority.selectedIndex,(unsigned long long)e.serial);for(unsigned k=0;k<nfs_graphics_dialog_word::Words;++k)std::fprintf(stderr,"%s%u",k?",":"",unsigned(colors[k]));std::fprintf(stderr,"\n");
+}
 inline void begin(Game&g,Intent&i){
  if(!nfs_background_scene_live::enabled()||activeRequest()||i.serial||i.beginConsumed)return;
  auto*s=live::current(g);if(!s)return;auto*c=cache::current(g);auto frame=live::lastPacket(g);if(!c){trace(1,"cache-owner",s);return;}if(!frame){trace(2,"current-frame",s);return;}if(!live::bound(*s,g,true)){trace(3,"bound-archive",s);return;}
@@ -29,11 +37,13 @@ inline void begin(Game&g,Intent&i){
  if(!live::sidebarBinding(*s,currentSidebar)){trace(15,"current-sidebar-binding",s);return;}
  auto sidebar=cache::acquireForSidebar(g,s->background.sidebar,currentSidebar,&cacheTarget);if(!sidebar){trace(8,"current-sidebar",s);return;}
  const auto&word=sidebar->captionWord();if(!word||!word->current()||word->packet()!=sidebar->caption()||!word->proof()||word->proof()->evidence().policy!=nfs_nested_sidebar_caption::Policy::Graphics){trace(16,"current-sidebar-word",s);return;}
+ auto dialogProof=nfs_graphics_text::acquireCurrentDialogProof(g);if(!dialogProof||dialogProof->packet()!=frame->text()){trace(17,"current-dialog-words",s);return;}
+ auto dialog=nfs_graphics_dialog_display::Prepared::create(dialogProof,frame->text(),{s->binding.form,s->binding.archive,reinterpret_cast<uintptr_t>(&g),s->acceptedTextSerial,s->binding.lifetime});if(!dialog){trace(18,"immutable-dialog-words",s);return;}
  const auto binding=s->binding;const auto cacheBinding=c->binding;
- auto owned=Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),currentSidebar,cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size());
+ auto owned=Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),currentSidebar,cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size(),dialog);
  if(!owned){trace(9,"immutable-scene-join",s);return;}nfs_graphics_frame::SidebarBinding repeatSidebar;
- if(!live::bound(*s,g,true)||!live::sidebarBinding(*s,repeatSidebar)||!(repeatSidebar==currentSidebar)||!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(binding,s->acceptedTextSerial,post.data(),post.size())){trace(10,"repeat-full-plane",s);return;}
- auto lease=Lease::create(owned);if(!lease){trace(11,"lease-allocation",s);return;}const uint64_t serial=nfs_background_scene_live::nextRequest();if(!serial){trace(12,"serial-overflow",s);return;}i.owned=lease;i.serial=serial;
+ if(nfs_graphics_text::acquireCurrentDialogProof(g)!=dialogProof||!live::bound(*s,g,true)||!live::sidebarBinding(*s,repeatSidebar)||!(repeatSidebar==currentSidebar)||!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(binding,s->acceptedTextSerial,post.data(),post.size())){trace(10,"repeat-full-plane",s);return;}
+ auto lease=Lease::create(owned);if(!lease){trace(11,"lease-allocation",s);return;}const uint64_t serial=nfs_background_scene_live::nextRequest();if(!serial){trace(12,"serial-overflow",s);return;}i.owned=lease;i.serial=serial;traceDialog(serial,*dialogProof);
  nfs::check_worker_stop();const auto receipt=nfs::enqueue_owned_renderer([lease,serial](){auto view=lease->view(serial);return int32_t(nfs_private_graphics_scene_begin(&view));});
  if(receipt==nfs::OwnedRendererAcceptance::UseExistingOwnerPath){i.owned.reset();i.serial=0;trace(13,"existing-owner-path",s);return;}
  i.beginConsumed=true;activeRequest()=serial;trace(14,"begin-enqueued",s);nfs::check_worker_stop();

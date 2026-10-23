@@ -3,11 +3,13 @@
 #define NFS_GRAPHICS_SCENE_LAYERS_H
 #include "BackgroundSceneCompositor.h"
 #include "NestedCaptionGpu.h"
+#include "GraphicsDialogWordGpu.h"
 #include "GraphicsSceneLayerAbi.h"
 typedef struct NfsGraphicsSceneGpu {
  NfsBackgroundSceneCompositor*background;
  NfsSoftwareTextGpu*sidebarCaption,*text;
  NfsNestedCaptionGpu*sidebarWord;
+ NfsGraphicsDialogWordGpu*dialogWords;
 } NfsGraphicsSceneGpu;
 #ifdef __cplusplus
 extern "C" {

@@ -2,7 +2,7 @@
 #ifndef NFS_GRAPHICS_SCENE_RUNTIME_ABI_H
 #define NFS_GRAPHICS_SCENE_RUNTIME_ABI_H
 #include "GraphicsSceneLayerAbi.h"
-#define NFS_GRAPHICS_SCENE_RUNTIME_SCHEMA 2u
+#define NFS_GRAPHICS_SCENE_RUNTIME_SCHEMA 3u
 /* Native immutable packet borrows. Required paired lifetime callbacks retain
    every scene/source/font allocation independently of queue consumption.
    Begin retains once before storing borrows; finish/cancel/retire releases once.

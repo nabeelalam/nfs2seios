@@ -1,0 +1,13 @@
+# Graphics dialog whole-word artwork
+
+Eight fixed English word graphics reconstruct car detail (F2), brightness (F10), view distance (F3), horizon (F4), reset, DONE, CANCEL and GRAPHICS. They use the accepted lighter Haettenschweiler treatment, baseline 24, fourfold raster dimensions and transparent padding on all four edges. All are right aligned within their original measured allocations except CANCEL, which is left aligned. The GRAPHICS title is right aligned at 426, not centered.
+
+Widths in original UI units are 90, 105, 120, 76, 33, 35, 51 and 68. No Main menu width correction or allocation widening is applied. The shared lettering treatment is a 0.88 horizontal factor and half logical pixel stroke inset. Car detail, horizon and reset additionally fit their original widths by factors 0.9944134, 0.9740260 and 0.9142857; the others need no additional fit.
+
+DONE and CANCEL retain the exact accepted Audio word pixels and RLE, with independent Graphics identities and destinations. Their shared appearance does not grant either dialog the other's source or renderer authority. Other words are newly authored from their semantic text, including the original uppercase function keys.
+
+The source contains white RGB with alpha for original RGB565 shadow, normal, selected, disabled and title colors. It contains no font file, alphabet or original game pixels. Dynamic values and colons remain original commands; this is a finite image set rather than a font substitution.
+
+The generator pins the complete source, schema, exact inventory, dimensions, destination allocations, bounded integer RLE, decoded digests and four padding edges before writing generated headers. The runtime decoder independently verifies full RGBA identity and returns immutable shared owners. Runtime activation now retains the genuine 32-command Graphics text packet and independently rechecks all eight descriptor/resolver/header policies, seven original right measurements and the unmeasured CANCEL route. Sixteen ordered image spans preserve every intervening original dynamic text draw.
+
+Local validation passes 22 optimized and 22 sanitizer checks plus actual-game selection, both buttons, reentry and 96 constant-brightness captured word comparisons. A longer-held Enter reentry behaviour remains tracked separately; the successful normal-input run used a short released tap. Physical iPad appearance, performance and energy use remain unverified. See evidence/hd-graphics-dialog-word-display.json for bounded coverage and remaining gaps.

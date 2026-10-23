@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "scope": "Eight fixed English Graphics menu captions, title and buttons",
+  "artwork": {
+    "images": 8,
+    "exactAcceptedAudioDoneCancelPixelsReused": true,
+    "originalAllocationsBaselineAndAlignmentPreserved": true,
+    "graphicsTitleRight426CancelLeft466": true,
+    "fontFileOrOriginalGamePixelsIncluded": false,
+    "colonsAndDynamicYellowValuesRemainOriginal": true
+  },
+  "source": {
+    "genuineOriginal32CommandInventory": true,
+    "eightDescriptorWrapperResolverPointerAndHeaderJoins": true,
+    "sevenOriginalRightMeasurementsAndOneUnmeasuredLeftPolicy": true,
+    "sourceAlignmentIndependentFromHistoricalHints": true,
+    "currentGameThreadArchiveSelectionResourcesFontTargetSerialLifetimeRechecked": true,
+    "exactTextFrameOwnerRetained": true,
+    "originalFull640GraphicsBackgroundSidebarCopyTextLeaseJoinsPreserved": true,
+    "unmatchedSelectionSyntheticFixturesNotPhysicalClaims": true
+  },
+  "renderer": {
+    "graphicsRuntimeSchema": 3,
+    "dialogWordSchema": 1,
+    "graphicsOwnedImages": 8,
+    "orderedReplacements": 16,
+    "audioRendererStateOrBarLayerShared": false,
+    "shaderMathAndExactDoneCancelPixelsOnlySharedConceptually": true,
+    "allOriginalFontVerticesStillValidated": true,
+    "dynamicOriginalFontGapsPreserved": true,
+    "boundsAndAliasesBeforeDraw": true,
+    "oldSchemaRejectedBeforeNewBorrow": true,
+    "ownedRetirementAndForeignLossForgetGuarded": true,
+    "original300Uploads300Selections600TrianglesAndColorOnlyCommitPreserved": true
+  },
+  "validation": {
+    "registeredChecksPerMode": 22,
+    "modes": [
+      "optimized",
+      "ASan+UBSan"
+    ],
+    "sourceGenerationModules": 11,
+    "genuineSourceTailFullGraphicsFrameSceneAndRetainedLeaseFixture": true,
+    "twoSourceGenerationsCrossedOwnerRefusalsAndCurrentMutations": true,
+    "actualGlesPixelsAtLogicalAndNativeOutput": true,
+    "allEightWordBoxesInterleavingAndUnrelatedPixelsChecked": true,
+    "representativeActualForeignContextLossCases": 2,
+    "independentSourceGpuAndVisualReviewsFoundNoConcreteBlocker": true,
+    "originalLfFileFormatsPreservedWithExactLogicalBytesAndLineCounts": true,
+    "finalGameCompiledFromPreservedBytes": true
+  },
+  "actualGame": {
+    "outputSize": [
+      2186,
+      1640
+    ],
+    "settledCaptures": 13,
+    "constantBrightnessShapeCaptures": 12,
+    "wordShapeComparisons": 96,
+    "lowerBrightnessCaptureExcludedFromFixedGammaShapeComparisons": true,
+    "selectedIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "glyphDiceRange": [
+      0.8372957896134945,
+      0.9612170559245768
+    ],
+    "fixedDiceThreshold": 0.8,
+    "fixedAlphaThreshold": 248,
+    "fixedColorDistance": 3,
+    "verifiedOriginalGamma": 1.5,
+    "originalFontNegativeDice": [
+      0.24124719249570617,
+      0.25206899990028914,
+      0.22126220886551465,
+      0.1733810802745449,
+      0.37577426015141085,
+      0.3776417143985779,
+      0.3776439709742165,
+      0.23443223443223443
+    ],
+    "brightnessChangedAndVisuallyRestoredExactly": true,
+    "brightnessConfigUnchangedBeforeHarnessRestore": true,
+    "doneCancelActivatedAndGraphicsReentered": true,
+    "returnedToMainAndCleanShutdown": true,
+    "copiedConfigArtworkRestored": true
+  },
+  "build": {
+    "maxCompilerWorkers": 2,
+    "compilerInputFilesPinned": 369,
+    "baselineObjectsUnchanged": true,
+    "originalMethodTextPreservedBeforeAddedHooks": true
+  },
+  "retainedFailures": [
+    "Mock font put space at catalog index32 instead of ASCII-minus32 index0; corrected fixture and kept production vertex-count proof.",
+    "Intentional context-loss fixture failed to restore caller GL state after manual owner recovery; isolated with first-error checks, corrected fixture state restoration, kept production guards.",
+    "Diagnostic helper name collided with a pixel buffer; renamed helper with assertions unchanged.",
+    "A .25-second held Enter during Graphics reentry returned to Options when Done was retained. Same binary passed with a .06-second released tap. Longer-held keyboard-confirm reuse remains an input follow-up; this batch does not claim to fix it."
+  ],
+  "limits": {
+    "allGraphicsValueDisabledAndLanguageVariantsVerified": false,
+    "unprovenStatesMayRetainOriginalRendering": true,
+    "allHelperGlCallLossPointsExhaustivelyInjected": false,
+    "allTextureSlotAliasCategoriesExercised": false,
+    "newNonemptyDialogActualAdapterLifetimeSchemaFixtureExpanded": false,
+    "gpuWordStreamSyntheticWithSeparateGenuineCpuSceneFixture": true,
+    "wholeUiAccepted": false,
+    "physicalIPadAppearancePerformanceOrBatteryVerified": false,
+    "newFpsLowPowerBatteryClaim": false,
+    "heldKeyboardConfirmBehaviourFullyResolved": false,
+    "cloudBuild": false,
+    "push": false
+  }
+}
