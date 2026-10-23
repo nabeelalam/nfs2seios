@@ -4,11 +4,13 @@
 #include "BackgroundSceneCompositor.h"
 #include "NestedCaptionGpu.h"
 #include "AudioBarGpu.h"
+#include "AudioDialogWordGpu.h"
 #include "AudioSceneLayerAbi.h"
 typedef struct NfsAudioSceneGpu {
  NfsBackgroundSceneCompositor*background;NfsAudioBarGpu*bars;
  NfsSoftwareTextGpu*sidebarCaption;NfsSoftwareTextGpu*text;
  NfsNestedCaptionGpu*sidebarWord;
+ NfsAudioDialogWordGpu*dialogWords;
 } NfsAudioSceneGpu;
 #ifdef __cplusplus
 extern "C" {

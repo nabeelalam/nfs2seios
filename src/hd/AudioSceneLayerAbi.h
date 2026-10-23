@@ -4,6 +4,7 @@
 #include "BackgroundSceneLayersAbi.h"
 #include "SoftwareTextLayerAbi.h"
 #include "CompactCaptionWordRuntimeAbi.h"
+#include "AudioDialogWordRuntimeAbi.h"
 #include "AudioLayerAbi.h"
 /* Synchronous immutable native-owned borrows; packet/catalog/art owners retain
    every byte. No GL dependency or frame/target permission is encoded here. */
@@ -12,5 +13,6 @@ typedef struct NfsAudioSceneLayers {
  NfsSoftwareTextLayerView sidebarCaption,text;
  const NfsAudioBarVertex*bars;size_t barVertices;
  NfsCompactCaptionWordView sidebarWord;
+ NfsAudioDialogWordsView dialogWords;
 } NfsAudioSceneLayers;
 #endif

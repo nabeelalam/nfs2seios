@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "scope": "Eight fixed English Audio body labels in accepted lighter condensed lettering",
+  "artwork": {
+    "originalHorizontalAllocationsPreserved": true,
+    "rightEdge": 368,
+    "logicalHeight": 32,
+    "rasterScale": 4,
+    "whiteAlphaArtUsesOriginalSourceTints": true,
+    "originalPixelsOrFontFilesIncluded": false,
+    "titleButtonsAndDynamicValuesUnchanged": true
+  },
+  "ownership": {
+    "privateLexicalPolicyAndResourceAuthority": true,
+    "originalIndependentMeasuresAndDescriptorPointersRequired": true,
+    "currentGameThreadArchiveResourceFontTargetSerialLifetimeRechecked": true,
+    "historicalConsistencyAloneDoesNotAuthorizeLiveDisplay": true,
+    "exactOriginalTextPacketOwnerRetained": true,
+    "originalFull640BarsSceneCopyUploadAndLeaseJoinsPreserved": true,
+    "nonemptyMalformedViewRefused": true,
+    "emptyLegacyFixtureFallbackRetained": true
+  },
+  "renderer": {
+    "audioRuntimeSchema": 3,
+    "originalTextVerticesStillValidated": true,
+    "sixteenSourceSpansInterleavedWithOriginalDynamicText": true,
+    "eightOwnedImagesAndProgram": true,
+    "originalShadowForegroundOrderAndColorsPreserved": true,
+    "originalScene300Selections600TrianglesAndColorOnlyCommitPreserved": true,
+    "resourceAndStagingAliasesRefusedBeforeDraw": true,
+    "warmCacheIdentityAndOwnedRetirementVerified": true,
+    "foreignOwnerLossForgetsWithoutCleanup": true
+  },
+  "validation": {
+    "registeredChecksPerMode": 21,
+    "modes": [
+      "optimized",
+      "ASan+UBSan"
+    ],
+    "sourceAndGenerationModules": 9,
+    "genuineFullAudioSceneSourceProofFixture": true,
+    "oldNewSourceGenerationsAndCrossedPacketRefusals": true,
+    "retainedLeaseSurvivesSourceRetirement": true,
+    "actualGlesPixelsAtLogicalAndNativeOutput": true,
+    "unrelatedPixelsComparedWithLegacyFallback": true,
+    "representativeActualForeignContextLossCases": 2,
+    "allNewGlCallLossPointsExhaustivelyInjected": false,
+    "dedicatedActualAudioAdapterFaultFixture": false
+  },
+  "actualGame": {
+    "outputSize": [
+      2186,
+      1640
+    ],
+    "originalInputOnly": true,
+    "settledCaptures": 13,
+    "labelComparisons": 104,
+    "observedSelectedIndices": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      9,
+      100
+    ],
+    "glyphDiceRange": [
+      0.8297841518180501,
+      0.9453502021651232
+    ],
+    "fixedDiceThreshold": 0.8,
+    "fixedAlphaThreshold": 248,
+    "fixedColorDistance": 3,
+    "originalPresentationGamma": 1.5,
+    "oldOriginalFontNegativeDice": [
+      0.12720422004521478,
+      0.15762273901808785,
+      0.2539641614026041,
+      0.2658947142703978,
+      0.30444444444444446,
+      0.2525371725277319,
+      0.5631180919139034,
+      0.35385629531970997
+    ],
+    "allCurrentShapesPassed": true,
+    "allOldNegativesDeclined": true,
+    "returnedToMain": true,
+    "cleanShutdownAndCopiedConfigArtworkRestoration": true,
+    "allAudioValueAndDisabledVariantsExercised": false
+  },
+  "build": {
+    "maxCompilerWorkers": 2,
+    "compilerInputFilesPinned": 361,
+    "baselineObjectsUnchanged": true,
+    "originalMethodBodiesPreserved": true
+  },
+  "retainedFailures": [
+    "Initial C++ compilation caught a hexadecimal-token spacing error; explicit spacing fixed it.",
+    "Selector fixture mutated an irrelevant low bit; it now mutates the actual high selector field, with separate low-bit acceptance coverage.",
+    "The genuine full-scene fixture initially supplied compact sidebar geometry as a full640 surface; the fixture now preserves the independently valid full640 geometry without weakening production checks.",
+    "The first screenshot checker expected raw RGB565 values before presentation gamma. It now applies the independently verified original shader transform and exact copied brightness value; shape and color tolerances are unchanged."
+  ],
+  "limits": {
+    "wholeUiAccepted": false,
+    "physicalIPadAppearanceOrPerformanceVerified": false,
+    "newFpsLowPowerOrBatteryClaim": false,
+    "remainingTitleButtonsAndUiPending": true,
+    "cloudBuild": false,
+    "push": false
+  }
+}
