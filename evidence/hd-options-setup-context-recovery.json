@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "scope": "Genuine new EGL/GLES2 context recovery of maintained Options and Setup cached adapters with nonempty authored captions",
+  "productionBehaviorChanged": false,
+  "testFiles": [
+    "tests/options_renderer_runtime_tests.cpp",
+    "tests/compact_caption_renderer_runtime_tests.cpp"
+  ],
+  "validation": {
+    "optimizedRegisteredChecks": 2,
+    "asanUbsanChecks": 2,
+    "originalOptionsRegressionPassed": true,
+    "replacementContextUnshared": true,
+    "replacementHandleDistinctWhilePriorHandleLive": true,
+    "priorTargetObjectsDestroyedBeforePriorContext": true,
+    "realProvenanceLifecycleAdvancedGeneration": true,
+    "oldUploadWitnessOtherwiseMatchedDescriptorAndBytes": true,
+    "staleGenerationRefusedByBothPublicOwners": true,
+    "staleRefusalPreservedTargetColorDepthAndState": true,
+    "freshNativeTextureUploads": 300,
+    "nativeUploadCounterMonotonic": true,
+    "coldAndWarmOwners": [
+      "Options caption 3",
+      "Setup caption 1"
+    ],
+    "newContextFullImagesExactlyEqualPriorContextReferences": true,
+    "nativeCachedSelectionsPerFrame": 300,
+    "nativeTrianglesPerFrame": 600,
+    "warmOptionalAllocationsAndUploads": 0,
+    "pendingSetupRetirementPreventsBothOwnerFinishes": true,
+    "protectedPreexistingDocumentsUnchanged": true
+  },
+  "privateEvidenceDigests": {
+    "checks-opt-01/receipt.json": "bd790cbe3d5b66485bbcbb146f0158aa11818326443f2451634feead8ca23f9a",
+    "checks-opt-01/ctest.log": "844954b0e1e91007b3f97e10d9d7aa37b12f03078e209e312351269d80edba41",
+    "checks-san-01/receipt.json": "6d248371cfe75566bc1e1139bc119faa2918d5ecd0938368ff61f4a61c3a1457",
+    "checks-san-01/options_renderer_runtime_tests.log": "b99315d042d0254ecb911728aae26f56aab73a94a88f84612a4a9c64a8e9e4a7",
+    "checks-san-01/compact_caption_renderer_runtime_tests.log": "a16edc9efd05f0aec2816fe722e80498ada75c2cf37b9b183bf02b38163294b5"
+  },
+  "testSourceDigests": {
+    "tests/options_renderer_runtime_tests.cpp": "e9cf0e7fc696833c1a975e7d0e2cc535d5fbcb9dfeeb7de010b687b43912d7ad",
+    "tests/compact_caption_renderer_runtime_tests.cpp": "eea45a229dc97e580181611a097cb41004c2da55f5c1b9fc3df05089d38f47cd"
+  },
+  "limitations": [
+    "Actual GLES adapter execution with synthetic background, font and native-cache data plus pinned finite caption artwork.",
+    "Original drawTriangles is a no-GL counter stub; original production renderer, SDL dispatch and full game context recreation are not exercised by this fixture.",
+    "Only owned retirement and this generation-1-to-2 recovery are claimed; not exhaustive context-loss or multi-cycle coverage.",
+    "GPU-driver leak checking is disabled in sanitizer runs.",
+    "Physical iPad context recovery, UI appearance, performance and battery acceptance remain unverified.",
+    "No new game build, cloud build, IPA, push or paid service."
+  ]
+}
