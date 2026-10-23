@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Genuine original-game Controls landing scene with current source proof, queue and native whole-scene renderer; private local activation",
+  "sourceHookTests": {
+    "sceneCases": 6,
+    "rendererCases": 5,
+    "registeredSourceHookChecksPassed": 5,
+    "exactLfAndCrLfReversal": true,
+    "realUploadEarlyAndFinalRestorationsDistinguished": true,
+    "originalCallsPreserved": true
+  },
+  "build": {
+    "observerBinarySha256": "6e52adaf204df582e6b68a57d97e09ea7a53ae02705815feac0c6d53847b7e68",
+    "changedUnitsCompiled": 2,
+    "sourceInputFiles": 426,
+    "allSourceAndReusedLinkPinsStableAfterRun": true,
+    "cloud": false
+  },
+  "actualOriginalGame": {
+    "nativeSize": [
+      2186,
+      1640
+    ],
+    "completeControlsPublications": 81,
+    "capturedViews": 5,
+    "observedSelections": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "sourceOwnerLifetimes": 2,
+    "freshMatchedNativePassesBeforeEachCapture": 4,
+    "nativeBeginFinishSerialContentContextFramebufferMatched": true,
+    "originalUploadsPerPass": 300,
+    "originalSelectionsPerPass": 300,
+    "originalTrianglesPerPass": 600,
+    "colorOnlyCommit": true,
+    "originalKeyboardNavigationOnly": true,
+    "controlAssignmentsChanged": false,
+    "parentVisualReview": [
+      "initial",
+      "done-selected",
+      "owner-reentry"
+    ],
+    "privateLogSha256": "56142dff07eeda60b9a9d2335e938868217b4d66c07c1acb3b3302d738e81210",
+    "privateResultSha256": "bd13a65e01b80e6289603c489b7fb20873cc58d6d08025181aaad61097bdf231",
+    "captureHashes": [
+      "c16885427cb9b88a0d575a66d04277bf8c811435ab60f51e95d9eb59aede7e80",
+      "54815d04d155ca2154eb5cebb32296ce705a88d94a447777e31e7873fc4fc9e3",
+      "c642c9564badf87fbfd5278ace5a6512e11f1ce79cd5a678032a14d1047260f1",
+      "e98b7c0054d2fb0313ec3ca2fc7d881fb3f37b0b21b67c6c848b8d5b91029702",
+      "a8b233447589aa6955f0ee9059106c254256871060ce6bf63c62d6c4f8451c7b"
+    ]
+  },
+  "restoration": {
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "brightnessConfigRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedGamePids": [],
+    "displayStoppedAfterTerminalAndRestore": true
+  },
+  "limits": {
+    "normalEnginePreparationRegistered": false,
+    "controlsChildDialogsValidated": false,
+    "actualControlsContextRecreationValidated": false,
+    "physicalIpadAcceptance": false,
+    "performanceOrBatteryClaim": false,
+    "newIpa": false
+  }
+}
