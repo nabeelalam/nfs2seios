@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "scope": "Actual local original game recovery after one requested original graphics-context recreation while Options was warm",
+  "productionSourceChanged": false,
+  "privateDiagnostic": {
+    "originalNeedRecreateGlRequestedOnce": true,
+    "guestStateWritten": false,
+    "exactSourceReversalPassed": true,
+    "extraGlQueriesOrCalls": false,
+    "actualSdlDestroySuccessObserved": true,
+    "actualNewContextCreatedAndCurrentObserved": true,
+    "oldGeneration": 1,
+    "newGeneration": 2,
+    "residentTexturesBefore": 609,
+    "freshTextureUploads": 609,
+    "reloadedEveryPreviouslyResidentTexture": true,
+    "markerBeforeOriginalFramebufferReallocation": true
+  },
+  "build": {
+    "scope": "Private one-shot original needRecreateGl path in actual game; no production source change",
+    "observerSha256": "a3b294a75b679fd567a0583cb94d46740c2aa6f78721bc0f833740fc42c82dc8",
+    "compiledUnits": 1,
+    "sourceInputFiles": 245,
+    "allInputsStable": true,
+    "maxCompilerWorkers": 1,
+    "cloud": false,
+    "seconds": 67.03
+  },
+  "actualGame": {
+    "passed": true,
+    "path": [
+      "Main",
+      "Options",
+      "Original native context recreation",
+      "Options",
+      "Main",
+      "Setup",
+      "Main"
+    ],
+    "nativeDimensions": [
+      2186,
+      1640
+    ],
+    "completeGuardedPublicationsInNewContext": {
+      "OPTIONS": 71,
+      "BG": 111,
+      "SETUP": 67
+    },
+    "selectionsPerCompleteNativePass": 300,
+    "trianglesPerCompleteNativePass": 600,
+    "optionsLogicalTextMaskDice": 1.0,
+    "exactFullFramePixelEqualityClaimed": false,
+    "cleanWmDeleteShutdown": true,
+    "exitCode": 0,
+    "copiedConfigBrightnessAndArtworkRestored": true,
+    "ownedGamePidsEmptyAndDisplayStopped": true,
+    "testLeaseAbsent": true,
+    "compiledSourceAndReusedObjectsUnchangedAfterRun": true,
+    "protectedPreexistingDocumentsUnchanged": true
+  },
+  "privateEvidenceDigests": {
+    "reverse-audit-02.json": "55f934ce34ca7ca57dc71c6aaaa209a5a3cd2cbd5e9b675a9b312da151866f4c",
+    "game-build-02/build-receipt.json": "41ba71cad65bb4dd0774a83bd111e3e8e8d481f39baa130d1095aa3b5c01c9f0",
+    "actual-context-reconciliation.json": "2bb7adc1b6eef1655796dd4743a0b9b704f715b817a68771d637dee3a1fb8b30",
+    "actual-menu-01/result.json": "33e540c8bc7336bba5d0f81cb66f450c3a52eab473d6fb633f64e67e18eb6859",
+    "actual-menu-01/run.log": "73090de4fc6349f199104a8b5b720b10b826eefe609f69c71eea3acd19d72de0",
+    "run_owned_context.py": "3941d53aa7980069465a967eda9c60e189f54654ff5e83fb016255969dcba994",
+    "analyze_actual.py": "461b33f78e840acb7051e8753774e16d31d902167da584c8680bf5c061b3996f"
+  },
+  "limitations": [
+    "The reset is requested by a private native flag trigger, not by an actual operating-system context-loss event.",
+    "One owned reset during this menu session is verified, followed by the named menu navigation; race and unbound-loss recovery are separate.",
+    "The exact comparison covers a logical-resolution Options text mask, not every framebuffer pixel or every artwork detail.",
+    "Local WSL software GLES execution does not establish physical iPad context recovery, UI appearance, performance or battery results.",
+    "No Apple build, IPA, push or paid service."
+  ]
+}
