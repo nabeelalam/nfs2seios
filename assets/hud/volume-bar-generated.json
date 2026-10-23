@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "originalGamePixelsIncluded": false,
+  "source": "assets/hud/pause/volume-bar.svg",
+  "sourceSha256": "1bc23122925d97b9de8c3859e6cfddead9560535a2dc203e710c55d4e0a43918",
+  "generatedFrom": "Newly authored classic cap, divider and recessed channel vector",
+  "rectangle": [
+    920,
+    398,
+    1000,
+    510
+  ],
+  "logicalProfile": [
+    20,
+    28
+  ],
+  "originalSprite": [
+    0,
+    172,
+    170,
+    28
+  ],
+  "originalVisibleExtent": [
+    0,
+    166
+  ],
+  "logicalDivider": 18,
+  "logicalChannelStart": 19,
+  "continuousMirrorX": 167,
+  "transparentTrailingColumns": [
+    167,
+    168,
+    169
+  ],
+  "preservedGutterRows": [
+    396,
+    397,
+    510,
+    511
+  ],
+  "rgbaSha256": "e53644556d80c4f7d3c67f84a9dbfde54869cee36f9b0004b12d409c751f4f60",
+  "rgbaBytes": 35840,
+  "rleSha256": "c5afca255c4145f7785830cd4e2356c7f979d26033cc15d079f3c56da914ecab",
+  "rleBytes": 9654,
+  "headerSha256": "1a7ded71ccce17932fc7bffe3df1241bb9dc09c73d943f7cc2980cac34bbeb1d"
+}

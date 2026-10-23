@@ -35,6 +35,8 @@
 // Original complete-quad UVs -> authored allocation texel centres; never sample adjacent rows.
 "if(vTexCoord.z>72.5 && vTexCoord.z<73.5){vec2 p=clamp((hdCoord*256.0-vec2(0.5,229.5)*(255.0/256.0))/(vec2(129.5,28.5)*(255.0/256.0)),vec2(0.0),vec2(1.0));hdCoord=(vec2(240.5,398.5)+p*vec2(519.0,111.0))/1024.0;}\n"
 "if(vTexCoord.z>73.5 && vTexCoord.z<74.5){vec2 p=clamp((hdCoord*256.0-vec2(209.5,227.5)*(255.0/256.0))/(vec2(37.5,28.5)*(255.0/256.0)),vec2(0.0),vec2(1.0));hdCoord=(vec2(768.5,398.5)+p*vec2(151.0,111.0))/1024.0;}\n"
+// Original rounded plate profile: divider18/channel19, visible columns0..166, trailing allocation transparent.
+"if(vTexCoord.z>74.5 && vTexCoord.z<75.5){vec2 source=hdCoord*256.0/(255.0/256.0);float cap=min(source.x,167.0-source.x);pauseOutside=source.x<0.0 || source.x>=167.0;hdCoord=clamp(vec2(920.0+cap*4.0,398.0+(source.y-172.0)*4.0),vec2(920.5,398.5),vec2(999.5,509.5))/1024.0;}\n"
 		"vec4 hd = texture2D(uHdTextureSampler, hdCoord);if(pauseOutside)hd=vec4(0.0);\n"
 		"if (vTexCoord.z > 0.5) sampled = hd;\n"
 		"#else\n"

@@ -113,6 +113,24 @@ static void exact_header_selector(){
  const float cropped[6]={.498046875f,228.603515625f,129.4921875f,228.603515625f,129.4921875f,255.f};CHECK(!nfs_pause_triangle(cropped));
 }
 
+static void exact_bar_selector(){
+ const float bounds[4]={.5f*255/256,172.5f*255/256,170.f*255/256,200.f*255/256};
+ unsigned accepted=0;
+ for(unsigned omitted=0;omitted<4;++omitted){
+  std::array<unsigned,3> order{};unsigned count=0;for(unsigned k=0;k<4;++k)if(k!=omitted)order[count++]=k;
+  do{
+   std::array<float,6> uv{};for(unsigned i=0;i<3;++i){uv[2*i]=bounds[order[i]&1?2:0];uv[2*i+1]=bounds[order[i]&2?3:1];}
+   const auto before=uv;CHECK(nfs_pause_triangle(uv.data())==75&&uv==before);++accepted;
+   auto bad=uv;bad[0]+=.02f;CHECK(!nfs_pause_triangle(bad.data()));
+   bad=uv;bad[1]=(bounds[1]+bounds[3])*.5f;CHECK(!nfs_pause_triangle(bad.data()));
+   bad=uv;bad[2]=bad[0];bad[3]=bad[1];CHECK(!nfs_pause_triangle(bad.data()));
+   bad=uv;bad[1]=228.603515625f;CHECK(!nfs_pause_triangle(bad.data()));
+   for(float invalid:{std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity()})for(unsigned i=0;i<6;++i){bad=uv;bad[i]=invalid;CHECK(!nfs_pause_triangle(bad.data()));}
+  }while(std::next_permutation(order.begin(),order.end()));
+ }
+ CHECK(accepted==24);
+}
+
 static void unauthenticated_source_rejection(){
  // An authored test buffer cannot establish the original game's source identity.
  // Never replace/mock the production original digest to manufacture a positive match.
@@ -136,6 +154,6 @@ static void unauthenticated_source_rejection(){
 }
 
 int main(){
- authored_storage();exact_uv_selector();exact_header_selector();unauthenticated_source_rejection();
+ authored_storage();exact_uv_selector();exact_header_selector();exact_bar_selector();unauthenticated_source_rejection();
  std::puts("PASS authored pause storage/digest/canaries, 24 captured-cell triangles/552 malformed negatives and unauthenticated-source fallback; original-source positive match requires private game evidence");
 }

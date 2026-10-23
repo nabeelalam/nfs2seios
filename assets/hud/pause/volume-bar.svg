@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="112" preserveAspectRatio="none" viewBox="0 0 20 28">
+<defs>
+<linearGradient id="rim" x1="0" y1="1" x2="0" y2="26" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a4a7ae"/><stop offset=".09" stop-color="#858890"/><stop offset=".22" stop-color="#52545c"/><stop offset=".52" stop-color="#606269"/><stop offset=".83" stop-color="#4e5057"/><stop offset="1" stop-color="#303139"/></linearGradient>
+<linearGradient id="cap" x1="0" y1="3" x2="0" y2="25" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#777a81"/><stop offset=".22" stop-color="#565860"/><stop offset=".56" stop-color="#50525a"/><stop offset="1" stop-color="#42444c"/></linearGradient>
+<linearGradient id="recess" x1="0" y1="8" x2="0" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#15171e"/><stop offset=".13" stop-color="#292c34"/><stop offset=".5" stop-color="#373a42"/><stop offset="1" stop-color="#22252d"/></linearGradient>
+</defs>
+<path d="M20 1.25H12.5C5.5 1.25 .25 6.2 .25 13.5S5.5 25.75 12.5 25.75H20Z" fill="url(#rim)" stroke="#24262d" stroke-width=".5"/>
+<path d="M17.8 2.8H12.5C6.6 2.8 1.9 7.3 1.9 13.5S6.6 24.3 12.5 24.3H17.8Z" fill="url(#cap)"/>
+<path d="M2.1 10.3C3.3 5.9 7.2 2.3 12.5 2.3H17.8" fill="none" stroke="#c1c3c8" stroke-opacity=".62" stroke-width=".55"/>
+<path d="M2 17.1C3.5 22.1 7.6 25 12.5 25H17.8" fill="none" stroke="#1e2027" stroke-opacity=".8" stroke-width=".55"/>
+<path d="M18 1.4V25.5" stroke="#202229" stroke-width="1"/><path d="M18.8 2V25" stroke="#898c92" stroke-opacity=".55" stroke-width=".45"/>
+<path d="M19 8H20V20H19Z" fill="url(#recess)"/>
+<path d="M19 7.7H20" stroke="#292b33" stroke-width=".8"/><path d="M19 8.4H20" stroke="#11131a" stroke-width=".6"/>
+<path d="M19 20.1H20" stroke="#979aa2" stroke-opacity=".65" stroke-width=".6"/>
+</svg>

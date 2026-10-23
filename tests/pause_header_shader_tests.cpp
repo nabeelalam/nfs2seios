@@ -27,9 +27,9 @@ struct Fixture {
   for(unsigned y=0;y<1024;++y)for(unsigned x=0;x<1024;++x)set(x,y,255,0,255);
   // Reserved preceding rows catch any accidental allocation shift or vertical bleed.
   rect(0,396,1024,398,0,255,255);
-  gradient(240,398,520,112,61);gradient(768,398,152,112,113);
+  gradient(240,398,520,112,61);gradient(768,398,152,112,113);gradient(920,398,80,112,173);
   // Lower neighbour remains original: glyph4 starts at texel centre512.5.
-  rect(0,510,1024,512,0,255,255);rect(256,512,320,576,120,70,30);
+  rect(0,510,1024,512,0,255,255);rect(256,512,320,576,120,70,30);rect(896,512,1024,576,120,70,30);
   // Six existing body-word interiors remain distinct, far from new allocations.
   rect(322,642,627,721,19,37,59);rect(631,642,901,721,31,47,71);
   rect(322,725,759,804,43,61,83);rect(322,814,809,893,53,73,97);
@@ -58,6 +58,35 @@ struct Fixture {
    if(x==.5f&&y==.5f){sample(normal,float(73+label),u,v,120,120,label?113:61,.5f);sample(normal,float(73+label),u,v,60,60,label?57:31,1,true,.5f);sample(normal,float(73+label),u,v,32,64,96,1,false);sample(basic,float(73+label),u,v,32,64,96);}
   }
  }
+ void bars(){
+  // Independent original source profile: rounded visible ends0..166, separator18,
+  // channel19; asymmetric170px allocation retains transparent trailing pixels.
+  const float xs[]={-1.f,-.0001f,0.f,.0001f,.5f,1.f,9.f,17.999f,18.f,18.001f,19.f,19.8f,20.f,21.f,50.f,83.5f,120.f,146.f,147.f,148.f,157.f,165.f,166.f,166.5f,167.f,167.001f,169.f,170.f,171.f};
+  const float ys[]={-.01f,0.f,.00001f,.5f,1.f,3.5f,14.f,24.5f,26.f,27.999f,28.f,28.01f};
+  auto expected=[](float x,float y){
+   const double fold=std::fmin(double(x),167.-x);
+   const double sampleX=std::fmax(.5,std::fmin(79.5,fold*4));
+   const double sampleY=std::fmax(.5,std::fmin(111.5,double(y)*4));
+   return std::array<unsigned,3>{unsigned(std::lround(20+200*(sampleX-.5)/79)),unsigned(std::lround(30+180*(sampleY-.5)/111)),173};
+  };
+  for(float x:xs)for(float y:ys){
+   const float u=x*(255.f/256)/256,v=(172.f+y)*(255.f/256)/256;
+   const auto rgb=expected(x,y);
+   if(x<0||x>=167)sample(normal,75,u,v,0,0,0,1,true,1,0);
+   else sample(normal,75,u,v,rgb[0],rgb[1],rgb[2]);
+   if(x==83.5f&&y==14.f){sample(normal,75,u,v,rgb[0],rgb[1],rgb[2],.5f);sample(normal,75,u,v,unsigned(std::lround(rgb[0]*.5)),unsigned(std::lround(rgb[1]*.5)),87,1,true,.5f);sample(normal,75,u,v,32,64,96,1,false);sample(basic,75,u,v,32,64,96);}
+  }
+  // Folded source profile gives matching cap samples; centre last-column stretch
+  // remains continuous on both sides of the original separator/channel join.
+  for(float x:{.5f,1.f,9.f,17.999f,18.f,18.001f,19.f,19.8f,20.f,21.f,50.f,83.5f}){
+   const float v=186.f*(255.f/256)/256;const auto rgb=expected(x,14);
+   sample(normal,75,x*(255.f/256)/256,v,rgb[0],rgb[1],rgb[2]);
+   unsigned char left[4]{};glReadPixels(2,2,1,1,GL_RGBA,GL_UNSIGNED_BYTE,left);
+   sample(normal,75,(167-x)*(255.f/256)/256,v,rgb[0],rgb[1],rgb[2]);
+   unsigned char right[4]{};glReadPixels(2,2,1,1,GL_RGBA,GL_UNSIGNED_BYTE,right);
+   for(unsigned k=0;k<4;++k)ck(std::abs(int(left[k])-int(right[k]))<=1,"mirrored original plate profile and channel continuity");
+  }
+ }
  void regressions(){
   const float source[6][4]={{.498046875f,.498046875f,154.39453125f,23.90625f},{.498046875f,25.400390625f,154.39453125f,48.80859375f},{.498046875f,73.212890625f,154.39453125f,96.62109375f},{.498046875f,97.119140625f,254.00390625f,120.52734375f},{.498046875f,49.306640625f,154.39453125f,72.71484375f},{.498046875f,198.720703125f,254.00390625f,226.11328125f}};
   const unsigned rgb[6][3]={{19,37,59},{31,47,71},{43,61,83},{53,73,97},{67,89,109},{79,101,127}};
@@ -75,22 +104,22 @@ struct Fixture {
   }
   sample(normal,2,.2f,.2f,211,97,23);
   for(unsigned y:{396u,397u})sample(normal,1,.5f,(y+.5f)/1024,0,255,255);
-  // Independent bilinear baseline for glyph4 at its original minimum native V.
+  // Independent bilinear baseline for glyph4 and cap-adjacent glyph14/15 at minimum native V.
   // A small accepted raw-UV jitter straddles the untouched row511/512 boundary.
   // Compare the complete authored atlas against a no-header baseline on actual GL.
-  for(float jitter:{-.01f,0.f,.01f}){
+  for(float glyph:{16.f,26.f,27.f})for(float jitter:{-.01f,0.f,.01f}){
    const float v=(15.9375f+jitter)/256;
    const double centre=512.5+double(jitter)*(.0658823529411765*4);
    const double lowerWeight=std::fmax(0.,512.5-centre);
    const unsigned red=unsigned(std::lround(120*(1-lowerWeight)));
    const unsigned green=unsigned(std::lround(70*(1-lowerWeight)+255*lowerWeight));
    const unsigned blue=unsigned(std::lround(30*(1-lowerWeight)+255*lowerWeight));
-   sample(normal,16,127.5f/256,v,red,green,blue);
+   sample(normal,glyph,127.5f/256,v,red,green,blue);
    unsigned char authored[4]{};glReadPixels(2,2,1,1,GL_RGBA,GL_UNSIGNED_BYTE,authored);
    auto baseline=pixels;
-   for(unsigned y=398;y<510;++y)for(unsigned x=240;x<920;++x){auto *p=baseline.data()+4*(y*1024+x);p[0]=255;p[1]=0;p[2]=255;p[3]=255;}
+   for(unsigned y=398;y<510;++y)for(unsigned x=240;x<1000;++x){auto *p=baseline.data()+4*(y*1024+x);p[0]=255;p[1]=0;p[2]=255;p[3]=255;}
    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,1024,1024,0,GL_RGBA,GL_UNSIGNED_BYTE,baseline.data());
-   sample(normal,16,127.5f/256,v,red,green,blue);
+   sample(normal,glyph,127.5f/256,v,red,green,blue);
    unsigned char untouched[4]{};glReadPixels(2,2,1,1,GL_RGBA,GL_UNSIGNED_BYTE,untouched);
    for(unsigned k=0;k<4;++k)ck(authored[k]==untouched[k],"small glyph lower-neighbour matches untouched baseline exactly");
    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,1024,1024,0,GL_RGBA,GL_UNSIGNED_BYTE,pixels.data());
@@ -101,5 +130,5 @@ struct Fixture {
  ~Fixture(){glDeleteFramebuffers(1,&fbo);GLuint ids[]={atlas,target};glDeleteTextures(2,ids);glDeleteProgram(normal);glDeleteProgram(basic);}
 };
 int main(){SDL_Window *window=nullptr;SDL_GLContext context=nullptr;try{
- ck(SDL_Init(SDL_INIT_VIDEO),"SDL video");ck(SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_ES)&&SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2)&&SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0),"ES2 attributes");window=SDL_CreateWindow("Pause header shader",16,16,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);ck(window,"hidden window");context=SDL_GL_CreateContext(window);ck(context&&SDL_GL_MakeCurrent(window,context),"actual current ES context");{Fixture f;f.headers();f.regressions();}SDL_GL_DestroyContext(context);SDL_DestroyWindow(window);SDL_Quit();std::printf("PASS %u actual production pause header shader checks; synthetic atlas only\n",checks);return 0;
+ ck(SDL_Init(SDL_INIT_VIDEO),"SDL video");ck(SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_ES)&&SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2)&&SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0),"ES2 attributes");window=SDL_CreateWindow("Pause header shader",16,16,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);ck(window,"hidden window");context=SDL_GL_CreateContext(window);ck(context&&SDL_GL_MakeCurrent(window,context),"actual current ES context");{Fixture f;f.headers();f.bars();f.regressions();}SDL_GL_DestroyContext(context);SDL_DestroyWindow(window);SDL_Quit();std::printf("PASS %u actual production pause header shader checks; synthetic atlas only\n",checks);return 0;
  }catch(const std::exception &e){std::fprintf(stderr,"FAIL %s SDL=%s checks=%u\n",e.what(),SDL_GetError(),checks);if(context)SDL_GL_DestroyContext(context);if(window)SDL_DestroyWindow(window);SDL_Quit();return 1;}}

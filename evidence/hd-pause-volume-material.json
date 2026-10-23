@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "scope": "Classic pause volume caps and channel, using existing auxiliary atlas and original dynamic fills",
+  "originalPixelsIncluded": false,
+  "artwork": {
+    "schema": 1,
+    "originalGamePixelsIncluded": false,
+    "source": "assets/hud/pause/volume-bar.svg",
+    "sourceSha256": "1bc23122925d97b9de8c3859e6cfddead9560535a2dc203e710c55d4e0a43918",
+    "generatedFrom": "Newly authored classic cap, divider and recessed channel vector",
+    "rectangle": [
+      920,
+      398,
+      1000,
+      510
+    ],
+    "logicalProfile": [
+      20,
+      28
+    ],
+    "originalSprite": [
+      0,
+      172,
+      170,
+      28
+    ],
+    "originalVisibleExtent": [
+      0,
+      166
+    ],
+    "logicalDivider": 18,
+    "logicalChannelStart": 19,
+    "continuousMirrorX": 167,
+    "transparentTrailingColumns": [
+      167,
+      168,
+      169
+    ],
+    "preservedGutterRows": [
+      396,
+      397,
+      510,
+      511
+    ],
+    "rgbaSha256": "e53644556d80c4f7d3c67f84a9dbfde54869cee36f9b0004b12d409c751f4f60",
+    "rgbaBytes": 35840,
+    "rleSha256": "c5afca255c4145f7785830cd4e2356c7f979d26033cc15d079f3c56da914ecab",
+    "rleBytes": 9654,
+    "headerSha256": "1a7ded71ccce17932fc7bffe3df1241bb9dc09c73d943f7cc2980cac34bbeb1d"
+  },
+  "runtime": {
+    "authenticatedPauseSource": 40,
+    "tag": 75,
+    "newTextures": 0,
+    "newDrawPasses": 0,
+    "perFrameUploads": 0,
+    "originalGeometryTintClipOrderPreserved": true
+  },
+  "localValidation": {
+    "optimizedRegisteredChecks": 14,
+    "sanitizerChecks": 7,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "actualGlesFixturePassed": true,
+    "actualSplitScreenPauseResumePassed": true,
+    "sourceFrames": 2,
+    "nativeTrianglesPerFrame": 64,
+    "queuedTrianglesPerFrame": 64,
+    "volumeSpritesPerFrame": 2,
+    "volumeTrianglesAcrossFrames": 8,
+    "originalSourceAndRendererJoinsPassed": true,
+    "independentRenderedFillMovementPassed": true,
+    "cleanShutdownAndCopiedResourceRestorationPassed": true
+  },
+  "privateEvidenceDigests": {
+    "checks-opt-01/receipt.json": "fba7fe16ceddd2f80ec38738f14011eaefe1a53dc520a888ca71d03c2294a22c",
+    "checks-san-01/receipt.json": "a43de013a24424be88105209a962c2349b2d9cffafc8140afcaa1bd027120eee",
+    "game-build-01/build-receipt.json": "321be083a96fb6c9789d63e60ace6ad780c7a9efe7986c69d3b2b6dd5626785b",
+    "actual-volume-reconciliation.json": "d8e197d8825969ca1f89558d0088649434fad98ea6dba8bcf92d7ab13e5f4a68",
+    "volume-fill-observation.json": "8c32673637989a414448b15b472be488de4b009f0f74958e1347f920db4cf383",
+    "actual-split-03/result.json": "c2dec230303850872d0d1a6802789811b1fe58ea4ef95f4b412060eb9c7a214c"
+  },
+  "limitations": [
+    "Only two initial complete pause frames are source-reconciled. Later volume changes have screenshot evidence, not full source-state transition logs.",
+    "Held original keys repeat; raised-again slider captures do not prove restoration to an exact prior value. Canonical copied test configuration is restored on shutdown.",
+    "Physical iPad appearance, performance and battery effects are unverified.",
+    "No cloud build, release package or push performed."
+  ]
+}

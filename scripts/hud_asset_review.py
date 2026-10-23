@@ -80,6 +80,9 @@ def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
+    if name == 'assets/hud/pause/volume-bar.svg':
+        from generate_volume_bar_pixels import reviewed_volume_bar_source
+        return reviewed_volume_bar_source(name,data)
     if name in ('assets/hud/pause/header-title.svg','assets/hud/pause/header-caution.svg'):
         from generate_pause_header_pixels import reviewed_pause_header_source
         return reviewed_pause_header_source(name,data)
