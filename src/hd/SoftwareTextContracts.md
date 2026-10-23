@@ -38,6 +38,13 @@ computed value and actual result. Completion requires closed commands, bounded
 counts, matching identity and equality of the entire replayed original plane.
 A failed build cannot publish a partially valid packet.
 
+Completed packets also retain each exact exit command and its original replacement-vertex
+range, including commands clipped to zero vertices. The immutable history is bounded
+by the existing command limit, copied away from caller inputs and retained across
+builder reuse. It supports later finite whole-word display without guessing text
+from glyph vertices. History is observational data, not current form/resource/owner
+authority, and does not activate a display replacement or change the original vertices.
+
 The producer must independently validate the actual owner, lifetime, selected
 surface, clip, format, addresses and every interior lookup-table entry using the
 existing checked guest-memory interface. The endpoint geometry checks in

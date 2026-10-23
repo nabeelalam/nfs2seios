@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "scope": "Finite compact caption preparation and original source-command evidence; no display activation",
+  "artwork": {
+    "words": [
+      "game setup",
+      "location",
+      "options"
+    ],
+    "sourceSha256": "e5c448f87291dea35c74eb4e339f6ce7291c0f60e0e12f850f0f823be354f4dc",
+    "originalWidths": [
+      75,
+      52,
+      48
+    ],
+    "originalRightEdge": 168,
+    "originalTop": [
+      126,
+      162,
+      364
+    ],
+    "rasterScale": 4,
+    "fontFileIncluded": false,
+    "originalGamePixelsIncluded": false
+  },
+  "sourceObservation": {
+    "ordinaryPolicies": [
+      "Setup",
+      "Options",
+      "Player1",
+      "Player2"
+    ],
+    "initialMainPoliciesUnchanged": [
+      "Player1",
+      "Player2"
+    ],
+    "currentArchiveSelectorEntryAndResourceRevalidated": true,
+    "independentCurrentSceneOwnerStillRequired": true
+  },
+  "commandHistory": {
+    "immutable": true,
+    "boundedByExistingCommandLimit": 1024,
+    "originalVertexRangesRetained": true,
+    "fullyClippedCommandsRetained": true,
+    "queuedPacketSurvivesCallerMutationAndBuilderReuse": true
+  },
+  "validation": {
+    "registeredChecksPerMode": 11,
+    "optimizedPassed": true,
+    "asanUbsanPassed": true,
+    "cxx14PacketCompatibilityPassed": true,
+    "sourceAndHookPythonCases": 31
+  },
+  "displayActivated": false,
+  "shippingGameRebuilt": false,
+  "actualGameValidation": false,
+  "physicalDeviceAcceptance": false,
+  "performanceClaim": false,
+  "cloudBuild": false
+}

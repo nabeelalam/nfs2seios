@@ -11,7 +11,7 @@ def original(name):
  if name in LOC_NAMES:
   t=prior(name)
   if name=='Methods_01.cpp':
-   for symbol,body in [('405CF0',''),('405580',''.join(' nfs_audio_sidebar_text::measured(*this,uint32_t(ecx),int32_t(eax),nfs_audio_sidebar_text::SourceMeasureAlignment::'+k+');\n'for k in('right','center')))]:
+   for symbol,body in [('405CF0',''),('405580',call('41B710')+''.join(' nfs_audio_sidebar_text::measured(*this,uint32_t(ecx),int32_t(eax),nfs_audio_sidebar_text::SourceMeasureAlignment::'+k+');\n'for k in('right','center')))]:
     assert 'Fn(void) Game::_sub_'+symbol+'()'not in t;t+=fn(symbol,body)
   if name=='Methods_13.cpp':t+=fn('4A5830',(STORE+'\n')*4)
   return add_location_scene_hooks(t,name)

@@ -29,13 +29,17 @@ struct TextCommand {
  uint16_t color=0;
  Clip clip{0,0,640,480};
 };
+// Immutable source-command history for display-only finite word substitution.
+// This records original observations; it does not supply form/current-owner authority.
+struct RecordedCommand {TextCommand command{};size_t vertexFirst=0,vertexCount=0;};
 class FramePacket {
  std::shared_ptr<const FontCatalog> font_;SurfaceIdentity surface_;uint64_t serial_=0;
  std::vector<uint16_t> clean_,original_;
  std::vector<Vertex> vertices_;
+ std::vector<RecordedCommand>records_;
  size_t commands_=0,writes_=0;
  friend class FramePacketBuilder;
- FramePacket(std::shared_ptr<const FontCatalog> font,SurfaceIdentity surface,uint64_t serial,std::vector<uint16_t>&&clean,std::vector<uint16_t>&&original,std::vector<Vertex>&&vertices,size_t commands,size_t writes):font_(std::move(font)),surface_(surface),serial_(serial),clean_(std::move(clean)),original_(std::move(original)),vertices_(std::move(vertices)),commands_(commands),writes_(writes){}
+ FramePacket(std::shared_ptr<const FontCatalog> font,SurfaceIdentity surface,uint64_t serial,std::vector<uint16_t>&&clean,std::vector<uint16_t>&&original,std::vector<Vertex>&&vertices,std::vector<RecordedCommand>&&records,size_t commands,size_t writes):font_(std::move(font)),surface_(surface),serial_(serial),clean_(std::move(clean)),original_(std::move(original)),vertices_(std::move(vertices)),records_(std::move(records)),commands_(commands),writes_(writes){}
  public:
  // Legacy constant remains the maximum plane capacity, not every packet size.
  static constexpr size_t maxPixelCount=640*480,pixelCount=maxPixelCount;
@@ -46,6 +50,7 @@ class FramePacket {
  const std::vector<uint16_t>&clean()const noexcept{return clean_;}
  const std::vector<uint16_t>&original()const noexcept{return original_;}
  const std::vector<Vertex>&vertices()const noexcept{return vertices_;}
+ const std::vector<RecordedCommand>&records()const noexcept{return records_;}
  size_t commands()const noexcept{return commands_;}
  size_t writes()const noexcept{return writes_;}
  bool matches(const SurfaceIdentity&current,uint64_t acceptedSerial,const uint16_t*source,size_t count)const noexcept{
@@ -61,6 +66,7 @@ class FramePacketBuilder {
  Failure failure_=Failure::notActive;
  std::vector<uint16_t> clean_,replay_;
  std::vector<Vertex> vertices_;
+ std::vector<RecordedCommand>records_;
  size_t used_=0,commands_=0,writes_=0,stringStartWrites_=0;
  TextCommand entry_{};
  static bool sameEntry(const TextCommand&a,const TextCommand&b)noexcept{return a.text==b.text&&a.length==b.length&&a.role==b.role&&a.alignment==b.alignment&&a.sourceSize==b.sourceSize&&a.x==b.x&&a.y==b.y&&a.originX==b.originX&&a.originY==b.originY&&a.color==b.color&&a.clip.left==b.clip.left&&a.clip.top==b.clip.top&&a.clip.right==b.clip.right&&a.clip.bottom==b.clip.bottom;}
@@ -72,7 +78,7 @@ class FramePacketBuilder {
  bool begin(SurfaceIdentity surface,uint64_t serial,const uint16_t*pre,size_t count)noexcept{
   if(!font_||active_||!surface.valid()||!serial||serial<=lastSerial_||!pre||count!=surface.pixelCount())return fail(Failure::invalidBegin);
   lastSerial_=serial;surface_=surface;serial_=serial;used_=commands_=writes_=0;stringActive_=false;
-  try{clean_.assign(pre,pre+count);replay_=clean_;vertices_.resize(maxVertices);}catch(...){return fail(Failure::allocation);}
+  try{records_.clear();clean_.assign(pre,pre+count);replay_=clean_;vertices_.resize(maxVertices);}catch(...){return fail(Failure::allocation);}
   active_=true;failure_=Failure::none;return true;
  }
  // entry is copied from the exact original call before its body; advance is determined on exit.
@@ -102,7 +108,9 @@ class FramePacketBuilder {
   if(c.clip.left<surface_.geometry[3]||c.clip.top<surface_.geometry[4]||c.clip.right>surface_.geometry[5]||c.clip.bottom>surface_.geometry[6])return fail(Failure::command);
   Layout shaped;
   if(!layout(*font_,c.text.data(),c.length+1,c.role,float(px),float(py),float(c.advance),c.alignment,c.clip,shaped))return fail(Failure::command);
+  const size_t first=used_;
   if(!append_vertices(shaped,c.color,vertices_.data(),vertices_.size(),used_))return fail(Failure::capacity);
+  try{records_.push_back({c,first,used_-first});}catch(...){return fail(Failure::allocation);}
   ++commands_;stringActive_=false;return true;
  }
  void invalidate(Failure why=Failure::identity)noexcept{fail(why);}
@@ -114,7 +122,7 @@ class FramePacketBuilder {
   if(std::memcmp(replay_.data(),post,count*sizeof(uint16_t))){fail(Failure::sourceMismatch);return {};}
   try{
    vertices_.resize(used_);
-   auto packet=std::shared_ptr<const FramePacket>(new FramePacket(font_,surface_,serial_,std::move(clean_),std::move(replay_),std::move(vertices_),commands_,writes_));
+   auto packet=std::shared_ptr<const FramePacket>(new FramePacket(font_,surface_,serial_,std::move(clean_),std::move(replay_),std::move(vertices_),std::move(records_),commands_,writes_));
    active_=false;failure_=Failure::none;return packet;
   }catch(...){fail(Failure::allocation);return {};}
  }

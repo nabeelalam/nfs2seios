@@ -68,4 +68,27 @@ static void compactSurfaceTests(){
    FramePacketBuilder rejected(f.font());CHECK(rejected.begin(clipped,1,pixels.data(),pixels.size()));CHECK(rejected.beginString(outside));CHECK(rejected.word(7*width+5,1,1,1));CHECK(!rejected.endString(outside));}
  }
 }
-int main(){fontTests();layoutTests();packetTests();capacityTests();compactSurfaceTests();std::printf("PASS software-frame-core checks=%u synthetic-only=1\n",checks);}
+
+static void commandHistoryTests(){
+ Fixture f;auto data=plane();auto id=identity();FramePacketBuilder b(f.font());
+ auto one=command(),two=command(),three=command();two.text={};two.text[0]=' ';two.length=1;two.advance=2;
+ three.text={};three.text[0]='A';three.length=1;three.advance=3;three.clip={12,0,14,480};
+ CHECK(b.begin(id,1,data.data(),data.size()));
+ const TextCommand expected[]={one,two,three};
+ for(const auto&c:expected){CHECK(b.beginString(c));CHECK(b.word(0,data[0],data[0],data[0]));CHECK(b.endString(c));}
+ auto packet=b.finish(id,data.data(),data.size());CHECK(packet);CHECK(packet->records().size()==3&&packet->commands()==3);
+ const size_t counts[]={12,0,6};size_t first=0;
+ for(unsigned i=0;i<3;++i){const auto&r=packet->records()[i];const auto&c=expected[i];
+  CHECK(r.vertexFirst==first&&r.vertexCount==counts[i]);first+=counts[i];
+  CHECK(r.command.text==c.text&&r.command.length==c.length&&r.command.role==c.role&&r.command.alignment==c.alignment);
+  CHECK(r.command.sourceSize==c.sourceSize&&r.command.x==c.x&&r.command.y==c.y&&r.command.originX==c.originX&&r.command.originY==c.originY&&r.command.advance==c.advance&&r.command.color==c.color);
+  CHECK(r.command.clip.left==c.clip.left&&r.command.clip.top==c.clip.top&&r.command.clip.right==c.clip.right&&r.command.clip.bottom==c.clip.bottom);
+ }
+ CHECK(first==packet->vertices().size());const float clippedX[]={12,12,12.25f,12.25f,12,12.25f};for(unsigned i=0;i<6;++i)CHECK(packet->vertices()[12+i].x==clippedX[i]);
+ // Caller mutation and builder reuse cannot rewrite a queued packet's command history.
+ one.text[0]='Z';one.advance=99;CHECK(packet->records()[0].command.text[0]=='A'&&packet->records()[0].command.advance==6);
+ CHECK(b.begin(id,2,data.data(),data.size()));CHECK(b.beginString(one));CHECK(b.word(0,data[0],data[0],data[0]));CHECK(b.endString(one));auto next=b.finish(id,data.data(),data.size());CHECK(next&&next->records().size()==1&&next->records()[0].vertexFirst==0);CHECK(packet->records().size()==3&&packet->records()[0].command.text[0]=='A');
+ CHECK(b.begin(id,3,data.data(),data.size()));CHECK(b.beginString(one));CHECK(b.word(0,data[0],data[0],data[0]));auto changed=one;changed.color^=1;CHECK(!b.endString(changed));CHECK(!b.finish(id,data.data(),data.size()));CHECK(packet->records().size()==3);
+}
+
+int main(){commandHistoryTests();fontTests();layoutTests();packetTests();capacityTests();compactSurfaceTests();std::printf("PASS software-frame-core checks=%u synthetic-only=1\n",checks);}

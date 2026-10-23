@@ -6,7 +6,7 @@
 namespace nfs_options_caption{struct TailScope;}namespace nfs_setup_caption{struct TailScope;}
 namespace nfs_player1_caption{struct TailScope;}namespace nfs_player2_caption{struct TailScope;}
 namespace nfs_compact_caption {
-enum class Policy:uint32_t{Player1=0x4d3050,Player2=0x4d3100};
+enum class Policy:uint32_t{Setup=0x4d2790,Options=0x4d3a88,Player1=0x4d3050,Player2=0x4d3100};
 // Distinct lexical origins; InitialMain never changes the retained Main epoch.
 enum class Route:uint32_t{OrdinaryEbp=1,InitialMain=2};
 struct Snapshot {

@@ -31,6 +31,7 @@ def add_options_scene_hooks(text,name):
         entry("40C160"," nfs_logo_publisher::OptionsMenuOwnerScope nfs_options_menu(*this);\n nfs_options_caption::OwnerScope nfs_options_caption_owner(*this);\n nfs_options_scene_live::OptionsScope nfs_options_scene(*this);")
         entry("40C110"," nfs_options_scene_live::TailScope nfs_options_scene_tail(*this);\n nfs_options_caption::TailScope nfs_options_caption_tail(*this);")
         entry("405CF0"," nfs_options_caption::StringScope nfs_options_caption_string(*this);")
+        entry("405580"," nfs_options_caption::ResourceScope nfs_options_caption_resource(*this);")
         entry("40BBE0"," nfs_options_scene_live::IterationScope nfs_options_iteration(*this);")
         entry("405B60"," nfs_options_scene_live::ResolvedScope nfs_options_resolved(*this);")
         after(" nfs_hd_scene_iteration.start();","lazy"," nfs_options_iteration.start();")
@@ -41,6 +42,9 @@ def add_options_scene_hooks(text,name):
             return wrap(part,"off_4D2474+ecx*4","405B30","word"," { nfs_options_scene_live::RoleScope nfs_options_word(*this,nfs_options_scene_live::Phase::Word);")
         body("40BBE0",redraw)
         def measurements(part):
+            source="\tesp -= 4; _sub_41B710(); esp += 4; //call"
+            if part.count(source)!=1:raise ValueError("Options caption resource resolution changed")
+            part=part.replace(source,source+block("resource-resolved"," nfs_options_caption::resolvedResource(*this,uint32_t(eax));"),1)
             for kind in ("right","center"):
                 a=" nfs_audio_sidebar_text::measured(*this,uint32_t(ecx),int32_t(eax),nfs_audio_sidebar_text::SourceMeasureAlignment::"+kind+");"
                 if part.count(a)!=1:raise ValueError("Options original measurement changed: "+kind)

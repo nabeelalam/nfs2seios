@@ -93,11 +93,21 @@ static std::shared_ptr<const nfs_player_caption_display::Prepared>captionDisplay
  // An escaped queue owner retains image bytes after all other display aliases go.
  auto queued=prepared;prepared.reset();auto second=display::Prepared::create(proof,packet,binding);assert(second&&queued->current()&&queued->view().rgba==v.rgba&&second->view().rgba==v.rgba);assert(!memcmp(queued->view().sha256,v.sha256,32));assert(proof->packet()==packet&&packet->font()==font&&packet->vertices().data()==vertices&&packet->original()==original&&packet->clean()==clean);return queued;
 }
+// Setup/Options ordinary evidence must not acquire the Player-only Main route.
+static void fixedOrdinaryBoundaryCases(){
+ if(testSelector==2||testSelector==3)return;
+ prepare();Game g;g.eax=testOwner;g.ebp=testOwner;g.esi=testOwner;
+ {cap::OwnerScope owner(g);auto*s=cap::current(g);assert(s&&cap::ordinaryProofPolicy()&&!cap::playerProofPolicy());const auto before=reads;
+  {cap::InitialCallerScope initial(g,{});assert(s->initialDepth==0&&!s->initialOrigin&&!s->initialLife);}
+  assert(reads==before);g.ebp=UINT32_MAX;
+  {cap::TailScope tail(g);trackedString(g,"normal");}
+  assert(!cap::lastPacket(g)&&!cap::lastProof(g)&&!cap::acquireCurrentProof(g));
+ }
+}
 static void sealedProofCases(){
  using Proof=nfs_compact_caption::Proof;using Evidence=nfs_compact_caption::Evidence;
  static_assert(!std::is_default_constructible<Proof>::value,"proof cannot be forged by default construction");
  static_assert(!std::is_constructible<Proof,std::shared_ptr<const nfs_soft::FramePacket>,const Evidence&>::value,"public observations cannot seal a proof");
- if(testSelector!=2&&testSelector!=3)return;
  std::shared_ptr<const Proof>retained;std::shared_ptr<const nfs_soft::FontCatalog>retainedFont;
  for(const char*mode:{"normal","measure-color","proof-resource","proof-anchor","proof-category","proof-no-resolved","proof-resolved-pointer","proof-resolved-duplicate","proof-resolved-font","proof-text-during","proof-text-after","proof-nested","proof-unwind"}){
   prepare();Game g;g.eax=testOwner;g.ebp=testOwner;
@@ -106,7 +116,22 @@ static void sealedProofCases(){
    // Supplemental observation failures cannot fabricate metadata or alter old
    // packet admission. Unwinding remains the existing packet rejection path.
    if(std::strcmp(mode,"proof-unwind")){if(!cap::lastPacket(g))std::fprintf(stderr,"legacy packet rejected in %s: %s\n",mode,cap::failureName(state->failure));assert(cap::lastPacket(g));}
-   if(proof){const auto&e=proof->evidence();assert(e.policy==(testSelector==2?nfs_compact_caption::Policy::Player1:nfs_compact_caption::Policy::Player2));assert(e.route==nfs_compact_caption::Route::OrdinaryEbp&&e.formGuest==testOwner&&e.incomingEbp==testOwner&&e.game==reinterpret_cast<uintptr_t>(&g)&&e.policyThread==cap::token());assert(e.lifetime==state->lifetime&&e.serial==state->serial&&e.resourceSerial);assert(e.requestedResource==testResource&&e.inputCategory==1&&e.inputAnchor==168&&e.inputY==testY&&e.textGuest==0x94000);assert(e.measureWidth==int(testWidth)&&e.measureAnchor==168&&e.measureKind==2);assert(e.command.length==sizeof(testText)-1&&!std::memcmp(e.command.text.data(),testText,sizeof(testText)-1));assert(e.command.x==int(testLeft)&&e.command.y==int(testY)&&e.command.advance==int(testWidth)&&e.command.role==1&&e.command.alignment==2&&e.command.sourceSize==18&&e.command.color==0xffff);assert(e.resolved.selector==testSelector&&e.resolved.entry==testRecord&&e.resolved.resource==testResource&&e.resolved.entryWord==((testResource<<16)|2));assert(e.resolved.font==0x98000&&e.measure.font==0x98000&&e.stringBefore.font==0x98000&&e.stringAfter.font==0x98000);assert(e.stringBefore.paletteWords==e.stringAfter.paletteWords&&e.stringBefore.fontHeader==e.stringAfter.fontHeader);assert(proof->font()==state->font&&proof->packet()==cap::lastPacket(g));assert(cap::acquireCurrentProof(g)==proof);
+   if(proof){const auto&e=proof->evidence();assert(e.policy==(testSelector==0?nfs_compact_caption::Policy::Setup:testSelector==6?nfs_compact_caption::Policy::Options:testSelector==2?nfs_compact_caption::Policy::Player1:nfs_compact_caption::Policy::Player2));assert(e.route==nfs_compact_caption::Route::OrdinaryEbp&&e.formGuest==testOwner&&e.incomingEbp==testOwner&&e.game==reinterpret_cast<uintptr_t>(&g)&&e.policyThread==cap::token());assert(e.lifetime==state->lifetime&&e.serial==state->serial&&e.resourceSerial);assert(e.requestedResource==testResource&&e.inputCategory==1&&e.inputAnchor==168&&e.inputY==testY&&e.textGuest==0x94000);assert(e.measureWidth==int(testWidth)&&e.measureAnchor==168&&e.measureKind==2);assert(e.command.length==sizeof(testText)-1&&!std::memcmp(e.command.text.data(),testText,sizeof(testText)-1));assert(e.command.x==int(testLeft)&&e.command.y==int(testY)&&e.command.advance==int(testWidth)&&e.command.role==1&&e.command.alignment==2&&e.command.sourceSize==18&&e.command.color==0xffff);assert(e.resolved.selector==testSelector&&e.resolved.entry==testRecord&&e.resolved.resource==testResource&&e.resolved.entryWord==((testResource<<16)|2));assert(e.resolved.font==0x98000&&e.measure.font==0x98000&&e.stringBefore.font==0x98000&&e.stringAfter.font==0x98000);assert(e.stringBefore.paletteWords==e.stringAfter.paletteWords&&e.stringBefore.fontHeader==e.stringAfter.fontHeader);assert(proof->font()==state->font&&proof->packet()==cap::lastPacket(g));assert(cap::acquireCurrentProof(g)==proof);
+    // Current archive is deliberately independent of packet SurfaceIdentity.
+    put<uint32_t>(dword_4D40B8,0x1235);
+    assert(!cap::acquireCurrentProof(g));
+    put<uint32_t>(dword_4D40B8,0x1234);
+    assert(cap::acquireCurrentProof(g)==proof);
+    put<uint32_t>(byte_4D3ECC,((testSelector+1)%8)<<16);
+    assert(!cap::acquireCurrentProof(g));
+    put<uint32_t>(byte_4D3ECC,testSelector<<16);
+    assert(cap::acquireCurrentProof(g)==proof);
+    // Identical resource ordinal with changed entry flags is not the old source.
+    put<uint32_t>(testRecord,(testResource<<16)|3);
+    assert(!cap::acquireCurrentProof(g));
+    put<uint32_t>(testRecord,(testResource<<16)|2);
+    assert(cap::acquireCurrentProof(g)==proof);
+
     retained=proof;retainedFont=proof->font();put<uint16_t>(selected.w[8]+16,1);assert(!cap::acquireCurrentProof(g));assert(proof->packet()->original()[0]==0);
    }
   }assert(!cap::current(g)&&!cap::lastProof(g));
@@ -302,6 +327,6 @@ int main(){prepare();Game g;g.eax=testOwner;g.ebp=testOwner;{cap::OwnerScope nof
  }
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);g.eax=testOwner;{cap::OwnerScope nested(g);assert(!cap::current(g));}}assert(!cap::lastPacket(g));}
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);put<uint32_t>(dword_4D243C,123);assert(cap::acquireCurrentPacket(g)==packet);put<uint32_t>(testRecord,((testResource+1)<<16)|2);assert(!cap::acquireCurrentPacket(g));assert(packet->original()[369*343+123]==0xffff);}
- descriptorRetirement();sealedProofCases();ordinarySidebarProofCases();initialCaptionCases();
+ descriptorRetirement();fixedOrdinaryBoundaryCases();sealedProofCases();ordinarySidebarProofCases();initialCaptionCases();
  assert(retained&&retained->pixels()==343*480&&retained->original()[369*343+123]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS cached menu caption (Options/Setup/Player1/Player2): compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
 }
