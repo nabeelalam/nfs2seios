@@ -2,6 +2,7 @@
 import hashlib
 import json
 import math
+from frontend_pixel_limits import FRONTEND_PIXEL_PART_BYTES, FRONTEND_PIXEL_MAX_PARTS
 from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, SETUP_WORDS, SETUP_SHARED
 from hud_font_environment import project_fonts
 from generate_remaster_pixels import rle, source
@@ -159,13 +160,13 @@ def setup_words(directory, pixels, location_placements, hashes, rows):
 
 def chunked_pixels(encoded):
     # Run-aligned decimal literals; keep every source below the unchanged 1 MiB gate.
-    if not encoded or len(encoded)%6 or len(encoded)>64*65520:
+    if not encoded or len(encoded)%6 or len(encoded)>FRONTEND_PIXEL_MAX_PARTS*FRONTEND_PIXEL_PART_BYTES:
         raise ValueError('Unbounded or unaligned authored frontend pixel runs')
     outputs = {}
     names = []
-    for i, start in enumerate(range(0,len(encoded),65520)):
+    for i, start in enumerate(range(0,len(encoded),FRONTEND_PIXEL_PART_BYTES)):
         name = 'FrontendFontPixelsPart'+str(i)+'.inc'
-        data = encoded[start:start+65520]
+        data = encoded[start:start+FRONTEND_PIXEL_PART_BYTES]
         outputs[name] = '// SPDX-License-Identifier: MIT\n'+',\n'.join(','.join(str(v) for v in data[j:j+24]) for j in range(0,len(data),24))+',\n'
         names.append(name)
     aggregate = 'static const unsigned char nfs_front_font_rle[]={\n'+''.join('#include "'+n+'"\n' for n in names)+'};'
@@ -338,11 +339,24 @@ def generate_frontend(check=False):
         pixels, {family: options[family+'Placements'] for family in
                  ('main','location','setup','player','opponents','options')},
         source_dir=directory)
+    from frontend_remaining_word_art import apply_remaining_word_art
+    remaining_art = apply_remaining_word_art(
+        pixels, {family: options[family+'Placements'] for family in
+                 ('main','location','setup','player','opponents','options')},
+        source_dir=directory)
+    from frontend_right_labels import right_label_rows, extend_layout
+    right_path = directory/'right-labels/catalog.json'
+    right_rows = right_label_rows(json.loads(right_path.read_text()), options['setupPlacements'], text_identity)
+    from frontend_remaining_ink_fit import remaining_ink_fit
+    remaining_ink = remaining_ink_fit(
+        directory, pixels, rows,
+        {family+'Placements': options[family+'Placements'] for family in
+         ('main','location','setup','player','opponents','options')}, right_rows)
     heading_ink = heading_ink_fit(directory, pixels, rows, options)
     player_ink = player_ink_fit(directory, pixels, rows, options['playerPlacements'])
     # Fit evidence must describe the adopted complete words, not the historical
     # SVG images used to reproduce the unchanged base packing recipe.
-    options['packingPhase'] = 'before-main-and-player-text-art-overrides'
+    options['packingPhase'] = 'before-fixed-text-art-overrides'
     ink = []
     for word, placement in zip(words, options['mainPlacements']):
         if word['file'] != placement['file']:
@@ -366,9 +380,6 @@ def generate_frontend(check=False):
     location_placements,setup_placements=opponents['locationPlacements'],opponents['setupPlacements']
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
     base_layout_hash = hashlib.sha256(('// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.\n'+layout).encode()).hexdigest()
-    from frontend_right_labels import right_label_rows, extend_layout
-    right_path = directory/'right-labels/catalog.json'
-    right_rows = right_label_rows(json.loads(right_path.read_text()), setup_placements, text_identity)
     layout = extend_layout(layout, right_rows)
     template = json.loads((ROOT/'scripts/hud_templates/FrontendFontPixels.json').read_text())['template']
     if template.count('@PIXEL_ARRAY@') != 1:
@@ -382,6 +393,7 @@ def generate_frontend(check=False):
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
                     mainWordArt=main_word_art, playerWordArt=player_word_art,
                     playerHeadingArt=heading_art, headingInkFit=heading_ink, playerInkFit=player_ink,
+                    remainingWordArt=remaining_art, remainingInkFit=remaining_ink,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
                     rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2048],
                     rleBytes=len(encoded), glyphPartitions=len(rows)+len(right_rows), inkFit=ink,
@@ -437,6 +449,13 @@ def generate_frontend_layout(check=False):
               ('main','location','setup','player','opponents')] +
              [('options', metadata['optionsAtlas']['optionsPlacements'])]),
         source_dir=directory)
+    from frontend_remaining_word_art import verify_remaining_word_art
+    verify_remaining_word_art(
+        metadata['remainingWordArt'],
+        dict([(family, metadata[family+'Placements']) for family in
+              ('main','location','setup','player','opponents')] +
+             [('options', metadata['optionsAtlas']['optionsPlacements'])]),
+        source_dir=directory)
     # A stale or edited image, catalog, packing recipe or generated header requires
     # full generation. Never silently reuse metadata from a different atlas.
     for relative, expected in metadata['sourceHashes'].items():
@@ -456,7 +475,7 @@ def generate_frontend_layout(check=False):
         if hashlib.sha256((directory/relative).read_bytes()).hexdigest() != metadata[key]:
             raise ValueError('Stale catalog or packing; run full generation')
     part_count=len(metadata['headerHashes'])-2
-    if not 1<=part_count<=64:raise ValueError('Unbounded generated frontend header inventory')
+    if not 1<=part_count<=FRONTEND_PIXEL_MAX_PARTS:raise ValueError('Unbounded generated frontend header inventory')
     expected_names = {'FrontendFontPixels.inc','FrontendWordLayout.inc'} | {
         'FrontendFontPixelsPart'+str(i)+'.inc' for i in range(part_count)}
     if set(metadata['headerHashes']) != expected_names:

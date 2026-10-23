@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from frontend_options_atlas import repack_options_words,validate_words,_recipe,FAMILIES
 from frontend_player_atlas import _subtract
+from frontend_pixel_limits import FRONTEND_PIXEL_MAX_PARTS
 from hud_font_environment import project_fonts
 from rasterize_hud_svg import rasterize
 DIR=ROOT/'assets/hud/frontend'
@@ -22,7 +23,7 @@ def identity(text):
 
 def decode_current():
     header=(ROOT/'src/FrontendFontPixels.inc').read_text();names=re.findall(r'#include "(FrontendFontPixelsPart[0-9]+\.inc)"',header)
-    if not 1<=len(names)<=64:raise AssertionError('Bounded current generated part inventory')
+    if not 1<=len(names)<=FRONTEND_PIXEL_MAX_PARTS:raise AssertionError('Bounded current generated part inventory')
     encoded=bytearray()
     for name in names:
         body=(ROOT/'src'/name).read_text().split('\n',1)[1]
@@ -48,6 +49,8 @@ def fixture():
     overridden = {alias for word in WORDS for alias in word[-1]}
     from frontend_player_heading_art import WORDS as HEADINGS
     overridden.update(alias for word in HEADINGS for alias in word[-1])
+    from frontend_remaining_word_art import WORDS as REMAINING
+    overridden.update(alias for word in REMAINING for alias in word[-1])
     historical_main={}
     with project_fonts():
         for word in json.loads((DIR/'catalog.json').read_text())['words']:

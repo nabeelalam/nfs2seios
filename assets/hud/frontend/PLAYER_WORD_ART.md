@@ -9,3 +9,5 @@ The reviewed text was authored with Haettenschweiler at a consistent weight and 
 Full generation applies this artwork after deterministic packing and the independent Main word override. Layout-only generation must validate the same two selected-project source files and exact final family placements against the recorded metadata. Updating the art or packing requires an explicit source/hash and fixture review. These fixed text graphics do not require Haettenschweiler installed on the build host; historical base packing still uses the bundled OFL fonts.
 
 The four uppercase headings/buttons use the separate [classic heading artwork](PLAYER_HEADING_ART.md) override after these thirty body graphics. Their finite source and sharing checks are independent.
+
+The other fifty menu body/value images use the independent [remaining menu lettering](REMAINING_MENU_WORD_ART.md) override. These thirty graphics and their approved aliases stay unchanged.

@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import re
 from prepare_engine import ROOT, prepare
+from frontend_pixel_limits import FRONTEND_PIXEL_MAX_PARTS
 
 SDL_PIN = "829a65d769d935c4852f8159e964312c0957260a"
 SDL_TAG = "release-3.4.18"
@@ -15,7 +16,7 @@ SDL_TAG = "release-3.4.18"
 def frontend_pixel_parts(text):
     parts=re.findall(r'^#include "(FrontendFontPixelsPart[0-9]+\.inc)"$',text,re.M)
     includes=re.findall(r'^\s*#include\b[^\n]*$',text,re.M)
-    if not 1<=len(parts)<=64 or len(parts)!=len(includes) or parts!=['FrontendFontPixelsPart'+str(i)+'.inc' for i in range(len(parts))]:
+    if not 1<=len(parts)<=FRONTEND_PIXEL_MAX_PARTS or len(parts)!=len(includes) or parts!=['FrontendFontPixelsPart'+str(i)+'.inc' for i in range(len(parts))]:
         raise ValueError('Unexpected authored frontend pixel header inventory')
     return parts
 

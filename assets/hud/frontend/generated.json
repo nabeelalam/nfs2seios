@@ -2019,13 +2019,2974 @@
       "outsideMatchingHorizontalBounds": 0
     }
   ],
+  "remainingWordArt": {
+    "sourceHashes": {
+      "remaining-menu-word-art-0.json": "09bcaa210ace3475355c000bf5c011a4d6062f8b9d28978dd1d8c425a953ed62",
+      "remaining-menu-word-art-1.json": "7f8b0509e724aa915a555a4962c06622566d098d7956acfff96f4eb390e4cae9",
+      "remaining-menu-word-art-2.json": "d909a10035496398a7a906c3364ead826f2f01408af14095f9061651d46f47a2"
+    },
+    "newRgba": [
+      {
+        "file": "track.svg",
+        "text": "track",
+        "atlas": [
+          878,
+          961,
+          132,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          132,
+          76
+        ],
+        "rgbaSha256": "031127e6a6859f21262591c47dccd7feeea41c46054e4a7bf0069ce92d3b2f2f",
+        "sharedUses": [
+          "location/track.svg"
+        ]
+      },
+      {
+        "file": "north-country.svg",
+        "text": "North Country",
+        "atlas": [
+          366,
+          297,
+          352,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          352,
+          96
+        ],
+        "rgbaSha256": "0e22ca6b809a8116d3963f1780888918a79bf47e0745b98de75c96071f54555b",
+        "sharedUses": [
+          "location/north-country.svg"
+        ]
+      },
+      {
+        "file": "laps.svg",
+        "text": "laps",
+        "atlas": [
+          898,
+          1938,
+          108,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          108,
+          96
+        ],
+        "rgbaSha256": "0b2b2fb90e456f11a9076c353720e25886f525b96425c0ad1a4eb16f354e7d08",
+        "sharedUses": [
+          "location/laps.svg"
+        ]
+      },
+      {
+        "file": "lap-two.svg",
+        "text": "2",
+        "atlas": [
+          960,
+          1607,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "rgbaSha256": "2467429c1b2b1ea001800101a19429f9d74954feabb1771e82983c70188475a7",
+        "sharedUses": [
+          "location/lap-two.svg"
+        ]
+      },
+      {
+        "file": "track-info.svg",
+        "text": "track info...",
+        "atlas": [
+          576,
+          1039,
+          280,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          280,
+          76
+        ],
+        "rgbaSha256": "e3b79c9997b32710861db6c06238159ebef0177a00844f967d6f72c5fd2585b0",
+        "sharedUses": [
+          "location/track-info.svg"
+        ]
+      },
+      {
+        "file": "track-records.svg",
+        "text": "track records...",
+        "atlas": [
+          374,
+          219,
+          368,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          368,
+          76
+        ],
+        "rgbaSha256": "8da3449e4fd6bf317e7b046e246730fd34a5db8f813cd7fcf7b836a287630d68",
+        "sharedUses": [
+          "location/track-records.svg"
+        ]
+      },
+      {
+        "file": "personal-statistics.svg",
+        "text": "personal statistics...",
+        "atlas": [
+          0,
+          0,
+          496,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          496,
+          96
+        ],
+        "rgbaSha256": "b5017a6c702be807601baf87d2dee84101bf625ba9e92b54a211c187fca5f779",
+        "sharedUses": [
+          "location/personal-statistics.svg"
+        ]
+      },
+      {
+        "file": "pacific-spirit.svg",
+        "text": "Pacific Spirit",
+        "atlas": [
+          704,
+          395,
+          312,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          312,
+          96
+        ],
+        "rgbaSha256": "75b8617ce38f067b44508da2b9c0b355522afcc907ea2e87c9f44e02c0c2ece3",
+        "sharedUses": [
+          "location/pacific-spirit.svg"
+        ]
+      },
+      {
+        "file": "mediterraneo.svg",
+        "text": "Mediterraneo",
+        "atlas": [
+          342,
+          702,
+          336,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          336,
+          76
+        ],
+        "rgbaSha256": "77d64afb38167e63bd3994593c573dadf2cfd2c0dd736fd71c9d66c227d07d2a",
+        "sharedUses": [
+          "location/mediterraneo.svg"
+        ]
+      },
+      {
+        "file": "mystic-peaks.svg",
+        "text": "Mystic Peaks",
+        "atlas": [
+          692,
+          516,
+          328,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          328,
+          96
+        ],
+        "rgbaSha256": "2a0da59d830593fb850d0260b58532b6481a6361c592f7c24c78773401b64b98",
+        "sharedUses": [
+          "location/mystic-peaks.svg"
+        ]
+      },
+      {
+        "file": "proving-grounds.svg",
+        "text": "Proving Grounds",
+        "atlas": [
+          0,
+          98,
+          408,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          408,
+          96
+        ],
+        "rgbaSha256": "2902665a53aa88e7fef1c3bf08d2d1ec7f592578eecad463e521de55a4c62b6c",
+        "sharedUses": [
+          "location/proving-grounds.svg"
+        ]
+      },
+      {
+        "file": "outback.svg",
+        "text": "Outback",
+        "atlas": [
+          0,
+          1757,
+          212,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          212,
+          76
+        ],
+        "rgbaSha256": "f2a5f1581301b2bc481fe7ff9c3154fdb86cae3d7796e5910155dafa3f356f8b",
+        "sharedUses": [
+          "location/outback.svg"
+        ]
+      },
+      {
+        "file": "last-resort.svg",
+        "text": "Last Resort",
+        "atlas": [
+          290,
+          1035,
+          284,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          284,
+          71
+        ],
+        "rgbaSha256": "bba575373a317c6ffefc7fe65bc62247b7d19b302f6d914c55afd77029240a69",
+        "sharedUses": [
+          "location/last-resort.svg"
+        ]
+      },
+      {
+        "file": "lap-4.svg",
+        "text": "4",
+        "atlas": [
+          698,
+          1617,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "rgbaSha256": "76e6a9e29273ac39f114c1f934bedc97cbb1fcc5ca663e080b634b6c87db7f6c",
+        "sharedUses": [
+          "location/lap-4.svg"
+        ]
+      },
+      {
+        "file": "lap-8.svg",
+        "text": "8",
+        "atlas": [
+          646,
+          1715,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "rgbaSha256": "e5ec1e25f8f11ee8f4bb9f9f8d69108bdfa2e9055c40eee3d67d68487686dc15",
+        "sharedUses": [
+          "location/lap-8.svg"
+        ]
+      },
+      {
+        "file": "game-type.svg",
+        "text": "game type",
+        "atlas": [
+          0,
+          1234,
+          264,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          264,
+          91
+        ],
+        "rgbaSha256": "83109ad34fb658abddcb2461bf21eee9d2a432fdaed5051e790aa26a5f2afe46",
+        "sharedUses": [
+          "setup/game-type.svg"
+        ]
+      },
+      {
+        "file": "race-type.svg",
+        "text": "race type",
+        "atlas": [
+          504,
+          1524,
+          236,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          236,
+          91
+        ],
+        "rgbaSha256": "05ac82f617ed620acad3eeb5bbd408be5ef154a95d2b2d47d0591e7e07fe83f2",
+        "sharedUses": [
+          "setup/race-type.svg"
+        ]
+      },
+      {
+        "file": "style.svg",
+        "text": "style",
+        "atlas": [
+          892,
+          1705,
+          128,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          128,
+          96
+        ],
+        "rgbaSha256": "e885c2c3202ccc8737c584d0edd03b58e58d7a94760fba2f84468e65dbace132",
+        "sharedUses": [
+          "setup/style.svg"
+        ]
+      },
+      {
+        "file": "catch-up.svg",
+        "text": "catch up",
+        "atlas": [
+          480,
+          1617,
+          216,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          96
+        ],
+        "rgbaSha256": "63d7189309a17cb07f9f9dcafef97273a206db915e95346655c87feb17e10a18",
+        "sharedUses": [
+          "setup/catch-up.svg"
+        ]
+      },
+      {
+        "file": "backwards.svg",
+        "text": "backwards",
+        "atlas": [
+          556,
+          1117,
+          268,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          268,
+          76
+        ],
+        "rgbaSha256": "8118e87eb161d7ee24442bf059a53ad196dc5a9d18aa38f27c3e99aa2f352f4e",
+        "sharedUses": [
+          "setup/backwards.svg"
+        ]
+      },
+      {
+        "file": "mirrored.svg",
+        "text": "mirrored",
+        "atlas": [
+          742,
+          1529,
+          220,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          220,
+          76
+        ],
+        "rgbaSha256": "be829699d033618c3180bdf4f91536f9b85b0a56e01bee334589cdfdaf99e320",
+        "sharedUses": [
+          "setup/mirrored.svg"
+        ]
+      },
+      {
+        "file": "one-player.svg",
+        "text": "one player",
+        "atlas": [
+          274,
+          1206,
+          264,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          264,
+          96
+        ],
+        "rgbaSha256": "fba8fd1a571b94476c8cd8157c2e409ec860eb91833e2ef0ed41b4306b751db8",
+        "sharedUses": [
+          "setup/one-player.svg"
+        ]
+      },
+      {
+        "file": "split-screen.svg",
+        "text": "split screen",
+        "atlas": [
+          302,
+          859,
+          288,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          96
+        ],
+        "rgbaSha256": "32ddadd12cc1aff5ee6ef92df2fbf98e126e01bd8e0ccdd584049fd343273c0b",
+        "sharedUses": [
+          "setup/split-screen.svg"
+        ]
+      },
+      {
+        "file": "modem.svg",
+        "text": "modem",
+        "atlas": [
+          452,
+          1715,
+          192,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          192,
+          76
+        ],
+        "rgbaSha256": "5a01ea756b946fee239ace80ad3b6ce8568546f0bc799d0b2b35618c04a91f33",
+        "sharedUses": [
+          "setup/modem.svg"
+        ]
+      },
+      {
+        "file": "serial-link.svg",
+        "text": "serial link",
+        "atlas": [
+          0,
+          1600,
+          240,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          240,
+          77
+        ],
+        "rgbaSha256": "5d6590c17b9603c2f1bb0f261e39c8b725bab18d6a0b14569a273f64f4e2e021",
+        "sharedUses": [
+          "setup/serial-link.svg"
+        ]
+      },
+      {
+        "file": "network.svg",
+        "text": "network",
+        "atlas": [
+          238,
+          1680,
+          212,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          212,
+          76
+        ],
+        "rgbaSha256": "e5c79f5cbbe31bce6ea1b21970cbb6f60f40ac60cdceec574a6f935d8ef076bd",
+        "sharedUses": [
+          "setup/network.svg"
+        ]
+      },
+      {
+        "file": "single-race.svg",
+        "text": "single race",
+        "atlas": [
+          282,
+          1108,
+          272,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          272,
+          96
+        ],
+        "rgbaSha256": "a77b5e883217ba2f774e1dde2fa6bc9ba9b0c358213becf062d4e1196034f798",
+        "sharedUses": [
+          "setup/single-race.svg"
+        ]
+      },
+      {
+        "file": "tournament.svg",
+        "text": "tournament",
+        "atlas": [
+          720,
+          297,
+          296,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          296,
+          71
+        ],
+        "rgbaSha256": "b804c9040ae81e4c6a7a92b1d892f0ddc81460da3c07c1b6e949650552b2923c",
+        "sharedUses": [
+          "setup/tournament.svg"
+        ]
+      },
+      {
+        "file": "knockout.svg",
+        "text": "knockout",
+        "atlas": [
+          0,
+          1679,
+          236,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          236,
+          76
+        ],
+        "rgbaSha256": "59892e06a84581a3ec0844930ddc38ce45ad15d605c188c88c78148ef1f7935c",
+        "sharedUses": [
+          "setup/knockout.svg"
+        ]
+      },
+      {
+        "file": "wild.svg",
+        "text": "wild",
+        "atlas": [
+          446,
+          1960,
+          108,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          108,
+          77
+        ],
+        "rgbaSha256": "7119d1a763a1b89c6929f601877ee74a793415a2a25fd58375b7c46964c60e00",
+        "sharedUses": [
+          "setup/wild.svg"
+        ]
+      },
+      {
+        "file": "arcade.svg",
+        "text": "arcade",
+        "atlas": [
+          364,
+          1871,
+          172,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          172,
+          76
+        ],
+        "rgbaSha256": "d449c5019f3c302a6b3ed58ec1ca7685fa925d0ab2e1db61e10de841101a0a4e",
+        "sharedUses": [
+          "setup/arcade.svg"
+        ]
+      },
+      {
+        "file": "simulation.svg",
+        "text": "simulation",
+        "atlas": [
+          540,
+          1296,
+          264,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          264,
+          77
+        ],
+        "rgbaSha256": "609e7eb1e5640e3f393fa5af11000e0023bfccdfd51ed04707060877e3809df4",
+        "sharedUses": [
+          "setup/simulation.svg"
+        ]
+      },
+      {
+        "file": "number.svg",
+        "text": "number",
+        "atlas": [
+          826,
+          1117,
+          196,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          196,
+          76
+        ],
+        "rgbaSha256": "0c9c68c6bada87999bc85e771d4a473872cb79adcbf9ba413bda6e629e823ec8",
+        "sharedUses": [
+          "opponents/number.svg"
+        ]
+      },
+      {
+        "file": "skill-level.svg",
+        "text": "skill level",
+        "atlas": [
+          242,
+          1601,
+          236,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          236,
+          77
+        ],
+        "rgbaSha256": "11e3653b752886677b17a8859f6d90898a472e8a415770e92682c1ded8747847",
+        "sharedUses": [
+          "opponents/skill-level.svg"
+        ]
+      },
+      {
+        "file": "traffic.svg",
+        "text": "traffic",
+        "atlas": [
+          858,
+          1039,
+          160,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          160,
+          76
+        ],
+        "rgbaSha256": "ac9a014065e38fcc3bb2bdd5381c4639c5ccc37ee8abd38cbd66f861439813b0",
+        "sharedUses": [
+          "opponents/traffic.svg"
+        ]
+      },
+      {
+        "file": "no-opponents.svg",
+        "text": "no opponents",
+        "atlas": [
+          346,
+          609,
+          344,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          344,
+          91
+        ],
+        "rgbaSha256": "11b9e787364d72ee09baca2f85c2ad8513e387e84a7f42f26b64c6263b0e04ed",
+        "sharedUses": [
+          "opponents/no-opponents.svg"
+        ]
+      },
+      {
+        "file": "full-grid.svg",
+        "text": "full grid",
+        "atlas": [
+          822,
+          1195,
+          196,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          196,
+          96
+        ],
+        "rgbaSha256": "85f444c1723d99ab2d53bee7ad4be6f5ed65ec413bed0ba1a761e63b3a780c84",
+        "sharedUses": [
+          "opponents/full-grid.svg"
+        ]
+      },
+      {
+        "file": "none.svg",
+        "text": "none",
+        "atlas": [
+          768,
+          1803,
+          132,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          132,
+          55
+        ],
+        "rgbaSha256": "ab397f3ee372a3eb70cc7809ebf835e8d1fc066c0d5deb98c95e233551be41e4",
+        "sharedUses": [
+          "opponents/none.svg"
+        ]
+      },
+      {
+        "file": "one.svg",
+        "text": "one",
+        "atlas": [
+          902,
+          1803,
+          100,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          100,
+          55
+        ],
+        "rgbaSha256": "3f78f4c39e57ff1227bacc95a7914ef7a19ecfcffe106ce09f2022baacc234d8",
+        "sharedUses": [
+          "opponents/one.svg"
+        ]
+      },
+      {
+        "file": "beginner.svg",
+        "text": "beginner",
+        "atlas": [
+          792,
+          98,
+          224,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          224,
+          96
+        ],
+        "rgbaSha256": "cd21d0cc461dbfddff1762ed954a30790641e3d9958571fccdc48512133aa9eb",
+        "sharedUses": [
+          "opponents/beginner.svg"
+        ]
+      },
+      {
+        "file": "advanced.svg",
+        "text": "advanced",
+        "atlas": [
+          766,
+          1451,
+          240,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          240,
+          76
+        ],
+        "rgbaSha256": "08f23e65946dced163f331597f8e6ae3e2511069df0f4716ccdda69c98ef673b",
+        "sharedUses": [
+          "opponents/advanced.svg"
+        ]
+      },
+      {
+        "file": "speedometer.svg",
+        "text": "speedometer",
+        "atlas": [
+          680,
+          702,
+          332,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          332,
+          96
+        ],
+        "rgbaSha256": "e9d110567d257ac8297914174d095a01e3bb290e050ec560b7d7c73b9ce37b30",
+        "sharedUses": [
+          "options/speedometer.svg"
+        ]
+      },
+      {
+        "file": "mph.svg",
+        "text": "mph",
+        "atlas": [
+          328,
+          1949,
+          116,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          116,
+          96
+        ],
+        "rgbaSha256": "0c5125abc74007e927cc4fbd1fdc4843915aaa37fd179cf36b968d96d29838b4",
+        "sharedUses": [
+          "options/mph.svg"
+        ]
+      },
+      {
+        "file": "kmh.svg",
+        "text": "kmh",
+        "atlas": [
+          898,
+          1860,
+          116,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          116,
+          76
+        ],
+        "rgbaSha256": "02c96e94764cadfc88d958ece6306fa303da63c49cc7ad358149a11779ea8262",
+        "sharedUses": [
+          "options/kmh.svg"
+        ]
+      },
+      {
+        "file": "personal-stats.svg",
+        "text": "personal stats",
+        "atlas": [
+          0,
+          392,
+          352,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          352,
+          96
+        ],
+        "rgbaSha256": "6b4757a383aeea1ade84787f528213ddb2fa1e17f31a72818085949265b8d18f",
+        "sharedUses": [
+          "options/personal-stats.svg"
+        ]
+      },
+      {
+        "file": "audio.svg",
+        "text": "audio...",
+        "atlas": [
+          404,
+          1793,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          184,
+          76
+        ],
+        "rgbaSha256": "6d6aa017103b4cb969827a5807eea023c0be494629f850a7c2ceb3bb01cd929d",
+        "sharedUses": [
+          "options/audio.svg"
+        ]
+      },
+      {
+        "file": "controls.svg",
+        "text": "controls...",
+        "atlas": [
+          0,
+          1425,
+          252,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          252,
+          77
+        ],
+        "rgbaSha256": "9bf25c2de36183aeb452d1600eba77348f06b8d76db3df060a158007e9a1829d",
+        "sharedUses": [
+          "options/controls.svg"
+        ]
+      },
+      {
+        "file": "load-save.svg",
+        "text": "load/save...",
+        "atlas": [
+          592,
+          878,
+          288,
+          81
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          81
+        ],
+        "rgbaSha256": "d9ffc7c08fc224d9f9a4f715d0a5318cc58f0b7738715a1249a59f58fe8aad90",
+        "sharedUses": [
+          "options/load-save.svg"
+        ]
+      },
+      {
+        "file": "graphics.svg",
+        "text": "graphics...",
+        "atlas": [
+          0,
+          1327,
+          256,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          256,
+          96
+        ],
+        "rgbaSha256": "c6b0e743848bc3924ed0461057d9d73fbe7d1ec96df772b83c63bc41e4824a90",
+        "sharedUses": [
+          "options/graphics.svg"
+        ]
+      },
+      {
+        "file": "credits.svg",
+        "text": "credits...",
+        "atlas": [
+          806,
+          1296,
+          216,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          76
+        ],
+        "rgbaSha256": "f21cab19ed63027976831ef14b35e1ade2a19184acc4bed6ee0c32b79d2588e7",
+        "sharedUses": [
+          "options/credits.svg"
+        ]
+      }
+    ],
+    "placements": [
+      {
+        "file": "track.svg",
+        "atlas": [
+          878,
+          961,
+          132,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          132,
+          76
+        ],
+        "sharedUses": [
+          "location/track.svg"
+        ]
+      },
+      {
+        "file": "north-country.svg",
+        "atlas": [
+          366,
+          297,
+          352,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          352,
+          96
+        ],
+        "sharedUses": [
+          "location/north-country.svg"
+        ]
+      },
+      {
+        "file": "laps.svg",
+        "atlas": [
+          898,
+          1938,
+          108,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          108,
+          96
+        ],
+        "sharedUses": [
+          "location/laps.svg"
+        ]
+      },
+      {
+        "file": "lap-two.svg",
+        "atlas": [
+          960,
+          1607,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "sharedUses": [
+          "location/lap-two.svg"
+        ]
+      },
+      {
+        "file": "track-info.svg",
+        "atlas": [
+          576,
+          1039,
+          280,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          280,
+          76
+        ],
+        "sharedUses": [
+          "location/track-info.svg"
+        ]
+      },
+      {
+        "file": "track-records.svg",
+        "atlas": [
+          374,
+          219,
+          368,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          368,
+          76
+        ],
+        "sharedUses": [
+          "location/track-records.svg"
+        ]
+      },
+      {
+        "file": "personal-statistics.svg",
+        "atlas": [
+          0,
+          0,
+          496,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          496,
+          96
+        ],
+        "sharedUses": [
+          "location/personal-statistics.svg"
+        ]
+      },
+      {
+        "file": "pacific-spirit.svg",
+        "atlas": [
+          704,
+          395,
+          312,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          312,
+          96
+        ],
+        "sharedUses": [
+          "location/pacific-spirit.svg"
+        ]
+      },
+      {
+        "file": "mediterraneo.svg",
+        "atlas": [
+          342,
+          702,
+          336,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          336,
+          76
+        ],
+        "sharedUses": [
+          "location/mediterraneo.svg"
+        ]
+      },
+      {
+        "file": "mystic-peaks.svg",
+        "atlas": [
+          692,
+          516,
+          328,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          328,
+          96
+        ],
+        "sharedUses": [
+          "location/mystic-peaks.svg"
+        ]
+      },
+      {
+        "file": "proving-grounds.svg",
+        "atlas": [
+          0,
+          98,
+          408,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          408,
+          96
+        ],
+        "sharedUses": [
+          "location/proving-grounds.svg"
+        ]
+      },
+      {
+        "file": "outback.svg",
+        "atlas": [
+          0,
+          1757,
+          212,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          212,
+          76
+        ],
+        "sharedUses": [
+          "location/outback.svg"
+        ]
+      },
+      {
+        "file": "last-resort.svg",
+        "atlas": [
+          290,
+          1035,
+          284,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          284,
+          71
+        ],
+        "sharedUses": [
+          "location/last-resort.svg"
+        ]
+      },
+      {
+        "file": "lap-4.svg",
+        "atlas": [
+          698,
+          1617,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "sharedUses": [
+          "location/lap-4.svg"
+        ]
+      },
+      {
+        "file": "lap-8.svg",
+        "atlas": [
+          646,
+          1715,
+          40,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          40,
+          71
+        ],
+        "sharedUses": [
+          "location/lap-8.svg"
+        ]
+      },
+      {
+        "file": "game-type.svg",
+        "atlas": [
+          0,
+          1234,
+          264,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          264,
+          91
+        ],
+        "sharedUses": [
+          "setup/game-type.svg"
+        ]
+      },
+      {
+        "file": "race-type.svg",
+        "atlas": [
+          504,
+          1524,
+          236,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          236,
+          91
+        ],
+        "sharedUses": [
+          "setup/race-type.svg"
+        ]
+      },
+      {
+        "file": "style.svg",
+        "atlas": [
+          892,
+          1705,
+          128,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          128,
+          96
+        ],
+        "sharedUses": [
+          "setup/style.svg"
+        ]
+      },
+      {
+        "file": "catch-up.svg",
+        "atlas": [
+          480,
+          1617,
+          216,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          96
+        ],
+        "sharedUses": [
+          "setup/catch-up.svg"
+        ]
+      },
+      {
+        "file": "backwards.svg",
+        "atlas": [
+          556,
+          1117,
+          268,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          268,
+          76
+        ],
+        "sharedUses": [
+          "setup/backwards.svg"
+        ]
+      },
+      {
+        "file": "mirrored.svg",
+        "atlas": [
+          742,
+          1529,
+          220,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          220,
+          76
+        ],
+        "sharedUses": [
+          "setup/mirrored.svg"
+        ]
+      },
+      {
+        "file": "one-player.svg",
+        "atlas": [
+          274,
+          1206,
+          264,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          264,
+          96
+        ],
+        "sharedUses": [
+          "setup/one-player.svg"
+        ]
+      },
+      {
+        "file": "split-screen.svg",
+        "atlas": [
+          302,
+          859,
+          288,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          96
+        ],
+        "sharedUses": [
+          "setup/split-screen.svg"
+        ]
+      },
+      {
+        "file": "modem.svg",
+        "atlas": [
+          452,
+          1715,
+          192,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          192,
+          76
+        ],
+        "sharedUses": [
+          "setup/modem.svg"
+        ]
+      },
+      {
+        "file": "serial-link.svg",
+        "atlas": [
+          0,
+          1600,
+          240,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          240,
+          77
+        ],
+        "sharedUses": [
+          "setup/serial-link.svg"
+        ]
+      },
+      {
+        "file": "network.svg",
+        "atlas": [
+          238,
+          1680,
+          212,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          212,
+          76
+        ],
+        "sharedUses": [
+          "setup/network.svg"
+        ]
+      },
+      {
+        "file": "single-race.svg",
+        "atlas": [
+          282,
+          1108,
+          272,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          272,
+          96
+        ],
+        "sharedUses": [
+          "setup/single-race.svg"
+        ]
+      },
+      {
+        "file": "tournament.svg",
+        "atlas": [
+          720,
+          297,
+          296,
+          71
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          296,
+          71
+        ],
+        "sharedUses": [
+          "setup/tournament.svg"
+        ]
+      },
+      {
+        "file": "knockout.svg",
+        "atlas": [
+          0,
+          1679,
+          236,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          236,
+          76
+        ],
+        "sharedUses": [
+          "setup/knockout.svg"
+        ]
+      },
+      {
+        "file": "wild.svg",
+        "atlas": [
+          446,
+          1960,
+          108,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          108,
+          77
+        ],
+        "sharedUses": [
+          "setup/wild.svg"
+        ]
+      },
+      {
+        "file": "arcade.svg",
+        "atlas": [
+          364,
+          1871,
+          172,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          172,
+          76
+        ],
+        "sharedUses": [
+          "setup/arcade.svg"
+        ]
+      },
+      {
+        "file": "simulation.svg",
+        "atlas": [
+          540,
+          1296,
+          264,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          264,
+          77
+        ],
+        "sharedUses": [
+          "setup/simulation.svg"
+        ]
+      },
+      {
+        "file": "number.svg",
+        "atlas": [
+          826,
+          1117,
+          196,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          196,
+          76
+        ],
+        "sharedUses": [
+          "opponents/number.svg"
+        ]
+      },
+      {
+        "file": "skill-level.svg",
+        "atlas": [
+          242,
+          1601,
+          236,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          236,
+          77
+        ],
+        "sharedUses": [
+          "opponents/skill-level.svg"
+        ]
+      },
+      {
+        "file": "traffic.svg",
+        "atlas": [
+          858,
+          1039,
+          160,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          160,
+          76
+        ],
+        "sharedUses": [
+          "opponents/traffic.svg"
+        ]
+      },
+      {
+        "file": "no-opponents.svg",
+        "atlas": [
+          346,
+          609,
+          344,
+          91
+        ],
+        "sourceCrop": [
+          0,
+          11,
+          344,
+          91
+        ],
+        "sharedUses": [
+          "opponents/no-opponents.svg"
+        ]
+      },
+      {
+        "file": "full-grid.svg",
+        "atlas": [
+          822,
+          1195,
+          196,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          196,
+          96
+        ],
+        "sharedUses": [
+          "opponents/full-grid.svg"
+        ]
+      },
+      {
+        "file": "none.svg",
+        "atlas": [
+          768,
+          1803,
+          132,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          132,
+          55
+        ],
+        "sharedUses": [
+          "opponents/none.svg"
+        ]
+      },
+      {
+        "file": "one.svg",
+        "atlas": [
+          902,
+          1803,
+          100,
+          55
+        ],
+        "sourceCrop": [
+          0,
+          27,
+          100,
+          55
+        ],
+        "sharedUses": [
+          "opponents/one.svg"
+        ]
+      },
+      {
+        "file": "beginner.svg",
+        "atlas": [
+          792,
+          98,
+          224,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          224,
+          96
+        ],
+        "sharedUses": [
+          "opponents/beginner.svg"
+        ]
+      },
+      {
+        "file": "advanced.svg",
+        "atlas": [
+          766,
+          1451,
+          240,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          240,
+          76
+        ],
+        "sharedUses": [
+          "opponents/advanced.svg"
+        ]
+      },
+      {
+        "file": "speedometer.svg",
+        "atlas": [
+          680,
+          702,
+          332,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          332,
+          96
+        ],
+        "sharedUses": [
+          "options/speedometer.svg"
+        ]
+      },
+      {
+        "file": "mph.svg",
+        "atlas": [
+          328,
+          1949,
+          116,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          116,
+          96
+        ],
+        "sharedUses": [
+          "options/mph.svg"
+        ]
+      },
+      {
+        "file": "kmh.svg",
+        "atlas": [
+          898,
+          1860,
+          116,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          116,
+          76
+        ],
+        "sharedUses": [
+          "options/kmh.svg"
+        ]
+      },
+      {
+        "file": "personal-stats.svg",
+        "atlas": [
+          0,
+          392,
+          352,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          352,
+          96
+        ],
+        "sharedUses": [
+          "options/personal-stats.svg"
+        ]
+      },
+      {
+        "file": "audio.svg",
+        "atlas": [
+          404,
+          1793,
+          184,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          184,
+          76
+        ],
+        "sharedUses": [
+          "options/audio.svg"
+        ]
+      },
+      {
+        "file": "controls.svg",
+        "atlas": [
+          0,
+          1425,
+          252,
+          77
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          252,
+          77
+        ],
+        "sharedUses": [
+          "options/controls.svg"
+        ]
+      },
+      {
+        "file": "load-save.svg",
+        "atlas": [
+          592,
+          878,
+          288,
+          81
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          288,
+          81
+        ],
+        "sharedUses": [
+          "options/load-save.svg"
+        ]
+      },
+      {
+        "file": "graphics.svg",
+        "atlas": [
+          0,
+          1327,
+          256,
+          96
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          256,
+          96
+        ],
+        "sharedUses": [
+          "options/graphics.svg"
+        ]
+      },
+      {
+        "file": "credits.svg",
+        "atlas": [
+          806,
+          1296,
+          216,
+          76
+        ],
+        "sourceCrop": [
+          0,
+          6,
+          216,
+          76
+        ],
+        "sharedUses": [
+          "options/credits.svg"
+        ]
+      }
+    ],
+    "changedPixels": 943498
+  },
+  "remainingInkFit": {
+    "images": 50,
+    "catalogUses": 50,
+    "catalogPlacements": 100,
+    "summaryUses": 2,
+    "summaryPlacements": 4,
+    "placements": [
+      {
+        "use": "location/track.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 344,
+        "y": 107,
+        "right": 376.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/track.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 345,
+        "y": 108,
+        "right": 377.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/north-country.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 107,
+        "right": 484.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/north-country.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 108,
+        "right": 485.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/laps.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 349,
+        "y": 133,
+        "right": 376.0,
+        "bottom": 184.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/laps.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 350,
+        "y": 134,
+        "right": 377.0,
+        "bottom": 185.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/lap-two.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 133,
+        "right": 403.0,
+        "bottom": 184.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/lap-two.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 134,
+        "right": 404.0,
+        "bottom": 185.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/track-info.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 315,
+        "y": 159,
+        "right": 388.0,
+        "bottom": 210.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/track-info.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 316,
+        "y": 160,
+        "right": 389.0,
+        "bottom": 211.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/track-records.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 292,
+        "y": 185,
+        "right": 388.0,
+        "bottom": 236.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/track-records.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 293,
+        "y": 186,
+        "right": 389.0,
+        "bottom": 237.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/personal-statistics.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 257,
+        "y": 211,
+        "right": 388.0,
+        "bottom": 262.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/personal-statistics.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 258,
+        "y": 212,
+        "right": 389.0,
+        "bottom": 263.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/pacific-spirit.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 107,
+        "right": 478.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/pacific-spirit.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 108,
+        "right": 479.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/mediterraneo.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 107,
+        "right": 482.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/mediterraneo.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 108,
+        "right": 483.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/mystic-peaks.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 107,
+        "right": 480.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/mystic-peaks.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 108,
+        "right": 481.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/proving-grounds.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 107,
+        "right": 501.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/proving-grounds.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 108,
+        "right": 502.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/outback.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 107,
+        "right": 447.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/outback.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 108,
+        "right": 448.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/last-resort.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 107,
+        "right": 468.0,
+        "bottom": 158.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/last-resort.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 108,
+        "right": 469.0,
+        "bottom": 159.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/lap-4.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 133,
+        "right": 403.0,
+        "bottom": 184.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/lap-4.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 134,
+        "right": 404.0,
+        "bottom": 185.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/lap-8.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 395,
+        "y": 133,
+        "right": 403.0,
+        "bottom": 184.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "location/lap-8.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 396,
+        "y": 134,
+        "right": 404.0,
+        "bottom": 185.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/game-type.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 284,
+        "y": 152,
+        "right": 351.0,
+        "bottom": 203.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/game-type.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 285,
+        "y": 153,
+        "right": 352.0,
+        "bottom": 204.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/race-type.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 291,
+        "y": 178,
+        "right": 351.0,
+        "bottom": 229.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/race-type.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 292,
+        "y": 179,
+        "right": 352.0,
+        "bottom": 230.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/style.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 320,
+        "y": 204,
+        "right": 351.0,
+        "bottom": 255.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/style.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 321,
+        "y": 205,
+        "right": 352.0,
+        "bottom": 256.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/catch-up.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 296,
+        "y": 230,
+        "right": 351.0,
+        "bottom": 281.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/catch-up.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 297,
+        "y": 231,
+        "right": 352.0,
+        "bottom": 282.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/backwards.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 280,
+        "y": 256,
+        "right": 351.0,
+        "bottom": 307.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/backwards.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 281,
+        "y": 257,
+        "right": 352.0,
+        "bottom": 308.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/mirrored.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 297,
+        "y": 282,
+        "right": 351.0,
+        "bottom": 333.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/mirrored.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 298,
+        "y": 283,
+        "right": 352.0,
+        "bottom": 334.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/one-player.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 152,
+        "right": 438.0,
+        "bottom": 203.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/one-player.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 153,
+        "right": 439.0,
+        "bottom": 204.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/split-screen.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 152,
+        "right": 445.0,
+        "bottom": 203.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/split-screen.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 153,
+        "right": 446.0,
+        "bottom": 204.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/modem.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 152,
+        "right": 416.0,
+        "bottom": 203.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/modem.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 153,
+        "right": 417.0,
+        "bottom": 204.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/serial-link.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 152,
+        "right": 433.0,
+        "bottom": 203.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/serial-link.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 153,
+        "right": 434.0,
+        "bottom": 204.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/network.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 152,
+        "right": 424.0,
+        "bottom": 203.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/network.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 153,
+        "right": 425.0,
+        "bottom": 204.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/single-race.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 178,
+        "right": 441.0,
+        "bottom": 229.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/single-race.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 179,
+        "right": 442.0,
+        "bottom": 230.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/tournament.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 178,
+        "right": 444.0,
+        "bottom": 229.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/tournament.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 179,
+        "right": 445.0,
+        "bottom": 230.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/knockout.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 178,
+        "right": 428.0,
+        "bottom": 229.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/knockout.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 179,
+        "right": 429.0,
+        "bottom": 230.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/wild.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 204,
+        "right": 399.0,
+        "bottom": 255.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/wild.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 205,
+        "right": 400.0,
+        "bottom": 256.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/arcade.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 204,
+        "right": 414.0,
+        "bottom": 255.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/arcade.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 205,
+        "right": 415.0,
+        "bottom": 256.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/simulation.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 370,
+        "y": 204,
+        "right": 437.0,
+        "bottom": 255.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "setup/simulation.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 371,
+        "y": 205,
+        "right": 438.0,
+        "bottom": 256.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/number.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 299,
+        "y": 171,
+        "right": 347.0,
+        "bottom": 222.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/number.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 298,
+        "y": 170,
+        "right": 346.0,
+        "bottom": 221.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/skill-level.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 286,
+        "y": 197,
+        "right": 347.0,
+        "bottom": 248.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/skill-level.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 285,
+        "y": 196,
+        "right": 346.0,
+        "bottom": 247.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/traffic.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 308,
+        "y": 223,
+        "right": 347.0,
+        "bottom": 274.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/traffic.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 307,
+        "y": 222,
+        "right": 346.0,
+        "bottom": 273.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/no-opponents.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 145,
+        "right": 454.0,
+        "bottom": 196.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/no-opponents.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 144,
+        "right": 453.0,
+        "bottom": 195.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/full-grid.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 171,
+        "right": 416.0,
+        "bottom": 222.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/full-grid.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 170,
+        "right": 415.0,
+        "bottom": 221.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/none.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 171,
+        "right": 398.0,
+        "bottom": 222.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/none.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 170,
+        "right": 397.0,
+        "bottom": 221.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/one.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 171,
+        "right": 390.0,
+        "bottom": 222.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/one.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 170,
+        "right": 389.0,
+        "bottom": 221.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/beginner.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 197,
+        "right": 423.0,
+        "bottom": 248.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/beginner.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 196,
+        "right": 422.0,
+        "bottom": 247.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/advanced.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 197,
+        "right": 428.0,
+        "bottom": 248.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "opponents/advanced.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 196,
+        "right": 427.0,
+        "bottom": 247.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/speedometer.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 263,
+        "y": 145,
+        "right": 347.0,
+        "bottom": 196.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/speedometer.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 262,
+        "y": 144,
+        "right": 346.0,
+        "bottom": 195.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/mph.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 145,
+        "right": 393.0,
+        "bottom": 196.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/mph.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 144,
+        "right": 392.0,
+        "bottom": 195.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/kmh.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 366,
+        "y": 145,
+        "right": 392.0,
+        "bottom": 196.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/kmh.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 365,
+        "y": 144,
+        "right": 391.0,
+        "bottom": 195.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/personal-stats.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 255,
+        "y": 275,
+        "right": 347.0,
+        "bottom": 326.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/personal-stats.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 254,
+        "y": 274,
+        "right": 346.0,
+        "bottom": 325.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/audio.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 310,
+        "y": 170,
+        "right": 358.0,
+        "bottom": 221.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/audio.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 311,
+        "y": 171,
+        "right": 359.0,
+        "bottom": 222.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/controls.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 294,
+        "y": 196,
+        "right": 358.0,
+        "bottom": 247.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/controls.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 295,
+        "y": 197,
+        "right": 359.0,
+        "bottom": 248.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/load-save.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 282,
+        "y": 222,
+        "right": 358.0,
+        "bottom": 273.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/load-save.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 283,
+        "y": 223,
+        "right": 359.0,
+        "bottom": 274.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/graphics.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 291,
+        "y": 248,
+        "right": 358.0,
+        "bottom": 299.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/graphics.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 292,
+        "y": 249,
+        "right": 359.0,
+        "bottom": 300.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/credits.svg",
+        "kind": "catalog",
+        "shadow": false,
+        "x": 302,
+        "y": 300,
+        "right": 358.0,
+        "bottom": 351.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "options/credits.svg",
+        "kind": "catalog",
+        "shadow": true,
+        "x": 303,
+        "y": 301,
+        "right": 359.0,
+        "bottom": 352.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/one-player.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 509.0,
+        "y": 73.0,
+        "right": 558.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/one-player.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 510.0,
+        "y": 74.0,
+        "right": 559.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/single-race.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 570.0,
+        "y": 73.0,
+        "right": 620.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/single-race.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 571.0,
+        "y": 74.0,
+        "right": 621.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      }
+    ]
+  },
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "1e39b5eb1e21582cbb9a270f03ff6724ee09ae9739d526ef69959c1b54c13464",
+  "rasterSha256": "3cfbcbe7c3b9f0330b629b9bbfdc75dc6a5ecb25c3a64c8a063d8e798c2340a4",
   "raster": [
     1024,
     2048
   ],
-  "rleBytes": 3142608,
+  "rleBytes": 5164410,
   "glyphPartitions": 2163,
   "inkFit": [
     {
@@ -6722,7 +9683,7 @@
     "additionalCachedTextureBytesForOptions": 0,
     "catalogSha256": "1cdafb1a723ce9d48bd862619edde73ef57379595986d18488dd401d05d94f38",
     "recipeSha256": "ea0001edfa5c9fab96de98e3f87563801622f287cdbffab279ab71476638da27",
-    "packingPhase": "before-main-and-player-text-art-overrides"
+    "packingPhase": "before-fixed-text-art-overrides"
   },
   "packingRecipeSha256": "8f27173502246177f73327a2ab31b7312abaff7b41778e7eef6e06741a7cb261",
   "compactAtlas": {
@@ -6744,55 +9705,86 @@
   "rasterBytes": 8388608,
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
-    "FrontendFontPixels.inc": "b18ba252da4d39c5e050204f41bd7c1eb45aa0d546f9393b6a095cd823213164",
+    "FrontendFontPixels.inc": "105c00a39d5ef778da5b9ee9e36a9221b7d3301c842ab731621ab6964db5eeb8",
     "FrontendWordLayout.inc": "7f426333f1dfaed6435f3382e6c34866a0cb42ad9035f2953dd56104e6cafa68",
-    "FrontendFontPixelsPart0.inc": "53a7419c8a661f3a1e3adfd1f0019471c9af4e25f7fdc41f308639944e88e5ad",
-    "FrontendFontPixelsPart1.inc": "76283051a54339e760664126cc0885fe3e5a39ffedbe5dad6734195d974cb337",
-    "FrontendFontPixelsPart2.inc": "d4cc2254c328c1a9ac703da5cd1c682b4e251b9068df638907ae2afce1d365bf",
-    "FrontendFontPixelsPart3.inc": "6e2e85a0b96453c4672ffcfbf72e25322580742417872aa0da9c0d92a6a93c00",
-    "FrontendFontPixelsPart4.inc": "3e411bfe2b15670fd69cbbb1360d70f2365b44c77635a56d08922794089c66d4",
-    "FrontendFontPixelsPart5.inc": "f8d01326eea7604a59545c1df91a88608e1852d3133c46c3d21eed0cd1afe5c0",
-    "FrontendFontPixelsPart6.inc": "46318e41cd17dd967d10f44dd3f7051a6fa3b5a69af350527963a47f1aa14e42",
-    "FrontendFontPixelsPart7.inc": "b1d1555b1bdde394d144c8e9193bdf5c8eec4fb07952b280e95db10eaaf73861",
-    "FrontendFontPixelsPart8.inc": "1362dc1a19acd927928b1529327fc18d946e1b9411517922ac6f4e4a84c79ee5",
-    "FrontendFontPixelsPart9.inc": "433316ddcc79348eff67b884583c683a2e283fb75320cca2702363e3b303b66f",
-    "FrontendFontPixelsPart10.inc": "1a55aa732a37983ae2c5f4aa5735cbbe16cd23ccd8708ee4ca09de17f1e5416e",
-    "FrontendFontPixelsPart11.inc": "0db7cc53f1118472c98b487bb5c6fab45331a55092f916261c43e019082dbc6c",
-    "FrontendFontPixelsPart12.inc": "3b557b1e30e8cabde8b4cdc6847073eea37d4fde7cde070232e90d9bbc83b76b",
-    "FrontendFontPixelsPart13.inc": "578c7245b046a681f0fdb4313ddc26d3cc33ba79f4c79d68e156f587daff719d",
-    "FrontendFontPixelsPart14.inc": "d61abe76868a4e898f73eba115be08796d51af8240a1e87946baff3452b5cc32",
-    "FrontendFontPixelsPart15.inc": "415263a3b1fb8e4f0c88a235834ffdc99eb4a59b09c7e3e2d1bdd0e702732bd4",
-    "FrontendFontPixelsPart16.inc": "5c9b354367463c7f262473f4ace272780defeca8b86ef49973c6f0d637229a67",
-    "FrontendFontPixelsPart17.inc": "5812058557bcc44a37d4efc5d71e3082a2fff81491a4b8b746e4cf0c927f992e",
-    "FrontendFontPixelsPart18.inc": "b97d0a96914f06e6e61566c25ae829ba501d0fd4b347a0b80937e0e065b3743d",
-    "FrontendFontPixelsPart19.inc": "60681e63ba94941776e3942c3c2927a1f878f017412ae581ec19a2930c7c2ed9",
-    "FrontendFontPixelsPart20.inc": "108ac3867fe960529e221ae393e48cd6229d550345673560719b5c3b5d0f8bcf",
-    "FrontendFontPixelsPart21.inc": "c8695ac07e8b50690838dc80cc625c4ced2e8620f51e90a7d10a450f6067b61d",
-    "FrontendFontPixelsPart22.inc": "6cf7212b0f615650370b438649c8738320e4e48d66041218ce1c5a1a8fc091ee",
-    "FrontendFontPixelsPart23.inc": "40d2d5cb1c1b2881b932f29222b0fb3fc444d54d42fb90e901fc767760414082",
-    "FrontendFontPixelsPart24.inc": "b44bbeac51a6e5d83a5588e284203c305574ebb7fc268ee8703af8fc4f5f79c2",
-    "FrontendFontPixelsPart25.inc": "3f83ea3f0897b917f9e89dd1383d5b7a48082a8b87497ce96e3fcd1480e36728",
-    "FrontendFontPixelsPart26.inc": "45281ef73a4566d83e3dc0dbb0e322d01c60b02400a7bf92ecfc419875e48b04",
-    "FrontendFontPixelsPart27.inc": "323fc85534b675d43685802167ae5f61f229a6b03a48ecd43004562789f1cabf",
-    "FrontendFontPixelsPart28.inc": "e7d4ab5496016fd4323fa5600138bf2ea4aab9e5feec3e5107dc35a056a2e6ea",
-    "FrontendFontPixelsPart29.inc": "9c81551918d5e63bfc3da83fdd793a2b1cacadb1217c11e3bcd50d6f80a1ffbf",
-    "FrontendFontPixelsPart30.inc": "547bdea01f3c23ffe1fcff1962f8f838966f13a5079f2770f4d6374167fcd683",
-    "FrontendFontPixelsPart31.inc": "8a5aff93faa0f358ed3b683e99b5379cd39bdd92355c3cff0e45a73360a597db",
-    "FrontendFontPixelsPart32.inc": "29c340bc69b62c1e0f0b08ce688818cb6af4870ef1cda34261a743bf81294540",
-    "FrontendFontPixelsPart33.inc": "33059cb9f7f7ef13e1316888158d67b2814d01d5d05c2124efe87d350bf96b84",
-    "FrontendFontPixelsPart34.inc": "7fc1df761706723d572ea1d661df40242d1bd9f2ac802e9aa3f65eac01a3ab1a",
-    "FrontendFontPixelsPart35.inc": "bee60898edb79e7ded03c8de2a11760ab659e8fea632bb1376897f396962f8e1",
-    "FrontendFontPixelsPart36.inc": "e4c1c44aee6ea19f733b3db7fe5598110121d382b692d336402d2baa78d990a9",
-    "FrontendFontPixelsPart37.inc": "af9b3502f2f40bce3644a7d4cb730cebb2f3711fc921b06651f54be528d1dca6",
-    "FrontendFontPixelsPart38.inc": "69e09a8e4a66001821082cd574e66281437678403e3b8f12ef4e4bc9d495f5a6",
-    "FrontendFontPixelsPart39.inc": "da8c53a04cfeab6cb2cac48576ec89ad08dd1a5f366b0774c933b946948f5415",
-    "FrontendFontPixelsPart40.inc": "335a47836f6dec5572850345f028b32d872e0dc6f18fc8d3827b54498a5f0b0f",
-    "FrontendFontPixelsPart41.inc": "499cbbd6d29b51e3ae89017802a93b2d4a1b27f963e80f549b437b66723130a4",
-    "FrontendFontPixelsPart42.inc": "d6bfb5ce3a72b84fb3653630bf3a95bdb1877388e4393bb6bb1a4ba61f7ab46b",
-    "FrontendFontPixelsPart43.inc": "5429ca711e3caf89c9d3629b4b8551952afa4a750920b53e313c90a36a7de1da",
-    "FrontendFontPixelsPart44.inc": "35983eadbd4aecc901278a142b6dcc6b2741430de734fc3b91da24c20e3b87cc",
-    "FrontendFontPixelsPart45.inc": "7ddc5e8916e916b3196922f21aec07da8b12f56bb10be9d99cb0dbd238ed0d7a",
-    "FrontendFontPixelsPart46.inc": "22a1eb3e2249f1ac2f74b7bc8eaae9544c96d94702521808330a2d7bd7f57eab",
-    "FrontendFontPixelsPart47.inc": "3eae875af3486d35878b391d58946a1e9e310fcb3573f9f0629e083cb1baae71"
+    "FrontendFontPixelsPart0.inc": "d5396b708d2e122d18634d386f06c0f7b76722aec9ea2a5ff41c1bb97d4a3cc8",
+    "FrontendFontPixelsPart1.inc": "df3875d1d3087335b982a3a9a36ebdc907268e298f309557b80a57f1fb7a3c72",
+    "FrontendFontPixelsPart2.inc": "1cb335eece5a7ab0406d997f83b01e87d78036bf0974948e3a5bf807e19b1abc",
+    "FrontendFontPixelsPart3.inc": "c2d24458e626c7864949133e401aba3260543faae9a5b65ab82f836833ef9039",
+    "FrontendFontPixelsPart4.inc": "bee88004a6889958657d488566b2a92cc25a5ce8834227e61ba1072a360b0f72",
+    "FrontendFontPixelsPart5.inc": "bfa38d417ca1a94e82708ef88eae2c68a02836fef9c838885e739e554251268a",
+    "FrontendFontPixelsPart6.inc": "214ecd0d50fbc58806e549530e056db3e56f429d6c498a7a7e9e19c16a2fd932",
+    "FrontendFontPixelsPart7.inc": "4e678f721518b9ba417aad3b1ccfdc322c61267daf31123c9dd88abb35f2ed55",
+    "FrontendFontPixelsPart8.inc": "44517f6d20cf8fcac42470665acfa556923e6efca2cd83dc60fcedf2f516794c",
+    "FrontendFontPixelsPart9.inc": "e75d1303d2be26565d2eb54cafa3ccb7ee900fc44cb9935c64906cacdbc5ce81",
+    "FrontendFontPixelsPart10.inc": "6b0d765eea76787b30823cc7073ccbd459e9aef6d120ba369c7fa86745b31633",
+    "FrontendFontPixelsPart11.inc": "598b9c23ff2123ff797d9b7faffb064ae44f889cd123d54d3c7a23446492bcd8",
+    "FrontendFontPixelsPart12.inc": "8c87ac35e4b972b6fa0d455cd9d62aa0700eb19feb24ecd3ab193fbb6f11c6b4",
+    "FrontendFontPixelsPart13.inc": "47c2065c531d4c78ad974ca4250284ec8018bc2ad9cd6361d6fe72d9a72a356f",
+    "FrontendFontPixelsPart14.inc": "16fcc1c758e752ac80fa617664bf11549aa644d329b5b513d09e0dfa4a1f6a87",
+    "FrontendFontPixelsPart15.inc": "ebd38204bbb88091578b21b4b43e172f77f721409f5344f8dbdb1a13c07bf621",
+    "FrontendFontPixelsPart16.inc": "0f409be0484fd18cdcbc37d461dd0f1d380b8b914993869378b787d8a5faff8e",
+    "FrontendFontPixelsPart17.inc": "93892017abfe0f8968fc87aa61c90f7c27a9d4a854b74b6f9e46a24f1e59daa9",
+    "FrontendFontPixelsPart18.inc": "6f9925d4f06c403be40fb6374679149669a85b2e01c02dc78c09d513a56e384d",
+    "FrontendFontPixelsPart19.inc": "d16ff7ceddff1138ddfb2b4d6c453ed4e17cc8065d2409c7c074c6f3a79c4840",
+    "FrontendFontPixelsPart20.inc": "350372e9814c1d7f15500bc3f4a283608884b7d599394162574c4e9c80154e37",
+    "FrontendFontPixelsPart21.inc": "c2b64d704a11674dae13297e9b45e154cc3f04c6945833460b485e0de841b7e1",
+    "FrontendFontPixelsPart22.inc": "42ef8871ad217e5e40ef21ab57af49bf24ef47862b9b50c50451464b7d75f946",
+    "FrontendFontPixelsPart23.inc": "5a9dd79d0ffdce487276c0fbc1070557a611cca0e1cd2e5f4bffdfa4924f5b22",
+    "FrontendFontPixelsPart24.inc": "0f26f9a8d822e6f5f15058a4ba08c21acb85ac16e5a50418a07b703cc03ae8f8",
+    "FrontendFontPixelsPart25.inc": "bab01334a02a162234ed69dba928ef9686f59bc494eff04f2558d386befdc538",
+    "FrontendFontPixelsPart26.inc": "315475942226b62b6cbcc3ee3916cf2067175154207949f5003a806dd24ff52c",
+    "FrontendFontPixelsPart27.inc": "6aba448ace9d9f777450eeb0bf2355eafdae6917c0fcf915efebd5560638f230",
+    "FrontendFontPixelsPart28.inc": "fc1697bcf94c6932820097654c60a366e23d80a166cb07fbe30b1fe9473769c8",
+    "FrontendFontPixelsPart29.inc": "224f1419bfe415c26b6d7f33fd86fb2398fa11cbc91d3121d65f263ffc5771b7",
+    "FrontendFontPixelsPart30.inc": "580de4c1235aa6107e0a91aa5440a0b578b1e12c9e7a6d2244649812696c053e",
+    "FrontendFontPixelsPart31.inc": "e7dce93a0928628cd3e2e4dd60208aaf3be7af40ff73dc4d65b51d4597b077c2",
+    "FrontendFontPixelsPart32.inc": "1a21d734a450b899a9506ad5733f4f0b0a796b42ce4804025580a857bbce6942",
+    "FrontendFontPixelsPart33.inc": "9919f05d89b7c878e7021fc3ddd7690bf862ba6d6aaf7302db615a47b9973f94",
+    "FrontendFontPixelsPart34.inc": "9aa9d9d09dbd68aa3a241d41bd03a447b5dd8ebc6532d50f78710e0b39ba0e7b",
+    "FrontendFontPixelsPart35.inc": "22a73d6d3966d43c82851934e901040e37aa9c58c3ac9ca623e056b928208cd6",
+    "FrontendFontPixelsPart36.inc": "7089ba1626e0f7620612aba3461b86ccde5bca172e3036e233461dc79df0e7c2",
+    "FrontendFontPixelsPart37.inc": "d6955dd4b3682fe53c566f56c68433270de85419a77c735978eccfe4dbd586ac",
+    "FrontendFontPixelsPart38.inc": "16555d855d87844048cc0061f914b09776ce32979a28bafdd5e086d68e757f53",
+    "FrontendFontPixelsPart39.inc": "4e56656e168ef524a12a87cf6cc8c10433d98099b731746ec8c40779c72bb470",
+    "FrontendFontPixelsPart40.inc": "f44d72b88ce636bcf52e823f6cc294cc285b8f461031e48b2fa779a9d00579e1",
+    "FrontendFontPixelsPart41.inc": "e2779a0a03a8e0aecb5887ac7082b8d82e27f2374a26455fb8246604c8c618f4",
+    "FrontendFontPixelsPart42.inc": "b3cebc0e1b56bc0a580a0986e873765dae4ae1ebcb1a5a4d85580f4cb3be83eb",
+    "FrontendFontPixelsPart43.inc": "9ee62a487c3eb9f2ffb98c5dd976aa0047185ee870877c6264a7b16fe2740d0a",
+    "FrontendFontPixelsPart44.inc": "ac2eb2e2bbc106fa1dd5c464142e3d7244c9d0a163020552bc5df56689234388",
+    "FrontendFontPixelsPart45.inc": "84c4841f6eea93128e325eaad3729a45e588aa45e1c07ff8e0c470fbaf5efa3c",
+    "FrontendFontPixelsPart46.inc": "40a60b8652f435f3946f3427cfaa84cc9de032f39c691301c1bad61812659a77",
+    "FrontendFontPixelsPart47.inc": "c76f57b03ddf075a8a5e563e2bfdd846ec735cf6f5b0f1d2dd172d278b2e1723",
+    "FrontendFontPixelsPart48.inc": "3f05b78b1db2f9646a84412d8863e546ff8ca77988e48eb1ff16e636ab8e60ae",
+    "FrontendFontPixelsPart49.inc": "e3070939995d3cc1ec1850a5f7d430b1afbefb5bfec2c72630c2d311edb0167e",
+    "FrontendFontPixelsPart50.inc": "0615a5253ba7eca3e0839077d41859881aaedc6f1b0e4e24f3742b68da9a2343",
+    "FrontendFontPixelsPart51.inc": "aad0698778ad69f2ee11df2a12657816feb17e558b9f070b81d58045b65af028",
+    "FrontendFontPixelsPart52.inc": "c33e87a33ab1568c2b6df8dc9221bc33d53f3032a5bce0d1808701b6553ddcf2",
+    "FrontendFontPixelsPart53.inc": "17cca6b814f55f967007efe22518e733f5cc87eb983e7f8feba85202c5fe1cbc",
+    "FrontendFontPixelsPart54.inc": "5dd88c8caa792d4a62eed999c6e534992f96835b92d6ef7d4e848e0bdacf6156",
+    "FrontendFontPixelsPart55.inc": "1e7d02ff7d461be74c0fbd0a09f1e0a6da6c1a42c59f7d372e9752c353a69207",
+    "FrontendFontPixelsPart56.inc": "c8e52f4785fa97025b03fa6ecd9e86453c229e8502ec28f639fe93c6edb9cdd3",
+    "FrontendFontPixelsPart57.inc": "dfa81da59fd7322310749bcf5b43d5dad9d1b3f711f6d8abbec761e3a407300b",
+    "FrontendFontPixelsPart58.inc": "ea54e008c45b520a8082aaf606c0f8333db9bf0ec5e6f6d5924f922929ec7914",
+    "FrontendFontPixelsPart59.inc": "7f814900cc11c444cc2ae5af4a2c9a12d45912eb1a1bd292ddcfde252d3865bf",
+    "FrontendFontPixelsPart60.inc": "d7c53408f11af646af1fe9908a6c021c81e00f6d0271dabb790b855fd9ea731d",
+    "FrontendFontPixelsPart61.inc": "ea864cf0a93d0559cd9dfd30739264b63bd2c83913c04be13528a43a80892783",
+    "FrontendFontPixelsPart62.inc": "5ecf1e06195017545d195871b43a18749c19b69e1682dc5398f7380340972b6c",
+    "FrontendFontPixelsPart63.inc": "135dbaf4747e4b85804d4763240a808c1c19f108dabec647e47a237f8d81075c",
+    "FrontendFontPixelsPart64.inc": "719efd38e49256782b06929adf785c40994d568621bc90c7b3c4607e5a7a3a48",
+    "FrontendFontPixelsPart65.inc": "6a10124a64a8a6dd2378321c62e364113e2eaca725d7a2ffc5830fb74a759e79",
+    "FrontendFontPixelsPart66.inc": "cf600c1039cb3acfdf948c02bcce70fd23bee20faa33d8743a5eba10c938589e",
+    "FrontendFontPixelsPart67.inc": "d806de117821931853875c12e6edf8219b538deb72414bbb333bfdb346c7b6a2",
+    "FrontendFontPixelsPart68.inc": "748af2ef482594fbc6a7eb296bc5ef3dea3f73bd3c54e3aea75323c34a72cda0",
+    "FrontendFontPixelsPart69.inc": "c2c5badbf0aa26b3887f81396ad39250b8dadc58f02f17357d31009516cd124e",
+    "FrontendFontPixelsPart70.inc": "77db525a648c189c76c78a4da81bbaac641fa2a328ca4dad3cc1bb963a603480",
+    "FrontendFontPixelsPart71.inc": "e50f576b53a3e433f0cf196acc78932f262c43d97520bcb2c31b270f0d3d2437",
+    "FrontendFontPixelsPart72.inc": "90c401bedb2ae36198cb93d3c7e14fb57c56753d03329d832a89e12e73c2cae5",
+    "FrontendFontPixelsPart73.inc": "953969d697e415852d141e785c0c5a6b39d46a9c88ecb0594b9cb64e4f3f968d",
+    "FrontendFontPixelsPart74.inc": "9d39f2ba74656093bf681da2f2f861d1b56148b6d5bc77a542f3ae3a171a1c71",
+    "FrontendFontPixelsPart75.inc": "a173bb742c1f4396993eb00d1f195331c6d415a143dde4072ee0b8d72f677fbc",
+    "FrontendFontPixelsPart76.inc": "df6b888909fd65538d83c1a431d88cd79b05500b421027587eb332f041f4d2c2",
+    "FrontendFontPixelsPart77.inc": "596bc33415e78862caaadfd923ea52184dcf2dcf8bf16e60837988176419490d",
+    "FrontendFontPixelsPart78.inc": "c56825cd247f314acb888729350799717cdb07ab024bfad3f72ec726640c3c50"
   }
 }

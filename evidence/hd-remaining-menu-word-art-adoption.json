@@ -1,0 +1,155 @@
+{
+  "scope": "Fifty remaining static menu body/value word images adopted on the separate UI branch; local validation only.",
+  "sourceFiles": [
+    {
+      "file": "remaining-menu-word-art-0.json",
+      "bytes": 824252,
+      "sha256": "09bcaa210ace3475355c000bf5c011a4d6062f8b9d28978dd1d8c425a953ed62",
+      "words": 16
+    },
+    {
+      "file": "remaining-menu-word-art-1.json",
+      "bytes": 811951,
+      "sha256": "7f8b0509e724aa915a555a4962c06622566d098d7956acfff96f4eb390e4cae9",
+      "words": 17
+    },
+    {
+      "file": "remaining-menu-word-art-2.json",
+      "bytes": 762740,
+      "sha256": "d909a10035496398a7a906c3364ead826f2f01408af14095f9061651d46f47a2",
+      "words": 17
+    }
+  ],
+  "fontFileOrAlphabetIncluded": false,
+  "originalGamePixelsIncluded": false,
+  "atlas": {
+    "baselineRasterSha256": "1e39b5eb1e21582cbb9a270f03ff6724ee09ae9739d526ef69959c1b54c13464",
+    "rasterSha256": "3cfbcbe7c3b9f0330b629b9bbfdc75dc6a5ecb25c3a64c8a063d8e798c2340a4",
+    "changedPixels": 943498,
+    "onlyFiftyAllocationsChanged": true,
+    "acceptedFortyTwoImagesUnchanged": true,
+    "originalCompleteLayoutByteIdentical": true,
+    "scaledSummaryFortyTwoLayoutRowsUnchanged": true,
+    "atlasBytesUnchanged": 8388608,
+    "images": 50,
+    "catalogUses": 50,
+    "scaledSummaryRoles": 2,
+    "originalPlacementsVerified": 104,
+    "rleBytes": 5164410,
+    "generatedPixelParts": 79,
+    "eachGeneratedSourceBelow1MiB": true
+  },
+  "catalogueCoverage": {
+    "uniqueAtlasAllocations": 92,
+    "cataloguedFamilyUses": 125,
+    "everyCataloguedAllocationCoveredByPinnedFixedArt": true,
+    "additionalMainSummaryRoles": 2,
+    "dynamicOrSoftwareRolesClaimedComplete": false
+  },
+  "validation": {
+    "focusedPythonChecks": 67,
+    "fullGeneration": true,
+    "generationCheck": true,
+    "selectedSourceLayoutOnlyCheck": true,
+    "registeredChecksPerMode": 8,
+    "optimizedPassed": true,
+    "asanUbsanPassed": true,
+    "cppGlyphTriangleCases": 8652,
+    "cppAmbiguousPositions": 302,
+    "full104PlacementProof": true,
+    "summaryLayoutRowsVerified": 42,
+    "sourceRleBoundariesAndForeignInventoryRejection": true,
+    "independentReviewNoConcreteBlocker": true
+  },
+  "build": {
+    "scope": "Fifty remaining menu fixed word graphics; local proof, physical acceptance unverified",
+    "binarySha256": "bdad8f2fae62c2b2d2ed7ddf294efb91f09ce335afd171cc76c2daf62a26168c",
+    "observerSha256": "494bb6e9b90d45b04ec14eb24176c109d9ecb8b53258681586db5271151f7503",
+    "oneRendererCompileUnit": true,
+    "reusedEightCpuAndObserverObjectsUnchanged": true,
+    "maintained74ObjectsUnchanged": true,
+    "sourceInputsStable": true,
+    "rendererInputCount": 217,
+    "generatedFontHeaderCount": 81,
+    "seconds": 129.64,
+    "cloud": false
+  },
+  "actualGame": {
+    "passed": true,
+    "bothPlayersAll21NormalIntroFrames": true,
+    "nativeGpuPhaseEvents": 168,
+    "originalInputCarChangesRestorationAndMainReturn": true,
+    "setupModeChangedByOriginalInput": true,
+    "menuCaptures": [
+      "setup",
+      "location",
+      "opponents",
+      "options"
+    ],
+    "independentlyComparedFixedLabelImages": 21,
+    "labelShapeDice": [
+      0.8710378761872067,
+      0.9031588313806911,
+      0.9137931034482759,
+      0.8736086175942549,
+      0.9246146435452793,
+      0.8863745019920318,
+      0.872690963554668,
+      0.9012673150604185,
+      0.8724504452743465,
+      0.89710910786447,
+      0.89579129432113,
+      0.9231011660888749,
+      0.9312666751365773,
+      0.8796569284374163,
+      0.8650537164817887,
+      0.9203994858103431,
+      0.9105424769703173,
+      0.9173134328358209,
+      0.894593118514473,
+      0.9048207663782447,
+      0.9227805988443355
+    ],
+    "oldFontNegativeControlDice": [
+      0.3404255319148936,
+      0.4810776138550353,
+      0.2788844621513944,
+      0.36287302848065356,
+      0.310459587955626,
+      0.3240922911822572,
+      0.28169014084507044,
+      0.2004863550391786,
+      0.2750377453447408,
+      0.2609703593310151,
+      0.25548245614035087,
+      0.19663799843627836,
+      0.2989556135770235,
+      0.22452257719079063
+    ],
+    "fixedShapeThreshold": 0.8,
+    "allMenuValuesExercised": false,
+    "allFourNativeCapturesVisuallyInspectedForTypography": true,
+    "mixedOriginalAndHdOtherArtworkStillPresent": true,
+    "cleanExitZero": true,
+    "copiedConfigAndArtworkRestored": true,
+    "ownedProcessesTerminalAndLeaseAbsent": true,
+    "resultSha256": "c58444fcfdf5f9d12af79c7b948a3ab164265880c66dc70d3d0d4034db370955"
+  },
+  "retainedFailures": [
+    "Location catalog has implicit label roles; authoring now follows that schema.",
+    "Strict ink verifier received extra packing metadata initially; integration now supplies only its six placement families.",
+    "Measured finite encoding needs79parts and correctly exceeded the old64bound before output writes; shared96bound is used consistently with the unchanged1MiB-per-file gate and8MiBtexture."
+  ],
+  "limitations": [
+    "All50images and104placements verified in source/generation fixtures; actual shape checks cover21staticlabels plus Setup mode recognition, not every alternate value.",
+    "Scaled Main-summary layouts and ink bounds verified; no independent physical iPad acceptance.",
+    "Pause-menu words, compact captions outside Player, Audio/Graphics text, other dialogs, HUD and artwork remain separate work.",
+    "Intentional yellow italic numerals and Omega/NFS logo identities remain distinct; no blanket font substitution.",
+    "No new physical iPad FPS, LowPower60 or battery claim."
+  ],
+  "capturesPublished": false,
+  "push": false,
+  "cloudBuild": false,
+  "paidService": false,
+  "fullGoalActive": true
+}
