@@ -94,57 +94,241 @@
     "assets/hud/frontend/options/graphics.svg": "9dad3110480217eabb479fc3fca5c92d25a2410d86853a926951bb4f682b22b9",
     "assets/hud/frontend/options/credits.svg": "fefe76964e169cad2120ddd07381380d172d3c11a1d3418d797970bc2da75961"
   },
+  "mainWordArt": {
+    "sourceSha": "91cd862d1be9e0e8b4193f0b6b4c0f52f977f8575ae54836e850562f7b80bd56",
+    "newRgba": [
+      {
+        "file": "game-setup.svg",
+        "text": "game setup",
+        "width": 380,
+        "height": 119,
+        "rgbaSha256": "74e68993aed31e26135941baeaf019a5f07c51783c8a72a0d4f756bf9a8be0ff"
+      },
+      {
+        "file": "location.svg",
+        "text": "location",
+        "width": 264,
+        "height": 99,
+        "rgbaSha256": "2fdcc0756147a41e6633da746053cec35170ae202768357d5908ab7928487230"
+      },
+      {
+        "file": "player-one.svg",
+        "text": "player one",
+        "width": 340,
+        "height": 119,
+        "rgbaSha256": "cbb2cf481baa8587780a4b5574a53ea85686f768ecd5428af666f6e2d6b451d6"
+      },
+      {
+        "file": "player-two.svg",
+        "text": "player two",
+        "width": 344,
+        "height": 119,
+        "rgbaSha256": "11a8c6eb61d4eb378d4bcdedbbac75ea6901c12d20277826a866037a309cb649"
+      },
+      {
+        "file": "opponents.svg",
+        "text": "opponents",
+        "width": 348,
+        "height": 119,
+        "rgbaSha256": "b4a31a0336d06fa02b49956af8b9415b127dc0baa0993e45819b9c902fb7b02b"
+      },
+      {
+        "file": "race.svg",
+        "text": "RACE",
+        "width": 300,
+        "height": 177,
+        "rgbaSha256": "19a8dfc5e6164b3e17213d4b07976f4a40cc95ecce538d86b25ab02b9e90ee13"
+      },
+      {
+        "file": "options.svg",
+        "text": "options",
+        "width": 248,
+        "height": 119,
+        "rgbaSha256": "59915bdcb4ba74d611701174034b6abe51e9013b5166873fbfd0ec4543fae3eb"
+      },
+      {
+        "file": "exit.svg",
+        "text": "exit",
+        "width": 128,
+        "height": 98,
+        "rgbaSha256": "0e27ee065143fe5fe3864f390203f09cad5a3c68190746d5c58067bfcc195a84"
+      }
+    ],
+    "placements": [
+      {
+        "file": "game-setup.svg",
+        "atlas": [
+          410,
+          98,
+          380,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          380,
+          119
+        ]
+      },
+      {
+        "file": "location.svg",
+        "atlas": [
+          556,
+          1195,
+          264,
+          99
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          264,
+          99
+        ]
+      },
+      {
+        "file": "player-one.svg",
+        "atlas": [
+          0,
+          687,
+          340,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          340,
+          119
+        ]
+      },
+      {
+        "file": "player-two.svg",
+        "atlas": [
+          0,
+          490,
+          344,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          344,
+          119
+        ]
+      },
+      {
+        "file": "opponents.svg",
+        "atlas": [
+          354,
+          395,
+          348,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          348,
+          119
+        ]
+      },
+      {
+        "file": "race.svg",
+        "atlas": [
+          0,
+          808,
+          300,
+          177
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          300,
+          177
+        ]
+      },
+      {
+        "file": "options.svg",
+        "atlas": [
+          254,
+          1480,
+          248,
+          119
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          248,
+          119
+        ]
+      },
+      {
+        "file": "exit.svg",
+        "atlas": [
+          768,
+          1860,
+          128,
+          98
+        ],
+        "sourceCrop": [
+          0,
+          0,
+          128,
+          98
+        ]
+      }
+    ],
+    "changedPixels": 271086
+  },
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "4c32e721676fb8a23b60218a13c01e04136101a7ca6a16135d3eb97b94983e29",
+  "rasterSha256": "dd6030860b1b5ec24c7bce0ec6fa7b495bc88fb61a7fadd802557053a611b6b7",
   "raster": [
     1024,
     2048
   ],
-  "rleBytes": 1497396,
+  "rleBytes": 1816116,
   "glyphPartitions": 2163,
   "inkFit": [
     {
       "text": "game setup",
-      "nontransparentPixels": 9820,
+      "nontransparentPixels": 13690,
       "outsideMatchingHitRectangle": 0
     },
     {
       "text": "location",
-      "nontransparentPixels": 6750,
+      "nontransparentPixels": 9962,
       "outsideMatchingHitRectangle": 0
     },
     {
       "text": "player one",
-      "nontransparentPixels": 8503,
+      "nontransparentPixels": 12184,
       "outsideMatchingHitRectangle": 0
     },
     {
       "text": "player two",
-      "nontransparentPixels": 8717,
+      "nontransparentPixels": 12469,
       "outsideMatchingHitRectangle": 0
     },
     {
       "text": "opponents",
-      "nontransparentPixels": 9119,
+      "nontransparentPixels": 12820,
       "outsideMatchingHitRectangle": 0
     },
     {
       "text": "RACE",
-      "nontransparentPixels": 23993,
+      "nontransparentPixels": 27474,
       "outsideMatchingHitRectangle": 0
     },
     {
       "text": "options",
-      "nontransparentPixels": 6377,
+      "nontransparentPixels": 9234,
       "outsideMatchingHitRectangle": 0
     },
     {
       "text": "exit",
-      "nontransparentPixels": 3224,
+      "nontransparentPixels": 4687,
       "outsideMatchingHitRectangle": 0
     }
   ],
-  "baseWordLayoutSha256": "c602f1613a57dc6d33970fded087c78345fba725da3be8db5f566dc4e3d0df53",
+  "baseWordLayoutSha256": "8da82a900865eb24411ee52423148cecd781eb3f3393aa4e64adaaef9d4a6836",
   "rightLabelCatalogSha256": "78ca798c2819fd98b1b69d8b867f202c6d40f739bff941226c97806e05502cb3",
   "locationCatalogSha256": "034362df7d9b69e8f92f0cfb6a512799922b3adb9d3611f7f9fc977de3555816",
   "locationPlacements": [
@@ -4796,7 +4980,8 @@
     ],
     "additionalCachedTextureBytesForOptions": 0,
     "catalogSha256": "1cdafb1a723ce9d48bd862619edde73ef57379595986d18488dd401d05d94f38",
-    "recipeSha256": "ea0001edfa5c9fab96de98e3f87563801622f287cdbffab279ab71476638da27"
+    "recipeSha256": "ea0001edfa5c9fab96de98e3f87563801622f287cdbffab279ab71476638da27",
+    "packingPhase": "before-main-word-art-override"
   },
   "packingRecipeSha256": "8f27173502246177f73327a2ab31b7312abaff7b41778e7eef6e06741a7cb261",
   "compactAtlas": {
@@ -4818,30 +5003,35 @@
   "rasterBytes": 8388608,
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
-    "FrontendFontPixels.inc": "4f7545a03145761b54fe545d461abc8e09a891c840a290b01b4cc69f399019ef",
-    "FrontendWordLayout.inc": "6c2f2ff7ed30542a7be4227f2e94cce110b47b549625bf13d572c94d7b48331f",
+    "FrontendFontPixels.inc": "f775098e1b93cf21d9e48c285d0e1a8438611cacdaf8e84a862f819cbe37346d",
+    "FrontendWordLayout.inc": "c80eec355e8d04cc87e3c5f3f429f110c0fb83cbc7baab2db6b9753115cb1c4c",
     "FrontendFontPixelsPart0.inc": "ac0fcd90e806a375d52c9d539ce6f6de11f7759d97d199da47f185e37ecf6399",
-    "FrontendFontPixelsPart1.inc": "ae1c46b72de6566ca5846430be164300eca6d052d2b3b1ea2270c5263a3e1a4e",
-    "FrontendFontPixelsPart2.inc": "21ba8c1d870f71ef6dd00ac6d0144b954a9ec6c20d6394c970f5b8d263e8932e",
-    "FrontendFontPixelsPart3.inc": "f4c0ce3e19e8acad1cd0d3297cad8e6857d1916665192f5ce82c81acf4f20d65",
-    "FrontendFontPixelsPart4.inc": "e9a5f6134cccd35f4416f0ce47010b878dde101d3814a51a622171ecc336e8ef",
-    "FrontendFontPixelsPart5.inc": "df9ce637dc5f87bae87a98f10eb422c04c83938d5dd62b143dbd584c0fca691b",
-    "FrontendFontPixelsPart6.inc": "a04cc9dc37f76657c00b1d874f0f75e1fc014c4f2f835dfb20d83804d464ceb6",
-    "FrontendFontPixelsPart7.inc": "3ac63dd25b41eb42c698337a48af5788b3a5152ba63cf5fd599829b174e6700f",
-    "FrontendFontPixelsPart8.inc": "50dd18699209f9a0b6796ddf5f95d2b927acf4a207e198cb3da251be28b3a49c",
-    "FrontendFontPixelsPart9.inc": "57d6b72793a44d1f6e0c262d52ade034969bd5be0e8f00ea4d78c9ee2ef848a1",
-    "FrontendFontPixelsPart10.inc": "8c4c2a7bf81a98c933daabe292503b248b0e99ea3a3a4a3aea048a577d296db6",
-    "FrontendFontPixelsPart11.inc": "d733ad6305e86574b2929778f24bb4d666ea8869cd1bfcea476a655b2d4d97ab",
-    "FrontendFontPixelsPart12.inc": "4f8ed98a0beb38cd06eccc2b4a8167e090ba54839d2bcf9f3a41a7cad49027b8",
-    "FrontendFontPixelsPart13.inc": "fe687e181d45d12ee0a97483268e37e32e8bcd242e69e0af9aa179c2550c6a6b",
-    "FrontendFontPixelsPart14.inc": "31b2aca366fc506a8372d7a33e7e335ebe6827d0f2a844345dc1672df908f8d8",
-    "FrontendFontPixelsPart15.inc": "71dae72dd2d134848bcb6c10a4cb44668e37576384f831981883fc7789840f2e",
-    "FrontendFontPixelsPart16.inc": "a2dccbb90c3f266682a73a7720f4185eb896f03998e6d1457c4fbb46bff44606",
-    "FrontendFontPixelsPart17.inc": "09a6ceb2696fb03cb25b91e15b5c30f8bb291f5ccbde4940d7e1790ba47395d5",
-    "FrontendFontPixelsPart18.inc": "c22bc51c93fae30c954404e1590977fae466894ed062de47b90c87d126ae7c51",
-    "FrontendFontPixelsPart19.inc": "7b2d3c0495693394136566459e075bf2cf92813d12b92f7f5b184db4e71650e3",
-    "FrontendFontPixelsPart20.inc": "b3b13ca9679e85a515875f1d07bcb3b884b7a3b11c738e33e16b41dccaf18bb5",
-    "FrontendFontPixelsPart21.inc": "09ab525c7b269afde791c820321beff17979f6d489934b03aee7d16e34009625",
-    "FrontendFontPixelsPart22.inc": "22e6a00413428ff11d8b941c7c61c3749c9fbe498a39578633aba9f36ee57be5"
+    "FrontendFontPixelsPart1.inc": "5cc76eb7e2f925c4c3eb3d10cdc5a698f6fcccd68bca9e800746153f8c8e6ce8",
+    "FrontendFontPixelsPart2.inc": "697784f8efcfe641614f63a92af057ad54afd06151d4653d9a982a2c534a80fe",
+    "FrontendFontPixelsPart3.inc": "9a6ec14d08a7b4ba4d6c7d49b5fb9acf18b452dbfcd0715d03c3506fe06ecd3b",
+    "FrontendFontPixelsPart4.inc": "c28482819c9362b7d48458a1a5faff7c8829a3aec396c4f9c8217d63465e7438",
+    "FrontendFontPixelsPart5.inc": "d0e9fa52638f7b9c3ab601256304f27f9fd13814b3f362186b492b31f3f8ad98",
+    "FrontendFontPixelsPart6.inc": "8ebab443dd4399741e38037db649782d4391518c666c0cc034109b96ff6b2b80",
+    "FrontendFontPixelsPart7.inc": "31de805cc524cd167154ae95129b5ec2d1c949f660eb8649dba2b5135b9ae4a4",
+    "FrontendFontPixelsPart8.inc": "381a2c57f2fce8b3578c940e212d66799357d8920b2df5f9f831bc1bf47f05ab",
+    "FrontendFontPixelsPart9.inc": "0c630e573c7fb0d70994039054ee442e3b7c39721b64f9c0a950c82e4e641daf",
+    "FrontendFontPixelsPart10.inc": "1503a2f1cd38ef9d79921979c67cf46a5b1bd8b3c2e4e40e7b491efb6e1b3d97",
+    "FrontendFontPixelsPart11.inc": "4d1e9c41349421ad86caa09ccb8f4df0d9a41d82b6deae6ee4c0c6a188909d86",
+    "FrontendFontPixelsPart12.inc": "81c0aea0bfb0a88b8d32735ad2e0bfc9853211db990c2fdc66009ce2ff400ee0",
+    "FrontendFontPixelsPart13.inc": "76fca79b4024d274601d999f24ee29786477268adfc0f3588a7e2c4d25e01591",
+    "FrontendFontPixelsPart14.inc": "9e98fba5a5a1e2d1f2c298efc902549551fadca6c8da8cf1c8c02e3083258790",
+    "FrontendFontPixelsPart15.inc": "3db574485bf5d75b81d01cb0d498e75dc1a165aff9c869672e2311c1fe4845be",
+    "FrontendFontPixelsPart16.inc": "84e5c569fcef342dadad4bbe2a349cecb823d75994eed323db4580c0167417ce",
+    "FrontendFontPixelsPart17.inc": "5ed65225952b93d7a7b40412f38ad7e2da87b7c16ef41335b7a9368852d2de14",
+    "FrontendFontPixelsPart18.inc": "7b2a7aa291fd13c9e7b6466d721160236971f5f3e2193928a2935f8e1ba9e000",
+    "FrontendFontPixelsPart19.inc": "a55c82651bcf9e6de15165126e25d7bf1a04c5b0664e5d107733ba0c889ee2d1",
+    "FrontendFontPixelsPart20.inc": "059a070e922289ad1670b7f7fb8298e8e3d033d4d5bf403852e7cda5d9afe59e",
+    "FrontendFontPixelsPart21.inc": "2d3439aa53f1e14c0cf4af5e7102ff01a54845e959b07079e992ceef9ca80198",
+    "FrontendFontPixelsPart22.inc": "800a2f98eca0127984ce8e5ebffeecb5b4099f5a86553c2ec1cb4784c7fd0845",
+    "FrontendFontPixelsPart23.inc": "16dc43c9f4cac797832d8386ba633386188f29188c3679fbd0de6aadc7564bb6",
+    "FrontendFontPixelsPart24.inc": "c181d9e44542c07398f22aa397cd9b1f5f3a49c7fade71e45378de871a935bd6",
+    "FrontendFontPixelsPart25.inc": "67948caf6590d8174eff5f708e71b81b84a3540ee2a96d599015fd07f1597df8",
+    "FrontendFontPixelsPart26.inc": "261e2b54eb53ca9211574c8ddd5856db038c1e3877bcff3ffd697f9efed333aa",
+    "FrontendFontPixelsPart27.inc": "0bccdda03bf258bff9a5691a3454bec75b24dc6eff46f3b87f878f4c79aaa145"
   }
 }

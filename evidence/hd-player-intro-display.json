@@ -75,13 +75,13 @@
     "Intermediate entrance frames not yet visually reviewed frame-by-frame.",
     "Alternate softwareintro route not covered.",
     "Mixed original/authored right-side artwork coverage and final semantic art/font/UI/HUD acceptance remain open.",
-    "Lighter/wider approved typography preview remains separate from production artwork.",
     "No physical iPad, performance, battery or LPM60 claim.",
-    "Dedicated Intro per-operation context-loss injection matrix remains open.",
-    "Strict malformed GrTexInfo.format mismatch rejection needs an additional guard; actual observed original selects used the accepted cached path."
+    "Dedicated Intro per-operation context-loss injection matrix remains open."
   ],
   "cloudBuild": false,
   "push": false,
   "paidService": false,
-  "fullGoalActive": true
+  "fullGoalActive": true,
+  "followupEvidence": "evidence/hd-main-menu-word-art-adoption.json",
+  "followupSummary": "Strict caller texture-format guard and malformed-descriptor negative now pass; four representative actual foreign-context loss cases pass. Refined Main word graphics reproducibly adopted. Broader remaining acceptance limits unchanged."
 }

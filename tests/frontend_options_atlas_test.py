@@ -37,12 +37,20 @@ def decode_current():
     return pixels
 
 def fixture():
-    """Reconstruct pinned prior83 from current authored raster, before/after adoption.
+    """Reconstruct the historical83-image input BEFORE the final Main override.
 
-    The eight cropped Main prefixes can be padded with their proved zero tails;
-    the original fixed83-image packing then recreates the independent prior digest.
+    Current pixels already contain the eight complete-word Main graphics. Render
+    only their historical SVG base images with the project's pinned fonts; all
+    other75 images still come byte-for-byte from the current authored atlas.
+    The independent old recipe hashes/geometry below remain unchanged. Separate
+    Main word-art tests verify the later override phase.
     """
     current=decode_current();meta=json.loads((DIR/'generated.json').read_text());assert sha(current)==meta['rasterSha256']
+    historical_main={}
+    with project_fonts():
+        for word in json.loads((DIR/'catalog.json').read_text())['words']:
+            historical_main[word['file']]=rasterize((DIR/word['file']).read_bytes(),word['width']*4,204)
+    assert len(historical_main)==8
     images={};groups=[];rows=[]
     for line in (ROOT/'src/FrontendWordLayout.inc').read_text().splitlines():
         if line.startswith('{'):rows.append(line.rstrip(','))
@@ -55,7 +63,9 @@ def fixture():
         for word,place in zip(catalog,meta[family+'Placements']):
             shared=word.get('sharedFamily')or('location'if word.get('shared')else family);path=DIR/word['file']if family=='main'else DIR/shared/word['file'];key=sha(path.read_bytes())
             x,y,w,h=place['atlas'];raw=b''.join(current[((y+j)*1024+x)*4:((y+j)*1024+x+w)*4]for j in range(h));top=place['sourceCrop'][1]
-            if family=='main':raw+=bytes((204-h)*w*4);h=204
+            if family=='main':
+                raw=historical_main[word['file']];h=204
+                assert len(raw)==w*h*4
             item=dict(width=w,height=h,top=top,rgba=raw)
             if key in images:assert images[key]==item
             images[key]=item

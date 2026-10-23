@@ -140,7 +140,7 @@ static void nfs_player_intro_renderer_other(void){nfs_player_intro_cancel_pendin
 static void nfs_player_intro_renderer_state(void){if(nfs_player_intro_renderer.phase!=NFS_PLAYER_INTRO_TAIL)nfs_player_intro_cancel_pending();}
 static void nfs_player_intro_renderer_upload_begin(TextureInfo*ti){(void)ti;nfs_player_intro_cancel_pending();}
 static void nfs_player_intro_renderer_select(unsigned tmu,uint32_t address,uint32_t evenOdd,const GrTexInfo*info,TextureInfo*ti){
- if(nfs_player_intro_renderer.phase==NFS_PLAYER_INTRO_SLOT0){NfsAudioNativeStamp stamp;if(!info||!ti||ti->hdDigits||!nfs_player_intro_native_stamp(&stamp)||!nfs_player_intro_pass_select(&nfs_player_intro_renderer.pass,&stamp,nfs_logo_provenance.uploads,tmu,address,ti->id,evenOdd,ti->fmt,ti->size,info->smallLod,info->largeLod,info->aspectRatio))nfs_player_intro_cancel_pending();}
+ if(nfs_player_intro_renderer.phase==NFS_PLAYER_INTRO_SLOT0){NfsAudioNativeStamp stamp;if(!info||!ti||info->format!=GR_TEXFMT_ARGB_1555||ti->hdDigits||!nfs_player_intro_native_stamp(&stamp)||!nfs_player_intro_pass_select(&nfs_player_intro_renderer.pass,&stamp,nfs_logo_provenance.uploads,tmu,address,ti->id,evenOdd,ti->fmt,ti->size,info->smallLod,info->largeLod,info->aspectRatio))nfs_player_intro_cancel_pending();}
  else if(nfs_player_intro_renderer.phase==NFS_PLAYER_INTRO_READY||nfs_player_intro_renderer.phase==NFS_PLAYER_INTRO_PRESENTED)nfs_player_intro_cancel_pending();
 }
 static NfsAudioNativeVertex nfs_player_intro_vertex(const GrVertex*v){NfsAudioNativeVertex o;memset(&o,0,sizeof o);if(v){o.x=v->x;o.y=v->y;o.r=v->r;o.g=v->g;o.b=v->b;o.a=v->a;o.oow=v->oow;o.sow=v->tmuvtx[0].sow;o.tow=v->tmuvtx[0].tow;}return o;}

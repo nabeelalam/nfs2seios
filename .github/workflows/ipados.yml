@@ -59,6 +59,7 @@ jobs:
           python3 tests/complete_helper_batching_test.py
           python3 tests/frontend_word_hooks_test.py
           python3 tests/frontend_asset_review_test.py
+          python3 tests/frontend_main_word_art_test.py
           python3 tests/frontend_font_inspection_test.py
           python3 tests/hd_workflow_coverage_test.py
           python3 scripts/setup_secret_scanner.py

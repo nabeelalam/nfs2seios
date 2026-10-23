@@ -240,11 +240,34 @@ def generate_frontend(check=False):
     pixels, rows, opponents = opponents_words(directory,pixels,rows,hashes,text_identity)
     from frontend_options_atlas import options_words
     pixels, rows, options = options_words(directory,pixels,rows,opponents,hashes,text_identity)
+    from frontend_main_word_art import apply_main_word_art
+    main_word_art = apply_main_word_art(pixels, options['mainPlacements'], source_path=directory/'main-word-art.json')
+    # Fit evidence must describe the adopted complete words, not the historical
+    # SVG images used to reproduce the unchanged base packing recipe.
+    options['packingPhase'] = 'before-main-word-art-override'
+    ink = []
+    for word, placement in zip(words, options['mainPlacements']):
+        if word['file'] != placement['file']:
+            raise ValueError('Main word placement identity changed')
+        ax, ay, width, height = placement['atlas']
+        left, top, right, bottom = word['hitBounds']
+        hits = 0
+        for y in range(height):
+            for x in range(width):
+                if pixels[((ay+y)*1024+ax+x)*4+3]:
+                    xx, yy = 168-word['width']+(x+.5)/4, word['originalY']+(y+.5)/4
+                    if not (left < xx < right and top < yy < bottom):
+                        raise ValueError('Adopted Main word ink leaves original interaction bounds')
+                    hits += 1
+        if not hits:
+            raise ValueError('Empty adopted Main word')
+        ink.append(dict(text=word['text'], nontransparentPixels=hits, outsideMatchingHitRectangle=0))
+
     for family in ('main','location','setup','player','opponents'):
         opponents[family+'Placements']=options[family+'Placements']
     location_placements,setup_placements=opponents['locationPlacements'],opponents['setupPlacements']
     layout = 'typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;} NfsFrontWordGlyph;\nstatic const NfsFrontWordGlyph nfs_front_word_glyphs[]={\n'+',\n'.join(rows)+'\n};\n'
-    base_layout_hash = hashlib.sha256(('// SPDX-License-Identifier: MIT\n// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.\n'+layout).encode()).hexdigest()
+    base_layout_hash = hashlib.sha256(('// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus complete Main word graphics; see assets/hud/frontend/MAIN_WORD_ART.md.\n'+layout).encode()).hexdigest()
     from frontend_right_labels import right_label_rows, extend_layout
     right_path = directory/'right-labels/catalog.json'
     right_rows = right_label_rows(json.loads(right_path.read_text()), setup_placements, text_identity)
@@ -256,9 +279,10 @@ def generate_frontend(check=False):
     aggregate, parts = chunked_pixels(encoded)
     dimensions = 'enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2048,NFS_FRONT_FONT_PIXELS=2097152,NFS_FRONT_FONT_RGBA_BYTES=8388608};\nstatic const float nfs_front_font_v_scale=.5f;\n'
     header = dimensions+template.replace('@PIXEL_ARRAY@', aggregate)
-    notice = '// SPDX-License-Identifier: MIT\n// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.\n'
+    notice = '// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus complete Main word graphics; see assets/hud/frontend/MAIN_WORD_ART.md.\n'
     outputs = {'FrontendFontPixels.inc': notice+header, 'FrontendWordLayout.inc': notice+layout, **parts}
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
+                    mainWordArt=main_word_art,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
                     rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2048],
                     rleBytes=len(encoded), glyphPartitions=len(rows)+len(right_rows), inkFit=ink,
@@ -296,6 +320,10 @@ def generate_frontend_layout(check=False):
     directory = ROOT/'assets/hud/frontend'
     receipt = directory/'generated.json'
     metadata = json.loads(receipt.read_text())
+    from frontend_main_word_art import verify_main_word_art
+    verify_main_word_art(metadata['mainWordArt'], source_path=directory/'main-word-art.json')
+    if metadata['mainWordArt']['placements'] != [{k:p[k] for k in ('file','atlas','sourceCrop')} for p in metadata['mainPlacements']]:
+        raise ValueError('Whole-word artwork placements differ from generated atlas')
     # A stale or edited image, catalog, packing recipe or generated header requires
     # full generation. Never silently reuse metadata from a different atlas.
     for relative, expected in metadata['sourceHashes'].items():

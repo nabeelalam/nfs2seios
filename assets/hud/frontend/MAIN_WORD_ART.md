@@ -1,0 +1,9 @@
+# Complete Main menu word artwork
+
+`main-word-art.json` contains eight fixed, complete-word graphics for the Main menu: game setup, location, player one, player two, opponents, RACE, options and exit. They use the locally rendered Haettenschweiler word shapes reviewed by the user, with lighter strokes and two original UI pixels more width. Right alignment, baseline, hit areas and original interaction geometry stay unchanged.
+
+These images are complete words, not a font, alphabet, character atlas or font-file conversion. No Haettenschweiler font file is included or needed to build the project. The original Windows font file was not modified. The source stores the alpha channel of each complete word; RGB is white, including fully transparent pixels. `frontend_main_word_art.py` checks the exact source and image digests before replacing only the eight existing allocations in the final authored atlas.
+
+Microsoft permits graphic images of complete words or phrases to be included in games and apps, and separately prohibits redistribution of its fonts or converting them to bitmap fonts. See the [Windows font FAQ](https://learn.microsoft.com/en-us/typography/fonts/font-faq), especially the question about graphic files in games and apps. These static images follow the complete-word graphics route.
+
+The remaining authored frontend sources use the pinned OFL fonts and licenses in `assets/hud/fonts`. Main word graphics are applied after final packing so that unrelated artwork, original scalar compatibility geometry and the existing 8 MiB texture allocation are preserved. `generate_frontend_pixels.py --check` checks the full generation path; `--layout-only` validates the same fixed art before reusing the generated atlas.

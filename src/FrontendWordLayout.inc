@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.
+// Font artwork: OFL Bebas Neue/Oxanium plus complete Main word graphics; see assets/hud/frontend/MAIN_WORD_ART.md.
 typedef struct {unsigned short cell;float x,y,w,h,left,right,atlasX,atlasY,width,outputX,inkTop,inkHeight;uint64_t word;float outputScaleX,outputScaleY;} NfsFrontWordGlyph;
 static const NfsFrontWordGlyph nfs_front_word_glyphs[]={
 {99,93,126,8,51,0,0.106666666667,102.5,12.25,95,73,0,29.75,UINT64_C(0x0000000000000000)},

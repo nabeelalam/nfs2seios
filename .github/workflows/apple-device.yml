@@ -48,6 +48,7 @@ jobs:
           python3 tests/bundle_resources_test.py
           python3 tests/frontend_word_hooks_test.py
           python3 tests/frontend_asset_review_test.py
+          python3 tests/frontend_main_word_art_test.py
           python3 tests/frontend_font_inspection_test.py
           python3 tests/hd_workflow_coverage_test.py
           python3 tests/guest_copy_semantics_test.py

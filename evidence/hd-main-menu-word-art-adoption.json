@@ -1,0 +1,94 @@
+{
+  "scope": "Reproducible adoption of eight refined whole-word Main menu graphics in the UI branch; remaining UI artwork and physical acceptance open.",
+  "typeface": "Haettenschweiler complete-word graphics",
+  "fontFileDistributed": false,
+  "bitmapAlphabetDistributed": false,
+  "fontRequiredOnBuildHost": false,
+  "sourceArtifact": {
+    "path": "assets/hud/frontend/main-word-art.json",
+    "sha256": "91cd862d1be9e0e8b4193f0b6b4c0f52f977f8575ae54836e850562f7b80bd56",
+    "bytes": 405540,
+    "completeWords": 8,
+    "widthIncreaseOriginalUiPixels": 2,
+    "strokeInsetOriginalUiPixels": 0.25,
+    "rightAnchorAndBaselinePreserved": true
+  },
+  "vendorGuidance": "https://learn.microsoft.com/en-us/typography/fonts/font-faq",
+  "generation": {
+    "fullGenerationCheckPassed": true,
+    "layoutOnlyCheckPassed": true,
+    "selectedProjectSourcePathChecked": true,
+    "everyAdoptedInkPixelInsideOriginalHitBounds": true,
+    "packingAndOriginalScalarGeometryUnchanged": true,
+    "priorPackingProofPhase": "before-main-word-art-override",
+    "onlyEightFinalAllocationsChanged": true,
+    "changedPixels": 271086,
+    "rasterSha256": "dd6030860b1b5ec24c7bce0ec6fa7b495bc88fb61a7fadd802557053a611b6b7",
+    "reviewedPrivatePreviewAtlasPixelsExact": true,
+    "textureBytes": 8388608,
+    "textureBytesIncrease": 0,
+    "generatedHeaderCount": 30,
+    "pythonTestsPassed": 35,
+    "sourceOfHistoricalMainSvgPackingFixture": "Only eight historicalMainSVG images are rerendered to verify the original recipe;75other prior images and all old hash/geometry assertions remain intact.",
+    "generationRunnerNote": "All generation/test steps passed. Final image comparison completed independently with the existing Windows image runtime because WSL lacks Pillow; original runner error preserved."
+  },
+  "build": {
+    "scope": "Current reproducible Main font artwork plus strict Intro format guard; physical acceptance unverified",
+    "binarySha256": "09c8bfdb320def88c7b1993d700bf01ca33d38b407c5ef10cf6f4dc38a45a9d6",
+    "observerSha256": "f25f68516d7c4b307eeadffee4a0db2098e025cba0fc3d70c764a92623b46bbf",
+    "oneRendererCompileUnit": true,
+    "sourceInputsStable": true,
+    "usedAllCurrentGeneratedFontHeaders": true,
+    "generatedFontHeaderCount": 30,
+    "reusedSevenCpuUnitsUnchanged": true,
+    "reusedReadOnlyProbeObjectUnchanged": true,
+    "maintained74ObjectsUnchanged": true,
+    "rendererInputCount": 163,
+    "seconds": 122.45,
+    "cloud": false
+  },
+  "transitionFollowup": {
+    "strictActualDescriptorArgb1555Guard": true,
+    "malformedDescriptorNegativePassed": true,
+    "optimizedAndAsanUbsanGlesFixturePassed": true,
+    "glesAssertionsPerMode": 7650,
+    "representativeActualForeignEglContextLossPoints": [
+      "begin capture",
+      "tail mirror",
+      "display selection",
+      "retirement deletion"
+    ],
+    "noForeignGlTouchesOrStateDrift": true,
+    "nativeColorDepthPreserved": true,
+    "exhaustivePerOperationContextLossMatrix": false
+  },
+  "actualCombinedRun": {
+    "passed": true,
+    "nativeWindowDimensions": [
+      2186,
+      1640
+    ],
+    "bothPlayersAll21IntroFrames": true,
+    "gpuPhaseEvents": 168,
+    "carChangeRestorationAndMainReturn": true,
+    "quit": "WM_DELETE_WINDOW,status0",
+    "copiedConfigAndArtworkRestored": true,
+    "ownedGameAndDisplayTerminal": true,
+    "leaseAbsent": true,
+    "resultSha256": "b3cbf31ed5fdc8c323d06afe43055d910add80e088c3f08b6d12f48d73efbfaa",
+    "gpuEventsSha256": "f1ddbe872f33772eca11fa8199045b0d7efb7fe073756d04d9c0b5d223a40bd8",
+    "failedRun01": "Cleanly exited/restored after old-font visual reference mismatched; failure preserved. Retry used independently validated refined-font captures and unchanged thresholds.",
+    "newReferenceScoreAgainstRun01Main": 1.0,
+    "referenceCorrectionReceiptSha256": "2de2aeabb85b1fd288c84962afa5f1cb028f55919597471a5685a5448200cd64"
+  },
+  "limitations": [
+    "Refined weight and spacing still open to further user critique.",
+    "Other font roles, remaining semantic artwork/UI/HUD and intermediate animation visual review remain open.",
+    "No new physical iPad, FPS, battery or LPM60 claim."
+  ],
+  "capturesAndOriginalDataPublished": false,
+  "cloudBuild": false,
+  "push": false,
+  "paidService": false,
+  "fullGoalActive": true
+}

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Font artwork: pinned Bebas Neue/Oxanium, SIL OFL; see assets/hud/fonts.
+// Font artwork: OFL Bebas Neue/Oxanium plus complete Main word graphics; see assets/hud/frontend/MAIN_WORD_ART.md.
 enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2048,NFS_FRONT_FONT_PIXELS=2097152,NFS_FRONT_FONT_RGBA_BYTES=8388608};
 static const float nfs_front_font_v_scale=.5f;
 static const unsigned char nfs_front_font_rle[]={
@@ -26,6 +26,11 @@ static const unsigned char nfs_front_font_rle[]={
 #include "FrontendFontPixelsPart20.inc"
 #include "FrontendFontPixelsPart21.inc"
 #include "FrontendFontPixelsPart22.inc"
+#include "FrontendFontPixelsPart23.inc"
+#include "FrontendFontPixelsPart24.inc"
+#include "FrontendFontPixelsPart25.inc"
+#include "FrontendFontPixelsPart26.inc"
+#include "FrontendFontPixelsPart27.inc"
 };
 
 static int nfs_front_font_expand(unsigned char *rgba,size_t capacity){
