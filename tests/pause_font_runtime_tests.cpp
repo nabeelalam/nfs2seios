@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Authored artwork and captured UV geometry only; no original game pixels.
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdio>
@@ -88,6 +89,30 @@ static void exact_uv_selector(){
  CHECK(complete==24 && rejected==552);
 }
 
+static void exact_header_selector(){
+ // Independently reconstruct the original half-pixel lower / integer upper formula.
+ const unsigned source[2][4]={{0,229,130,29},{209,227,38,29}};
+ unsigned accepted=0;
+ for(unsigned label=0;label<2;++label){
+  const auto &r=source[label];
+  const float b[4]={(r[0]+.5f)*255/256,(r[1]+.5f)*255/256,float(r[0]+r[2])*255/256,float(r[1]+r[3])*255/256};
+  for(unsigned omitted=0;omitted<4;++omitted){
+   std::array<unsigned,3> order{};unsigned n=0;for(unsigned k=0;k<4;++k)if(k!=omitted)order[n++]=k;
+   do {
+    std::array<float,6> uv{};for(unsigned i=0;i<3;++i){uv[i*2]=b[(order[i]&1)?2:0];uv[i*2+1]=b[(order[i]&2)?3:1];}
+    const auto before=uv;CHECK(nfs_pause_triangle(uv.data())==int(73+label));CHECK(uv==before);++accepted;
+    auto bad=uv;bad[0]+=.02f;CHECK(!nfs_pause_triangle(bad.data()));
+    bad=uv;bad[2]=bad[0];bad[3]=bad[1];CHECK(!nfs_pause_triangle(bad.data()));
+    bad=uv;bad[1]=(b[1]+b[3])*.5f;CHECK(!nfs_pause_triangle(bad.data()));
+    for(float invalid:{std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity()})for(unsigned i=0;i<6;++i){bad=uv;bad[i]=invalid;CHECK(!nfs_pause_triangle(bad.data()));}
+   }while(std::next_permutation(order.begin(),order.end()));
+  }
+ }
+ CHECK(accepted==48);
+ // Cropping the over-range title to atlas row256 is not the captured complete triangle.
+ const float cropped[6]={.498046875f,228.603515625f,129.4921875f,228.603515625f,129.4921875f,255.f};CHECK(!nfs_pause_triangle(cropped));
+}
+
 static void unauthenticated_source_rejection(){
  // An authored test buffer cannot establish the original game's source identity.
  // Never replace/mock the production original digest to manufacture a positive match.
@@ -111,6 +136,6 @@ static void unauthenticated_source_rejection(){
 }
 
 int main(){
- authored_storage();exact_uv_selector();unauthenticated_source_rejection();
+ authored_storage();exact_uv_selector();exact_header_selector();unauthenticated_source_rejection();
  std::puts("PASS authored pause storage/digest/canaries, 24 captured-cell triangles/552 malformed negatives and unauthenticated-source fallback; original-source positive match requires private game evidence");
 }

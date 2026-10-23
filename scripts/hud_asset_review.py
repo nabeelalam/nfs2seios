@@ -80,6 +80,9 @@ def reviewed_font_file(name,data):
     return name in FONT_FILES and hashlib.sha256(data).hexdigest()==FONT_FILES[name]
 
 def reviewed_remaster_svg(name,data):
+    if name in ('assets/hud/pause/header-title.svg','assets/hud/pause/header-caution.svg'):
+        from generate_pause_header_pixels import reviewed_pause_header_source
+        return reviewed_pause_header_source(name,data)
     options_match=re.fullmatch(r'assets/hud/frontend/options/([a-z0-9-]+)\.svg',name)
     options_art=options_match is not None and options_match[1] in OPTIONS_WORDS
     opponents_match=re.fullmatch(r'assets/hud/frontend/opponents/([a-z0-9-]+)\.svg',name)

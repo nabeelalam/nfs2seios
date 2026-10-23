@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "scope": "Classic English PAUSE title and repeated caution-header material; UI branch only",
+  "artwork": {
+    "originalYellowPlateAndCautionStripeCompositionRetained": true,
+    "newVectorBevelsAndGradientsAuthored": true,
+    "titleFont": "Pinned OFL Michroma; broad squared lettering",
+    "originalGamePixelsResampledOrIncluded": false,
+    "proprietaryFontFileIncluded": false,
+    "existingSixBodyWordPixelsAndAllocationsUnchanged": true,
+    "originalPurpleFillBordersVolumeSpritesClippingPositionsTintAndTriangleOrderPreserved": true
+  },
+  "renderer": {
+    "authenticatedOriginalPauseSource": 40,
+    "finiteSelectors": [
+      73,
+      74
+    ],
+    "frontendSelector72Unchanged": true,
+    "auxiliaryAtlasSize": [
+      1024,
+      1024
+    ],
+    "titleRectangle": [
+      240,
+      398,
+      760,
+      510
+    ],
+    "cautionRectangle": [
+      768,
+      398,
+      920,
+      510
+    ],
+    "numericFilteringRowsPreserved": [
+      396,
+      397
+    ],
+    "neighbourLetterFilteringRowsPreserved": [
+      510,
+      511
+    ],
+    "texelCentreClamped": true,
+    "originalOverrangeTitleSourceUvPreserved": true,
+    "additionalTextureAllocationDrawPassOrPerFrameUpload": false
+  },
+  "validation": {
+    "optimizedRegisteredChecks": 11,
+    "addressAndUndefinedSanitizerChecks": 6,
+    "actualProductionFragmentIncludeExecutedInGles": true,
+    "headerFractionalEdgeOvershootPerspectiveTintAndBasicPrecisionFallbackChecked": true,
+    "sixBodyLabelsNumericFrontendAndTransparentCropRegressionsChecked": true,
+    "neighbourLetterBoundaryJitterComparedAgainstUntouchedGpuAtlas": true,
+    "malformedSecondStreamRejectedBeforeAnyWrite": true,
+    "fullPlaneCanariesAndAllFourGutterRowsChecked": true,
+    "sourceFontRasterAndReceiptRegenerationChecked": true
+  },
+  "actualLocalGame": {
+    "splitScreenSelectedThroughOriginalSetup": true,
+    "ordinaryPauseFramesReconciled": 2,
+    "nativeTrianglesPerFrame": 64,
+    "queuedTrianglesPerFrame": 64,
+    "totalQueuedTriangles": 128,
+    "titleTrianglesAcrossBothFrames": 4,
+    "cautionTrianglesAcrossBothFrames": 56,
+    "independentUvAndSourceAllocationSelectorPredictions": true,
+    "originalGeometryColorsUvTextureDigestClipAndFifoJoinsReconciled": true,
+    "continueRestartContinueSelectionAndResumeExercised": true,
+    "screenshotInspectedForFitSeamsClassicAppearanceAndTranslucentPanel": true,
+    "cleanShutdownAndCopiedSettingsBrightnessArtworkRestored": true,
+    "protectedPreexistingWorkUnchanged": true,
+    "observerSha256": "f2690aa26128e7265af0f892b8d9202b2e8105db6734071a5d22d1515ab820be"
+  },
+  "evidenceDigests": {
+    "checks-opt-02/receipt.json": "d84ac4c6d449f8747222342e0f08612789ff15a6ade4bc8216330be35976eb83",
+    "checks-san-02/receipt.json": "f05d4eeca9d2064b0b273a1b96a2b4c1c849c3aabc35f5f0a69919641ae20927",
+    "game-build-02/build-receipt.json": "7d790e1f7d8cf0d33595b723144fe0526093f50e454d8e652e4d90e3a09ea850",
+    "actual-split-02/result.json": "27d4bb5cf86a0f79f8f616a183e407757b876e9fa75eb439b03760ed5119c4ec",
+    "actual-header-reconciliation.json": "6b1147b7a2bc5a476d42bbf909697bbfc8318225f0e4d64b3ba66e37b6d2e7ee"
+  },
+  "limitations": [
+    "Local Linux observation build; no new cloud build, IPA or physical iPad appearance/FPS/battery acceptance.",
+    "Two ordinary paused frames; confirmation dialogs and alternate languages are not covered.",
+    "Original volume-bar caps remain pending their own remaster.",
+    "Fog-table values and actual GL sampler state were not independently queried."
+  ]
+}

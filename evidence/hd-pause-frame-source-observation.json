@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "scope": "Original ordinary-pause title, caution header, volume sprites and frame source-to-renderer observation",
+  "implementationActivated": false,
+  "runs": [
+    {
+      "modeSelectedThroughOriginalMenu": "single player",
+      "frames": 2,
+      "rawMode": 0,
+      "originalSourceEventsPerFrame": 33,
+      "nativeTrianglesPerFrame": 64,
+      "queuedTrianglesPerFrame": 64,
+      "sourceAndRendererOwnerOrderDescriptorViewOffsetColorUvTextureDigestAndClipJoinsVerified": true,
+      "pauseSelectionAndResumeExercised": true,
+      "cleanShutdownAndCopiedSettingsArtworkRestoration": true
+    },
+    {
+      "modeSelectedThroughOriginalMenu": "split screen",
+      "frames": 2,
+      "rawMode": 1,
+      "originalSourceEventsPerFrame": 33,
+      "nativeTrianglesPerFrame": 64,
+      "queuedTrianglesPerFrame": 64,
+      "sourceAndRendererOwnerOrderDescriptorViewOffsetColorUvTextureDigestAndClipJoinsVerified": true,
+      "pauseSelectionAndResumeExercised": true,
+      "cleanShutdownAndCopiedSettingsArtworkRestoration": true
+    }
+  ],
+  "inventoryPerFrame": {
+    "cautionHeaderTiles": 14,
+    "pauseTitle": 1,
+    "volumeBackgroundSprites": 2,
+    "existingAuthoredBodyLabelSprites": 6,
+    "untexturedFillBorderAndSliderQuads": 9,
+    "originalClip": [
+      64,
+      48,
+      576,
+      432
+    ]
+  },
+  "originalSampling": {
+    "titleSourceRectangle": [
+      0,
+      229,
+      130,
+      29
+    ],
+    "headerTileSourceRectangle": [
+      209,
+      227,
+      38,
+      29
+    ],
+    "atlasSize": [
+      256,
+      256
+    ],
+    "sourceRectanglePastAtlasEdgeRetained": true,
+    "nativeHalfTexelAnd255ScaleThenQueued256DivisionReconciled": true,
+    "clampToEdgeConfiguredInOriginalRenderer": true,
+    "actualGlSamplerStateIndependentlyQueried": false,
+    "unusedInheritedRaceTextureNotMisidentifiedAsPauseAtlas": true,
+    "eachConsumedPauseSpriteBindingRequiredExactPauseDigest": true,
+    "sixExistingBodySelectors50Through55Preserved": true
+  },
+  "observationBuild": {
+    "compiledUnits": 2,
+    "maxCompilerWorkers": 2,
+    "all505SourceInputsAndLinkInputsStable": true,
+    "productionUnchanged": true,
+    "newGlCallsDrawsOrFlushes": 0,
+    "observerSha256": "4e8a14d62b17de08a09e948520f1342c548a4ecfc355b354abbcdd4e86405f13",
+    "consumedSourceHelperSha256": "952d8a5016eb364b839d841b6613c7c45254f558cb539aa026735072be273a0c",
+    "preparationReceiptEarlierHelperHashSupersededByPinnedCompileInput": true
+  },
+  "privateEvidenceDigests": {
+    "pause-source-renderer-inventory.json": "099d5009f7055cfda1dbad45952810e4a43736d99a5588d1bb93fb7c7f3e134a",
+    "observer-build/build-receipt.json": "25352b073587a765e8c5d1ef1a5125d405fb62682a1370111dd24ebd3654134a",
+    "observer-build/compile-plan.json": "0804f5e59ad9e51f3dd892e8b8bd374f2b88af533a2c88540c737bf8bdc4146c",
+    "actual-single-01/result.json": "bd7a95045a2a6dd71f02ecbc4249dc6ad1643cf978254d1b6ed045cd045ca772",
+    "actual-split-01/result.json": "2e22ad62fc0e882295231819220e73c1afd4900df1b429f65f9fbe1fc0839dde"
+  },
+  "limitations": [
+    "Two ordinary-pause frames per mode; confirmation dialogs are separate.",
+    "Source/FIFO/native-array observation is not independent fragment raster or physical-device acceptance.",
+    "Original fog-table values were not independently observed.",
+    "No new iPad build, performance or battery claim."
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="112" preserveAspectRatio="none" viewBox="0 0 130 29">
+<defs><linearGradient id="plate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffec62"/><stop offset=".12" stop-color="#fce12d"/><stop offset=".48" stop-color="#ecd125"/><stop offset=".56" stop-color="#e3c21b"/><stop offset="1" stop-color="#c5a31c"/></linearGradient></defs>
+<path d="M0 0H130V29H0Z" fill="url(#plate)"/>
+<path d="M.5 28.5V.5H129.5" fill="none" stroke="#fff291" stroke-width="1"/>
+<path d="M129.5 .5V28.5H.5" fill="none" stroke="#9b7b12" stroke-width="1"/>
+<g transform="translate(7.5 22) scale(.96 1)"><text x="0" y="0" font-family="Michroma" font-size="24" letter-spacing=".45" fill="#202329" stroke="#202329" stroke-width=".45" stroke-linejoin="round" paint-order="stroke fill">PAUSE</text></g>
+</svg>

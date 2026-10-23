@@ -32,6 +32,9 @@
 "if(vTexCoord.z>37.5 && vTexCoord.z<38.5 && uHdCellLayout>.5)hdCoord=(vTexCoord.st/vTexCoord.q)*vec2(0.05266106442577031,0.06588235294117648)+vec2(0.6189313616071429,0.55888671875);\n"
 "if(vTexCoord.z>68.5 && vTexCoord.z<69.5){hdCoord=(vTexCoord.st/vTexCoord.q)*vec2(1.011644042232277,1.202371181030552)+vec2(0.07664513221153846,-0.5059842841569767);hdCoord=clamp(hdCoord,vec2(0.07861328125,0.18408203125),vec2(0.20654296875,0.28466796875));}\n"
 "if(vTexCoord.z>70.5 && vTexCoord.z<71.5){vec2 p=clamp((hdCoord*256.0-vec2(159.0,130.0)*(255.0/256.0))/(50.0*255.0/256.0),vec2(0.0),vec2(1.0))*221.0;float bank=step(110.5,p.y);hdCoord=(vec2(248.5+222.0*bank,188.5-110.0*bank)+p)/1024.0;}\n"
+// Original complete-quad UVs -> authored allocation texel centres; never sample adjacent rows.
+"if(vTexCoord.z>72.5 && vTexCoord.z<73.5){vec2 p=clamp((hdCoord*256.0-vec2(0.5,229.5)*(255.0/256.0))/(vec2(129.5,28.5)*(255.0/256.0)),vec2(0.0),vec2(1.0));hdCoord=(vec2(240.5,398.5)+p*vec2(519.0,111.0))/1024.0;}\n"
+"if(vTexCoord.z>73.5 && vTexCoord.z<74.5){vec2 p=clamp((hdCoord*256.0-vec2(209.5,227.5)*(255.0/256.0))/(vec2(37.5,28.5)*(255.0/256.0)),vec2(0.0),vec2(1.0));hdCoord=(vec2(768.5,398.5)+p*vec2(151.0,111.0))/1024.0;}\n"
 		"vec4 hd = texture2D(uHdTextureSampler, hdCoord);if(pauseOutside)hd=vec4(0.0);\n"
 		"if (vTexCoord.z > 0.5) sampled = hd;\n"
 		"#else\n"

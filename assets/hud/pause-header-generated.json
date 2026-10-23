@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "originalGamePixelsIncluded": false,
+  "generatedFrom": "Digest-pinned authored classic yellow plate/caution vectors and pinned Michroma",
+  "atlasSize": [
+    1024,
+    1024
+  ],
+  "preservedNumericGutterRows": [
+    396,
+    397
+  ],
+  "preservedGlyphGutterRows": [
+    510,
+    511
+  ],
+  "entries": [
+    {
+      "source": "assets/hud/pause/header-title.svg",
+      "sourceSha256": "3fad7f2f5c2bdddafee5e1f977cda85b0551bd68a5422d5a876735dc0a970686",
+      "rectangle": [
+        240,
+        398,
+        760,
+        510
+      ],
+      "rgbaBytes": 232960,
+      "rgbaSha256": "c97df3b14af9efc67fb921f4864a3f94308af30dba6a932d31643783148f3884",
+      "rleBytes": 20358,
+      "rleSha256": "1213e0fb60ed255eead68b176a67c934995efdd186679c9d8ccd5f2bf243afc6"
+    },
+    {
+      "source": "assets/hud/pause/header-caution.svg",
+      "sourceSha256": "46c47dc4490e8ef15369c3f4b3dd4f330c36823335fb4197cda84aeae0c31e7d",
+      "rectangle": [
+        768,
+        398,
+        920,
+        510
+      ],
+      "rgbaBytes": 68096,
+      "rgbaSha256": "68dd9793c1c1327af0b682e3fe1e293a2a2c99bc27f28ef12b13e068a3e89de6",
+      "rleBytes": 8124,
+      "rleSha256": "66f7b055ab6046a012c7d210f9c5b3d10c017ba2ab8c858cb3fb9c185fd1d0cf"
+    }
+  ],
+  "headerSha256": "43bb0130a333c1470a103da93a80346119e28701a5a4a744e544c5c357a1d780"
+}
