@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Genuine original Controls child navigation, assignment abort, steering restoration and feedback availability; child artwork remains original",
+  "observerBinarySha256": "4efa5ebef4c5af0c02c89cc69fe4452ab729ea3d234928ade1220de9b484aa00",
+  "privateLogSha256": "6c79c5f62c664ac5806a2eaa3c583e784f755f57b5829f7c210e7b049ea7ee28",
+  "privateResultSha256": "48dadb6688dd92004f7e1033eb1b23896ad6a950520110d80087706b5ad46efd",
+  "sourceInputFiles": 429,
+  "sourceAndReusedInputsStable": true,
+  "originalInputOnly": true,
+  "forcedGuestStateWrites": false,
+  "setup": {
+    "actualFormSymbol": 5059740,
+    "resource": 275,
+    "bindingBytes": 4,
+    "assignmentModeBefore": 1,
+    "assignmentModeAfter": 0,
+    "escapePreservedExactBinding": true,
+    "nativeControllerBindingRuntimeClaimed": false
+  },
+  "steering": {
+    "before": 0,
+    "changed": 1,
+    "restored": 0
+  },
+  "childSourceFramesWithoutControlsReplacement": 4,
+  "freshControlsNativePassesAfterEachChild": 4,
+  "verifiedLandingReturns": 3,
+  "feedbackAvailability": {
+    "resource": 769,
+    "availability": 0,
+    "formSymbol": 5060552,
+    "selected": 2,
+    "original405C70Returned": true
+  },
+  "privateCaptureHashes": {
+    "setup-child.bmp": "0d19c60d0664ecd101946c7b2a91d1323369b66f4c2ace7b2e02ef8440b54e70",
+    "setup-after-assignment-cancel.bmp": "dce5e035ee193b7fc3ccae1f2f45e0d02a237e1276b0c61697baebada45e4df8",
+    "steering-child.bmp": "fa497c5095c2cc4f78e6c7f8ab798b3abf2021911ef003398055e3a6e4db1a86",
+    "steering-changed.bmp": "0436180a1cdf14537ae45c6299771b5e0802f6b2b53dbb4b5275263029ac034d",
+    "controls-after-setup.bmp": "5455fe25403331eb509f7a5611bd44d60fde9840323da75678b03c456fa88086",
+    "controls-after-steering.bmp": "c2db160408bebf34b50b1c48b0ae317436834d9a7ad41a1fb19a047ec4d565e1",
+    "controls-after-feedback-unavailable.bmp": "31cd45cbd1535f6f7cf0e728a64c5fc51ace9f4f7be4903a956a177d23de242f",
+    "feedback-availability-modal.bmp": "123537649ef39cbbce1872b7be68c31135357432c68d4d296a54f8bb2dc4d21a"
+  },
+  "restoration": {
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "brightnessConfigRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedGamePids": [],
+    "displayStoppedAfterTerminalAndRestore": true
+  },
+  "limits": {
+    "childHdArtworkComplete": false,
+    "forceFeedbackHardwareWorkingClaimed": false,
+    "actualControllerRemapOnIpadClaimed": false,
+    "normalEnginePreparationRegistered": false,
+    "physicalIpadAcceptance": false,
+    "newIpa": false,
+    "cloud": false
+  },
+  "feedbackDismissal": {
+    "acceptedRetryKey": "Space",
+    "priorEscapeExitedOriginalParent": true,
+    "priorLandingWaitFailedAsExpected": true,
+    "priorResourcesRestored": true,
+    "priorPrivateResultSha256": "a17988724c1c64c3d7c0375884c46eeaeda7141fce3ef9d7aa2331a6562d881d",
+    "runtimeInputBehaviorChanged": false
+  },
+  "evidenceInterpretation": {
+    "structuredChildAndModalEventsAreAuthoritative": true,
+    "inheritedLandingOnlyManifestPathAndFinalHistoryDescriptionAreOutdated": true,
+    "actualRoute": "Main -> Options -> Controls -> setup assignment enter/Escape -> steering Right/Left -> unavailable feedback/Space -> Controls -> Options -> Main",
+    "assignmentWasOpenedAndCancelledWithoutChangingBinding": true,
+    "actualChildArtworkWasVisuallyReviewedAndRemainsOriginal": true
+  },
+  "parentVisualReview": [
+    "original setup child",
+    "assignment prompt",
+    "feedback device-not-found modal"
+  ]
+}
