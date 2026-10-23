@@ -1,0 +1,110 @@
+{
+  "scope": "Actual original Controls landing dialog observed; no remaster activation",
+  "observationPassed": true,
+  "path": [
+    "Main",
+    "Options",
+    "Controls landing",
+    "Options",
+    "Main"
+  ],
+  "sameVerifiedExistingGameBinary": true,
+  "newGameBuild": false,
+  "originalInputOnly": true,
+  "controlAssignmentsRequested": false,
+  "directGuestWrites": false,
+  "nativeHostCaptureDimensions": [
+    2186,
+    1640
+  ],
+  "observedControlsCaptures": 3,
+  "landingForm": "off_4D37C8",
+  "parentOptionsDescriptor": "dword_4D3A08",
+  "parentOptionsResource": 129,
+  "actualNestedOwner": "4101C0",
+  "originalSharedTextTail": "40FA90",
+  "staticActiveSourceDescriptors": 5,
+  "resources": [
+    {
+      "resource": 325,
+      "semanticText": "CONTROLS",
+      "fontSize": 18,
+      "normalColorIndex": 5,
+      "selectedColorIndex": 5,
+      "originalAlignmentPolicy": 5,
+      "anchor": 416,
+      "top": 105
+    },
+    {
+      "resource": 328,
+      "semanticText": "setup",
+      "fontSize": 18,
+      "normalColorIndex": 1,
+      "selectedColorIndex": 2,
+      "originalAlignmentPolicy": 4,
+      "anchor": 416,
+      "top": 170
+    },
+    {
+      "resource": 329,
+      "semanticText": "steering sensitivity",
+      "fontSize": 18,
+      "normalColorIndex": 1,
+      "selectedColorIndex": 2,
+      "originalAlignmentPolicy": 4,
+      "anchor": 416,
+      "top": 196
+    },
+    {
+      "resource": 330,
+      "semanticText": "force feedback",
+      "fontSize": 18,
+      "normalColorIndex": 1,
+      "selectedColorIndex": 2,
+      "originalAlignmentPolicy": 4,
+      "anchor": 416,
+      "top": 224
+    },
+    {
+      "resource": 331,
+      "semanticText": "DONE",
+      "fontSize": 18,
+      "normalColorIndex": 1,
+      "selectedColorIndex": 2,
+      "originalAlignmentPolicy": 4,
+      "anchor": 416,
+      "top": 267
+    }
+  ],
+  "adjacentCancelResource332ClaimedActive": false,
+  "currentRendering": "Original-resolution landing screen fallback; top-level Options controls label is already authored",
+  "maintainedControlsSceneOrWordRoutePresent": false,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "privateEvidenceDigests": {
+    "result.json": "3d752c4cb4c12279f55f98b27dec98bad8cfdb7d65c167780a0a6f3437bb186b",
+    "run.log": "cbfb3d12e216e0e5f20a5f840e7d67e70e504a8d6c51356cfb46a0c302128ed8",
+    "controls-observed-00.bmp": "4e840229af0eadbbb6bce39237062442ac5b805b6e5997eae4ebfa13c9b4a98e",
+    "controls-observed-01.bmp": "becd9326d60fd09a2190a30291940440f0522fc00a5b9954856083f494854a07",
+    "controls-observed-02.bmp": "44d0be00daa467691bc382a9738cea6b7506d8c95bac6613725e4248b8cb29b5",
+    "options-after-controls.bmp": "0c9113431833a1a12d13a3e583171dd0f91358a280933e3d974d287d33655093",
+    "main-after-controls-00.bmp": "c88991dfac42141b5fdcab2f5ad5f01fc43f25c6595f1026d34a44975a440e50"
+  },
+  "missingBeforeActivation": [
+    "Exact current reset/sidebar original byte/LUT/lifetime evidence under the Controls owner.",
+    "Complete original software text commands, shadow/normal ordering, resolved resource and measured width evidence.",
+    "Controls-specific current native upload/select/triangle presentation proof.",
+    "Dedicated typed Controls source policy and locally validated background/static-word publication."
+  ],
+  "remainingScope": [
+    "Controls setup/remapping child",
+    "Steering-sensitivity child",
+    "Force-feedback child",
+    "Other unfinished dialog/artwork paths",
+    "Physical iPad UI/performance/battery acceptance"
+  ],
+  "limitations": [
+    "Appearance capture and current source audit only; no complete Controls software-packet or native compositing proof is claimed.",
+    "Observed keyboard/default local profile; no physical controller reassignment test.",
+    "No UI replacement, input change, cloud build, IPA, push or paid service."
+  ]
+}
