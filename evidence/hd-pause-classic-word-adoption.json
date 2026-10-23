@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "scope": "Six fixed classic metallic pause word graphics; original layout and interaction preserved",
+  "originalGamePixelsIncluded": false,
+  "fontFileIncluded": false,
+  "geometryChanged": false,
+  "rasterSha256": "cf28531359fe430bd88960bc559dd439987333d91d0a02e9c94289f425c9e603",
+  "rasterBytes": 1081344,
+  "rleBytes": 606852,
+  "generatedPartCount": 10,
+  "changedPixels": 142674,
+  "outsideAllocationsUnchanged": true,
+  "sourceCatalogUnchanged": true,
+  "registeredChecks": {
+    "optimizedPassed": 3,
+    "asanUbsanPassed": 3,
+    "pythonSourceCases": 6,
+    "pythonChunkCases": 3,
+    "cppPositiveTriangles": 24,
+    "cppRejectedTriangles": 552
+  },
+  "localBuild": {
+    "productionSha256": "7b064a96e5f314b899ca635f8d48ce7a93543e4f0edf2a2d756aed2c34b708a7",
+    "singleRendererCompile": true,
+    "unchangedEngineObjectsReused": true,
+    "generatedArtworkHeadersInCompilerClosure": 92
+  },
+  "localGameplay": {
+    "singlePlayerPauseHighlightAndResumeObserved": true,
+    "allSixWordsVisible": true,
+    "cleanShutdown": true,
+    "copiedResourcesRestored": true,
+    "splitScreenPauseHighlightAndResumeObserved": true,
+    "stationaryRaceSmokeOnly": true,
+    "completedRaceClaim": false
+  },
+  "physicalIPadAcceptance": false,
+  "performanceClaim": false,
+  "cloudBuild": false
+}

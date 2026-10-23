@@ -6,6 +6,8 @@ from pathlib import Path
 from hud_asset_review import ROOT,reviewed_remaster_svg
 from hud_font_environment import project_fonts
 from rasterize_hud_svg import rasterize
+from pause_word_art import apply_pause_word_art
+from pause_pixel_chunks import chunked_pause_pixels
 
 ASSETS=ROOT/'assets/hud'
 
@@ -27,8 +29,8 @@ def source(path,w,h,sources):
     sources[name]=hashlib.sha256(data).hexdigest()
     return rasterize(data,w,h)
 
-def generate(kind):
-    hashes={}
+def generate(kind, *, outputs=None):
+    hashes={};extra={};fixed=None
     with project_fonts():
         if kind in ('timing','speed'):
             catalog=json.loads((ASSETS/(kind+'-font.json')).read_text())
@@ -62,21 +64,33 @@ def generate(kind):
                 for y in range(ch):
                     at=((ay-640+y)*704+ax-320)*4
                     rgba[at:at+cw*4]=pixels[((top+y)*w+left)*4:((top+y)*w+right)*4]
+            fixed=apply_pause_word_art(rgba,catalog,source_dir=ASSETS/'pause')
+            hashes.update(fixed['sourceHashes'])
             encoded=rle(rgba);template=json.loads((ROOT/'scripts/hud_templates/PauseFontPixels.json').read_text())['template']
-            text=template.replace('@PIXEL_ARRAY@',array('nfs_pause_pixels_rle',encoded,decimal=True).rstrip())
+            aggregate,extra=chunked_pause_pixels(encoded)
+            text=template.replace('@PIXEL_ARRAY@',aggregate)
         else:raise ValueError('Unknown remaster family')
     manifest=dict(generatedFrom='Reviewed existing-font/brand SVG artwork',originalGamePixelsIncluded=False,
         sourceHashes=hashes,rasterSha256=hashlib.sha256(rgba).hexdigest(),rasterBytes=len(rgba),rleBytes=len(encoded),
         headerSha256=hashlib.sha256(text.encode()).hexdigest())
+    if fixed is not None:
+        manifest['fixedWordArt']=fixed
+        manifest['generatedFrom']='Reviewed historical layout with six fixed authored metallic word graphics'
+        manifest['partHashes']={name:hashlib.sha256(value.encode()).hexdigest() for name,value in extra.items()}
+    if outputs is not None:outputs.update(extra)
     return text,manifest
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
     for kind,name in [('timing','TimingFontPixels.inc'),('speed','SpeedFontPixels.inc'),('pause','PauseFontPixels.inc'),('logo','LogoPixels.inc')]:
-        text,meta=generate(kind);header=ROOT/'src'/name;receipt=ASSETS/(kind+'-generated.json')
+        extra={};text,meta=generate(kind,outputs=extra);receipt=ASSETS/(kind+'-generated.json')
+        files={name:text,**extra}
+        if any(len(value.encode())>=1048576 for value in files.values()):raise ValueError('Generated remaster source exceeds file limit')
         if args.check:
-            if header.read_text()!=text or json.loads(receipt.read_text())!=meta:raise ValueError('Generated remaster artwork differs: '+kind)
-        else:header.write_text(text);receipt.write_text(json.dumps(meta,indent=2)+'\n')
+            if any((ROOT/'src'/filename).read_text()!=value for filename,value in files.items()) or json.loads(receipt.read_text())!=meta:raise ValueError('Generated remaster artwork differs: '+kind)
+        else:
+            for filename,value in files.items():(ROOT/'src'/filename).write_bytes(value.encode())
+            receipt.write_bytes((json.dumps(meta,indent=2)+'\n').encode())
     from generate_surface_pixels import generate_surface_pixels
     generate_surface_pixels(args.check)
     from generate_label_pixels import generate_labels

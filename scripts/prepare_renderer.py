@@ -8,6 +8,7 @@ import subprocess
 import re
 from prepare_engine import ROOT, prepare
 from frontend_pixel_limits import FRONTEND_PIXEL_MAX_PARTS
+from pause_pixel_chunks import pause_pixel_parts
 
 SDL_PIN = "829a65d769d935c4852f8159e964312c0957260a"
 SDL_TAG = "release-3.4.18"
@@ -314,7 +315,8 @@ def prepare_hd_atlas(text, dest):
     if depth:raise ValueError('Unterminated original frame-commit entry')
     text=text[:close-1]+' nfs_front_frame_committed();\n'+text[close-1:]
     font_parts=frontend_pixel_parts((ROOT/'src/FrontendFontPixels.inc').read_text())
-    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendTextContext.h', 'FrontendFontPixels.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc',*font_parts):
+    pause_parts=pause_pixel_parts((ROOT/'src/PauseFontPixels.inc').read_text())
+    for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendTextContext.h', 'FrontendFontPixels.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc',*font_parts,*pause_parts):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
 

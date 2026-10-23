@@ -1,5 +1,5 @@
 {
-  "generatedFrom": "Reviewed existing-font/brand SVG artwork",
+  "generatedFrom": "Reviewed historical layout with six fixed authored metallic word graphics",
   "originalGamePixelsIncluded": false,
   "sourceHashes": {
     "assets/hud/pause/continue.svg": "892e13a8f3ad0de5d44209567f8a9bcc59007c02faabc041ac1ddf742fe21672",
@@ -7,10 +7,135 @@
     "assets/hud/pause/racing-music.svg": "557eb10e3ae07cd9e6034257b52ebef9d5682f911342bb40b956cfaec1c96075",
     "assets/hud/pause/sound-effects.svg": "9dfae8a7c509c16ec278282ec6e9d8f3d0b59461dede4d7c621bf6703741843b",
     "assets/hud/pause/quit.svg": "155851fc5dba9aa3cde5203c088432402601418614761fb5828dd43f03396847",
-    "assets/hud/pause/quit-to-system.svg": "32509757acd1812e0cddc52c116aa88449babecfdcb3ad9d42039af07e7bf61b"
+    "assets/hud/pause/quit-to-system.svg": "32509757acd1812e0cddc52c116aa88449babecfdcb3ad9d42039af07e7bf61b",
+    "classic-word-art-0.json": "b9af7a21abdbd95ef53bb5f7af94aa17ef99688dd944d136f1a1ec8e284b1865",
+    "classic-word-art-1.json": "4d03a4a3e82d3d9509d8723b1f78e5cee4d50a864bb31807921dcf61e7baf795"
   },
-  "rasterSha256": "c6e78d7b52d3190fa2bcd7a1a963546815b645f6ad1f775369967fa6ab701a83",
+  "rasterSha256": "cf28531359fe430bd88960bc559dd439987333d91d0a02e9c94289f425c9e603",
   "rasterBytes": 1081344,
-  "rleBytes": 223590,
-  "headerSha256": "cb84231ad6503067a00cdcd8b7811c565a01335fa9ff19cd6b34b78181f700fd"
+  "rleBytes": 606852,
+  "headerSha256": "b4fd05d04626188c454c33a251398ab545474f798a4e0c89ca8f8914b967bd26",
+  "fixedWordArt": {
+    "sourceHashes": {
+      "classic-word-art-0.json": "b9af7a21abdbd95ef53bb5f7af94aa17ef99688dd944d136f1a1ec8e284b1865",
+      "classic-word-art-1.json": "4d03a4a3e82d3d9509d8723b1f78e5cee4d50a864bb31807921dcf61e7baf795"
+    },
+    "newRgba": [
+      {
+        "name": "continue",
+        "text": "CONTINUE",
+        "atlas": [
+          322,
+          642,
+          305,
+          79
+        ],
+        "sourceCrop": [
+          10,
+          9,
+          315,
+          88
+        ],
+        "rgbaSha256": "737f28d21ee9783b6f240c0e061c24f57e0c01606d98d317c0153c5626883991"
+      },
+      {
+        "name": "restart",
+        "text": "RESTART",
+        "atlas": [
+          631,
+          642,
+          270,
+          79
+        ],
+        "sourceCrop": [
+          11,
+          9,
+          281,
+          88
+        ],
+        "rgbaSha256": "374c963ccfcdf5b00b4a310da2997357ae132b2aa1ecbaed06949cd8fdf46f49"
+      },
+      {
+        "name": "racing-music",
+        "text": "RACING MUSIC",
+        "atlas": [
+          322,
+          725,
+          437,
+          79
+        ],
+        "sourceCrop": [
+          11,
+          9,
+          448,
+          88
+        ],
+        "rgbaSha256": "f8fc7aaac4f0b0704b89bc9f4ef092d0a456363f52a18cec9b62f800c23de826"
+      },
+      {
+        "name": "sound-effects",
+        "text": "SOUND EFFECTS",
+        "atlas": [
+          322,
+          814,
+          487,
+          79
+        ],
+        "sourceCrop": [
+          9,
+          9,
+          496,
+          88
+        ],
+        "rgbaSha256": "7319c2efc92dd89646d57e9bcbd1d064567c14487d56ed892cef9367731e6246"
+      },
+      {
+        "name": "quit",
+        "text": "QUIT",
+        "atlas": [
+          763,
+          725,
+          139,
+          85
+        ],
+        "sourceCrop": [
+          10,
+          9,
+          149,
+          94
+        ],
+        "rgbaSha256": "aa44bc7cc1f8ac93bac53768f4aad1c8dd625c58c29e3a5a1f0ac1f76ce6ac95"
+      },
+      {
+        "name": "quit-to-system",
+        "text": "QUIT TO SYSTEM",
+        "atlas": [
+          322,
+          897,
+          496,
+          85
+        ],
+        "sourceCrop": [
+          10,
+          17,
+          506,
+          102
+        ],
+        "rgbaSha256": "2792e754547a66d72b673bed000562e482abd697339d170006e89ca81161fa67"
+      }
+    ],
+    "changedPixels": 142674
+  },
+  "partHashes": {
+    "PauseFontPixelsPart0.inc": "cfa8703fafdeeba492192a9522ecf0c22efc3832ece094e0c5e6ce3a64d297bb",
+    "PauseFontPixelsPart1.inc": "f1a7a97db5319298c89f5c69a5f6956d8f65ee7c40cc5e5ca45aed327fcdfe0f",
+    "PauseFontPixelsPart2.inc": "cc6d73ab38db463d6572f28d9fe923b5cff416ff2f3eb16b77b0c22a31bf8551",
+    "PauseFontPixelsPart3.inc": "66da156fdea775759b842f7e25fdfdac1bd429b7738a456e42f937333186e348",
+    "PauseFontPixelsPart4.inc": "b7bbd8a47d50f723fd73e1624ec221e8fbb14135351e1ce525db50a4538fd0d2",
+    "PauseFontPixelsPart5.inc": "3cb3d6716a7778ed9193b35d347f7d1bd5d9d9f222f8c8844561d1e934fec6cc",
+    "PauseFontPixelsPart6.inc": "2b071701415c7f594645ac2e38edf05c36207486ac0a1e74adeae02a4d90678f",
+    "PauseFontPixelsPart7.inc": "3f0aee614ecab8f03bb95e9ba81e29ba0a57130134eb7c3e883465bb5b28169c",
+    "PauseFontPixelsPart8.inc": "875bc961f0e476d16fd7a10e4da97e5445976874a85ce8829a63deb056cd2f43",
+    "PauseFontPixelsPart9.inc": "062f11a58947ea9a9fbfc7a489a959b9e9cfa55a817885a77f90e4ee6be72610"
+  }
 }
