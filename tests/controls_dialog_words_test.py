@@ -48,6 +48,15 @@ class ControlsDialogWordsTests(unittest.TestCase):
             self.assertLess(len(encoded), 1048576)
             self.assertEqual((ROOT/'src/hd'/name).read_bytes(), encoded)
 
+    def test_centered_title_ink_and_preserved_body_right_edges(self):
+        width=art.WORDS[0][2]
+        xs=[i%width for i,a in enumerate(self.images[0][3::4]) if a]
+        self.assertEqual(min(xs)+max(xs)+1,width)
+        self.assertEqual(sum(art.WORDS[0][4][::2])/2,416)
+        for image,word in zip(self.images[1:],art.WORDS[1:]):
+            xs=[i%word[2] for i,a in enumerate(image[3::4]) if a]
+            self.assertEqual(max(xs),word[2]-3)
+
     def test_done_reuses_accepted_audio_pixels_without_geometry_aliasing(self):
         prior=json.loads((ROOT/'assets/hud/frontend/audio-dialog-word-art.json').read_bytes())['words'][8]
         current=self.document['words'][4]

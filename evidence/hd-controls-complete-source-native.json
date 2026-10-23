@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "scope": "Controls landing complete original source, independently owned finite-word collector and CPU display; separate native callback observation",
+  "passed": true,
+  "originalCompleteSource": {
+    "completeOriginalFrames": 2,
+    "genuineCurrentFiniteWordProofAcceptedFrames": 2,
+    "frames": [
+      {
+        "frame": 1,
+        "commands": 16,
+        "originalWordWrites": 10572,
+        "vertices": 696,
+        "fullPlaneWords": 307200,
+        "changedTextPixels": 6206,
+        "independentBackgroundCopyMatchedEveryWord": true,
+        "originalTitleRightEdgeGlyphOverhangPixels": 10,
+        "maximumObservedRightOverhangBeyondLogicalAdvance": 1,
+        "otherTextChangesContainedInLogicalCommandBoxes": true,
+        "wrongMapAndCleanPlaneRejected": true,
+        "digests": {
+          "clean.rgb565": "84c7fdce6582ac0bac57bd489529dc8de174c71256e55d11f79be80544948dde",
+          "original.rgb565": "fbf79707fcb2397bacf7c42f345c12ac3127ab962f1922bafe0fc8c4d7ac3fcb",
+          "map-source.bin": "cf64a41513491b216ba6b969c7e468c4a7a11dc5b56fa3d244ca9a469133e59a",
+          "sidebar-source.bin": "dbbfcae963f70e889afd0c1f19106d0d5364ace6ac771bbee457d33f5173de97"
+        }
+      },
+      {
+        "frame": 2,
+        "commands": 16,
+        "originalWordWrites": 10572,
+        "vertices": 696,
+        "fullPlaneWords": 307200,
+        "changedTextPixels": 6206,
+        "independentBackgroundCopyMatchedEveryWord": true,
+        "originalTitleRightEdgeGlyphOverhangPixels": 10,
+        "maximumObservedRightOverhangBeyondLogicalAdvance": 1,
+        "otherTextChangesContainedInLogicalCommandBoxes": true,
+        "wrongMapAndCleanPlaneRejected": true,
+        "digests": {
+          "clean.rgb565": "18bfd1de3042d3a4d343965df9e7bbd7dda6cf3bc3d68601a11ac2221f1076fa",
+          "original.rgb565": "ff91eb1a385585d1c2aa78fd580f94a0893b187a2881338765b7aa66996b319f",
+          "map-source.bin": "cf64a41513491b216ba6b969c7e468c4a7a11dc5b56fa3d244ca9a469133e59a",
+          "sidebar-source.bin": "290ed014f00ae88928322e4f3ce003fe904232fcd9e37090e829da990cf21208"
+        }
+      }
+    ],
+    "allSourceAndReusedObjectPinsStableAfterRun": true,
+    "cleanShutdownAndCopiedResourcesRestored": true
+  },
+  "nativeCallbackObservation": {
+    "schema": 1,
+    "passed": true,
+    "freshNativeJoinedFrames": 1,
+    "sourceOwnerEpochPassSerialLifetimeAndPlaneDigestMatch": true,
+    "sourceCurrentBeforeAndAfterOriginal426950": true,
+    "immutableOriginalPlaneCrossedFifo": true,
+    "actualNativeOwnerContextGenerationAndBoundFramebufferChecked": true,
+    "nativeSize": [
+      2186,
+      1640
+    ],
+    "uploads": 300,
+    "selections": 300,
+    "triangles": 600,
+    "actualUploadInputsUnchangedBeforeAfter": 300,
+    "exactOriginal565TilePayloadsCompared": 300,
+    "nativeCallbackProtocolAccepted": true,
+    "noAddedDrawsFlushesOrSharedRequestState": true,
+    "gpuSubmissionProven": false,
+    "uiReplacementActivated": false,
+    "cleanShutdownAndCopiedResourcesRestored": true,
+    "allSourceAndReusedInputPinsStable": true,
+    "privateLogSha256": "5d435bfd8e97dcb50a49f7a27d36049bcc56488e4ec94ecbfa42330cb90da14d",
+    "privateResultSha256": "ff6a647431eacea889d639308502c29773b6e8f53c397c96b2405d80c74cb08e",
+    "limitations": [
+      "One fresh joined native frame; private capture cutoff prevents claiming a second.",
+      "Native callbacks/FIFO completion do not prove every final GL submission; original buffered draws were not forcibly flushed.",
+      "Local software GLES validation, not physical iPad acceptance."
+    ]
+  },
+  "currentSourceDisplay": {
+    "schema": 1,
+    "passed": true,
+    "actualCurrentSourceDisplayViews": 5,
+    "observedSelections": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "distinctOwnerLifetimes": 2,
+    "sameOriginalDrawOrderAndVertexSpans": true,
+    "originalEllipsisSpansExcludedFromWordReplacement": true,
+    "allCurrentSourceAndReusedObjectPinsStable": true,
+    "cleanShutdownAndCopiedResourcesRestored": true,
+    "runtimeRenderingActivated": false,
+    "privateLogSha256": "f286f68e4dabd4c56dde6c8ff80f01966a154afb9fa6ab5aa5aaf016ea579a7a",
+    "privateResultSha256": "cf5924097e8319ff3d2e8d149d6192f3849bc754b639c21c901079d1724b5f4b"
+  },
+  "cpuDisplay": {
+    "immutableImages": 5,
+    "placements": 10,
+    "canonicalImageIds": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "originalDrawOrderArtIds": [
+      2,
+      3,
+      4,
+      5,
+      1
+    ],
+    "shadowAndForegroundKeptSeparate": true,
+    "originalEllipsisVertexSpansUntouched": true,
+    "originalLogicalDestinationsUnchanged": true,
+    "titleInkCenteredAtOriginalUiX": 416,
+    "titleRgbaSha256": "1776f2c15b5936b59f44a5346ed0524149026b4a1f8f8b666ab400bc6db31f53",
+    "otherFourAuthoredImagesUnchanged": true,
+    "genuineCurrentSourceReacquiredBeforeDisplayPreparation": true,
+    "retainedDisplayCurrentMeansHistoricalConsistencyOnly": true
+  },
+  "validation": {
+    "optimizedRegisteredChecksPassed": 6,
+    "addressAndUndefinedSanitizerRegisteredChecksPassed": 3,
+    "sourceGeneratorUnitCases": 6,
+    "sourceHookUnitCases": 7,
+    "proofAndDisplayFixtureSealingExplicitlySynthetic": true,
+    "actualGameCurrentProofObservedSeparately": true
+  },
+  "builds": {
+    "maintained-build-01": {
+      "compiledUnits": 5,
+      "maxCompilerWorkers": 1,
+      "receiptSha256": "20654ac5002872b2917a8f6c864615bc8118925a55624dc221b74b0cbd4f3074"
+    },
+    "native-build-02": {
+      "compiledUnits": 2,
+      "maxCompilerWorkers": 1,
+      "receiptSha256": "ad01c7521bb11425b3b240588d2735b1a5af4c0094c60511c8e99befb74a7dee"
+    },
+    "current-display-build-01": {
+      "compiledUnits": 1,
+      "maxCompilerWorkers": 1,
+      "receiptSha256": "c945c9066f5af2503630bf7489385c6f43cb303fd348d534fc75faad886f4321"
+    }
+  },
+  "runtimeUiReplacementActivated": false,
+  "limitations": [
+    "The maintained source collector and the native callback observer ran in separate binaries; their evidence is not a single integrated HD scene.",
+    "One native callback frame is joined; buffered original draws were not forcibly flushed and complete GPU submission is not proven.",
+    "Retained sidebar construction, independent Controls scene joining and native HD rendering remain required.",
+    "Setup and remapping, sensitivity and feedback child forms, remaining artwork and physical iPad UI, performance and battery acceptance remain open.",
+    "No cloud build, push, installable package or physical acceptance is claimed."
+  ]
+}

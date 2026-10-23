@@ -6,8 +6,8 @@ import json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE_BYTES=293786
-SOURCE_SHA='85e13191d59b194516bbe286fd6b9997036a7aba9912044b76b4da5e6923ee15'
-WORDS=((1, 'CONTROLS', 272, 128, [382, 105, 450, 137], 'be6c7f8030ea47de19ac89489649f5986a2540d1a154b3b9656ee0eb44df359f'), (2, 'setup', 144, 128, [380, 170, 416, 202], '8129b04761c19702a89f5a705ac5252db8a92ac50dd0e70d8feacd529ec0d197'), (3, 'steering sensitivity', 492, 128, [293, 196, 416, 228], '8c68421bdcb0a2a5eaa3f89c5cf97104da5989ab241e6669a4035719b590320f'), (4, 'force feedback', 384, 128, [320, 224, 416, 256], '603163b4df5f7b5b02a26906c60827f681593d56a1ca6ca14159665302812bdc'), (5, 'DONE', 140, 128, [381, 267, 416, 299], 'dcca47f4cdceb4011aff18d22fb419c5bbd3ebb4abdd8a7abca1e74853d447aa'))
+SOURCE_SHA='264ac8c6a2a198d12dadd4673deaa641bc70418864c4d164e0f8e67342bb8f36'
+WORDS=((1, 'CONTROLS', 272, 128, [382, 105, 450, 137], '1776f2c15b5936b59f44a5346ed0524149026b4a1f8f8b666ab400bc6db31f53'), (2, 'setup', 144, 128, [380, 170, 416, 202], '8129b04761c19702a89f5a705ac5252db8a92ac50dd0e70d8feacd529ec0d197'), (3, 'steering sensitivity', 492, 128, [293, 196, 416, 228], '8c68421bdcb0a2a5eaa3f89c5cf97104da5989ab241e6669a4035719b590320f'), (4, 'force feedback', 384, 128, [320, 224, 416, 256], '603163b4df5f7b5b02a26906c60827f681593d56a1ca6ca14159665302812bdc'), (5, 'DONE', 140, 128, [381, 267, 416, 299], 'dcca47f4cdceb4011aff18d22fb419c5bbd3ebb4abdd8a7abca1e74853d447aa'))
 
 def _pairs(pairs):
  result={}

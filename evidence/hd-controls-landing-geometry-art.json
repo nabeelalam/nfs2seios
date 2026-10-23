@@ -79,7 +79,7 @@
   "authoredArtwork": {
     "wordCount": 5,
     "sourceBytes": 293786,
-    "sourceSha256": "85e13191d59b194516bbe286fd6b9997036a7aba9912044b76b4da5e6923ee15",
+    "sourceSha256": "264ac8c6a2a198d12dadd4673deaa641bc70418864c4d164e0f8e67342bb8f36",
     "rasterScale": 4,
     "baselineOriginalUiPixels": 24,
     "sameAcceptedTypefaceTreatment": true,
@@ -87,11 +87,14 @@
     "fontFileIncluded": false,
     "originalGamePixelsIncluded": false,
     "destinationsFollowActualMeasuredGeometry": true,
-    "assetOrderIsNotOriginalDrawOrder": true
+    "assetOrderIsNotOriginalDrawOrder": true,
+    "titleInkCenteredAtOriginalUiX": 416,
+    "originalLogicalDestinationsUnchanged": true,
+    "otherFourImagesUnchanged": true
   },
   "validation": {
     "registeredLocalChecksPassed": 2,
-    "sourceUnitCasesPassed": 5,
+    "sourceUnitCasesPassed": 6,
     "wrongSceneSourceRejected": true,
     "schemaAndGeometryAndRunAndPaddingNegativesPassed": true,
     "reproducibleHeadersPassed": true,

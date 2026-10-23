@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-// Five complete-word controls, no font or original pixels. Source SHA256 85e13191d59b194516bbe286fd6b9997036a7aba9912044b76b4da5e6923ee15
+// Five complete-word controls, no font or original pixels. Source SHA256 264ac8c6a2a198d12dadd4673deaa641bc70418864c4d164e0f8e67342bb8f36
 #ifndef NFS_CONTROLS_DIALOG_WORD_DATA_H
 #define NFS_CONTROLS_DIALOG_WORD_DATA_H
 static const unsigned short nfs_controls_dialog_word_alpha_rle_1[]={
-7642,0,1,3,2,0,1,1,1,48,1,114,1,160,1,199,1,226,1,230,1,203,1,163,
+7632,0,1,3,2,0,1,1,1,48,1,114,1,160,1,199,1,226,1,230,1,203,1,163,
 1,113,1,43,2,0,2,1,13,0,1,2,1,1,2,0,1,37,1,103,1,153,1,193,
 1,222,1,234,1,213,1,179,1,137,1,77,1,15,2,0,1,3,8,0,1,2,1,0,
 1,43,1,136,1,135,6,136,1,134,1,136,1,76,1,0,1,2,6,0,1,1,1,0,
@@ -837,7 +837,7 @@ static const unsigned short nfs_controls_dialog_word_alpha_rle_1[]={
 10,0,1,3,2,0,1,6,1,59,1,122,1,167,1,203,2,229,1,200,1,159,1,108,
 1,40,3,0,1,2,10,0,1,5,19,16,1,15,1,3,8,0,1,1,1,2,2,0,
 1,23,1,88,1,144,1,185,1,217,1,234,1,221,1,191,1,151,1,100,1,32,2,0,
-1,1,1,2,9798,0
+1,1,1,2,9808,0
 };
 static const unsigned short nfs_controls_dialog_word_alpha_rle_2[]={
 4385,0,1,4,1,0,1,119,1,255,1,252,3,255,1,254,1,255,1,76,1,0,1,3,
