@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "passed": true,
+  "completedOriginalTextTails": 2,
+  "descriptorResourceDrawOrder": [
+    "0x148",
+    "0x149",
+    "0x14a",
+    "0x14b",
+    "0x145"
+  ],
+  "resourceWrappersPerTail": 5,
+  "literalEllipsisWrappersPerTail": 3,
+  "actualShadowAndForegroundCallsPerTail": 16,
+  "originalWidthMeasurementsPerTail": 8,
+  "geometry": [
+    {
+      "resource": 325,
+      "text": "CONTROLS",
+      "width": 68,
+      "left": 382,
+      "top": 105
+    },
+    {
+      "resource": 328,
+      "text": "setup",
+      "width": 36,
+      "left": 380,
+      "top": 170
+    },
+    {
+      "resource": 329,
+      "text": "steering sensitivity",
+      "width": 123,
+      "left": 293,
+      "top": 196
+    },
+    {
+      "resource": 330,
+      "text": "force feedback",
+      "width": 96,
+      "left": 320,
+      "top": 224
+    },
+    {
+      "resource": 331,
+      "text": "DONE",
+      "width": 35,
+      "left": 381,
+      "top": 267
+    }
+  ],
+  "independentCatalogHeadersAndTextMatched": true,
+  "twoTailsSameGeometry": true,
+  "stableOriginalTargetOwnerAnd640x480Pitch1280": true,
+  "shadowOffset": [
+    1,
+    1
+  ],
+  "shadowRgb565": 1,
+  "titleRgb565": 3998,
+  "selectedSetupRgb565": 65535,
+  "unselectedBodyRgb565": 37904,
+  "negativeWidthAndShadowColorRejected": true,
+  "compiledAndReusedInputsUnchanged": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "completeGlyphWritesOrNativeControlsCompositionProven": false,
+  "runtimeUiReplacementActivated": false,
+  "privateDigests": {
+    "run.log": "8c8a5d777f1558ddd9046197a76019dfc449de57e5bb18f8a6b53ed2897236f8",
+    "result.json": "791ff1721ed43fa6edb0158e05b9fd2469c7821c2541c083f17f73acef72d3b6",
+    "controls-observed-00.bmp": "a9020e1597c8321981626caac8230200e42e221b74d904fb94162cf5a1317e1b",
+    "controls-observed-01.bmp": "43550299bb463a9719cadf6413f0e4c9ff50c36e6d3047961690360aca151800",
+    "controls-observed-02.bmp": "d3dacc1365adab3f50ddedc442bb955325130f02d46a122fac1240759a0f6f72"
+  },
+  "scope": "Controls landing source metadata and five authored finite word images; no runtime replacement activation",
+  "sourceObservationBinarySha256": "9f5539d5a7fa5a532e092f86d5a45dfbb8a523900f37d426bbf4875b114ad288",
+  "sourceObservationBaseline": "Exact prepared source from the previously validated game; the earlier generated-source probe omitted existing menu hooks and is superseded.",
+  "authoredArtwork": {
+    "wordCount": 5,
+    "sourceBytes": 293786,
+    "sourceSha256": "85e13191d59b194516bbe286fd6b9997036a7aba9912044b76b4da5e6923ee15",
+    "rasterScale": 4,
+    "baselineOriginalUiPixels": 24,
+    "sameAcceptedTypefaceTreatment": true,
+    "donePixelsMatchAcceptedAudioWord": true,
+    "fontFileIncluded": false,
+    "originalGamePixelsIncluded": false,
+    "destinationsFollowActualMeasuredGeometry": true,
+    "assetOrderIsNotOriginalDrawOrder": true
+  },
+  "validation": {
+    "registeredLocalChecksPassed": 2,
+    "sourceUnitCasesPassed": 5,
+    "wrongSceneSourceRejected": true,
+    "schemaAndGeometryAndRunAndPaddingNegativesPassed": true,
+    "reproducibleHeadersPassed": true,
+    "windowsSourceCasesPassed": true
+  },
+  "limitations": [
+    "Only source metadata was observed; complete glyph-write replay and Controls-specific native publication proof remain required.",
+    "Only the initial selection was observed; other selections and child dialogs remain unverified.",
+    "Five-word artwork is authored and checked but has no active Controls scene route.",
+    "No cloud build, IPA, push, physical iPad UI, FPS or battery acceptance."
+  ]
+}
