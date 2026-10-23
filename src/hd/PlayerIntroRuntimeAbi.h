@@ -3,7 +3,8 @@
 #define NFS_PLAYER_INTRO_RUNTIME_ABI_H
 #include "BackgroundSceneRuntimeAbi.h"
 #include "SoftwareTextLayerAbi.h"
-#define NFS_PLAYER_INTRO_RUNTIME_SCHEMA 1u
+#include "PlayerCaptionRuntimeAbi.h"
+#define NFS_PLAYER_INTRO_RUNTIME_SCHEMA 2u
 /* Immutable synchronous borrows retained by the producer. Historical Main
    serial/content/events stay historical; requestSerial is a distinct request.
    No field supplies GL/context/target authority or changes native buffers. */
@@ -16,6 +17,7 @@ typedef struct NfsPlayerIntroFrameView {
  const uint16_t*paddedOriginal565;
  size_t wordsCount;
  uint32_t keys[300];
+ NfsPlayerCaptionWordView captionWord;
 } NfsPlayerIntroFrameView;
 #ifdef __cplusplus
 extern "C" {

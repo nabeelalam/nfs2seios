@@ -179,5 +179,6 @@ int nfs_private_location_scene_finish(uint64_t serial){return nfs_bg_native_fini
 /* NFS_OPTIONS_RENDERER_END:implementation */
 
 /* NFS_PLAYER_RENDERER_BEGIN:implementation */
+#include "PlayerCaptionRenderer.inc"
 #include "PlayerSceneRenderer.inc"
 /* NFS_PLAYER_RENDERER_END:implementation */

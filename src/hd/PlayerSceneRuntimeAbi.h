@@ -3,8 +3,9 @@
 #define NFS_PLAYER_SCENE_RUNTIME_ABI_H
 #include "BackgroundSceneRuntimeAbi.h"
 #include "SoftwareTextLayerAbi.h"
+#include "PlayerCaptionRuntimeAbi.h"
 #include "OriginalPreviewLayerAbi.h"
-#define NFS_PLAYER_SCENE_RUNTIME_SCHEMA 1u
+#define NFS_PLAYER_SCENE_RUNTIME_SCHEMA 2u
 enum {NFS_BACKGROUND_TAIL_PLAYER1_CAPTION=5,NFS_BACKGROUND_TAIL_PLAYER2_CAPTION=6};
 /* Immutable synchronous borrows, retained by the producer. Exact form/tail pairs
    remain Player-only; no GL context/upload/target authority is supplied here. */
@@ -13,6 +14,7 @@ typedef struct NfsPlayerSceneFrameView {
  NfsBackgroundSceneFrameView scene;
  NfsSoftwareTextLayerView caption;
  NfsOriginalPreviewLayerView preview;
+ NfsPlayerCaptionWordView captionWord;
 } NfsPlayerSceneFrameView;
 #ifdef __cplusplus
 extern "C" {

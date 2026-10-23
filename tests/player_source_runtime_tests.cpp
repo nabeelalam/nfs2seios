@@ -10,7 +10,7 @@
 static constexpr uint32_t byte_512DBF=0xe200,byte_512DDA=0xe201,byte_512DC1=0xe220,byte_512DDC=0xe240,dword_4D62C8=0xe400;
 namespace nfs_player_scene_live {
 namespace bg=nfs_player_scene_cpu;using Plane=nfs_logo_capture::Plane;
-struct SidebarCapture{bg::Scene scene;rec::Group group;rec::Copy originalCopy;std::shared_ptr<const nfs_soft::FramePacket>caption;std::shared_ptr<const bg::SourceCatalog>catalogue;uint64_t captionSerial=0,captionLifetime=0,groupSerial=0,copySerial=0;bg::Event groupEvent{},tailEvent{},copyEvent{};uint32_t archive=0,form=0;};
+struct SidebarCapture{bg::Scene scene;rec::Group group;rec::Copy originalCopy;std::shared_ptr<const nfs_soft::FramePacket>caption;std::shared_ptr<const bg::SourceCatalog>catalogue;uint64_t captionSerial=0,captionLifetime=0,groupSerial=0,copySerial=0;bg::Event groupEvent{},tailEvent{},copyEvent{};uint32_t archive=0,form=0;std::shared_ptr<const nfs_compact_caption::Proof>compactCaption;uintptr_t captionGame=0;uint32_t captionFormGuest=0,captionArchive=0;};
 enum class CachedUploadSite:uint32_t{None,Initial,Refresh,Lazy};
 struct State{
  std::shared_ptr<const nfs_player_initial_sidebar::Proof>pendingInitialSidebar;

@@ -8,7 +8,7 @@
 #define NFS_PLAYER_SCENE_THREAD_TOKEN() ((uintptr_t)SDL_GetCurrentThreadID())
 #endif
 static struct {
- NfsNativeLogoTargetProof target;NfsSoftwareTextGpu caption;
+ NfsNativeLogoTargetProof target;NfsSoftwareTextGpu caption;NfsPlayerCaptionGpu captionWord;
  GLuint preview;unsigned previewWidth,previewHeight,previewReady;unsigned char previewSha[32],coverageSha[32];
  uintptr_t context,thread;uint64_t generation,serial,content;
  unsigned map,words,nativeArmed,traceLines,activeOwnerKind;
@@ -22,7 +22,7 @@ static int nfs_player_current(void){return nfs_player_context(nfs_player_rendere
 #define NFS_PLAYER_RENDER_GL(call) do{if(!nfs_player_current())goto lost;call;if(!nfs_player_current())goto lost;}while(0)
 static void nfs_player_trace(const char*event,const char*reason){if(!nfs_logo_trace_enabled()||nfs_player_renderer.traceLines>=2048)return;++nfs_player_renderer.traceLines;fprintf(stderr,"%s NATIVE %s reason=%s serial=%llu content=%llu map=%u words=%u context=%llu size=%ux%u fbo=%u selections=%u triangles=%u\n",nfs_player_renderer.activeOwnerKind==NFS_PLAYER_OWNER_TWO?"PLAYER2":"PLAYER1",event,reason,(unsigned long long)nfs_player_renderer.serial,(unsigned long long)nfs_player_renderer.content,nfs_player_renderer.map,nfs_player_renderer.words,(unsigned long long)nfs_player_renderer.generation,nfs_player_renderer.target.width,nfs_player_renderer.target.height,nfs_player_renderer.target.framebuffer,nfs_logo_provenance.selects,nfs_logo_provenance.triangles);}
 static void nfs_player_cancel(const char*reason){if(nfs_player_renderer.serial)nfs_player_trace("canceled",reason);if(nfs_player_renderer.nativeArmed&&nfs_logo_provenance.active&&nfs_logo_provenance.pendingSerial==nfs_player_renderer.serial&&nfs_logo_provenance.pendingContext==nfs_player_renderer.generation&&nfs_logo_provenance.pendingFbo==nfs_player_renderer.target.framebuffer)nfs_logo_p_cancel(&nfs_logo_provenance);nfs_player_renderer.nativeArmed=0;nfs_player_renderer.serial=0;nfs_player_renderer.activeOwnerKind=NFS_PLAYER_OWNER_NONE;memset(&nfs_player_renderer.target,0,sizeof nfs_player_renderer.target);}
-static void nfs_player_forget_gpu(void){nfs_soft_gpu_context_retired(&nfs_player_renderer.caption,nfs_player_renderer.caption.generation,0);nfs_player_renderer.preview=nfs_player_renderer.previewReady=0;nfs_player_renderer.previewWidth=nfs_player_renderer.previewHeight=0;nfs_player_renderer.color=nfs_player_renderer.fbo=0;nfs_player_renderer.width=nfs_player_renderer.height=0;}
+static void nfs_player_forget_gpu(void){nfs_player_caption_forget(&nfs_player_renderer.captionWord);nfs_soft_gpu_context_retired(&nfs_player_renderer.caption,nfs_player_renderer.caption.generation,0);nfs_player_renderer.preview=nfs_player_renderer.previewReady=0;nfs_player_renderer.previewWidth=nfs_player_renderer.previewHeight=0;nfs_player_renderer.color=nfs_player_renderer.fbo=0;nfs_player_renderer.width=nfs_player_renderer.height=0;}
 static void nfs_player_abandon(void){nfs_player_forget_gpu();nfs_player_cancel("owner-lost");}
 static int nfs_player_context_owner(void*user,const NfsBackgroundSceneStage*t){(void)user;return t&&nfs_player_context(t->generation,t->contextIdentity);}
 static NfsBackgroundSceneStage nfs_player_context_stage(void){NfsBackgroundSceneStage t;memset(&t,0,sizeof t);t.generation=nfs_player_renderer.generation;t.contextIdentity=nfs_player_renderer.context;t.framebuffer=g_framebuffer;t.ownerCurrent=nfs_player_context_owner;return t;}
@@ -46,6 +46,7 @@ static int nfs_player_read_target(NfsNativeLogoTargetProof*out,uint64_t serial){
 static void nfs_player_renderer_created(void){uint64_t generation=nfs_logo_provenance.context;uintptr_t context=(uintptr_t)g_glCtx;if(!nfs_bg_feature()||!generation||!context||SDL_GL_GetCurrentContext()!=g_glCtx)return;nfs_player_renderer.generation=generation;nfs_player_renderer.context=context;nfs_player_renderer.thread=NFS_PLAYER_SCENE_THREAD_TOKEN();nfs_player_cancel("context-created");(void)nfs_soft_gpu_context_created(&nfs_player_renderer.caption,generation);}
 static void nfs_player_renderer_retired(int owner){
  if(owner&&nfs_player_current()){
+  {NfsBackgroundSceneStage guard=nfs_player_context_stage();if(!nfs_player_caption_retire(&nfs_player_renderer.captionWord,&guard,1))goto lost;}
   if(nfs_player_renderer.caption.generation==nfs_player_renderer.generation&&nfs_player_renderer.caption.ownerGeneration==nfs_player_renderer.generation){
    if(nfs_player_renderer.caption.program){NFS_PLAYER_RENDER_GL(glDeleteProgram(nfs_player_renderer.caption.program));}
    if(nfs_player_renderer.caption.texture){NFS_PLAYER_RENDER_GL(glDeleteTextures(1,&nfs_player_renderer.caption.texture));}
@@ -140,7 +141,7 @@ static int nfs_player_preview_prepare(const NfsOriginalPreviewLayerView*v){
  unsigned char sha[32],maskSha[32],*rgba=NULL;const uint16_t little=1;GLuint texture=0;GLboolean exists=0;GLenum error;int ok=0;NfsBgSaved saved;NfsBackgroundSceneStage guard=nfs_player_context_stage();
  if(!nfs_player_current()||!nfs_bg_preview_view(v)||*(const unsigned char*)&little!=1||!nfs_texture_sha256((const unsigned char*)v->pixels565,v->pixelCount*2,sha)||memcmp(sha,v->sha256,32)||!nfs_texture_sha256(v->coverage,v->coverageCount,maskSha)||memcmp(maskSha,v->coverageSha256,32))return 0;
  for(size_t i=0;i<v->coverageCount;++i)if(v->coverage[i]&&v->coverage[i]!=255)return 0;
- texture=nfs_player_renderer.preview;if(texture){if(texture==g_framebufferTexture||texture==nfs_player_renderer.color||texture==nfs_player_renderer.caption.texture||texture==nfs_bg_compositor.logo.texture)return 0;for(unsigned i=0;i<5;++i)if(texture==nfs_bg_compositor.textures[i])return 0;NFS_PLAYER_RENDER_GL(exists=glIsTexture(texture));if(!exists)return 0;}
+ texture=nfs_player_renderer.preview;if(texture){if(texture==g_framebufferTexture||texture==nfs_player_renderer.color||texture==nfs_player_renderer.caption.texture||texture==nfs_player_renderer.captionWord.texture||texture==nfs_bg_compositor.logo.texture)return 0;for(unsigned i=0;i<5;++i)if(texture==nfs_bg_compositor.textures[i])return 0;NFS_PLAYER_RENDER_GL(exists=glIsTexture(texture));if(!exists)return 0;}
  if(texture&&nfs_player_renderer.previewReady&&nfs_player_renderer.previewWidth==v->width&&nfs_player_renderer.previewHeight==v->height&&!memcmp(sha,nfs_player_renderer.previewSha,32)&&!memcmp(maskSha,nfs_player_renderer.coverageSha,32))return 1;
  rgba=(unsigned char*)malloc(v->pixelCount*4);if(!rgba)return 0;for(size_t i=0;i<v->pixelCount;++i){unsigned p=v->pixels565[i],r=(p>>11)&31,g=(p>>5)&63,b=p&31;unsigned char*out=rgba+4*i;out[3]=v->coverage[i];out[0]=out[3]?(unsigned char)((r<<3)|(r>>2)):0;out[1]=out[3]?(unsigned char)((g<<2)|(g>>4)):0;out[2]=out[3]?(unsigned char)((b<<3)|(b>>2)):0;}
  if(!nfs_graphics_scene_save(&saved,&guard))goto lost;nfs_player_renderer.previewReady=0;
@@ -155,7 +156,7 @@ static int nfs_player_preview_draw(const NfsBackgroundSceneStage*t,const NfsOrig
  if(!nfs_player_renderer.previewReady||!nfs_player_renderer.preview)return 0;
  NFS_PLAYER_LAYER_GL(glUseProgram(b->program));NFS_PLAYER_LAYER_GL(glUniformMatrix4fv(b->matrix,1,GL_FALSE,t->sampling.projection));NFS_PLAYER_LAYER_GL(glUniform1i(b->sampler,0));NFS_PLAYER_LAYER_GL(glUniform1f(b->opacity,1));NFS_PLAYER_LAYER_GL(glBindTexture(GL_TEXTURE_2D,nfs_player_renderer.preview));NFS_PLAYER_LAYER_GL(glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,t->sampling.magFilter));NFS_PLAYER_LAYER_GL(glEnableVertexAttribArray(0));for(unsigned i=1;i<4;++i){NFS_PLAYER_LAYER_GL(glDisableVertexAttribArray(i));}NFS_PLAYER_LAYER_GL(glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,vertices));if(!nfs_graphics_scene_blend(t,1))return 0;NFS_PLAYER_LAYER_GL(glDrawArrays(GL_TRIANGLES,0,6));NFS_PLAYER_LAYER_GL(error=glGetError());return error==GL_NO_ERROR;
 }
-static int nfs_player_draw_layers(NfsGraphicsSceneGpu*gpu,const NfsBackgroundSceneStage*t,const NfsBackgroundSceneLayers*v,const NfsSoftwareTextLayerView*caption,const NfsOriginalPreviewLayerView*preview){
+static int nfs_player_draw_layers(NfsGraphicsSceneGpu*gpu,const NfsBackgroundSceneStage*t,const NfsBackgroundSceneLayers*v,const NfsSoftwareTextLayerView*caption,const NfsOriginalPreviewLayerView*preview,const NfsPlayerCaptionWordView*word){
  NfsBackgroundSceneCompositor*b=gpu->background;NfsLogoVertex logos[18];size_t count=0;float bounds[4];GLint type=0,name=0;GLenum error;static const int32_t full[4]={0,0,640,480};
  if(!nfs_bg_stage_layers(v)||!nfs_graphics_scene_font(gpu->sidebarCaption,caption,343,t->generation)||!nfs_graphics_scene_ready(gpu,t)||!nfs_graphics_scene_target(gpu,t)||!nfs_logo_layers(v->logos,3,logos,&count,bounds))return 0;
  NFS_PLAYER_LAYER_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type));NFS_PLAYER_LAYER_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name));if(type!=GL_TEXTURE||(GLuint)name==nfs_player_renderer.preview)return 0;
@@ -163,7 +164,7 @@ static int nfs_player_draw_layers(NfsGraphicsSceneGpu*gpu,const NfsBackgroundSce
  if(!nfs_graphics_scene_quad(b,t,v->mapRole,0,0,640,480,0,0,b->art[v->mapRole].width,b->art[v->mapRole].height,full,256,0)||!nfs_player_preview_draw(t,preview)||!nfs_graphics_scene_quad(b,t,2,0,0,343,480,0,0,1372,1920,v->panelClip,256,1))return 0;
  for(unsigned i=0;i<v->wordCount;++i){const NfsBackgroundSceneWordLayer*w=v->words+i;const NfsBackgroundSceneWord*r=b->regions+w->sourceRole-1;if(!nfs_graphics_scene_quad(b,t,r->textureRole,(float)w->left,(float)w->top,(float)r->logicalWidth,(float)r->logicalHeight,r->x,r->y,r->width,r->height,w->clip,w->scalar256,1))return 0;}
  if(count){NFS_PLAYER_LAYER_GL(glUseProgram(b->logo.program));NFS_PLAYER_LAYER_GL(glUniformMatrix4fv(b->logo.matrix,1,GL_FALSE,t->sampling.projection));NFS_PLAYER_LAYER_GL(glUniform1i(b->logo.sampler,0));NFS_PLAYER_LAYER_GL(glBindTexture(GL_TEXTURE_2D,b->logo.texture));NFS_PLAYER_LAYER_GL(glEnableVertexAttribArray(0));NFS_PLAYER_LAYER_GL(glEnableVertexAttribArray(1));NFS_PLAYER_LAYER_GL(glDisableVertexAttribArray(2));NFS_PLAYER_LAYER_GL(glDisableVertexAttribArray(3));NFS_PLAYER_LAYER_GL(glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),logos));NFS_PLAYER_LAYER_GL(glVertexAttribPointer(1,1,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),&logos[0].coefficient));if(!nfs_graphics_scene_blend(t,1))return 0;NFS_PLAYER_LAYER_GL(glDrawArrays(GL_TRIANGLES,0,(GLsizei)count));NFS_PLAYER_LAYER_GL(error=glGetError());if(error!=GL_NO_ERROR)return 0;}
- return nfs_graphics_scene_text(gpu->sidebarCaption,t,caption);
+ return nfs_player_caption_empty(word)?nfs_graphics_scene_text(gpu->sidebarCaption,t,caption):nfs_player_caption_draw(&nfs_player_renderer.captionWord,word,t);
 }
 #undef NFS_PLAYER_LAYER_GL
 static int nfs_player_begin_refused(const char*reason,uint64_t serial){if(nfs_logo_trace_enabled()&&nfs_player_renderer.traceLines<2048){++nfs_player_renderer.traceLines;fprintf(stderr,"PLAYER1 NATIVE begin-refused reason=%s serial=%llu context=%llu\n",reason,(unsigned long long)serial,(unsigned long long)nfs_player_renderer.generation);}return 0;}
@@ -171,24 +172,26 @@ static int nfs_player_cached_begin_refused(unsigned ownerKind,const char*reason,
  if(ownerKind!=NFS_PLAYER_OWNER_TWO)return nfs_player_begin_refused(reason,serial);
  if(nfs_logo_trace_enabled()&&nfs_player_renderer.traceLines<2048){++nfs_player_renderer.traceLines;fprintf(stderr,"PLAYER2 NATIVE begin-refused reason=%s serial=%llu context=%llu\n",reason,(unsigned long long)serial,(unsigned long long)nfs_player_renderer.generation);}return 0;
 }
-static int nfs_player_cached_begin(const NfsBackgroundSceneFrameView*scene,const NfsSoftwareTextLayerView*caption,const NfsOriginalPreviewLayerView*preview,unsigned ownerKind){
+static int nfs_player_cached_begin(const NfsBackgroundSceneFrameView*scene,const NfsSoftwareTextLayerView*caption,const NfsOriginalPreviewLayerView*preview,const NfsPlayerCaptionWordView*word,unsigned ownerKind){
  NfsNativeLogoTargetProof target;NfsBackgroundSceneLayers layers;NfsGraphicsSceneGpu gpu;NfsBackgroundSceneStage guard,stage;NfsBgSaved saved;uint32_t ids[300];GLenum filter=GL_LINEAR;int ok=0;
- if((ownerKind!=NFS_PLAYER_OWNER_ONE&&ownerKind!=NFS_PLAYER_OWNER_TWO)||!scene||!caption||!nfs_bg_preview_view(preview)||scene->tailKind!=ownerKind||!nfs_bg_feature()||!nfs_player_current()||!nfs_bg_view_common(scene)||caption->logicalWidth!=343||caption->logicalHeight!=480)return nfs_player_cached_begin_refused(ownerKind,"view-owner",scene?scene->serial:0);
+ if(!nfs_player_caption_valid(word,ownerKind==NFS_PLAYER_OWNER_ONE?1u:2u)||(ownerKind!=NFS_PLAYER_OWNER_ONE&&ownerKind!=NFS_PLAYER_OWNER_TWO)||!scene||!caption||!nfs_bg_preview_view(preview)||scene->tailKind!=ownerKind||!nfs_bg_feature()||!nfs_player_current()||!nfs_bg_view_common(scene)||caption->logicalWidth!=343||caption->logicalHeight!=480)return nfs_player_cached_begin_refused(ownerKind,"view-owner",scene?scene->serial:0);
  if(nfs_player_renderer.serial||nfs_player_renderer.activeOwnerKind!=NFS_PLAYER_OWNER_NONE){nfs_player_cancel("nested-begin");return 0;}
  /* Other cached-scene pending state cannot lend authority to this admission. */
  nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);drawTriangles();
  if(!nfs_player_read_target(&target,scene->serial))return nfs_player_cached_begin_refused(ownerKind,"native-target",scene->serial);
  if(!nfs_player_cached_tiles(scene,ids,&filter))return nfs_player_cached_begin_refused(ownerKind,"cached-upload-key-payload-filter",scene->serial);
+ if(nfs_player_caption_alias(nfs_player_renderer.captionWord.texture,nfs_player_renderer.caption.texture,nfs_player_renderer.preview,nfs_player_renderer.color,ids))return nfs_player_cached_begin_refused(ownerKind,"word-native-alias",scene->serial);
  if(nfs_player_renderer.preview)for(unsigned i=0;i<300;++i)if(nfs_player_renderer.preview==ids[i])return nfs_player_cached_begin_refused(ownerKind,"preview-native-alias",scene->serial);
  target.sampling.magFilter=filter;nfs_player_renderer.activeOwnerKind=ownerKind;nfs_player_renderer.serial=scene->serial;nfs_player_renderer.content=scene->contentRevision;nfs_player_renderer.map=scene->mapRole;nfs_player_renderer.words=scene->wordCount;nfs_player_renderer.target=target;
  {NfsBackgroundResourceOwner owner={nfs_player_renderer.generation,nfs_player_renderer.context,nfs_player_resource_owner,NULL};if(!nfs_bg_scene_prepare_owned(&nfs_bg_compositor,&owner)){if(!nfs_player_current())goto lost;nfs_player_cancel("background-prepare");return 0;}}
- if(!nfs_player_font_prepare(&nfs_player_renderer.caption,&caption->font)||!nfs_player_color_target(target.width,target.height)||!nfs_player_preview_prepare(preview)){if(!nfs_player_current())goto lost;nfs_player_cancel("caption-stage-prepare");return 0;}
+ guard=nfs_player_context_stage();
+ if(!nfs_player_font_prepare(&nfs_player_renderer.caption,&caption->font)||!nfs_player_caption_prepare(&nfs_player_renderer.captionWord,word,ownerKind==NFS_PLAYER_OWNER_ONE?1u:2u,&guard)||!nfs_player_color_target(target.width,target.height)||!nfs_player_preview_prepare(preview)){if(!nfs_player_current())goto lost;nfs_player_cancel("caption-stage-prepare");return 0;}
  if(!nfs_player_read_target(&target,scene->serial)){nfs_player_cancel("prepare-target");return 0;}target.sampling.magFilter=filter;if(memcmp(&target,&nfs_player_renderer.target,sizeof target)){nfs_player_cancel("prepare-target-changed");return 0;}
  memset(&layers,0,sizeof layers);layers.mapRole=scene->mapRole;layers.wordCount=scene->wordCount;memcpy(layers.panelClip,scene->panelClip,sizeof layers.panelClip);memcpy(layers.words,scene->words,sizeof layers.words);memcpy(layers.logos,scene->logos,sizeof layers.logos);
  guard=nfs_player_context_stage();if(!nfs_graphics_scene_save(&saved,&guard))goto lost;
  NFS_PLAYER_RENDER_GL(glBindFramebuffer(GL_FRAMEBUFFER,nfs_player_renderer.fbo));NFS_PLAYER_RENDER_GL(glViewport(target.sampling.viewport[0],target.sampling.viewport[1],target.sampling.viewport[2],target.sampling.viewport[3]));
  memset(&stage,0,sizeof stage);stage.generation=nfs_player_renderer.generation;stage.contextIdentity=nfs_player_renderer.context;stage.framebuffer=nfs_player_renderer.fbo;stage.width=target.width;stage.height=target.height;stage.sampling=target.sampling;stage.ownerCurrent=nfs_player_stage_owner;gpu.background=&nfs_bg_compositor;gpu.sidebarCaption=gpu.text=&nfs_player_renderer.caption;
- ok=nfs_player_draw_layers(&gpu,&stage,&layers,caption,preview);if(!nfs_player_current())goto lost;if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;if(!ok){nfs_player_cancel("ordered-stage");return 0;}
+ ok=nfs_player_draw_layers(&gpu,&stage,&layers,caption,preview,word);if(!nfs_player_current())goto lost;if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;if(!ok){nfs_player_cancel("ordered-stage");return 0;}
  if(!nfs_player_read_target(&target,scene->serial)){nfs_player_cancel("staged-target");return 0;}target.sampling.magFilter=filter;if(memcmp(&target,&nfs_player_renderer.target,sizeof target)){nfs_player_cancel("staged-target-changed");return 0;}
  /* Actual observed native clear/context/key/serial proof arms only after all
     optional staging has restored the original state. No clear is invented. */
@@ -216,7 +219,7 @@ int nfs_private_player_scene_begin(const NfsPlayerSceneFrameView*v){
  unsigned kind;if(!v||v->schema!=NFS_PLAYER_SCENE_RUNTIME_SCHEMA)return nfs_player_begin_refused("player-view",v?v->scene.serial:0);
  kind=v->form==0x4d3050?NFS_BACKGROUND_TAIL_PLAYER1_CAPTION:v->form==0x4d3100?NFS_BACKGROUND_TAIL_PLAYER2_CAPTION:0;
  if(!kind||v->scene.tailKind!=kind)return nfs_player_begin_refused("player-form-tail",v->scene.serial);
- return nfs_player_cached_begin(&v->scene,&v->caption,&v->preview,kind);
+ return nfs_player_cached_begin(&v->scene,&v->caption,&v->preview,&v->captionWord,kind);
 }
 int nfs_private_player_scene_finish(uint64_t serial){unsigned kind=nfs_player_renderer.activeOwnerKind;if(kind!=NFS_PLAYER_OWNER_ONE&&kind!=NFS_PLAYER_OWNER_TWO)return 0;return nfs_player_cached_finish(serial,kind);}
 int nfs_private_player_scene_cancel(uint64_t serial){

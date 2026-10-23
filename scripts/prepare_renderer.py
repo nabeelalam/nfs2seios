@@ -225,7 +225,9 @@ static void nfs_logo_native_triangle(const GrVertex*,const GrVertex*,const GrVer
            'GraphicsSceneRuntimeAbi.h','GraphicsSceneLayerAbi.h','GraphicsSceneLayers.h',
            'GraphicsSceneLayers.c.inc','GraphicsSceneRenderer.inc',
            'OptionsSceneRuntimeAbi.h','SetupSceneRuntimeAbi.h','OptionsSceneLayerAbi.h','OptionsSceneLayers.h',
-           'OptionsSceneLayers.c.inc','OptionsSceneRenderer.inc']
+           'OptionsSceneLayers.c.inc','OptionsSceneRenderer.inc',
+           'PlayerSceneRuntimeAbi.h','PlayerSceneRenderer.inc','PlayerCaptionRuntimeAbi.h',
+           'PlayerCaptionRenderer.inc','PlayerCaptionWordIdentity.h']
     for name in names:shutil.copyfile(ROOT/'src/hd'/name,target/name)
     return text
 

@@ -30,7 +30,7 @@ inline std::shared_ptr<const cpu::VerifiedSource>prepareSource(Game&g,uint64_t o
  auto*&storage=slot();if(!storage)storage=new(std::nothrow)State;if(!storage)return {};auto&s=*storage;if(s.preparing){s.source.reset();return {};}s.preparing=true;struct Finish{State&s;~Finish(){s.preparing=false;}}finish{s};s.source.reset();
  if(s.owner!=l||s.epoch!=l->ownerEpoch){s.rawSidebar.reset();s.sidebar.reset();s.initialSidebar.reset();}s.initialSidebar=initial;s.owner=l;s.epoch=l->ownerEpoch;s.event=observedEvent;s.kind=kind;
  try{
-  if(!initial&&(s.rawSidebar!=raw||!s.sidebar)){cpu::SidebarInput i{raw->scene,raw->group,raw->originalCopy,raw->caption,raw->copySerial,raw->captionSerial,raw->captionLifetime,raw->groupEvent,raw->tailEvent};auto verified=cpu::verifySidebar(i,l->workspace,*l->catalogue);if(!verified)return {};s.rawSidebar=raw;s.sidebar=std::move(verified);}
+  if(!initial&&(s.rawSidebar!=raw||!s.sidebar)){cpu::SidebarInput i{raw->scene,raw->group,raw->originalCopy,raw->caption,raw->copySerial,raw->captionSerial,raw->captionLifetime,raw->groupEvent,raw->tailEvent};i.compactCaption=raw->compactCaption;i.captionGame=raw->captionGame;i.captionFormGuest=raw->captionFormGuest;i.captionArchive=raw->archive;auto verified=cpu::verifySidebar(i,l->workspace,*l->catalogue);if(!verified)return {};s.rawSidebar=raw;s.sidebar=std::move(verified);}
   if(!anchoredPlane(s.upload,l->base.post.target)||uint32_t(g.eax)!=s.upload.target.w[8]||l->nextContent==UINT64_MAX)return {};
   // Fresh source event from the owner sequencer at this lexical upload entry.
   auto upload=l->event(l->currentCopyEvent.iteration);if(!upload.sequence||l->invalid)return {};const uint64_t content=++l->nextContent;

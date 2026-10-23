@@ -6,6 +6,7 @@
 #include "PlayerPreviewPacket.h"
 #include "PlayerSwatchPacket.h"
 #include "PlayerInitialSidebarProof.h"
+#include "PlayerCaptionDisplay.h"
 #include <new>
 namespace nfs_player_scene_cpu {
 namespace bg=nfs_background_scene_cpu;namespace pv=nfs_player_preview;namespace sw=nfs_player_swatch;
@@ -40,6 +41,7 @@ struct OriginalOverlay {
 };
 struct Prepared:bg::Prepared {
  uint32_t form=0;std::shared_ptr<const nfs_soft::FramePacket>caption;uint64_t captionSerial=0,captionLifetime=0;
+ std::shared_ptr<const nfs_player_caption_display::Prepared>captionWord;
  std::shared_ptr<const pv::Packet>preview;std::shared_ptr<const sw::Packet>swatch;std::shared_ptr<const OriginalOverlay>overlay;
  uint64_t previewSerial=0,previewLifetime=0,swatchCopySerial=0;uint32_t previewArchive=0;
  Event previewBaseEvent{},previewEvent{},swatchCopyEvent{},swatchEvent{};
@@ -49,7 +51,7 @@ struct Prepared:bg::Prepared {
   const auto&font=*caption->font();auto&f=v.caption.font;f.schema=1;f.width=font.width;f.height=font.height;f.identity=font.identity();f.alpha=font.alpha().data();f.bytes=font.alpha().size();
   struct FontDigest{std::shared_ptr<const nfs_soft::FontCatalog>owner;std::array<unsigned char,32>sha{};};static thread_local FontDigest cached;const auto&owner=caption->font();
   if(cached.owner.get()!=owner.get()||cached.owner.owner_before(owner)||owner.owner_before(cached.owner)){std::array<unsigned char,32>digest{};if(!nfs_texture_sha256(f.alpha,f.bytes,digest.data()))return {};cached.owner=owner;cached.sha=digest;}std::copy(cached.sha.begin(),cached.sha.end(),f.sha256);
-  v.caption.logicalWidth=343;v.caption.logicalHeight=480;v.caption.vertices=caption->vertices().data();v.caption.vertexCount=caption->vertices().size();return v;
+  v.caption.logicalWidth=343;v.caption.logicalHeight=480;v.caption.vertices=caption->vertices().data();v.caption.vertexCount=caption->vertices().size();if(captionWord){if(!captionWord->current())return {};v.captionWord=captionWord->view();if(!v.captionWord.schema)return {};}return v;
  }
 };
 
@@ -68,11 +70,13 @@ struct SidebarInput {
  const Scene&scene;const nfs_logo_capture::Group&logos;const nfs_logo_capture::Copy&originalCopy;
  std::shared_ptr<const nfs_soft::FramePacket>caption;uint64_t serial=0,captionSerial=0,captionLifetime=0;
  Event groupEvent{},tailEvent{};
+ // Supplemental authentic caption metadata; absent retains legacy packet behavior.
+ std::shared_ptr<const nfs_compact_caption::Proof>compactCaption;uintptr_t captionGame=0;uint32_t captionFormGuest=0,captionArchive=0;
 };
 class SidebarProof;
 inline std::shared_ptr<const SidebarProof>verifySidebar(const SidebarInput&,Workspace&,const SourceCatalog&,Failure*failure=nullptr)noexcept;
 class SidebarProof final {
- SourceCatalog catalog_;nfs_logo_capture::Group group_;Plane post_;std::shared_ptr<const nfs_soft::FramePacket>caption_;
+ SourceCatalog catalog_;nfs_logo_capture::Group group_;Plane post_;std::shared_ptr<const nfs_soft::FramePacket>caption_;std::shared_ptr<const nfs_compact_caption::Proof>compactCaption_;
  uint64_t serial_=0,captionSerial_=0,lifetime_=0;uint32_t form_=0;Event sceneEvent_{},groupEvent_{},tailEvent_{};
  unsigned wordCount_=0;std::array<NfsBackgroundSceneWordLayer,4>words_{};std::array<NfsSmallLogoLayer,3>logos_{};
  SidebarProof()=default;friend std::shared_ptr<const SidebarProof>verifySidebar(const SidebarInput&,Workspace&,const SourceCatalog&,Failure*)noexcept;
@@ -80,6 +84,7 @@ class SidebarProof final {
 public:
  bool catalogMatches(const SourceCatalog&c)const noexcept{return sameCatalog(catalog_,c);}const nfs_logo_capture::Group&group()const noexcept{return group_;}const Plane&post()const noexcept{return post_;}
  const std::shared_ptr<const nfs_soft::FramePacket>&caption()const noexcept{return caption_;}
+ const std::shared_ptr<const nfs_compact_caption::Proof>&compactCaption()const noexcept{return compactCaption_;}
  uint64_t serial()const noexcept{return serial_;}uint64_t captionSerial()const noexcept{return captionSerial_;}uint64_t lifetime()const noexcept{return lifetime_;}uint32_t form()const noexcept{return form_;}
  Event sceneEvent()const noexcept{return sceneEvent_;}Event groupEvent()const noexcept{return groupEvent_;}Event tailEvent()const noexcept{return tailEvent_;}
  unsigned wordCount()const noexcept{return wordCount_;}const std::array<NfsBackgroundSceneWordLayer,4>&words()const noexcept{return words_;}const std::array<NfsSmallLogoLayer,3>&logos()const noexcept{return logos_;}
@@ -119,6 +124,16 @@ inline std::shared_ptr<const OriginalOverlay>makeOverlay(const pv::Packet&previe
  unsigned left=640,top=480,right=0,bottom=0;for(unsigned y=0;y<480;++y)for(unsigned x=0;x<640;++x)if(coverage[y*640+x]){left=std::min(left,x);top=std::min(top,y);right=std::max(right,x+1);bottom=std::max(bottom,y+1);}
  if(left>=right||top>=bottom)return {};std::shared_ptr<OriginalOverlay>out(new OriginalOverlay);out->left=int32_t(left);out->top=int32_t(top);out->width=right-left;out->height=bottom-top;for(unsigned y=top;y<bottom;++y)for(unsigned x=left;x<right;++x){out->pixels.push_back(whole[y*640+x]);out->coverage.push_back(coverage[y*640+x]);}if(!pv::wordsSha(out->pixels.data(),out->pixels.size(),out->sha)||!nfs_texture_sha256(out->coverage.data(),out->coverage.size(),out->coverageSha.data()))return {};return out;
 }
+// Metadata is supplemental display authority only; immutable original packet,
+// full343 replay and side/logo/copy verification remain independently required.
+inline bool ordinaryCompactCaptionMatches(const SidebarInput&i)noexcept{
+ if(!i.compactCaption)return true;const auto&p=*i.compactCaption;const auto&e=p.evidence();const bool one=i.scene.form==Player1Form;
+ if(!tail(i.scene.form)||!p.current()||p.origin()||e.route!=nfs_compact_caption::Route::OrdinaryEbp||e.policy!=(one?nfs_compact_caption::Policy::Player1:nfs_compact_caption::Policy::Player2)||!i.captionGame||e.game!=i.captionGame||!i.captionFormGuest||e.formGuest!=i.captionFormGuest||e.incomingEbp!=i.captionFormGuest||!i.captionArchive||!e.policyThread||!e.resourceSerial||e.serial!=i.captionSerial||e.lifetime!=i.captionLifetime||p.packet()!=i.caption)return false;
+ if(e.requestedResource!=(one?2u:3u)||e.inputCategory!=1||e.inputAnchor!=168||e.inputY!=(one?198:234)||e.measureWidth!=(one?68:70)||e.measureAnchor!=168||e.measureKind!=2||e.command.role!=1||e.command.sourceSize!=18||e.command.alignment!=2||e.command.color!=0xffff||e.command.x!=(one?100:98)||e.command.y!=e.inputY||e.command.advance!=e.measureWidth||e.command.length!=10||std::memcmp(e.command.text.data(),one?"player one":"player two",10)||e.command.text[10])return false;
+ const auto&t=i.scene.tailPost.target;const auto&clip=e.command.clip;if(clip.left!=float(t.w[3])||clip.top!=float(t.w[4])||clip.right!=float(t.w[5])||clip.bottom!=float(t.w[6]))return false;
+ for(const auto*s:{&e.resolved,&e.measure,&e.stringBefore,&e.stringAfter})if(s->archive!=i.captionArchive||!nfs_main_sidebar_origin::sameRetainedTarget(s->target,t)||s->identity.lifetime!=i.captionLifetime||s->selector!=(one?2u:3u)||s->resource!=(one?2u:3u))return false;
+ return i.caption&&e.stringAfter.identity==i.caption->surface();
+}
 inline std::shared_ptr<const SidebarProof>verifySidebar(const SidebarInput&i,Workspace&w,const SourceCatalog&catalog,Failure*failure)noexcept{
  auto reject=[&](Failure f)->std::shared_ptr<const SidebarProof>{if(failure)*failure=f;return {};};if(failure)*failure=Failure::None;
  if(!validCatalog(catalog))return reject(Failure::Source);const auto&s=i.scene;const auto&g=i.logos;const auto&c=i.originalCopy;const uint32_t form=s.form;const unsigned expectedTail=tail(form);std::unique_ptr<bg::Prepared>scratch(new(std::nothrow)bg::Prepared);if(!scratch)return reject(Failure::Source);auto&o=*scratch;
@@ -130,11 +145,12 @@ inline std::shared_ptr<const SidebarProof>verifySidebar(const SidebarInput&i,Wor
  if(s.tailKind!=expectedTail||s.tailPredicate!=form||s.tailSymbol!=form||!samePlane(s.tailPre,g.post,343))return reject(Failure::Tail);
  if(!plane(s.tailPost,343)||!i.caption||!i.captionSerial||!i.captionLifetime||i.caption->commands()!=1||!i.caption->writes()||i.caption->vertices().empty()||!i.caption->font()||i.caption->pixels()!=Side)return reject(Failure::Tail);
  nfs_soft::SurfaceIdentity identity{};if(!captionIdentity(c.sourceOwner,i.captionLifetime,identity)||!sameCaptionOwner(c.sourceOwner,s.tailPost.target)||!i.caption->matches(identity,i.captionSerial,s.tailPost.pixels.data(),Side)||!std::equal(i.caption->clean().begin(),i.caption->clean().end(),s.tailPre.pixels.begin()))return reject(Failure::Tail);
+ if(!ordinaryCompactCaptionMatches(i))return reject(Failure::Tail);
  // The immutable logo verifier owns its exact union; caption may change only outside it.
  for(unsigned k=0;k<Side;++k)if(w.logo.groupUnion[k]&&s.tailPre.pixels[k]!=s.tailPost.pixels[k])return reject(Failure::Tail);
 
  if(c.sourceOwner.header[3]||!sameCaptionOwner(c.sourceOwner,s.tailPost.target))return reject(Failure::Target);for(unsigned k=0;k<Side;++k)if(le16(c.sourceBefore.data()+16+2*k)!=s.tailPost.pixels[k])return reject(Failure::Copy);
- try{std::shared_ptr<SidebarProof>p(new SidebarProof);p->catalog_=catalog;p->group_=g;p->post_=s.tailPost;p->caption_=i.caption;p->serial_=i.serial;p->captionSerial_=i.captionSerial;p->lifetime_=i.captionLifetime;p->form_=form;p->sceneEvent_=s.event;p->groupEvent_=i.groupEvent;p->tailEvent_=i.tailEvent;p->wordCount_=unsigned(s.draws.size()-1);p->words_=o.words;p->logos_=o.logoScratch.layers;return p;}catch(...){return reject(Failure::Source);}
+ try{std::shared_ptr<SidebarProof>p(new SidebarProof);p->catalog_=catalog;p->group_=g;p->post_=s.tailPost;p->caption_=i.caption;p->compactCaption_=i.compactCaption;p->serial_=i.serial;p->captionSerial_=i.captionSerial;p->lifetime_=i.captionLifetime;p->form_=form;p->sceneEvent_=s.event;p->groupEvent_=i.groupEvent;p->tailEvent_=i.tailEvent;p->wordCount_=unsigned(s.draws.size()-1);p->words_=o.words;p->logos_=o.logoScratch.layers;return p;}catch(...){return reject(Failure::Source);}
 }
 inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&i,Workspace&w,const SourceCatalog&catalog,Failure*failure)noexcept{
  auto reject=[&](Failure f)->std::shared_ptr<const VerifiedSource>{if(failure)*failure=f;return {};};if(failure)*failure=Failure::None;
@@ -154,15 +170,15 @@ inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&i,Wor
  // historical Main epochs/events and actual copy kinds are never relabelled.
  if(bool(i.initialSidebar)==bool(i.sidebar)||ve.ownerEpoch!=a.epoch||ce.ownerEpoch!=a.epoch||ue.ownerEpoch!=a.epoch||ve.iteration!=ce.iteration||ue.iteration!=ce.iteration||ve.sequence<=i.previewEvent.sequence||ve.sequence>=ce.sequence||ce.sequence>=ue.sequence||!i.actualSidebarPost||!plane(*i.actualSidebarPost,343))return reject(Failure::Binding);
  const nfs_logo_capture::Group*sidebarGroup=nullptr;const Plane*sidebarPost=nullptr;
- std::shared_ptr<const nfs_soft::FramePacket>caption;uint64_t captionSerial=0,captionLifetime=0;
+ std::shared_ptr<const nfs_soft::FramePacket>caption;std::shared_ptr<const nfs_compact_caption::Proof>compactCaption;uint64_t captionSerial=0,captionLifetime=0;
  unsigned wordCount=0;std::array<NfsBackgroundSceneWordLayer,4>words{};std::array<NfsSmallLogoLayer,3>logos{};
  if(i.initialSidebar){const auto&p=*i.initialSidebar;const auto&ib=p.binding();const auto&event=ib.captionEvent;
   if((a.kind!=SourceKind::Initial&&a.kind!=SourceKind::Refresh)||i.acceptedSidebarSerial||i.sidebarLifetime||!p.current()||!p.catalogMatches(catalog)||ib.form!=form||ib.formGuest!=a.formGuest||ib.archive!=a.archive||ib.game!=a.gameOwner||ib.thread!=a.thread||ib.epoch!=a.epoch||event.ownerEpoch!=a.epoch||event.iteration||!event.sequence||event.sequence>=b.event.sequence||!p.origin()||!p.origin()->current()||!p.origin()->frame()||!p.origin()->frame()->valid||p.origin()->game()!=a.gameOwner||p.origin()->publisherThread()!=a.thread||p.origin()->archive()!=a.archive||!p.captionProof()||!p.caption()||!p.captionSerial()||!p.captionLifetime())return reject(Failure::Binding);
-  sidebarGroup=&p.origin()->group();sidebarPost=&p.post();caption=p.caption();captionSerial=p.captionSerial();captionLifetime=p.captionLifetime();
+  sidebarGroup=&p.origin()->group();sidebarPost=&p.post();caption=p.caption();compactCaption=p.captionProof();captionSerial=p.captionSerial();captionLifetime=p.captionLifetime();
   const auto&inherited=*p.origin()->frame();wordCount=inherited.wordCount;words=inherited.words;logos=inherited.logos;
  }else{const auto&p=*i.sidebar;
   if(!p.catalogMatches(catalog)||p.form()!=form||p.serial()!=i.acceptedSidebarSerial||!i.acceptedSidebarSerial||p.lifetime()!=i.sidebarLifetime||!i.sidebarLifetime||p.sceneEvent().ownerEpoch!=a.epoch||p.tailEvent().sequence>=ve.sequence)return reject(Failure::Binding);
-  sidebarGroup=&p.group();sidebarPost=&p.post();caption=p.caption();captionSerial=p.captionSerial();captionLifetime=i.sidebarLifetime;wordCount=p.wordCount();words=p.words();logos=p.logos();
+  sidebarGroup=&p.group();sidebarPost=&p.post();caption=p.caption();compactCaption=p.compactCaption();captionSerial=p.captionSerial();captionLifetime=i.sidebarLifetime;wordCount=p.wordCount();words=p.words();logos=p.logos();
  }
  if(!sidebarGroup||!sidebarPost||!plane(*sidebarPost,343)||!sameCaptionOwner(sidebarPost->target,i.actualSidebarPost->target)||!std::equal(sidebarPost->pixels.begin(),sidebarPost->pixels.begin()+Side,i.actualSidebarPost->pixels.begin()))return reject(Failure::Binding);
  if(!sameCaptionOwner(c.sourceOwner,i.actualSidebarPost->target)||c.sourceOwner.owner==c.pre.target.owner||c.sourceOwner.ownerState[3]!=c.pre.target.owner||!retainedBaseTarget(b.post.target,c.pre.target)||!i.actualUploadPost||!pv::planeValid(*i.actualUploadPost)||!retainedBaseTarget(b.post.target,i.actualUploadPost->target))return reject(Failure::Target);
@@ -180,6 +196,6 @@ inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&i,Wor
  std::copy(i.preview->post().begin(),i.preview->post().end(),w.whole.begin());const uint32_t key=c.row[0].colorKey;for(unsigned y=0;y<480;++y)for(unsigned x=0;x<343;++x){unsigned at=y*640+x;w.whole[at]=nfs_small_logo_live::pixel(w.whole[at],nfs_small_logo_live::expanded(le16(c.sourceBefore.data()+16+2*(y*343+x)),key),false);}
  if(i.swatch){const auto r=i.swatch->bounds();if(r.left!=366||r.top!=141||r.width!=85||r.height!=22||i.swatch->pixels().size()!=85*22||i.swatch->coverage().size()!=85*22)return reject(Failure::Pixels);for(unsigned y=0;y<22;++y)for(unsigned x=0;x<85;++x){unsigned k=y*85+x;if(i.swatch->coverage()[k])w.whole[(y+141)*640+x+366]=i.swatch->pixels()[k];}}
  if(!std::equal(w.whole.begin(),w.whole.end(),i.actualUploadPost->pixels.begin()))return reject(Failure::Pixels);
- try{std::shared_ptr<VerifiedSource>source(new VerifiedSource);auto&o=source->data_;o.overlay=makeOverlay(*i.preview,i.swatch.get(),c);if(!o.overlay)return reject(Failure::Pixels);o.form=form;o.caption=caption;o.captionSerial=captionSerial;o.captionLifetime=captionLifetime;o.preview=i.preview;o.previewSerial=i.acceptedPreviewSerial;o.previewLifetime=a.lifetime;o.previewArchive=a.archive;o.previewBaseEvent=b.event;o.previewEvent=i.previewEvent;o.swatch=i.swatch;o.swatchCopySerial=i.acceptedSwatchCopySerial;o.swatchCopyEvent=i.swatchCopyEvent;o.swatchEvent=i.swatchEvent;o.mapRole=b.mapRole;o.wordCount=wordCount;o.words=words;o.logos=logos;o.serial=a.generation;o.contentRevision=a.contentSerial;o.original=i.actualUploadPost->pixels;o.valid=true;source->binding_=a;source->target_=i.actualUploadPost->target;source->initialSidebar_=i.initialSidebar;if(!source->current())return reject(Failure::Binding);return source;}catch(...){return reject(Failure::Source);}
+ try{std::shared_ptr<VerifiedSource>source(new VerifiedSource);auto&o=source->data_;o.overlay=makeOverlay(*i.preview,i.swatch.get(),c);if(!o.overlay)return reject(Failure::Pixels);o.form=form;o.caption=caption;o.captionSerial=captionSerial;o.captionLifetime=captionLifetime;if(compactCaption){o.captionWord=nfs_player_caption_display::Prepared::create(compactCaption,caption,{form,a.formGuest,a.archive,a.gameOwner,captionSerial,captionLifetime});if(!o.captionWord)return reject(Failure::Tail);}o.preview=i.preview;o.previewSerial=i.acceptedPreviewSerial;o.previewLifetime=a.lifetime;o.previewArchive=a.archive;o.previewBaseEvent=b.event;o.previewEvent=i.previewEvent;o.swatch=i.swatch;o.swatchCopySerial=i.acceptedSwatchCopySerial;o.swatchCopyEvent=i.swatchCopyEvent;o.swatchEvent=i.swatchEvent;o.mapRole=b.mapRole;o.wordCount=wordCount;o.words=words;o.logos=logos;o.serial=a.generation;o.contentRevision=a.contentSerial;o.original=i.actualUploadPost->pixels;o.valid=true;source->binding_=a;source->target_=i.actualUploadPost->target;source->initialSidebar_=i.initialSidebar;if(!source->current())return reject(Failure::Binding);return source;}catch(...){return reject(Failure::Source);}
 }
 } // namespace nfs_player_scene_cpu

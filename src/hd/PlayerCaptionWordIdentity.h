@@ -1,0 +1,9 @@
+// SPDX-License-Identifier: MIT
+// Two complete-word graphics, no font or original pixels. Source SHA256 a25e745a01e87d261c5d4c0831e5071e710bb8f973287917813a31e373ab9072
+#ifndef NFS_PLAYER_CAPTION_WORD_IDENTITY_H
+#define NFS_PLAYER_CAPTION_WORD_IDENTITY_H
+static const unsigned char nfs_player_caption_word_sha256[2][32]={
+{161,56,3,31,4,20,55,226,37,248,15,193,197,100,38,160,70,217,232,26,167,12,111,63,147,13,191,62,89,106,212,215},
+{33,65,155,113,105,18,133,182,67,167,150,14,108,85,202,9,148,236,96,191,37,88,174,175,195,139,216,37,133,151,197,115}
+};
+#endif

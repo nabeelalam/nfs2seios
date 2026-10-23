@@ -1,0 +1,134 @@
+{
+  "scope": "Two fixed lowercase Player sidebar word graphics, genuine source-proof-bound display in the UI branch; full UI/physical acceptance remains open.",
+  "sourceArtifact": {
+    "path": "assets/hud/frontend/player-caption-word-art.json",
+    "sha256": "a25e745a01e87d261c5d4c0831e5071e710bb8f973287917813a31e373ab9072",
+    "bytes": 107630,
+    "wordCount": 2,
+    "fontFileOrAlphabetIncluded": false,
+    "originalGamePixelsIncluded": false
+  },
+  "words": [
+    {
+      "word": 1,
+      "text": "player one",
+      "width": 272,
+      "height": 128,
+      "destination": [
+        100,
+        198,
+        168,
+        230
+      ],
+      "rgbaSha256": "a138031f041437e225f80fc1c56426a046d9e81aa70c6f3f930dbf3e596ad4d7"
+    },
+    {
+      "word": 2,
+      "text": "player two",
+      "width": 280,
+      "height": 128,
+      "destination": [
+        98,
+        234,
+        168,
+        266
+      ],
+      "rgbaSha256": "21419b71691285b643a7960e6c55ca0994ec60bf2558aeafc38bd8258597c573"
+    }
+  ],
+  "sourcePreservation": {
+    "originalResolveMeasureDrawAndPixelReplayRetained": true,
+    "exactFontPacketAndOriginalPixelsRetained": true,
+    "optionalOrdinaryMetadataWithoutWordAuthorityRemainsCompatible": true,
+    "suppliedBadMetadataDeclines": true,
+    "initialAndCachedDisplayShareImmutableArtwork": true,
+    "originalLayoutAndAnimationCallsUnchanged": true,
+    "otherFontCataloguesUnchanged": true
+  },
+  "runtimeAbi": {
+    "sceneSchema": 2,
+    "introSchema": 2,
+    "existingSoftwareViewRetained": true,
+    "explicitWordViewSeparateFromFontCatalog": true,
+    "oldSchemaRejectedBeforeWordBorrow": true,
+    "malformedNonzeroWordDeclines": true,
+    "allZeroWordRetainsSourceDisplay": true
+  },
+  "validation": {
+    "focusedRegisteredChecksPerMode": 26,
+    "optimizedPassed": true,
+    "asanUbsanPassed": true,
+    "genuineLexicalInitialAndOrdinaryProofFixtures": true,
+    "queueImageOwnershipAndInitialRetirementCases": true,
+    "twoIndependentPinnedWordImages": true,
+    "actualGlesStateBoundsNativeColorDepthAndWarmReusePassed": true,
+    "representativeNewWordUploadForeignContextLossPoints": 1,
+    "exhaustiveNewContextLossMatrix": false,
+    "sourceGeneratorAndSelectedSourceNegativeChecksPassed": true,
+    "independentReviewNoReachableBlocker": true
+  },
+  "build": {
+    "scope": "Genuine Player compact-caption complete-word display, both original routes; physical acceptance unverified",
+    "binarySha256": "88adecd7052bb0ec3488ceecb9380eb756f21cd5687cdd0a63926ac548a7ff00",
+    "observerSha256": "da4e0002bbf08e88c4e64ac1ea3a316728d2eec355fa80e54a2911b28c2151fa",
+    "compileUnits": 9,
+    "maxCompilerWorkers": 2,
+    "sourceInputsStable": true,
+    "maintained74ObjectsUnchanged": true,
+    "compilerInputCount": 296,
+    "seconds": 154.3,
+    "cloud": false
+  },
+  "formatOnlyNormalization": {
+    "onlyTwoTrailingSpacesRemoved": true,
+    "rendererObjectByteIdentical": true,
+    "objectSha256": "3fb1c67e9d9ab196696cc8469cfaa93fd9eebbc082b631ad25295e21a53719a1",
+    "relinkNeeded": false
+  },
+  "actualGameRun": {
+    "passed": true,
+    "bothPlayersAll21OriginalIntroFrames": true,
+    "nativeGpuPhaseEvents": 168,
+    "successfulWordDrawCounts": {
+      "1": 85,
+      "2": 21
+    },
+    "carChangesRestorationAndMainReturn": true,
+    "nativeCaptureDimensions": [
+      2186,
+      1640
+    ],
+    "captionShapeDice": [
+      0.9255808174928563,
+      0.9247814846731504
+    ],
+    "priorFontNegativeControlDice": [
+      0.3987798114254021,
+      0.357288411900557
+    ],
+    "shapeThreshold": 0.8,
+    "cleanWmDeleteExitZero": true,
+    "copiedConfigAndArtworkRestored": true,
+    "ownedProcessesAndDisplayTerminal": true,
+    "leaseAbsent": true,
+    "resultSha256": "14c66f879c7550fc5735378acfa1517fce2fd0142cab9d966fb84494af9cd31b",
+    "actualOrdinaryEbpRouteSeparatelyObserved": false
+  },
+  "retainedFailures": [
+    "Reference-member test input needed fresh copy construction.",
+    "Hard-coded frame-schema fixtures updated to the explicitly versioned ABI; unsupported schema borrowing regression added.",
+    "New regression fixture method call corrected before final passing checks.",
+    "Compiler dependency inspection showed GameContexts does not include the display adapter; its full input closure stayed pinned."
+  ],
+  "limitations": [
+    "Actual normal intro and cached-refresh display proved locally; genuine OrdinaryEbp metadata path covered by lexical fixtures, not a separately traced real-game entry.",
+    "No exhaustive intermediate-frame visual or new context-loss matrix claim.",
+    "Remaining uppercase/other-menu fonts, semantic artwork/HUD/right marks and physical UI acceptance remain open.",
+    "No new physical iPad FPS, LowPower60 or battery claim."
+  ],
+  "capturesOriginalDataAndFontFilesPublished": false,
+  "cloudBuild": false,
+  "push": false,
+  "paidService": false,
+  "fullGoalActive": true
+}
