@@ -36,6 +36,16 @@ def fixture(nl='\n'):
 
 
 class ControlsRendererHooksTests(unittest.TestCase):
+    def test_pre_export_names_preserve_exact_original_calls(self):
+        for nl in ('\n', '\r\n'):
+            original = fixture(nl).replace('native_gr', 'gr')
+            result = hooks.add_controls_renderer_hooks(original)
+            self.assertEqual(hooks.reverse_controls_renderer_hooks(result), original)
+            self.assertIn('nfs_controls_renderer_upload_done(ti);', result)
+            duplicate = original + '\nvoid native_grTexSource() { original(); }\n'
+            with self.assertRaises(ValueError):
+                hooks.add_controls_renderer_hooks(duplicate)
+
     def test_exact_lf_and_crlf_reversal_and_existing_calls(self):
         for nl in ('\n', '\r\n'):
             original = fixture(nl)

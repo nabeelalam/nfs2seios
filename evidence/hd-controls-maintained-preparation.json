@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Maintained Controls source and renderer preparation, fresh observer-free local executable and real original-menu acceptance",
+  "preparation": {
+    "isolatedProjectRootUsed": true,
+    "workingGeneratedDirectoriesUntouched": true,
+    "existingPinnedCachedDependenciesOnly": true,
+    "appleWorkflowCheckedCopyBundleSettingMatched": true,
+    "sourceTransformOrder": [
+      "ControlsText",
+      "ControlsSidebar",
+      "ControlsLive",
+      "ControlsScene"
+    ],
+    "menuLifetimeNestingMatchesValidatedUnits": true,
+    "preExportAndExportedRendererNamesAcceptedButAmbiguousDuplicatesRefused": true,
+    "rendererHelpersCopiedAndHashMatched": 9,
+    "exactComparedUnitsAfterOnlyKnownObserverRemoval": 7,
+    "comparisonSha256": "6d65d71099276f7915dbd5dfc26a583ba7bc694ca58d804d1fb73aeba9f91752",
+    "generationReceiptSha256": "25a5419eeb9fe394f84534bbd31612cbcff814d3bb186bdb9ea8753f3da186d4"
+  },
+  "build": {
+    "binarySha256": "95743ffecf8f5b6c786f756507f2d29a456eec4fd811bd239b6d278c5c429d64",
+    "compiledUnits": 18,
+    "maxCompilerWorkers": 2,
+    "maxLinkWorkers": 2,
+    "sourceInputFiles": 788,
+    "allSourceAndReusedInputsStable": true,
+    "privateSourceChildPauseAndContextObserversAbsentFromBinaryAndRun": true,
+    "existingVerifiedPlatformAndSdlObjectsReused": true
+  },
+  "actualGame": {
+    "nativeSize": [
+      2186,
+      1640
+    ],
+    "observedSelections": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "independentWhiteHighlightRecognition": true,
+    "capturedViews": 5,
+    "freshPairedControlsNativePassesBeforeEachCapture": 4,
+    "completeControlsPublications": 69,
+    "originalUploadsPerPass": 300,
+    "originalSelectionsPerPass": 300,
+    "originalTrianglesPerPass": 600,
+    "originalMenuInputsOnly": true,
+    "reopenedAfterRecognizedOptionsScene": true,
+    "privateSourceObserverMessagesRequired": false,
+    "privateLogSha256": "9beb4fea858d648f711e041047afe949e4a4eb412db7dde3ca1d883627f4883d",
+    "privateResultSha256": "959850933dced0939181126cbcd153ffa8f8016becbb939fa30212a008855bb4",
+    "captureHashes": [
+      "1526954ea7128a78365231b847578a4f996562f550a0122b92286f82f296a57e",
+      "c667fd8776cf74dc01a8ba6059a3c7488297520f799504b1bc039d2ae6232ed8",
+      "69aa53dfa68932e4112265f42629bc6477b91607e8834e8bedd3e3886f399c88",
+      "ec03987d77fa3b5f7242445b76ca57b9acf669039e2d82835a5751e2d599f476",
+      "c0b388004d18e3117787195aa7a1618c7862928ae41bd9cc514fb8eb07b800f5"
+    ]
+  },
+  "registeredSourceHookChecksPassed": 5,
+  "rendererHookCasesPassed": 6,
+  "restoration": {
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "brightnessConfigRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedGamePids": [],
+    "displayStoppedAfterTerminalAndRestore": true
+  },
+  "limits": {
+    "childHdArtworkComplete": false,
+    "physicalIpadUiPerformanceBatteryValidated": false,
+    "newIpa": false,
+    "cloudBuild": false,
+    "published": false
+  },
+  "validationNotes": {
+    "priorCleanRunStoppedBeforeOpeningControlsDueToHarnessNavigationOmission": true,
+    "retryUsedIdenticalBinary": true,
+    "priorResourcesRestored": true,
+    "priorPrivateResultSha256": "e27588cd3ba2c2145be034fd080064f54fd495ccef9160231bbb062640bca788",
+    "sourcePinsVerifiedInWslToReadExistingLinuxCandidateSymlinks": true,
+    "parentViewedCleanNativeCapture": true
+  }
+}

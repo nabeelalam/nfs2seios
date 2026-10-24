@@ -13,6 +13,10 @@ from location_preview_hooks import add_location_preview_hooks
 from audio_live_hooks import add_audio_live_hooks
 from audio_dialog_word_hooks import add_audio_dialog_word_hooks
 from graphics_dialog_word_hooks import add_graphics_dialog_word_hooks
+from controls_text_hooks import add_controls_text_hooks
+from controls_sidebar_hooks import add_controls_sidebar_hooks
+from controls_live_hooks import add_controls_live_hooks
+from controls_scene_hooks import add_controls_scene_hooks
 from audio_sidebar_cache_hooks import add_audio_sidebar_cache_hooks
 from audio_scene_hooks import add_audio_scene_hooks
 from audio_sidebar_measure_hooks import add_audio_sidebar_measure_hooks
@@ -220,11 +224,20 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         text = add_graphics_live_hooks(text, path.name)
         text = add_graphics_sidebar_hooks(text, path.name)
         text = add_graphics_scene_hooks(text, path.name)
+        # Methods_01 owns overlapping menu lifetimes. Preserve their tested
+        # nesting while other units keep their established callback order.
+        if path.name == "Methods_01.cpp":
+            text = add_player_scene_hooks(text, path.name)
         text = add_options_scene_hooks(text, path.name)
         text = add_setup_scene_hooks(text, path.name)
-        text = add_player_scene_hooks(text, path.name)
+        if path.name != "Methods_01.cpp":
+            text = add_player_scene_hooks(text, path.name)
         text = add_audio_dialog_word_hooks(text, path.name)
         text = add_graphics_dialog_word_hooks(text, path.name)
+        text = add_controls_text_hooks(text, path.name)
+        text = add_controls_sidebar_hooks(text, path.name)
+        text = add_controls_live_hooks(text, path.name)
+        text = add_controls_scene_hooks(text, path.name)
         (dest / path.name).write_text(text)
     stubs = (source / "Stubs.cpp").read_text()
     dispatch = '#include "Game.h"\n#include "FunctionIds.h"\nextern "C" bool nfs_register_guest_function(uint32_t, NativeGameFunction);\n'

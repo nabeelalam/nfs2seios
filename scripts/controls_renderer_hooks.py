@@ -53,7 +53,10 @@ def _code(text):
 
 def _bounds(text, name):
     masked = _code(text)
-    found = list(re.finditer(r'^[^\r\n;{}]*\b' + re.escape(name) + r'\([^;{}\r\n]*\)\s*\{', masked, re.M))
+    # The maintained pipeline exports gr* names after hooks; private prepared
+    # files already carry native_gr*. Admit either exact stage, never both.
+    symbol = r'(?:native_)?' + re.escape(name[7:]) if name.startswith('native_') else re.escape(name)
+    found = list(re.finditer(r'^[^\r\n;{}]*\b' + symbol + r'\([^;{}\r\n]*\)\s*\{', masked, re.M))
     if len(found) != 1:
         raise ValueError('Missing/duplicate Controls renderer function: ' + name)
     start = masked.index('{', found[0].start())
