@@ -143,7 +143,7 @@ class ControlsSteeringRendererHooksTests(unittest.TestCase):
             self.assertIn(name,hooks.HELPERS)
         self.assertNotIn('ControlsBindingPhraseGpu.h',hooks.HELPERS)
         pipeline=(SCRIPT.parent/'prepare_renderer.py').read_text()
-        self.assertNotIn('text = add_controls_steering_renderer_hooks(text)',pipeline)
+        self.assertEqual(pipeline.count('text = add_controls_steering_renderer_hooks(text)'),1)
 
     def test_callback_symbols_match_independent_renderer_interface(self):
         result = hooks.add_controls_steering_renderer_hooks(fixture())

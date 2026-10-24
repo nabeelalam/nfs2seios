@@ -87,6 +87,18 @@ def normal_steps(source):
         if len(parent) != 1 or parent[0] >= positions[0]:
             raise ValueError('parent dependency must precede child pipeline: '+name)
     after = loop.body[positions[-1]+1:]
+    # The independently tested Steering sibling follows Setup on the same text.
+    # Admit precisely that complete unconditional suffix; no reset/dead branch
+    # or unrelated write may hide the Setup result before the emitted unit.
+    suffix = tuple('add_controls_steering_'+part+'_hooks' for part in ('text','chart','sidebar','live','scene'))
+    if after and isinstance(after[0], ast.Assign):
+        if len(after) < len(suffix)+1:
+            raise ValueError('incomplete Steering sibling suffix')
+        for node, name in zip(after, suffix):
+            expected_node=ast.parse('text = '+name+'(text, path.name)').body[0]
+            if ast.dump(node) != ast.dump(expected_node):
+                raise ValueError('changed/dead Steering sibling suffix')
+        after=after[len(suffix):]
     # Require the chain output itself to reach the maintained unit write. A
     # dead helper call or overwrite/reset before the write must not pass.
     if not after or not isinstance(after[0], ast.Expr):

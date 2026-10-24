@@ -38,3 +38,10 @@ Nineteen registered Steering checks pass, including AddressSanitizer/UndefinedBe
 The new words and bar do not rehash pixels, upload or allocate during warm staging. The unchanged shared OPTIONS helper still validates its pixel buffer three times per staged frame; this is explicitly measured, not claimed as optimized. Initial synthetic validation incorrectly assumed that inherited helper did no hashing; the corrected test separately counts its established work and forbids pixel hashing of the new Steering images.
 
 This is an isolated local preview. Maintained preparation activation, Apple compilation, physical iPad appearance and performance, split-screen coverage and Low Power Mode/battery acceptance are not proven by this test. See `evidence/hd-controls-steering-native-preview.json`.
+
+
+## Maintained preparation activation
+
+The normal pipeline installs Steering Text, Chart, Sidebar, Live and Scene hooks after Controls and child Setup, copies its independent renderer helpers, and compiles the four-level authored bar data into the runtime targets. Fresh normal generation reverses exactly to the prior output for all fifteen engine units and the renderer, preserving existing original operations and checked-copy boundaries.
+
+The normal executable contains no private Steering source observers. Twenty-one related registered checks pass. Original-input runs in single-player and genuinely selected split-screen configuration render all four Steering levels, preserve Setup binding columns (10 and 20 groups respectively), recover parent menus and shut down cleanly with copied resources restored. Split-mode Setup and half-sensitivity captures were visually inspected. These are Linux menu-rendering checks, not iPad, racing-performance or battery acceptance. See `evidence/hd-controls-steering-maintained.json`.

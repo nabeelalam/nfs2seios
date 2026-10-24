@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "scope": "Maintained Steering activation; original-game menu rendering in both single and split configuration, no private source observers",
+  "parentMilestoneCommit": "e2221143c8fac4b6d468a29b63072d6433123e10",
+  "normalPreparation": {
+    "sourceFamilies": [
+      "text",
+      "chart",
+      "sidebar",
+      "live",
+      "scene"
+    ],
+    "rendererHelperCopyVerified": true,
+    "finiteBarDataCompiledByRuntimeTargets": true,
+    "all15GeneratedEngineUnitsReverseExactlyToPriorMaintainedOutput": true,
+    "rendererReversesExactlyToPriorMaintainedOutput": true,
+    "cachedOriginalsReadOnly": true,
+    "networkRequested": false,
+    "defaultGeneratedDirectoriesUntouched": true,
+    "sourceHashesStableAcrossGenerationAndBuild": true
+  },
+  "validation": {
+    "registeredSteeringAndSetupChecksPassed": 21,
+    "newPipelineCases": 4,
+    "strengthenedPipelineCasesRerunPassed": 4,
+    "addressAndUndefinedSanitizers": true,
+    "actualGlesPixelAndStateTests": true,
+    "normalExecutableSha256": "91cda1966d642318aef55b74804c9e7f110cfaff83222e6f07b435aa4e506523",
+    "compiledUnits": 8,
+    "maximumWorkers": 2,
+    "unchangedObjectsReused": true,
+    "privateObserversPresent": false,
+    "normalNativeDimensions": [
+      2186,
+      1640
+    ],
+    "requiredNativeWitness": {
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600,
+      "stop": 0,
+      "reason": "color-only-commit"
+    }
+  },
+  "actualRuns": {
+    "single": {
+      "passed": true,
+      "steeringPublicationsByLevel": {
+        "0": 14,
+        "1": 15,
+        "2": 14,
+        "3": 14
+      },
+      "setupNativePublications": 15,
+      "setupBindingGroups": [
+        10
+      ],
+      "splitScreenSelectedThroughOriginalSetupAndRecognized": false,
+      "sourceObserverDependency": false,
+      "allOriginalControlsSelectionsVisited": true,
+      "parentControlsReentryPassed": true,
+      "originalMenuInputOnly": true,
+      "cleanShutdown": true,
+      "profileRestored": true,
+      "brightnessConfigurationRestored": true,
+      "baselineArtworkRestored": true,
+      "ownedProcessesRemaining": 0,
+      "captureSha256": {
+        "clean-child-setup": "c27a0b2685c3455e07ca9f79c1baf0ed465e54c0a791655eb734a95abb8f85ad",
+        "clean-steering-level-0": "693cb1e841f68346686d88fa4bedf1fbde5a5c95d6d1d7b69fb50c859c7c9294",
+        "clean-steering-level-1": "61c2c3949895ae48ceb79dd9ed7cddd4b177299ebe5023316fbde898f440ce74",
+        "clean-steering-level-2": "05e1fc8057ecf2635093018b4a479410e2675b4af1f5876f630e49dc4a9f3e35",
+        "clean-steering-level-3": "e5abb01657d0ebfde1dedc9edd5aeaa8ef58066d86c7ccceb50f0ed023590f84"
+      }
+    },
+    "split": {
+      "passed": true,
+      "steeringPublicationsByLevel": {
+        "0": 14,
+        "1": 14,
+        "2": 14,
+        "3": 14
+      },
+      "setupNativePublications": 14,
+      "setupBindingGroups": [
+        20
+      ],
+      "splitScreenSelectedThroughOriginalSetupAndRecognized": true,
+      "sourceObserverDependency": false,
+      "allOriginalControlsSelectionsVisited": true,
+      "parentControlsReentryPassed": true,
+      "originalMenuInputOnly": true,
+      "cleanShutdown": true,
+      "profileRestored": true,
+      "brightnessConfigurationRestored": true,
+      "baselineArtworkRestored": true,
+      "ownedProcessesRemaining": 0,
+      "captureSha256": {
+        "clean-child-setup": "5ccbefdf6066a13bed2eafb3c65b5f693f4196add066ceb7d636d077ba1c4262",
+        "clean-steering-level-0": "46288ab5a784a49d6eb9ab4d1a8751a8c60e630edffedd183bbf972d8685621a",
+        "clean-steering-level-1": "6f90f1535c22b394feb20c890226da4b5ed9d210e7b037fdfd1d14bc8cd9abae",
+        "clean-steering-level-2": "bd6433d3069e7609508209b5fa8f2fdb9ed94d47a8f97486c5513a7ab07a4e25",
+        "clean-steering-level-3": "794f0963f5237fd73361d211555f226e776b667fdb3a3d3c434e40ab55da3f2e"
+      }
+    }
+  },
+  "visualInspection": [
+    "split-mode Setup both player columns",
+    "split-mode half-sensitivity Steering"
+  ],
+  "limits": {
+    "racePerformanceRevalidated": false,
+    "appleBuildRun": false,
+    "physicalIPadAppearanceOrPerformanceVerified": false,
+    "lowPowerModeOrBatteryAcceptanceClaimed": false,
+    "forceFeedbackSettingsRemastered": false,
+    "cloudRun": false
+  },
+  "sources": {
+    "CMakeLists.txt": "93dcca589891a3ba9b9b93ff329f521fed70f13cdb0634f121d1f965650c941c",
+    "scripts/prepare_full_mapped.py": "b10a4598a8704fd63304b2e80ae646f08f7e9ddc6254ca1f024cd4752d45bcf8",
+    "scripts/prepare_renderer.py": "6f9846547799dc72c38288fb7bbe5baf114396fe13d6067d59a71e74fb4b890e",
+    "tests/controls_setup_pipeline_test.py": "173cb126c88ae2200e06b86b26a777deea3477e5651f758565ca05b613c6765a",
+    "tests/controls_steering_pipeline_test.py": "5a8c6aee6a2adcd2bbecb6b98957479bbdc0cd2ddbeb253d3baa0427e5807796",
+    "tests/controls_steering_renderer_hooks_test.py": "4adee8b5bea7419dd407b0ddf922a3160e53798371ab44932982d808f036da58"
+  }
+}
