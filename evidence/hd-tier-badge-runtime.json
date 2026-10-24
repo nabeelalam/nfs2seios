@@ -25,7 +25,8 @@
     ],
     "expectedScoreMinimum": 0.95,
     "otherClassMarginMinimum": 0.12,
-    "allObservedExpectedScores": 1.0
+    "allObservedExpectedScores": 1.0,
+    "uniqueRetainedCaptureFiles": 8
   },
   "nativeArtworkAcceptance": "Expected authored textures accepted earlier within the same normal run; diagnostic logs are once per texture/height, not fresh per return.",
   "separateInstrumentedSourceRun": {
@@ -46,8 +47,14 @@
     "Ordinary single-player main-menu class selection only",
     "Class-letter classifier does not establish complete plate/coupe geometry, materials, fades or context recovery",
     "No iPad visual or performance acceptance",
-    "Final artwork approval remains open",
-    "Normal run inherited an overbroad manifest description; authoritative independent receipt corrects its scope without replacing it",
-    "Reference pins were collected after the normal run; independently recomputed visual results match recorded scores"
-  ]
+    "Final artwork approval remains open"
+  ],
+  "validationRevision": 2,
+  "referenceHashesPinnedBeforeAndAfter": true,
+  "normalManifestScopeAccurate": true,
+  "loggedNativeMarkTextures": {
+    "created": 8,
+    "retired": 8,
+    "contextIdentityArtIdMultisetsEqual": true
+  }
 }
