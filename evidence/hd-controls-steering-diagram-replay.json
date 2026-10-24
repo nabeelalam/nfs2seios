@@ -1,0 +1,148 @@
+{
+  "scope": "Actual original steering diagram source, palette conversion, rows, stores and final-plane replay; inactive native replacement",
+  "status": "original-draw-replay-accepted-locally",
+  "correctedEarlierInference": {
+    "earlier": "Static notes inferred RGBA32 callback 483070 via 4A1090",
+    "actual": "48330C detects source8/target16 and selects indexed callback 483288 with override7b; 499EC0 converts source palette through4998A8",
+    "meaning": "Do not replay indexed palette entries through the RGBA32 blend helper"
+  },
+  "actualRun": {
+    "passed": true,
+    "originalInputOnly": true,
+    "sensitivityStates": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "samplesPerState": 2,
+    "sourceWidth": 356,
+    "sourceHeight": 49,
+    "explicitPlacement": [
+      280,
+      280
+    ],
+    "sourceBytes": 18500,
+    "rowsPerSample": 49,
+    "storesPerSample": 13860,
+    "transparentSkippedPixelsPerSample": 3584,
+    "blendedStoresPerSample": 4296,
+    "opaqueStoresPerSample": 9564,
+    "entireFinalPlanePixelsPerSample": 307200,
+    "observedStoreOrderAndValuesMatch": true,
+    "unexplainedFinalPlaneDifferences": 0,
+    "sourceStableAcrossResolvedDraw": true,
+    "convertedPaletteBytesCheckedAtEveryRowEntry": 1024,
+    "sourceMatchesOriginalArchive": true,
+    "all256ConvertedPaletteWordsMatch4998A8ForEveryState": true,
+    "returnMenus": [
+      "Controls",
+      "Options",
+      "Main"
+    ],
+    "cleanShutdown": "WM_DELETE_WINDOW, exit0",
+    "copiedConfigurationBrightnessAndArtworkRestored": true,
+    "ownedGameProcessesAfterCleanup": 0,
+    "observerBinarySha256": "09f1a3f61f8d35c2ae7dbf0027090bc0617a1131d059cd9b674f60e8d2a81561",
+    "resultSha256": "ef92c10651d92b30acca74686b84c911467b2c07bea39b158e178671d17dcab8",
+    "routesSha256": "798941ae088693696e047ed6fba9ebea3012d032e9964ea6e8961e6a891c694c",
+    "independentReplaySha256": "e670a33c51824a58b450589cb4f60eecdf9ca69d1ce614d55f1266c145a71ff7"
+  },
+  "sourceIdentities": [
+    {
+      "level": 0,
+      "resource": "sful",
+      "sourceSha256": "f33bc7835f16740435c3961a47121b83c3b1efaf701b02a7ef3fbfbc777b7bd2",
+      "convertedPaletteSha256": "c066111a03e78f142551a23f1051e8a85acde660c8277cad30f79b927a7488c2",
+      "originalArchiveSourceByteEqual": true,
+      "paletteWordsChecked": 256,
+      "allPaletteWordsMatchOriginal4998A8": true,
+      "completePlanePixelsCompared": 307200,
+      "fullPlaneReplayEqual": true,
+      "stores": 13860,
+      "skips": 3584
+    },
+    {
+      "level": 1,
+      "resource": "sthr",
+      "sourceSha256": "da54a47c71d873224bfd094596e059ad31f2bea4b26026c30ed28e90cb368bdb",
+      "convertedPaletteSha256": "25e39f9f641dbdef65216f9b9700a5871f49f1697cbc15173e23942a95f5512d",
+      "originalArchiveSourceByteEqual": true,
+      "paletteWordsChecked": 256,
+      "allPaletteWordsMatchOriginal4998A8": true,
+      "completePlanePixelsCompared": 307200,
+      "fullPlaneReplayEqual": true,
+      "stores": 13860,
+      "skips": 3584
+    },
+    {
+      "level": 2,
+      "resource": "shlf",
+      "sourceSha256": "d6ed54f01cf93a96f76eb15f382913cc840e6dd855996bdd8d4ac2f444cea7aa",
+      "convertedPaletteSha256": "7ac4db75386cf6f003ca066facce3c4092877bf3afd46519bafbee12b7d88ecb",
+      "originalArchiveSourceByteEqual": true,
+      "paletteWordsChecked": 256,
+      "allPaletteWordsMatchOriginal4998A8": true,
+      "completePlanePixelsCompared": 307200,
+      "fullPlaneReplayEqual": true,
+      "stores": 13860,
+      "skips": 3584
+    },
+    {
+      "level": 3,
+      "resource": "sqrt",
+      "sourceSha256": "8512aa7f491ecc6fdf46cbd89960d02dd4b3b10de7214faa06f8685dadaf49c9",
+      "convertedPaletteSha256": "98182b24f8a5ca635abdfaf79616542c7ecbc6aed08eeae8c08c847d2a5c4d56",
+      "originalArchiveSourceByteEqual": true,
+      "paletteWordsChecked": 256,
+      "allPaletteWordsMatchOriginal4998A8": true,
+      "completePlanePixelsCompared": 307200,
+      "fullPlaneReplayEqual": true,
+      "stores": 13860,
+      "skips": 3584
+    }
+  ],
+  "paletteLifetime": {
+    "originalStorage": "48330C local1024byte guest-stack scratch",
+    "global": "5636EC",
+    "capture": "Copied during each live483288 row; copied values retained for replay",
+    "restriction": "Global pointer after48330C returns grants no retained authority; production owner/lifetime and after-row drift guards remain to implement"
+  },
+  "newPureHelpers": {
+    "rgba32Original": "483070",
+    "indexedPackedPaletteOriginal": "483288",
+    "grantsOwnerOrRendererAuthority": false,
+    "registeredTest": "hd_controls_steering_blend_565",
+    "independentRegisterOracleChecks": 19533974,
+    "addressAndUndefinedBehaviorChecks": true,
+    "productionIndexedHelperAgainstActualFourFinalPlanesPixels": 1228800,
+    "actualHelperReplayMatched": true
+  },
+  "build": {
+    "compiledUnits": 2,
+    "sourceAndReusedInputsPinned": 886,
+    "maxCompilerWorkers": 2,
+    "linkWorkers": 2,
+    "originalSourceReversalVerified": [
+      "Methods_01",
+      "Methods_10"
+    ],
+    "allPinsStable": true,
+    "observerWritesGuestState": false
+  },
+  "attempts": {
+    "build01": "Exact-source assertion stopped before compilation because store text occurred more than once; preserved. Build02 uses specific loc4832FD anchor.",
+    "actual01": "Passed using prior accepted original-input protocol."
+  },
+  "remaining": [
+    "Production chart owner/source/palette/lifetime collector and malformed/drift/retirement tests",
+    "Final scene joining retained343 sidebar, text, diagram and unchanged source gaps",
+    "Native staging, accepted artwork and actual renderer visual checks",
+    "Remaining feedback UI and physical iPad UI/Low Power Mode/battery validation"
+  ],
+  "nativeSteeringActivation": false,
+  "newIpa": false,
+  "cloudBuild": false,
+  "push": false,
+  "originalDataPublished": false
+}
