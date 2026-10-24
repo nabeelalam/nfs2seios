@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
+// The generated original-engine config reserves this macro.
+#define packed __attribute__((__packed__))
 #include "hd/SteeringBlend565.h"
+#undef packed
 #include <array>
 #include <cstdio>
 #include <cstdlib>

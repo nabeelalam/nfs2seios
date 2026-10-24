@@ -1,0 +1,115 @@
+{
+  "scope": "Maintained independent steering chart source collector and neutral complete-frame join; native steering rendering remains inactive",
+  "status": "actual-chart-collector-accepted-locally",
+  "collector": {
+    "owner": "Independent36A8/4101C0, parentControls selection1, current steering text owner/lifetime/serial",
+    "source": "Original archive directory role, complete18500byte source SHA256 by sensitivity, unchanged source span before/after resolved draw",
+    "palette": "All256 converted entries equal original4998A8, same live pointer/format/callback and copied contents before/after every row; no expired scratch-pointer authority",
+    "words": "All49 ordered356-pixel rows; exact actual nontransparent store address/before/computed/after; no transparent/extra/missing stores; final307200word comparison",
+    "lifecycle": "Current archive/authority/target/LUT/source/text packet owner checked; immutable retained packet does not grant current acquisition after owner exit/retirement",
+    "memoryLeases": "No allocation/hash or nested transaction inside a guest-memory lease"
+  },
+  "actualGame": {
+    "passed": true,
+    "sensitivityStates": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "samplesPerState": 2,
+    "sameActualTextPacket": true,
+    "rowsPerSample": 49,
+    "storesPerSample": 13860,
+    "sourceBytesPerSample": 18500,
+    "finalPlanePixelsPerSample": 307200,
+    "allSamplesAccepted": true,
+    "parentReplacementPublishedInsideChild": false,
+    "returnMenus": [
+      "Controls",
+      "Options",
+      "Main"
+    ],
+    "cleanShutdown": "WM_DELETE_WINDOW exit0",
+    "copiedConfigBrightnessAndArtworkRestored": true,
+    "ownedGameProcessesAfterCleanup": 0,
+    "binarySha256": "81f842e5d0a82057fbff4333561e045926324a5ec4eb386983def7e1111c44ba",
+    "resultSha256": "3f4c93588163589cb637b1815ad191cda4c107f7a90f0d8c6ea2f5622c2edafd",
+    "samplesSha256": "49d66c3e7045ce235b80eeaf2a3a754547412c66ee34dc6b2f70ab6e8d2e66b4",
+    "compiledUnits": 2,
+    "maxCompilerWorkers": 2,
+    "linkWorkers": 2,
+    "pinnedSourceAndReusedInputs": 888,
+    "originalSourceReversalVerified": [
+      "Methods_01",
+      "Methods_10"
+    ],
+    "sourcePinsStable": true,
+    "observerWritesGuestState": false
+  },
+  "metadataCorrection": {
+    "actualPaletteHeaderHex": "2a000000000101000001000000000000",
+    "earlierStaticHeaderHex": "2a000000000101000000010000000000",
+    "effect": "A strict header check rejected the real source before row collection. Corrected against actual captured bytes, then independently checked with all four real source/palette/pretext/final-plane sets. The former incorrect layout is now a negative fixture."
+  },
+  "verification": {
+    "registeredRelevantSanitizerChecks": 10,
+    "registeredChecksPassed": true,
+    "pureChartPacketSyntheticChecks": 278821,
+    "realCollectorSyntheticChecks": 677686,
+    "collectorShaBoundaryExplicitlyMockedInSyntheticFixture": true,
+    "realArchiveHashAuthenticationProvenSeparatelyByActualGameRun": true,
+    "frameJoinSyntheticChecks": 176310,
+    "sourceHookCases": 8,
+    "sourceHookReversal": "Exact actualMethods01/10 after prior steering text hooks; LF/CRLF and malformed/changed anchors tested",
+    "actualSourcePacketBuilderCheck": "All4actual source/palette/pretext/finalplane sets equal,1228800pixels; synthetic descriptor/binding placeholders only, not owner authority",
+    "actualSourcePacketBuilderLogSha256": "4c7537e5e3c66dd19db9df8a0fc9280071acb83632370e2c5cbd338cc6abe6f2",
+    "suiteLogSha256": "ea621b08f2a2e7fb858ef4ab39ad1a8f067a5e6e1039deb9e77cbe9a8dc96609"
+  },
+  "neutralFrameJoin": {
+    "implemented": true,
+    "independentCurrentHandlerRequired": true,
+    "background": "Neutral VerifiedBackground; no Setup/parent-owner gate broadening",
+    "text": "Chart-retained text.clean exactly equals verified post-sidebar plane; actual surface and accepted serial retained",
+    "final": "Current final plane matches chart.original; never substitute pre-chart text.matches for final drawing",
+    "stores": "Derived from source alpha including equal-value/opaque-black writes;0/partial/full synthetic cases",
+    "actualSteeringBackgroundJoinValidated": false,
+    "nativeAuthority": false
+  },
+  "preservedAttempts": {
+    "build01": "Stopped at actual generated packed macro collision; renamed local to destinationFields and added macro regression",
+    "build02Actual01": "All4original menus/draws ran cleanly, collector rejected; early source assumption not accepted. Raw failure preserved.",
+    "build03": "First-failure/source diagnostics plus short nonrecursive palette lease; original link handle disappeared with no live job, verified objects/pins then linked only; receipt records recovery.",
+    "build03Actual02": "Early invalidBegin due incorrect palette attachment metadata; clean shutdown/restoration preserved",
+    "fixtureInitialCompile": "Renamed main was cleared by nested test include; fixed include ordering and explicit return; original diagnostic preserved in execution output",
+    "build04Actual03": "Corrected collector passed all4states,2drawseach, clean menu return and resource restoration"
+  },
+  "files": {
+    "src/hd/ControlsSteeringChartGameHooks.inc": "c0ea1c8d8e38c710953a4f858d36dcbb9a88e2fb6bbe4acc10eb151a86018e58",
+    "src/hd/SteeringChartPacket.h": "fb919d3775adfb2bccb341c116539dd4b7ca4eadf817e4c5d0b0ce93137aa8c7",
+    "src/hd/SteeringFramePacket.h": "c07fcc28408a2d2a9d069ed1314969deca583925414ae6b2109015cc463c56a7",
+    "src/hd/SteeringBlend565.h": "fb1d97f90725e31259bac770a83a31f59a7e0cc34ef3222351c72435480cc676",
+    "scripts/controls_steering_chart_hooks.py": "abaad8307a693d41c74e7e68c37a0e9e0dab6a9d565225151294b63e50dbfc25",
+    "tests/steering_chart_packet_tests.cpp": "e97b18b19d97d08724f4f9be3c7d92045f59d0e2ee2ed8b828900e4effdb67a5",
+    "tests/steering_frame_packet_tests.cpp": "df4db246b2f8b3a0dbcd9dcd234aca976f7f909f992a06990bf76167312a2921",
+    "tests/controls_steering_chart_runtime_tests.cpp": "d9314359bceeaf699e581e51dd502faf63505dc057e1961f0ca0865f5613b731",
+    "tests/controls_steering_chart_hooks_test.py": "b396ea4ff304101e4bfe7b9759b7f5001e8b3c26e87387fc2809865d410ab5f8",
+    "tests/controls_setup_runtime_fixture.h": "93c7143e5c5b314f2d6c4dfe4a4c5c29c0da2a68f17c0b1eebd435dc60f5c6d3",
+    "tests/controls_steering_text_runtime_tests.cpp": "18f4a9f832a1a792110a5b7c8b636b580863ad00c010fc58baf94588096f38c3",
+    "tests/steering_blend_565_tests.cpp": "fd6a50dcb27a7748c41a15ed4bef7c43e6c376e6e635c16f2c3e53b819831405",
+    "CMakeLists.txt": "cbb1870ce7622fb2cb52f7ecb6eac2ad4aceae8b88147eae4273fe7db5450dbf"
+  },
+  "remaining": [
+    "Independent live steering reset/full640 background and retained343sidebar/caption ownership",
+    "Connect neutral background/text/chart join to those actual source observations",
+    "HD steering words/bar artwork admission, native scene ABI/queue/staging and original300tile pass acceptance",
+    "Actual rendered steering screen review and normal preparation integration",
+    "Remaining feedback UI plus physical iPad UI/Low Power Mode/battery acceptance"
+  ],
+  "nativeSteeringActivation": false,
+  "normalPipelineActivation": false,
+  "cloudBuild": false,
+  "newIpa": false,
+  "push": false,
+  "originalDataPublished": false
+}

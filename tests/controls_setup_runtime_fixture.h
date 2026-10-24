@@ -30,7 +30,7 @@ static constexpr uint32_t dword_4D34E4=0x11000,dword_4D34F8=0x11020,dword_4D350C
 static constexpr uint32_t game_id_sub_4A5830=0xface0010,Plane=0x20000,Font=0x180000,Palette=0x190000,Text=0x1a0000,Table=0x18000;
 inline uint32_t guest_address(uint32_t p){return p;}
 inline void*nfs_host_address(uint32_t p,size_t n){if(!leaseDepth||uint64_t(p)+n>memory.size()||(deniedRead&&uint64_t(p)<=deniedRead&&uint64_t(p)+n>deniedRead))throw 1;++reads;return memory.data()+p;}
-namespace nfs{struct GuestCopyTransaction{GuestCopyTransaction(){++leaseDepth;}~GuestCopyTransaction(){--leaseDepth;}template<class T>T load(uint32_t p){T v;std::memcpy(&v,nfs_host_address(p,sizeof v),sizeof v);return v;}};}
+namespace nfs{struct GuestCopyTransaction{GuestCopyTransaction(){CHECK(!leaseDepth);++leaseDepth;}~GuestCopyTransaction(){--leaseDepth;}template<class T>T load(uint32_t p){T v;std::memcpy(&v,nfs_host_address(p,sizeof v),sizeof v);return v;}};}
 static nfs_logo_capture::Target selected{};static bool feature=true;
 namespace nfs_logo_publisher{inline uintptr_t threadToken(){static thread_local unsigned char t;return reinterpret_cast<uintptr_t>(&t);}inline bool enabled(){return feature;}inline int exceptions(){return std::uncaught_exceptions();}inline void checked(uint32_t p,size_t n){(void)nfs_host_address(p,n);}inline void target(nfs::GuestCopyTransaction&,nfs_logo_capture::Target&t){++reads;t=selected;}}
 #define NFS_CONTROLS_TEXT_TEST 1
