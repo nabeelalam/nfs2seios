@@ -67,25 +67,29 @@ class FramePacketBuilder {
  std::vector<uint16_t> clean_,replay_;
  std::vector<Vertex> vertices_;
  std::vector<RecordedCommand>records_;
+ const uint32_t expectedSourceSize_;
+ uint32_t stringExpectedSourceSize_=0;
  size_t used_=0,commands_=0,writes_=0,stringStartWrites_=0;
  TextCommand entry_{};
  static bool sameEntry(const TextCommand&a,const TextCommand&b)noexcept{return a.text==b.text&&a.length==b.length&&a.role==b.role&&a.alignment==b.alignment&&a.sourceSize==b.sourceSize&&a.x==b.x&&a.y==b.y&&a.originX==b.originX&&a.originY==b.originY&&a.color==b.color&&a.clip.left==b.clip.left&&a.clip.top==b.clip.top&&a.clip.right==b.clip.right&&a.clip.bottom==b.clip.bottom;}
  bool fail(Failure why)noexcept{active_=false;stringActive_=false;failure_=why;return false;}
  public:
- explicit FramePacketBuilder(std::shared_ptr<const FontCatalog> font)noexcept:font_(std::move(font)){}
+ explicit FramePacketBuilder(std::shared_ptr<const FontCatalog> font,uint32_t expectedSourceSize=18)noexcept:font_(std::move(font)),expectedSourceSize_(expectedSourceSize){}
  bool active()const noexcept{return active_;}
  Failure failure()const noexcept{return failure_;}
  bool begin(SurfaceIdentity surface,uint64_t serial,const uint16_t*pre,size_t count)noexcept{
-  if(!font_||active_||!surface.valid()||!serial||serial<=lastSerial_||!pre||count!=surface.pixelCount())return fail(Failure::invalidBegin);
+  if((expectedSourceSize_!=18&&expectedSourceSize_!=16)||!font_||active_||!surface.valid()||!serial||serial<=lastSerial_||!pre||count!=surface.pixelCount())return fail(Failure::invalidBegin);
   lastSerial_=serial;surface_=surface;serial_=serial;used_=commands_=writes_=0;stringActive_=false;
   try{records_.clear();clean_.assign(pre,pre+count);replay_=clean_;vertices_.resize(maxVertices);}catch(...){return fail(Failure::allocation);}
   active_=true;failure_=Failure::none;return true;
  }
  // entry is copied from the exact original call before its body; advance is determined on exit.
- bool beginString(const TextCommand&entry)noexcept{
+ bool beginString(const TextCommand&entry,uint32_t expectedSourceSize=0)noexcept{
   if(!active_)return false;
   if(stringActive_)return fail(Failure::unclosedString);
   if(commands_>=maxCommands)return fail(Failure::capacity);
+  if(expectedSourceSize&&expectedSourceSize!=16&&expectedSourceSize!=18)return fail(Failure::command);
+  stringExpectedSourceSize_=expectedSourceSize?expectedSourceSize:expectedSourceSize_;
   entry_=entry;stringStartWrites_=writes_;stringActive_=true;return true;
  }
  bool word(size_t index,uint16_t before,uint16_t computed,uint16_t after)noexcept{
@@ -98,7 +102,7 @@ class FramePacketBuilder {
  bool endString(const TextCommand&c)noexcept{
   if(!active_)return false;
   if(!stringActive_)return fail(Failure::unclosedString);
-  if(!sameEntry(entry_,c)||writes_==stringStartWrites_||!c.length||c.length>95||c.role>1||c.alignment>2||c.sourceSize!=18||c.advance<=0||c.advance>4096)return fail(Failure::command);
+  if(!sameEntry(entry_,c)||writes_==stringStartWrites_||!c.length||c.length>95||c.role>1||c.alignment>2||c.sourceSize!=stringExpectedSourceSize_||c.advance<=0||c.advance>4096)return fail(Failure::command);
   for(size_t i=0;i<c.length;++i)if(!c.text[i])return fail(Failure::command);
   for(size_t i=c.length;i<c.text.size();++i)if(c.text[i])return fail(Failure::command);
   const int64_t px=int64_t(c.x)+c.originX,py=int64_t(c.y)+c.originY+24-font_->description().baseline[c.role];

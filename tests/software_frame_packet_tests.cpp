@@ -91,4 +91,35 @@ static void commandHistoryTests(){
  CHECK(b.begin(id,3,data.data(),data.size()));CHECK(b.beginString(one));CHECK(b.word(0,data[0],data[0],data[0]));auto changed=one;changed.color^=1;CHECK(!b.endString(changed));CHECK(!b.finish(id,data.data(),data.size()));CHECK(packet->records().size()==3);
 }
 
-int main(){commandHistoryTests();fontTests();layoutTests();packetTests();capacityTests();compactSurfaceTests();std::printf("PASS software-frame-core checks=%u synthetic-only=1\n",checks);}
+// A16-pixel source is opt-in and is retained verbatim; existing collectors stay18.
+static void explicitSourceSizeTests(){
+ Fixture f;auto c=command();c.sourceSize=16;
+ for(unsigned expected:{0u,15u,17u,19u,255u}){auto pixels=plane();FramePacketBuilder bad(f.font(),expected);CHECK(!bad.begin(identity(),1,pixels.data(),pixels.size()));}
+ for(unsigned expected:{16u,18u})for(unsigned actual:{16u,18u}){
+  auto pixels=plane();auto cmd=c;cmd.sourceSize=actual;FramePacketBuilder builder(f.font(),expected);
+  CHECK(builder.begin(identity(),1,pixels.data(),pixels.size()));CHECK(builder.beginString(cmd));CHECK(builder.word(100,pixels[100],1,1));pixels[100]=1;
+  if(expected!=actual){CHECK(!builder.endString(cmd));CHECK(!builder.finish(identity(),pixels.data(),pixels.size()));continue;}
+  CHECK(builder.endString(cmd));auto packet=builder.finish(identity(),pixels.data(),pixels.size());CHECK(packet&&packet->records()[0].command.sourceSize==actual);CHECK(packet->matches(identity(),1,pixels.data(),pixels.size()));pixels[101]^=1;CHECK(!packet->matches(identity(),1,pixels.data(),pixels.size()));
+ }
+ auto pixels=plane();FramePacketBuilder unchangedDefault(f.font());CHECK(unchangedDefault.begin(identity(),1,pixels.data(),pixels.size()));CHECK(unchangedDefault.beginString(c));CHECK(unchangedDefault.word(100,pixels[100],1,1));CHECK(!unchangedDefault.endString(c));
+ FramePacketBuilder changedExit(f.font(),16);CHECK(changedExit.begin(identity(),1,pixels.data(),pixels.size()));CHECK(changedExit.beginString(c));CHECK(changedExit.word(100,pixels[100],1,1));c.sourceSize=18;CHECK(!changedExit.endString(c));
+}
+static void mixedSourceSizeTests(){
+ Fixture f;const auto id=identity();
+ for(unsigned baseline:{16u,18u}){
+  auto pixels=plane();const auto clean=pixels;FramePacketBuilder b(f.font(),baseline);CHECK(b.begin(id,1,pixels.data(),pixels.size()));
+  // Explicit per-string expectations must neither rewrite source metadata nor
+  // leak into the next default string's constructor-selected expectation.
+  const unsigned sizes[]={16,18,baseline};
+  for(unsigned i=0;i<3;++i){auto c=command();c.sourceSize=sizes[i];c.y+=int(i*30);CHECK(b.beginString(c,i<2?sizes[i]:0));CHECK(b.word(100+i,pixels[100+i],uint16_t(0x100+i),uint16_t(0x100+i)));pixels[100+i]=uint16_t(0x100+i);CHECK(b.endString(c));}
+  auto p=b.finish(id,pixels.data(),pixels.size());CHECK(p&&p->commands()==3&&p->writes()==3&&p->clean()==clean&&p->original()==pixels);
+  for(unsigned i=0;i<3;++i)CHECK(p->records()[i].command.sourceSize==sizes[i]&&p->records()[i].vertexCount==12);
+  CHECK(p->matches(id,1,pixels.data(),pixels.size()));
+ }
+ for(unsigned invalid:{15u,17u,19u,255u,UINT32_MAX}){auto pixels=plane();FramePacketBuilder b(f.font());CHECK(b.begin(id,1,pixels.data(),pixels.size()));CHECK(!b.beginString(command(),invalid));CHECK(!b.finish(id,pixels.data(),pixels.size()));}
+ for(unsigned expected:{16u,18u}){
+  auto pixels=plane();auto c=command();c.sourceSize=expected==16?18:16;FramePacketBuilder b(f.font());CHECK(b.begin(id,1,pixels.data(),pixels.size()));CHECK(b.beginString(c,expected));CHECK(b.word(100,pixels[100],1,1));pixels[100]=1;CHECK(!b.endString(c));CHECK(!b.finish(id,pixels.data(),pixels.size()));
+  FramePacketBuilder changed(f.font());c.sourceSize=expected;CHECK(changed.begin(id,1,pixels.data(),pixels.size()));CHECK(changed.beginString(c,expected));CHECK(changed.word(101,pixels[101],2,2));pixels[101]=2;c.sourceSize=expected==16?18:16;CHECK(!changed.endString(c));CHECK(!changed.finish(id,pixels.data(),pixels.size()));
+ }
+}
+int main(){mixedSourceSizeTests();explicitSourceSizeTests();commandHistoryTests();fontTests();layoutTests();packetTests();capacityTests();compactSurfaceTests();std::printf("PASS software-frame-core checks=%u synthetic-only=1\n",checks);}

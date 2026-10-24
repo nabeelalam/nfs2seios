@@ -1,0 +1,206 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Independent original single-player and split-screen Controls setup text collection and complete glyph-write replay, before child HD renderer activation",
+  "build": {
+    "binarySha256": "667740eeda69cce1b871dc2de5439773d00cff1826ad2280653bc2de98c1ee0a",
+    "sourceInputFiles": 847,
+    "sourceAndReusedInputsStable": true,
+    "originalBodyReversalUnits": 6,
+    "allAffectedEngineAndPlatformObjectsRebuilt": true,
+    "unaffectedFreshObjectsReused": 0,
+    "maximumCompilerWorkers": 2,
+    "sharedPacketDefaultSourceSizePreserved": 18,
+    "splitSourceSizePolicy": "Original role-specific16or18, checked independently for each complete string",
+    "normalPreparationActivation": false
+  },
+  "runs": {
+    "single": {
+      "privateLogSha256": "bd3c096b9309ecc862020b18dc215a80e3b085ffe19aa000319e7f012aceb743",
+      "privateResultSha256": "affc346f16a194569fc4f0eb437a075f1e78edd2b19d2f9df7468252988724aa",
+      "privatePacketObservationSha256": "45c1a440e6a817087821f1076780d3f7110f64f82f60cb6593699d16ec5fe735",
+      "nativePresentationSize": [
+        2186,
+        1640
+      ],
+      "originalInputOnly": true,
+      "forcedGuestStateWrites": false,
+      "completePlaneWords": 307200,
+      "rejectedPackets": 0,
+      "snapshots": [
+        {
+          "snapshot": 1,
+          "selected": 0,
+          "assignment": 0,
+          "playerColumn": 0,
+          "commands": 122,
+          "writes": 52006,
+          "vertices": 3228,
+          "planeWords": 307200,
+          "sourceSize": 18,
+          "cleanPlaneSha256": "742d6c21d1c46b128e702a5683450da4eeaa098fa638acd6dacc61b00e96d13e",
+          "originalPlaneSha256": "a54c6bca348e22880b2d32369a3e569dd2498bdddc19553016bc72e1304b5637",
+          "size16Commands": 0,
+          "size18Commands": 122
+        },
+        {
+          "snapshot": 2,
+          "selected": 0,
+          "assignment": 1,
+          "playerColumn": 0,
+          "commands": 116,
+          "writes": 49136,
+          "vertices": 3120,
+          "planeWords": 307200,
+          "sourceSize": 18,
+          "cleanPlaneSha256": "e83107d5157034fc01c2d1626d11d0cf5d379fa435b0b5a653fa1ee5e515c099",
+          "originalPlaneSha256": "2f7973844edf47a99f032dcd790a7903b7e2db9d3bf18066b2d2c0a625074c63",
+          "size16Commands": 0,
+          "size18Commands": 116
+        }
+      ],
+      "bindingCancelChecks": 1,
+      "bindingBytesCheckedPerCancel": 4,
+      "originalModeTransitionsVerified": true,
+      "freshParentReturns": 3,
+      "restoration": {
+        "cleanShutdown": true,
+        "profileRestored": true,
+        "brightnessConfigRestored": true,
+        "baselineArtworkRestored": true,
+        "displayStoppedAfterTerminalAndRestore": true
+      }
+    },
+    "split": {
+      "privateLogSha256": "cceb741743674ad468707fb20239ab68ba52c59600042a09d570c9d1e1a4f580",
+      "privateResultSha256": "d9ca9de16ece41efd5bfd397ace5ce665a7539fa600f456e39657d1cba74c432",
+      "privatePacketObservationSha256": "7d7c3992dc424ebec96d54718651660f80b2b425135c1d670f9e9aa47985e282",
+      "nativePresentationSize": [
+        2186,
+        1640
+      ],
+      "originalInputOnly": true,
+      "forcedGuestStateWrites": false,
+      "completePlaneWords": 307200,
+      "rejectedPackets": 0,
+      "snapshots": [
+        {
+          "snapshot": 1,
+          "selected": 0,
+          "assignment": 0,
+          "playerColumn": 0,
+          "commands": 182,
+          "writes": 67910,
+          "vertices": 4968,
+          "planeWords": 307200,
+          "sourceSize": 16,
+          "cleanPlaneSha256": "ac15c3f4b20be837cfbf26d7cabe8916b484aff6a2a1b9fd4d2911d49d86dc23",
+          "originalPlaneSha256": "5cc013dadd04e5bf11fad2f7d11d2988eb304f53c5e42fb56759021493599d38",
+          "size16Commands": 172,
+          "size18Commands": 10
+        },
+        {
+          "snapshot": 2,
+          "selected": 0,
+          "assignment": 1,
+          "playerColumn": 0,
+          "commands": 176,
+          "writes": 65514,
+          "vertices": 4860,
+          "planeWords": 307200,
+          "sourceSize": 16,
+          "cleanPlaneSha256": "9b5073dbc8df94c8444d8e300f9bfdb00156492d7a330ba235a50f77f728f782",
+          "originalPlaneSha256": "fb49976e4a7e46560d17964912c8bc672c5091b0eb84a18617396cc021b39499",
+          "size16Commands": 166,
+          "size18Commands": 10
+        },
+        {
+          "snapshot": 3,
+          "selected": 0,
+          "assignment": 0,
+          "playerColumn": 1,
+          "commands": 182,
+          "writes": 67910,
+          "vertices": 4968,
+          "planeWords": 307200,
+          "sourceSize": 16,
+          "cleanPlaneSha256": "5ddd057b3758b58bf2500d479cf1eac3474a959d2f15bcb5af113e9aa447363b",
+          "originalPlaneSha256": "0caae327092cddda88362b61ed7266eb08a54de7e1d3cbfc3672cd029022e3a1",
+          "size16Commands": 172,
+          "size18Commands": 10
+        },
+        {
+          "snapshot": 4,
+          "selected": 0,
+          "assignment": 1,
+          "playerColumn": 1,
+          "commands": 176,
+          "writes": 65480,
+          "vertices": 4860,
+          "planeWords": 307200,
+          "sourceSize": 16,
+          "cleanPlaneSha256": "a7aab7e70142aebb7c90e55e1e3e93f0a319883c303ef39a9aa0ff2e019c3df0",
+          "originalPlaneSha256": "61f8e8846ac2259fc19a07c2dcf770a9bed98d4a9a7844319b3a788600c101ed",
+          "size16Commands": 166,
+          "size18Commands": 10
+        }
+      ],
+      "bindingCancelChecks": 2,
+      "bindingBytesCheckedPerCancel": 8,
+      "originalModeTransitionsVerified": true,
+      "freshParentReturns": 1,
+      "restoration": {
+        "cleanShutdown": true,
+        "profileRestored": true,
+        "brightnessConfigRestored": true,
+        "baselineArtworkRestored": true,
+        "displayStoppedAfterTerminalAndRestore": true
+      }
+    }
+  },
+  "regressionTests": {
+    "opt": {
+      "passed": 22,
+      "privateLogSha256": "0843f54cadc0719af5cd1e62922b102c4680db608c2480251fef9f5c1ada7501",
+      "sharedPacketChecks": 527766,
+      "syntheticRuntimeChecks": 39717
+    },
+    "san": {
+      "passed": 22,
+      "privateLogSha256": "b769fbda1b13d7084f26e4427b687b2dde92b48b4373e9619289078fd3dc7b0b",
+      "sharedPacketChecks": 527766,
+      "syntheticRuntimeChecks": 39717
+    },
+    "sourceHookContractTests": 6,
+    "actualOriginalRuntimeReplaySeparateFromSyntheticTests": true
+  },
+  "lifecycleCorrection": {
+    "failedInitialOwnerCannotResurrectThroughNestedCall": true,
+    "invalidAndNestedPromptsCannotPublish": true,
+    "originalFailingRegressionPreserved": true,
+    "fixedOptimizedAndSanitizerRegressionPassed": true,
+    "counterExhaustionAndWrongThreadRejected": true,
+    "changedTextIncludingTerminatorAndFullFontPaletteRejected": true
+  },
+  "limits": {
+    "childHdRendererActivated": false,
+    "childSidebarSourceProofComplete": false,
+    "childArtworkFinalized": false,
+    "genericPacketVerticesAreAcceptedFinalTypography": false,
+    "allDeviceNamesAndAllBindingRowsCoveredInOriginalRuntime": false,
+    "steeringOrForceFeedbackAddedToCollector": false,
+    "forceFeedbackHardwareTested": false,
+    "physicalIpadAcceptance": false,
+    "newIpa": false,
+    "cloud": false
+  },
+  "mixedFontCorrection": {
+    "originalSplitHasMixed16And18PixelRoles": true,
+    "failedSingleSizeAssumptionPreserved": true,
+    "privateFailureLogSha256": "8e47f716281ef2ac59d250a4986616d5217ab66cd7736bb57444bb4b11ded3c6",
+    "privateFailureResultSha256": "32357e14e5d10edc18b02dd2c7a25d093025da6542f0baf1e784a4f9ee90eb2c",
+    "contextBoundPerStringExpectation": true,
+    "defaultOtherCollectorsUnchanged": true
+  },
+  "nextStep": "Independent original child sidebar and current-scene composition, then native child rendering with approved typography; keep existing parent Controls acceptance separate"
+}
