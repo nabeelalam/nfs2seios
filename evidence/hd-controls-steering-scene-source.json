@@ -1,0 +1,115 @@
+{
+  "scope": "Independent original steering full640 scene source join, retained343 sidebar and genuine OPTIONS caption artwork admission; no native steering renderer activation",
+  "status": "complete-source-scene-accepted-locally",
+  "actualOriginalGame": {
+    "sensitivityStates": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "samplesPerState": 2,
+    "allSamplesCurrent": true,
+    "originalFullPlanePixelsPerSample": 307200,
+    "allOriginalComponentsJoined": [
+      "authenticated original full640 reset/map",
+      "actual retained343 transparent copy and owner/LUT/raw source binding",
+      "actual pre-chart text source packet",
+      "authenticated indexed diagram and complete final-plane replay"
+    ],
+    "allSidebarSourcesAndFrameBindingsEqual": true,
+    "genuineIndependentSteeringCaptionProof": true,
+    "authoredOptionsRole3Admitted": true,
+    "sameCurrentOriginalTextPacket": true,
+    "sourceMode": "Original single-player profile; no split-mode claim from a CLI label",
+    "originalInputOnly": true,
+    "originalLazyBuilderForced": false,
+    "parentReplacementPublishedInsideSteeringChild": false,
+    "returnMenus": [
+      "Controls",
+      "Options",
+      "Main"
+    ],
+    "cleanShutdown": "WM_DELETE_WINDOW exit0",
+    "copiedConfigBrightnessAndArtworkRestored": true,
+    "ownedGameProcessesAfterCleanup": 0,
+    "resultSha256": "b532cb19d76918b3d4abf71b6775cfc286903d65904baa8d85f08f7b4d1f2270",
+    "samplesSha256": "518efaeb8e6cf3c87bb77c6cb212bcbeeebacd9a88807829d4e9fa568ec2378a",
+    "binarySha256": "c2b3ba6109fd6d7ba938f16a903cc6da101b083cc69fec6fd6e43356134b292d"
+  },
+  "independentOwners": {
+    "full640": "Strict steering36A8/4101C0 with parentControls selection1, current owner epoch/lifetime/archive/handler; reset/sidebar/text/chart source order and final current chart packet required",
+    "retained343": "Own steering cache epoch/revision/lifetime; authenticated original source words/logos/rows/palette, exact original copy and raw target retained",
+    "caption": "Own sealed steering proof/current owner checks; full steering descriptors/resources captured, valid selection/sensitivity changes allowed only for retained history; exact measured OPTIONS command/font/palette/write/plane admitted",
+    "unchangedParentAndSetupValidators": true
+  },
+  "lazyCacheFinding": {
+    "initialRejectedRun": "Full640 source frame accepted, independent sidebar cache still idle on first two source text frames; run correctly failed and exited/restored cleanly",
+    "acceptedProtocol": "Preserves immediate first-text input acknowledgment, waits for genuine original lazy cache/caption regeneration; samples two current complete source joins per sensitivity",
+    "temporaryUnavailableStates": "Original abandoned/incomplete candidates can temporarily have no current typed caption. No forced rebuild/guest state writes. Native integration must retain original fallback when current admission fails."
+  },
+  "builds": {
+    "initial": "Five unit preparation; private diagnostic missing explicit sidebar includes and duplicate local stopped Methods01; valid Methods09/10 preserved",
+    "second": "Three remaining units compiled and two reused after complete source/header equality checks; all five actual units reverse exactly to maintained original",
+    "acceptedDiagnostic": "One Methods01 rebuild only to change bounded readiness sampling; four collector units reused",
+    "acceptedInputPins": 899,
+    "allSourceAndReusedInputsStable": true,
+    "maxCompilerWorkers": 2,
+    "linkWorkers": 2,
+    "normalPipelineActivation": false,
+    "observerWritesGuestState": false,
+    "currentPublicHeadersComparedWithAcceptedFrozenHeaders": {
+      "ControlsSteeringLiveGameHooks.inc": "exact code bytes; only removed trailing blank lines allowed",
+      "ControlsSteeringSidebarCaptionProof.h": "exact code bytes; only removed trailing blank lines allowed",
+      "ControlsSteeringSidebarCaptionGameHooks.inc": "exact code bytes; only removed trailing blank lines allowed",
+      "ControlsSteeringSidebarCaptionDisplay.h": "exact code bytes; only removed trailing blank lines allowed",
+      "ControlsSteeringSidebarLiveGameHooks.inc": "exact code bytes; only removed trailing blank lines allowed"
+    }
+  },
+  "tests": {
+    "registeredRelevantChecksPassed": 15,
+    "addressAndUndefinedBehaviorInstrumentation": true,
+    "captionRuntimeSyntheticChecks": 8627,
+    "captionDisplaySyntheticChecks": 717,
+    "fullLiveAdapterSyntheticChecks": 5639734,
+    "fullAdapterVariants": "four sensitivity states, both retained sidebar slots, real map SHA and background verifier; chart proprietary digest explicitly mocked in fixture only",
+    "sourceHookCases": {
+      "sidebar": 7,
+      "live": 5
+    },
+    "exactActualSourceReversalUnits": [
+      "Methods_01",
+      "Methods_09",
+      "Methods_10",
+      "Methods_13",
+      "Methods_14"
+    ],
+    "suiteLogSha256": "c0b74bde41e252f8402c2ebbc588602faead69d3dfd07bddf3e3ceb928002dda"
+  },
+  "files": {
+    "src/hd/ControlsSteeringLiveGameHooks.inc": "f40477a7d438618a1ff5f6844a1a549e0d2db1c4870d821baf50e38aac0e6d08",
+    "src/hd/ControlsSteeringSidebarCaptionProof.h": "654db18a4e3fc1e3113d0e88ed67b5f9914bc7f675369b2867d8f9631c6bd106",
+    "src/hd/ControlsSteeringSidebarCaptionGameHooks.inc": "0c35d6612b61076092ee2170a0d4add6b36e7a8b6d047ad3fd6391e393aeb7f5",
+    "src/hd/ControlsSteeringSidebarCaptionDisplay.h": "f77450618bf0fe9af259f525aa542cd98561b88b8c27c0a048d801c6a496ddb0",
+    "src/hd/ControlsSteeringSidebarLiveGameHooks.inc": "fd97c011a0ca610c35e356aa5be1c8d7df488070be01273356adb2e4c90162b9",
+    "scripts/controls_steering_live_hooks.py": "d125bb5cfa50afa578721344445085c8451de25178b2b35cf62aa3903c59c88c",
+    "scripts/controls_steering_sidebar_hooks.py": "5d2e214c1fb625721df00c0a71f07c6208dc13e2ab2baa0faa5a34ce34fb9b38",
+    "tests/controls_steering_live_hooks_test.py": "7f04c02cbae4a99a10bc6f8264dfa032658a587038fdc45500e15a0bfc6b625c",
+    "tests/controls_steering_live_runtime_tests.cpp": "f5819afae0746429db638ee4a8c10bda20e34f041ac2fa1e9a2fd8323c7851e1",
+    "tests/controls_steering_sidebar_hooks_test.py": "5a0c50b5e5b2c12866879dc15fc3411100279f78e8d2cc4b18fa7aff9c62e2e8",
+    "tests/controls_steering_sidebar_caption_runtime_tests.cpp": "b0df495b0ad281bb5dbcd174b03d3af4db8cef9779bf755dec812a3b3aa11eba",
+    "tests/controls_steering_sidebar_caption_display_tests.cpp": "d5082bdc47a5c2355f4f32984a25639688f9f74946e0b25c15468a1ff304f10b",
+    "CMakeLists.txt": "5a45fc849f12643065ca1baf30f3138cb7e5922c26e575ccdb71f1b26d17a6e4"
+  },
+  "remaining": [
+    "Native steering words and four bar artwork CPU/GPU components and real GLES acceptance",
+    "Native scene ABI/lease/queue/context and original300tile staging/atomic color commit acceptance",
+    "Actual remastered screen visual review and maintained preparation integration",
+    "Physical iPad UI/controller/Low Power Mode/battery acceptance"
+  ],
+  "nativeSteeringRendered": false,
+  "cloudBuild": false,
+  "newIpa": false,
+  "push": false,
+  "originalAssetsPublished": false
+}
