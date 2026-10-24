@@ -1,0 +1,53 @@
+{
+  "scope": "Local car class badge candidate runtime validation; original assets separately supplied",
+  "status": "local-presentation-verified-final-art-and-device-pending",
+  "normalBinarySha256": "0920d8cec00b32fad38746ba84da5b3a77937fdad19a10c4fa27899af7ea3416",
+  "packSha256": "5a5991030c7987f93bceb5e46500e5b4a2b42eb069d21345ef282fe78ecab25d",
+  "nativeWindow": [
+    2186,
+    1640
+  ],
+  "originalInputOnly": true,
+  "temporarySourceObserverUsedInNormalRun": false,
+  "normalSequence": [
+    "B",
+    "C",
+    "B",
+    "A"
+  ],
+  "freshVisualWitnesses": {
+    "consecutiveCapturesPerChoice": 2,
+    "classLetterRoiLogical": [
+      524,
+      414,
+      560,
+      444
+    ],
+    "expectedScoreMinimum": 0.95,
+    "otherClassMarginMinimum": 0.12,
+    "allObservedExpectedScores": 1.0
+  },
+  "nativeArtworkAcceptance": "Expected authored textures accepted earlier within the same normal run; diagnostic logs are once per texture/height, not fresh per return.",
+  "separateInstrumentedSourceRun": {
+    "sequence": [
+      "B",
+      "C",
+      "B",
+      "A"
+    ],
+    "exactFullNativePayloadComparisonBytes": 32768,
+    "freshDrawSelectionsRequired": true,
+    "droppedEvents": 0
+  },
+  "exitCode": 0,
+  "copiedConfigBrightnessAndBaselineArtworkRestored": true,
+  "ownedProcessesRemaining": 0,
+  "limits": [
+    "Ordinary single-player main-menu class selection only",
+    "Class-letter classifier does not establish complete plate/coupe geometry, materials, fades or context recovery",
+    "No iPad visual or performance acceptance",
+    "Final artwork approval remains open",
+    "Normal run inherited an overbroad manifest description; authoritative independent receipt corrects its scope without replacing it",
+    "Reference pins were collected after the normal run; independently recomputed visual results match recorded scores"
+  ]
+}
