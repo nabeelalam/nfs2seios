@@ -93,6 +93,10 @@ def prepare_renderer():
     text = add_controls_renderer_hooks(text)
     for name in CONTROLS_HELPERS:
         shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
+    from controls_setup_renderer_hooks import add_controls_setup_renderer_hooks, HELPERS as CONTROLS_SETUP_HELPERS
+    text = add_controls_setup_renderer_hooks(text)
+    for name in CONTROLS_SETUP_HELPERS:
+        shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")

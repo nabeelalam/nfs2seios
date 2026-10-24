@@ -1,0 +1,240 @@
+{
+  "schema": 1,
+  "scope": "Local actual original child Controls single/split native-render milestone; physical iPad UI acceptance remains open",
+  "binarySha256": "ea7399cab67feab7112fafcf32fea7ec8120547595d539dadb57048a19cffac0",
+  "finiteCompleteWordImages": 28,
+  "reusableFontAlphabetExported": false,
+  "fixedLabels": "lighter Haettenschweiler whole-word artwork with original source-16/source-18 metrics",
+  "dynamicBindingGlyphs": "existing immutable source font catalog; unchanged dynamic values and spans",
+  "maintainedPreparation": {
+    "passed": true,
+    "normalCpuOriginalPreserved": true,
+    "normalRendererOriginalPreserved": true,
+    "allChildHelpersCopied": true,
+    "copiedHelpers": 9,
+    "networkRequested": false
+  },
+  "validation": {
+    "registeredTests": 10,
+    "allPassed": true,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "cpuWordChecks": 869,
+    "actualGlesChecks": 304000,
+    "artImages": 28,
+    "afterPayloadHashCallsPerWarmFrame": 0,
+    "afterWarmTextureUploads": 0,
+    "newGenerationPayloadAuthentications": 28,
+    "testLogSha256": "9742921d6450f3298b02146872218419a09c954128740d80badc325ce3d54f96",
+    "beforePayloadHashPassesPerWarmFrame": 5,
+    "beforePayloadHashCallsPerWarmFrame": 140
+  },
+  "runs": [
+    {
+      "mode": "single",
+      "resultSha256": "563511c2243f5c63602f036e88ae3ad6f16643fd323c62bf0bb78be0289f88fd",
+      "passed": true,
+      "nativePublications": 60,
+      "nativeOriginalWitnessesPerPass": {
+        "uploads": 300,
+        "selections": 300,
+        "triangles": 600
+      },
+      "target": [
+        2186,
+        1640
+      ],
+      "sourceReplay": [
+        {
+          "accepted": true,
+          "snapshot": 1,
+          "handler": 4260288,
+          "assignment": 0,
+          "column": 0,
+          "words": 307200,
+          "commands": 122,
+          "writes": 52006,
+          "publication": 2,
+          "cacheRevision": 1,
+          "redrawAttempt": 1,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 2,
+          "handler": 4260288,
+          "assignment": 1,
+          "column": 0,
+          "words": 307200,
+          "commands": 116,
+          "writes": 49136,
+          "publication": 21,
+          "cacheRevision": 19,
+          "redrawAttempt": 20,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        }
+      ],
+      "sourceSizes": [
+        {
+          "snapshot": 1,
+          "size16Commands": 0,
+          "size18Commands": 122,
+          "commands": 122
+        },
+        {
+          "snapshot": 2,
+          "size16Commands": 0,
+          "size18Commands": 116,
+          "commands": 116
+        }
+      ],
+      "initialUnobservedFramesDeclined": 1,
+      "captures": {
+        "setup-assignment-prompt.bmp": "ac70df1ae2a52ca439c7d7ff166030dc0dd1d77354cee3dc23d7f8761f2d482d",
+        "setup-child.bmp": "55e43656a0323193856db5282ff9432dc18bb520d0948572bcb27504253c51fc"
+      },
+      "assignmentCancelledWithoutBindingChanges": true,
+      "copiedDataRestored": true,
+      "cleanOwnedShutdown": true
+    },
+    {
+      "mode": "split",
+      "resultSha256": "ff3bd31a1ec8e92b6ecccb14080a444e3ff11e5bf323b6b5d80d6ade7f7c563c",
+      "passed": true,
+      "nativePublications": 142,
+      "nativeOriginalWitnessesPerPass": {
+        "uploads": 300,
+        "selections": 300,
+        "triangles": 600
+      },
+      "target": [
+        2186,
+        1640
+      ],
+      "sourceReplay": [
+        {
+          "accepted": true,
+          "snapshot": 1,
+          "handler": 4209008,
+          "assignment": 0,
+          "column": 0,
+          "words": 307200,
+          "commands": 182,
+          "writes": 67910,
+          "publication": 2,
+          "cacheRevision": 1,
+          "redrawAttempt": 1,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 2,
+          "handler": 4209008,
+          "assignment": 1,
+          "column": 0,
+          "words": 307200,
+          "commands": 176,
+          "writes": 65514,
+          "publication": 42,
+          "cacheRevision": 40,
+          "redrawAttempt": 41,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 3,
+          "handler": 4209008,
+          "assignment": 0,
+          "column": 1,
+          "words": 307200,
+          "commands": 182,
+          "writes": 67910,
+          "publication": 83,
+          "cacheRevision": 61,
+          "redrawAttempt": 61,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 4,
+          "handler": 4209008,
+          "assignment": 1,
+          "column": 1,
+          "words": 307200,
+          "commands": 176,
+          "writes": 65480,
+          "publication": 102,
+          "cacheRevision": 80,
+          "redrawAttempt": 80,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        }
+      ],
+      "sourceSizes": [
+        {
+          "snapshot": 1,
+          "size16Commands": 172,
+          "size18Commands": 10,
+          "commands": 182
+        },
+        {
+          "snapshot": 2,
+          "size16Commands": 166,
+          "size18Commands": 10,
+          "commands": 176
+        },
+        {
+          "snapshot": 3,
+          "size16Commands": 172,
+          "size18Commands": 10,
+          "commands": 182
+        },
+        {
+          "snapshot": 4,
+          "size16Commands": 166,
+          "size18Commands": 10,
+          "commands": 176
+        }
+      ],
+      "initialUnobservedFramesDeclined": 1,
+      "captures": {
+        "split-player-0-after-cancel.bmp": "6bc996a6e9a4c4df5a310221d61faea34caee545aa0033bd3b2daed6b97a6ec2",
+        "split-player-0-assignment-prompt.bmp": "2ecd97b3dbed485627e145a19b081efd87aedbe9a236fda9171a4f6459963d66",
+        "split-player-0-before-assignment.bmp": "11ad410c54e0d25af6dc16dc3bdc6e2e1fcedb6bfcaca675634a751d744e9bca",
+        "split-player-1-after-cancel.bmp": "119e211562e70ab7cfb0d6309945452a02da129fac1e8707d78a7dab34347b3d",
+        "split-player-1-assignment-prompt.bmp": "062dfaa4d3018a96570e46b3f4c24bc3725a5fe0289b7024e2f3a4938d85a4f4",
+        "split-player-1-before-assignment.bmp": "1dc8b94bb8948566bd71fad0eaf673cbbf9fce00a774443a6c253f1226acf0c3",
+        "split-setup-initial.bmp": "040289c6b1477a444732fbd541760696640fc6389d19ca542f11ccfb276e6629"
+      },
+      "assignmentCancelledWithoutBindingChanges": true,
+      "copiedDataRestored": true,
+      "cleanOwnedShutdown": true
+    }
+  ],
+  "paidServicesUsed": false,
+  "cloudBuildDispatched": false,
+  "iPadAcceptanceClaimed": false,
+  "batteryImprovementMeasured": false,
+  "remaining": [
+    "Harmonize dynamic binding font appearance with fixed labels",
+    "Broader HD UI/device rendering acceptance",
+    "Physical iPad performance and battery comparison"
+  ],
+  "generatedSourceGrouping": {
+    "identicalCompleteWordArrays": 28,
+    "parts": [
+      "ControlsSetupWordDataPart01.inc",
+      "ControlsSetupWordDataPart02.inc",
+      "ControlsSetupWordDataPart03.inc"
+    ],
+    "payloadUnchanged": true,
+    "wholeWordArraysSha256": "67dad0016a6fc8b222f48efcfa18a7d14e43a55277706bd730435b5ff7622b4a"
+  }
+}

@@ -17,6 +17,7 @@ from controls_text_hooks import add_controls_text_hooks
 from controls_sidebar_hooks import add_controls_sidebar_hooks
 from controls_live_hooks import add_controls_live_hooks
 from controls_scene_hooks import add_controls_scene_hooks
+from controls_setup_scene_hooks import add_controls_setup_scene_hooks
 from audio_sidebar_cache_hooks import add_audio_sidebar_cache_hooks
 from audio_scene_hooks import add_audio_scene_hooks
 from audio_sidebar_measure_hooks import add_audio_sidebar_measure_hooks
@@ -238,6 +239,7 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         text = add_controls_sidebar_hooks(text, path.name)
         text = add_controls_live_hooks(text, path.name)
         text = add_controls_scene_hooks(text, path.name)
+        text = add_controls_setup_scene_hooks(text, path.name)
         (dest / path.name).write_text(text)
     stubs = (source / "Stubs.cpp").read_text()
     dispatch = '#include "Game.h"\n#include "FunctionIds.h"\nextern "C" bool nfs_register_guest_function(uint32_t, NativeGameFunction);\n'
