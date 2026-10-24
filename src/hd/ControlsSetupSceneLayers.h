@@ -4,12 +4,14 @@
 #include "BackgroundSceneCompositor.h"
 #include "NestedCaptionGpu.h"
 #include "ControlsSetupWordGpu.h"
+#include "ControlsBindingPhraseGpu.h"
 #include "ControlsSetupSceneLayerAbi.h"
 typedef struct NfsControlsSetupSceneGpu {
  NfsBackgroundSceneCompositor*background;
  NfsSoftwareTextGpu*sidebarCaption,*text;
  NfsNestedCaptionGpu*sidebarWord;
  NfsControlsSetupWordGpu*childWords;
+ NfsControlsBindingPhraseGpu*bindings;
 } NfsControlsSetupSceneGpu;
 #ifdef __cplusplus
 extern "C" {

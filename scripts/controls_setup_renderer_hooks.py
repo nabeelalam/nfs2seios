@@ -11,7 +11,9 @@ HELPERS = ('ControlsSetupSceneRenderer.inc', 'ControlsSetupSceneLayers.h',
            'ControlsSetupSceneLayers.c.inc', 'ControlsSetupSceneLayerAbi.h',
            'ControlsSetupSceneRuntimeAbi.h', 'ControlsSetupWordRuntimeAbi.h',
            'ControlsSetupWordIdentity.h', 'ControlsSetupWordGpu.h',
-           'ControlsSetupWordGpu.c.inc')
+           'ControlsSetupWordGpu.c.inc', 'ControlsBindingPhraseGpu.h',
+           'ControlsBindingPhraseGpu.c.inc', 'ControlsBindingPhraseRuntimeAbi.h',
+           'ControlsBindingPhraseIdentity.h')
 OTHER_SITES = (
     ('destroyFrameBuffer', ' nfs_logo_native_other();'),
     ('createFrameBuffer', ' nfs_logo_native_other();'),

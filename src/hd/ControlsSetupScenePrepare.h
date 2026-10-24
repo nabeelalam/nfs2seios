@@ -5,6 +5,7 @@
 #include "ControlsSetupSceneRuntimeAbi.h"
 #include "ControlsSetupSidebarCaptionDisplay.h"
 #include "ControlsSetupWordDisplay.h"
+#include "ControlsBindingPhraseDisplay.h"
 #include <atomic>
 namespace nfs_controls_setup_scene_cpu {
 // Immutable CPU join only. Independent live owners supply current bindings,
@@ -14,6 +15,7 @@ class Prepared final {
  std::shared_ptr<const nfs_audio_sidebar::Packet>sidebar_;unsigned mapRole_=0;
  std::shared_ptr<const nfs_controls_setup_sidebar_caption::Display>caption_;
  std::shared_ptr<const nfs_controls_setup_word_display::Prepared>words_;
+ std::shared_ptr<const nfs_controls_binding_phrase::Prepared>bindings_;
  Prepared()=default;
  static bool captionWordValid(const std::shared_ptr<const nfs_audio_sidebar::Packet>&sidebar,const std::shared_ptr<const nfs_controls_setup_sidebar_caption::Display>&caption)noexcept{
   if(!sidebar||sidebar->captionWord()||!caption||!caption->current()||caption->packet()!=sidebar->caption()||!caption->proof())return false;
@@ -44,18 +46,20 @@ public:
   const auto&e=caption->proof()->evidence();
   if(!e.game||!e.thread||e.thread!=currentCache.thread||!nfs_audio_sidebar::retainedTarget(e.post.target,cacheTarget))return {};
   unsigned role=2;for(unsigned k=0;k<2;++k)if(b->catalog()->sha()==sidebar->catalog()->mapSha[k]){if(role!=2)return {};role=k;}if(role==2)return {};
-  try{auto p=std::shared_ptr<Prepared>(new Prepared);p->frame_=std::move(frame);p->sidebar_=std::move(sidebar);p->caption_=std::move(caption);p->words_=std::move(words);p->mapRole_=role;return p;}catch(...){return {};}
+  auto bindings=nfs_controls_binding_phrase::Prepared::create(frame->text());if(!bindings)return {};
+  try{auto p=std::shared_ptr<Prepared>(new Prepared);p->frame_=std::move(frame);p->sidebar_=std::move(sidebar);p->caption_=std::move(caption);p->words_=std::move(words);p->bindings_=std::move(bindings);p->mapRole_=role;return p;}catch(...){return {};}
  }
  const std::shared_ptr<const nfs_graphics_frame::GraphicsFramePacket>&frame()const noexcept{return frame_;}
  const std::shared_ptr<const nfs_audio_sidebar::Packet>&sidebar()const noexcept{return sidebar_;}
  NfsControlsSetupSceneFrameView view(uint64_t serial)const noexcept{
-  NfsControlsSetupSceneFrameView v{};if(!serial||!frame_||!sidebar_||!captionWordValid(sidebar_,caption_)||!words_||!words_->current()||words_->packet()!=frame_->text())return v;
+  NfsControlsSetupSceneFrameView v{};if(!serial||!frame_||!sidebar_||!captionWordValid(sidebar_,caption_)||!words_||!words_->current()||words_->packet()!=frame_->text()||!bindings_||bindings_->packet()!=frame_->text())return v;
   v.layers.sidebarWord=caption_->view();if(!v.layers.sidebarWord.schema||v.layers.sidebarWord.word!=3)return {};
+  v.layers.bindingPhrases=bindings_->view();
   v.layers.childWords=words_->view();if(v.layers.childWords.schema!=NFS_CONTROLS_SETUP_WORD_SCHEMA||!v.layers.childWords.count)return {};
   v.schema=NFS_CONTROLS_SETUP_SCENE_RUNTIME_SCHEMA;v.width=640;v.height=480;v.serial=serial;v.contentRevision=frame_->binding().pass;v.planeWords=nfs_graphics_frame::Pixels;v.original565=frame_->text()->original().data();
   auto&b=v.layers.background;b.mapRole=mapRole_;b.wordCount=sidebar_->wordCount();b.panelClip[2]=343;b.panelClip[3]=480;std::copy(sidebar_->words().begin(),sidebar_->words().end(),b.words);std::copy(sidebar_->logos().begin(),sidebar_->logos().end(),b.logos);
-  // Only exact finite fixed-label spans are replaced. Dynamic binding names
-  // and every intervening original source span retain their collected catalog.
+  // Fixed labels and exact supported complete binding groups are authored.
+  // Unsupported values and every unrelated source span retain their catalog.
   if(!textView(sidebar_->caption(),343,v.layers.sidebarCaption)||!textView(frame_->text(),640,v.layers.text))return {};
   return v;
  }

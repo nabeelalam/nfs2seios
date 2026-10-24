@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "scope": "Local original-game Controls binding typography; physical iPad UI and performance acceptance remains open",
+  "binarySha256": "447342a5f6a6d400287b132e4a39afd4f4b2dc65bd89a7c1bad688afb7c4b661",
+  "finiteCompletePhraseImages": 360,
+  "sourceSizes": [
+    16,
+    18
+  ],
+  "reusableFontAlphabetExported": false,
+  "fontFileExported": false,
+  "phraseManifestSha256": "f73cc79f7a9b128fd83edfac16706a54f9aa032a24b7adc7ca870df5abd466f7",
+  "sourceArtwork": "Complete phrase graphics with original per-component advances; lighter Haettenschweiler style",
+  "runtime": {
+    "maxCpuCachedImages": 40,
+    "maxActiveGpuTextures": 20,
+    "lazyDecodeAndUpload": true,
+    "missingPixelsAuthenticatedBeforeGpuWork": true,
+    "warmPayloadHashes": 0,
+    "warmTextureUploads": 0,
+    "unsupportedOrClippedLayout": "retain original text",
+    "sourceSpanOrderPreserved": true,
+    "sourcePacketAndImageOwnersRetained": true
+  },
+  "validation": {
+    "registeredTests": 13,
+    "allPassed": true,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "testLogSha256": "ce8058e3116863a325289c42afbea9f76aa5142ff2dd3253f49fc92ef2d2522e",
+    "all360IdentitiesAndImageHashes": true,
+    "actualGlesTextureReadback": true,
+    "coldCorruptPixelsRefused": true,
+    "warmReuseAndContextChangeCovered": true,
+    "inheritedTextureUnitEvictionCovered": true,
+    "fixedPhraseOriginalOrderedDrawCovered": true,
+    "sourceOnlyReviewMaterialFindings": 0
+  },
+  "build": {
+    "observerSha256": "447342a5f6a6d400287b132e4a39afd4f4b2dc65bd89a7c1bad688afb7c4b661",
+    "compiledUnits": 2,
+    "unaffectedEngineAndPlatformObjectsReused": 20,
+    "maxCompilerWorkers": 2,
+    "linkWorkers": 2,
+    "sourceInputFiles": 1059,
+    "allSourceAndReusedInputsStable": true,
+    "frozenPreviewSources": true,
+    "fixedAndBindingPhraseTypography": true,
+    "pixelsAuthenticatedAtUpload": true,
+    "cloud": false,
+    "seconds": 81.7
+  },
+  "maintainedPreparation": {
+    "passed": true,
+    "allOtherGeneratedOutputsIdentical": true,
+    "unchangedGeneratedOutputCount": 317,
+    "currentControlsHelpers": 22,
+    "network": false
+  },
+  "runs": [
+    {
+      "mode": "single",
+      "passed": true,
+      "resultSha256": "23a5d26b9e0d69ca6107e9036fb71c1dacf1a1d78f163459392f079a9aa201f7",
+      "nativePublicationsSha256": "29192a8e3e80b133bf3d8dcc1b903b4dba261bcad7373a1dc4d370ab5ab072e3",
+      "nativePublications": 63,
+      "authoredBindingGroupCounts": [
+        10
+      ],
+      "maxActivePhraseImages": 10,
+      "target": [
+        2186,
+        1640
+      ],
+      "originalWitnessesPerPass": {
+        "uploads": 300,
+        "selections": 300,
+        "triangles": 600
+      },
+      "assignmentOpenedAndCancelled": true,
+      "bothPlayerColumnsExercised": false,
+      "originalBindingWordsPreservedOnCancel": true,
+      "cleanShutdown": true,
+      "copiedConfigurationBrightnessArtworkRestored": true,
+      "noOwnedGameProcessesRemaining": true,
+      "previewSha256": "9b6564ca4c040c90e71713277ecf1c78be8fb894ad065323a1a92f52da4f87ea"
+    },
+    {
+      "mode": "split",
+      "passed": true,
+      "resultSha256": "a511af6b55abb4ae46ca8758cf4e62822784ada92748c0dfbe9ad6d53f956f55",
+      "nativePublicationsSha256": "97343017b47cc088b193b93d6fee85108d78fb7b5c1d0641bc7435b755db7a80",
+      "nativePublications": 139,
+      "authoredBindingGroupCounts": [
+        20
+      ],
+      "maxActivePhraseImages": 19,
+      "target": [
+        2186,
+        1640
+      ],
+      "originalWitnessesPerPass": {
+        "uploads": 300,
+        "selections": 300,
+        "triangles": 600
+      },
+      "assignmentOpenedAndCancelled": true,
+      "bothPlayerColumnsExercised": true,
+      "originalBindingWordsPreservedOnCancel": true,
+      "cleanShutdown": true,
+      "copiedConfigurationBrightnessArtworkRestored": true,
+      "noOwnedGameProcessesRemaining": true,
+      "previewSha256": "a0e5a50700dbd8488075ce4f198230340310d9b038ec3a537e421eacc7420a6f"
+    }
+  ],
+  "privateGameDataAndCapturesPublished": false,
+  "physicalIpadAcceptance": false,
+  "ipadBatteryImprovementClaimed": false,
+  "cloudBuildRequested": false,
+  "paidServiceUsed": false
+}
