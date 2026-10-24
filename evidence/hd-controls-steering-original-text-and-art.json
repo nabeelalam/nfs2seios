@@ -1,0 +1,240 @@
+{
+  "schema": 1,
+  "scope": "Genuine original four-level steering pre-diagram text acceptance and private remaster artwork; final chart replay/native rendering still incomplete",
+  "binarySha256": "cde7664cf2a4e42f101b403bf5a3dafd3eb919863e315a7d1ba6c32c08ca7aab",
+  "build": {
+    "observerSha256": "cde7664cf2a4e42f101b403bf5a3dafd3eb919863e315a7d1ba6c32c08ca7aab",
+    "scope": "Same steering collector plus private function-entry input acknowledgment only",
+    "compiledUnits": 1,
+    "maxCompilerWorkers": 1,
+    "linkWorkers": 2,
+    "sourceInputFiles": 881,
+    "allSourceAndReusedInputsStable": true,
+    "maxSamplesPerLevel": 2,
+    "originalSourceReversalVerified": true,
+    "guestStateWritesByObserver": false,
+    "cloud": false,
+    "seconds": 73.21
+  },
+  "originalInputOnly": true,
+  "observerWritesGuestState": false,
+  "resultSha256": "f035b75824def520045c137a2c11c9f61fa78e55c88e9cc0366dba8c690be4ce",
+  "packetObservationSha256": "295b135f467e31ea335785511267833d3ae15940e182bb8a8cbd21c9e6067fc9",
+  "runLogSha256": "c27f9608a7083fbc6cb037dcbc028e17bf9fcb8d65ff807399d985f2c4c53eb0",
+  "samplesPerLevel": 2,
+  "sourceSize": 18,
+  "levels": [
+    {
+      "level": 0,
+      "textSamples": 2,
+      "textCommandsPerSample": 12,
+      "glyphWordWritesPerSample": 9622,
+      "wholePlaneWordsCompared": 307200,
+      "preChartCurrentAfterBitmap": false,
+      "chartChangedPixels": 13860,
+      "chartChangedBounds": [
+        284,
+        284,
+        632,
+        325
+      ],
+      "cleanPlaneSha256": "b065b1ca8484b5e7d594ab1a0a66a9bc93a8fcb52b92ddd52d31f56c76093684",
+      "textPlaneSha256": "d0f38a747f8a3d03d05f1d1b00132aefbb8eb867fc42ffdb1b1ed38ee972e715",
+      "chartPlaneSha256": "efdd8f70ca22e554044bb3b8995ee70f34d4628e66a3a646b83a56440c6ee3fc"
+    },
+    {
+      "level": 1,
+      "textSamples": 2,
+      "textCommandsPerSample": 12,
+      "glyphWordWritesPerSample": 11214,
+      "wholePlaneWordsCompared": 307200,
+      "preChartCurrentAfterBitmap": false,
+      "chartChangedPixels": 13858,
+      "chartChangedBounds": [
+        284,
+        284,
+        632,
+        325
+      ],
+      "cleanPlaneSha256": "d2b334a9b4ae7a9d35959fe8cc75a4e579ef349a2b7d1dd56ec618df4408d0b8",
+      "textPlaneSha256": "cbd24f59fd5e6044f6e28d167e626118d7fde315d4612102c770f51f7d7c5c7d",
+      "chartPlaneSha256": "5bcccccccc9368a1074de7bacdf88c789a999d1c1afcd28e437e539aa808fd7b"
+    },
+    {
+      "level": 2,
+      "textSamples": 2,
+      "textCommandsPerSample": 12,
+      "glyphWordWritesPerSample": 9740,
+      "wholePlaneWordsCompared": 307200,
+      "preChartCurrentAfterBitmap": false,
+      "chartChangedPixels": 13857,
+      "chartChangedBounds": [
+        284,
+        284,
+        632,
+        325
+      ],
+      "cleanPlaneSha256": "a755f40801fe4cfa1bd47ed4fb3fe9902e32034cc3bed51d7b64fa613a37f309",
+      "textPlaneSha256": "c3d1d13e621908fce3f0c097eed457b4061a4b3fbf860c5087bd5cee8cb6180e",
+      "chartPlaneSha256": "6b64f45014c7749b20014a95ef2dbf443d1062f8929bf4ca66c2a4c7b4afd058"
+    },
+    {
+      "level": 3,
+      "textSamples": 2,
+      "textCommandsPerSample": 12,
+      "glyphWordWritesPerSample": 10920,
+      "wholePlaneWordsCompared": 307200,
+      "preChartCurrentAfterBitmap": false,
+      "chartChangedPixels": 13858,
+      "chartChangedBounds": [
+        284,
+        284,
+        632,
+        325
+      ],
+      "cleanPlaneSha256": "1aad585fbef6a0f0bfcca544cf2719fe2c143e438abe09364314557f9e7bc124",
+      "textPlaneSha256": "ed09000052dee249bd2f7d1cd1ed43736b717f935c09cb276681767d9aec6229",
+      "chartPlaneSha256": "971278b016f394abdbe545430a484ff3dd83fd6e52b12b5318c6467dae445ea5"
+    }
+  ],
+  "measuredForegroundText": [
+    {
+      "text": ":",
+      "sourceSize": 18,
+      "advance": 4,
+      "x": 443,
+      "y": 144
+    },
+    {
+      "text": "CANCEL",
+      "sourceSize": 18,
+      "advance": 51,
+      "x": 455,
+      "y": 187
+    },
+    {
+      "text": "DONE",
+      "sourceSize": 18,
+      "advance": 35,
+      "x": 400,
+      "y": 187
+    },
+    {
+      "text": "STEERING SENSITIVITY",
+      "sourceSize": 18,
+      "advance": 149,
+      "x": 361,
+      "y": 105
+    },
+    {
+      "text": "full",
+      "sourceSize": 18,
+      "advance": 21,
+      "x": 454,
+      "y": 144
+    },
+    {
+      "text": "half",
+      "sourceSize": 18,
+      "advance": 25,
+      "x": 454,
+      "y": 144
+    },
+    {
+      "text": "one quarter",
+      "sourceSize": 18,
+      "advance": 75,
+      "x": 454,
+      "y": 144
+    },
+    {
+      "text": "sensitivity",
+      "sourceSize": 18,
+      "advance": 66,
+      "x": 369,
+      "y": 144
+    },
+    {
+      "text": "three quarter",
+      "sourceSize": 18,
+      "advance": 85,
+      "x": 454,
+      "y": 144
+    }
+  ],
+  "parentNativePublicationsDuringChild": 0,
+  "returnThroughControlsOptionsMain": true,
+  "cleanShutdownAndCopiedConfigurationBrightnessArtworkRestored": true,
+  "noOwnedGameProcessesRemain": true,
+  "privateArtwork": {
+    "completeWordImages": 8,
+    "wordManifestSha256": "785db070e59de7cf2a1a8c0b05d419f795360b36654ee5ca190444d893e94536",
+    "newVectorBarVariants": 4,
+    "barManifestSha256": "804fcfaa02e2b325a5db4f8ab48e41a93dca699470e1a576588129a7bc3edc7b",
+    "barRenderedImages": [
+      {
+        "level": 0,
+        "width": 1424,
+        "height": 196,
+        "rgbaSha256": "8ea18c208104e589f4a17c722fdcfdac59b5820bc2682486a9360709efa2d031",
+        "pngSha256": "555450edd13db8eecd2c535deb629eaef980859bf69d8b1ec76aa139aad100e6"
+      },
+      {
+        "level": 1,
+        "width": 1424,
+        "height": 196,
+        "rgbaSha256": "895b1c850b6fcad951aa2750318022ce0013a6efcdc41d9173ebd23f013b584e",
+        "pngSha256": "924cc16ac1d45d2f7ea5ea10d4b918a36d090c7b582bd19acd3ce5424ffe4aea"
+      },
+      {
+        "level": 2,
+        "width": 1424,
+        "height": 196,
+        "rgbaSha256": "85caaa9782bb245d7614a72134a782f6d4fe6f18250fd82ca03564d751d6dbee",
+        "pngSha256": "5ac524a5a3522978061597a154e5a2e8674caa51c093318f3ff989dc27f9fc3c"
+      },
+      {
+        "level": 3,
+        "width": 1424,
+        "height": 196,
+        "rgbaSha256": "5cef6e20d8267dd0ddba9f03a221f4cc06e6d8865096a8205a6a7fd91e92f6d6",
+        "pngSha256": "9d539ba07b05fe63c97597be9bcf5677710e92062832d734a47023499025d4af"
+      }
+    ],
+    "originalPixelInputToAuthoring": false,
+    "centredRangeAndDivider": true,
+    "minimumBarTransparentBorderPixels": 4,
+    "rendererActivated": false
+  },
+  "earlierFailedAttemptsPreserved": [
+    {
+      "attempt": 1,
+      "error": "AssertionError('Parent Controls replacement published inside steering child')",
+      "resultSha256": "0f0395cd42d424190de24f59ccb0f25047ea0b4b3e43a13187f1b724384fc04e",
+      "cleanShutdownAndCopiedResourcesRestored": true
+    },
+    {
+      "attempt": 2,
+      "error": "AssertionError('No four complete native Controls passes in clean build')",
+      "resultSha256": "67eef8bc65311d464171914fdd5034c726d6869a03c14d05cb556f0394b9889e",
+      "cleanShutdownAndCopiedResourcesRestored": true
+    },
+    {
+      "attempt": 3,
+      "error": "AssertionError('Original steering input not acknowledged')",
+      "resultSha256": "1a8ea26ef5ba4ddf277072e72e59002e2915ba13c1b36304a0e91b453019c79a",
+      "cleanShutdownAndCopiedResourcesRestored": true
+    }
+  ],
+  "testProtocolCorrections": [
+    "Count parent publications only after actual child entry",
+    "Acknowledge original function entry rather than hold Enter until native presentation"
+  ],
+  "actualFinalChartWordReplayProven": false,
+  "normalPreparationSteeringActivated": false,
+  "nativeSteeringRendererActivated": false,
+  "physicalIpadAcceptance": false,
+  "originalAssetsOrCapturesPublished": false,
+  "cloudBuildRequested": false,
+  "paidServiceUsed": false
+}
