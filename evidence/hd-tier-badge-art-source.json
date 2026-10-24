@@ -1,0 +1,22 @@
+{
+  "scope": "Authored A/B/C vector candidate generator; source validation only",
+  "status": "candidate-not-final",
+  "originalAssetsIncluded": false,
+  "externalFontsRequired": false,
+  "sourceTests": {
+    "command": "python -B tests/tier_badge_art_test.py",
+    "passed": true,
+    "tests": 7
+  },
+  "sourceSha256": {
+    "scripts/generate_tier_badge_art.py": "7116c0e4cacc64ac961df256278069359f8e7992e557d6a6680ffe5b58bf9c5d",
+    "tests/tier_badge_art_test.py": "c95a095ef7c3b5a3d54c2066b3f20aac08cb2944b37b049f992887191776adc1"
+  },
+  "limits": [
+    "No raster or native rendering claim from these source tests",
+    "Complete fresh A/B/C runtime navigation verification remains pending",
+    "Final likeness and material approval remain pending",
+    "Physical iPad acceptance remains pending"
+  ],
+  "formattingNote": "Removed excess trailing blank line only; generated artwork is unchanged."
+}
