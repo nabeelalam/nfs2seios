@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "scope": "Independent pre-diagram steering text collector; source and synthetic runtime acceptance only",
+  "normalPreparationActivated": false,
+  "rendererActivated": false,
+  "owner": {
+    "form": "0x4D36A8",
+    "handler": "0x4101C0",
+    "parentSelection": 1,
+    "uniformSourceSize": 18,
+    "sensitivityRange": [
+      0,
+      3
+    ]
+  },
+  "boundary": "after reset/sidebar copy, before40FA90 text to immediately after40FA90, before410330 diagram",
+  "finalDiagramFrameProven": false,
+  "actualFourLevelCommandsMeasured": false,
+  "syntheticRuntimeChecks": 10553,
+  "registeredRelevantTests": 16,
+  "allRegisteredTestsPassed": true,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "registeredLogSha256": "78a47242ac7ef4a7a022b131508eb50fa34a98ba69238b958813425015f8f662",
+  "manualRuntimeLogSha256": "25af6e33bc8075167de6fa5a401a29e3a15052efaec29920cc3f08d2ec6ab0c1",
+  "sourceHookCases": 4,
+  "actualGeneratedUnitsExactSourceReversal": 6,
+  "originalGameRuntimeAcceptance": false,
+  "physicalIpadAcceptance": false,
+  "privateAssetsPublished": false,
+  "cloudBuildRequested": false,
+  "paidServiceUsed": false,
+  "nextRequired": [
+    "actual original four-level command/write observation",
+    "independent diagram source and final frame proof",
+    "retained sidebar/current owner join",
+    "native rendering acceptance"
+  ]
+}
