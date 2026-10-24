@@ -1,0 +1,260 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Bounded original Controls child text and metrics inventory in genuine single-player and split-screen menus; no child HD renderer activation",
+  "build": {
+    "binarySha256": "7ff80df1c49420f302bd6c7eb777fc66c4cc7add5ec39b235982a55ab96361dd",
+    "sourceInputFiles": 792,
+    "sourceAndReusedInputsStable": true,
+    "compiledUnits": 1,
+    "exactObserverRemovalRecoversNormalSource": true,
+    "privateReadOnlyObserver": true,
+    "normalMaintainedExecutableChanged": false
+  },
+  "runs": {
+    "single": {
+      "privateLogSha256": "950a86e5b208a8cce4aa05767b26e58dada1c25bfa97bd1dbaf1123dad5cff1f",
+      "privateResultSha256": "b089f5a160c27dea248a9ea44d6eec9393552a109ee27d8cdc8a8e5bd9b7560b",
+      "privateInventorySha256": "57594b1bb4027e934a7c1124560c4442470aa0b85c2f036c76fc7cad984e53e3",
+      "nativeSize": [
+        2186,
+        1640
+      ],
+      "originalInputOnly": true,
+      "forcedGuestStateWrites": false,
+      "uniqueRecords": 305,
+      "recordLimit": 1024,
+      "limitReached": false,
+      "byForm": {
+        "5059740": {
+          "records": 277,
+          "uniqueStringCallRecords": 243,
+          "uniqueObservedStrings": 33,
+          "assignmentRecords": 133,
+          "uniqueMeasuredStringRecords": 57,
+          "targetSizes": [
+            [
+              343,
+              480
+            ],
+            [
+              640,
+              480
+            ]
+          ],
+          "resourceIds": [
+            7,
+            274,
+            275,
+            276,
+            277,
+            278,
+            279,
+            280,
+            281,
+            282,
+            283,
+            284,
+            285,
+            286,
+            287,
+            309
+          ]
+        },
+        "5060264": {
+          "records": 28,
+          "uniqueStringCallRecords": 19,
+          "uniqueObservedStrings": 8,
+          "assignmentRecords": 0,
+          "uniqueMeasuredStringRecords": 11,
+          "targetSizes": [
+            [
+              343,
+              480
+            ],
+            [
+              640,
+              480
+            ]
+          ],
+          "resourceIds": [
+            7,
+            338,
+            339,
+            340,
+            341
+          ]
+        }
+      },
+      "originalBindingChecks": [
+        {
+          "bindingBytes": 4,
+          "escapePreservedExactBinding": true,
+          "assignmentModeAfter": 0
+        }
+      ],
+      "verifiedLandingReturns": 3,
+      "completeControlsPublications": 64,
+      "freshPairedControlsNativePassesAfterEachChild": 4,
+      "privateCaptureHashes": {
+        "controls-after-feedback-unavailable.bmp": "66ecd623ce3dc6d0e36b715e4d569b21735c47d3473d97adca335f592e724795",
+        "controls-after-setup.bmp": "2c5b48f9d69577be185afeae68cebf46a2efd07ede679d7e3030b1bdfa647fe7",
+        "controls-after-steering.bmp": "57120db4f9afdff3606ea90f7c3ce0eba65f07c976792ab0b58f699827e65991",
+        "controls-hd-initial.bmp": "0e8a2eb91d9519ea1eaf02595405943ded964a6496072917e664df99018a171f",
+        "feedback-availability-modal.bmp": "8c47ae51e0d07dbf3967e6620d5992060935e74ce0b352419bf1d5a53337847e",
+        "options-after-controls.bmp": "179b3bad65fd2d234941f952158c911ae14bb98f1b1cdf1c8b30990c952a0f47",
+        "setup-after-assignment-cancel.bmp": "057cb36f00245b2183e3a19837c9da21883f080b35c67931969e291e4e931eaf",
+        "setup-assignment-prompt.bmp": "9f198942e9f68e15c20015d7e39a7873b978d724f13096488fd01bd2cfe13479",
+        "setup-child.bmp": "09cdab365957449ea6898602c6e10f624325ad4de5b2e5f35399fb581b671964",
+        "steering-changed.bmp": "adf26beb11f602883303b40a0b54ba2491fd6a51f0987fd974ae82855d12a43b",
+        "steering-child.bmp": "48660d3fc453daf9a10748050f0164f0b76ca8abaa42fc0cb12671b99fba0246"
+      },
+      "restoration": {
+        "cleanShutdown": true,
+        "profileRestored": true,
+        "brightnessConfigRestored": true,
+        "baselineArtworkRestored": true,
+        "displayStoppedAfterTerminalAndRestore": true
+      }
+    },
+    "split": {
+      "privateLogSha256": "d1fa883e35cd8e8392d2a4afeb2fef28595915606fc27a2ea0e3027e15476e31",
+      "privateResultSha256": "32074bb7aaea51012b3463c42876e4124382c123d06194e2a196e109bb1c3f7b",
+      "privateInventorySha256": "61f48b006846301b3077a6dfbab7710069bd262087e3796b77ff66cdc6851979",
+      "nativeSize": [
+        2186,
+        1640
+      ],
+      "originalInputOnly": true,
+      "forcedGuestStateWrites": false,
+      "uniqueRecords": 798,
+      "recordLimit": 1024,
+      "limitReached": false,
+      "byForm": {
+        "5060072": {
+          "records": 798,
+          "uniqueStringCallRecords": 720,
+          "uniqueObservedStrings": 40,
+          "assignmentRecords": 388,
+          "uniqueMeasuredStringRecords": 100,
+          "targetSizes": [
+            [
+              343,
+              480
+            ],
+            [
+              640,
+              480
+            ]
+          ],
+          "resourceIds": [
+            7,
+            285,
+            286,
+            287,
+            309,
+            311,
+            312,
+            313,
+            314,
+            315,
+            316,
+            317,
+            318,
+            319,
+            320,
+            321,
+            322,
+            323,
+            324
+          ]
+        }
+      },
+      "originalBindingChecks": [
+        {
+          "bindingBytes": 8,
+          "escapePreservedExactBinding": true,
+          "assignmentModeAfter": 0,
+          "playerColumn": 0
+        },
+        {
+          "bindingBytes": 8,
+          "escapePreservedExactBinding": true,
+          "assignmentModeAfter": 0,
+          "playerColumn": 1
+        }
+      ],
+      "verifiedLandingReturns": 1,
+      "completeControlsPublications": 26,
+      "freshPairedControlsNativePassesAfterEachChild": 4,
+      "privateCaptureHashes": {
+        "controls-after-split-setup.bmp": "94e19a5e26dcaadb381e651b3e3648e30fec8288fd8af684c0293638be36a193",
+        "controls-hd-initial.bmp": "39d0a07619031fc8a80017422fde32623527eade20adf5dd1bbb25b515673c4f",
+        "options-after-controls.bmp": "8fa82911907d02d00b4a2dc4693206b9aa683206a44517985c14e290e51c61a7",
+        "split-player-0-after-cancel.bmp": "bff609fda17c518d821271d74a106c848b97886f82d392c5f673f611b30a3aa0",
+        "split-player-0-assignment-prompt.bmp": "d9a10bc1ad99aea6b2f17775bdd18acdabe61cdf102feb14a26a950e989529ed",
+        "split-player-0-before-assignment.bmp": "f4f4036f16e448430cfa4d61cda522bc5c5eff4548e39c70fa777c426758f5d0",
+        "split-player-1-after-cancel.bmp": "c2eb5a000daaa7c878fe58ac26c96e2406400df3adbc27ff21ed0a938f9b2779",
+        "split-player-1-assignment-prompt.bmp": "79e71eaeb433330d538ab04c0b7e302e5f55545f5aef555a039136347f8afc95",
+        "split-player-1-before-assignment.bmp": "3a479a4c0a1a55151df97212333bbb9b63701c86272a9d8c2ab903501d01874d",
+        "split-setup-initial.bmp": "3ed03c8b0f1e922f436a9f7cdb5cb81a90e5d0858811704ded8133e95404991e"
+      },
+      "restoration": {
+        "cleanShutdown": true,
+        "profileRestored": true,
+        "brightnessConfigRestored": true,
+        "baselineArtworkRestored": true,
+        "displayStoppedAfterTerminalAndRestore": true
+      }
+    }
+  },
+  "limits": {
+    "childHdArtworkComplete": false,
+    "fullGlyphWriteReplayProven": false,
+    "completeFontPaletteSnapshotProven": false,
+    "allPossibleDeviceAndKeyNamesCovered": false,
+    "allSteeringValuesCovered": false,
+    "forceFeedbackHardwareTested": false,
+    "physicalIpadAcceptance": false,
+    "newIpa": false,
+    "cloud": false
+  },
+  "earlierBoundedFailure": {
+    "reason": "Initial256-record inventory filled before the steering form; final inventory coverage assertion rejected the run",
+    "records": 256,
+    "privateLogSha256": "971a55174b801b1a226213a13e964c7bb86a5cef20ccf17596bfb5502a63f82a",
+    "privateResultSha256": "07c0456e869776e0d768e2e14f3926ca85473248fe1793c5473c8d728e57a710",
+    "rawEvidencePreserved": true,
+    "cleanShutdownAndRestoration": true,
+    "fix": "Versioned read-only observer with1024-record limit and explicit original game-type/player-column fields; accepted runs remain below limit"
+  },
+  "earlierSplitHarnessFailure": {
+    "reason": "Original pointer hover outside action rows selected the no-row sentinel100; the harness expected selected0",
+    "runtimeChanged": false,
+    "sameObserverBinaryRetested": true,
+    "rawEvidencePreserved": true,
+    "privateLogSha256": "a9b7f115bdd8f548337d8a139fb67c0065fc2033c719409957eb0f6827a61df9",
+    "privateResultSha256": "5cedf75d8a7f7caaf411a0d26053df5fd2bac6a4f140bfb0271ad8f227936106",
+    "cleanShutdownAndRestoration": true,
+    "fix": "Remove outside-row mouse hover; original Right arrow toggles Player Two and423E10 positions the original cursor inside that column"
+  },
+  "rejectedHoverRetry": {
+    "reason": "Keyboard selection after an outside-row hover did not remain selected through capture; Enter opened no assignment",
+    "runtimeChanged": false,
+    "sameObserverBinaryRetested": true,
+    "rawEvidencePreserved": true,
+    "privateLogSha256": "fe4656596108b05753c185ead64986e0c37f0945bfd6a35811da602760aa2ee9",
+    "privateResultSha256": "e90068280411df4618228df22d47a3e1f26cc8036cdbc8689b74e468d1799644",
+    "cleanShutdownAndRestoration": true,
+    "correctedSourceChain": "403970 Right ->423E10 cursor positioning ->4222F0 original mouse position ->423B90/422060 read ->423CA0 row and423DC0 column"
+  },
+  "interpretation": {
+    "dynamicBindingDescriptionsAreMultipleOriginalStringCalls": true,
+    "343SidebarAnd640FullTargetsRemainDistinct": true,
+    "splitPlayerColumnsObservedDuringEachOriginalAssignment": true,
+    "assignmentPromptDrawObservedThroughOriginalResource309": true,
+    "resource288WasNotAssumedToBeDrawn": true,
+    "parentControlsWordAuthorityUnchanged": true,
+    "nextIntegration": "Separate child full-plane glyph-write replay and original child ownership; preserve dynamic names and the later prompt draw without widening parent Controls acceptance"
+  }
+}
