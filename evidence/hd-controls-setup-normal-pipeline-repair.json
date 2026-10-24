@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "scope": "Repair required child Controls source collectors in the normal preparation entry; verify clean executable single/split",
+  "problem": "Private integration executable installed Text/Sidebar/Live, while normal preparation installed only the child scene hook. Earlier helper-copy/source-equality checks did not prove these required source observations were installed.",
+  "repair": "Explicit unconditional Text -> Sidebar -> Live -> Scene calls after parent hooks and before writing every generated unit",
+  "priorEvidenceCorrection": "Normal generation07/08 helper-copy and byte-equality evidence remains valid only for its stated narrow checks; it did not establish complete child collection in the maintained pipeline. Private actual-game renderer evidence remains valid. This record establishes the repaired normal path.",
+  "binarySha256": "c5cfecf29e32eed7d47823337d97d31a5b34bf4a2037132730c26a3fe4bb72d0",
+  "build": {
+    "observerSha256": "c5cfecf29e32eed7d47823337d97d31a5b34bf4a2037132730c26a3fe4bb72d0",
+    "scope": "Clean maintained preparation includes required child source collectors, no private observers",
+    "compiledUnits": 7,
+    "maxCompilerWorkers": 2,
+    "linkWorkers": 2,
+    "sourceInputFiles": 871,
+    "allSourceAndReusedInputsStable": true,
+    "privateObserversPresent": false,
+    "cloud": false,
+    "seconds": 89.89
+  },
+  "originalSourceReversal": {
+    "methodsUnits": 15,
+    "allOriginalTextRecovered": true,
+    "allFiveRuntimeUnitsHaveThreeCollectorFamilies": true,
+    "nativeMethods03SceneHookRetained": true
+  },
+  "regression": {
+    "registeredTests": 14,
+    "allPassed": true,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "logSha256": "178c37836b4b1f403c0a3205b19248ab2ac098dac164c419b1c1e002c5384ad2",
+    "realPreparationAstChecks": true,
+    "missingConditionalReorderedWrongImportAndDiscardedOutputMutationsRejected": true,
+    "sixSyntheticUnitsComposeAndReverse": true
+  },
+  "runs": [
+    {
+      "mode": "single",
+      "passed": true,
+      "resultSha256": "f9050ef5cb6d371fcfda81e2dbaa9d0e39adb764408ef8dd0f2b4b48229dba89",
+      "publicationSha256": "b21e840520f59b00fd51d042d852600c3cb7950316dd786e0398e49c934c4aff",
+      "childNativePublications": 16,
+      "allBindingGroups": 10,
+      "target": [
+        2186,
+        1640
+      ],
+      "privateSourceObserversRequired": false,
+      "originalMenuSelectionObserved": true,
+      "returnsToParentControlsOptionsMain": true,
+      "cleanShutdownAndCopiedResourcesRestored": true,
+      "noOwnedGameProcessesRemain": true,
+      "remappingRequested": false
+    },
+    {
+      "mode": "split",
+      "passed": true,
+      "resultSha256": "f180d13ab1a4aeb9f4a3042f2434263d3593604028b6aecb41a394c8e8ac4083",
+      "publicationSha256": "df1e6d7c20a0510251d5b297c7e9cc2d67ad428dca26319056da90965e4d1101",
+      "childNativePublications": 14,
+      "allBindingGroups": 20,
+      "target": [
+        2186,
+        1640
+      ],
+      "privateSourceObserversRequired": false,
+      "originalMenuSelectionObserved": true,
+      "returnsToParentControlsOptionsMain": true,
+      "cleanShutdownAndCopiedResourcesRestored": true,
+      "noOwnedGameProcessesRemain": true,
+      "remappingRequested": false
+    }
+  ],
+  "physicalIpadAcceptance": false,
+  "newIpa": false,
+  "privateAssetsOrCapturesPublished": false,
+  "cloudBuildRequested": false,
+  "paidServices": false
+}
