@@ -1,0 +1,260 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Independent original Controls setup343 sidebar composition and caption replay, including retained use during single/split remapping; no child native rendering activation",
+  "build": {
+    "binarySha256": "dc9f3d310a13ab0eadbe0f43bc01886de3ccf30b965b873c76a925a679d5c56b",
+    "sourceInputFiles": 861,
+    "sourceAndReusedInputsStable": true,
+    "originalBodyReversalUnits": 5,
+    "initialCollectorUnitsCompiled": 5,
+    "correctedPrivateObserverUnitsCompiled": 1,
+    "productionCollectorSourceUnchangedForObserverCorrection": true,
+    "maximumCompilerWorkers": 2,
+    "normalPreparationActivation": false
+  },
+  "runs": {
+    "single": {
+      "privateLogSha256": "41b895aab6defaae0d00802be0c3fccafdeb7f5a46c2a4c6e685fcd5ca301804",
+      "privateResultSha256": "243a01331deaa3f9de6774d5601ddd59c90302f2bdc3a0e1d16e46928b378a7a",
+      "privateObservationSha256": "2f5e908308dc13671b2814e151863dc746ddd10425f37da1428dd60601a59ea8",
+      "initialUnobservedCacheWaits": 1,
+      "captions": [
+        {
+          "snapshot": 1,
+          "assignment": 0,
+          "playerColumn": 0,
+          "ownerEpoch": 1,
+          "revision": 1,
+          "captionSerial": 1,
+          "captionLifetime": 1,
+          "captionCommands": 1,
+          "captionWrites": 674,
+          "captionWords": 164640,
+          "wordLayers": 4,
+          "logoLayers": 3,
+          "retainedFromLastNormal": false,
+          "normalOrdinal": 1,
+          "retainedFromLastSidebarReturn": true,
+          "generationOrdinal": 1,
+          "rawSidebarSha256": "00fc3b945c6a94b4f161e3032bebdb30149b524d304cd7362a08803355722786",
+          "captionCleanSha256": "370b5f93a080aee102287d54539bfb25dc9604efef4bdb31907ba277d57555a7",
+          "captionOriginalSha256": "5fb6b5a58c70024c911aede70f6ad0ede859fb4be62955fdae24d75d134c04d4"
+        },
+        {
+          "snapshot": 2,
+          "assignment": 1,
+          "playerColumn": 0,
+          "ownerEpoch": 1,
+          "revision": 18,
+          "captionSerial": 18,
+          "captionLifetime": 1,
+          "captionCommands": 1,
+          "captionWrites": 674,
+          "captionWords": 164640,
+          "wordLayers": 4,
+          "logoLayers": 3,
+          "retainedFromLastNormal": false,
+          "normalOrdinal": 17,
+          "retainedFromLastSidebarReturn": true,
+          "generationOrdinal": 18,
+          "rawSidebarSha256": "d1e543831bf1f9d95e36a7d63bdaa5a219bae85f429244e39b6097cc9ef5fb9b",
+          "captionCleanSha256": "83a11bdf4e8236bcfd4699ef5ddca26bba911cb9925f3104a40f4d5b3075d3c4",
+          "captionOriginalSha256": "a66d022d8fa00d4fda30d1943fb26fffa147c993ff87e701680b774f3473d8e6"
+        }
+      ],
+      "bindingCancelChecks": 1,
+      "freshParentReturns": 1,
+      "existingFull640TextReplayStillPassed": true,
+      "restoration": {
+        "cleanShutdown": true,
+        "profileRestored": true,
+        "brightnessConfigRestored": true,
+        "baselineArtworkRestored": true,
+        "displayStoppedAfterTerminalAndRestore": true
+      }
+    },
+    "split": {
+      "privateLogSha256": "2eca60554028446634d7ef369565f3708bced38e67e4a4be7375f94e497040a4",
+      "privateResultSha256": "b459d8a8669910e7abe4a637b8dabd04350f581315241e56bf33b46f28cfcc5d",
+      "privateObservationSha256": "b329de125a21165bd60c5dfbff0ee439d0d22d0ca21cdcdd77c0d5522cc606ab",
+      "initialUnobservedCacheWaits": 1,
+      "captions": [
+        {
+          "snapshot": 1,
+          "assignment": 0,
+          "playerColumn": 0,
+          "ownerEpoch": 1,
+          "revision": 1,
+          "captionSerial": 1,
+          "captionLifetime": 1,
+          "captionCommands": 1,
+          "captionWrites": 674,
+          "captionWords": 164640,
+          "wordLayers": 4,
+          "logoLayers": 3,
+          "retainedFromLastNormal": false,
+          "normalOrdinal": 1,
+          "retainedFromLastSidebarReturn": true,
+          "generationOrdinal": 1,
+          "rawSidebarSha256": "af71aa1a439fe8dde5ace35e6684fa94ed0d71e65a9048ddd12fe4d97ef84781",
+          "captionCleanSha256": "ee75d537c76bc7b38ab533ce045a3708c428ae16cc692a572df9c6b658a37377",
+          "captionOriginalSha256": "cac0750e5c6df7acef39197150da1e5609caf67302a02b80243bea3f3315a19d"
+        },
+        {
+          "snapshot": 2,
+          "assignment": 1,
+          "playerColumn": 0,
+          "ownerEpoch": 1,
+          "revision": 35,
+          "captionSerial": 35,
+          "captionLifetime": 1,
+          "captionCommands": 1,
+          "captionWrites": 674,
+          "captionWords": 164640,
+          "wordLayers": 4,
+          "logoLayers": 3,
+          "retainedFromLastNormal": true,
+          "normalOrdinal": 35,
+          "retainedFromLastSidebarReturn": true,
+          "generationOrdinal": 35,
+          "rawSidebarSha256": "a2734d76b42bb9d3a35e6086d7853b2bb5c85f9a8c78b9dd2dce5fe5528fd87d",
+          "captionCleanSha256": "e9394022f2aeb5edb053a5b46215f7fe24963e64543f95e90a961f8642f463f0",
+          "captionOriginalSha256": "f3dfa17ab4174d7ada8106e59b82e37990d26d6622db925b44d2f249ba063636"
+        },
+        {
+          "snapshot": 3,
+          "assignment": 0,
+          "playerColumn": 1,
+          "ownerEpoch": 1,
+          "revision": 52,
+          "captionSerial": 52,
+          "captionLifetime": 1,
+          "captionCommands": 1,
+          "captionWrites": 674,
+          "captionWords": 164640,
+          "wordLayers": 4,
+          "logoLayers": 3,
+          "retainedFromLastNormal": true,
+          "normalOrdinal": 54,
+          "retainedFromLastSidebarReturn": true,
+          "generationOrdinal": 54,
+          "rawSidebarSha256": "1113e3db5610d935dfa5d375bd38a7261de1348dd00df143e59aaa79a107ee9c",
+          "captionCleanSha256": "2c2f01748ed6a5c088da19602ffc99a25d4fbab604a0d53b5b27f5d76673f34d",
+          "captionOriginalSha256": "bd2a19c1deca6610a53613eecfb88a5258aabb6b8399021e4c2f0158d9c9e5e1"
+        },
+        {
+          "snapshot": 4,
+          "assignment": 1,
+          "playerColumn": 1,
+          "ownerEpoch": 1,
+          "revision": 68,
+          "captionSerial": 68,
+          "captionLifetime": 1,
+          "captionCommands": 1,
+          "captionWrites": 674,
+          "captionWords": 164640,
+          "wordLayers": 4,
+          "logoLayers": 3,
+          "retainedFromLastNormal": false,
+          "normalOrdinal": 69,
+          "retainedFromLastSidebarReturn": true,
+          "generationOrdinal": 70,
+          "rawSidebarSha256": "a7d9524c46b3ec30ea0b60563be4296d1b49b52b05770352e064c84ab8e0fa66",
+          "captionCleanSha256": "1ef6a9974a9c9afb49549d3ba0c29844daa0594d7e0841c5f323eaccd6a9b755",
+          "captionOriginalSha256": "dda3e4629b70c2d20bb773eae3329ded60c8d9058c15435efdb32be131874c26"
+        }
+      ],
+      "bindingCancelChecks": 2,
+      "freshParentReturns": 1,
+      "existingFull640TextReplayStillPassed": true,
+      "restoration": {
+        "cleanShutdown": true,
+        "profileRestored": true,
+        "brightnessConfigRestored": true,
+        "baselineArtworkRestored": true,
+        "displayStoppedAfterTerminalAndRestore": true
+      }
+    }
+  },
+  "tests": {
+    "opt": {
+      "registeredPassed": 5,
+      "captionHelperSyntheticChecks": 9474,
+      "existingTextHelperSyntheticChecks": 39717,
+      "privateLogSha256": "8b0947ee07cf748508df430e5290f79a503ee193d285de7038767fc8d3175e93"
+    },
+    "san": {
+      "registeredPassed": 5,
+      "captionHelperSyntheticChecks": 9474,
+      "existingTextHelperSyntheticChecks": 39717,
+      "privateLogSha256": "3a7fecd960f6fb745ac7cf013ccb75a3cf720377430105ba72dda7bb68346589"
+    },
+    "previousFixtureDeclarationsAndMainPreserved": true
+  },
+  "authoredCaptionDisplay": {
+    "approvedExistingOptionsArtworkReused": true,
+    "typedChildProofRequired": true,
+    "parentPolicyUnchanged": true,
+    "logicalQuad": [
+      120,
+      364,
+      168,
+      396
+    ],
+    "pixelSize": [
+      192,
+      128
+    ],
+    "actualOriginalGameDisplayIntegrationVerified": false,
+    "tests": {
+      "opt": {
+        "checks": 479,
+        "privateLogSha256": "b9ef08dfc9b431adc5e5c567d0c802a50c709c9234e82d717ccfd60625686e8e"
+      },
+      "san": {
+        "checks": 479,
+        "privateLogSha256": "af1cb3a12e36f22a87e41ab710bbaf2fca29ed0f952506eab5026ef8868c844c"
+      }
+    },
+    "cxx14HostSyntaxPassed": true
+  },
+  "observerCorrection": {
+    "productionSourceChanged": false,
+    "originalFailingResultPreserved": true,
+    "privateFirstLogSha256": "91a61986d5f76eec07f12094b14de86beee64182e53acf4d984897df76017949",
+    "privateFirstResultSha256": "34b0e14f8d4da13be2cbbed87190b8f6490ee44b956e4e063e1e062bea95073e",
+    "initialCacheWithoutObservedChildProvenanceDeclines": true,
+    "firstScreenshotIsNotLatestCacheGeneration": true,
+    "promptComparedToOriginalSidebarReturnRatherThanCompletedNormal640Frame": true,
+    "normalRedrawsMayAdvanceCacheRevision": true,
+    "secondFailingResultPreserved": true,
+    "privateSecondLogSha256": "4549d9fbd5075a261e8e141b9551d1cf4f240f59a629b203ea85b93588b32471",
+    "privateSecondResultSha256": "150d52248e645f7840d03c4348d7430079ba4513e5a06952ca0309867f6d8fac",
+    "originalSidebarReturnMaySeal343ThenSkipNormal640Redraw": true,
+    "productionSourceStillUnchanged": true
+  },
+  "interpretation": {
+    "captionIsOriginalOptionsResource7": true,
+    "captionAt": [
+      120,
+      364
+    ],
+    "rightAlignedOriginalMeasureWidth": 48,
+    "rightAlignedOriginalMeasureAnchor": 168,
+    "captionAndSidebarOwnershipIndependentFromParentControls": true,
+    "complete343SideWordsLogosCaptionSourceTransformVerified": true,
+    "promptUsesRetained343WithoutRequiringCurrentChildEbpOrFreshSidebarDraw": true
+  },
+  "limits": {
+    "full640SceneJoinComplete": false,
+    "childNativeRenderingActivated": false,
+    "childArtworkAndTypographyFinalized": false,
+    "genericCaptionVerticesAreApprovedFinalTypography": false,
+    "allControllerAndKeyNamesCovered": false,
+    "physicalIpadAcceptance": false,
+    "newIpa": false,
+    "cloud": false
+  },
+  "nextStep": "Join original child640 reset/copy/text with the separately authenticated retained343 sidebar and caption; then prepare the child native scene with approved finite labels and dynamic binding presentation"
+}
