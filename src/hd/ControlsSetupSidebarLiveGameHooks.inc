@@ -53,9 +53,34 @@ inline bool table(std::array<uint32_t,9>&v,Phase phase,bool full=false)noexcept{
 inline bool bank(std::array<uint32_t,256>&v,uint32_t at,bool narrow)noexcept{if(!span(at,narrow?512:1024))return false;try{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<256;++k)v[k]=narrow?tx.load<uint16_t>(at+2*k):tx.load<uint32_t>(at+4*k);return true;}catch(...){return false;}}
 struct OwnerScope {State*s=nullptr;bool entered=false;int unwind=0;explicit OwnerScope(Game&g)noexcept{auto*p=owner::current(g);if(!p||!p->ownerEpoch||uint32_t(g.eax)!=p->form)return;auto catalog=nfs_background_scene_runtime::acquireCatalog();if(!catalog)return;auto*&v=slot();if(!v)v=new(std::nothrow)State;if(!v)return;s=v;unwind=nfs_logo_publisher::exceptions();if(s->depth==UINT_MAX){s->fail(Failure::overflow);return;}entered=true;if(s->depth++){s->fail(Failure::nested);return;}s->game=reinterpret_cast<uintptr_t>(&g);s->thread=nfs_logo_publisher::threadToken();s->epoch=p->ownerEpoch;s->form=p->form;s->handler=p->handler;s->catalog=std::move(catalog);s->fresh();s->iteration=false;s->invocations=0;s->sequence=0;s->archiveAuthenticated=authenticateArchive(*s);if(!s->archiveAuthenticated)s->fail(Failure::source);}
  ~OwnerScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Failure::unwind);if(s->depth&&!--s->depth){s->fail(Failure::owner);s->game=0;s->iteration=false;s->invocations=0;}}};
-struct IterationScope {Game&g;State*s=nullptr;bool entered=false,started=false;uint32_t form=0;int unwind=0;explicit IterationScope(Game&game)noexcept:g(game){s=current(g);if(!s)return;form=uint32_t(g.eax);unwind=nfs_logo_publisher::exceptions();if(s->invocations==UINT_MAX){s->fail(Failure::overflow);return;}entered=true;if(s->invocations++)s->fail(Failure::nested);}
- void start()noexcept{if(!entered||started)return;started=true;if(s->invocations!=1||form!=s->form||!ownerCurrent(*s,g)||s->nextRevision==UINT64_MAX||s->nextLifetime==UINT64_MAX){s->fail(Failure::owner);return;}s->fresh();s->iteration=true;s->binding={form,0,0,s->archive,s->epoch,++s->nextRevision,s->thread,++s->nextLifetime};s->scene.form=form;}
- ~IterationScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Failure::unwind);if(started){if(s->phase!=Phase::complete&&!s->invalid)s->fail(Failure::order);s->iteration=false;}if(s->invocations)--s->invocations;}};
+inline std::shared_ptr<const cache::Packet>acquireCurrentCache(Game&g)noexcept;
+struct IterationScope {
+ Game&g;State*s=nullptr;bool entered=false,started=false;uint32_t form=0;int unwind=0;
+ // The original may abandon the opposite buffer before switching its selector.
+ // Preserve accepted provenance, never the unfinished candidate's pixels.
+ cache::Binding retainedBinding{};Target retainedTarget{};
+ std::shared_ptr<const cache::Packet>retainedPacket;
+ std::shared_ptr<const nfs_controls_setup_sidebar_caption::Proof>retainedProof;
+ uint64_t retainedSerial=0,retainedLifetime=0;
+ explicit IterationScope(Game&game)noexcept:g(game){s=current(g);if(!s)return;form=uint32_t(g.eax);unwind=nfs_logo_publisher::exceptions();if(s->invocations==UINT_MAX){s->fail(Failure::overflow);return;}entered=true;if(s->invocations++)s->fail(Failure::nested);}
+ void start()noexcept{if(!entered||started)return;started=true;if(s->invocations!=1||form!=s->form||!ownerCurrent(*s,g)||s->nextRevision==UINT64_MAX||s->nextLifetime==UINT64_MAX){s->fail(Failure::owner);return;}
+  if(!s->invalid&&s->phase==Phase::complete&&s->published&&s->captionProof){retainedBinding=s->binding;retainedTarget=s->target;retainedPacket=s->published;retainedProof=s->captionProof;retainedSerial=s->captionSerial;retainedLifetime=s->captionLifetime;}
+  s->fresh();s->iteration=true;s->binding={form,0,0,s->archive,s->epoch,++s->nextRevision,s->thread,++s->nextLifetime};s->scene.form=form;
+ }
+ ~IterationScope(){if(!entered)return;const bool unwinding=nfs_logo_publisher::exceptions()>unwind;if(unwinding)s->fail(Failure::unwind);if(started){
+  // Only a clean original early return qualifies. Any source, owner, retirement,
+  // nested-scope or unwind failure keeps the candidate invalid and drops history.
+  const bool interrupted=!unwinding&&!s->invalid&&s->phase!=Phase::complete&&uint32_t(g.eax)==0&&!s->resolved&&!s->rowActive;
+  if(s->phase!=Phase::complete&&!s->invalid)s->fail(Failure::order);s->iteration=false;
+  if(interrupted&&retainedPacket&&retainedProof){
+   s->binding=retainedBinding;s->target=retainedTarget;s->published=retainedPacket;s->captionProof=retainedProof;s->captionSerial=retainedSerial;s->captionLifetime=retainedLifetime;s->phase=Phase::complete;s->invalid=false;s->failure=Failure::none;
+   // Reacquire independently: current selected table/owner, exact retained raw
+   // bytes, packet binding and the current child caption proof must all agree.
+   // This does not complete or bless any part of the abandoned redraw.
+   if(acquireCurrentCache(g)!=retainedPacket)s->fail(Failure::order);
+  }
+ }if(s->invocations)--s->invocations;}
+};
 struct RoleScope {Game&g;State*s=nullptr;Phase phase=Phase::idle;bool active=false;int unwind=0;RoleScope(Game&game,Phase p)noexcept:g(game){s=current(g);if(!s||!s->iteration||s->invalid)return;if(s->phase!=Phase::idle||s->resolved||s->groupDone||!bound(*s,g)){s->fail(Failure::order);return;}if((p==Phase::side&&!s->scene.draws.empty())||(p==Phase::word&&s->scene.draws.empty())){s->fail(Failure::order);return;}phase=p;s->phase=p;active=true;unwind=nfs_logo_publisher::exceptions();if(p==Phase::side){if(!s->event(s->sideEvent)||!readPlane(s->scene.preSide)){s->fail(Failure::target);return;}s->target=s->scene.preSide.target;s->binding.sourceOwner=s->target.owner;s->binding.bitmap=s->target.w[8];}}
  ~RoleScope(){if(!active)return;if(nfs_logo_publisher::exceptions()>unwind||s->resolved)s->fail(Failure::unwind);if(!s->invalid&&phase==Phase::side&&(!readPlane(s->scene.postSide)||!nfs_logo_capture::same(s->scene.postSide.target,s->target)))s->fail(Failure::target);s->phase=Phase::idle;}};
 inline void preGroup(Game&g)noexcept{auto*s=current(g);if(!s||!s->iteration||s->invalid)return;if(s->phase!=Phase::idle||s->resolved||s->groupDone||s->scene.draws.empty()||!bound(*s,g)||!readPlane(s->group.pre)||!nfs_logo_capture::same(s->group.pre.target,s->target)||!s->event(s->groupEvent)){s->fail(Failure::order);return;}s->scene.postWords=s->group.pre;s->group.serial=s->groupEvent;s->group.thread=s->thread;s->group.kind=1;s->group.ownerArg=s->binding.form;s->group.stage=1;s->phase=Phase::logos;}

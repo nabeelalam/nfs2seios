@@ -1,0 +1,191 @@
+{
+  "schema": 1,
+  "scope": "Independent complete original Controls setup frame composition; no child renderer activation",
+  "sourceOnly": true,
+  "nativeChildRenderingActivated": false,
+  "physicalIpadValidation": false,
+  "cloudBuild": false,
+  "sourceFiles": {
+    "src/hd/ControlsSetupLiveGameHooks.inc": "9cf7acebccdc7ece3adfd0ecd7d6490ccfef4f8eddb6f13c38af960cc94f84e3",
+    "scripts/controls_setup_live_hooks.py": "f22e5fc9bf527fcc482b2458a34579d99529c3cdc5adf5c9f4fb9a62cf16a5f8",
+    "tests/controls_setup_live_hooks_test.py": "db71ed095b3774341be1c0c790bd2e61bdf499dadd9d1b82c1c3edbc56caefa7",
+    "src/hd/ControlsSetupSidebarLiveGameHooks.inc": "9d4f0a758ca4ef15f2a2110f925eb86f8d8d9289a1752c6e5b6a43a61a5a7955"
+  },
+  "build": {
+    "observerSha256": "f746d484fa3030584b11e49b95cc21ff8a5be616c9304aba645e058a4989af7a",
+    "compiledUnits": 5,
+    "unaffectedEngineAndPlatformObjectsReused": 17,
+    "maxCompilerWorkers": 2,
+    "linkWorkers": 2,
+    "sourceInputFiles": 869,
+    "allSourceAndReusedInputsStable": true,
+    "cloud": false,
+    "seconds": 76.54
+  },
+  "sourceReversal": [
+    {
+      "unit": "Methods_01.cpp",
+      "originalSha256": "525f9e14f0cd66a57288be65d691070254347644e3c64243defd812b85c5134d",
+      "exactReversal": true
+    },
+    {
+      "unit": "Methods_09.cpp",
+      "originalSha256": "37cf862e970d7dc3ac5c910f5b6de631ee3be99d692153758641c82059e331c6",
+      "exactReversal": true
+    },
+    {
+      "unit": "Methods_10.cpp",
+      "originalSha256": "5ce4ca8dc3a96602b193c1febe2ac3e633d9720c62b17d7eeaabd7139f2b83fd",
+      "exactReversal": true
+    },
+    {
+      "unit": "Methods_13.cpp",
+      "originalSha256": "68a5a18292dff93b8425d6660c74bf812deb79d40ee5e16c7c43ba2e7c2dc23b",
+      "exactReversal": true
+    },
+    {
+      "unit": "Methods_14.cpp",
+      "originalSha256": "99db976382f154c2a54b182358798678247f51bd755a510065a69b2791f81049",
+      "exactReversal": true
+    }
+  ],
+  "runs": [
+    {
+      "mode": "single",
+      "initialUnobservedFramesDeclined": 1,
+      "resultSha256": "3773b7f47fad15733cfbd83f3d2e40af4df898c5252946fbbeebeeb432a08bac",
+      "fullSceneObservationSha256": "f17beaa6e9d892e409348f04b68da073e40ceb09cd919f27447173b81d67744f",
+      "sourceReplaySha256": "6c226a5652611a5e4e27c10bf70fd1fb497dc09a197254554881cfceaa5681fa",
+      "rows": [
+        {
+          "accepted": true,
+          "snapshot": 1,
+          "handler": 4260288,
+          "assignment": 0,
+          "column": 0,
+          "words": 307200,
+          "commands": 122,
+          "writes": 52006,
+          "publication": 2,
+          "cacheRevision": 1,
+          "redrawAttempt": 1,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 2,
+          "handler": 4260288,
+          "assignment": 1,
+          "column": 0,
+          "words": 307200,
+          "commands": 116,
+          "writes": 49136,
+          "publication": 20,
+          "cacheRevision": 18,
+          "redrawAttempt": 18,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        }
+      ],
+      "cleanExitAndCopiedDataRestored": true
+    },
+    {
+      "mode": "split",
+      "initialUnobservedFramesDeclined": 1,
+      "resultSha256": "b8ab9fdab7f3d3fdd248e326c9ed2000783cd16bddb895840ff5e65186f44e05",
+      "fullSceneObservationSha256": "26e8180c7874e0bd3ed96cc4d8a13b0fe1b286156ea2e577d1c5ddd2849e55f2",
+      "sourceReplaySha256": "8ef0a3d5d090e770e8da7eb70625020c4027d67ffb96bbcbe3110800eb1dd5b1",
+      "rows": [
+        {
+          "accepted": true,
+          "snapshot": 1,
+          "handler": 4209008,
+          "assignment": 0,
+          "column": 0,
+          "words": 307200,
+          "commands": 182,
+          "writes": 67910,
+          "publication": 2,
+          "cacheRevision": 1,
+          "redrawAttempt": 1,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 2,
+          "handler": 4209008,
+          "assignment": 1,
+          "column": 0,
+          "words": 307200,
+          "commands": 176,
+          "writes": 65514,
+          "publication": 36,
+          "cacheRevision": 34,
+          "redrawAttempt": 35,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 3,
+          "handler": 4209008,
+          "assignment": 0,
+          "column": 1,
+          "words": 307200,
+          "commands": 182,
+          "writes": 67910,
+          "publication": 66,
+          "cacheRevision": 52,
+          "redrawAttempt": 52,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        },
+        {
+          "accepted": true,
+          "snapshot": 4,
+          "handler": 4209008,
+          "assignment": 1,
+          "column": 1,
+          "words": 307200,
+          "commands": 176,
+          "writes": 65480,
+          "publication": 83,
+          "cacheRevision": 68,
+          "redrawAttempt": 68,
+          "currentSidebarMatches": true,
+          "parentCurrent": false
+        }
+      ],
+      "cleanExitAndCopiedDataRestored": true
+    }
+  ],
+  "regressions": {
+    "optimizedAndSanitizerRegisteredTestsPerMode": 8,
+    "newSourceHookCases": 6,
+    "completeFramePacketChecksPerMode": 102,
+    "existingChildCollectorAndCaptionTestsPassed": true
+  },
+  "correctedFailure": {
+    "observed": "Initial local observer nested a nonrecursive guest-memory transaction during reset and froze before the child frame",
+    "correction": "Read authority before constructing the bounded memory transaction; audited other transaction scopes",
+    "failedResultSha256": "579f3ef263d3e37e1fb90faf21338f93eccb436e58bb283394a6493900e3a5e1",
+    "recoverySha256": "5284e5686cead2794aa3d5ae725088fc6cfafecd3d0db0c9921a3a955fa17b6b",
+    "onlyExactOwnedProcessesStopped": true,
+    "copiedDataRestoredBeforeRerun": true
+  },
+  "retainedSidebarFix": {
+    "observed": "Original input may abandon an unselected partial redraw before switching buffers; previous collector discarded accepted selected-cache provenance at speculative start",
+    "correction": "Retain prior complete packet across a clean original early return and independently reacquire selected owner/raw/current caption proof; never accept the partial candidate",
+    "actualRetainedGenerationRequired": true,
+    "failedSplitResultSha256": "ac9b75b750f1ecea9d45743fea7382306290cd2f81e0d29daf2674cc34d944af"
+  },
+  "limits": [
+    "Generic source text vertices are not the final approved HD typography",
+    "No FIFO/GPU/native-renderer admission is granted by this source frame packet",
+    "Single and split assignment prompts are included through their final original text footer",
+    "Original assets and raw captures remain private"
+  ],
+  "next": "Prepare independent child native composition from this complete source frame, the retained child sidebar, and approved authored typography; verify actual rendered appearance before activating the maintained pipeline"
+}
