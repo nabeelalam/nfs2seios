@@ -1,0 +1,148 @@
+{
+  "schema": 1,
+  "scope": "Independent remastered Steering scene, isolated local native renderer preview; maintained preparation activation and physical iPad validation remain pending",
+  "sourceCommitParent": "3b61ba6ed95c4b1b7dfb80f42f0956b523e7872d",
+  "artwork": {
+    "wholeAuthoredWords": 8,
+    "authoredBarLevels": 4,
+    "sourceLogicalRect": [
+      280,
+      280,
+      636,
+      329
+    ],
+    "barRaster": [
+      1424,
+      196
+    ],
+    "originalColonSpansRetained": true,
+    "authoredOptionsCaptionMandatory": true,
+    "barPremultipliedExactlyOnce": true,
+    "originalPixelsAndFontFilePublished": false
+  },
+  "validation": {
+    "registeredSteeringChecksPassed": 19,
+    "addressAndUndefinedSanitizers": true,
+    "actualGlesSizes": [
+      480,
+      1640
+    ],
+    "rendererHookCases": 11,
+    "queueHookCases": 6,
+    "prepareHeaderStandaloneSyntaxPassed": true,
+    "stagingPixelAndDepthOraclesPassed": true,
+    "contextLossAndAliasRejectionsPassed": true
+  },
+  "actualGame": {
+    "binarySha256": "f2f14ad3d7dc7405866423014d25ecab17d03a00949100db7899ca3f74325683",
+    "screenDimensions": [
+      2186,
+      1640
+    ],
+    "originalMenuInputOnly": true,
+    "sourceSceneCurrentJoins": 8,
+    "nativePublicationsByLevel": {
+      "0": 12,
+      "1": 12,
+      "2": 12,
+      "3": 11
+    },
+    "requiredWitness": {
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600,
+      "reason": "color-only-commit"
+    },
+    "parentControlsNativePublicationsInsideSteering": 0,
+    "returnPath": [
+      "Controls",
+      "Options",
+      "Main"
+    ],
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "brightnessConfigurationRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedProcessesRemaining": 0,
+    "captureSha256": {
+      "0": "6fd0d1b8caaa17de47f165c71aa2b22c2538d28e83c84b6124627ea610943eb8",
+      "1": "61cbcb89495283178b0347136a6ac3c8ee32d93ff8a7f225019f1c244758ec24",
+      "2": "c05eab1be889d53a63e23bc77ec352edafb2b970a0bc30df7c371e09a082b52d",
+      "3": "a635e657f9b8dde8533f11b6baf352ce817223927beebb2da28365879cd52c6e"
+    },
+    "visualInspection": [
+      "full sensitivity",
+      "one quarter sensitivity"
+    ],
+    "singlePlayerProfileOnly": true,
+    "splitScreenCoverageClaimed": false
+  },
+  "warmStage": {
+    "newSteeringWordOrBarPixelsHashed": false,
+    "newArtUploadsOrAllocation": false,
+    "existingSharedOptionsCaptionPixelHashCount": 3,
+    "existingCaptionOptimizationClaimed": false
+  },
+  "build": {
+    "compiledUnits": 3,
+    "maximumWorkers": 2,
+    "unchangedObjectsReused": true,
+    "sourceAndReusedObjectHashesVerified": true,
+    "sourceAndRendererTransformsReversedExactly": true,
+    "failedPrecompileSnapshotsPreservedInLogs": 2,
+    "postTestFormattingOnly": "Removed trailing blank lines; compiled snapshot and current native sources match after stripping final CR/LF bytes",
+    "artDataOrganization": "Four separate per-level source includes; expanding them reproduces the compiled original Data.c exactly. Regeneration byte-equal; decoded RGBA identities and affected GLES tests rechecked."
+  },
+  "limits": {
+    "maintainedPreparationActivated": false,
+    "appleBuild": false,
+    "physicalIPadAppearanceOrPerformanceVerified": false,
+    "raceOrLowPowerModeImprovementClaimed": false,
+    "cloudRun": false
+  },
+  "sources": {
+    "scripts/controls_steering_renderer_hooks.py": "f34696f56e0e0c6bf0bc4f9d51ce539d910a1d907726c72f245707be7a386069",
+    "scripts/controls_steering_scene_hooks.py": "c7ef7042ede0fac8efbb6da35517f03d82138283227281e726e30795fbfb2403",
+    "scripts/generate_steering_bar_data.py": "112c86dd6eaf25d0dd743964ddf940f5a84e89b88cfe56406b9bda8d75222cda",
+    "scripts/generate_steering_word_data.py": "3953876245e98ac587e5a7b8e6edb2bfa8c819036caf7c3ae4108f2cfbb9a567",
+    "src/hd/ControlsSteeringBarArtwork.h": "e9c06f6366d7ef23c38d255e721e11801e2dfedbfbf06e5ad4664370567b93b2",
+    "src/hd/ControlsSteeringBarData.c": "ad33b5eb281bcad3962b87c900736ffaca1417fea5680ecd3a4ea226433d171b",
+    "src/hd/ControlsSteeringBarData.h": "00c7c90872ddf9ccdee94fd5e87912e3f680a5e3fc38bcd1d2413238cb32d82f",
+    "src/hd/ControlsSteeringBarGpu.c": "8f65057792bea9a76ebee332105446014485299654fd4806353567e236d30259",
+    "src/hd/ControlsSteeringBarGpu.h": "2a1934cdd8a70ce68746603f5a1a6fdd68fba62c4ada14aede01830bbff5a642",
+    "src/hd/ControlsSteeringBarIdentity.h": "0dade2e3e599dba0d7dd26f9375b3cc7df5a528310e29bf4a871e239f2a22524",
+    "src/hd/ControlsSteeringBarRuntimeAbi.h": "ea2aade7778d0eedc14193335987074cd552d31ccfe0d71c72a039e01a904a1b",
+    "src/hd/ControlsSteeringChartGameHooks.inc": "c0ea1c8d8e38c710953a4f858d36dcbb9a88e2fb6bbe4acc10eb151a86018e58",
+    "src/hd/ControlsSteeringLiveGameHooks.inc": "f40477a7d438618a1ff5f6844a1a549e0d2db1c4870d821baf50e38aac0e6d08",
+    "src/hd/ControlsSteeringSceneLayerAbi.h": "1c709e7ab483e7e73441cee1d8d1fd071209e319f83117dcbcd25365e40ab15e",
+    "src/hd/ControlsSteeringSceneLayers.c.inc": "61ea50dcd2ce94f9846d4bf1eeb7b2b998516fcb18c82098d48f30742adaeecc",
+    "src/hd/ControlsSteeringSceneLayers.h": "49d9577c7337abc81c14359a5f884a5830051830146b94ac790ce0a29d251acd",
+    "src/hd/ControlsSteeringScenePrepare.h": "d235af037edfa0b47c972166f45c54baf6ba656aca8b39c619715142c6ea1258",
+    "src/hd/ControlsSteeringSceneQueueAdapter.inc": "0bad1fcfca1abc5e3295e248a2e7d7bde03c76a503d52acd5b1de3f6a01af257",
+    "src/hd/ControlsSteeringSceneRenderer.inc": "f61d1ca7b1912a563393307092294dfccea80cd9c6a7b8880ca59d521cbfec4b",
+    "src/hd/ControlsSteeringSceneRuntimeAbi.h": "346d8969606539de06c9725e599df6121c0c4c8e830cb681d2fd7cd618ce005b",
+    "src/hd/ControlsSteeringSidebarCaptionDisplay.h": "f77450618bf0fe9af259f525aa542cd98561b88b8c27c0a048d801c6a496ddb0",
+    "src/hd/ControlsSteeringSidebarCaptionGameHooks.inc": "0c35d6612b61076092ee2170a0d4add6b36e7a8b6d047ad3fd6391e393aeb7f5",
+    "src/hd/ControlsSteeringSidebarCaptionProof.h": "654db18a4e3fc1e3113d0e88ed67b5f9914bc7f675369b2867d8f9631c6bd106",
+    "src/hd/ControlsSteeringSidebarLiveGameHooks.inc": "fd97c011a0ca610c35e356aa5be1c8d7df488070be01273356adb2e4c90162b9",
+    "src/hd/ControlsSteeringTextGameHooks.inc": "1910f694749564c009981ba30d22a5416fa7e1ae17fe791f04cc52a90ba85adb",
+    "src/hd/ControlsSteeringWordArtwork.h": "d06fc5ac34b04abdf7c1bf2b823727de78afc4b162eb71c90679b40ecccbd289",
+    "src/hd/ControlsSteeringWordData.h": "40e713add0c666fa5b98d4e9b84384b2f85e1afad3a4c4fbe9a6988153dba98a",
+    "src/hd/ControlsSteeringWordDisplay.h": "0e5b564a34363130e863f5219518aae5a5d432d02fffce993d3d1968ec9b9b2e",
+    "src/hd/ControlsSteeringWordGpu.c.inc": "9c56fd12105a3cbec7d8cd439f39c986a46a0f3c282ba6dda63ce1b5698a99ca",
+    "src/hd/ControlsSteeringWordGpu.h": "2dc8a86e34cafd6e2bc678326a06a714c2f3747ce0fb0f02b14173e5e0aeec1f",
+    "src/hd/ControlsSteeringWordIdentity.h": "0fbe050c413fd9e53c22c9f9992a935638bcdc293bd4757e9d7ed3840af4d5f0",
+    "src/hd/ControlsSteeringWordRuntimeAbi.h": "361afa94474375a7f8d86172df644ded73b14128dafe4f924c8c06a41151425c",
+    "tests/controls_steering_bar_artwork_tests.cpp": "6b21797a9ba2240905647dd653a9e5c37ae2c2f730074a7d99ecaee3cc90abb4",
+    "tests/controls_steering_bar_gpu_tests.cpp": "d6c69c6b2206a28761cde7b4a55dc754d2e1d6af3e128533a509dbd2b45bc578",
+    "tests/controls_steering_renderer_hooks_test.py": "c7fc08b251bb9b47b5d4650f58a4c2b6ab603bbb5a5ca4914ae990bea3108765",
+    "tests/controls_steering_scene_hooks_test.py": "cdf17385ca767a8ccbf02d9f1e3a21473857856bc1c46e7debd7e697a782f4af",
+    "tests/controls_steering_scene_layers_tests.cpp": "fd7a7fb326b101486c1f7bcd2bd5bc2d2be03984522fde80d081d7d812ae9047",
+    "tests/controls_steering_word_display_tests.cpp": "5655c2d5702edd1d25ad2d21ced0e6a133282c46bf5d39f4340e79936e4a6fd4",
+    "tests/controls_steering_word_gpu_tests.cpp": "277ed453aa4c946d8d3ccf4fc00596355f0b42e180be5ef548d87d8fa537c9c6",
+    "src/hd/ControlsSteeringBarLevel0.inc": "7efce97b2736bf43ac9908d652262326f89c228c4fbe38a85e667a51f6ba0e94",
+    "src/hd/ControlsSteeringBarLevel1.inc": "1aa19fb6e9a2e8db4571c91c04895232a4b56861d6cf7d65a9572977f63dd695",
+    "src/hd/ControlsSteeringBarLevel2.inc": "2530043cb8f3927ec65a51d317dae2a2ca185915070f628e06e68f699ad974ac",
+    "src/hd/ControlsSteeringBarLevel3.inc": "854f260288aed696f33f72e88bdddd14e4851403d49d32a564973c0b392b6ff5"
+  }
+}
