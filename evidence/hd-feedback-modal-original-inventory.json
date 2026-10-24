@@ -1,0 +1,204 @@
+{
+  "schema": 1,
+  "scope": "Genuine original Feedback-unavailable popup source observation and pure layout arithmetic; no remastered popup or native authority yet",
+  "normalBaselineCommit": "30e8cb6c0e87d466938688a26057c6ba95dbc61b",
+  "sourceRoute": {
+    "parent": "Controls",
+    "selection": 2,
+    "availability": 0,
+    "caller": "4109D5",
+    "modal": "402E80",
+    "titleResource": 330,
+    "messageResource": 769,
+    "incomingCount": 2,
+    "resourcePointersMatchedCurrentLookupTable": true,
+    "forceFeedbackFlagWrittenByObserver": false,
+    "originalInputOnly": true,
+    "dismissal": "Space"
+  },
+  "actualText": {
+    "passed": 1,
+    "reason": "none",
+    "commands": 2,
+    "policies": 2,
+    "writes": 2661,
+    "pixels": 307200,
+    "widths": [
+      96,
+      108
+    ],
+    "fontIdentity": 13992032872926792265,
+    "fontBaseline": [
+      23,
+      20
+    ],
+    "text": [
+      {
+        "hex": "666f72636520666565646261636b",
+        "x": 302,
+        "y": 185,
+        "advance": 96,
+        "color": 1,
+        "size": 18,
+        "anchor": 350,
+        "policyY": 185,
+        "alignment": 2,
+        "colorIndex": 0,
+        "measured": 96,
+        "origin": [
+          0,
+          0
+        ],
+        "clip": [
+          0,
+          0,
+          640,
+          480
+        ]
+      },
+      {
+        "hex": "646576696365206e6f7420666f756e64",
+        "x": 266,
+        "y": 225,
+        "advance": 108,
+        "color": 65535,
+        "size": 18,
+        "anchor": 320,
+        "policyY": 225,
+        "alignment": 2,
+        "colorIndex": 2,
+        "measured": 108,
+        "origin": [
+          0,
+          0
+        ],
+        "clip": [
+          0,
+          0,
+          640,
+          480
+        ]
+      }
+    ]
+  },
+  "actualOriginalSwap": {
+    "currentFinal": 1,
+    "commands": 2,
+    "originalSwapReturned": true
+  },
+  "layout": {
+    "screen": [
+      640,
+      480
+    ],
+    "window": [
+      227,
+      210,
+      186,
+      60
+    ],
+    "titleAnchor": [
+      350,
+      185
+    ],
+    "messageAnchor": [
+      320,
+      225
+    ],
+    "sourceFontSize": 18,
+    "colors565": [
+      1,
+      65535
+    ],
+    "alignmentStackArgument": 2,
+    "titleColorIndex": 0,
+    "messageColorIndex": 2,
+    "centeringUsesTruncationTowardZero": true
+  },
+  "sourcePlaneDifferences": {
+    "beforeTopretext": {
+      "changedPixels": 18530,
+      "bounds": [
+        183,
+        172,
+        437,
+        270
+      ]
+    },
+    "pretextTofinal": {
+      "changedPixels": 2653,
+      "bounds": [
+        267,
+        190,
+        399,
+        249
+      ]
+    }
+  },
+  "privatePlaneSha256": {
+    "before": "bd5fbd32b450b5d5fb21f1c3f9115a3eca4e9d112919e32f4e613256bdc82536",
+    "pretext": "cfe922b4136297374e780344d63157c33ae4da24cbb59da85a833a744f92c7c1",
+    "final": "7447e622abe453a38bf39400b98caf6d62a8ad76b1a3fa0122b026a663dc37f8"
+  },
+  "privateCaptureSha256": "2834af9581823db66c6eb224a7acbd6ac9737df4cf3617d71a81249121f93943",
+  "interpretation": {
+    "preModalPlaneIsNotPreTextPlane": true,
+    "orderedTextStores": 2661,
+    "changedTextPixels": 2653,
+    "equalValueStoresStillRequired": true,
+    "full307200WordReplayPassed": true,
+    "finalPlaneStillCurrentAfterOriginalSwap": true,
+    "appearanceVisuallyReviewed": true,
+    "artworkMeaning": "Gold II/SE emblem and banner above a translucent dark panel; title shifted right to leave emblem space; message centered",
+    "graphicBackdropReplayOrIdentityProven": false,
+    "lowResolutionParentFrameAlsoNeedsNativeReconstruction": true,
+    "fontIdentityAndBaselineAreInstalledNeutralCatalogMetadata": true,
+    "sourceFontHeadersAndPalettesNotExported": true,
+    "orderedStoreReplayIsNotIndependentGlyphArithmeticProof": true
+  },
+  "geometryHelper": {
+    "file": "src/hd/FeedbackModalGeometry.h",
+    "registeredTest": "hd_feedback_modal_geometry",
+    "checks": 4393009,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "independentExpandedRegisterOracle": true,
+    "actualMeasuredCasePassed": true,
+    "validNegativeCoordinatesPreserved": true,
+    "overflowAndInvalidInputsLeaveOutputUnchanged": true,
+    "sourceOrNativeAuthorityGranted": false
+  },
+  "observerBuild": {
+    "sha256": "5e6e3d7f152d3ef8223d069090d5c0e158d0091ecc376ca7dc17629ff6cb1d54",
+    "compiledUnits": 3,
+    "maximumWorkers": 2,
+    "originalThreeUnitsReversedExactly": true,
+    "allSourceAndReusedInputsStable": true,
+    "initialCompileTypeErrorCorrectedInSeparateRetry": true
+  },
+  "cleanup": {
+    "originalMenusRecovered": true,
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "brightnessConfigurationRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedProcessesRemaining": 0
+  },
+  "limits": {
+    "popupArtworkChanged": false,
+    "productionModalTextCollectorInstalled": false,
+    "fullBackdropSourceReplayOrNativePublicationProven": false,
+    "forceFeedbackHardwareSupportAdded": false,
+    "appleBuildRun": false,
+    "physicalDeviceValidated": false,
+    "performanceOrBatteryImprovementClaimed": false,
+    "cloud": false
+  },
+  "sources": {
+    "CMakeLists.txt": "631d83a9c3566cdc3d3007dc4bf4c8bd67ecf77f19db90c4d013b1ee6cf5eaed",
+    "src/hd/FeedbackModalGeometry.h": "7176ab96d5bed5f58fb3161cd88d6c2698add4962317500036adba9ba97da79c",
+    "tests/feedback_modal_geometry_tests.cpp": "da8d89d8afc10cb4594c590fef2a2db7a7452ba5ed308ddb3486b10f5cad79e2"
+  }
+}
