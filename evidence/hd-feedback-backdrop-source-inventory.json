@@ -1,0 +1,75 @@
+{
+  "scope": "Original Feedback-unavailable popup backdrop source inventory and offline numeric replay; no remaster activation",
+  "status": "source-inventory-verified-production-modal-pending",
+  "originalInputOnly": true,
+  "capabilityFlagOverridden": false,
+  "independentMainOwner": {
+    "fullSize": [
+      640,
+      480
+    ],
+    "originalFirstRestoreSameOwner": true,
+    "originalFirstRestorePlaneUnchanged": true,
+    "resourcesStableThroughReturn": true,
+    "ambientTargetAtEntryNotAssumedFullScreen": true
+  },
+  "backdrop": {
+    "operations": 17,
+    "dispatches": 169,
+    "numericImageRows": 168,
+    "knownBulkScratchFillDispatches": 1,
+    "orderedMainStores": 22482,
+    "fullPretextPixelsReproduced": 307200,
+    "bodySourcePixelsNumericallyVerified": 11160,
+    "indexedPixelsIncludingTransparentNumericallyVerified": 16302,
+    "selectedPaletteEntryComparisons": 27648,
+    "sourceOpacity": 180,
+    "copiedScratchPostfillPixelsVerified": 11160
+  },
+  "originalResources": {
+    "archive": "mouse.fsh",
+    "archiveSha256": "b1ffe450ed6822bd748cbfc73dfacd3fa5b3e6fa2e7e374b9b64e2ff73bfb918",
+    "entries": [
+      {
+        "name": "dbar",
+        "size": [
+          344,
+          47
+        ],
+        "wholeEntryMatchesCapture": true
+      },
+      {
+        "name": "dlog",
+        "size": [
+          117,
+          61
+        ],
+        "wholeEntryMatchesCapture": true
+      }
+    ]
+  },
+  "textJoin": {
+    "sameInvocationBeforeAndPretextExact": true,
+    "commands": 2,
+    "orderedTextStores": 2661,
+    "currentFinalAfterOriginalSwap": true
+  },
+  "runtime": {
+    "cleanExit": true,
+    "copiedConfigBrightnessAndBaselineArtworkRestored": true,
+    "ownedProcessesRemaining": 0
+  },
+  "existingBlendUtilityChecks": {
+    "optimized": 71117,
+    "addressUndefinedSanitizers": 71117,
+    "scope": "Existing arithmetic only, no transfer of Audio-form authority"
+  },
+  "limits": [
+    "No production modal collector, native admission, fade or context-recovery proof",
+    "Nested conversion callbacks and lookup-table state for outer4A1090 were not separately captured",
+    "Original scratch fill has no individual store trace; its complete copied postfill source is verified",
+    "Existing strict Controls full-screen guard remains unchanged; some observed ambient entry states are unselected",
+    "Original pixels, palettes, source records and candidate artwork remain private",
+    "No iPad visual or performance acceptance and no final artwork approval"
+  ]
+}
