@@ -7,16 +7,16 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from hud_asset_review import ROOT
 from generate_frontend_pixels import text_identity
-from frontend_right_labels import right_label_rows, extend_layout, base_layout
+from frontend_right_labels import right_label_rows, extend_layout, base_layout, EXPECTED_ROWS
 
 class RightLabels(unittest.TestCase):
     def setUp(self):
         self.catalog=json.loads((ROOT/'assets/hud/frontend/right-labels/catalog.json').read_text())
-        self.placements=json.loads((ROOT/'assets/hud/frontend/generated.json').read_text())['setupPlacements']
+        self.placements={f+'Placements': json.loads((ROOT/'assets/hud/frontend/generated.json').read_text())[f+'Placements'] for f in ('setup','location')}
     def rows(self,catalog=None,placements=None):
         return right_label_rows(self.catalog if catalog is None else catalog,self.placements if placements is None else placements,text_identity)
     def test_width_height_and_original_shadow(self):
-        rows=self.rows();self.assertEqual(len(rows),42)
+        rows=self.rows();self.assertEqual(len(rows),EXPECTED_ROWS)
         for start,count,width,atlas_width in [(0,10,49,66),(20,11,50,68)]:
             values=[[float(v) for v in row[1:row.index(',UINT64')].split(',')] for row in rows[start:start+count*2]]
             main,shadow=values[:count],values[count:]
@@ -26,6 +26,24 @@ class RightLabels(unittest.TestCase):
                 self.assertEqual(a[4],37)
             scale=float(rows[start].rsplit(',',2)[1]);self.assertAlmostEqual(atlas_width*scale,width)
             self.assertAlmostEqual(float(rows[start].rsplit(',',1)[1][:-1])*51,37)
+    def test_preserved_legacy_rows_and_finite_source_calibration(self):
+        import hashlib
+        rows=self.rows()
+        self.assertEqual(hashlib.sha256('\n'.join(rows[:42]).encode()).hexdigest(), 'a0e115f314a9495d9327339fc772082d1d97d2e5f6812b92d02add3740e02456')
+        for field,value in [('x',505),('y',74),('width',52),('height',38),('reuseFamily','location'),('reuse','network.svg')]:
+            c=copy.deepcopy(self.catalog);c['words'][2][field]=value
+            with self.subTest(field=field),self.assertRaises(ValueError):self.rows(c)
+        c=copy.deepcopy(self.catalog);c['words'][2]['glyphs'][0]['cell']=110
+        with self.assertRaises(ValueError):self.rows(c)
+        c=copy.deepcopy(self.catalog);c['words'][2:4]=reversed(c['words'][2:4])
+        with self.assertRaises(ValueError):self.rows(c)
+        p=copy.deepcopy(self.placements)
+        p['locationPlacements'].append(copy.deepcopy(next(x for x in p['setupPlacements'] if x['file']=='split-screen.svg')))
+        self.assertEqual(self.rows(placements=p),rows)
+        # A foreign-family duplicate must never satisfy the selected family's source.
+        p['setupPlacements']=[x for x in p['setupPlacements'] if x['file']!='split-screen.svg']
+        with self.assertRaises(ValueError):self.rows(placements=p)
+
     def test_existing_layout_roundtrip(self):
         layout=(ROOT/'src/FrontendWordLayout.inc').read_text()
         self.assertEqual(extend_layout(base_layout(layout),self.rows()),layout)
@@ -41,9 +59,9 @@ class RightLabels(unittest.TestCase):
         with self.assertRaises(ValueError):self.rows(c)
     def test_missing_duplicate_and_invalid_packing(self):
         for kind in ['missing','duplicate','bounds','crop']:
-            p=copy.deepcopy(self.placements);item=next(x for x in p if x['file']=='one-player.svg')
-            if kind=='missing':p.remove(item)
-            elif kind=='duplicate':p.append(copy.deepcopy(item))
+            p=copy.deepcopy(self.placements);items=p['setupPlacements'];item=next(x for x in items if x['file']=='one-player.svg')
+            if kind=='missing':items.remove(item)
+            elif kind=='duplicate':items.append(copy.deepcopy(item))
             elif kind=='bounds':item['atlas'][0]=1024
             else:item['sourceCrop'][2]+=1
             with self.assertRaises(ValueError):self.rows(placements=p)

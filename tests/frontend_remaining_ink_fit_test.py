@@ -43,11 +43,11 @@ class RemainingInkFit(unittest.TestCase):
         self.assertEqual({key:proof[key] for key in ("images","catalogUses","catalogPlacements",
                                                     "summaryUses","summaryPlacements")},
                          dict(images=50,catalogUses=50,catalogPlacements=100,
-                              summaryUses=2,summaryPlacements=4))
-        self.assertEqual(len(proof["placements"]), 104)
+                              summaryUses=15,summaryPlacements=30))
+        self.assertEqual(len(proof["placements"]), 130)
         self.assertTrue(all(record["outsideOriginalBounds"] == 0 for record in proof["placements"]))
         summary = [record for record in proof["placements"] if record["kind"] == "summary"]
-        self.assertEqual([(r["x"],r["y"],r["right"],r["bottom"]) for r in summary],
+        self.assertEqual([(r["x"],r["y"],r["right"],r["bottom"]) for r in summary[:4]],
                          [(509,73,558,110),(510,74,559,111),
                           (570,73,620,110),(571,74,621,111)])
 

@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "scope": "Authenticated original English warning texture and native triangle coordinate observation",
+  "observerBinarySha256": "18b21150a444842d296c036cc5eda5a4f5045869f59d07386a4b4cd241e12d2f",
+  "rendererOnlyAdditiveObserver": true,
+  "reusedObjectAndSourcePinsStable": true,
+  "compiledObjects": 1,
+  "maximumCompilerAndLinkWorkers": 2,
+  "originalAtlasSha256": "c067e866e0168ae1b74e89fb9f9f165342a4fde1394f56ce8718b54da06eac8a",
+  "uniqueTriangleRecords": 4,
+  "nativeUvBounds": [
+    0.498046875,
+    0.498046875,
+    222.128906,
+    20.9179688
+  ],
+  "sourceAtlasEdge": 256,
+  "originalPerspectiveReciprocal": 1,
+  "rootReviewedCurrentBothZeroClocks": true,
+  "advancingBothClocksRequiredBeforeDriving": true,
+  "independentControllerPhases": 5,
+  "rootReviewedWarningCapture": {
+    "observation": "P1 original WRONG WAY lettering visible on hazard stripe; P2 ordinary timing header visible",
+    "label": "race-both-opposite-steering-b.bmp",
+    "sha256": "2b8e5daee6363dbfe2ff4f144fc3067a2209b660483c0d196f375015bfd12c63"
+  },
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "warningReplacementImplemented": false,
+  "limits": [
+    "Coordinate capture is not replacement acceptance",
+    "No completed race or physical iPad validation",
+    "No FPS or battery claim; software-rendered host fixture",
+    "Exclamation and letter clipping analysis remains open",
+    "Original texture pixels and raw captures remain private"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}

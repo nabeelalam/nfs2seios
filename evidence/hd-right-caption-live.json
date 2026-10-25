@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "scope": "Normal original-game Main summary captions observed through original menu input",
+  "binarySha256": "37a6e0801d49adfd5ca57c9e5fcf3feee4304cfad92862454a762ff9cd4b4651",
+  "artworkPackSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+  "normalMainReused": true,
+  "fixtureObjectsUsed": false,
+  "compiledObjects": 1,
+  "actualCompiledDependenciesMatchSeal": true,
+  "freshGeneratedRendererRequired": true,
+  "freshRendererChangedOutputs": [
+    "FrontendWordLayout.inc"
+  ],
+  "maintainedRendererCopiesVerified": 253,
+  "preservedStaleAttempt": "Dependency guard rejected the old copied renderer before object compilation",
+  "captionSourceCoverageWords": 15,
+  "visuallyObservedNewCaptions": [
+    "split screen",
+    "North Country"
+  ],
+  "existingSingleRaceCaptionVisible": true,
+  "rootViewed": [
+    {
+      "label": "summary-phase-00-setup.bmp",
+      "sha256": "bfab77c062772336053ce3de2783be42eb91ec77bfa7cd035c4ecefd503d3df3"
+    },
+    {
+      "label": "summary-phase-01-location.bmp",
+      "sha256": "853590493fc2f828707fb889f06597885d8234932ba92805ab72b1282084658f"
+    },
+    {
+      "label": "summary-phase-03-location.bmp",
+      "sha256": "29c36ffe829574aab99d5c457f020bad21f896d3d6ab58acb70d78d1fe050de1"
+    }
+  ],
+  "originalSelectionSequence": [
+    "Setup",
+    "Location",
+    "Setup",
+    "Location",
+    "Options"
+  ],
+  "sameTwoPlayerIconBrightDimPreserved": true,
+  "correctedThreeLayerBackgroundPresent": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "defaultArtworkUnchanged": true,
+  "limits": [
+    "Two new caption variants visually observed; remaining finite variants have source and bounds tests",
+    "Host software-rendered normal app; physical iPad typography acceptance pending",
+    "No race, FPS, audible audio or battery claim",
+    "Warning replacement not part of this binary"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}

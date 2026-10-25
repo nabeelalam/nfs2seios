@@ -3935,8 +3935,8 @@
     "images": 50,
     "catalogUses": 50,
     "catalogPlacements": 100,
-    "summaryUses": 2,
-    "summaryPlacements": 4,
+    "summaryUses": 15,
+    "summaryPlacements": 30,
     "placements": [
       {
         "use": "location/track.svg",
@@ -4977,6 +4977,266 @@
         "right": 621.0,
         "bottom": 111.0,
         "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/split-screen.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 504.0,
+        "y": 73.0,
+        "right": 555.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/split-screen.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 505.0,
+        "y": 74.0,
+        "right": 556.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/modem.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 526.0,
+        "y": 73.0,
+        "right": 558.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/modem.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 527.0,
+        "y": 74.0,
+        "right": 559.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/serial-link.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 513.0,
+        "y": 73.0,
+        "right": 557.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/serial-link.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 514.0,
+        "y": 74.0,
+        "right": 558.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/network.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 520.0,
+        "y": 73.0,
+        "right": 557.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/network.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 521.0,
+        "y": 74.0,
+        "right": 558.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/tournament.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 570.0,
+        "y": 73.0,
+        "right": 622.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/tournament.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 571.0,
+        "y": 74.0,
+        "right": 623.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/knockout.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 570.0,
+        "y": 73.0,
+        "right": 609.0,
+        "bottom": 110.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/knockout.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 571.0,
+        "y": 74.0,
+        "right": 610.0,
+        "bottom": 111.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/north-country.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 541.0,
+        "y": 181.0,
+        "right": 602.0,
+        "bottom": 218.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/north-country.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 542.0,
+        "y": 182.0,
+        "right": 603.0,
+        "bottom": 219.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/pacific-spirit.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 544.0,
+        "y": 181.0,
+        "right": 600.0,
+        "bottom": 218.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/pacific-spirit.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 545.0,
+        "y": 182.0,
+        "right": 601.0,
+        "bottom": 219.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/mediterraneo.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 542.0,
+        "y": 181.0,
+        "right": 605.0,
+        "bottom": 218.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/mediterraneo.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 543.0,
+        "y": 182.0,
+        "right": 606.0,
+        "bottom": 219.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/mystic-peaks.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 544.0,
+        "y": 181.0,
+        "right": 600.0,
+        "bottom": 218.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/mystic-peaks.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 545.0,
+        "y": 182.0,
+        "right": 601.0,
+        "bottom": 219.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/proving-grounds.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 535.0,
+        "y": 181.0,
+        "right": 609.0,
+        "bottom": 218.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/proving-grounds.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 536.0,
+        "y": 182.0,
+        "right": 610.0,
+        "bottom": 219.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/outback.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 555.0,
+        "y": 181.0,
+        "right": 590.0,
+        "bottom": 218.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/outback.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 556.0,
+        "y": 182.0,
+        "right": 591.0,
+        "bottom": 219.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/last-resort.svg",
+        "kind": "summary",
+        "shadow": false,
+        "x": 547.0,
+        "y": 181.0,
+        "right": 595.0,
+        "bottom": 218.0,
+        "outsideOriginalBounds": 0
+      },
+      {
+        "use": "main-summary/last-resort.svg",
+        "kind": "summary",
+        "shadow": true,
+        "x": 548.0,
+        "y": 182.0,
+        "right": 596.0,
+        "bottom": 219.0,
+        "outsideOriginalBounds": 0
       }
     ]
   },
@@ -5031,7 +5291,7 @@
     }
   ],
   "baseWordLayoutSha256": "f2b03a61146497ea227829390ed053a0eb976fdb1137c6cf9aa86583a868a664",
-  "rightLabelCatalogSha256": "78ca798c2819fd98b1b69d8b867f202c6d40f739bff941226c97806e05502cb3",
+  "rightLabelCatalogSha256": "015c7bdaf470869fb7f5e8555f4460bfc2e9a9df2bcc024422b3748c64f13b97",
   "locationCatalogSha256": "034362df7d9b69e8f92f0cfb6a512799922b3adb9d3611f7f9fc977de3555816",
   "locationPlacements": [
     {
@@ -9706,7 +9966,7 @@
   "additionalCachedTextureBytes": 4194304,
   "headerHashes": {
     "FrontendFontPixels.inc": "105c00a39d5ef778da5b9ee9e36a9221b7d3301c842ab731621ab6964db5eeb8",
-    "FrontendWordLayout.inc": "7f426333f1dfaed6435f3382e6c34866a0cb42ad9035f2953dd56104e6cafa68",
+    "FrontendWordLayout.inc": "d03f5b97ba4a69f40986395c77da48325a7f12d9242e08c002f2c2f34853ebb7",
     "FrontendFontPixelsPart0.inc": "d5396b708d2e122d18634d386f06c0f7b76722aec9ea2a5ff41c1bb97d4a3cc8",
     "FrontendFontPixelsPart1.inc": "df3875d1d3087335b982a3a9a36ebdc907268e298f309557b80a57f1fb7a3c72",
     "FrontendFontPixelsPart2.inc": "1cb335eece5a7ab0406d997f83b01e87d78036bf0974948e3a5bf807e19b1abc",

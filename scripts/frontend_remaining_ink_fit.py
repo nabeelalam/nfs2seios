@@ -5,7 +5,7 @@ import json
 import math
 from pathlib import Path
 import re
-from frontend_right_labels import right_label_rows
+from frontend_right_labels import right_label_rows, EXPECTED_ROWS, LABELS
 
 FAMILIES = ("main", "location", "setup", "player", "opponents", "options")
 # Original accepted output positions, independent of the new artwork and rows.
@@ -61,7 +61,7 @@ OUTPUT_X = {
     'options/graphics.svg': (294.0, 295.0),
     'options/credits.svg': (304.0, 305.0),
 }
-SUMMARY_CATALOG_SHA256 = "78ca798c2819fd98b1b69d8b867f202c6d40f739bff941226c97806e05502cb3"
+SUMMARY_CATALOG_SHA256 = "015c7bdaf470869fb7f5e8555f4460bfc2e9a9df2bcc024422b3748c64f13b97"
 ROW = re.compile(r"^\{([^{}]+),UINT64_C\(0x([0-9a-f]{16})\)(?:,([^{}]+))?\}$")
 
 
@@ -185,14 +185,14 @@ def remaining_ink_fit(directory, pixels, rows, placements, summary_rows):
     if hashlib.sha256(raw_catalog).hexdigest() != SUMMARY_CATALOG_SHA256:
         raise ValueError("Original Main-summary source catalog changed")
     catalog = json.loads(raw_catalog)
-    expected = right_label_rows(catalog, placements["setupPlacements"], _identity)
-    if (len(summary_rows) != 42
+    expected = right_label_rows(catalog, placements, _identity)
+    if (len(summary_rows) != EXPECTED_ROWS
             or [row.rstrip(",") for row in summary_rows] != expected):
         raise ValueError("Original Main-summary layout/scales changed")
     summary = [_parse(row, summary=True) for row in summary_rows]
     index = 0
     for word in catalog["words"]:
-        alias = "setup/"+word["reuse"]
+        alias = word["reuseFamily"]+"/"+word["reuse"]
         record = allowed[alias]; x, y, width, height = record[2]; crop = record[3]
         low, high, top, bottom = inks[alias]; count = len(word["glyphs"])
         for shadow in (0, 1):
@@ -212,7 +212,7 @@ def remaining_ink_fit(directory, pixels, rows, placements, summary_rows):
             result.append(dict(use="main-summary/"+word["reuse"],kind="summary",shadow=bool(shadow),
                                x=left,y=gy,right=left+word["width"],bottom=gy+word["height"],
                                outsideOriginalBounds=0))
-    if index != 42 or len(result) != 104:
+    if index != EXPECTED_ROWS or len(result) != 100+len(LABELS)*2:
         raise ValueError("Incomplete remaining artwork summary coverage")
     return dict(images=50,catalogUses=50,catalogPlacements=100,
-                summaryUses=2,summaryPlacements=4,placements=result)
+                summaryUses=len(LABELS),summaryPlacements=len(LABELS)*2,placements=result)

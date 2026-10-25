@@ -1,10 +1,11 @@
 {
-  "schema": 1,
-  "description": "Main-menu summary captions reuse authored Setup words with output-only scaling. Original pixels are not included.",
+  "schema": 2,
+  "description": "Finite native Main summary captions reuse reviewed packed Setup/Location words; exact original text and glyph geometry required. No original pixels.",
   "words": [
     {
       "text": "one player",
       "reuse": "one-player.svg",
+      "reuseFamily": "setup",
       "x": 509.0,
       "y": 73.0,
       "width": 49.0,
@@ -65,6 +66,7 @@
     {
       "text": "single race",
       "reuse": "single-race.svg",
+      "reuseFamily": "setup",
       "x": 570.0,
       "y": 73.0,
       "width": 50.0,
@@ -124,6 +126,834 @@
           "cell": 97,
           "x": 44.0,
           "width": 6.0
+        }
+      ]
+    },
+    {
+      "text": "split screen",
+      "reuse": "split-screen.svg",
+      "reuseFamily": "setup",
+      "x": 504.0,
+      "y": 73.0,
+      "width": 51.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 111,
+          "x": 0.0,
+          "width": 4.0
+        },
+        {
+          "cell": 108,
+          "x": 4.0,
+          "width": 6.0
+        },
+        {
+          "cell": 104,
+          "x": 10.0,
+          "width": 3.0
+        },
+        {
+          "cell": 101,
+          "x": 13.0,
+          "width": 3.0
+        },
+        {
+          "cell": 112,
+          "x": 16.0,
+          "width": 3.0
+        },
+        {
+          "cell": 28,
+          "x": 19.0,
+          "width": 3.0
+        },
+        {
+          "cell": 111,
+          "x": 22.0,
+          "width": 4.0
+        },
+        {
+          "cell": 95,
+          "x": 26.0,
+          "width": 4.0
+        },
+        {
+          "cell": 110,
+          "x": 30.0,
+          "width": 3.0
+        },
+        {
+          "cell": 97,
+          "x": 33.0,
+          "width": 6.0
+        },
+        {
+          "cell": 97,
+          "x": 39.0,
+          "width": 6.0
+        },
+        {
+          "cell": 106,
+          "x": 45.0,
+          "width": 6.0
+        }
+      ]
+    },
+    {
+      "text": "modem",
+      "reuse": "modem.svg",
+      "reuseFamily": "setup",
+      "x": 526.0,
+      "y": 73.0,
+      "width": 32.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 105,
+          "x": 0.0,
+          "width": 7.0
+        },
+        {
+          "cell": 107,
+          "x": 7.0,
+          "width": 6.0
+        },
+        {
+          "cell": 96,
+          "x": 13.0,
+          "width": 6.0
+        },
+        {
+          "cell": 97,
+          "x": 19.0,
+          "width": 6.0
+        },
+        {
+          "cell": 105,
+          "x": 25.0,
+          "width": 7.0
+        }
+      ]
+    },
+    {
+      "text": "serial link",
+      "reuse": "serial-link.svg",
+      "reuseFamily": "setup",
+      "x": 513.0,
+      "y": 73.0,
+      "width": 44.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 111,
+          "x": 0.0,
+          "width": 4.0
+        },
+        {
+          "cell": 97,
+          "x": 4.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 10.0,
+          "width": 3.0
+        },
+        {
+          "cell": 101,
+          "x": 13.0,
+          "width": 3.0
+        },
+        {
+          "cell": 93,
+          "x": 16.0,
+          "width": 6.0
+        },
+        {
+          "cell": 104,
+          "x": 22.0,
+          "width": 3.0
+        },
+        {
+          "cell": 28,
+          "x": 25.0,
+          "width": 3.0
+        },
+        {
+          "cell": 104,
+          "x": 28.0,
+          "width": 3.0
+        },
+        {
+          "cell": 101,
+          "x": 31.0,
+          "width": 3.0
+        },
+        {
+          "cell": 106,
+          "x": 34.0,
+          "width": 6.0
+        },
+        {
+          "cell": 103,
+          "x": 40.0,
+          "width": 4.0
+        }
+      ]
+    },
+    {
+      "text": "network",
+      "reuse": "network.svg",
+      "reuseFamily": "setup",
+      "x": 520.0,
+      "y": 73.0,
+      "width": 37.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 106,
+          "x": 0.0,
+          "width": 6.0
+        },
+        {
+          "cell": 97,
+          "x": 6.0,
+          "width": 6.0
+        },
+        {
+          "cell": 112,
+          "x": 12.0,
+          "width": 3.0
+        },
+        {
+          "cell": 115,
+          "x": 15.0,
+          "width": 9.0
+        },
+        {
+          "cell": 107,
+          "x": 24.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 30.0,
+          "width": 3.0
+        },
+        {
+          "cell": 103,
+          "x": 33.0,
+          "width": 4.0
+        }
+      ]
+    },
+    {
+      "text": "tournament",
+      "reuse": "tournament.svg",
+      "reuseFamily": "setup",
+      "x": 570.0,
+      "y": 73.0,
+      "width": 52.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 112,
+          "x": 0.0,
+          "width": 3.0
+        },
+        {
+          "cell": 107,
+          "x": 3.0,
+          "width": 6.0
+        },
+        {
+          "cell": 113,
+          "x": 9.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 15.0,
+          "width": 3.0
+        },
+        {
+          "cell": 106,
+          "x": 18.0,
+          "width": 6.0
+        },
+        {
+          "cell": 93,
+          "x": 24.0,
+          "width": 6.0
+        },
+        {
+          "cell": 105,
+          "x": 30.0,
+          "width": 7.0
+        },
+        {
+          "cell": 97,
+          "x": 37.0,
+          "width": 6.0
+        },
+        {
+          "cell": 106,
+          "x": 43.0,
+          "width": 6.0
+        },
+        {
+          "cell": 112,
+          "x": 49.0,
+          "width": 3.0
+        }
+      ]
+    },
+    {
+      "text": "knockout",
+      "reuse": "knockout.svg",
+      "reuseFamily": "setup",
+      "x": 570.0,
+      "y": 73.0,
+      "width": 39.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 103,
+          "x": 0.0,
+          "width": 4.0
+        },
+        {
+          "cell": 106,
+          "x": 4.0,
+          "width": 6.0
+        },
+        {
+          "cell": 107,
+          "x": 10.0,
+          "width": 6.0
+        },
+        {
+          "cell": 95,
+          "x": 16.0,
+          "width": 4.0
+        },
+        {
+          "cell": 103,
+          "x": 20.0,
+          "width": 4.0
+        },
+        {
+          "cell": 107,
+          "x": 24.0,
+          "width": 6.0
+        },
+        {
+          "cell": 113,
+          "x": 30.0,
+          "width": 6.0
+        },
+        {
+          "cell": 112,
+          "x": 36.0,
+          "width": 3.0
+        }
+      ]
+    },
+    {
+      "text": "North Country",
+      "reuse": "north-country.svg",
+      "reuseFamily": "location",
+      "x": 541.0,
+      "y": 181.0,
+      "width": 61.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 74,
+          "x": 0.0,
+          "width": 6.0
+        },
+        {
+          "cell": 107,
+          "x": 6.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 12.0,
+          "width": 3.0
+        },
+        {
+          "cell": 112,
+          "x": 15.0,
+          "width": 3.0
+        },
+        {
+          "cell": 100,
+          "x": 18.0,
+          "width": 6.0
+        },
+        {
+          "cell": 28,
+          "x": 24.0,
+          "width": 3.0
+        },
+        {
+          "cell": 63,
+          "x": 27.0,
+          "width": 6.0
+        },
+        {
+          "cell": 107,
+          "x": 33.0,
+          "width": 6.0
+        },
+        {
+          "cell": 113,
+          "x": 39.0,
+          "width": 6.0
+        },
+        {
+          "cell": 106,
+          "x": 45.0,
+          "width": 6.0
+        },
+        {
+          "cell": 112,
+          "x": 51.0,
+          "width": 3.0
+        },
+        {
+          "cell": 110,
+          "x": 54.0,
+          "width": 3.0
+        },
+        {
+          "cell": 117,
+          "x": 57.0,
+          "width": 4.0
+        }
+      ]
+    },
+    {
+      "text": "Pacific Spirit",
+      "reuse": "pacific-spirit.svg",
+      "reuseFamily": "location",
+      "x": 544.0,
+      "y": 181.0,
+      "width": 56.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 76,
+          "x": 0.0,
+          "width": 6.0
+        },
+        {
+          "cell": 93,
+          "x": 6.0,
+          "width": 6.0
+        },
+        {
+          "cell": 95,
+          "x": 12.0,
+          "width": 4.0
+        },
+        {
+          "cell": 101,
+          "x": 16.0,
+          "width": 3.0
+        },
+        {
+          "cell": 98,
+          "x": 19.0,
+          "width": 3.0
+        },
+        {
+          "cell": 101,
+          "x": 22.0,
+          "width": 3.0
+        },
+        {
+          "cell": 95,
+          "x": 25.0,
+          "width": 4.0
+        },
+        {
+          "cell": 28,
+          "x": 29.0,
+          "width": 3.0
+        },
+        {
+          "cell": 79,
+          "x": 32.0,
+          "width": 6.0
+        },
+        {
+          "cell": 108,
+          "x": 38.0,
+          "width": 6.0
+        },
+        {
+          "cell": 101,
+          "x": 44.0,
+          "width": 3.0
+        },
+        {
+          "cell": 110,
+          "x": 47.0,
+          "width": 3.0
+        },
+        {
+          "cell": 101,
+          "x": 50.0,
+          "width": 3.0
+        },
+        {
+          "cell": 112,
+          "x": 53.0,
+          "width": 3.0
+        }
+      ]
+    },
+    {
+      "text": "Mediterraneo",
+      "reuse": "mediterraneo.svg",
+      "reuseFamily": "location",
+      "x": 542.0,
+      "y": 181.0,
+      "width": 63.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 73,
+          "x": 0.0,
+          "width": 9.0
+        },
+        {
+          "cell": 97,
+          "x": 9.0,
+          "width": 6.0
+        },
+        {
+          "cell": 96,
+          "x": 15.0,
+          "width": 6.0
+        },
+        {
+          "cell": 101,
+          "x": 21.0,
+          "width": 3.0
+        },
+        {
+          "cell": 112,
+          "x": 24.0,
+          "width": 3.0
+        },
+        {
+          "cell": 97,
+          "x": 27.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 33.0,
+          "width": 3.0
+        },
+        {
+          "cell": 110,
+          "x": 36.0,
+          "width": 3.0
+        },
+        {
+          "cell": 93,
+          "x": 39.0,
+          "width": 6.0
+        },
+        {
+          "cell": 106,
+          "x": 45.0,
+          "width": 6.0
+        },
+        {
+          "cell": 97,
+          "x": 51.0,
+          "width": 6.0
+        },
+        {
+          "cell": 107,
+          "x": 57.0,
+          "width": 6.0
+        }
+      ]
+    },
+    {
+      "text": "Mystic Peaks",
+      "reuse": "mystic-peaks.svg",
+      "reuseFamily": "location",
+      "x": 544.0,
+      "y": 181.0,
+      "width": 56.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 73,
+          "x": 0.0,
+          "width": 9.0
+        },
+        {
+          "cell": 117,
+          "x": 9.0,
+          "width": 4.0
+        },
+        {
+          "cell": 111,
+          "x": 13.0,
+          "width": 4.0
+        },
+        {
+          "cell": 112,
+          "x": 17.0,
+          "width": 3.0
+        },
+        {
+          "cell": 101,
+          "x": 20.0,
+          "width": 3.0
+        },
+        {
+          "cell": 95,
+          "x": 23.0,
+          "width": 4.0
+        },
+        {
+          "cell": 28,
+          "x": 27.0,
+          "width": 3.0
+        },
+        {
+          "cell": 76,
+          "x": 30.0,
+          "width": 6.0
+        },
+        {
+          "cell": 97,
+          "x": 36.0,
+          "width": 6.0
+        },
+        {
+          "cell": 93,
+          "x": 42.0,
+          "width": 6.0
+        },
+        {
+          "cell": 103,
+          "x": 48.0,
+          "width": 4.0
+        },
+        {
+          "cell": 111,
+          "x": 52.0,
+          "width": 4.0
+        }
+      ]
+    },
+    {
+      "text": "Proving Grounds",
+      "reuse": "proving-grounds.svg",
+      "reuseFamily": "location",
+      "x": 535.0,
+      "y": 181.0,
+      "width": 74.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 76,
+          "x": 0.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 6.0,
+          "width": 3.0
+        },
+        {
+          "cell": 107,
+          "x": 9.0,
+          "width": 6.0
+        },
+        {
+          "cell": 114,
+          "x": 15.0,
+          "width": 4.0
+        },
+        {
+          "cell": 101,
+          "x": 19.0,
+          "width": 3.0
+        },
+        {
+          "cell": 106,
+          "x": 22.0,
+          "width": 6.0
+        },
+        {
+          "cell": 99,
+          "x": 28.0,
+          "width": 6.0
+        },
+        {
+          "cell": 28,
+          "x": 34.0,
+          "width": 3.0
+        },
+        {
+          "cell": 67,
+          "x": 37.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 43.0,
+          "width": 3.0
+        },
+        {
+          "cell": 107,
+          "x": 46.0,
+          "width": 6.0
+        },
+        {
+          "cell": 113,
+          "x": 52.0,
+          "width": 6.0
+        },
+        {
+          "cell": 106,
+          "x": 58.0,
+          "width": 6.0
+        },
+        {
+          "cell": 96,
+          "x": 64.0,
+          "width": 6.0
+        },
+        {
+          "cell": 111,
+          "x": 70.0,
+          "width": 4.0
+        }
+      ]
+    },
+    {
+      "text": "Outback",
+      "reuse": "outback.svg",
+      "reuseFamily": "location",
+      "x": 555.0,
+      "y": 181.0,
+      "width": 35.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 75,
+          "x": 0.0,
+          "width": 6.0
+        },
+        {
+          "cell": 113,
+          "x": 6.0,
+          "width": 6.0
+        },
+        {
+          "cell": 112,
+          "x": 12.0,
+          "width": 3.0
+        },
+        {
+          "cell": 94,
+          "x": 15.0,
+          "width": 6.0
+        },
+        {
+          "cell": 93,
+          "x": 21.0,
+          "width": 6.0
+        },
+        {
+          "cell": 95,
+          "x": 27.0,
+          "width": 4.0
+        },
+        {
+          "cell": 103,
+          "x": 31.0,
+          "width": 4.0
+        }
+      ]
+    },
+    {
+      "text": "Last Resort",
+      "reuse": "last-resort.svg",
+      "reuseFamily": "location",
+      "x": 547.0,
+      "y": 181.0,
+      "width": 48.0,
+      "height": 37.0,
+      "glyphs": [
+        {
+          "cell": 72,
+          "x": 0.0,
+          "width": 4.0
+        },
+        {
+          "cell": 93,
+          "x": 4.0,
+          "width": 6.0
+        },
+        {
+          "cell": 111,
+          "x": 10.0,
+          "width": 4.0
+        },
+        {
+          "cell": 112,
+          "x": 14.0,
+          "width": 3.0
+        },
+        {
+          "cell": 28,
+          "x": 17.0,
+          "width": 3.0
+        },
+        {
+          "cell": 78,
+          "x": 20.0,
+          "width": 6.0
+        },
+        {
+          "cell": 97,
+          "x": 26.0,
+          "width": 6.0
+        },
+        {
+          "cell": 111,
+          "x": 32.0,
+          "width": 4.0
+        },
+        {
+          "cell": 107,
+          "x": 36.0,
+          "width": 6.0
+        },
+        {
+          "cell": 110,
+          "x": 42.0,
+          "width": 3.0
+        },
+        {
+          "cell": 112,
+          "x": 45.0,
+          "width": 3.0
         }
       ]
     }

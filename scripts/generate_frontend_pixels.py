@@ -346,7 +346,7 @@ def generate_frontend(check=False):
         source_dir=directory)
     from frontend_right_labels import right_label_rows, extend_layout
     right_path = directory/'right-labels/catalog.json'
-    right_rows = right_label_rows(json.loads(right_path.read_text()), options['setupPlacements'], text_identity)
+    right_rows = right_label_rows(json.loads(right_path.read_text()), {f+'Placements': options[f+'Placements'] for f in ('setup','location')}, text_identity)
     from frontend_remaining_ink_fit import remaining_ink_fit
     remaining_ink = remaining_ink_fit(
         directory, pixels, rows,
@@ -489,8 +489,9 @@ def generate_frontend_layout(check=False):
         raise ValueError('Stale base word layout')
     # Cross-check metadata regions against the already-authenticated base rows.
     import re
-    for text, filename in [('one player','one-player.svg'),('single race','single-race.svg')]:
-        placements = [p for p in metadata['setupPlacements'] if p['file'] == filename]
+    for word in json.loads((directory/'right-labels/catalog.json').read_text())['words']:
+        text, filename = word['text'], word['reuse']
+        placements = [p for p in metadata[word['reuseFamily']+'Placements'] if p['file'] == filename]
         if len(placements) != 1:
             raise ValueError('Ambiguous packed label')
         p = placements[0]; ax, ay, aw, ah = p['atlas']; top = p['sourceCrop'][1]
@@ -499,8 +500,28 @@ def generate_frontend_layout(check=False):
                               or [float(v) for v in row.split(',')][11:13] != [top/4,ah/4] for row in matches):
             raise ValueError('Packed label metadata disagrees with base atlas coordinates')
     catalog_path = directory/'right-labels/catalog.json'
-    rows = right_label_rows(json.loads(catalog_path.read_text()), metadata['setupPlacements'], text_identity)
+    rows = right_label_rows(json.loads(catalog_path.read_text()), {f+'Placements': metadata[f+'Placements'] for f in ('setup','location')}, text_identity)
     table = extend_layout(base, rows)
+    # Revalidate all ink bounds against the authenticated, unchanged RLE payload.
+    encoded = bytearray()
+    for i in range(part_count):
+        body = (ROOT/'src'/('FrontendFontPixelsPart'+str(i)+'.inc')).read_text().split('\n',1)[1]
+        encoded.extend(int(n) for n in re.findall(r'\b[0-9]+\b', body))
+    if len(encoded)%6:
+        raise ValueError('Malformed authenticated frontend RLE')
+    pixels = bytearray()
+    for at in range(0,len(encoded),6):
+        count = encoded[at] | (encoded[at+1]<<8)
+        if not count or len(pixels)+4*count>8388608:
+            raise ValueError('Unbounded authenticated frontend RLE')
+        pixels.extend(encoded[at+2:at+6]*count)
+    if len(pixels)!=8388608 or hashlib.sha256(pixels).hexdigest()!=metadata['rasterSha256']:
+        raise ValueError('Authenticated frontend raster changed')
+    from frontend_remaining_ink_fit import remaining_ink_fit
+    metadata['remainingInkFit'] = remaining_ink_fit(
+        directory,pixels,[line.rstrip(',') for line in base.splitlines() if line.startswith('{')],
+        {f+'Placements': metadata['optionsAtlas']['optionsPlacements'] if f=='options' else metadata[f+'Placements']
+         for f in ('main','location','setup','player','opponents','options')},rows)
     metadata['rightLabelCatalogSha256'] = hashlib.sha256(catalog_path.read_bytes()).hexdigest()
     metadata['headerHashes']['FrontendWordLayout.inc'] = hashlib.sha256(table.encode()).hexdigest()
     if check:
