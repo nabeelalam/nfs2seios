@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Saved-profile race retry exposed nonpersistent split-mode assumption",
+  "actualRaceStarted": true,
+  "actualObservedMode": "Single Player",
+  "expectedMode": "Split Screen",
+  "testPassed": false,
+  "failure": "RuntimeError('No bounded current native split HUD candidate')",
+  "bothPlayerInputChecksExecuted": false,
+  "rootViewedSinglePlayerHudAndMinimap": true,
+  "captureSha256": "13504ff77639ccd83a7b43f8b1004f1101e1379b9cfa5c078a6b00bfd8026dff",
+  "clockAtViewedCapture": "0:05.03",
+  "profileSha256": "96601ee22039c0fa0e2343dc49ef5aff988654df31d49faae24a73f2e02f04b6",
+  "gameCrashObserved": false,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "next": "Explicit current typed Setup Split selection after every launch before race; do not infer game mode from saved config alone",
+  "completedRaceOrPerformanceClaim": false,
+  "physicalDeviceVerified": false,
+  "cloudBuild": false,
+  "sourceCauseEstablished": "Original valid-config load copies the saved block, then deliberately resets the game-type field to zero. Split must be selected in each new process.",
+  "bindingsPersistenceNotAssumed": "Startup can select a device-status fallback; fresh current binding-cell verification remains required."
+}

@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "scope": "Latest maintained original-game split-screen host-fixture driving and HUD regression",
+  "fixtureBinarySha256": "04aa8077c551820ce836a816f3ed9b7c1721104af7a2e4991a777ff49879b593",
+  "artworkPackSha256": "c4304ecf9c169cf08fc47befb850f0902ea7b13e31f6d65f98c22b025da878af",
+  "currentProcessSplitExplicitlySelected": true,
+  "bothCurrentAutomaticValuesAndEightBindingsChecked": true,
+  "rootReviewedExactLiveZeroCaptureWithOpenDeadlineAndNonce": true,
+  "twoAdvancingBothClockCapturesPassedBeforeDriving": true,
+  "normalIndependentSdlInputPhases": 5,
+  "p1OnlyAccelerationObservedWithP2Stationary": true,
+  "p2AccelerationObservedInItsOwnPhase": true,
+  "opposingSteeringAndBothViewsMovementObserved": true,
+  "hudClockSpeedGearLapAndRecordDisplayed": true,
+  "validWrongWayAlertPreserved": true,
+  "wrongWayTextVisualRemasterStillOpen": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "rootViewed": [
+    {
+      "captureLabel": "race-initial-zero-candidate.bmp",
+      "sha256": "ff4874b231b7de403992a957a6c3ce43753ec433ed1b75cff864069540360dc9",
+      "observation": "Both0:00.00, neutral, speed0"
+    },
+    {
+      "captureLabel": "race-p1-only-throttle.bmp",
+      "sha256": "123687eee215c4e979cde9cc877192cc4475b3edec59e00e20b10549da33e996",
+      "observation": "P1 speed77 gear3; P2 speed0 gear1; both clock3:34.29"
+    },
+    {
+      "captureLabel": "race-p2-only-throttle.bmp",
+      "sha256": "72ae8cbcc2671533c02908bcba831c5718b6b3916c62c0d781bb555e20eb9994",
+      "observation": "P1 speed5 gear1; P2 speed81 gear3; both clock3:42.67"
+    },
+    {
+      "captureLabel": "race-both-opposite-steering-a.bmp",
+      "sha256": "1b1e3ee84b36a3fee67bf6b30461eafb73f412770736a09ea80bb92e310473c0",
+      "observation": "Distinct changed headings and positions; speeds6/37; both clock3:59.18"
+    },
+    {
+      "captureLabel": "race-both-opposite-steering-b.bmp",
+      "sha256": "e7c69495c2670e7a72db274a18d82203fbc2e7a4ace694da4fc2d3d8c04473f5",
+      "observation": "P1 valid WRONG WAY warning at speed81; P2 speed7 and clock4:07.50"
+    }
+  ],
+  "limits": [
+    "Bounded driving only; no completed lap or race claim",
+    "Software-rendered WSL and isolated virtual-controller entrypoint; not physical iPad acceptance",
+    "No FPS, battery or busy-race performance claim; initial root review left cars neutral for several minutes",
+    "Split minimap not observed; single-player minimap recorded separately",
+    "Audio driver was dummy for this host test; no new audible-device claim"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}

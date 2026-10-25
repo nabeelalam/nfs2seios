@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "scope": "First current split-race attempt reached actual HUD but internal root-review wait expired",
+  "fixtureBinarySha256": "04aa8077c551820ce836a816f3ed9b7c1721104af7a2e4991a777ff49879b593",
+  "actualOriginalSplitRaceLaunched": true,
+  "bothCurrentZeroClocksRootVisuallyConfirmed": true,
+  "zeroClockCaptureSha256": "88f4a2d0dee3744ee22a55a4f77d1e32a4834ed0d77aa9d604f28db8d9d7d0ee",
+  "rootReviewWrittenAfterWaitExpired": true,
+  "testPassed": false,
+  "gameCrashObserved": false,
+  "testFailure": "Bounded internal zero-clock screenshot review wait expired before root response",
+  "clockMaskSimilarityAtZero": 0.958904109589041,
+  "independentDrivingExecuted": false,
+  "cleanGameExit": true,
+  "copiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "next": "Retry from actual UI-generated saved profile; longer bounded review and verify live review deadline before response",
+  "physicalDeviceVerified": false,
+  "performanceClaim": false,
+  "cloudBuild": false
+}

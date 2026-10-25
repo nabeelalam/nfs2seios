@@ -13,11 +13,13 @@
   "twoPlayerShape": "Shared gold emblem with two head/body silhouettes",
   "mapTextureContainsNoDynamicMarks": true,
   "staleSingleModeInterpretationDisproved": true,
-  "currentTwoPlayerArtReplacementMissing": true,
-  "actualPreparedTwoPlayerNativePayloadCaptured": false,
-  "nextBindingRequirement": "Capture and authenticate actual converted payload and dim variant before registering replacement",
+  "currentTwoPlayerArtReplacementMissing": false,
+  "actualPreparedTwoPlayerNativePayloadCaptured": true,
+  "nextBindingRequirement": "Observed native two5 binding and original tint/fade path verified; unobserved twod remains unbound. Physical visual acceptance remains open.",
   "carLogoRetainedLayoutStillUnderReview": true,
   "speculativeSourceOrShaderChangesMade": false,
   "originalPixelsIncluded": false,
-  "physicalDeviceVerified": false
+  "physicalDeviceVerified": false,
+  "normalAppHostRuntimeVerified": true,
+  "followupEvidence": "evidence/hd-split-mode-native-art-live.json"
 }

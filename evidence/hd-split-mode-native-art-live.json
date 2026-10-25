@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "scope": "Observed native two-player emblem binding and actual normal-app preview",
+  "sourceCanvasBytesVerified": 32768,
+  "actualSourceConvertedSha256": "a49d44cbe42990d5d3915a3715c2ab17bfcde1826af21552cc1829b3cdf3b6aa",
+  "observedSourceEntry": "two5",
+  "nativeBuilderUsesSuffix5": true,
+  "observedNativeTriangleEntries": 656,
+  "observedVertexSamples": 1968,
+  "originalColorStates": 9,
+  "originalBrightGoldDimAndFadeTintPreservedByUnchangedShader": true,
+  "twodMeaningAssumedToBeDim": false,
+  "unobservedTwodBoundOrAliased": false,
+  "initialBothAssetCoverageNegativePreserved": true,
+  "newSourceBindings": 1,
+  "newNativeTextures": 1,
+  "all12PriorProviderBindingsAndPixelsUnchanged": true,
+  "packSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+  "binarySha256": "741286a0c8e6d62a54027e670a68f39571ddff8d634b9842bbd5bf7bf1f2be45",
+  "newTextureIdentity": 5566821096482668557,
+  "normalGameAndRendererSourceUnpatched": true,
+  "compiledObjects": 1,
+  "onlyTrustedStartupPinChanged": true,
+  "nativeResourceCreatedDrawAcceptedAndRetired": true,
+  "allCreatedNativeTextureIdentitiesRetired": true,
+  "rootViewed": [
+    {
+      "captureLabel": "split-mark-phase-setup.bmp",
+      "sha256": "1074892861630f24c0f007cb9cce13f24bbb6347179f1eb7e6d2515ade02377e",
+      "state": "Bright selected Game Setup state"
+    },
+    {
+      "captureLabel": "split-mark-phase-location.bmp",
+      "sha256": "3f7a174c9c849b10d50033e878145c1455d318c7ac32cad914bae8efa3961632",
+      "state": "Gold-dim state with Location selected"
+    }
+  ],
+  "normalShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "priorPacksAndOriginalAssetsPreserved": true,
+  "defaultArtworkReplaced": false,
+  "physicalDeviceVerified": false,
+  "limits": [
+    "Local software-rendered preview; no physical iPad visual/FPS/battery acceptance",
+    "No original pixel bytes or private paths included",
+    "Native upload/selection/source proof and actual screenshots; no assertion of separate GPU-batch completion from observer entries",
+    "Remaining warning words and other frontend text/art acceptance are open"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}
