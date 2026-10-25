@@ -1,0 +1,14 @@
+{
+  "scope": "Unmodified maintained preparation entry functions with disposable project ROOT and read-only cached source/src/SDL links",
+  "generationSeconds": 24.01,
+  "networkRequested": false,
+  "defaultGeneratedDirectoriesUntouched": true,
+  "allSourceHooksPassed": true,
+  "sourceAndRendererPreparationPassed": true,
+  "generatedOutputCount": 432,
+  "generationReceiptSha256": "41ac97ebe8c9ef71ed81ec4091f3f81d2fafcf12780c90df906713d74699f167",
+  "limits": [
+    "Preparation does not prove compilation, linkage, gameplay or device acceptance",
+    "Fresh maintained sources still need build/runtime validation with authenticated authored v5 pack"
+  ]
+}

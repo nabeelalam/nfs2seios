@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "scope": "Registered maintained CMake targets and CTest execution",
+  "freshTestTargetsBuilt": 8,
+  "maximumCompilerWorkers": 2,
+  "ctestPassed": 17,
+  "ctestFailed": 0,
+  "groups": {
+    "feedbackProviderPackStartup": 12,
+    "keyedTransformRecompositionTextProtectionAndCopy": 4,
+    "sidebarRecipe": 1
+  },
+  "preparationHookTestsPassed": 58,
+  "independentReadOnlyReview": "No actionable issue in optional pack activation, one-shot receipts or retained parent lifetime",
+  "physicalDeviceVerified": false
+}

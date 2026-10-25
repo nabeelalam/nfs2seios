@@ -52,6 +52,14 @@ public:
   unsigned role=2;for(unsigned k=0;k<2;++k)if(b->catalog()->sha()==sidebar->catalog()->mapSha[k]){if(role!=2)return {};role=k;}if(role==2)return {};
   try{auto p=std::shared_ptr<Prepared>(new Prepared);p->frame_=std::move(frame);p->sidebar_=std::move(sidebar);p->dialog_=std::move(dialog);p->mapRole_=role;return p;}catch(...){return {};}
  }
+ // Borrowed view only: the caller retains both this Prepared and the accepted
+ // replacement sidebar. No new original frame/text packet or source authority.
+ NfsControlsSceneFrameView viewWithSidebar(uint64_t serial,const std::shared_ptr<const nfs_audio_sidebar::Packet>&sidebar,unsigned role)const noexcept{
+  auto v=view(serial);if(!v.schema||!sidebar||role>1||!captionWordValid(sidebar)||sidebar->wordCount()>sidebar->words().size())return {};
+  v.layers.sidebarWord=sidebar->captionWord()->view();if(!v.layers.sidebarWord.schema||v.layers.sidebarWord.word!=3)return {};
+  if(!textView(sidebar->caption(),343,v.layers.sidebarCaption))return {};
+  auto&b=v.layers.background;b.mapRole=role;b.wordCount=sidebar->wordCount();std::copy(sidebar->words().begin(),sidebar->words().end(),b.words);std::copy(sidebar->logos().begin(),sidebar->logos().end(),b.logos);return v;
+ }
  const std::shared_ptr<const nfs_graphics_frame::GraphicsFramePacket>&frame()const noexcept{return frame_;}
  const std::shared_ptr<const nfs_audio_sidebar::Packet>&sidebar()const noexcept{return sidebar_;}
  NfsControlsSceneFrameView view(uint64_t serial)const noexcept{

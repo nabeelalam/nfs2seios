@@ -4,6 +4,7 @@
 #include "HdArtProvider.h"
 #include "NativeMarkProvider.h"
 #include "AudioArtProvider.h"
+#include "FeedbackModalBackdropArtProvider.h"
 #include "AudioDialogRecords.h"
 #include <memory>
 #include <string>
@@ -29,6 +30,9 @@ public:
     // pixels remain in the separately supplied game archive.
     NfsAudioArtProvider audioArtProvider() const noexcept;
     const std::array<nfs_audio_frame::SourceIdentity,6>* audioSourceIdentities() const noexcept{return audio_.pixels?&audioSources_:nullptr;}
+    // Optional version5 straight-RGBA Feedback pair; the same retained pack
+    // owns these bytes. No provider is exposed when both sections are absent.
+    NfsFeedbackModalBackdropArtProvider feedbackBackdropProvider() const noexcept;
     const Digest& digest()const noexcept{return digest_;}
     size_t size()const noexcept{return bytes_.size();}
 private:
@@ -40,6 +44,8 @@ private:
     static int region(void*,uint32_t,NfsSmallLogoRegion*);
     static int nativeMark(void*,uint32_t,uint32_t,const uint8_t[32],NfsNativeMarkArt*);
     static int audioAtlas(void*,NfsAudioArt*);
+    static int feedbackBackdrop(void*,NfsFeedbackModalBackdropArtView*);
+    NfsFeedbackModalBackdropArtView feedback_{};
     NfsAudioArt audio_{};
     std::array<nfs_audio_frame::SourceIdentity,6> audioSources_{};
     struct NativeMarkBinding {uint32_t texture=0,encoding=0,edge=0;Digest prepared{};};

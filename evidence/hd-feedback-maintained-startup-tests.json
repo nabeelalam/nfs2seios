@@ -1,0 +1,42 @@
+{
+  "scope": "Synthetic authenticated optional Feedback startup and version1-5 pack regression",
+  "results": [
+    {
+      "variant": "opt",
+      "startupCases": [
+        "success",
+        "legacy-absent",
+        "sealed-optional",
+        "wrong-pin"
+      ],
+      "packRegressionPassed": true
+    },
+    {
+      "variant": "san",
+      "startupCases": [
+        "success",
+        "legacy-absent",
+        "sealed-optional",
+        "wrong-pin"
+      ],
+      "packRegressionPassed": true
+    }
+  ],
+  "sha256": {
+    "src/hd/ArtworkPack.h": "583597c42bcf38e45aaa6693ad239a93f8e20358ff5624bef5ca4dc8832d9e8a",
+    "src/hd/ArtworkPack.cpp": "73cbc8d93721db64d94ac87536b72c796a12089d78109094ea5c03018e14b4de",
+    "src/hd/ArtworkActivation.cpp": "b1b6360faa0c22b083d13154c250a3407c5545536391b19300a4e65d3a3c730c",
+    "src/hd/FeedbackModalBackdropArtProvider.h": "df2568581c1125b13fbe30389c96c9aef9738aa529abfe5e56407bd7cb4aa147",
+    "src/hd/FeedbackModalBackdropArtProvider.c": "b0faf81d4efbf0904a9a586e71f1bfd951b6c0b485c49d1b9951e35e887a2394",
+    "src/hd/FeedbackModalBackdropArtAbi.h": "6480ee4a904a6e4bb7f9a3759fc05d0dcf6753ac2c3d7a5880df43d9fa60d367",
+    "tests/FeedbackArtworkPackFixture.h": "3298f79ea00ed7909d32dc8fcfa46b17177a15cf5047d01b5f50895a3a845068",
+    "tests/feedback_artwork_activation_tests.cpp": "b39b90c23afe8d16f7ffb988c8a589a7d2887ac84ad477483f112fa5210bcb94",
+    "tests/feedback_artwork_pack_tests.cpp": "4d0acf2d5954705f4b4147846f0388507255d170a0d8ea8e31526fab6c4dfeeb"
+  },
+  "originalAssetsUsed": false,
+  "physicalDeviceVerified": false,
+  "limits": [
+    "Synthetic contracts only; fresh maintained Game runtime unverified",
+    "Standalone optimized and ASanUBSan executed; CMake registered, CTest not run"
+  ]
+}

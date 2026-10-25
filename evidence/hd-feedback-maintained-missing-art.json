@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Actual maintained original popup fallback with authenticated legacy artwork pack and absent optional Feedback images",
+  "binarySha256": "0a1cbdd1d8a99fe3e120e1b792e02fb62ae04471e744e52b9972d0bf5b9e73c5",
+  "changedCompiledObjects": 1,
+  "reusedObjectsAndSourceInputsStable": true,
+  "actualPopupEntries": 4,
+  "missingProviderAndNoHdCompositionPerEntry": 4,
+  "nativeReceiptsAndDuplicateRejection": 4,
+  "originalMessageVisiblePerEntry": 4,
+  "hdPopupPublications": 0,
+  "ordinaryDismissalAndMenuRecovery": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "captureVisuallyInspected": true,
+  "captureSha256": "00d1e5babc0fe57a70a046b05638e8ee29a79d5f3232e7d4ae6dd2d461dff5f7",
+  "preparationRegressionTestsPassed": 58,
+  "limitations": [
+    "Local WSL software-rendered test; no physical iPad acceptance or performance measurement",
+    "Background correction remains an unpromoted geometry study",
+    "No cloud build, upload or push"
+  ]
+}

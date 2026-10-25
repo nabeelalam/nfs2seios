@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "scope": "Isolated body/banner/emblem GPU mechanics and maintained exact original upload source hooks",
+  "optimizedCxx14": true,
+  "asanUbsanCxx14": true,
+  "softwareEglGles": true,
+  "leakDetectionDisabledForGraphicsDriver": true,
+  "syntheticArtOnly": true,
+  "independentPixelOracle": true,
+  "originalBodyPmaAndBannerLeftClipPreserved": true,
+  "sourceHookTests": 11,
+  "actualFullTranslationUnitExactReverse": true,
+  "wholeSceneActivation": false,
+  "ctestRun": false,
+  "physicalDeviceVerified": false,
+  "sourceSha256": {
+    "src/hd/FeedbackModalBackdropArtAbi.h": "d1a57aa0d1fac61a13109c3b07670da67a6f73df9567b5302888c625fd0bd81a",
+    "src/hd/FeedbackModalBackdropGpu.h": "537c95491d2d09956d7743715cd89fece2cbc525ce5fc8f872525cd6224902ab",
+    "src/hd/FeedbackModalBackdropGpu.c.inc": "bd11831881a1903d4c1612420b6d483fd1358ad85b9cc9983f2c02be564f7682",
+    "tests/feedback_modal_backdrop_gpu_tests.cpp": "b3aeec6de51759d015764f48974d8dd339851c1cdb5042bce46c11b87040b0f3",
+    "scripts/feedback_modal_observer_source_hooks.py": "f10846c16a347ab09725d30f3c38f0666fb715ca397cec12609eda896659b8e6",
+    "tests/feedback_modal_observer_source_hooks_test.py": "ff46b8c1a7192a823a6f8b5ad64b05f21f9f8c9abf002c03c84ed9b425c78614",
+    "CMakeLists.txt": "d3674018b1008c1cd16c225300cb25f39edfdee0e9550e1630862fe61f2c8a9e"
+  },
+  "limits": [
+    "GPU helper uses synthetic art in this test; no authored candidate is embedded.",
+    "Whole HD parent plus popup staging and guarded commit remain open."
+  ]
+}

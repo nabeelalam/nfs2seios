@@ -1,0 +1,26 @@
+{
+  "scope": "Actual source-sealed fresh animated parent, full original-plane reconstruction, native HD popup composition; private provider registration",
+  "binarySha256": "43fa2240211cc8d8fa1e9336b0816e2eb4df07d7d85b7c7aa0a9980c50e9f485",
+  "verifiedOriginalCopies": 73,
+  "acceptedFreshParentUpdates": 70,
+  "parentRefusals": {
+    "before-chain": 3
+  },
+  "popupEntries": 4,
+  "currentCpuJoins": 4,
+  "actualNativePasses": 4,
+  "completeHdPublicationsBeforeOriginalCursor": 4,
+  "consumedReceiptsDuplicateRejected": 4,
+  "uploadsPerEntry": 300,
+  "sourceTrianglesPerEntry": 600,
+  "actualBatchesPerEntry": 300,
+  "captureSha256": "23a4514366462d6392748332dfc47aa8cc400b7b7fdbea9a5cd528d64c0e0ba3",
+  "actualCaptureVisuallyInspected": true,
+  "cleanRouteAndRestoration": true,
+  "limits": [
+    "One four-entry trial; same-binary repeat currently running separately",
+    "Private authored-art provider and scene queue extension; maintained production registration still open",
+    "No physical iPad HD acceptance or performance claim",
+    "No cloud build, IPA or push"
+  ]
+}

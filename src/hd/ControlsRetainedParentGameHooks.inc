@@ -7,6 +7,7 @@
 #include "ControlsLiveGameHooks.inc"
 #include "ControlsSidebarLiveGameHooks.inc"
 #include "FeedbackModalInvocationGameHooks.inc"
+namespace nfs_controls_lazy_parent_live {struct CopyScope;}
 namespace nfs_controls_retained_parent {
 namespace live=nfs_controls_live;
 namespace cache=nfs_controls_sidebar_live;
@@ -30,6 +31,23 @@ inline std::shared_ptr<const Retained>&slot()noexcept{
  static thread_local std::shared_ptr<const Retained>p;
  return p;
 }
+// Source-sealed historical update: only the actual original-copy scope may
+// construct it, after current source ownership, exact replay and recipe checks.
+class LazyUpdate final {
+ std::shared_ptr<const Retained>retained_;
+ std::shared_ptr<const nfs_audio_sidebar::Packet>source_;
+ std::vector<uint16_t>after_;Target main_{};uint32_t key_=0;
+ LazyUpdate(std::shared_ptr<const Retained>r,std::shared_ptr<const nfs_audio_sidebar::Packet>s,std::vector<uint16_t>after,const Target&m,uint32_t key)
+  :retained_(std::move(r)),source_(std::move(s)),after_(std::move(after)),main_(m),key_(key){}
+ friend struct ::nfs_controls_lazy_parent_live::CopyScope;
+public:
+ const std::shared_ptr<const Retained>&retained()const noexcept{return retained_;}
+ const std::shared_ptr<const nfs_audio_sidebar::Packet>&source()const noexcept{return source_;}
+ const std::vector<uint16_t>&after()const noexcept{return after_;}
+ const Target&main()const noexcept{return main_;}
+ uint32_t key()const noexcept{return key_;}
+};
+inline std::shared_ptr<const LazyUpdate>&updateSlot()noexcept{static thread_local std::shared_ptr<const LazyUpdate>p;return p;}
 // The ambient retained-sidebar selector is not a Main bitmap generation. This
 // is the sole ignored field; every Main descriptor/LUT/header and all four
 // original owner handles still match exactly. Original collectors separately
@@ -108,7 +126,7 @@ inline bool feedbackSidebar(Game&g,const Retained&r,live::State&s,cache::State&c
 }
 } // namespace detail
 
-inline void forget()noexcept{detail::slot().reset();}
+inline void forget()noexcept{detail::updateSlot().reset();detail::slot().reset();}
 
 // Call only after the existing ordinary Controls queue's repeat acquisition
 // and native EAX/Main-owner gates. Recheck them here; no caller-supplied numeric
@@ -151,13 +169,19 @@ inline void remember(Game&g,const std::shared_ptr<const Prepared>&prepared,
 class Parent final {
  std::shared_ptr<const detail::Retained>retained_;
  std::shared_ptr<const Invocation>invocation_;
- Parent(std::shared_ptr<const detail::Retained>r,std::shared_ptr<const Invocation>i)
-  :retained_(std::move(r)),invocation_(std::move(i)){}
+ std::shared_ptr<const detail::LazyUpdate>update_;
+ Parent(std::shared_ptr<const detail::Retained>r,std::shared_ptr<const Invocation>i,std::shared_ptr<const detail::LazyUpdate>u)
+  :retained_(std::move(r)),invocation_(std::move(i)),update_(std::move(u)){}
  friend std::shared_ptr<const Parent>acquireForFeedback(Game&)noexcept;
 public:
+ NfsControlsSceneFrameView view(uint64_t serial)const noexcept{
+  auto v=retained_->prepared->view(serial);if(!v.schema||!update_)return v;
+  v=retained_->prepared->viewWithSidebar(serial,update_->source(),v.layers.background.mapRole);
+  if(v.schema){v.original565=update_->after().data();v.planeWords=update_->after().size();}return v;
+ }
  const std::shared_ptr<const Prepared>&prepared()const noexcept{return retained_->prepared;}
  const std::shared_ptr<const Invocation>&invocation()const noexcept{return invocation_;}
- const std::vector<uint16_t>&original()const noexcept{return retained_->prepared->frame()->text()->original();}
+ const std::vector<uint16_t>&original()const noexcept{return update_?update_->after():retained_->prepared->frame()->text()->original();}
  // Historical join identity only; this is intentionally not named "current".
  bool sameInvocation(const std::shared_ptr<const Invocation>&i)const noexcept{
   return i&&i==invocation_&&original()==i->before();
@@ -171,6 +195,9 @@ inline std::shared_ptr<const Parent>acquireForFeedback(Game&g)noexcept{
  try{
   const auto retained=detail::slot();auto invocation=modal::activeInvocation(g);
   if(!retained||!invocation||uint32_t(g.eax)!=2||uint32_t(g.edx)!=invocation->binding().owner)return {};
+  const auto update=detail::updateSlot();
+  if(update&&(update->retained()!=retained||!update->source()||!detail::sameMain(update->main(),retained->main)))return {};
+  const auto&expected=update?update->after():retained->prepared->frame()->text()->original();
   live::State*s=nullptr;cache::State*c=nullptr;
   if(!detail::feedbackOwners(g,*retained,s,c)||
      invocation->parentEpoch()!=retained->binding.ownerEpoch||
@@ -181,20 +208,20 @@ inline std::shared_ptr<const Parent>acquireForFeedback(Game&g)noexcept{
      invocation->authority().archive!=retained->binding.archive||
      !(invocation->authority()==retained->dialog->evidence().authority)||
      !(invocation->binding().surface==retained->binding.surface)||
-     invocation->before()!=retained->prepared->frame()->text()->original()||
+     invocation->before()!=expected||
      !detail::sameMain(invocation->initialTarget(),retained->main)||
      !detail::feedbackSidebar(g,*retained,*s,*c))return {};
   Target now;modal::bd::Plane pixels;
   if(!modal::explicitMain(now,pixels)||!detail::sameMain(now,retained->main)||
      !nfs_logo_capture::same(now,invocation->initialTarget())||
      pixels!=invocation->before()||
-     !retained->prepared->frame()->matches(retained->binding,s->acceptedTextSerial,pixels.data(),pixels.size()))return {};
+     (!update&&!retained->prepared->frame()->matches(retained->binding,s->acceptedTextSerial,pixels.data(),pixels.size())))return {};
   live::State*repeat=nullptr;cache::State*repeatCache=nullptr;
-  if(detail::slot()!=retained||modal::activeInvocation(g)!=invocation||
+  if(detail::slot()!=retained||detail::updateSlot()!=update||modal::activeInvocation(g)!=invocation||
      !detail::feedbackOwners(g,*retained,repeat,repeatCache)||repeat!=s||repeatCache!=c||
      !detail::feedbackSidebar(g,*retained,*s,*c)||!modal::explicitMain(now,pixels)||
      !nfs_logo_capture::same(now,invocation->initialTarget())||pixels!=invocation->before())return {};
-  return std::shared_ptr<const Parent>(new Parent(retained,invocation));
+  return std::shared_ptr<const Parent>(new Parent(retained,invocation,update));
  }catch(...){return {};}
 }
 } // namespace nfs_controls_retained_parent

@@ -1,0 +1,49 @@
+{
+  "scope": "Complete actual transform-row arithmetic and candidate whole-plane layout consistency; no parent source authority",
+  "entries": [
+    {
+      "entry": 1,
+      "rows": 480,
+      "completeIntermediateBytes": 658560,
+      "transparentPixels": 47174,
+      "independentRowArithmeticEqual": true,
+      "wholePlaneCandidateReplayEqual": true,
+      "traceSha256": "ccdad864646f8ff646a2820dfe382ce091658f9ea254e48e896241f7c3193374"
+    },
+    {
+      "entry": 2,
+      "rows": 480,
+      "completeIntermediateBytes": 658560,
+      "transparentPixels": 47183,
+      "independentRowArithmeticEqual": true,
+      "wholePlaneCandidateReplayEqual": true,
+      "traceSha256": "727f29787772c00236314f4ec712bf8250ab076f4bdf4f57219a12115c9ef1c5"
+    },
+    {
+      "entry": 3,
+      "rows": 480,
+      "completeIntermediateBytes": 658560,
+      "transparentPixels": 47241,
+      "independentRowArithmeticEqual": true,
+      "wholePlaneCandidateReplayEqual": true,
+      "traceSha256": "cb9dbe531bd5d87ac1f48961b5156367f93f7159b68144de2f43945653ab2f61"
+    },
+    {
+      "entry": 4,
+      "rows": 480,
+      "completeIntermediateBytes": 658560,
+      "transparentPixels": 47246,
+      "independentRowArithmeticEqual": true,
+      "wholePlaneCandidateReplayEqual": true,
+      "traceSha256": "9ef424687c1626783033bb51bdedb2c34261181cf5e89ab4512e97905836aafc"
+    }
+  ],
+  "cleanRouteAndRestoration": true,
+  "physicalDeviceVerified": false,
+  "binarySha256": "d00db73e0db4da68c2c06b9d7ab4f0cf7290867924b57ff610283f4865aec4a0",
+  "limitations": [
+    "Candidate top-left layout consistency is not independently issued Game geometry/source authority",
+    "Retained parent update and HD recipe equivalence not integrated",
+    "Linux software-rendered fixture; no physical iPad verification"
+  ]
+}

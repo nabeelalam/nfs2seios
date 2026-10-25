@@ -1,0 +1,27 @@
+{
+  "scope": "Pure synthetic exact keyed conversion only; no Game or source authority",
+  "runs": [
+    {
+      "name": "keyed-opt",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    },
+    {
+      "name": "keyed-san",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    }
+  ],
+  "sourceSha256": "f25e0b2b9eaa8a11b9826a40c9fbe7ff828646642f46a89d9977ff7b6968cbbe",
+  "headerSha256": "6cfef2416d128441fa58949f199c6dd6e8b999c84698367535d50aef2ad578b8",
+  "coverage": [
+    "All65536RGB565values across6keys including32bitoutofrange",
+    "Complete ARGB32 intermediate and keyed destination semantics",
+    "Identity/count/null/span/corruption/partialalpha rejection"
+  ],
+  "limits": [
+    "Numeric consistency only, no Game source authority",
+    "Standalone optimized and ASanUBSan execution; CMake registered but CTest not run",
+    "Separate complete actual trace passes arithmetic/layout consistency; Game producer authority remains separate"
+  ]
+}

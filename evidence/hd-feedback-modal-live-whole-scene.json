@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "scope": "First actual original-game complete HD Controls parent and authored Feedback popup composition",
+  "status": "one-live-composition-passed",
+  "nativeWitness": {
+    "uploads": 300,
+    "selections": 300,
+    "sourceTriangles": 600,
+    "actualPostSyncBatches": 300,
+    "oneShotReceipt": true,
+    "duplicateRejected": true
+  },
+  "fullParentAndPopupStagedBeforeColorOnlyCommit": true,
+  "beforeOriginalCursorAndSwap": true,
+  "originalCpuPixelsAndOperationsPreserved": true,
+  "parentInvocationPlanesExactlyEqual": true,
+  "authoredCandidateProviderVerified": true,
+  "screenshotSize": [
+    2186,
+    1640
+  ],
+  "screenshotPixelPreservingPngSha256": "413e350322d0323bff6da7ff1ce0480264706dccd0f15ce1e41632c0243d6968",
+  "originalMenuRecoveryAndCleanupPassed": true,
+  "physicalDeviceVerified": false,
+  "productionPreparationRegistered": false,
+  "publicArtworkPublished": false,
+  "sourceSha256": {
+    "src/hd/FeedbackModalSceneRenderer.inc": "d06b223abf747d5b133ebf75731cab9bf005a68b203225e2e8ee44f917cdfd86",
+    "src/hd/FeedbackModalSceneRuntimeAbi.h": "4d2c0b8e19254e8bb8ea374dc11629883e768ff2a7e7fe9aad2b9c6b0f869aec",
+    "src/hd/FeedbackModalSceneLayers.c.inc": "253dfa72a7beedbca4eddb4521836c0f90ed11d02314a72c506479159ff7ab45",
+    "src/hd/FeedbackModalSceneLayerAbi.h": "b318423722423fca81c29e1b8131871915a09e1db3df880c2ab311303834a2fe",
+    "src/hd/FeedbackModalBackdropGpu.c.inc": "bd11831881a1903d4c1612420b6d483fd1358ad85b9cc9983f2c02be564f7682",
+    "src/hd/FeedbackModalWordGpu.c.inc": "3d27df5094b1820b9f5e0c3f0b9bb603a3f562d494a935caa1ff46c00579110a"
+  },
+  "binarySha256": "7591e0f9cd6989dbb6b6dbff2e7400fc7ed291d8006bd6eee81ebcb789278662",
+  "limits": [
+    "Previous run23 retained-parent stage2 refusal is still unexplained; this success does not resolve it.",
+    "One live popup invocation; reentry, renderer retirement and cancellation still need runtime coverage.",
+    "Artwork is a private authored candidate awaiting visual acceptance.",
+    "Private composed source/provider hooks only; no IPA or cloud build."
+  ]
+}

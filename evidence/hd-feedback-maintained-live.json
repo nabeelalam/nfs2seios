@@ -1,0 +1,28 @@
+{
+  "scope": "Actual maintained preparation, authenticated optional v5 provider, canonical fresh-parent and native whole-popup composition",
+  "binarySha256": "81df684a4489905c2d8bae5de33b93766bddb7451cbeb2d3da4d8da4418ffbf8",
+  "baseFreshCompiledObjects": 76,
+  "changedRegeneratedObjects": 1,
+  "unchangedSourceHeaderAndObjectChecksPassed": true,
+  "privateSourcePatchesOrFileLoader": false,
+  "actualPopupEntries": 4,
+  "nativeWholePublicationsBeforeOriginalCursor": 4,
+  "oneShotReceiptsDuplicateRejected": 4,
+  "uploadsPerEntry": 300,
+  "sourceTrianglesPerEntry": 600,
+  "actualBatchesPerEntry": 300,
+  "verifiedOriginalCopies": 75,
+  "acceptedCanonicalParentUpdates": 71,
+  "parentRefusals": {
+    "before-chain": 4
+  },
+  "actualCaptureVisuallyInspected": true,
+  "captureSha256": "88b1384aa82146bac43a2db092282c78fd17322178947f05d876d5e010ec1689",
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "limits": [
+    "Local software-rendered WSL test; no new physical iPad acceptance or performance claim",
+    "Engineering pack intentionally contains previous panel; corrected three-layer study not promoted",
+    "No cloud build, IPA upload or push",
+    "Missing-artwork runtime verified separately; context-loss coverage is isolated GLES, not an actual iPad lifecycle test"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "scope": "Synthetic recipe fieldwise comparisons; no accepted-packet positive fixture",
+  "runs": [
+    {
+      "name": "recipe-opt",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    },
+    {
+      "name": "recipe-san",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    }
+  ],
+  "sourceSha256": "cb8f6fe5e65a241764f7ca5d220bb5e14eb847e2b85e0d58b3d95a32cbb10198",
+  "headerSha256": "d630792559c8f233d53d4616bc529ee3cae3595d9e666d4401e199afb2fb707f",
+  "limits": [
+    "Synthetic fieldwise content comparisons only; accepted-packet positive case requires actual Game integration",
+    "No independent Game/source/native authority",
+    "CMake registered; standalone optimized and sanitizer execution passed, CTest not run"
+  ]
+}

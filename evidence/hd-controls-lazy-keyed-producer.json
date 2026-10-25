@@ -1,0 +1,42 @@
+{
+  "scope": "Actual Game producer complete keyed-row and whole-Main numeric replay; retained-parent source update not issued",
+  "binarySha256": "3bb17067e2dc7e1cee6ff8277a4fe1982fdc769722beb9c55271fea8ecd55719",
+  "verifiedOriginalCopyCalls": 71,
+  "entries": [
+    {
+      "entry": 1,
+      "liveNumericReplayVerified": true,
+      "actualRows": 480,
+      "summaryRowCountKnownReportingDefect": 0,
+      "summarySha256": "c0aac6b1d354f8de85554a498746e35642e768fcbca367b493a7f95dcde97d4f"
+    },
+    {
+      "entry": 2,
+      "liveNumericReplayVerified": true,
+      "actualRows": 480,
+      "summaryRowCountKnownReportingDefect": 0,
+      "summarySha256": "6cac97a18e03fe0d1a2a643a6a572df58ffe737848fa039ae76ae4bdaefa68c9"
+    },
+    {
+      "entry": 3,
+      "liveNumericReplayVerified": true,
+      "actualRows": 480,
+      "summaryRowCountKnownReportingDefect": 0,
+      "summarySha256": "bafceb452cb3527aa6b120a238fe58fd640a068b4f30de06392f4c966e7c8641"
+    },
+    {
+      "entry": 4,
+      "liveNumericReplayVerified": true,
+      "actualRows": 480,
+      "summaryRowCountKnownReportingDefect": 0,
+      "summarySha256": "85c65940e37d5dd09aa2264ea7ca17416c7a17a71ca8ae15f0e65e3986a9c017"
+    }
+  ],
+  "cleanRouteAndRestoration": true,
+  "audit": "Read-only collector audit found no blocking lease/stack/event/destructor issue",
+  "limits": [
+    "Checkpoint rows field still counts direct vector; actual keyed count is480 from verified replay log and actual row records",
+    "Parent refresh needs exact retained before-plane chain and HD recipe equivalence",
+    "No production renderer registration, cloud build, IPA or physical iPad HD validation"
+  ]
+}

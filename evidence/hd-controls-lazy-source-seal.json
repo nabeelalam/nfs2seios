@@ -1,0 +1,14 @@
+{
+  "publicGameHeaderSyntax": true,
+  "privateSnapshotFactory": true,
+  "noncopyableNonmovableScope": true,
+  "privateScopeState": true,
+  "rawLazyUpdateFactoryUnavailable": true,
+  "runtimeAuthorityVerified": false,
+  "headersSha256": {
+    "ControlsRetainedParentGameHooks.inc": "00a60a7545849780a7f8b67c614f16285fff3766084ff5856b9fae91eb370d60",
+    "ControlsLazyParentCopyGameHooks.inc": "72625df0ccbe8ce0785b0f45c2087d63b3c3984188f7d4f87b118346e05c6541",
+    "ControlsSidebarRecipeEquivalent.h": "d630792559c8f233d53d4616bc529ee3cae3595d9e666d4401e199afb2fb707f",
+    "ControlsLazyParentTextProtection.h": "d48bc8b667ea3933887d9e1d05ffd00fe2a53ffa3f6507499f3454a938462d57"
+  }
+}

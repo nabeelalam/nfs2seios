@@ -1,0 +1,8 @@
+{
+  "scope": "First maintained native runtime trial failed due omitted completion callbacks",
+  "binarySha256": "0f1cea6aa784e7b18cae53c98c85740cbaeb5f6cefdc8c10f09cd8fb0874f772",
+  "nativePopupEntriesBeforeFailure": 1,
+  "cause": "Maintained transformer omitted afterTransform/afterForward, causing exact sequence verification failure5",
+  "correctiveAction": "Add real completion hooks with nineteen structural regression tests; keep verifier unchanged",
+  "failedTrialCleanShutdownAndRestoration": true
+}

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual saved/fresh immutable sidebar component comparison only; no source policy changed",
+  "binarySha256": "35307fc9542cd8303ba2af99956a5c2da4e9abe624e4a394bb7cc8cdb8879833",
+  "cleanRouteAndRestoration": true,
+  "entries": [
+    {
+      "entry": 1,
+      "changedPixelWords": 19443,
+      "keySupportDifferences": 0,
+      "sourceCatalogueEqual": true,
+      "fontAndCaptionArtworkEqual": true,
+      "changedCountryLayers": 4,
+      "changedLogoLayers": 1
+    },
+    {
+      "entry": 2,
+      "changedPixelWords": 21023,
+      "keySupportDifferences": 0,
+      "sourceCatalogueEqual": true,
+      "fontAndCaptionArtworkEqual": true,
+      "changedCountryLayers": 3,
+      "changedLogoLayers": 1
+    },
+    {
+      "entry": 3,
+      "changedPixelWords": 15602,
+      "keySupportDifferences": 59,
+      "sourceCatalogueEqual": true,
+      "fontAndCaptionArtworkEqual": true,
+      "changedCountryLayers": 4,
+      "changedLogoLayers": 1
+    },
+    {
+      "entry": 4,
+      "changedPixelWords": 18107,
+      "keySupportDifferences": 0,
+      "sourceCatalogueEqual": true,
+      "fontAndCaptionArtworkEqual": true,
+      "changedCountryLayers": 4,
+      "changedLogoLayers": 1
+    }
+  ],
+  "limits": [
+    "Original and HD source art catalogue unchanged but actual animation layers differ; unchanged-recipe route is not a fix",
+    "Key support changed for59pixels in entry3; canonical full reconstruction must be proven, never assumed",
+    "No new Parent update or full fresh HD view integrated yet",
+    "No cloud, IPA or physical iPad validation"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "Canonical maintained source headers, original generated headers remain local",
+  "sourcePreparationPassed": true,
+  "generationSeconds": 41.36,
+  "affectedGameSyntaxUnits": [
+    "Methods_01",
+    "Methods_03",
+    "Methods_10",
+    "Methods_13"
+  ],
+  "affectedGameSyntaxPassed": true,
+  "maintainedHeadersCopiedIntoGeneratedOutput": false,
+  "inventorySha256": "6df088a6f6042bea608c28bae575c00c833e2a875cb335419e6afcbc4c1538ec",
+  "generationReceiptSha256": "ebd7b63a1e36c6467f8d891cfc0845badba0a272c69346382105ba563d96491b",
+  "priorFailures": [
+    "Mixed copied Feedback and source Controls headers duplicated graphics types",
+    "Copying core helpers duplicated worker state through runtime bridge headers"
+  ],
+  "limits": [
+    "Syntax and preparation are not object/link/runtime proof",
+    "Fresh native compilation is in progress; no maintained Game runtime claimed",
+    "No cloud or physical iPad validation"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "Synthetic transparent-source text-occlusion guard only",
+  "runs": [
+    {
+      "name": "text-protection-opt",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    },
+    {
+      "name": "text-protection-san",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    }
+  ],
+  "sourceSha256": "2b4f682b0b903a34d166dc6e5f2025d61bb1c9714875277bb1a18f4a3ba6131e",
+  "headerSha256": "d48bc8b667ea3933887d9e1d05ffd00fe2a53ffa3f6507499f3454a938462d57",
+  "limits": [
+    "Pure numeric occlusion check only; original copy and retained/live source ownership remain separately required",
+    "Standalone optimized and ASanUBSan passed; CTest not run"
+  ]
+}

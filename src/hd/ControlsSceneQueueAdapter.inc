@@ -4,6 +4,7 @@
 #include "ControlsSidebarLiveGameHooks.inc"
 #include "ControlsLiveGameHooks.inc"
 #include "BackgroundSceneQueueAdapter.inc"
+#include "ControlsRetainedParentGameHooks.inc"
 #endif
 #include "ControlsScenePrepare.h"
 #include "MainThreadBridge.h"
@@ -55,6 +56,9 @@ inline void begin(Game&g,Intent&i){
     !live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(binding,s->acceptedTextSerial,post.data(),post.size())){trace(10,"repeat-full-plane",s);return;}
  bool repeatOwner=false;try{nfs::GuestCopyTransaction tx;repeatOwner=tx.load<uint32_t>(dword_4D4D24)==binding.owner;}catch(...){trace(6,"native-owner-read",s);return;}
  if(!repeatOwner||uint32_t(g.eax)!=binding.surface.geometry[8]){trace(5,"native-source-owner",s);return;}
+#ifndef NFS_CONTROLS_QUEUE_RUNTIME_TEST
+ nfs_controls_retained_parent::remember(g,owned,dialogProof);
+#endif
  auto lease=Lease::create(owned);if(!lease){trace(11,"lease-allocation",s);return;}const uint64_t serial=nfs_background_scene_live::nextRequest();if(!serial){trace(12,"serial-overflow",s);return;}i.owned=lease;i.serial=serial;traceDialog(serial,*dialogProof);
  nfs::check_worker_stop();const auto receipt=nfs::enqueue_owned_renderer([lease,serial](){auto view=lease->view(serial);return int32_t(nfs_private_controls_scene_begin(&view));});
  if(receipt==nfs::OwnedRendererAcceptance::UseExistingOwnerPath){i.owned.reset();i.serial=0;trace(13,"existing-owner-path",s);return;}

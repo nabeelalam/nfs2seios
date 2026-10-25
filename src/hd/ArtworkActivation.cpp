@@ -39,6 +39,8 @@ bool activateArtworkPack(const std::string&root,const Digest&expected)noexcept{
         // A missing/sealed mark registry preserves originals, not valid scenes.
         const auto marks=owner->nativeMarkProvider();
         if(marks.schema)(void)nfs_hd_install_native_mark_provider(&marks);
+        const auto feedback=owner->feedbackBackdropProvider();
+        if(feedback.schema)(void)nfs_hd_install_feedback_modal_backdrop_art_provider(&feedback);
         const auto audio=owner->audioArtProvider();
         if(audio.schema&&nfs_hd_install_audio_art_provider(&audio)){
             NfsAudioArt art{};const auto*metadata=owner->audioSourceIdentities();

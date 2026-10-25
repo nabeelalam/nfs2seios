@@ -1,0 +1,22 @@
+{
+  "scope": "Synthetic complete fresh-background and retained-text recomposition proof only",
+  "runs": [
+    {
+      "name": "recomposition-opt",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    },
+    {
+      "name": "recomposition-san",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    }
+  ],
+  "sourceSha256": "bb38fb7e5e74b8fd798cdb394ab20551dcf3b505655639fbc1901690fc4c9d4f",
+  "headerSha256": "41a4ebbd69c09fca5f4272c9e27a14597c3a1ab3824aba5bf7e311598420939b",
+  "limits": [
+    "Synthetic numeric full-recomposition proof only; source ownership and actual live view integration remain open",
+    "Canonical originalmap+nonzerosidebar+unchangedtext must match every actual after pixel",
+    "CMake registered; standalone optimized and sanitizer execution passed, CTest not run"
+  ]
+}

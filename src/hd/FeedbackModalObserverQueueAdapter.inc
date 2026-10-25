@@ -2,10 +2,13 @@
 #pragma once
 #include "FeedbackModalWordDisplay.h"
 #include "FeedbackModalNativeObserverAbi.h"
+#include "FeedbackModalSceneRuntimeAbi.h"
+#include "FeedbackModalBackdropArtProvider.h"
 #include "BackgroundSceneQueueAdapter.inc"
 #include <atomic>
 #include <stdexcept>
-// Observe-only source queue. No artwork staging, suppression or publication.
+// Source-bound observation and optional complete HD composition. Missing or
+// invalid authored artwork leaves the original rendering intact.
 namespace nfs_feedback_modal_observer_queue {
 using Words=nfs_feedback_modal_word_display::Prepared;
 using Joined=nfs_feedback_modal_scene_live::Joined;
@@ -19,6 +22,13 @@ public:
  static std::shared_ptr<const Lease>create(std::shared_ptr<const Words>w)noexcept{
   if(!w||!w->scene()||!w->historicalConsistent()||w->scene()->original().size()!=307200)return {};
   try{auto*p=new Lease(std::move(w));return std::shared_ptr<const Lease>(p,[p](const Lease*){release(p);});}catch(...){return {};}
+ }
+ NfsFeedbackModalSceneView sceneView(uint64_t serial,const NfsFeedbackModalBackdropArtView&art)const noexcept{
+  NfsFeedbackModalSceneView v{};if(!serial||!words_||!words_->historicalConsistent())return v;
+  const auto&joined=words_->scene();auto parent=joined->parent()->view(serial);if(parent.schema!=NFS_CONTROLS_SCENE_RUNTIME_SCHEMA)return v;
+  v.schema=1;v.width=640;v.height=480;v.serial=serial;v.modalEpoch=joined->invocation()->modalEpoch();v.layers.schema=1;v.layers.parent=parent.layers;v.layers.words=words_->view();v.layers.backdrop=art;
+  const auto&font=words_->packet()->font();if(!font)return {};v.layers.text.font.schema=1;v.layers.text.font.width=font->width;v.layers.text.font.height=font->height;v.layers.text.font.identity=font->identity();v.layers.text.font.alpha=font->alpha().data();v.layers.text.font.bytes=font->alpha().size();if(!nfs_texture_sha256(font->alpha().data(),font->alpha().size(),v.layers.text.font.sha256))return {};
+  v.layers.text.logicalWidth=640;v.layers.text.logicalHeight=480;v.layers.text.vertices=words_->packet()->vertices().data();v.layers.text.vertexCount=words_->packet()->vertices().size();return v;
  }
  NfsFeedbackModalNativeView view(uint64_t serial)const noexcept{
   NfsFeedbackModalNativeView v{};if(!serial||!words_||!words_->historicalConsistent())return v;
@@ -40,7 +50,13 @@ inline void finish(Intent&i){
  if(!i.consumed||i.finished)return;if(!i.serial||nfs_background_scene_live::activeRequest()!=i.serial)throw std::logic_error("Feedback observer queue owner changed");
  const auto lease=i.lease;const auto serial=i.serial,epoch=i.epoch;nfs::check_worker_stop();
  const auto acceptance=nfs::enqueue_owned_renderer([lease,serial,epoch](){
-  (void)lease;(void)nfs_private_feedback_modal_observer_finish(serial,epoch);NfsFeedbackModalNativeReceipt r{},again{};const int taken=nfs_private_feedback_modal_observer_take_receipt(serial,epoch,&r);
+  (void)nfs_private_feedback_modal_observer_finish(serial,epoch);NfsFeedbackModalNativeReceipt r{},again{};
+  NfsFeedbackModalBackdropArtView art{};const int provider=nfs_hd_feedback_modal_backdrop_art(&art);int composed=0;
+  if(provider){auto view=lease->sceneView(serial,art);if(view.schema)composed=nfs_private_feedback_modal_scene_compose(&view,&r);}
+  // Compose owns its one-shot receipt. If it did not consume one (including
+  // missing artwork/invalid view), finish the original observe-only path.
+  int taken=r.admitted?1:0;if(!taken)taken=nfs_private_feedback_modal_observer_take_receipt(serial,epoch,&r);
+  std::fprintf(stderr,"FEEDBACK WHOLE SCENE provider=%u composed=%u\n",unsigned(provider),unsigned(composed));
   const int duplicate=nfs_private_feedback_modal_observer_take_receipt(serial,epoch,&again);
   std::fprintf(stderr,"FEEDBACK MODAL QUEUE receipt=%u admitted=%u batches=%u duplicate=%u context=%llu\n",unsigned(taken),r.admitted,r.batches,unsigned(duplicate),(unsigned long long)r.contextGeneration);
   if(!taken)nfs_private_feedback_modal_observer_cancel(serial,epoch);return int32_t(taken&&r.admitted&&!duplicate);

@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "scope": "Complete unpublished HD Controls parent and popup staging in isolated actual EGL/GLES with synthetic source/art",
+  "optimizedCxx17": true,
+  "asanUbsanCxx17": true,
+  "softwareDriver": true,
+  "leakDetectionDisabledForGraphicsDriver": true,
+  "expectedDraws": 24,
+  "order": [
+    "complete HD Controls parent",
+    "body",
+    "clipped banner",
+    "emblem",
+    "title",
+    "message"
+  ],
+  "independentFullImageBlendOracle": true,
+  "originalTargetUntouched": true,
+  "preflightPureAndAliasesRefusedBeforeDraw": true,
+  "lateErrorsAndActualContextLossCovered": true,
+  "cmakeRegistered": true,
+  "ctestRun": false,
+  "actualGameComposition": false,
+  "physicalDeviceVerified": false,
+  "sourceSha256": {
+    "src/hd/FeedbackModalSceneLayerAbi.h": "b318423722423fca81c29e1b8131871915a09e1db3df880c2ab311303834a2fe",
+    "src/hd/FeedbackModalSceneLayers.h": "a7f688ad63de977d5e95ea918f8fb599e88e2fcc118099e0985c8f43b98728fc",
+    "src/hd/FeedbackModalSceneLayers.c.inc": "253dfa72a7beedbca4eddb4521836c0f90ed11d02314a72c506479159ff7ab45",
+    "tests/feedback_modal_scene_layers_tests.cpp": "51247fdfd97c027c7cdcec3814a4edaad8f7280f68f94190b7b10cf4bcfc227d"
+  }
+}

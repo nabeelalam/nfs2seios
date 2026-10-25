@@ -1,0 +1,15 @@
+{
+  "scope": "Unchanged-binary second four-entry actual HD fresh-parent trial",
+  "binarySha256": "43fa2240211cc8d8fa1e9336b0816e2eb4df07d7d85b7c7aa0a9980c50e9f485",
+  "verifiedCopies": 72,
+  "freshParentPromotions": 69,
+  "hdNativePublications": 4,
+  "oneShotReceiptsDuplicateRejected": 4,
+  "cleanRestoration": true,
+  "combinedTwoTrials": {
+    "popupEntries": 8,
+    "freshParentPromotions": 139,
+    "nativePublications": 8
+  },
+  "physicalDeviceVerified": false
+}

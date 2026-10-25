@@ -101,12 +101,41 @@ def prepare_renderer():
     text = add_controls_steering_renderer_hooks(text)
     for name in CONTROLS_STEERING_HELPERS:
         shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
+    from feedback_modal_observer_hooks import add_feedback_modal_observer_hooks, HELPERS as FEEDBACK_OBSERVER_HELPERS
+    from feedback_modal_scene_renderer_hooks import add_feedback_modal_scene_renderer_hooks, HELPERS as FEEDBACK_SCENE_HELPERS
+    text = add_feedback_modal_observer_hooks(text)
+    text = add_feedback_modal_scene_renderer_hooks(text)
+    copy_feedback_renderer_helpers(dest, FEEDBACK_OBSERVER_HELPERS + FEEDBACK_SCENE_HELPERS)
     path.write_text('#include "FramePresentation.h"\n' + text)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
 
 
 
+
+
+def copy_feedback_renderer_helpers(dest, names):
+    """Copy only maintained local source dependencies, preserving their paths."""
+    source_root = (ROOT / 'src').resolve()
+    pending = [source_root / 'hd' / name for name in names]
+    seen = set()
+    while pending:
+        source = pending.pop().resolve()
+        if not source.is_relative_to(source_root):
+            raise ValueError('Feedback renderer helper escapes maintained source')
+        if source in seen: continue
+        if not source.is_file(): raise ValueError('Missing Feedback renderer helper: ' + source.name)
+        seen.add(source)
+        relative = source.relative_to(source_root)
+        target = dest / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+        for name in re.findall(r'^\s*#include\s+"([^"\r\n]+)"', source.read_text(), re.M):
+            dependency = (source.parent / name).resolve()
+            if not dependency.is_file(): dependency = (source_root / name).resolve()
+            if not dependency.is_file(): raise ValueError('Missing quoted Feedback renderer dependency: ' + name)
+            pending.append(dependency)
+    return seen
 
 def copy_native_mark_helpers(dest):
     target = dest / 'hd'

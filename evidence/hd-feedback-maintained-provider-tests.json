@@ -1,0 +1,36 @@
+{
+  "kind": "provider",
+  "records": [
+    {
+      "variant": "opt",
+      "scenarios": [
+        "missing",
+        "null-first",
+        "failed-callback",
+        "metadata",
+        "descriptor-copy",
+        "invalid-install",
+        "concurrent"
+      ],
+      "passed": true
+    },
+    {
+      "variant": "san",
+      "scenarios": [
+        "missing",
+        "null-first",
+        "failed-callback",
+        "metadata",
+        "descriptor-copy",
+        "invalid-install",
+        "concurrent"
+      ],
+      "passed": true
+    }
+  ],
+  "scope": "Synthetic optional artwork provider/pack contract only; no actual source pipeline or physical device validation",
+  "limits": [
+    "Synthetic contracts only; fresh maintained Game runtime unverified",
+    "Standalone optimized and ASanUBSan executed; CMake registered, CTest not run"
+  ]
+}

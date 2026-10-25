@@ -1,0 +1,44 @@
+{
+  "scope": "Sealed retained-background integration trial; exact-copy producer passes, unchanged-recipe refresh cannot handle observed updates",
+  "binarySha256": "80ab4349dfa4ae605997bdc05f80863a96a29774457e78cbae3d5fe38456d038",
+  "verifiedOriginalCopies": 73,
+  "parentUpdateReasons": {
+    "sidebar-recipe": 69,
+    "before-chain": 4
+  },
+  "acceptedParentUpdates": 0,
+  "entries": [
+    {
+      "entry": 1,
+      "parentOriginalPlaneMatches": false,
+      "differentOriginalPixelWords": 23812,
+      "joinedHdPopup": false
+    },
+    {
+      "entry": 2,
+      "parentOriginalPlaneMatches": true,
+      "differentOriginalPixelWords": 0,
+      "joinedHdPopup": true
+    },
+    {
+      "entry": 3,
+      "parentOriginalPlaneMatches": false,
+      "differentOriginalPixelWords": 44468,
+      "joinedHdPopup": false
+    },
+    {
+      "entry": 4,
+      "parentOriginalPlaneMatches": true,
+      "differentOriginalPixelWords": 0,
+      "joinedHdPopup": true
+    }
+  ],
+  "cleanRouteAndRestoration": true,
+  "limitations": [
+    "No updated-parent branch was accepted or runtime validated",
+    "Two entries still reject HD join due changed parent plane",
+    "Exact differing recipe components need capture; do not weaken raw equality or assume version-only change",
+    "Text-occlusion guard passed synthetic tests but actual acceptance remains unverified",
+    "No cloud, IPA or physical iPad HD validation"
+  ]
+}

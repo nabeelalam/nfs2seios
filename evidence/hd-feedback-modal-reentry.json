@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "scope": "Four genuine original-input popup entries using the same native binary; source-refusal diagnostic retained",
+  "entries": 4,
+  "wholeHdCompositions": 3,
+  "nativeReceipts": 3,
+  "duplicateReceiptsRejected": true,
+  "typedTextAndBackdropInvocationsCurrent": 4,
+  "sourceRefusals": 1,
+  "sourceRefusalEntry": 2,
+  "sourceRefusalReason": "Full original Main differs from frozen parent; ownership/authority/geometry/LUT checks match",
+  "changedPixelCount": 20846,
+  "changedPixelBounds": [
+    0,
+    0,
+    176,
+    480
+  ],
+  "actualCopyFootprintCaptured": false,
+  "remainingCauseWork": "Original source contains an unobserved lazy Sidebar-to-Main copy in 40BBE0; capture and verify that copy before rebinding a fresh parent recipe.",
+  "sourceGateNotWeakened": true,
+  "menuRecoveryAfterEveryEntryAndFinalCleanup": true,
+  "physicalDeviceVerified": false,
+  "productionPreparationRegistered": false,
+  "binarySha256": "7591e0f9cd6989dbb6b6dbff2e7400fc7ed291d8006bd6eee81ebcb789278662",
+  "limits": [
+    "Three successful compositions do not resolve the one genuine source refusal.",
+    "Changed-pixel bounds are not proof of the original write footprint.",
+    "Next producer must verify actual copy/source/clip and the complete before-to-after plane; no pixel mismatch tolerance."
+  ]
+}

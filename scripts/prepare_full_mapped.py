@@ -1,7 +1,9 @@
 """Prepare statically translated methods with checked guest-copy boundaries."""
 import re
+import hashlib
+import json
 import shutil
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from prepare_mapped_engine import prepare_mapped, rewrite_stores, closing, ROOT, TYPES
 from batch_guest_copies import batch_copies
 from native_controller_hooks import add_native_controller_hooks
@@ -17,6 +19,10 @@ from controls_text_hooks import add_controls_text_hooks
 from controls_sidebar_hooks import add_controls_sidebar_hooks
 from controls_live_hooks import add_controls_live_hooks
 from controls_scene_hooks import add_controls_scene_hooks
+from feedback_modal_hooks import add_feedback_modal_hooks
+from feedback_modal_backdrop_hooks import add_feedback_backdrop_hooks
+from feedback_modal_scene_hooks import add_feedback_modal_scene_hooks, HELPERS as FEEDBACK_SCENE_HELPERS
+from feedback_modal_observer_source_hooks import add_feedback_modal_observer_source_hooks
 from controls_setup_text_hooks import add_controls_setup_text_hooks
 from controls_setup_sidebar_hooks import add_controls_setup_sidebar_hooks
 from controls_setup_live_hooks import add_controls_setup_live_hooks
@@ -79,6 +85,103 @@ def add_audio_operation_guards(text):
     return '#include "AudioOperations.h"\n' + text
 
 
+def validate_game_helper_includes(dest, generated_files=None):
+    """Inventory canonical src headers; never copy maintained headers.
+
+    CMake already supplies src before FullMapped. Runtime TUs also include src
+    headers locally. Duplicating even a closed helper graph in FullMapped would
+    split #pragma-once identities when those two paths meet in one TU.
+    """
+    source = (ROOT / 'src').resolve()
+    dest = dest.resolve()
+    generated = tuple(generated_files) if generated_files is not None else tuple(
+        path.name for path in sorted(dest.iterdir())
+        if path.is_file() and path.suffix in ('.cpp', '.h'))
+    protected = set()
+    for name in generated:
+        path = (dest / name).resolve()
+        try:
+            relative = path.relative_to(dest)
+        except ValueError:
+            raise ValueError('Original generated header escaped output directory') from None
+        if len(relative.parts) != 1 or not path.is_file():
+            raise ValueError('Missing/non-root original generated input: '+str(name))
+        protected.add(relative.as_posix())
+    pending = [Path('hd') / name for name in FEEDBACK_SCENE_HELPERS]
+    validated = {}
+
+    def canonical_include(includer, include):
+        if Path(include).is_absolute() or PureWindowsPath(include).is_absolute():
+            raise ValueError('Absolute/private include is not a maintained header')
+        try:
+            includer.relative_to(dest)
+            is_generated = True
+        except ValueError:
+            is_generated = False
+        if is_generated:
+            local = (includer.parent / include).resolve()
+            try:
+                relative = local.relative_to(dest)
+            except ValueError:
+                raise ValueError('Generated quoted include escaped its output directory') from None
+            if relative.as_posix() in protected:
+                return None  # Preserve the original local Game/data/config header.
+            choices = (source / relative, source / include)
+        else:
+            choices = (includer.parent / include, source / include)
+        for candidate in choices:
+            candidate = candidate.resolve()
+            try:
+                relative = candidate.relative_to(source)
+            except ValueError:
+                raise ValueError('Game include escaped maintained source tree') from None
+            if candidate.is_file():
+                if relative.as_posix() in protected:
+                    raise ValueError('Maintained header collides with original generated header: '+relative.as_posix())
+                return relative
+        return None  # Original generated fallback or external SDK/system header.
+
+    # Reject old partial-copy outputs rather than deleting or silently preferring
+    # them. Fresh generation uses only original generated files plus this receipt.
+    for path in dest.rglob('*'):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(dest)
+        if relative.as_posix() not in protected and (source / relative).is_file():
+            raise ValueError('Stale maintained-header shadow; use a fresh generated directory: '+relative.as_posix())
+    for name in generated:
+        path = dest / name
+        for include in re.findall(r'^\s*#include\s+"([^"\n]+)"', path.read_text(), re.M):
+            relative = canonical_include(path, include)
+            if relative is not None:
+                pending.append(relative)
+    while pending:
+        path = (source / pending.pop()).resolve()
+        try:
+            relative = path.relative_to(source)
+        except ValueError:
+            raise ValueError('Game helper escaped maintained source tree') from None
+        name = relative.as_posix()
+        if name in validated:
+            continue
+        if name in protected or not path.is_file() or path.suffix not in ('.h', '.hpp', '.inc', '.inl'):
+            raise ValueError('Missing/non-header/colliding maintained Game helper: '+name)
+        if (dest / relative).exists():
+            raise ValueError('Maintained header has a second physical generated copy: '+name)
+        data = path.read_bytes()
+        validated[name] = hashlib.sha256(data).hexdigest()
+        for include in re.findall(r'^\s*#include\s+"([^"\n]+)"', data.decode('utf-8'), re.M):
+            child = canonical_include(path, include)
+            if child is not None:
+                pending.append(child)
+    inventory = {'schema': 1, 'mode': 'canonical-project-src-no-header-copies',
+                 'originalGeneratedFiles': sorted(protected),
+                 'maintainedHeaders': [{'path': name, 'sha256': validated[name]}
+                                       for name in sorted(validated)]}
+    (dest / 'maintained-header-inventory.json').write_text(json.dumps(inventory, indent=2)+'\n')
+    return tuple(sorted(validated))
+
+
 def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=False):
     if (bounded_rep_words or checked_copy_bundle) and output_dir is None:
         raise ValueError("Experimental word-copy generation requires a new output directory")
@@ -95,9 +198,12 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
     mapped = prepare_mapped()
     source = ROOT / ".build/engine/Cpp"
     dest.mkdir(parents=True, exist_ok=output_dir is None)
+    generated_files = []
     for path in mapped.glob("*.h"):
         shutil.copyfile(path, dest / path.name)
+        generated_files.append(path.name)
     shutil.copyfile(mapped / "MappedMemory.cpp", dest / "MappedMemory.cpp")
+    generated_files.append("MappedMemory.cpp")
     functions = set(re.findall(r"game_id_(\w+) =", (mapped / "FunctionIds.h").read_text()))
     transaction_blocks = 0
     rep_word_loops = 0
@@ -257,7 +363,13 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         text = add_controls_steering_sidebar_hooks(text, path.name)
         text = add_controls_steering_live_hooks(text, path.name)
         text = add_controls_steering_scene_hooks(text, path.name)
+        # Genuine unavailable-Feedback source scopes follow all Controls owners.
+        text = add_feedback_modal_hooks(text, path.name)
+        text = add_feedback_backdrop_hooks(text, path.name)
+        text = add_feedback_modal_scene_hooks(text, path.name)
+        text = add_feedback_modal_observer_source_hooks(text, path.name)
         (dest / path.name).write_text(text)
+        generated_files.append(path.name)
     stubs = (source / "Stubs.cpp").read_text()
     dispatch = '#include "Game.h"\n#include "FunctionIds.h"\nextern "C" bool nfs_register_guest_function(uint32_t, NativeGameFunction);\n'
     registrations = []
@@ -267,6 +379,8 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
     if len(registrations) != len(functions): raise ValueError("Incomplete native function dispatch table")
     dispatch += 'extern "C" bool register_original_game_functions() {\n' + ''.join(registrations) + 'return true;\n}\n'
     (dest / "FullDispatch.cpp").write_text(dispatch)
+    generated_files.append("FullDispatch.cpp")
+    validate_game_helper_includes(dest, generated_files)
     if (bounded_rep_words or checked_copy_bundle) and rep_word_loops != 12:
         raise ValueError("Incomplete reviewed bounded-word-copy method set")
     if checked_copy_bundle and complete_helpers != 2:

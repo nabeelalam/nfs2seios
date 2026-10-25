@@ -1,0 +1,18 @@
+{
+  "kind": "pack",
+  "records": [
+    {
+      "variant": "opt",
+      "passed": true
+    },
+    {
+      "variant": "san",
+      "passed": true
+    }
+  ],
+  "scope": "Synthetic optional artwork provider/pack contract only; no actual source pipeline or physical device validation",
+  "limits": [
+    "Synthetic contracts only; fresh maintained Game runtime unverified",
+    "Standalone optimized and ASanUBSan executed; CMake registered, CTest not run"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "scope": "Pure synthetic direct/keyed whole-plane replay; no Game source authority",
+  "runs": [
+    {
+      "name": "copy-opt",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    },
+    {
+      "name": "copy-san",
+      "exitCode": 0,
+      "assertionsEnabled": true
+    }
+  ],
+  "sourceSha256": "1ec4d43d12e965dcaf1475845fb8278ac94bb98cc666593738b68e7d9113a701",
+  "headerSha256s": [
+    {
+      "file": "ControlsLazyParentCopyRecords.h",
+      "sha256": "442703b6b10759390c02b1eb91b6a0a184c625a28c97521141c24c191439bba4"
+    },
+    {
+      "file": "ControlsLazyParentCopyReplay.h",
+      "sha256": "e89448256c7d8992da0d7dcb3a76e60c6b3df18c03d6748a9206094f75a10821"
+    },
+    {
+      "file": "ControlsLazyParentKeyedTransform.h",
+      "sha256": "6cfef2416d128441fa58949f199c6dd6e8b999c84698367535d50aef2ad578b8"
+    }
+  ],
+  "limits": [
+    "Pure synthetic numeric verification; no Game source or retained-parent authority",
+    "Fresh collector evidence needed for keyed row event/stack/sourceAfter/temporaryAfter fields"
+  ]
+}
