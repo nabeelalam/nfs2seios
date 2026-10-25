@@ -55,7 +55,8 @@ class ReplayVerifier {
  static bool dispatchValid(const Row&r,const Binding&b,const SourceCatalog&c,const Scratch&s,const SelectorContract&selectors)noexcept{
   if(!protectedSpan(r.dispatchSlot,4,b,c,s.source,s.postFill.size())||detail::overlap(r.dispatchSlot,4,s.descriptor,56))return false;
   const uint32_t addresses[9]={selectors.convertSlot,selectors.blendSlot,selectors.opacitySlot,selectors.lutAddress,b.targetOwner,b.surface.geometry[11],b.surface.geometry[12],s.words[11],s.words[12]};
-  const unsigned sizes[9]={4,4,4,256,56,640*4,480*4,186*4,60*4};
+  // Original descriptor slot11 owns Y rows; slot12 owns X columns.
+  const unsigned sizes[9]={4,4,4,256,56,480*4,640*4,60*4,186*4};
   for(unsigned k=0;k<9;++k)if(detail::overlap(r.dispatchSlot,4,addresses[k],sizes[k]))return false;
   return !r.paletteAddress||!detail::overlap(r.dispatchSlot,4,r.paletteAddress,1024);
  }
@@ -82,7 +83,7 @@ public:
   const uint32_t selectorAddresses[4]={requiredSelectors.convertSlot,requiredSelectors.blendSlot,requiredSelectors.opacitySlot,requiredSelectors.lutAddress};
   const unsigned selectorSizes[4]={4,4,4,256};
   for(unsigned k=0;k<4;++k)if(!protectedSpan(selectorAddresses[k],selectorSizes[k],current,*catalog,s.source,scratchBytes)||detail::overlap(selectorAddresses[k],selectorSizes[k],s.descriptor,56))return {};
-  if(!protectedSpan(w[11],width*4,current,*catalog,s.source,scratchBytes)||!protectedSpan(w[12],height*4,current,*catalog,s.source,scratchBytes)||detail::overlap(w[11],width*4,w[12],height*4)||detail::overlap(w[11],width*4,s.descriptor,56)||detail::overlap(w[12],height*4,s.descriptor,56))return {};
+  if(!protectedSpan(w[11],height*4,current,*catalog,s.source,scratchBytes)||!protectedSpan(w[12],width*4,current,*catalog,s.source,scratchBytes)||detail::overlap(w[11],height*4,w[12],width*4)||detail::overlap(w[11],height*4,s.descriptor,56)||detail::overlap(w[12],width*4,s.descriptor,56))return {};
   try{Plane replay=r.before;size_t total=0;uint32_t sequence=0;
    nfs_feedback_modal_geometry::Geometry g;if(!nfs_feedback_modal_geometry::make(640,480,r.titleWidth,r.messageWidth,g)||g.left!=227||g.top!=210||g.width!=int(width)||g.height!=int(height))return {};
    for(unsigned yy=0;yy<height;++yy){const auto&row=s.rows[yy];const uint32_t source=s.source+16+yy*width*2,destination=current.surface.geometry[8]+16+((g.top+yy)*640+g.left)*2;

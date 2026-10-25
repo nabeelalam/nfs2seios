@@ -3,14 +3,14 @@
   "status": "cpu-core-verified-live-integration-pending",
   "tests": {
     "opt": {
-      "backdropSyntheticChecks": 139,
+      "backdropSyntheticChecks": 141,
       "textSyntheticChecks": 199,
       "geometryChecks": 4393009,
       "actualCapturedBackdropReplayPassed": true,
       "actualPoisonNegatives": 9
     },
     "san": {
-      "backdropSyntheticChecks": 139,
+      "backdropSyntheticChecks": 141,
       "textSyntheticChecks": 199,
       "geometryChecks": 4393009,
       "actualCapturedBackdropReplayPassed": true,
@@ -49,10 +49,10 @@
   },
   "sourceSha256": {
     "src/hd/FeedbackModalBackdropRecords.h": "2e1806edbd9e7d13de4d7e371fb33251e96bb3725f1c109f8eb6fa078009c829",
-    "src/hd/FeedbackModalBackdropReplay.h": "c751321c9d25c1b2ac61f60fdd8a02839c5e58ba011ae7d1901946e2d10a0602",
+    "src/hd/FeedbackModalBackdropReplay.h": "be44f0f9ae2954fb45998b1cec0da33b8054a5f1058d3522c074e42630396964",
     "src/hd/FeedbackModalTextRecords.h": "2e620489ce38ed06358849101a12bed5b8c8ab5b09cb3c6cbefc14111b30b8e8",
     "src/hd/FeedbackModalTextProof.h": "ed1fff0a655b79e2fe1b97c315d97801cf861507dfb32f9d514ccf797c44fee3",
-    "tests/feedback_modal_backdrop_tests.cpp": "de3a0e372fc2002f855dd2ad6e1910627aaa093b27276f42ab6a7960f2dd1c16",
+    "tests/feedback_modal_backdrop_tests.cpp": "be798da91633b91cff9b0557cadef6311ab3741d0668e7442e82f77ff7682bef",
     "tests/feedback_modal_text_tests.cpp": "33f7a8960ceb49facde7e55dcf23ade9a1e4bc68aeac5dc6c8fc0916a44db67e"
   },
   "limits": [
@@ -60,5 +60,19 @@
     "No HD parent retention/complete scene join or modal native pass/fade/context recovery",
     "No remastered popup activation, final artwork approval or physical iPad validation",
     "Captured data fixtures, originals and reference art remain private"
-  ]
+  ],
+  "lookupOwnership": {
+    "descriptorSlot11": "Y rows",
+    "descriptorSlot12": "X columns",
+    "mainElements": {
+      "Y": 480,
+      "X": 640
+    },
+    "scratchElements": {
+      "Y": 60,
+      "X": 186
+    },
+    "tailDispatchAliasRegressionFailsBeforeFix": true,
+    "optimizedAndSanitizerCapturedReplayPassedAfterFix": true
+  }
 }

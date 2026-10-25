@@ -37,6 +37,10 @@ struct Fixture {
 static void reject(Fixture&f,const std::function<void(Record&)>&mutate){Record r=f.r;mutate(r);CHECK(!ReplayVerifier::verify(r,f.r.binding,f.catalog,f.selectors));}
 int main(){
  Fixture f;CHECK(f.r.binding.valid());CHECK(f.selectors.valid());CHECK(detail::converted(0xff123456)==0xff0011aa);CHECK(detail::rgbaBlend(0xffff,detail::modulate(detail::expanded(0x0841),180))==bodyOracle(0xffff));
+ // Last X entries lie beyond the height-sized prefix. Dispatch slots may
+ // never alias them, including when every row reports matching fake IDs.
+ reject(f,[](Record&r){for(auto&row:r.body.rows)setDispatchSlot(row,r.binding.surface.geometry[12]+639*4);});
+ reject(f,[](Record&r){for(auto&row:r.body.rows)setDispatchSlot(row,r.body.words[12]+185*4);});
  auto accepted=ReplayVerifier::verify(f.r,f.r.binding,f.catalog,f.selectors);CHECK(accepted);CHECK(accepted->rows()==168);CHECK(accepted->stores()>11160);CHECK(accepted->before()==f.r.before);CHECK(accepted->pretext()==f.r.pretext);CHECK(accepted->matches(f.r.binding,f.r.pretext.data(),Pixels));CHECK(!accepted->matches(f.r.binding,nullptr,Pixels));CHECK(!accepted->matches(f.r.binding,f.r.pretext.data(),Pixels-1));
  // Admission identity/source/catalog corruption and allocation/target bounds.
  for(unsigned k=0;k<2;++k){auto data=f.source;data[k][20]^=1;CHECK(!SourceCatalog::create(f.id,data));auto identities=f.id;identities[k].header[0]^=1;CHECK(!SourceCatalog::create(identities,f.source));identities=f.id;identities[k].paletteHeader[2]=0;CHECK(!SourceCatalog::create(identities,f.source));identities=f.id;identities[k].providerKey=0;CHECK(!SourceCatalog::create(identities,f.source));identities=f.id;identities[k].span=UINT32_MAX;CHECK(!SourceCatalog::create(identities,f.source));data=f.source;data[k].pop_back();CHECK(!SourceCatalog::create(f.id,data));}
