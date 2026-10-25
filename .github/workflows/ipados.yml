@@ -85,7 +85,7 @@ jobs:
           python3 tests/guest_copy_semantics_test.py
           python3 scripts/check_runner_space.py
           cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256"
-          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
+          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests desktop_pointer_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
       - name: Validate full native engine linkage and memory ownership
         run: |
           set -o pipefail
@@ -150,6 +150,7 @@ jobs:
           timeout 15s .build/pixels/frame_pacing_sdl_tests
           timeout 15s .build/pixels/game_trace_tests
           timeout 15s .build/pixels/keyboard_input_tests
+          timeout 15s .build/pixels/desktop_pointer_tests
           timeout 15s .build/pixels/touch_pointer_tests
           timeout 15s .build/pixels/touch_sdl_tests
           timeout 15s .build/pixels/pointer_buffer_tests

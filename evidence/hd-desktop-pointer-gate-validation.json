@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Current desktop pointer verification and Linux test scheduling",
+  "adapterTests": {
+    "optimizedChecks": 32,
+    "addressUndefinedSanitizerChecks": 32,
+    "sourcePinsUnchanged": true,
+    "gameRun": false
+  },
+  "workflow": {
+    "buildsDesktopPointerTest": true,
+    "runsDesktopPointerTest": true,
+    "coverageChecksPassed": 4,
+    "artworkInputChecksPassed": 2
+  },
+  "limitations": [
+    "Synthetic adapter checks do not prove actual cursor corner or hotspot behavior",
+    "Historical stationary XTest captures predate the desktop pointer adapter",
+    "Physical iPad cursor/touch acceptance remains pending"
+  ],
+  "cloudBuild": false,
+  "upload": false
+}

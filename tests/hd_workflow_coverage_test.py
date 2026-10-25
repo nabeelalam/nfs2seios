@@ -31,6 +31,13 @@ class HdWorkflowCoverage(unittest.TestCase):
             executed.update(group.split())
         self.assertFalse(self.required-executed)
 
+    def test_linux_pointer_adapter_is_built_and_executed(self):
+        workflow=(ROOT/'.github/workflows/ipados.yml').read_text()
+        build=re.search(r'cmake --build \.build/pixels --target ([^\n]+) -j ',workflow)
+        self.assertIsNotNone(build)
+        self.assertIn('desktop_pointer_tests',build[1].split())
+        self.assertRegex(workflow,r'timeout 15s \.build/pixels/desktop_pointer_tests\b')
+
     def test_fast_preparation_and_policy_checks_are_scheduled(self):
         for name in ('ipados.yml','apple-device.yml'):
             workflow=(ROOT/'.github/workflows'/name).read_text()
