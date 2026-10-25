@@ -1,0 +1,27 @@
+{
+  "scope": "Actual original-menu live popup text collection, pending packet only; no complete scene or native activation",
+  "status": "live-text-pending-current-at-original-presentation",
+  "commands": 2,
+  "completeOriginalPlanePixels": 307200,
+  "sharedOpaqueInvocationRetained": true,
+  "surfaceLifetimeFromControlsOwner": true,
+  "freshPendingAcquisitionAtOriginalPresentation": true,
+  "originalMenuRecoveryPassed": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "sourceHookTests": 11,
+  "backdropHookTests": 9,
+  "privateObserverScopeCompositionCorrected": true,
+  "originalOperationsPreserved": true,
+  "sourceSha256": {
+    "src/hd/FeedbackModalInvocationGameHooks.inc": "b66bba586fd48d430dead322fd843de0047d673c85c2fc4c4d546d15323e9253",
+    "src/hd/FeedbackModalTextGameHooks.inc": "35cb569c88ef62cfd46b7db4ebc2b1656bce278fa119f13b9e1edcb58b394e0c",
+    "scripts/feedback_modal_hooks.py": "f867397a3a76703150774d7d6b6e7871ab93d08986ce9cbbbe8dfb5c4af34496",
+    "tests/feedback_modal_hooks_test.py": "ad953b1cb652d6c5375369afc59d55e8a5727f74e31c4b38dc6571f7f17c94a1"
+  },
+  "limits": [
+    "One genuine local unavailable-Feedback popup invocation only; no repeated-popup or context-loss acceptance yet",
+    "Pending text is not sealed complete modal source Proof or native authority",
+    "Live backdrop collector and retained-parent helper only compile-checked; not yet runtime integrated",
+    "No remastered popup activation, physical iPad UI acceptance or new IPA"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "scope": "Complete CPU-owned popup scene join from actual source receipts; no renderer admission or activation",
+  "status": "actual-source-join-current-and-lifetime-negatives-passed",
+  "pixelsPerPlane": 307200,
+  "transitions": [
+    "retained parent original equals backdrop before",
+    "backdrop pretext equals text clean",
+    "text final equals freshly reacquired Main"
+  ],
+  "sameOpaqueInvocationForAllPieces": true,
+  "missingParentRejected": true,
+  "alteredFinalRejected": true,
+  "stillCurrentAfterNegativeChecks": true,
+  "expiredInvocationRejected": true,
+  "ownedFinalPlaneSurvivesExpiry": true,
+  "originalMenuRecoveryAndResourceRestorationPassed": true,
+  "sourceSha256": {
+    "src/hd/FeedbackModalSceneGameHooks.inc": "c84d459f0cd2ecec49f7a8872e451d343ffbfaffe5d97253cb0d53e818c0e797",
+    "src/hd/ControlsRetainedParentGameHooks.inc": "b1f629d37634b2459f6d8345ae955f8de733a6f0e9db7042ab6310ff5f13e822",
+    "src/hd/FeedbackModalBackdropGameHooks.inc": "3cc361d8e44a14493b7f605de4e29f78e7cacab5130f99497d54e0e7c8e11833",
+    "src/hd/FeedbackModalTextGameHooks.inc": "35cb569c88ef62cfd46b7db4ebc2b1656bce278fa119f13b9e1edcb58b394e0c",
+    "src/hd/FeedbackModalTextProof.h": "ed1fff0a655b79e2fe1b97c315d97801cf861507dfb32f9d514ccf797c44fee3"
+  },
+  "limits": [
+    "One local single-player original-menu invocation; repeated/reentry/context cases remain open",
+    "Owned displayed underlay is independent of later sidebar cache revisions; ordinary cache acquisition unchanged",
+    "No native batch-state proof, staging renderer, remastered popup activation or physical device test",
+    "No new IPA or cloud build"
+  ]
+}

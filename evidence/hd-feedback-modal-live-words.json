@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "scope": "Actual original popup immutable two-label preparation before original native upload and after presentation",
+  "status": "passed",
+  "beforeOriginalUpload": {
+    "joined": true,
+    "prepared": true,
+    "current": true,
+    "titleColor565": 1,
+    "messageColor565": 65535
+  },
+  "afterOriginalPresentation": {
+    "schema": 1,
+    "count": 2,
+    "titlePixels": [
+      384,
+      128
+    ],
+    "messagePixels": [
+      432,
+      128
+    ],
+    "current": true
+  },
+  "originalRouteRecovered": true,
+  "cleanShutdownAndResourceRestoration": true,
+  "expiredInvocationRejected": true,
+  "protectedUserDocumentsUnchanged": true,
+  "liveGpuDrawObservation": false,
+  "remasteredPopupActivated": false,
+  "physicalDeviceVerified": false,
+  "sourceSha256": {
+    "src/hd/FeedbackModalWordDisplay.h": "e7e74a18e24a38d1c4ac91a718065d3ccdfae7baa2eecc8c1269cfbc1425283b",
+    "src/hd/FeedbackModalWordArtwork.h": "3c03eeb86e98e5411933a8852c81acd55b20d9939801bdc7a4bc4400e9e3ff8f",
+    "src/hd/FeedbackModalWordRuntimeAbi.h": "64920e3b49d6a157e19d5aad213659b4bdc7f91750b0c9367247e1ebefd20888",
+    "src/hd/FeedbackModalWordIdentity.h": "e462693cbdc83dfa59410ad45e3b9aba32e3372e316b73a067463ecdbf0296ff",
+    "src/hd/FeedbackModalWordData.h": "89c605e2c7dd9fc922659202c1145c241a8657b5d0b9b3e125ab036d4a58d55b"
+  },
+  "binarySha256": "9288428b29ad8cc486e51a71d1277b69c04e8adf7744b83270e0de59f85376d7",
+  "limits": [
+    "This run prepares retained immutable words; the original popup is still drawn.",
+    "Native batch observer and unpublished whole-scene composition remain incomplete.",
+    "This is a Linux original-data test, not physical iPad acceptance."
+  ]
+}

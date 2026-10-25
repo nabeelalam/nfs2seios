@@ -1,0 +1,28 @@
+{
+  "scope": "Actual local typed backdrop numeric replay, same opaque invocation as live pending text; no complete source/native scene",
+  "status": "live-backdrop-pending-verified-at-original-presentation",
+  "steps": 15,
+  "rows": 168,
+  "orderedStores": 22482,
+  "completePretextPixels": 307200,
+  "sameInvocationTextPendingAccepted": true,
+  "originalMenuRecoveryPassed": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "lookupAxes": {
+    "slot11": "Y",
+    "slot12": "X"
+  },
+  "sourceSha256": {
+    "src/hd/FeedbackModalBackdropGameHooks.inc": "3cc361d8e44a14493b7f605de4e29f78e7cacab5130f99497d54e0e7c8e11833",
+    "src/hd/FeedbackModalBackdropReplay.h": "be44f0f9ae2954fb45998b1cec0da33b8054a5f1058d3522c074e42630396964",
+    "scripts/feedback_modal_backdrop_hooks.py": "33b16eb1d1a4b1104d96d8f4580765f3db54683d866a090d7e6fbdc7086366f8"
+  },
+  "limits": [
+    "One genuine local original-menu invocation only",
+    "Complete parent/backdrop/text scene join, source seal and native rendering not yet implemented",
+    "No source Proof seal, native pass or remastered popup activation",
+    "No physical iPad or new IPA acceptance"
+  ],
+  "sameInvocationRetainedParentAccepted": true,
+  "parentAcceptanceScope": "One actual invocation with a valid ordinary sidebar cache; incomplete cache classification checked separately on synthetic actual State"
+}

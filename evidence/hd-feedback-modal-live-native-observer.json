@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Actual original popup final-plane lease and independently registered native upload/draw observation",
+  "status": "passed",
+  "uploads": 300,
+  "selections": 300,
+  "sourceTriangles": 600,
+  "actualPostSyncBatches": 300,
+  "oneShotReceiptConsumed": true,
+  "duplicateReceiptRejected": true,
+  "exactOriginalUploadBoundary": "426950 before original cursor and swap",
+  "finalOriginalPopupPlaneWords": 307200,
+  "sameSourceGameAndCurrentJoinedRequired": true,
+  "allOriginalCallsPreserved": true,
+  "cleanShutdownAndResourceRestoration": true,
+  "protectedUserDocumentsUnchanged": true,
+  "wholeStageComposition": false,
+  "artworkActivated": false,
+  "physicalDeviceVerified": false,
+  "binarySha256": "c60b0caa560e73b80a7e39ddd0c736736e42f98865a8a0fd1cd1ff71237ab48a",
+  "sourceSha256": {
+    "src/hd/FeedbackModalNativeObserver.inc": "67e0fccd56fc0e9a09cb5031694f88e0d8efa31808b87df47115f160c3bfff50",
+    "src/hd/FeedbackModalNativeObserverAbi.h": "d1c69418ff53eac1cc45ee21fa7c53d205372de7d5199063d55b19c74ce5167f",
+    "src/hd/FeedbackModalNativePass.h": "462833be74dc9e7b63b56a7a1861cee56ca8d8e285f8655146a1fe7e2303f13d",
+    "src/hd/FeedbackModalObserverQueueAdapter.inc": "5fec9a81679dc7f8404d06bc677c3b23a54085a255a347b2c6f83eba598ad563"
+  },
+  "limitations": [
+    "One genuine popup invocation; repeated entries, cancellation and context changes remain to test.",
+    "Runtime used private composed engine hooks; production preparation remains unchanged.",
+    "A native observer receipt does not grant artwork publication or suppression."
+  ]
+}

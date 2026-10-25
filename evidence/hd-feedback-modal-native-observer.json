@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "scope": "Independent popup native observer and reversible renderer hooks; syntax and structural checks only",
+  "sourceHookTests": 5,
+  "actualPreparedRendererSyntaxPassed": true,
+  "originalOperationsPreservedByExactReversal": true,
+  "runtimeObserved": false,
+  "sourceQueueIntegration": false,
+  "publicationOrSuppression": false,
+  "physicalDeviceVerified": false,
+  "sourceSha256": {
+    "src/hd/FeedbackModalNativeObserver.inc": "67e0fccd56fc0e9a09cb5031694f88e0d8efa31808b87df47115f160c3bfff50",
+    "src/hd/FeedbackModalNativeObserverAbi.h": "d1c69418ff53eac1cc45ee21fa7c53d205372de7d5199063d55b19c74ce5167f",
+    "scripts/feedback_modal_observer_hooks.py": "ca938b90b838ef9580531b173b6590f2e9e38e1bf3940a8349ad81f139e65fa1",
+    "tests/feedback_modal_observer_hooks_test.py": "258bd1e84c8cc6d789aa8bc834ec6d7e4c9abce2b5771e91c8df9c5cba4771b2"
+  },
+  "limitations": [
+    "Observer has not yet received a real modal source lease or observed an actual game draw.",
+    "No staging or popup artwork activation is implemented by this observer.",
+    "Context-loss and receipt behavior require runtime validation."
+  ]
+}

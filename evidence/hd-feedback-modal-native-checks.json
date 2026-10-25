@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "scope": "Synthetic popup native tile and post-sync batch checker plus immutable two-label artwork tests",
+  "status": "passed",
+  "nativeChecks": 231568,
+  "nativeOptimizedCxx14": true,
+  "nativeAsanUbsanCxx14": true,
+  "artworkOptimizedCxx14": true,
+  "artworkAsanUbsanCxx17": true,
+  "artworkPythonTests": 3,
+  "registeredInCmake": true,
+  "cmakeRun": false,
+  "liveRendererIntegration": false,
+  "physicalDeviceVerified": false,
+  "limitations": [
+    "Numeric checker has not observed a live OpenGL draw.",
+    "Word display source adapter has not yet been compiled in the actual Game context.",
+    "Artwork tests validate masks and identity metadata; final visual approval remains open."
+  ],
+  "sourceSha256": {
+    "src/hd/FeedbackModalNativePass.h": "462833be74dc9e7b63b56a7a1861cee56ca8d8e285f8655146a1fe7e2303f13d",
+    "tests/feedback_modal_native_pass_tests.cpp": "ce07f28013a6401c8ba660d33f3ef5a784d6746e3ed024c366824d308bd5247a",
+    "src/hd/FeedbackModalWordArtwork.h": "3c03eeb86e98e5411933a8852c81acd55b20d9939801bdc7a4bc4400e9e3ff8f",
+    "src/hd/FeedbackModalWordData.h": "89c605e2c7dd9fc922659202c1145c241a8657b5d0b9b3e125ab036d4a58d55b",
+    "src/hd/FeedbackModalWordDisplay.h": "e7e74a18e24a38d1c4ac91a718065d3ccdfae7baa2eecc8c1269cfbc1425283b",
+    "src/hd/FeedbackModalWordIdentity.h": "e462693cbdc83dfa59410ad45e3b9aba32e3372e316b73a067463ecdbf0296ff",
+    "src/hd/FeedbackModalWordRuntimeAbi.h": "64920e3b49d6a157e19d5aad213659b4bdc7f91750b0c9367247e1ebefd20888",
+    "scripts/generate_feedback_modal_words.py": "f0d0605031501f148c7a44448959bb5b3beeb74df08d07c515349813914ddedc",
+    "tests/feedback_modal_word_art_source_test.py": "b4943bcdf78e4994dee6a3ba8848ace15c3b0e81a8a0e08c54170b03c0369011",
+    "tests/feedback_modal_word_artwork_tests.cpp": "33020c2b92c290fac809b6c83bbe28ab4d500df5e0321637b84f214f04d0c93a",
+    "CMakeLists.txt": "d2f91b71060f11d176253e1431be15926a72bb67a6b0d66b5ddefcdac699359d"
+  }
+}

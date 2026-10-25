@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "scope": "Isolated actual EGL/GLES drawing mechanics; synthetic source metadata and target ownership",
+  "status": "passed",
+  "optimizedCxx14": true,
+  "asanUbsanCxx14": true,
+  "softwareDriver": true,
+  "leakDetectionDisabledForGraphicsDriver": true,
+  "pixelOracle": {
+    "frame": [
+      640,
+      480
+    ],
+    "channelsCompared": 3,
+    "maximumAllowedChannelError": 3,
+    "titleColor565": 1,
+    "messageColor565": 65535
+  },
+  "cases": [
+    "cold prepare state restoration",
+    "warm resources reused",
+    "exactly two unshadowed quads",
+    "17 malformed views rejected before draw",
+    "resource aliases refused",
+    "bounded alias inventory",
+    "draw failure after either word restores state",
+    "actual context change after either word leaves foreign state intact",
+    "owned resources retired and borrowed resources preserved"
+  ],
+  "testCorrection": "Current OpenGL program deletion is deferred until unbind; test verifies delete status and disappearance after unbind.",
+  "cmakeRegistered": true,
+  "ctestRun": false,
+  "actualGameGpuIntegration": false,
+  "nativePublication": false,
+  "physicalDeviceVerified": false,
+  "sourceSha256": {
+    "src/hd/FeedbackModalWordGpu.h": "3e25d5feee7c9a8323f5cce11d769a709321217249bd091f468ab02493c51fe5",
+    "src/hd/FeedbackModalWordGpu.c.inc": "3d27df5094b1820b9f5e0c3f0b9bb603a3f562d494a935caa1ff46c00579110a",
+    "tests/feedback_modal_word_gpu_tests.cpp": "d8cfd859d77b36ccd8aed1bbbcf1d9f321da6612aaf8b57893871ecec13aa747",
+    "CMakeLists.txt": "d2f91b71060f11d176253e1431be15926a72bb67a6b0d66b5ddefcdac699359d"
+  }
+}
