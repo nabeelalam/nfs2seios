@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "scope": "Latest maintained split-mode Setup and Player One/Two native form observation",
+  "splitModeChangedThroughOriginalUi": true,
+  "freshTypedPlayerNativePasses": true,
+  "originalSelectionsPerPass": 300,
+  "sourceTrianglesPerPass": 600,
+  "nativeSize": [
+    2186,
+    1640
+  ],
+  "playerValuesChanged": false,
+  "raceLaunched": false,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "fullVisualAcceptance": false,
+  "physicalDeviceVerified": false,
+  "cloudBuild": false,
+  "fixtureBinarySha256": "04aa8077c551820ce836a816f3ed9b7c1721104af7a2e4991a777ff49879b593",
+  "rootViewed": [
+    {
+      "captureLabel": "setup-current-first-native.bmp",
+      "sha256": "be1877ada30fe4ad52fed203afedb91fb5e5a60109c5b2b6b2c09291767960ff"
+    },
+    {
+      "captureLabel": "player1-next-row-native.bmp",
+      "sha256": "25ab429eb3fd6c124c15d4a0bf289227c6e352defb7f519fe10504cde9b2a4b1"
+    },
+    {
+      "captureLabel": "player2-form-first-native.bmp",
+      "sha256": "cc0dea15811974a4a12531ad9db82f324ccf0d7e0241dc14dc5f54cada26d4fb"
+    }
+  ],
+  "observedSemantics": {
+    "playerOne": "Ford Indigo; Manual transmission selected after one Down",
+    "playerTwo": "Nazca C2; Manual transmission visible; car selected on entry"
+  },
+  "visualDefectOpen": "Two-player count symbol remains original low-resolution beside the independently authored race-type symbol. Initial stale-mode interpretation disproved by canonical source contact sheet; car logos occupy distinct vertical slots and intended retained layout remains under audit.",
+  "modeSymbolsAreIndependent": true
+}

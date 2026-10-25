@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "scope": "Actual maintained original-menu preview of corrected two-sheet background",
+  "construction": "Continuous foreground sheet with teeth; recessed continuous sheet with interleaved teeth; independent cast shadows over map",
+  "packSha256": "c4304ecf9c169cf08fc47befb850f0902ea7b13e31f6d65f98c22b025da878af",
+  "binarySha256": "e1eb3e24265930b011cf6f6118a6e4b9299ee4dd7cffee6920b6bf4a8f8a2f25",
+  "changedPackSection": {
+    "tag": 2,
+    "role": 2,
+    "dimensions": [
+      1372,
+      1920
+    ]
+  },
+  "unchangedOtherPackSections": 40,
+  "sourceIdentityAndPremultipliedValidationPassed": true,
+  "compiledObjects": 1,
+  "reusedObjectAndSourcePinsStable": true,
+  "actualHdPopupEntries": 4,
+  "oneShotNativeReceiptsDuplicateRejected": 4,
+  "normalDismissalAndMenuRecovery": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "nativeCaptureSize": [
+    2186,
+    1640
+  ],
+  "rootVisuallyInspected": {
+    "mainCaptureSha256": "49cab851a2da27acc8c50da88c0d5e36ce3f00d7e3cdb50390723332d076f7b3",
+    "popupCaptureSha256": "ff46962d0135d273d3f36c20f6ee8d179bc1cadc906c972e317da9831750db29"
+  },
+  "artReview": "Independent review found no clear silhouette or tooth-phase mismatch; material separation remains open for critique",
+  "priorPacksAndAssetsPreserved": true,
+  "defaultArtworkChanged": false,
+  "physicalDeviceVerified": false,
+  "cloudBuild": false,
+  "pushOrUpload": false
+}

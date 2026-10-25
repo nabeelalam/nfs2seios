@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "scope": "Latest maintained original-game two-controller host fixture build; runtime test not yet executed",
+  "binarySha256": "04aa8077c551820ce836a816f3ed9b7c1721104af7a2e4991a777ff49879b593",
+  "baseBinarySha256": "e1eb3e24265930b011cf6f6118a6e4b9299ee4dd7cffee6920b6bf4a8f8a2f25",
+  "compiledEntrypointObjects": 1,
+  "sourceInputPins": 686,
+  "reusedGameRendererAndSourcePinsStable": true,
+  "fixtureSourceReversesExactlyToCurrentMain": true,
+  "maximumCompilerAndLinkWorkers": 2,
+  "inputRoute": "Two ordinary SDL virtual gamepads in private host entrypoint; fixture keys consumed before original keyboard queue",
+  "gameSourceOrGuestStateModified": false,
+  "raceExecuted": false,
+  "remainingGate": "Fresh current Setup and Player transition observations, then rendered-clock countdown gate and independent acceleration phases",
+  "physicalDeviceVerified": false,
+  "cloudBuild": false
+}

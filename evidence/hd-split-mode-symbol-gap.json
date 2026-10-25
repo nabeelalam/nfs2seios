@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Current split-mode symbol coverage audit; no rendering fix or asset activation",
+  "independentModeAndRaceSymbols": {
+    "onePlayer": "sin5",
+    "twoPlayers": "two5",
+    "singleRace": "rac5"
+  },
+  "twoPlayerOriginalLogicalSize": [
+    83,
+    52
+  ],
+  "twoPlayerShape": "Shared gold emblem with two head/body silhouettes",
+  "mapTextureContainsNoDynamicMarks": true,
+  "staleSingleModeInterpretationDisproved": true,
+  "currentTwoPlayerArtReplacementMissing": true,
+  "actualPreparedTwoPlayerNativePayloadCaptured": false,
+  "nextBindingRequirement": "Capture and authenticate actual converted payload and dim variant before registering replacement",
+  "carLogoRetainedLayoutStillUnderReview": true,
+  "speculativeSourceOrShaderChangesMade": false,
+  "originalPixelsIncluded": false,
+  "physicalDeviceVerified": false
+}

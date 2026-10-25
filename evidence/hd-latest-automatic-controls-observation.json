@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "scope": "Actual current Player Automatic values and split binding table/prompt observations; no race input",
+  "fixtureBinarySha256": "04aa8077c551820ce836a816f3ed9b7c1721104af7a2e4991a777ff49879b593",
+  "bothAutomaticValuesVisuallyConfirmed": true,
+  "bothPlayerBindingsVisuallyConfirmed": {
+    "steeringAxes": [
+      0,
+      0
+    ],
+    "accelerationAxis": 5,
+    "brakeAxis": 4,
+    "devices": [
+      1,
+      2
+    ]
+  },
+  "existingAxisBindingsAlreadyCorrect": true,
+  "axisRemappingPerformed": false,
+  "readyAndEnterNewControlPromptVisuallyConfirmed": true,
+  "selectedPromptCell": "Player One steer left",
+  "nativeBindingGroups": 20,
+  "nativeBindingImages": 19,
+  "actualOriginalNativeBatches": 300,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "rootViewed": [
+    {
+      "captureLabel": "player1-automatic-candidate.bmp",
+      "sha256": "98f309f1c9de9082f8c831ed77973ab8854951706c7a37ba701e3322291fa210"
+    },
+    {
+      "captureLabel": "player2-automatic-candidate.bmp",
+      "sha256": "4dcacd6b0d91c40605576f2c1957e0be126b37a25aa71767aee50b0c7347648c"
+    },
+    {
+      "captureLabel": "current-bindings-before-one-prompt.bmp",
+      "sha256": "934989474972efbec10bd3c2c66215bc1f150732967937abc6c3f98c8da38486"
+    },
+    {
+      "captureLabel": "current-bindings-prompt-candidate-01.bmp",
+      "sha256": "0cf3a9447b5de2b9a67e7cb2ca5d8f4a6970f31f8a71c3f59ca54b017eb5802c"
+    }
+  ],
+  "countdownGateSyntheticCasesPassed": 7,
+  "actualRaceClockGateValidated": false,
+  "raceLaunched": false,
+  "visualAndDeviceAcceptance": false,
+  "cloudBuild": false
+}
