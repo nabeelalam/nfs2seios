@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "scope": "Updated original-game Single warning typography root pixel acceptance",
+  "normalBinarySha256": "185e71443bc8c2263e06131c9ec97b1060f7592885b1ed86db57962c01805b89",
+  "fixtureBinarySha256": "94933b6c7d68222ee78cbfe50aae62b48cf1c514130004331e67d856cd4225b1",
+  "artworkPackSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+  "rootReviewedCurrentSingleZeroAndFourBindings": true,
+  "postCountdownGatePassed": true,
+  "actualOriginalControllerInputOnly": true,
+  "sourceObserverLogRequired": false,
+  "rootReviewed": {
+    "headerSha256": "d383ab6e18ea928bb3c2a9c1e461db05728a55773efe7205e7c015b1ed00f32c",
+    "fullSha256": "e0bc47282af0906cf335e2dd45774caf15891e5c366c8f2d44f364341d34b296",
+    "text": "WRONG WAY!",
+    "sharpAuthoredLetteringVisible": true,
+    "fullYAndPunctuationFit": true,
+    "noVisibleBankSeams": true,
+    "gearSpeedMinimapMirrorAndRecordRetained": true
+  },
+  "headerAndFullAreIndependentConsecutiveSnapshots": true,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "splitVisualAcceptance": "Both player views accepted separately",
+  "limits": [
+    "Host source-verified virtual-controller entry point; not physical iPad acceptance",
+    "Bounded driving only; no completed race claim",
+    "No FPS battery or audible audio claim"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}

@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "scope": "Fixed classic black warning word; no original game pixels",
+  "text": "WRONG WAY",
+  "font": "Outlined project Oxanium700/OFL1.1",
+  "sourceSha256": "8b428311c5a566d1c75faf98409617e76df6b27c5ecf0c4b456b0324061457b1",
+  "punctuationSha256": "4b9d7b1c180bee8d0eae680386b92d3cd8d13d05a8e6f6d38541d76eccfb987c",
+  "punctuationBank": [
+    129,
+    129,
+    18,
+    57
+  ],
+  "singleWordInk": [
+    17,
+    1,
+    230,
+    20
+  ],
+  "logicalSize": [
+    223,
+    21
+  ],
+  "logicalInk": [
+    17,
+    1,
+    223,
+    20
+  ],
+  "scale": 3,
+  "croppedSize": [
+    618,
+    57
+  ],
+  "banks": [
+    [
+      0,
+      318,
+      1,
+      963
+    ],
+    [
+      318,
+      126,
+      1,
+      129
+    ],
+    [
+      444,
+      62,
+      129,
+      1
+    ],
+    [
+      506,
+      62,
+      129,
+      61
+    ],
+    [
+      568,
+      50,
+      633,
+      1
+    ]
+  ],
+  "alphaSha256": "cad33a8fcc40504a7158399678c6916cab8473a263bfa2947d0aaecd1109c15f",
+  "rleSha256": "2e3893116df7b0c10db7d36a46d04ac4d51d07c3160533adc571ef8a20d8787f",
+  "rleBytes": 13035,
+  "atlasSize": [
+    1024,
+    1024
+  ],
+  "headerSha256": "8849adb5dcae1038eac314e2b8dac0420ec93ebf937e549eae317e60e0a3c7a2",
+  "shaderSha256": "64b8ff7df81ada63140099bd12e5e3b7e7af46ba78f84698514cc1dd6539449f"
+}

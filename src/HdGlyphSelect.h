@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 #ifndef NFS_HD_GLYPH_SELECT_H
 #define NFS_HD_GLYPH_SELECT_H
+#include "WarningWordSelect.h"
 /* The game shrinks texel coordinates by 255/256. Undo that only for identifying
  * complete timing cells; leave actual sampling coordinates untouched. Gold speed
  * cells use their complete observed corner bounds, including original trims. In raw

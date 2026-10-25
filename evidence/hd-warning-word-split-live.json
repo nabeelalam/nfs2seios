@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "scope": "Updated original-game Split warning typography accepted in both player views",
+  "normalBinarySha256": "185e71443bc8c2263e06131c9ec97b1060f7592885b1ed86db57962c01805b89",
+  "fixtureBinarySha256": "94933b6c7d68222ee78cbfe50aae62b48cf1c514130004331e67d856cd4225b1",
+  "artworkPackSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+  "currentProcessSplitExplicitlySelected": true,
+  "rootReviewedEightBindingsSha256": "1e3a9987325971b668f9737d14b02997e3fe8a066f4ce276bb702351efd64596",
+  "rootReviewedCurrentBothZeroClocks": true,
+  "rootReviewSecondsBeforeDeadline": 77.70236097600002,
+  "twoAdvancingBothClockCapturesPassed": true,
+  "bothControllersExercisedIndependently": true,
+  "bothWarningViewsRequiredForProtocolPass": true,
+  "rootReviewed": [
+    {
+      "player": 1,
+      "headerSha256": "206600c8d425e4813343019bf7d759f59ddea92c05ed63f39bcc497fc72b9bb5",
+      "fullSha256": "894515dc4ca1a4319440abfd2ee79b190731652e83cc105f07eab71c3d4d9470",
+      "text": "WRONG WAY",
+      "rootViewedBothImages": true,
+      "sharpAuthoredLetteringVisible": true,
+      "fullYFits": true,
+      "noVisibleBankSeams": true,
+      "matchingShorterOriginalWarningWindow": true
+    },
+    {
+      "player": 2,
+      "headerSha256": "c1d71197f96170ab2052307eef4ec62935f90329a02e02a1830d58f24b1f39ad",
+      "fullSha256": "e2caa2369f30ecfa9a1f723f12ac8e557d771543a9e8939e3f3154c72f725805",
+      "text": "WRONG WAY",
+      "rootViewedBothImages": true,
+      "sharpAuthoredLetteringVisible": true,
+      "fullYFits": true,
+      "noVisibleBankSeams": true,
+      "matchingShorterOriginalWarningWindow": true
+    }
+  ],
+  "headerAndFullAreIndependentConsecutiveSnapshots": true,
+  "actualOriginalInputOnly": true,
+  "sourceObserverLogsRequired": false,
+  "privateRendererPatchesUsed": false,
+  "cleanShutdownAndCopiedResourcesRestored": true,
+  "ownedProcessesRemaining": 0,
+  "limits": [
+    "Host virtual-controller entry point; physical iPad validation pending",
+    "Bounded driving only; no completed lap or race claim",
+    "No FPS battery or audible audio claim",
+    "Other unsupported HUD layouts retain original artwork"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}

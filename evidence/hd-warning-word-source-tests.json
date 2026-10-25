@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "scope": "Authored warning word and punctuation for observed single and split native layouts",
+  "originalAtlasSha256": "c067e866e0168ae1b74e89fb9f9f165342a4fde1394f56ce8718b54da06eac8a",
+  "layouts": [
+    {
+      "mode": "single",
+      "selector": 77,
+      "screen": [
+        283.0,
+        7.0,
+        539.0,
+        28.0
+      ],
+      "sourceUv": [
+        0.498046875,
+        0.498046875,
+        255.0,
+        20.91796875
+      ],
+      "text": "WRONG WAY!"
+    },
+    {
+      "mode": "split upper",
+      "selector": 76,
+      "screen": [
+        299.0,
+        7.0,
+        522.0,
+        28.0
+      ],
+      "sourceUv": [
+        0.498046875,
+        0.498046875,
+        222.12890625,
+        20.91796875
+      ],
+      "text": "WRONG WAY"
+    },
+    {
+      "mode": "split lower",
+      "selector": 76,
+      "screen": [
+        299.0,
+        248.0,
+        522.0,
+        269.0
+      ],
+      "sourceUv": [
+        0.498046875,
+        0.498046875,
+        222.12890625,
+        20.91796875
+      ],
+      "text": "WRONG WAY"
+    }
+  ],
+  "artwork": "Outlined project Oxanium 700; solid black printed warning ink; no original pixels shipped",
+  "originalGeometryTimingAndTintPreserved": true,
+  "unsupportedSourceGeometryPerspectiveColorOrPrecision": "Original fallback",
+  "atlasSize": [
+    1024,
+    1024
+  ],
+  "additionalGpuTextures": 0,
+  "additionalGpuTextureBytes": 0,
+  "bankCount": 6,
+  "oldArtworkOutsideNewBanksAndGuttersByteExact": true,
+  "tests": {
+    "optimizedCpuPassed": true,
+    "addressAndUndefinedSanitizersPassed": true,
+    "actualProductionShaderChecks": 1889,
+    "generatorReproducibilityPassed": true,
+    "actualConsumerAndForeignProducerGuardsPassed": true,
+    "maintainedCopyInventoryAndIncludeClosurePassed": true,
+    "sealedSourcesBeforeAndAfterEqual": true,
+    "registeredCmakeTestsPassed": 4,
+    "registeredTestDisplay": "Owned Xvfb and X11 using pinned prebuilt SDL",
+    "sdlRebuilt": false,
+    "initialOffscreenEglFailurePreserved": true
+  },
+  "limits": [
+    "Synthetic shader checks use software GLES2, not physical iPad",
+    "Game pixel acceptance is recorded separately for Single and both Split player views",
+    "Other HUD styles and unsupported layouts retain original fallback",
+    "No FPS battery or audible audio claim"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false,
+  "rootViewedOriginalSingleWarning": {
+    "captureLabel": "single-warning-final-00.bmp",
+    "sha256": "08e7ad791518dfd468bde2cd4a2aefcd42277866fcd01d2374cc8e7419a9d1fe",
+    "text": "WRONG WAY!"
+  },
+  "runtimeEvidence": [
+    "hd-warning-word-single-live.json",
+    "hd-warning-word-split-live.json"
+  ]
+}

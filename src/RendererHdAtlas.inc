@@ -77,6 +77,13 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
     if(nfs_front_font_source_page(nfs_hd_selected)>=0)return 0;
+    // hd_selected1 comes only from the existing exact builtin timing-atlas SHA.
+    // The uniform availability guard also preserves basic/lowp original fallback.
+    if(nfs_hd_selected==1 && nfs_hd_cell_layout_available){
+        NfsWarningWordVertex warning[3];
+        for(unsigned i=0;i<3;++i){const GrVertex*v=vertices[i];NfsWarningWordVertex value={v->x-VertexSnap,v->y-VertexSnap,v->oow,v->r,v->g,v->b,v->a};warning[i]=value;}
+        const int selected=nfs_warning_word_triangle(warning,uv);if(selected)return selected;
+    }
     if(nfs_hd_selected==1 && nfs_hd_cell_layout_available && nfs_start_light_triangle(a,b,c,uv))return 71;
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;if(nfs_hd_cell_layout_available && nfs_clock_punctuation_triangle(uv))return 69;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gauge=nfs_gauge_mask_triangle(uv);if(gauge)return gauge;}
