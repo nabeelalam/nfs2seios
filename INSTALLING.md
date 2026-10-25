@@ -159,3 +159,27 @@ Actual build 18 core readings, layout and regressions remain unverified on iPad.
 ## HD digit comparison
 
 Build 21 is the next experimental HD test, superseding build 20 for this comparison. In the hidden diagnostic settings, HUD digits switches timing and speed numerals together between Original and HD. The existing session recorder uses the compatible `hd_timing_requested` field. Use Native resolution, full graphics, the 30 FPS lock off and matched North Country split-screen sections. Make separate recordings in normal power and Low Power Mode, comparing both art modes within each recording. Stop and share each JSONL file; no manual counter transcription is required. Allow a few seconds after switching modes. Report any missing, clipped or incorrect digits or a crash. These device results remain unverified.
+
+
+## Optional owner-assembled artwork candidate
+
+The current HD branch's expanded menu artwork has not yet been delivered as a
+new validated iPad release. The older build links above do not establish support
+for this candidate. Use only a future device build compiled for the exact
+verified artwork fingerprint, together with its reviewed owner template.
+
+Assemble `remaster.nfshd` on your computer using the instructions in
+[BUILDING.md](BUILDING.md#optional-owner-assembled-menu-artwork). Original game
+files are read locally and remain separate from the public source and IPA.
+
+For a matching build with an existing import, copy the resulting file into
+`game/gamedata/remaster.nfshd` inside the app's Files shared folder (NFS II SE),
+then relaunch. Keep any existing artwork pack as a separate backup before
+replacing it. Preserve the app, its imported game folder, configuration and
+saves; deleting the app is not required. A separately stored source game folder
+is not the same as the app's imported copy.
+
+The owner-art template itself is not a loadable game pack. Missing or untrusted
+artwork falls back to the original artwork. Device rendering, cursor accuracy,
+controller/touch interaction, lifecycle, audio and performance still require
+physical validation of the matching new build.

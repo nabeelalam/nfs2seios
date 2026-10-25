@@ -293,3 +293,34 @@ controllers, resolution changes, reset and simulated suspension/context recovery
 New record characters were observed in both views; shutdown was clean and the
 copied profile was restored. This was a short driving check, not a complete race
 or iPad visual, performance or energy acceptance.
+
+
+## Optional owner-assembled menu artwork
+
+The current HD branch supports a separately supplied artwork pack. This is a
+local candidate, not a newly published device release. The assembly tool and
+workflow input do not bundle or download game assets.
+
+When the exact reviewed owner-art template is available, assemble it locally
+with Python 3.10 or later, using your separately owned game folder:
+
+```sh
+python3 scripts/assemble_hd_artwork.py --template authored-payload.ownerart \
+  --owner-root /path/to/owned-game --output /path/to/output/remaster.nfshd
+```
+
+Choose a new output file outside the owned game folder. The tool reads the
+originals, verifies the template and owner archive, and refuses an existing
+output. It has no option to disable verification or override the release pins.
+Filesystems without atomic hard-link creation are refused without replacing a
+file. The template omits 24 original resource headers; it still contains
+compatibility hashes and layout metadata. Neither it nor the assembled pack
+belongs in the source repository without a separate content review.
+
+For a matching build, set `NFS_HD_ARTWORK_SHA256` to the verified output SHA-256
+when configuring CMake, or use the manual workflow's `artwork_sha256` input.
+The input accepts only an empty string or 64 hexadecimal characters. The tool
+prints the output hash after successful assembly. Empty means no external pack
+activation. The workflow receives only the fingerprint; it does not upload the
+owner template or pack. A fingerprint match authenticates bytes, not artwork
+distribution rights or physical-device behavior.
