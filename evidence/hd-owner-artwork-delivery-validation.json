@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "scope": "Owner-side optional artwork assembly and build-input readiness",
+  "validation": {
+    "syntheticAssemblyTests": 10,
+    "workflowInputTests": 2,
+    "workflowCoverageTests": 3,
+    "ownerAssemblyTestPlatforms": [
+      "Windows",
+      "WSL"
+    ],
+    "registeredAssemblyCTestPassed": true,
+    "actualOwnerReconstructionPassed": true,
+    "outputSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+    "originalInputsUnchanged": true
+  },
+  "safeguards": [
+    "Trusted template and final output fingerprints",
+    "Bounded archive decoding and exact owner entry identities",
+    "Original resource headers omitted from separate owner-art template",
+    "Read-only owner assets; new output outside owner folder",
+    "No overwrite; atomic create with staged verification",
+    "Synthetic test fixtures contain no original game data",
+    "Workflow fingerprint checked before source preparation",
+    "Compiler concurrency limited to two"
+  ],
+  "limitations": [
+    "Template retains compatibility hashes and layout metadata",
+    "Template and reconstructed pack remain private and are not committed",
+    "Source validation does not authorize public artwork distribution",
+    "Apple compilation, package inspection and physical HD validation remain pending"
+  ],
+  "cloudBuildStarted": false,
+  "uploaded": false
+}

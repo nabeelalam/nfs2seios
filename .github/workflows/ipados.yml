@@ -13,6 +13,10 @@ on:
           - Debug
           - Release
         default: Debug
+      artwork_sha256:
+        description: Optional owner artwork SHA-256 fingerprint (no artwork uploaded)
+        type: string
+        default: ''
       include_probe:
         description: Also rebuild the separate platform diagnostic
         type: boolean
@@ -40,6 +44,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
+      NFS_HD_ARTWORK_SHA256: ${{ inputs.artwork_sha256 }}
       ASAN_OPTIONS: allow_addr2line=1
       ASAN_SYMBOLIZER_PATH: /usr/bin/addr2line
     steps:
@@ -49,6 +54,7 @@ jobs:
           persist-credentials: false
       - name: Publication and independent secret gates
         run: |
+          python3 scripts/validate_artwork_sha256.py
           python3 tests/publication_audit_test.py
           python3 tests/diagnostic_session_summary_test.py
           python3 tests/artifact_budget_test.py
@@ -62,6 +68,7 @@ jobs:
           python3 tests/frontend_main_word_art_test.py
           python3 tests/frontend_font_inspection_test.py
           python3 tests/hd_workflow_coverage_test.py
+          python3 tests/artwork_workflow_input_test.py
           python3 scripts/setup_secret_scanner.py
           python3 scripts/publication_gate.py --mode history
           python3 scripts/publication_audit.py --mode worktree
@@ -77,8 +84,8 @@ jobs:
         run: |
           python3 tests/guest_copy_semantics_test.py
           python3 scripts/check_runner_space.py
-          cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON
-          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests -j 3
+          cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256"
+          cmake --build .build/pixels --target frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
       - name: Validate full native engine linkage and memory ownership
         run: |
           set -o pipefail
@@ -88,7 +95,7 @@ jobs:
           .build/pixels/texture_digest_tests
           .build/pixels/builtin_timing_tests
           .build/pixels/hd_glyph_select_tests
-          for test in small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests; do
+          for test in small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests glide_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests; do
             .build/pixels/"$test"
           done
           .build/pixels/shared_memory_tests
@@ -153,6 +160,7 @@ jobs:
       contents: read
     uses: ./.github/workflows/apple-device.yml
     with:
+      artwork_sha256: ${{ inputs.artwork_sha256 }}
       configuration: ${{ inputs.configuration }}
       include_probe: ${{ inputs.include_probe }}
       publish_ipa: ${{ inputs.publish_ipa }}
@@ -164,6 +172,7 @@ jobs:
       contents: write
     uses: ./.github/workflows/apple-device.yml
     with:
+      artwork_sha256: ${{ inputs.artwork_sha256 }}
       configuration: Release
       publish_release: true
       thin_lto: ${{ inputs.thin_lto }}

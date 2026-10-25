@@ -5,6 +5,9 @@ on:
       configuration:
         type: string
         required: true
+      artwork_sha256:
+        type: string
+        default: ''
       include_probe:
         type: boolean
         default: false
@@ -26,13 +29,15 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
       NFS_THIN_LTO: ${{ inputs.thin_lto && 'ON' || 'OFF' }}
-      NFS_BUILD_JOBS: ${{ inputs.thin_lto && '2' || '3' }}
+      NFS_BUILD_JOBS: '2'
+      NFS_HD_ARTWORK_SHA256: ${{ inputs.artwork_sha256 }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: Toolchain information
         run: |
+          python3 scripts/validate_artwork_sha256.py
           python3 scripts/check_runner_space.py
           case "$NFS_BUILD_CONFIGURATION" in Debug|Release) ;; *) echo "Invalid build configuration"; exit 1 ;; esac
           if [ "$NFS_THIN_LTO" = ON ] && [ "$NFS_BUILD_CONFIGURATION" != Release ]; then echo "ThinLTO validation requires Release"; exit 1; fi
@@ -51,14 +56,15 @@ jobs:
           python3 tests/frontend_main_word_art_test.py
           python3 tests/frontend_font_inspection_test.py
           python3 tests/hd_workflow_coverage_test.py
+          python3 tests/artwork_workflow_input_test.py
           python3 tests/guest_copy_semantics_test.py
           if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
-          cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON
-          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests -j 3
+          cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256"
+          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests apple_main_thread_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_word_tests frontend_text_context_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
           ctest --test-dir .build/host --output-on-failure
       - name: Configure native iPadOS targets
         run: |
-          cmake -S . -B .build/ios -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DNFS_THIN_LTO="$NFS_THIN_LTO" -DNFS_THIN_LTO_JOBS=2
+          cmake -S . -B .build/ios -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DNFS_THIN_LTO="$NFS_THIN_LTO" -DNFS_THIN_LTO_JOBS=2 -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256"
       - name: Compile translated engine to ARM64 objects
         run: |
           set -o pipefail
