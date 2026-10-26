@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "scope": "Bounded owner-art reconstruction budget for a concrete larger private artwork pack; no new release pin or template publication",
+  "defaultLimitBytes": 100663296,
+  "maximumTrustedRecipeBytes": 109051904,
+  "templateMetadataOrCliCannotRaiseBudget": true,
+  "existingKnownReleasePinsUnchanged": true,
+  "validatedSyntheticSafetyTestsPerPlatform": 14,
+  "platforms": [
+    "Windows",
+    "WSL Ubuntu"
+  ],
+  "actualPrivateTemplateBytes": 103496541,
+  "actualReconstructedPackBytes": 103492520,
+  "actualReconstructedPackSha256": "8d60efeb04d3cc4e7bf665746f33fbb0bab91d2d573648f1af0ab74b6af3243c",
+  "actualWindowsAndWslByteExact": true,
+  "originalOwnerFilesUnchanged": true,
+  "originalHeaderBytesOmittedFromPrivateTemplate": 384,
+  "all24OriginalHeaderPatternsAbsentFromPrivateTemplate": true,
+  "legacy96MiBAndOldDefaultAndOverwriteRefuseLargerTemplate": true,
+  "privateTemplatePublicationApproved": false,
+  "physicalDeviceVerified": false,
+  "privateWindowsProofSha256": "ed07f22f0f1ae3913d2b41691c960283c1be508e1e19fdf952b32d376ad4ef1c",
+  "privateWslProofSha256": "2bf6693355ffca8dd842225aab745d8d1b898a5fccd9f067ddd133724b8cfc6a"
+}

@@ -16,6 +16,7 @@ import tempfile
 
 MAGIC = b"OWNART01"
 MAX_TEMPLATE = 96 * 1024 * 1024
+MAX_TRUSTED_TEMPLATE = 104 * 1024 * 1024
 MAX_ORIGINAL = 8 * 1024 * 1024
 HEADER_COUNT = 24
 HEADER_BYTES = 16
@@ -50,10 +51,14 @@ class TrustedRecipe:
     """
     template_sha256: str
     output_sha256: str
+    max_template_bytes: int = MAX_TEMPLATE
 
     def __post_init__(self):
         require(valid_digest(self.template_sha256)
                 and valid_digest(self.output_sha256), "Invalid trusted recipe")
+        require(type(self.max_template_bytes) is int
+                and 16 <= self.max_template_bytes <= MAX_TRUSTED_TEMPLATE,
+                "Invalid trusted artwork budget")
 
 
 KNOWN_RELEASE = TrustedRecipe(
@@ -146,7 +151,7 @@ def unique_object(pairs):
 
 def parse_template(data, recipe):
     require(isinstance(recipe, TrustedRecipe), "Trusted recipe required")
-    require(type(data) is bytes and 16 <= len(data) <= MAX_TEMPLATE,
+    require(type(data) is bytes and 16 <= len(data) <= recipe.max_template_bytes,
             "Template bounds")
     require(sha256(data) == recipe.template_sha256,
             "Untrusted or tampered template")
@@ -161,7 +166,7 @@ def parse_template(data, recipe):
             "Template schema")
     require(type(metadata["outputBytes"]) is int
             and HEADER_COUNT * HEADER_BYTES < metadata["outputBytes"]
-            <= MAX_TEMPLATE, "Template output bounds")
+            <= recipe.max_template_bytes, "Template output bounds")
     for key in ("outputSha256", "ownerSha256", "decodedSha256", "payloadSha256"):
         require(valid_digest(metadata[key]), "Template digest type")
     require(metadata["outputSha256"] == recipe.output_sha256,
@@ -267,10 +272,11 @@ def read_regular(path, limit):
 
 
 def assemble(template_path, owner_root, output, recipe=KNOWN_RELEASE):
+    require(isinstance(recipe, TrustedRecipe), "Trusted recipe required")
     root, source = resolve_owner_asset(owner_root)
     original = read_regular(source, MAX_ORIGINAL)
     before = sha256(original)
-    template = read_regular(template_path, MAX_TEMPLATE)
+    template = read_regular(template_path, recipe.max_template_bytes)
     result = reconstruct(template, original, recipe)
     target = Path(output).absolute()
     parent = real_path(target.parent, directory=True)
@@ -287,7 +293,7 @@ def assemble(template_path, owner_root, output, recipe=KNOWN_RELEASE):
             stream.write(result)
             stream.flush()
             os.fsync(stream.fileno())
-        require(sha256(read_regular(temporary, MAX_TEMPLATE)) == recipe.output_sha256,
+        require(sha256(read_regular(temporary, recipe.max_template_bytes)) == recipe.output_sha256,
                 "Staged output changed")
         require(real_path(target.parent, directory=True) == parent,
                 "Output parent changed")

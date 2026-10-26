@@ -250,6 +250,72 @@ class OwnerArtwork(unittest.TestCase):
         with self.assertRaises(ValueError):
             art.inspect_fsh(bytes(data))
 
+    def test_trusted_budget_defaults_bounds_and_immutability(self):
+        self.assertEqual(self.recipe.max_template_bytes, 96 * 1024 * 1024)
+        self.assertEqual(art.KNOWN_RELEASE.max_template_bytes, art.MAX_TEMPLATE)
+        large = art.TrustedRecipe(self.recipe.template_sha256, self.recipe.output_sha256,
+                                  104 * 1024 * 1024)
+        self.assertEqual(large.max_template_bytes, art.MAX_TRUSTED_TEMPLATE)
+        for value in (True, False, None, 104.0, "104", 0, 15,
+                      art.MAX_TRUSTED_TEMPLATE + 1):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                art.TrustedRecipe(self.recipe.template_sha256,
+                                  self.recipe.output_sha256, value)
+        with self.assertRaises(FrozenInstanceError):
+            large.max_template_bytes = art.MAX_TRUSTED_TEMPLATE + 1
+
+    def test_exact_trusted_budget_and_one_byte_under(self):
+        exact = art.TrustedRecipe(self.recipe.template_sha256, self.recipe.output_sha256,
+                                  len(self.template))
+        self.assertEqual(art.reconstruct(self.template, self.owner, exact), self.output)
+        small = art.TrustedRecipe(self.recipe.template_sha256, self.recipe.output_sha256,
+                                  len(self.template) - 1)
+        with self.assertRaisesRegex(ValueError, "Template bounds"):
+            art.parse_template(self.template, small)
+        with self.assertRaisesRegex(ValueError, "Input file bounds"):
+            art.assemble(self.path, self.game, self.base / "too-small", small)
+        self.assertFalse((self.base / "too-small").exists())
+        metadata = copy.deepcopy(self.metadata)
+        metadata["outputBytes"] = exact.max_template_bytes + 1
+        for _ in range(3):
+            blob = encoded(metadata, self.payload)
+            metadata["outputBytes"] = len(blob) + 1
+        blob = encoded(metadata, self.payload)
+        self.assertEqual(metadata["outputBytes"], len(blob) + 1)
+        trusted = art.TrustedRecipe(art.sha256(blob), self.recipe.output_sha256,
+                                    len(blob))
+        with self.assertRaisesRegex(ValueError, "Template output bounds"):
+            art.parse_template(blob, trusted)
+
+    def test_budget_applies_to_template_and_staged_output_reads(self):
+        recipe = art.TrustedRecipe(self.recipe.template_sha256, self.recipe.output_sha256,
+                                   len(self.template))
+        original = art.read_regular
+        calls = []
+        def tracked(path, limit):
+            calls.append((Path(path), limit))
+            return original(path, limit)
+        with patch.object(art, "read_regular", side_effect=tracked):
+            result = art.assemble(self.path, self.game, self.base / "bounded", recipe)
+        self.assertEqual(result["bytes"], len(self.output))
+        self.assertIn((self.path, recipe.max_template_bytes), calls)
+        staged = [limit for path, limit in calls if path.name.startswith(".owner-art-")]
+        self.assertEqual(staged, [recipe.max_template_bytes])
+        self.assertEqual(self.asset.read_bytes(), self.owner)
+        metadata = copy.deepcopy(self.metadata)
+        metadata["maxTemplateBytes"] = art.MAX_TRUSTED_TEMPLATE
+        with self.assertRaisesRegex(ValueError, "Template fields"):
+            self.parse_changed(metadata)
+
+    def test_cli_cannot_raise_trusted_budget(self):
+        command = [sys.executable, str(ROOT / "scripts/assemble_hd_artwork.py"),
+                   "--template", str(self.path), "--owner-root", str(self.game),
+                   "--output", str(self.base / "untrusted-limit"),
+                   "--max-template-bytes", str(art.MAX_TRUSTED_TEMPLATE)]
+        result = subprocess.run(command, capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.base / "untrusted-limit").exists())
+
     def test_cli_has_no_untrusted_recipe_or_hash_override(self):
         command = [sys.executable, str(ROOT / "scripts/assemble_hd_artwork.py"),
                    "--template", str(self.path), "--owner-root", str(self.game),
