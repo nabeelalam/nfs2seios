@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "scope": "Private read-only McLaren source observer preparation; original logo binding remains unverified",
+  "diagnosticBinarySha256": "08280f2458d99de6f375bfc5e3d42957d3bbe63818f90503406f6cc7cd855bb4",
+  "baseBinarySha256": "a7f14d3aa2a40c46f152dfcba03077185e266ea02ab341d55c871b684f342a83",
+  "packSha256": "8b8dc2db8b025cd8ae71ab174a51a5c1ef7cfe8b0d0ee41e50fb7fa09a239fed",
+  "build": {
+    "compiledObjects": 1,
+    "reusedObjects": 75,
+    "seconds": 77.925,
+    "actualNonSystemDependencies": 297,
+    "sourceReversalByteExact": true,
+    "reusedInputsStable": true
+  },
+  "observerSafeguards": {
+    "readOnlyGuestAndGpuState": true,
+    "callerErrnoPreserved": true,
+    "errnoContractCases": 8,
+    "errnoChecks": 71,
+    "capturedRecordsMaximum": 64,
+    "eventMaximum": 16384,
+    "serializedRendererOwnerOnly": true
+  },
+  "lifetimeReplayTests": {
+    "retainedHistoricalTriangles": 656,
+    "parsedHistoricalEvents": 12859,
+    "negativeCases": 19,
+    "wideMultiBindingCasePassed": true,
+    "exactEventAndPayloadInventoryRequired": true
+  },
+  "firstObservation": {
+    "passed": false,
+    "observedPlayerOneMainSelection": true,
+    "stop": "Required Player1 scene publication was not observed; no post-Enter frame was captured, so actual form entry remains unknown",
+    "cleanShutdown": true,
+    "copiedResourcesRestored": true,
+    "ownedProcessesRemaining": 0
+  },
+  "nextAction": "Capture the actual transition and compare form/car evidence with optional scene admission before any further value input",
+  "runtimeSourceBindingVerified": false,
+  "artworkActivated": false,
+  "limits": [
+    "Private diagnostic executable is not a device release",
+    "No actual McLaren car or texture acceptance",
+    "No physical-device, performance or battery claim"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}
