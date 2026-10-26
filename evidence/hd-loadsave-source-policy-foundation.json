@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "scope": "Pure LoadSave source-policy foundation with synthetic owned evidence; no live admission or remastered scene",
+  "exactType9FormAndEightStaticResourceSemantics": true,
+  "orderedOriginalGlyphStoresAndFullPlaneReplayRequired": true,
+  "invalidSelectedRows7_8_65535Reject": true,
+  "optimizedBehavioralChecks": 19509,
+  "asanUbsanBehavioralChecks": 19509,
+  "actualDependenciesStable": 274,
+  "pythonSourceChecksPassed": 6,
+  "hostRegistrationCasesPassed": 6,
+  "hostTestsRegisteredWithTimeoutsAndSanitizers": true,
+  "exactWhitespaceOnlyWarningFixVerifiedAgainstTestedHeader": true,
+  "privateBehavioralReceiptSha256": "31f9591537c8a899e4c111986d994cbd808c6886d65dbca491b37ae2cc6ea096",
+  "privateRegistrationCheckpointSha256": "df241b525c6a20eefa84db8f28cd50cb5dbe8bd471175db96537bb7559950c25",
+  "supportedActualOriginalFontProfile": false,
+  "liveIssuerHooksOrGpuActivation": false,
+  "actualLoadSaveHdRenderingVerified": false,
+  "physicalDeviceVerified": false
+}
