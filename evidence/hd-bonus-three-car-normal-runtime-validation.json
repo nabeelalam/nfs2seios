@@ -1,0 +1,198 @@
+{
+  "schema": 1,
+  "scope": "Actual local normal-app three bonus-car badges and three new fixed car-value captions",
+  "environment": "Linux desktop software OpenGL",
+  "display": [
+    2186,
+    1640
+  ],
+  "normalBinarySha256": "d8949f5af2e23e42bb78b9608ee410b3af0b203fc176d6b51f13128e28a64297",
+  "privateBuildReceiptSha256": "da09844069c4ad709b0b011729cdae6c1471c66f2702537e0cddbafa17df8e67",
+  "privateBuildPlanSha256": "9d17458b01757506a8f4014fc1698cfc779bcc24774b68aa56075b102aa26bb3",
+  "packSha256": "4eda92b41bb6a16d42731d940983767153830abba6c6291ccc14ef9d5f2a717d",
+  "relatedBuildEvidence": "hd-fifteen-car-normal-build.json",
+  "relatedCaptionSourceEvidence": "hd-bonus-car-caption-integration.json",
+  "observerOrFixtureBuildObjectsUsed": false,
+  "normalMaintainedRendererReused": true,
+  "normalMaintainedRendererOriginallyRebuiltAndVerified": true,
+  "passed": true,
+  "resultSha256": "ba2799d5579bee0b9364f4d85c116d36abd67210be26a377172992335b826f11",
+  "recipeSha256": "30acbf366afaf1c8c9cdb08165de6e265e7096997e5c322420f904de8218ff60",
+  "independentCheckpointSha256": "9a3cf33f41fa9d370eb8d228869284d635675de8847c04db7428bdcc7fe44ba5",
+  "stableInputPins": 1625,
+  "captureFilesHashAndExactOwnerVerified": 106,
+  "ownedBulkCapturesVerified": 99,
+  "canonicalAndBulkSameSnapshotBytesEqual": true,
+  "ordinaryAscendingCodes": [
+    "BOMBER",
+    "TOMBSTONE",
+    "FZR2000"
+  ],
+  "eligibleGameTypeAndSingleRacePositivelyObserved": true,
+  "codeReturnKeySent": false,
+  "carValueRightInputsSent": false,
+  "guestMemoryPatchesUsed": false,
+  "carResults": [
+    {
+      "car": "Bomber BFS",
+      "newCaptionShapeVerified": true,
+      "captionTypeface": "Haettenschweiler",
+      "captionRgbaSha256": "860a131781e668159dc2b85141e3f2989af3016f58fa471b9cf83c2069bbd56b",
+      "captionFixedLogicalOutput": [
+        365.0,
+        86.5,
+        78.0,
+        17.0
+      ],
+      "captionAtlasY": 2050,
+      "captionAcceptedSamples": 2,
+      "captionShapeDice": [
+        0.9168316831683169,
+        0.9168316831683169
+      ],
+      "oldSourceRivalDice": [
+        0.6515495086923658,
+        0.6515495086923658
+      ],
+      "haettMinusRivalMargin": [
+        0.26528217447595104,
+        0.26528217447595104
+      ],
+      "whitePlayerFormMaterialAndCaptionVerifiedTogether": true,
+      "whiteMainMaterialVerified": true,
+      "whiteMainMeanOpaqueRgbError": 0.6622181905030765,
+      "whiteMainSpatialCorrelation": 0.9958664030222137,
+      "opaqueSamples": 45830,
+      "fixedLogicalQuad": [
+        510.0,
+        215.0,
+        638.0,
+        343.0
+      ],
+      "newPmaSha256": "f7e7d9ef491a28ae2161fcde717824abe3062386c95760b8e87ad0c66cddc766",
+      "dimSourceEligible": true,
+      "dimMainMaterialVerified": true,
+      "dimMainMeanOpaqueRgbError": 0.5243126397456138,
+      "dimMainSpatialCorrelation": 0.9913268978949824
+    },
+    {
+      "car": "Tombstone",
+      "newCaptionShapeVerified": true,
+      "captionTypeface": "Haettenschweiler",
+      "captionRgbaSha256": "f5648a5e6155308a8804b211028f44cba323b5e77735430203b3e5deda8f39c0",
+      "captionFixedLogicalOutput": [
+        365.0,
+        86.5,
+        70.0,
+        17.0
+      ],
+      "captionAtlasY": 2050,
+      "captionAcceptedSamples": 2,
+      "captionShapeDice": [
+        0.9567010309278351,
+        0.9567010309278351
+      ],
+      "oldSourceRivalDice": [
+        0.6594504579517069,
+        0.6594504579517069
+      ],
+      "haettMinusRivalMargin": [
+        0.2972505729761282,
+        0.2972505729761282
+      ],
+      "whitePlayerFormMaterialAndCaptionVerifiedTogether": true,
+      "whiteMainMaterialVerified": true,
+      "whiteMainMeanOpaqueRgbError": 0.6958096586555208,
+      "whiteMainSpatialCorrelation": 0.9943763475900198,
+      "opaqueSamples": 43381,
+      "fixedLogicalQuad": [
+        510.0,
+        215.0,
+        638.0,
+        343.0
+      ],
+      "newPmaSha256": "e10bf2e3b2fdecfc50449927ec18ce24733dc4f4c628c6d8ee22f78b756f20cc",
+      "dimSourceEligible": false,
+      "dimMainMaterialVerified": false
+    },
+    {
+      "car": "FZR 2000",
+      "newCaptionShapeVerified": true,
+      "captionTypeface": "Haettenschweiler",
+      "captionRgbaSha256": "58ac00be0bfc7a8c621dc3acbe927abfc0a093d3a4db840cfd0295dd45347a4e",
+      "captionFixedLogicalOutput": [
+        365.0,
+        86.5,
+        60.0,
+        17.0
+      ],
+      "captionAtlasY": 2050,
+      "captionAcceptedSamples": 2,
+      "captionShapeDice": [
+        0.9551515151515152,
+        0.9551515151515152
+      ],
+      "oldSourceRivalDice": [
+        0.56318407960199,
+        0.56318407960199
+      ],
+      "haettMinusRivalMargin": [
+        0.3919674355495252,
+        0.3919674355495252
+      ],
+      "whitePlayerFormMaterialAndCaptionVerifiedTogether": true,
+      "whiteMainMaterialVerified": true,
+      "whiteMainMeanOpaqueRgbError": 1.1288402922933836,
+      "whiteMainSpatialCorrelation": 0.9899865157032643,
+      "opaqueSamples": 43841,
+      "fixedLogicalQuad": [
+        510.0,
+        215.0,
+        638.0,
+        343.0
+      ],
+      "newPmaSha256": "96939c06e2dab1948a6b04c1baee5082f46bc0e95e2ebb5aa41fb92ac60c6524",
+      "dimSourceEligible": false,
+      "dimMainMaterialVerified": false
+    }
+  ],
+  "materialOracle": {
+    "whiteMeanRgbErrorLimit": 20,
+    "dimMeanRgbErrorLimit": 8,
+    "rivalGapMinimum": 15,
+    "spatialCorrelationMinimum": 0.85,
+    "sampling": "Fixed original 128 square, original 255/256 UV, inverse output pixel centers, GL_LINEAR, gamma 1.5; only four fully opaque contributing PMA texels"
+  },
+  "captionOracle": {
+    "authoredAlphaThreshold": 128,
+    "shapeDiceMinimum": 0.78,
+    "foreignAndOriginalRivalMarginMinimum": 0.1,
+    "sampling": "Fixed original screen geometry and accepted whole-word alpha; no translation, font or threshold fitting",
+    "newBottomAtlasRowsRenderedByShapeEvidence": true,
+    "completeFontPageOrNativeRgbaTraceClaimed": false,
+    "counterProofClaimed": false
+  },
+  "nonacceptedIntermediateObservationsPreserved": 6,
+  "materialAndCaptionOracleReplays": 20,
+  "resourceCreateRetirePairs": 8,
+  "resourceDrawsJoinedToCurrentCreatedLifetime": true,
+  "cleanShutdown": true,
+  "exitCode": 0,
+  "profileArtworkAndGammaRestored": true,
+  "savedFileInventory49Unchanged": true,
+  "ownedGameProcessesRemaining": 0,
+  "ownedDisplayStopped": true,
+  "leaseRemovedAfterTerminalRestoration": true,
+  "priorAttempt": {
+    "passed": false,
+    "retained": true,
+    "reason": "Initial Setup observation arrived before a positive Setup form; retry added bounded observation-only transition settling without extra keys or weaker recognition"
+  },
+  "limits": [
+    "Desktop software OpenGL validation; physical iPad performance and visuals remain unverified.",
+    "Caption results discriminate fixed logical Haett shapes from original rivals; they do not prove pixel-exact native RGBA, enclosed counters or a font-page trace.",
+    "Badge material results cover opaque footprints; full alpha, edges, background composition and broad visual approval are separate.",
+    "Tombstone and FZR 2000 original dim eligibility is false; no dim runtime result is claimed for them.",
+    "No race, battery, hidden traffic/object vehicle path or complete UI coverage claim."
+  ]
+}
