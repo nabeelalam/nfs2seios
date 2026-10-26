@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "scope": "Partial actual current-normal desktop cursor observations; full corner gate failed",
+  "binarySha256": "185e71443bc8c2263e06131c9ec97b1060f7592885b1ed86db57962c01805b89",
+  "packSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+  "actualMenuRecognition": true,
+  "confirmed": [
+    {
+      "logicalPosition": [
+        0,
+        0
+      ],
+      "captureSha256": "7893179648ecd8b215e909b8ad292f8a9e4a8e66d9c171521bc54c47863e9945",
+      "dimensions": [
+        640,
+        480
+      ],
+      "toleranceLogicalPixels": 2
+    },
+    {
+      "logicalPosition": [
+        320,
+        240
+      ],
+      "captureSha256": "1cce315de001fdbf9d233844e842b114672c0f77821eeb10bfb1c1d0a8d356de",
+      "dimensions": [
+        640,
+        480
+      ],
+      "toleranceLogicalPixels": 2
+    },
+    {
+      "logicalPosition": [
+        7,
+        8
+      ],
+      "captureSha256": "36927649fdbd88cc56375328de1d52b51e4c88d860d24ad942515b77045327c0",
+      "dimensions": [
+        640,
+        480
+      ],
+      "toleranceLogicalPixels": 2
+    }
+  ],
+  "fullCursorGatePassed": false,
+  "failure": "Point-sample image matcher rejected partially clipped upper-right cursor; no upper-right acceptance claimed",
+  "nextAction": "Validate pixel-centre resampling and clipped-cursor negatives before another live run",
+  "cleanShutdown": true,
+  "copiedProfileAndArtworkRestored": true,
+  "ownedProcessesRemaining": 0,
+  "physicalIpad": false,
+  "performanceOrBatteryClaim": false,
+  "cloudBuild": false,
+  "pushOrUpload": false
+}
