@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Local normal-app build for the complete fifteen-car artwork pack; bonus replacement rendering remains pending",
+  "binarySha256": "d8949f5af2e23e42bb78b9608ee410b3af0b203fc176d6b51f13128e28a64297",
+  "privateBuildReceiptSha256": "da09844069c4ad709b0b011729cdae6c1471c66f2702537e0cddbafa17df8e67",
+  "independentBuildAuditSha256": "d52874d7bc0db51f3460cc05dff9da15b7d405ff178085df585e76821d4d9df0",
+  "buildPlanSha256": "9d17458b01757506a8f4014fc1698cfc779bcc24774b68aa56075b102aa26bb3",
+  "packSha256": "4eda92b41bb6a16d42731d940983767153830abba6c6291ccc14ef9d5f2a717d",
+  "compiledObjects": 1,
+  "reusedVerifiedObjects": 75,
+  "actualCompiledDependencies": 33,
+  "sealedInputs": 799,
+  "maximumCompilerAndLinkWorkers": 2,
+  "rendererObjectSha256": "b8489f1ed07d8eb571d63dffa66cdc031fa59d2a4069af5a13e2bf69268098d4",
+  "rendererUnchangedFromStandardCarBuild": true,
+  "beforeAfterAndCurrentPinsExact": true,
+  "observerOrFixtureObjectsUsed": false,
+  "seconds": 72.67145149699999,
+  "cloudBuild": false,
+  "currentDefaultsChanged": false,
+  "bonusReplacementRenderingVerified": false,
+  "physicalDeviceVerified": false
+}

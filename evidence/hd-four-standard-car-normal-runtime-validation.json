@@ -1,0 +1,272 @@
+{
+  "schema": 1,
+  "scope": "Actual local normal-app Mustang caption and four standard-car badge selected/dim material validation",
+  "environment": "Linux desktop software OpenGL",
+  "display": [
+    2186,
+    1640
+  ],
+  "normalBinarySha256": "89bb85324f609ce6d76aed491804cff26603aa7e4c5ffa5c2a3fe997d4881c68",
+  "privateBuildReceiptSha256": "41c46a03e11f1a6f8c56f73275f4fd8ce9dd732657febf92a9271701b70fe690",
+  "privateBuildPlanSha256": "c1facb22cc72804f5019145ffac91ed4c7fccb7a908f71d4807b8b8d42deff41",
+  "packSha256": "8d60efeb04d3cc4e7bf665746f33fbb0bab91d2d573648f1af0ab74b6af3243c",
+  "relatedBuildEvidence": "hd-bonus-caption-standard-car-normal-build.json",
+  "observerOrFixtureBuildObjectsUsed": false,
+  "normalMaintainedRendererRebuilt": true,
+  "runs": [
+    {
+      "label": "Mustang caption and badge",
+      "passed": true,
+      "resultSha256": "1a43eccd9281e24129c8c7afd0fe3689465e0cd56da0d79ee67e5f4ad6bea66c",
+      "checkpointSha256": "eaea25a2a65d2649ed35c27c7ab0d46fe9f3bb25ba206428991660381cc71768",
+      "recipeSha256": "996f5b9b79b1c6d9dcefc173b8045eae75b6ed3b20383607c1e34a690f76aca5",
+      "buildAuthoritySha256": "5c1468256c405468a9cc65b8af19588206a164e5580b249c889550e20f10ea85",
+      "checkpointReportedStableInputs": 1575,
+      "resourceCreateRetirePairs": 6,
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "profileAndArtworkRestored": true,
+      "savedFileInventory49Unchanged": true,
+      "ownedGameProcessesRemaining": 0,
+      "ownedDisplayStopped": true
+    },
+    {
+      "label": "Three remaining standard badges",
+      "passed": true,
+      "resultSha256": "b1bbc031ba91200713313a8c6aa83ac0b9ca5b3ff828e36e1cdd1a7791b70e29",
+      "checkpointSha256": "bb787ebbf29fac78d125ed00011d6690c146061cd424dfcdade1cf802591d8dd",
+      "recipeSha256": "1d89625ae8000eff6746c8e2a0bf28bc627edb7bcbb26aa78538829c172c443c",
+      "buildAuthoritySha256": "5c1468256c405468a9cc65b8af19588206a164e5580b249c889550e20f10ea85",
+      "checkpointReportedStableInputs": 1578,
+      "resourceCreateRetirePairs": 12,
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "profileAndArtworkRestored": true,
+      "savedFileInventory49Unchanged": true,
+      "ownedGameProcessesRemaining": 0,
+      "ownedDisplayStopped": true,
+      "displayAndCorroborationAddendumSha256": "e10dfd70040e7735f253fcdd11326c46dd86d52c5077d7951c97a07f4e7d9bca"
+    }
+  ],
+  "carMaterialResults": [
+    {
+      "car": "Mustang Mach III",
+      "selectedMainVerified": true,
+      "dimmedMainVerified": true,
+      "rootReviewedActualFrames": true,
+      "states": {
+        "selected": [
+          {
+            "captureSha256": "fdbf38152c1bfe8ac06096b15c01e9fed2323368928b1c77e87a2f311b8a63a5",
+            "meanOpaqueRgbError": 1.1965709738268455,
+            "spatialCorrelation": 0.9942927000601139,
+            "opaqueSamples": 23246
+          },
+          {
+            "captureSha256": "28d91d953e2f9dda2dc06c7dc7f8db9e89a313459b197eea233b0a94ca30ad3c",
+            "meanOpaqueRgbError": 1.1965709738268455,
+            "spatialCorrelation": 0.9942927000601139,
+            "opaqueSamples": 23246
+          }
+        ],
+        "dimmed": [
+          {
+            "captureSha256": "f907e4fda0c8b11b2183e7a8f7018bca33a9a4ce2e6bd9c726ffe7a1e950a970",
+            "meanOpaqueRgbError": 0.7476857860383428,
+            "spatialCorrelation": 0.9914339245110825,
+            "opaqueSamples": 23246
+          },
+          {
+            "captureSha256": "b97d9fd8e247c9525859ff20df9fffe6ea86f794bf5c063dbb0ca9e0bc48c70a",
+            "meanOpaqueRgbError": 0.7476857860383428,
+            "spatialCorrelation": 0.9914339245110825,
+            "opaqueSamples": 23246
+          }
+        ]
+      }
+    },
+    {
+      "car": "Lotus Esprit V8",
+      "selectedMainVerified": true,
+      "dimmedMainVerified": true,
+      "rootReviewedActualFrames": true,
+      "states": {
+        "selected": [
+          {
+            "captureSha256": "b5d23c3567083cfab424e68fd8482e9b6264ebb3254fdec937e637f6b2071ba3",
+            "meanOpaqueRgbError": 1.8480231448148199,
+            "spatialCorrelation": 0.989534055050647,
+            "opaqueSamples": 9660
+          },
+          {
+            "captureSha256": "7e600482e82a1a954d276deec9ae400f87c10184c7296b4119c418f22dbf4186",
+            "meanOpaqueRgbError": 1.8480231448148199,
+            "spatialCorrelation": 0.989534055050647,
+            "opaqueSamples": 9660
+          }
+        ],
+        "dimmed": [
+          {
+            "captureSha256": "5969bc80d09c4e1c3f80a2071c705643ed6483d32026d5acf19c846ac57c77ae",
+            "meanOpaqueRgbError": 0.9958138917708681,
+            "spatialCorrelation": 0.9835070785910279,
+            "opaqueSamples": 9660
+          },
+          {
+            "captureSha256": "91e87365d7448b5e6a687b4b7181567f642485015f48558593eaf68cf0b61eb3",
+            "meanOpaqueRgbError": 0.9958138917708681,
+            "spatialCorrelation": 0.9835070785910279,
+            "opaqueSamples": 9660
+          }
+        ]
+      }
+    },
+    {
+      "car": "Italdesign Cala",
+      "selectedMainVerified": true,
+      "dimmedMainVerified": true,
+      "rootReviewedActualFrames": true,
+      "states": {
+        "selected": [
+          {
+            "captureSha256": "99af75c19755f518182bf57044c45a2fda98cbed088260812c86283fc0bb0fbd",
+            "meanOpaqueRgbError": 2.3212584499071,
+            "spatialCorrelation": 0.9927213794934422,
+            "opaqueSamples": 6933
+          },
+          {
+            "captureSha256": "a1686cdedfa12d0c0aa9923ec3c2df4d10ee9ba17185194505676749bca16f11",
+            "meanOpaqueRgbError": 2.3212584499071,
+            "spatialCorrelation": 0.9927213794934422,
+            "opaqueSamples": 6933
+          }
+        ],
+        "dimmed": [
+          {
+            "captureSha256": "7f74cd844be5540dba34960130b133492326369d7f03157f8702416b75ade515",
+            "meanOpaqueRgbError": 1.184076273860633,
+            "spatialCorrelation": 0.9916140024672532,
+            "opaqueSamples": 6933
+          },
+          {
+            "captureSha256": "f5dded07f0989af5d9d2da87814b4996e44640da7b7a29439a6d50b6f88c779a",
+            "meanOpaqueRgbError": 1.184076273860633,
+            "spatialCorrelation": 0.9916140024672532,
+            "opaqueSamples": 6933
+          }
+        ]
+      }
+    },
+    {
+      "car": "Isdera 112i",
+      "selectedMainVerified": true,
+      "dimmedMainVerified": true,
+      "rootReviewedActualFrames": true,
+      "states": {
+        "selected": [
+          {
+            "captureSha256": "fe0522cfdcbc12c5669b19cdca216363514d4aa4697b950d728a58fe4e0f8522",
+            "meanOpaqueRgbError": 1.1784572909376836,
+            "spatialCorrelation": 0.9951228358989985,
+            "opaqueSamples": 28097
+          },
+          {
+            "captureSha256": "a5c46b55349138b116b0e31dce93e8b347b2636d2f8a48e909012d084c369df3",
+            "meanOpaqueRgbError": 1.1784572909376836,
+            "spatialCorrelation": 0.9951228358989985,
+            "opaqueSamples": 28097
+          }
+        ],
+        "dimmed": [
+          {
+            "captureSha256": "fd6aa8078ff700e203e55893a123f7137e32a4fd498c6329c7840e1649ec6667",
+            "meanOpaqueRgbError": 0.8345223129710507,
+            "spatialCorrelation": 0.9907383560851449,
+            "opaqueSamples": 28097
+          },
+          {
+            "captureSha256": "e146776b81cc7d6d6707eaa28030993d34b140cb9802c858e0bebcbfcc304ee1",
+            "meanOpaqueRgbError": 0.8345223129710507,
+            "spatialCorrelation": 0.9907383560851449,
+            "opaqueSamples": 28097
+          }
+        ]
+      }
+    }
+  ],
+  "materialContract": {
+    "sourceFixedGeometry": true,
+    "inverseOutputPixelCenters": true,
+    "linearTextureSampling": true,
+    "gamma": 1.5,
+    "fourContributingTexelsFullyOpaque": true,
+    "selectedRgbErrorMaximum": 20,
+    "dimmedRgbErrorMaximum": 8,
+    "rivalErrorGapMinimum": 15,
+    "perChannelCenteredSpatialCorrelationMinimum": 0.85,
+    "consecutiveFramesPerState": 2,
+    "thresholdsFittedToActualFrames": false
+  },
+  "mustangCaption": {
+    "sourceFixedShapeAndOldCaptionRivalOnly": true,
+    "haettDiceMinimum": 0.78,
+    "rivalMarginMinimum": 0.1,
+    "acceptedFrames": [
+      {
+        "captureSha256": "1ea7ae062bd8a973eab76cdba02e7619abc231e8be943b4d1f7be0d703a4838a",
+        "fixedHaettDice": 0.9350132625994695,
+        "oldCaptionRivalDice": 0.7414772727272727,
+        "haettMinusRivalMargin": 0.19353598987219678,
+        "expectedShapeSamples": 743,
+        "accepted": true
+      },
+      {
+        "captureSha256": "4913470c5a78ab3677305fc9c6f2ff36e55f84ba2a2cb67b024d503e820f2a6c",
+        "fixedHaettDice": 0.9350132625994695,
+        "oldCaptionRivalDice": 0.7414772727272727,
+        "haettMinusRivalMargin": 0.19353598987219678,
+        "expectedShapeSamples": 743,
+        "accepted": true
+      }
+    ],
+    "enclosedCounterProofAvailable": false,
+    "pixelExactNativeRgbaProof": false
+  },
+  "retainedNonacceptedObservations": [
+    {
+      "car": "Isdera 112i",
+      "captureSha256": "0e239b30b69568e0b6b9359b8489da03f7d082a009dc1fbaebdb1973fc6991bd",
+      "status": "Partial material corroboration; caption still identified preceding car",
+      "whiteMaterialAccepted": true,
+      "meanOpaqueWhiteRgbError": 1.1918056466671303,
+      "spatialCorrelation": 0.9950740043981621,
+      "acceptedCarIdentityPair": false,
+      "extraValueInputIssued": false,
+      "laterStablePairRequired": true
+    },
+    {
+      "car": "Italdesign Cala",
+      "captureSha256": "1c6cbbba4bb22de7ca01c4ffce71a8e66dba43595c4a7e079557e138a7ddbd19",
+      "status": "First transition capture did not meet material acceptance",
+      "meanOpaqueWhiteRgbError": 20.09056512244552,
+      "spatialCorrelation": 0.6189865519594661,
+      "accepted": false,
+      "laterConsecutivePairAccepted": true
+    }
+  ],
+  "currentReferencedBinaryPackAndAuthorityHashesRechecked": true,
+  "originalPixelsIncluded": false,
+  "privatePathsIncluded": false,
+  "rawDescriptorsIncluded": false,
+  "currentDefaultsChanged": false,
+  "gameOrBuildRunByEvidencePreparation": false,
+  "physicalDeviceVerified": false,
+  "ipadGameplayOrPerformanceClaim": false,
+  "finalUserArtworkAcceptance": false,
+  "limits": [
+    "Material measurements cover fully opaque footprints only; transparent edges and background blending remain outside this proof.",
+    "Mustang caption uses fixed logical shape plus a fixed old-caption rival; zero enclosed counters and no per-word GPU trace or pixel-exact native RGBA claim.",
+    "Transient caption/material mismatch is retained as partial evidence; cause is unproven and no engine-fix claim is made.",
+    "Local menu observations do not establish iPad rendering, gameplay, frame rate, battery use or final visual acceptance."
+  ]
+}
