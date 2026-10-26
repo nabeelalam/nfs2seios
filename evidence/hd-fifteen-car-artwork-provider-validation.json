@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "scope": "Private complete standard and bonus-car artwork catalog; maintained loader/provider checks, not game rendering",
+  "packSha256": "4eda92b41bb6a16d42731d940983767153830abba6c6291ccc14ef9d5f2a717d",
+  "packBytes": 106638872,
+  "sections": 56,
+  "nativeBindings": 27,
+  "carBadgeEntries": 15,
+  "newBonusEntries": [
+    "bom5",
+    "tom5",
+    "fzr5"
+  ],
+  "oldBindingRecordsPreserved": 24,
+  "oldNonBindingPayloadsPreserved": 52,
+  "allPriorProfilesIdentitiesPixelsUnchanged": true,
+  "exactNewProfileIdentityPmaAlphaPositives": 3,
+  "negativeCalls": 18,
+  "untouchedSentinelOutputs": 15,
+  "stableRepeatLookups": 9,
+  "actualCompilerDependencies": 26,
+  "compilerInvocations": 1,
+  "maxCompilerWorkers": 1,
+  "originalBonusSourceRecords": 8,
+  "originalSourceEvents": 7924,
+  "actualOriginalEntryTriangles": [
+    256,
+    174,
+    44
+  ],
+  "privateProviderReceiptSha256": "b989f4e6d997af27807fffa56957df576d481daeda06c59434c1e8c0475d87cf",
+  "privatePackReceiptSha256": "b09c626bdab99a63523572ca4e40cc2b5a504a510fd1913c5a3750482c1d57c3",
+  "withinExisting128MiBLoaderLimit": true,
+  "defaultAndOwnerReleasePinsUnchanged": true,
+  "actualNewBonusBadgeGameRenderingVerified": false,
+  "finalUserArtworkApproval": false,
+  "physicalDeviceVerified": false,
+  "rawOriginalBytesOrPrivateArtworkPublished": false
+}
