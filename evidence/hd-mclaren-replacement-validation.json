@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "scope": "Private McLaren replacement source/provider/build and actual native-size normal-game rendering validation",
+  "packSha256": "10d03ff357f8f60aff119f0de1b76e1908ffd7ee83272bfb9edce11d4e55cbc4",
+  "packBytes": 94053464,
+  "packSections": 44,
+  "preservedOtherPayloads": 42,
+  "preservedPreviousBindings": 14,
+  "newNativeRole": 14,
+  "newNativeIdentity": 5566821096482668559,
+  "newPmaSha256": "4ef303e10b381ce1dca3f18ae69b7230c925429451b1b989958b0fb0623c9449",
+  "artwork": {
+    "periodLetterPathsPreserved": true,
+    "goldPlateWithTransparentLetterKnockouts": true,
+    "canvasOffset": [
+      8,
+      0
+    ],
+    "fullyOpaqueTexels": 24790,
+    "partiallyTransparentTexels": 1528,
+    "rootReviewedPrivateComparison": true,
+    "finalVisualAcceptance": false
+  },
+  "providerValidation": {
+    "passed": true,
+    "exactDependencyClosure": 26,
+    "seconds": 7.564,
+    "previousBindingProfilesAndPixelsByteEqual": true,
+    "negativeLookups": 6,
+    "negativeOutputsUnchanged": true,
+    "repeatLookupPassed": true
+  },
+  "normalBuild": {
+    "binarySha256": "81fba676f62cdb4c2ce08b2f3fa9191d4656cc4f2a9f9824678f12afdf0404b9",
+    "compiledObjects": 1,
+    "reusedObjects": 75,
+    "exactCompiledDependencies": 33,
+    "maximumWorkers": 2,
+    "seconds": 72.376,
+    "normalMainAndRendererReused": true,
+    "onlyPrivateTrustedFingerprintChanged": true
+  },
+  "runtimeReplacementVerified": true,
+  "physicalDeviceVerified": false,
+  "maintainedDefaultOrOwnerTemplateChanged": false,
+  "cloudBuild": false,
+  "pushOrUpload": false,
+  "limits": [
+    "Opaque footprint photometry does not prove transparent edge blending",
+    "Linux rendering is not iPad acceptance",
+    "Performance and battery acceptance remain open",
+    "First-run caption/actual-selection mismatch cause remains unproven; acknowledgement-aware navigation avoids outstanding value inputs without an engine-fix claim"
+  ],
+  "firstNormalRun": {
+    "passed": false,
+    "nativeDisplay": [
+      2186,
+      1640
+    ],
+    "stop": "Selected Main showed Ferrari F50 after a car-caption/actual-photo mismatch; later attract mode rejected",
+    "captionMismatch": "Player1 capture reported McLaren F1 while photo and native mark showed Ferrari F50",
+    "partialMcLarenRendering": {
+      "captureHadIsderaCaptionWithMcLarenPhotoAndNewPlate": true,
+      "meanOpaqueWhiteRgbError": 1.1459519404679992,
+      "meanOpaqueDimRgbError": 97.49610867829136,
+      "opaqueSamples": 17324,
+      "unchangedOracle": true,
+      "rootViewedActualFrame": true,
+      "stablePairOrDimVerified": false
+    },
+    "cleanShutdown": true,
+    "copiedProfileAndArtworkRestored": true,
+    "ownedProcessesRemaining": 0,
+    "causeUnproven": true
+  },
+  "actualNormalRuntime": {
+    "passed": true,
+    "display": [
+      2186,
+      1640
+    ],
+    "positivePlayerOneHeadingAndCarRow": true,
+    "oneRightThenChangedCaptionAcknowledgement": true,
+    "sameFrameMclarenCaptionAndMaterialRequiredBeforeDone": true,
+    "selectedAndDimmedMainVerified": true,
+    "consecutiveAcceptedFramesPerState": 2,
+    "selectedMeanOpaqueRgbError": 1.1460673872470342,
+    "dimMeanOpaqueRgbError": 0.7609678909357231,
+    "opaqueSamplesPerFrame": 17324,
+    "predeclaredThresholds": {
+      "white": 20,
+      "dim": 8,
+      "rivalGap": 15
+    },
+    "rootViewedTargetSelectedAndDimmedFrames": true,
+    "nativeResourceAndDrawIdentityVerified": true,
+    "resultSha256": "ef43332e4632e06bef5fd087ffee51db406d37f8d85961740edf5f9c8a475dff",
+    "cleanShutdown": true,
+    "copiedProfileAndArtworkRestored": true,
+    "ownedProcessesRemaining": 0
+  },
+  "independentRuntimeAudit": {
+    "allSealedInputsStable": 172,
+    "retainedArtifactsPinned": 69,
+    "createdAndRetiredResources": 7,
+    "exactResourceIdentityPairsRetired": true,
+    "oneRightPulses": 8,
+    "eachChangeAcknowledgedBeforeNextPulse": true,
+    "currentConfigArtworkAndGammaRestored": true,
+    "leaseAndOwnedGameAndDisplayAbsent": true,
+    "privateCheckpointSha256": "5a4b38800a3a7de38f97144747c025568b93f96a70e5dc2c9feecd91bfdac11c",
+    "scope": "Seven actually loaded resources, not all fifteen provider entries; opaque desktop rendering only"
+  }
+}
