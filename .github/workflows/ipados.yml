@@ -69,6 +69,7 @@ jobs:
           python3 tests/frontend_font_inspection_test.py
           python3 tests/hd_workflow_coverage_test.py
           python3 tests/artwork_workflow_input_test.py
+          python3 tests/assemble_hd_artwork_test.py
           python3 scripts/setup_secret_scanner.py
           python3 scripts/publication_gate.py --mode history
           python3 scripts/publication_audit.py --mode worktree

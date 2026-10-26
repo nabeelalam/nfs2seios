@@ -41,7 +41,7 @@ class HdWorkflowCoverage(unittest.TestCase):
     def test_fast_preparation_and_policy_checks_are_scheduled(self):
         for name in ('ipados.yml','apple-device.yml'):
             workflow=(ROOT/'.github/workflows'/name).read_text()
-            for test in ('frontend_word_hooks','frontend_asset_review','frontend_font_inspection','hd_workflow_coverage'):
+            for test in ('frontend_word_hooks','frontend_asset_review','frontend_font_inspection','hd_workflow_coverage','assemble_hd_artwork'):
                 with self.subTest(workflow=name,test=test):
                     self.assertIn('python3 tests/'+test+'_test.py',workflow)
 

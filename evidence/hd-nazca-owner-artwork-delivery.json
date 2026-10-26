@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "scope": "Reviewed owner-side reconstruction of actual-game-tested Nazca artwork candidate",
+  "trustedTemplateSha256": "bff23f6ff74ddca8d5bd611b58618466149fb04d9e49882b42235d061d733d23",
+  "testedPackSha256": "8b8dc2db8b025cd8ae71ab174a51a5c1ef7cfe8b0d0ee41e50fb7fa09a239fed",
+  "templateBytes": 93008700,
+  "packBytes": 93004680,
+  "originalHeadersOmitted": 24,
+  "originalHeaderBytesOmitted": 384,
+  "rawHeaderPatternMatchesInTemplate": 0,
+  "rootIndependentReconstructionAndByteEqualityPassed": true,
+  "rootActualCliPassed": true,
+  "ownerUnchanged": true,
+  "assemblyTests": {
+    "windows": 10,
+    "wsl": 10
+  },
+  "actualCliNegatives": {
+    "existingOutputPreserved": true,
+    "previousReleaseTemplateRefusedWithoutOutput": true
+  },
+  "independentContentReview": {
+    "exactPayloadEqualsPackMinusHeaderHoles": true,
+    "priorPayloadsAndBindingsUnchanged": true,
+    "detectedPrivatePathOrCredentialSignatures": 0,
+    "compatibilityNamesHashesAndLayoutMetadataRemain": true
+  },
+  "sourceChange": "Only two immutable trusted release fingerprints; parser and filesystem safeguards unchanged",
+  "appDefaultArtworkActivationChanged": false,
+  "limits": [
+    "Template and reconstructed pack remain private; no distribution approval or upload claimed",
+    "Current HD iPad rendering, lifecycle, audio, controller and energy acceptance remain unverified"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false,
+  "fastSyntheticSafetyTestsScheduledBeforeFullBuild": true
+}

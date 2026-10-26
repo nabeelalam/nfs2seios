@@ -57,6 +57,7 @@ jobs:
           python3 tests/frontend_font_inspection_test.py
           python3 tests/hd_workflow_coverage_test.py
           python3 tests/artwork_workflow_input_test.py
+          python3 tests/assemble_hd_artwork_test.py
           python3 tests/guest_copy_semantics_test.py
           if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
           cmake -S . -B .build/host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256"

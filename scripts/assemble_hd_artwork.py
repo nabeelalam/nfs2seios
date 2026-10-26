@@ -57,8 +57,8 @@ class TrustedRecipe:
 
 
 KNOWN_RELEASE = TrustedRecipe(
-    "28aa4b2f05b10647059215fddd25e0c07a1dbed9020b52594f1ebd2285fd3d4f",
-    "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc")
+    "bff23f6ff74ddca8d5bd611b58618466149fb04d9e49882b42235d061d733d23",
+    "8b8dc2db8b025cd8ae71ab174a51a5c1ef7cfe8b0d0ee41e50fb7fa09a239fed")
 
 
 def decode_qfs(data):
