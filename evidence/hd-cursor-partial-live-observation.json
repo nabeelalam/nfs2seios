@@ -122,5 +122,7 @@
   "pushOrUpload": false,
   "filteringAndGammaModel": "Inverse fragment centres, original UVs, bilinear opaque footprints and source/config-pinned gamma 1.5",
   "fullNativeTrackingAndHoverGatePassed": false,
-  "priorFailedAttemptsPreserved": true
+  "priorFailedAttemptsPreserved": true,
+  "historicalAttempt": true,
+  "followUpNativeTrackingEvidence": "hd-cursor-native-tracking.json"
 }

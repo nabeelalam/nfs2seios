@@ -27,8 +27,8 @@
   },
   "artReview": "Second private candidate follows historical curved lettering and gold relief; final user and physical approval pending",
   "limits": [
-    "Original upload observations are historical local evidence",
-    "Current authored candidate has not yet been displayed in the game",
+    "Original upload and selection observations are historical local evidence",
+    "Current new artwork is verified in native dimmed Setup display; bright selected view and complete round trip remain open",
     "Owner-art reconstruction template is not yet updated",
     "No physical-device, performance or battery acceptance"
   ],
@@ -45,5 +45,30 @@
     "normalMainAndRendererReused": true,
     "seconds": 70.14,
     "runtimeVerified": false
+  },
+  "actualDimNativeDisplay": {
+    "verified": true,
+    "rootVisuallyInspected": true,
+    "captureSha256": "f48d0bfde2e3c5cdad64904181edd187853d66adaf2186ac3d8862ae67de27d1",
+    "dimensions": [
+      2186,
+      1640
+    ],
+    "nativeArtIdentity": 5566821096482668558,
+    "resourceCreatedAndDrawAccepted": true,
+    "originalTint": [
+      129,
+      84,
+      18
+    ],
+    "gamma": 1.5,
+    "fullyOpaqueSamples": 8756,
+    "meanDimRGBError": 2.1286570762444006,
+    "noFittedBackgroundOrTranslation": true,
+    "selectedWhiteDisplayVerified": false,
+    "wholeNavigationGatePassed": false,
+    "stopReason": "Setup observer recognized selected gold mode text but not its dimmed state after navigating to the next row",
+    "cleanShutdownAndCopiedResourcesRestored": true,
+    "ownedProcessesRemaining": 0
   }
 }

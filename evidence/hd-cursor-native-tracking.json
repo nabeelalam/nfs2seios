@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "scope": "Actual desktop native-resolution cursor tracking and menu hover; paired with separate original-resolution session",
+  "binarySha256": "185e71443bc8c2263e06131c9ec97b1060f7592885b1ed86db57962c01805b89",
+  "packSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+  "nativeGatePassed": true,
+  "originalResolutionEvidence": {
+    "scope": "Prior separate-session640phase only; overallrun04 failed native log admission, never overallpassed",
+    "priorResultSha256": "109186c08c63abdc31a1c2c33270db4a65b3c52f320de686fda367b6c4170a1f",
+    "priorManifestSha256": "2e4b27fd162b95d95907e0a5388e0a3d9bdf29c9c818ad71fa30be87c0a9c27e",
+    "pairedProofSha256": "e365c22066751505f241ea8e6ffbf2cd970d0394624e84c61099cf947964986e",
+    "captures": 7,
+    "sameBinarySha256": "185e71443bc8c2263e06131c9ec97b1060f7592885b1ed86db57962c01805b89",
+    "samePackSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+    "gamma": 1.5,
+    "oneSessionBothDensitiesClaimed": false
+  },
+  "oneSessionBothResolutionsClaimed": false,
+  "dimensions": [
+    2186,
+    1640
+  ],
+  "coordinateToleranceLogicalPixels": 2,
+  "maximumObservedCoordinateError": 1,
+  "method": "Inverse native output pixel centres, original UVs, bilinear fully opaque texture footprints and source/config-pinned gamma 1.5; known-identity art and semantic Main required",
+  "recognitionThresholdUnchanged": 20,
+  "confirmed": [
+    {
+      "captureSha256": "d353b84de423842a7f042592470d48712ea1fecea0ffebcad336cebe02a2b69a",
+      "observed": [
+        0,
+        0
+      ],
+      "expected": null,
+      "meanOpaqueRGBError": 0.9224027313327837,
+      "opaqueSamples": 1923
+    },
+    {
+      "captureSha256": "4b2de35e367ccfacff766d06d804d7e4f7f4129e7fff8968aa78133f3c779090",
+      "observed": [
+        320,
+        240
+      ],
+      "expected": [
+        320,
+        240
+      ],
+      "meanOpaqueRGBError": 0.8084269438096527,
+      "opaqueSamples": 1919
+    },
+    {
+      "captureSha256": "e23448d78ee5e312edd1a0a7abcda078a40b49ba6834d3be8334d349a5085592",
+      "observed": [
+        6,
+        7
+      ],
+      "expected": [
+        7,
+        8
+      ],
+      "meanOpaqueRGBError": 0.5487781755312019,
+      "opaqueSamples": 1922
+    },
+    {
+      "captureSha256": "17f137074984fc3626b73cba0192a3640225bb39345213d4326112b2e4d1f4c0",
+      "observed": [
+        631,
+        8
+      ],
+      "expected": [
+        631,
+        8
+      ],
+      "meanOpaqueRGBError": 3.1173448492709404,
+      "opaqueSamples": 775
+    },
+    {
+      "captureSha256": "2518cd2cfb55175f4eaa7ed2d93ebbb892722b8d9777e2c7d4604c0cbf4d967d",
+      "observed": [
+        630,
+        469
+      ],
+      "expected": [
+        631,
+        469
+      ],
+      "meanOpaqueRGBError": 0.5248290884549127,
+      "opaqueSamples": 650
+    },
+    {
+      "captureSha256": "0bc797b36f3eabd1177c0b2a5db2a2df9cfbb710c3517a4f37ea4a076b140705",
+      "observed": [
+        6,
+        468
+      ],
+      "expected": [
+        7,
+        469
+      ],
+      "meanOpaqueRGBError": 2.844977198832802,
+      "opaqueSamples": 1156
+    },
+    {
+      "captureSha256": "4152929b30212527ced5bec07af57f0d768d8b70474f02c3d996cf39330e2705",
+      "observed": [
+        320,
+        239
+      ],
+      "expected": [
+        320,
+        240
+      ],
+      "meanOpaqueRGBError": 1.0141227560871908,
+      "opaqueSamples": 1918
+    },
+    {
+      "captureSha256": "3474c218bb327dae995c276c8acb9ebd4ea32422a90aece96414c7891007ab27",
+      "observed": [
+        159,
+        177
+      ],
+      "expected": [
+        160,
+        177
+      ],
+      "meanOpaqueRGBError": 1.0082653003466706,
+      "opaqueSamples": 1927
+    },
+    {
+      "captureSha256": "27e6f5db149ed8a6d4320fb713120a9e8a5b17fc468290cfdd9761e42ce1aab2",
+      "observed": [
+        160,
+        381
+      ],
+      "expected": [
+        160,
+        381
+      ],
+      "meanOpaqueRGBError": 1.2971064471082534,
+      "opaqueSamples": 1933
+    }
+  ],
+  "hover": [
+    {
+      "target": "location",
+      "whiteBefore": 0,
+      "whiteAfter": 336,
+      "cursorAndFilterHaloExcluded": true
+    },
+    {
+      "target": "options",
+      "whiteBefore": 0,
+      "whiteAfter": 335,
+      "cursorAndFilterHaloExcluded": true
+    }
+  ],
+  "rootVisuallyInspected": [
+    "Native centre",
+    "Native clipped lower-right",
+    "Options hover"
+  ],
+  "cleanShutdown": true,
+  "copiedProfileAndArtworkRestored": true,
+  "ownedProcessesRemaining": 0,
+  "limits": [
+    "Near-corner positions including requested y469; exact extreme y479 not localized",
+    "Two-pixel localization tolerance; no subpixel or translucent-edge photometric claim",
+    "Hover targeting only; click-open behavior not tested in this run",
+    "Desktop software-GLES evidence is not physical iPad, hardware-GPU, performance or battery acceptance"
+  ],
+  "productionTraceCapChanged": false,
+  "gameOrRendererPatchedForTest": false,
+  "cloudBuild": false,
+  "pushOrUpload": false
+}
