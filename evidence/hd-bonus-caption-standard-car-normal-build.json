@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "scope": "Local normal-app build of bonus-caption renderer and complete standard-car pack fingerprint; runtime rendering pending",
+  "binarySha256": "89bb85324f609ce6d76aed491804cff26603aa7e4c5ffa5c2a3fe997d4881c68",
+  "privateBuildReceiptSha256": "41c46a03e11f1a6f8c56f73275f4fd8ce9dd732657febf92a9271701b70fe690",
+  "privateBuildPlanSha256": "c1facb22cc72804f5019145ffac91ed4c7fccb7a908f71d4807b8b8d42deff41",
+  "compiledObjects": 2,
+  "reusedVerifiedObjects": 74,
+  "maximumCompilerAndLinkWorkers": 2,
+  "normalMainReused": true,
+  "maintainedRendererRebuilt": true,
+  "observerOrFixtureObjectsUsed": false,
+  "actualCompiledDependencies": [
+    300,
+    33
+  ],
+  "sealedInputs": 1405,
+  "beforeAfterPinsExact": true,
+  "packSha256": "8d60efeb04d3cc4e7bf665746f33fbb0bab91d2d573648f1af0ab74b6af3243c",
+  "seconds": 95.899,
+  "cloudBuild": false,
+  "gameRenderingVerified": false,
+  "physicalDeviceVerified": false,
+  "currentDefaultsChanged": false
+}
