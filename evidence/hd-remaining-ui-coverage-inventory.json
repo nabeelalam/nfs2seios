@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "scope": "Remaining UI remaster coverage inventory; authored parent navigation is distinct from child scenes",
+  "reviewedSourceCommit": "69da070",
+  "privateInventorySha256": "04c0df577db8f630d53884b7aab024d9f8a2bba43d9e0f816a88697a5b54c774",
+  "independentlyRehashedInputs": 50,
+  "privateJournalAppendOnlyVerification": {
+    "retainedPrefixBytes": 805672,
+    "appendedBytes": 1354,
+    "retainedPrefixSha256": "c791605d083518e24eafea007d6766611a882b8ef27d73e15b94d9eaf631a6ad"
+  },
+  "areas": [
+    {
+      "area": "Load/Save child form",
+      "status": "SOURCE-ONLY gap; parent Options navigation word is authored, child form is not covered coherently"
+    },
+    {
+      "area": "Track records / personal statistics child tables",
+      "status": "SOURCE-ONLY current-HD coverage gap; HUD RECORD font and frontend navigation words are separate"
+    },
+    {
+      "area": "Race Summary / Lap Times / Tournament and Knockout results",
+      "status": "HISTORICAL ORIGINAL presentation observed; current HD replacement unverified and no dedicated coherent coverage found"
+    },
+    {
+      "area": "Credits child screen",
+      "status": "SOURCE-ONLY current-HD gap; Credits navigation word exists"
+    },
+    {
+      "area": "Tournament/Knockout menu rule emblems and tournament preview",
+      "status": "SOURCE-IDENTIFIED unsupported candidates; current live replacement not established"
+    },
+    {
+      "area": "Race minimap player/opponent markers",
+      "status": "SOURCE ARCHIVE known; actual draw/UV/lifetime route and HD replacement unverified"
+    },
+    {
+      "area": "Other HUD/replay icon inventory",
+      "status": "SOURCE-ONLY candidates; semantic/current visibility unverified"
+    },
+    {
+      "area": "Initial Player form native scene admission",
+      "status": "ACTUAL current-normal first-entry fallback remains unresolved; not a missing caption/car-art task"
+    }
+  ],
+  "nextTarget": "Read-only Load/Save child observation before exact scene/text integration",
+  "saveLoadDeleteActionsAuthorizedByObservation": false,
+  "coverageClaimsDoNotProveAllPixelsOriginal": true,
+  "previouslyVerifiedBackgroundCursorVolumeNotReopened": true,
+  "newRuntime": false,
+  "newCompile": false,
+  "physicalDeviceAcceptance": false,
+  "fullRemasterComplete": false
+}
