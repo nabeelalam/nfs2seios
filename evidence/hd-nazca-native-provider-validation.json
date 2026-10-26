@@ -27,9 +27,9 @@
   },
   "artReview": "Second private candidate follows historical curved lettering and gold relief; final user and physical approval pending",
   "limits": [
-    "Original upload and selection observations are historical local evidence",
-    "Current new artwork is verified in native dimmed Setup display; bright selected view and complete round trip remain open",
-    "Owner-art reconstruction template is not yet updated",
+    "Original source upload/selection evidence is historical local data; current new dim and selected displays are separate native desktop captures",
+    "Final user artwork critique and physical iPad acceptance remain open",
+    "Owner-art reconstruction template update remains separate and private",
     "No physical-device, performance or battery acceptance"
   ],
   "defaultArtworkChanged": false,
@@ -68,6 +68,31 @@
     "selectedWhiteDisplayVerified": false,
     "wholeNavigationGatePassed": false,
     "stopReason": "Setup observer recognized selected gold mode text but not its dimmed state after navigating to the next row",
+    "cleanShutdownAndCopiedResourcesRestored": true,
+    "ownedProcessesRemaining": 0,
+    "historicalSeparateAttempt": true
+  },
+  "actualSelectedNativeDisplay": {
+    "verified": true,
+    "rootVisuallyInspected": true,
+    "dimensions": [
+      2186,
+      1640
+    ],
+    "binarySha256": "a7f14d3aa2a40c46f152dfcba03077185e266ea02ab341d55c871b684f342a83",
+    "packSha256": "8b8dc2db8b025cd8ae71ab174a51a5c1ef7cfe8b0d0ee41e50fb7fa09a239fed",
+    "captureSha256": "f0c53f9a64b1386f280463c1ce9a8bfb2396b3bfdff988b67155383789453703",
+    "carNameFormCaptureSha256": "a4c490e459537b66c0ab7dbbd3c184170266cf14b5c63c94e85f0fc2e9d92caa",
+    "manualCarNameConfirmed": "Nazca C2",
+    "meanOpaqueWhiteRGBError": 4.30174747286601,
+    "opaqueSamples": 8756,
+    "gamma": 1.5,
+    "newNativeIdentity": 5566821096482668558,
+    "priorSixNativeIdentitiesRetained": true,
+    "originalPreparedGeometryAndUVRetained": true,
+    "setupModeVerifiedInSelectedStateTwice": true,
+    "subsequentModePreservationBasis": "Pinned original Down-only row-navigation path; dim text was not represented as recognized",
+    "mainPlayer2FormAndReturnVerified": true,
     "cleanShutdownAndCopiedResourcesRestored": true,
     "ownedProcessesRemaining": 0
   }
