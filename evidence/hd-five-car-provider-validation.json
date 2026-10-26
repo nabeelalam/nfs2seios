@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Five private source-proven artwork additions and maintained C++ loader/provider validation; actual replacement display remains open",
+  "scope": "Five artwork additions with maintained provider/build checks and actual selected/dim normal-game rendering across two bounded local sessions",
   "packSha256": "f2ad4725e3e82b4713c8b9e7672b6a1a2935541db35014d097b88f628e533259",
   "packBytes": 99297384,
   "packSections": 49,
@@ -77,7 +77,7 @@
   },
   "withinCurrent96MiBAssemblyBudget": true,
   "maintainedDefaultsOrOwnerTemplateChanged": false,
-  "actualReplacementRenderingVerified": false,
+  "actualReplacementRenderingVerified": true,
   "physicalDeviceVerified": false,
   "cloudBuild": false,
   "pushOrUpload": false,
@@ -137,5 +137,37 @@
     "ownedProcessesRemaining": 0,
     "gameGeneratedConfigNotPersisted": true,
     "resultSha256": "d45383a0e113a48b06e934c51d63b58a1db7c2a64228cd5b5113d931c6c7cc45"
-  }
+  },
+  "continuationRun": {
+    "passed": true,
+    "completedSelectedAndDimmedTargets": [
+      {
+        "entry": "3555",
+        "selectedMeanOpaqueRgbError": 1.3792925223596506,
+        "dimMeanOpaqueRgbError": 0.868891244967942,
+        "selectedSpatialCorrelation": 0.9959447873059708,
+        "dimSpatialCorrelation": 0.9939721649465233,
+        "opaqueSamples": 25542
+      },
+      {
+        "entry": "fgt5",
+        "selectedMeanOpaqueRgbError": 1.0121313358541617,
+        "dimMeanOpaqueRgbError": 0.6709985865340993,
+        "selectedSpatialCorrelation": 0.9966242247111301,
+        "dimSpatialCorrelation": 0.9941366583992242,
+        "opaqueSamples": 8212
+      }
+    ],
+    "originalFordProfileUsed": true,
+    "acknowledgedSingleRightPulses": 11,
+    "sameBinaryAndPackAsFirstRun": true,
+    "allSealedInputsStable": 239,
+    "postGateExactOwnerCaptureRecords": 100,
+    "createdAndRetiredResources": 12,
+    "cleanShutdown": true,
+    "copiedConfigArtworkAndGammaRestored": true,
+    "leaseGameAndDisplayAbsent": true,
+    "independentCheckpointSha256": "5d5c1a2b4158ae4052e7a1cc1d19983feef9731c1883b77116f9d59d0b9eb9ac"
+  },
+  "aggregateQualification": "All five target selected/dim observations are supported across the original three-target partial session and the successful two-target continuation. The original combined whole-run failure is preserved; no single five-target session PASS is claimed."
 }

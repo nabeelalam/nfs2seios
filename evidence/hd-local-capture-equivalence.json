@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "scope": "Private Linux local-test screenshot encoding equivalence; no game-renderer or device-performance change",
+  "actualOwnedNativeSnapshot": {
+    "width": 2186,
+    "height": 1640,
+    "exactProcessStartWindowGeometryVerified": true,
+    "singleRetainedXImage": true,
+    "xGetImageCalls": 1,
+    "wholeCanonicalAndBulkBmpBytesEqual": true,
+    "bmpSha256": "ad320f37937686682cefc756784a155be987b52b4e4cab02940fab8920499b07",
+    "canonicalEncodingSeconds": 2.7843480189999994,
+    "bulkEncodingSeconds": 0.016384307000002707
+  },
+  "postGateCapturesAudited": 100,
+  "supportedFastLayout": "Explicit Linux LP64 little-endian depth24 /32bpp RGB masks and stride; canonical fallback preserved elsewhere",
+  "syntheticSameImageCases": 6,
+  "layoutRejectionCases": 13,
+  "exactOwnerGuardCases": 7,
+  "journalGuardCases": 19,
+  "sharedCaptureHelperUnchanged": true,
+  "privateV1Preserved": true,
+  "publicImagesOrGameDataIncluded": false,
+  "cloudBuild": false,
+  "pushOrUpload": false,
+  "limits": [
+    "Timing is one encoding comparison, not a benchmark of the game or iPad",
+    "Image equivalence does not prove device behavior",
+    "Every future capture still requires owned process/window/geometry validation"
+  ]
+}
