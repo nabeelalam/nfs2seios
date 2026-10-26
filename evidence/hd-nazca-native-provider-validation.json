@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "scope": "Private reference-led Nazca C2 artwork and exact native provider candidate",
+  "packSha256": "8b8dc2db8b025cd8ae71ab174a51a5c1ef7cfe8b0d0ee41e50fb7fa09a239fed",
+  "basePackSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
+  "newTextures": 1,
+  "newBindings": 1,
+  "priorPayloadsUnchanged": 41,
+  "priorBindingRecordsUnchanged": 13,
+  "actualOriginalUploadMatchBytes": 32768,
+  "actualHistoricalSelections": 328,
+  "actualHistoricalEntryTriangles": 656,
+  "sourceCanvasOffset": [
+    -3,
+    0
+  ],
+  "originalAndAuthoredInkLost": 0,
+  "authoredPmaSha256": "5f198f855cb93593673e516b40db19f302bdd5611caca00af55cadefbb786206",
+  "providerVerification": {
+    "passed": true,
+    "rootIndependentRerun": true,
+    "priorBindingsAndPixelsUnchanged": 13,
+    "negativeChecks": 6,
+    "actualDependencyPins": 26,
+    "sourceAndDataPinsStable": true,
+    "sanitizer": false
+  },
+  "artReview": "Second private candidate follows historical curved lettering and gold relief; final user and physical approval pending",
+  "limits": [
+    "Original upload observations are historical local evidence",
+    "Current authored candidate has not yet been displayed in the game",
+    "Owner-art reconstruction template is not yet updated",
+    "No physical-device, performance or battery acceptance"
+  ],
+  "defaultArtworkChanged": false,
+  "cloudBuild": false,
+  "pushOrUpload": false
+}
