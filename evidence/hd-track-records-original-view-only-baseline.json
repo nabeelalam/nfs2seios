@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "scope": "Actual original Track Records view-only local baseline; HD table replacement remains unimplemented",
+  "environment": "Linux desktop software OpenGL",
+  "display": [
+    2186,
+    1640
+  ],
+  "normalBinarySha256": "89bb85324f609ce6d76aed491804cff26603aa7e4c5ffa5c2a3fe997d4881c68",
+  "packSha256": "8d60efeb04d3cc4e7bf665746f33fbb0bab91d2d573648f1af0ab74b6af3243c",
+  "privateRuntimeRecipeSha256": "955b370b4241feb21c8e29eacb1afe61a427bb7e50dae08d8293a4deabbdfdef",
+  "privateResultSha256": "5ef778f8303df52e8f6632be6227715f8c6f5cc3ea849dd5425ffc14b0b6b3e1",
+  "independentCheckpointSha256": "3c1401c223cafae80933abf97b7847348bc70be30576277ae60814895e19b22f",
+  "sealedInputsRehashed": 1579,
+  "ordinaryRoute": "Main -> Location -> Track Records -> Escape -> Location -> Escape -> Main",
+  "twoConsecutiveChildFramesAccepted": true,
+  "rootReviewedActualFullTableFrame": true,
+  "originalLabels": [
+    {
+      "label": "next track",
+      "selected": true,
+      "sourceColorIndex": 2,
+      "fixedShapeDice": 0.8348717948717949,
+      "expectedShapeSamples": 568,
+      "enclosedSourceCounterSamples": 9,
+      "counterInkFraction": 0.0
+    },
+    {
+      "label": "laps",
+      "selected": false,
+      "sourceColorIndex": 0,
+      "fixedShapeDice": 0.9194499017681729,
+      "expectedShapeSamples": 272,
+      "enclosedSourceCounterSamples": 20,
+      "counterInkFraction": 0.0
+    },
+    {
+      "label": "personal statistics",
+      "selected": false,
+      "sourceColorIndex": 0,
+      "fixedShapeDice": 0.9400749063670412,
+      "expectedShapeSamples": 1088,
+      "enclosedSourceCounterSamples": 49,
+      "counterInkFraction": 0.061224489795918366
+    },
+    {
+      "label": "done",
+      "selected": false,
+      "sourceColorIndex": 0,
+      "fixedShapeDice": 0.9233176838810642,
+      "expectedShapeSamples": 343,
+      "enclosedSourceCounterSamples": 25,
+      "counterInkFraction": 0.0
+    }
+  ],
+  "fixedContract": {
+    "shapeDiceMinimum": 0.78,
+    "selectionMarginMinimum": 0.1,
+    "counterInkFractionMaximum": 0.1,
+    "normalNearBlackPaletteIndex": 0,
+    "selectedWhitePaletteIndex": 2,
+    "sourceMasksAndCoordinatesUnchanged": true,
+    "offsetSearch": false,
+    "screenshotThresholdFitting": false
+  },
+  "optionalRecordLapText": {
+    "usedAsAcceptanceGate": false,
+    "sourceMaskRecognitionAccepted": false,
+    "rootVisualObservationOnly": true
+  },
+  "captureIntegrity": {
+    "capturesRehashed": 30,
+    "sameRetainedSnapshotCanonicalBulkComparison": true
+  },
+  "cleanup": {
+    "cleanExitCode": 0,
+    "profileAndArtworkRestored": true,
+    "copiedSaveFiles49BeforeAfterCurrentExact": true,
+    "gammaBaselineRestored": true,
+    "ownedProjectGameProcessesRemaining": 0,
+    "ownedDisplayTerminalAndAbsent": true,
+    "exclusiveLeaseAbsent": true,
+    "nativeResourceCreateRetirePairs": 5
+  },
+  "priorAttempt": {
+    "wholeRunPassed": false,
+    "originalFailedRunPreserved": true,
+    "sealedPrivateFilesUnchanged": 67,
+    "cause": "Recognizer assumed light unselected labels; original source policy uses near-black normal labels and white selected labels",
+    "notNavigationFailure": true
+  },
+  "recordsCleared": false,
+  "recordsSeeded": false,
+  "childEnterOrDirectionalInputsSent": false,
+  "originalTablePayloadIncluded": false,
+  "originalPixelsIncluded": false,
+  "privatePathsIncluded": false,
+  "currentHdRecordsReplacementVerified": false,
+  "newCompilerOrGameByEvidenceAuditor": false,
+  "physicalDeviceVerified": false,
+  "ipadGameplayPerformanceBatteryClaim": false,
+  "limits": [
+    "Source-fixed static-label recognition and visual review establish the original child form only; dynamic record rows are preserved privately and not exported.",
+    "Optional record-lap text did not satisfy its source-mask recognizer and was not used to accept the screen.",
+    "No authored HD Records table, pixel-exact full-frame replacement, Personal Statistics graph, iPad or gameplay/performance acceptance is claimed."
+  ]
+}
