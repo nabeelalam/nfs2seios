@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Partial original LoadSave first-frame replay; full capture rejected and no live HD source profile admitted",
+  "privateAnalysisSha256": "583dd88afe34e74eccbce34c2975c8dd39d2db53c93021e7dc2abdb018dd4218",
+  "fullRuntimePassed": false,
+  "originalFailureCode": 9,
+  "genuineRetainedFrameReuseVerified": false,
+  "partialFirstFrameOnly": {
+    "actualStrings": 16,
+    "actualGlyphs": 178,
+    "actualStores": 18466,
+    "callbackStoreCoverageAndOrder": true,
+    "independentOriginalPaletteBlendReplay": true,
+    "whole307200WordPostPlaneEqual": true,
+    "prePostTargetHeaderAndInteriorLUTIdentityEqual": true,
+    "sharedAtlasWidth": 136,
+    "sharedAtlasHeight": 368,
+    "sharedAtlasStride": 68,
+    "fontBitmapBytes": 25040
+  },
+  "runtimePinsVerified": 75,
+  "ownedCapturesVerified": 30,
+  "saveFilesBeforeAfterCurrentEqual": 49,
+  "baselineSettingsRestored": true,
+  "noOwnedGameDisplayOrLease": true,
+  "originalRawFailureAndCapturePreserved": true,
+  "retirementSpecificSharedFieldAndReferenceCountsCaptured": false,
+  "sourceProfileAdmitted": false,
+  "hdReplacementImplemented": false,
+  "physicalDeviceVerified": false,
+  "systemHeaderOrFullRuntimeAcceptanceClaimed": false
+}
