@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "scope": "Actual original 12-car native texture source validation; no new replacement rendering or physical acceptance",
+  "observerBinarySha256": "08280f2458d99de6f375bfc5e3d42957d3bbe63818f90503406f6cc7cd855bb4",
+  "newCompiles": 0,
+  "records": 16,
+  "events": 3461,
+  "observerCaps": {
+    "records": 64,
+    "events": 16384
+  },
+  "allTwelveCarSourcesMatched": true,
+  "full32768ByteEqualityBothFormats": true,
+  "all16384WordRotationsMatched": true,
+  "uniqueMatchesWithinFiniteSourceCatalog": true,
+  "currentLiveUploadSelectionTriangleProofRequired": true,
+  "terminalInventoryAndSummaryVerified": true,
+  "sources": [
+    {
+      "entry": "ind5",
+      "inputSha256": "1f20cc9dab7689403092676d3e10dc9897f5847b5550869806636829c1a56298",
+      "convertedSha256": "865917d1715a7e8ecc7bb847f27d41ded4a0d0fd5c936bf4b24091816faf0982",
+      "sampledLiveEntryTriangles": 148,
+      "nativeCanvasOffset": [
+        8,
+        0
+      ],
+      "nonzero1555": 3439,
+      "croppedInk": 0
+    },
+    {
+      "entry": "mus5",
+      "inputSha256": "80431a9cace8de2384a911ea2c95494f3ae9dbda8029a2a7ddbdfdf380d3ae7f",
+      "convertedSha256": "945d7f656d4ee3fdde0334da86c93de92f084b786af4a4c61059be04958d2bb3",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        4,
+        0
+      ],
+      "nonzero1555": 3506,
+      "croppedInk": 0
+    },
+    {
+      "entry": "jag5",
+      "inputSha256": "709c6a01088ebce86ebe63fdeae43ec29bd6ec76353568bc806237a17eab7ba0",
+      "convertedSha256": "82e3cc1d0d019466d5e62e4b8176248fe0c059d542cc0b8dab7f7d65ff1cfb87",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        1,
+        0
+      ],
+      "nonzero1555": 1949,
+      "croppedInk": 0
+    },
+    {
+      "entry": "lgt5",
+      "inputSha256": "e07d5d30025afdb47371beb6a18dd62c671a7eca0459138ca63b41df8b71569c",
+      "convertedSha256": "80be0768c8b5d5d999699754bfed3f93f4939f0eb6a3314ca1de9d099d3a8683",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        4,
+        0
+      ],
+      "nonzero1555": 5433,
+      "croppedInk": 0
+    },
+    {
+      "entry": "lv85",
+      "inputSha256": "f5505b13404171fab8adab99a8bc5003703f280cf230f3cc493a59cfaa8fe1b2",
+      "convertedSha256": "f330d81d79008d690cae20840590eb2c89be826b903279a49bfa587a58af7112",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        6,
+        0
+      ],
+      "nonzero1555": 1679,
+      "croppedInk": 0
+    },
+    {
+      "entry": "nas5",
+      "inputSha256": "561bb3e9cda72256916439b543f02299b727f4a08cea27ea50d168554834e025",
+      "convertedSha256": "1723e025f0bf5969f494f07f62e641f4747a41522f96253c5ba189bca01e31cd",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        -3,
+        0
+      ],
+      "nonzero1555": 1653,
+      "croppedInk": 0
+    },
+    {
+      "entry": "Cal5",
+      "inputSha256": "069c8ecf7c59ce7b10977c284314c29aa22b5a5f6fb3904baee44cc5031a2e4b",
+      "convertedSha256": "e50247ad0b57dfdbce8e4006ea1cc50ac3d55bcbcb96019aa4a35a81ba9d9bec",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        -3,
+        0
+      ],
+      "nonzero1555": 1778,
+      "croppedInk": 0
+    },
+    {
+      "entry": "isd5",
+      "inputSha256": "218c2587afc1dab5991adebf252526b099458d00b1b9bb9c7e8c99604850a570",
+      "convertedSha256": "c8c3732f257d23237e4d251353d5ea5cbd146ff8294cd25cbd85519ffe78c021",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        36,
+        0
+      ],
+      "nonzero1555": 3119,
+      "croppedInk": 0
+    },
+    {
+      "entry": "mac5",
+      "inputSha256": "910c0b08fdeaf278758b84800f04060bc402011858e2354aedd26e3b1448a3f9",
+      "convertedSha256": "b58adafe1a7b7f1d30f650a954f38e723587add5949cebf2438e0c6ae57c1998",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        8,
+        0
+      ],
+      "nonzero1555": 1695,
+      "croppedInk": 0
+    },
+    {
+      "entry": "F505",
+      "inputSha256": "6d3dc5a789ecc1ab40e79c5c8493eb60554507fab2e9bd70fe484790e745c2e2",
+      "convertedSha256": "6995dee6886392c2121702b3f4b7d2f548d4c1c9648ae2a26f7b8488b56dc192",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        2,
+        0
+      ],
+      "nonzero1555": 3417,
+      "croppedInk": 0
+    },
+    {
+      "entry": "3555",
+      "inputSha256": "c41ed1ee7748c15a8f1ace78d9de2d8896e931b0784543f0b1e6e9640d8661b1",
+      "convertedSha256": "d2dc21659bfc85c7daa3c52ae8cecce0416ae5989bb5696da10de8a948c2eb0d",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        2,
+        0
+      ],
+      "nonzero1555": 3988,
+      "croppedInk": 0
+    },
+    {
+      "entry": "fgt5",
+      "inputSha256": "3447f81d426acb3067328cc1bdadf20bb4607fc644828c28ea56f026ee9c4734",
+      "convertedSha256": "ca5df76de3719dc284e512ba98a1efc513c6af6ad5896faeb65164c8f7a074bb",
+      "sampledLiveEntryTriangles": 18,
+      "nativeCanvasOffset": [
+        33,
+        0
+      ],
+      "nonzero1555": 1530,
+      "croppedInk": 0
+    }
+  ],
+  "navigation": {
+    "fullAcknowledgedCycleAndWrap": true,
+    "oneRightThenTwoStableChangedCaptions": true,
+    "doneConfirmed": false,
+    "rootViewedFerrariF50Ferrari355AndGt90Frames": true,
+    "captionsAloneNotPerFramePhotoAuthority": true
+  },
+  "cleanup": {
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedGamePids": [],
+    "displayStoppedAfterTerminalAndRestore": true
+  },
+  "limits": [
+    "Sampled original entry triangles can include animation geometry and tint",
+    "No all-texture or GPU-completion claim",
+    "No replacement activation, iPad or battery acceptance"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false,
+  "independentAudit": {
+    "recipePinsStable": 26,
+    "retainedArtifactsPinned": 98,
+    "fullSourceReplayPassed": true,
+    "exactRecordAndEventInventoriesPassed": true,
+    "disabled": 0,
+    "droppedEvents": 0,
+    "acknowledgedSingleRightPulses": 12,
+    "currentConfigArtworkGammaRestored": true,
+    "leaseGameAndDisplayAbsent": true,
+    "privateCheckpointSha256": "7cd976f54aaff00766d2414f15a3fa0e70d6ea941a5ddbd5be14abf4e33f74bc"
+  }
+}
