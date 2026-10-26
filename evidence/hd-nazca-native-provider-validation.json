@@ -34,5 +34,16 @@
   ],
   "defaultArtworkChanged": false,
   "cloudBuild": false,
-  "pushOrUpload": false
+  "pushOrUpload": false,
+  "isolatedNormalBuild": {
+    "passed": true,
+    "binarySha256": "a7f14d3aa2a40c46f152dfcba03077185e266ea02ab341d55c871b684f342a83",
+    "compiledObjects": 1,
+    "reusedObjects": 75,
+    "rootReverifiedInputPins": 124,
+    "actualDependenciesMatchedSeal": true,
+    "normalMainAndRendererReused": true,
+    "seconds": 70.14,
+    "runtimeVerified": false
+  }
 }

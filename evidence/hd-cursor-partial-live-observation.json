@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Partial actual current-normal desktop cursor observations; full corner gate failed",
+  "scope": "Partial actual desktop cursor observations with filtering- and gamma-correct image comparison",
   "binarySha256": "185e71443bc8c2263e06131c9ec97b1060f7592885b1ed86db57962c01805b89",
   "packSha256": "6ad480d154cae6328e7936e6611d58c7d9df4bac687d889aaf0705215b5007bc",
   "actualMenuRecognition": true,
@@ -10,46 +10,117 @@
         0,
         0
       ],
-      "captureSha256": "7893179648ecd8b215e909b8ad292f8a9e4a8e66d9c171521bc54c47863e9945",
+      "captureSha256": "7a7ec6488752b64e8ecc29e4199b0333b74703c0c9b7f19d0ce8cfed6dc61088",
       "dimensions": [
         640,
         480
       ],
-      "toleranceLogicalPixels": 2
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 0.8362370948154069
     },
     {
       "logicalPosition": [
         320,
         240
       ],
-      "captureSha256": "1cce315de001fdbf9d233844e842b114672c0f77821eeb10bfb1c1d0a8d356de",
+      "captureSha256": "3df7f459c86284ded2d63b72841e033813c3881240a61671bbbcaa806a3dadcb",
       "dimensions": [
         640,
         480
       ],
-      "toleranceLogicalPixels": 2
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 0.5019127151897339
     },
     {
       "logicalPosition": [
         7,
         8
       ],
-      "captureSha256": "36927649fdbd88cc56375328de1d52b51e4c88d860d24ad942515b77045327c0",
+      "captureSha256": "9b0e85641e1064b557c78f42c7343892bbdce98b6f402b0a68a481e26458c60d",
       "dimensions": [
         640,
         480
       ],
-      "toleranceLogicalPixels": 2
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 0.5850351793449798
+    },
+    {
+      "logicalPosition": [
+        631,
+        8
+      ],
+      "captureSha256": "858fc85c13448e8cde5329a2bff745a98b752afad8bc7de4198e591148f5f776",
+      "dimensions": [
+        640,
+        480
+      ],
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 4.521663202531827
+    },
+    {
+      "logicalPosition": [
+        631,
+        460
+      ],
+      "captureSha256": "a759343d36d443688ac1782082c6b74e03032d80b1db7ee15ed91f17fd520b24",
+      "dimensions": [
+        640,
+        480
+      ],
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 3.7498835625350075
+    },
+    {
+      "logicalPosition": [
+        7,
+        460
+      ],
+      "captureSha256": "f59fe920e258bc7aa52235626362c336355d7ea678954d66126bf53adce33b69",
+      "dimensions": [
+        640,
+        480
+      ],
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 1.8527463809674818
+    },
+    {
+      "logicalPosition": [
+        320,
+        240
+      ],
+      "captureSha256": "91037903b4987e9eff0e63b5b48765f1c4970c20034d0b144859b5533982f69c",
+      "dimensions": [
+        640,
+        480
+      ],
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 0.5019127151897339
+    },
+    {
+      "logicalPosition": [
+        1,
+        1
+      ],
+      "captureSha256": "7b1a56796c692aa1fab298dd545655543280a83efadc1ecf79abdd1416bfa2dc",
+      "dimensions": [
+        2186,
+        1640
+      ],
+      "toleranceLogicalPixels": 2,
+      "meanOpaqueRGBError": 0.6862966770350439
     }
   ],
   "fullCursorGatePassed": false,
-  "failure": "Point-sample image matcher rejected partially clipped upper-right cursor; no upper-right acceptance claimed",
-  "nextAction": "Validate pixel-centre resampling and clipped-cursor negatives before another live run",
+  "failure": "After all planned 640x480 positions and native home, original attract movie replaced the menu; semantic guard correctly stopped the test",
+  "nextAction": "Verify original idle-timer input handling and keep the menu active using legitimate input before fresh homing; no timer or game code patch",
   "cleanShutdown": true,
   "copiedProfileAndArtworkRestored": true,
   "ownedProcessesRemaining": 0,
   "physicalIpad": false,
   "performanceOrBatteryClaim": false,
   "cloudBuild": false,
-  "pushOrUpload": false
+  "pushOrUpload": false,
+  "filteringAndGammaModel": "Inverse fragment centres, original UVs, bilinear opaque footprints and source/config-pinned gamma 1.5",
+  "fullNativeTrackingAndHoverGatePassed": false,
+  "priorFailedAttemptsPreserved": true
 }
