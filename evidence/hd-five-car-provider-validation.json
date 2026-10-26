@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "scope": "Five private source-proven artwork additions and maintained C++ loader/provider validation; actual replacement display remains open",
+  "packSha256": "f2ad4725e3e82b4713c8b9e7672b6a1a2935541db35014d097b88f628e533259",
+  "packBytes": 99297384,
+  "packSections": 49,
+  "basePackSha256": "10d03ff357f8f60aff119f0de1b76e1908ffd7ee83272bfb9edce11d4e55cbc4",
+  "preservedNonBindingPayloads": 43,
+  "preservedPreviousBindingRecords": 15,
+  "totalNativeBindings": 20,
+  "totalNativeTextures": 20,
+  "additions": [
+    {
+      "entry": "jag5",
+      "pmaSha256": "bcefdbb94b0640cf77b017d6a9159921531b0f33f94e87c7fdeb58f3e55724a9",
+      "actualSourceEntryTriangles": 18,
+      "alphaOpaque": 16291,
+      "alphaPartial": 5783,
+      "alphaZero": 240070,
+      "originalConvertedSha256": "82e3cc1d0d019466d5e62e4b8176248fe0c059d542cc0b8dab7f7d65ff1cfb87"
+    },
+    {
+      "entry": "lgt5",
+      "pmaSha256": "c7d15e62905cf5e3cdf00cdbe416264115f9c64057a2dbc713ad124dfb679cef",
+      "actualSourceEntryTriangles": 18,
+      "alphaOpaque": 69749,
+      "alphaPartial": 4376,
+      "alphaZero": 188019,
+      "originalConvertedSha256": "80be0768c8b5d5d999699754bfed3f93f4939f0eb6a3314ca1de9d099d3a8683"
+    },
+    {
+      "entry": "F505",
+      "pmaSha256": "491148d3edf2dd6b3a26be00fdb02f706304bb1e240ae8dc056f3609e4e5a1a2",
+      "actualSourceEntryTriangles": 18,
+      "alphaOpaque": 34021,
+      "alphaPartial": 5902,
+      "alphaZero": 222221,
+      "originalConvertedSha256": "6995dee6886392c2121702b3f4b7d2f548d4c1c9648ae2a26f7b8488b56dc192"
+    },
+    {
+      "entry": "3555",
+      "pmaSha256": "8464b892369fec716084856277ccd4feabc7c6e197e9fbbe5ff96bf3f958a317",
+      "actualSourceEntryTriangles": 18,
+      "alphaOpaque": 37767,
+      "alphaPartial": 6986,
+      "alphaZero": 217391,
+      "originalConvertedSha256": "d2dc21659bfc85c7daa3c52ae8cecce0416ae5989bb5696da10de8a948c2eb0d"
+    },
+    {
+      "entry": "fgt5",
+      "pmaSha256": "e2a2de04c6fd66471a473086ba0a116fe3fe5a8a2d4ca8fa940512b433c10d86",
+      "actualSourceEntryTriangles": 18,
+      "alphaOpaque": 13315,
+      "alphaPartial": 4077,
+      "alphaZero": 244752,
+      "originalConvertedSha256": "ca5df76de3719dc284e512ba98a1efc513c6af6ad5896faeb65164c8f7a074bb"
+    }
+  ],
+  "validation": {
+    "passed": true,
+    "actualNonSystemDependencies": 26,
+    "seconds": 8.117,
+    "priorProfilesIdentitiesAndPixelsUnchanged": true,
+    "fiveExactNewProfilesAndPixelsPassed": true,
+    "negativeCalls": 30,
+    "untouchedOutputNegatives": 25,
+    "stableRepeatedLookups": 15,
+    "sourceToolAndDataPinsStable": true,
+    "providerReceiptSha256": "6db91245bba97bf89918895447a2315c74e652353a6916dccbb130e04778b714"
+  },
+  "sourceProof": {
+    "full32768ByteReplayBothFormats": true,
+    "allWordRotations": true,
+    "currentLiveUploadSelectionEntryTriangles": true,
+    "sourceBatchRecords": 16,
+    "sourceBatchEvents": 3461
+  },
+  "withinCurrent96MiBAssemblyBudget": true,
+  "maintainedDefaultsOrOwnerTemplateChanged": false,
+  "actualReplacementRenderingVerified": false,
+  "physicalDeviceVerified": false,
+  "cloudBuild": false,
+  "pushOrUpload": false,
+  "limits": [
+    "Five candidates retain open final artistic acceptance",
+    "Successful lookup is not GPU execution or actual display acceptance",
+    "Twelve standard-car source proof does not cover three bonus marks",
+    "No physical-device, performance or energy claim"
+  ],
+  "normalBuild": {
+    "binarySha256": "08ec8dbcdf92d8850f8fa4581a5b6b5839bff5933b2a7dbab796ad36ce023583",
+    "compiledObjects": 1,
+    "reusedObjects": 75,
+    "exactCompiledDependencies": 33,
+    "sealedInputsStable": 123,
+    "seconds": 70.734,
+    "normalMainAndRendererReused": true,
+    "onlyPrivateTrustedFingerprintChanged": true
+  },
+  "firstCombinedRun": {
+    "wholeRunPassed": false,
+    "stop": "Fixed 600-second diagnostic capture deadline; game shutdown clean",
+    "completedSelectedAndDimmedTargets": [
+      {
+        "entry": "jag5",
+        "selectedMeanOpaqueRgbError": 3.252793960480646,
+        "dimMeanOpaqueRgbError": 1.5494491266032815,
+        "selectedSpatialCorrelation": 0.9644980300355246,
+        "dimSpatialCorrelation": 0.9453717205629654,
+        "opaqueSamples": 9770
+      },
+      {
+        "entry": "lgt5",
+        "selectedMeanOpaqueRgbError": 1.1371049533239905,
+        "dimMeanOpaqueRgbError": 0.7727249874083337,
+        "selectedSpatialCorrelation": 0.9863173076181411,
+        "dimSpatialCorrelation": 0.9788307582957988,
+        "opaqueSamples": 48674
+      },
+      {
+        "entry": "F505",
+        "selectedMeanOpaqueRgbError": 1.2679783534656035,
+        "dimMeanOpaqueRgbError": 0.8500905245192965,
+        "selectedSpatialCorrelation": 0.9969682129349892,
+        "dimSpatialCorrelation": 0.9953117414208286,
+        "opaqueSamples": 22898
+      }
+    ],
+    "remainingFullGates": [
+      "3555",
+      "fgt5"
+    ],
+    "partial355EvidenceNotFullGate": true,
+    "materialCaptureQualification": "Two accepted material captures with observed focus activity between them; not an uninterrupted selected-state sequence",
+    "cleanShutdown": true,
+    "copiedProfileAndArtworkRestored": true,
+    "ownedProcessesRemaining": 0,
+    "gameGeneratedConfigNotPersisted": true,
+    "resultSha256": "d45383a0e113a48b06e934c51d63b58a1db7c2a64228cd5b5113d931c6c7cc45"
+  }
+}
