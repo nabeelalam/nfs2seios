@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "scope": "Complete twelve-standard-car artwork catalog with four new private candidates; loader/provider validation only",
+  "packSha256": "8d60efeb04d3cc4e7bf665746f33fbb0bab91d2d573648f1af0ab74b6af3243c",
+  "packBytes": 103492520,
+  "sections": 53,
+  "totalNativeBindings": 24,
+  "newEntries": [
+    "mus5",
+    "lv85",
+    "Cal5",
+    "isd5"
+  ],
+  "preservedPriorPayloads": 48,
+  "preservedPriorBindings": 20,
+  "maintainedProvider": {
+    "passed": true,
+    "exactNewProfileIdentityPixelsAndAlphaCases": 4,
+    "unchangedPriorProfilesIdentitiesPixels": 20,
+    "negativeCalls": 24,
+    "untouchedSentinelOutputs": 20,
+    "stableRepeatedLookups": 12,
+    "actualCompilerDependencies": 26,
+    "compilerInvocations": 1,
+    "maxWorkers": 1,
+    "allConsumedPinsStable": true,
+    "privateReceiptSha256": "91f10824d11883bbad66a28fe379de378e3aa7ed04ba8cea5d5def20b643ec64"
+  },
+  "withinExisting128MiBLoaderLimit": true,
+  "ownerTemplate96MiBLimitUnchanged": true,
+  "largerOwnerTemplateDeliveryPending": true,
+  "existingDefaultArtworkUnchanged": true,
+  "gameRenderingVerified": false,
+  "finalUserArtworkApproval": false,
+  "physicalDeviceVerified": false,
+  "originalBytesAndPrivateArtworkPublished": false
+}
