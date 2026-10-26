@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "scope": "Private LoadSave source-observer V3 build and inert helper-contract milestone only",
+  "passed": true,
+  "environment": "Linux desktop native diagnostic build",
+  "baseNormalBinarySha256": "89bb85324f609ce6d76aed491804cff26603aa7e4c5ffa5c2a3fe997d4881c68",
+  "observerBinarySha256": "494e905f809cdb8c62ff1fe485e2e07f0cce443de31ee61b2ce515f88194e910",
+  "buildReceiptSha256": "4f62fa3534ac72c36e798155fc20feaea2685b366bb9a408d48d3f24825d5b22",
+  "dependencyPlanSha256": "3f0aaeee3f84920c93aa8c3619a46b0a451d524eb667810f6d1ed3b3f1bea328",
+  "sourceFreezeSha256": "794ff082d9d562b2a12ca7e22becb1b371b644747d7574fca4cf0bf3a846f948",
+  "independentTerminalBuildAuditSha256": "c463ebd19ad6f798b11bba7a7a60135ab7d6f2776942ec6adb0a381fdabe8886",
+  "packSha256": "8d60efeb04d3cc4e7bf665746f33fbb0bab91d2d573648f1af0ab74b6af3243c",
+  "relatedPriorBuildEvidence": "hd-loadsave-observer-build-validation.json",
+  "rawSourceSchema": 2,
+  "compiledTranslatedObjects": 5,
+  "preservedActualNormalObjects": 71,
+  "actualMmdDependencyCounts": [
+    176,
+    133,
+    173,
+    169,
+    141
+  ],
+  "actualMmdClosuresEqualSealedQueries": true,
+  "inputPinsStable": {
+    "source": 450,
+    "tools": 4,
+    "libraries": 10
+  },
+  "actualLinkAuthority": "Actual successful normal receipt command; only five observer object slots and the fresh diagnostic output substituted",
+  "maximumSequentialCompilerWorkers": 1,
+  "thinLtoBackendWorkers": 2,
+  "compileTimeoutSeconds": 180,
+  "linkTimeoutSeconds": 480,
+  "ownedCompileAndLinkProcesses": 6,
+  "allOwnedReturnCodes": 0,
+  "allOwnedGroupsEmptyAtTerminal": true,
+  "matchingCompilerGroupsRemaining": 0,
+  "totalBuildSeconds": 112.936,
+  "linkSeconds": 64.93,
+  "currentRendererAndStandardTwelvePackActivationPreserved": true,
+  "expectedPackFingerprintPresent": true,
+  "supersededPackFingerprintAbsent": true,
+  "inertHelperContracts": {
+    "passed": true,
+    "checks": 21,
+    "receiptSha256": "b56906bb0855cf04a3f58e188431175bf7884fe418a097399d08ac90173b7796",
+    "actualLocalMmdFiles": 3,
+    "includesNewRetirementPolicy": true,
+    "compilerGroupEmpty": true,
+    "testGroupEmpty": true,
+    "scope": "Actual observer helper with owned synthetic memory only: lifecycle, errno, CPU preservation and frame-flow contracts"
+  },
+  "preparedObservationModes": [
+    "Two coherent full redraw observations with independent per-frame replay and a stable source-derived two-slot retained-buffer catalog",
+    "One complete observation followed by the original exclusive non-redraw edge"
+  ],
+  "guardScope": "Reference-count and release-multiplicity checks; direct protected-owner and unknown callback rejection; continuous full and both retained-slot ownership observation",
+  "earlierFailedRuntimeEvidencePreserved": true,
+  "gameLaunchedByBuildOrAudit": false,
+  "sharedGameConfigOrLeaseAccessedByAudit": false,
+  "actualRuntimeSourceCaptureVerified": false,
+  "actualFontProfileAdmitted": false,
+  "physicalDeviceVerified": false,
+  "limits": [
+    "Build and inert contract milestone only; no successful original-game source capture, font-profile admission, rendered LoadSave improvement or gameplay result is claimed.",
+    "Two-slot ping-pong follows original producer selection; the prepared validator does not require the selected retained handle to remain fixed.",
+    "Earlier failed observations remain failed; this build does not retroactively validate them.",
+    "No original data bytes, screenshots, raw logs, credentials or machine paths are included."
+  ]
+}
