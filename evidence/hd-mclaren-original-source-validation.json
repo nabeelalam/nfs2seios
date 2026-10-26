@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "scope": "Actual original McLaren F1 menu texture identification; replacement remains inactive",
+  "diagnosticBinarySha256": "08280f2458d99de6f375bfc5e3d42957d3bbe63818f90503406f6cc7cd855bb4",
+  "originalSource": {
+    "inputSha256": "910c0b08fdeaf278758b84800f04060bc402011858e2354aedd26e3b1448a3f9",
+    "convertedSha256": "b58adafe1a7b7f1d30f650a954f38e723587add5949cebf2438e0c6ae57c1998",
+    "bytesEach": 32768,
+    "all16384WordRotationsMatched": true,
+    "opaqueTexels": 1695,
+    "sourcePlacement": [
+      8,
+      0
+    ]
+  },
+  "actualObservation": {
+    "carNamesObserved": [
+      "Ford Indigo",
+      "Mustang Mach III",
+      "Jaguar XJ220",
+      "Lotus GT1",
+      "Lotus Esprit V8",
+      "Nazca C2",
+      "Italdesign Cal\u00e0",
+      "Isdera 112i",
+      "McLaren F1"
+    ],
+    "playerOneFormAndSelectedCarRowVerified": true,
+    "mainMenuReturnVerified": true,
+    "matchingSampledLiveTriangles": 146,
+    "recordInventory": 13,
+    "eventInventory": 4274,
+    "disabled": 0,
+    "droppedEvents": 0,
+    "presentation": "Black period McLaren lettering within a gold rectangular plate",
+    "rootViewedSelectedFrame": true
+  },
+  "navigationCorrection": {
+    "priorRetryStoppedSafely": true,
+    "reason": "Optional HD Player1 publication was absent although the original form was positively visible",
+    "mandatoryNavigationProof": "Actual PLAYER ONE heading, recognized car name and selected white car row",
+    "exactSourceBindingChecksRetained": true
+  },
+  "cleanup": {
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "baselineArtworkRestored": true,
+    "ownedGamePids": [],
+    "displayStoppedAfterTerminalAndRestore": true
+  },
+  "limits": [
+    "Sampled supported-size texture observations, not all renderer traffic",
+    "Optional Player1 HD admission failure cause remains unproven",
+    "No replacement activation, physical-device or energy acceptance"
+  ],
+  "cloudBuild": false,
+  "pushOrUpload": false
+}
