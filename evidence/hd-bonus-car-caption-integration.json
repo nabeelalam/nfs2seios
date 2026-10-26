@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "scope": "Three finite remastered bonus-car captions; source, generated-data and isolated renderer-fixture validation",
+  "words": [
+    "Bomber BFS",
+    "Tombstone",
+    "FZR 2000"
+  ],
+  "atlas": [
+    1024,
+    2120
+  ],
+  "addedRgbaBytes": 294912,
+  "generatedParts": 82,
+  "oldAtlasPrefixBytesPreserved": 8388608,
+  "oldIntegerLayoutRowsPreserved": 2437,
+  "newSourceGlyphPartitions": 54,
+  "strictOriginalSourcePageCellUvScreenPerspectiveAndWholeWordContextRequired": true,
+  "legacy2048LimitUsesUnchangedPrefixAndRejectsNewOutOfRangeWords": true,
+  "uploadFaultClearsAuxBindingCacheAndNextConsumerRebinds": true,
+  "actualRuntimeCodeExercisedWithMockGl": true,
+  "optimizedAndAsanUbsanFixtureRuns": 6,
+  "glyphTriangleCases": 9964,
+  "ambiguousPositions": 326,
+  "sourceGeneratorAndPythonCommandsPassed": 8,
+  "ownedSourceFilesIndependentlyRehashed": 24,
+  "privateImplementationCheckpointSha256": "6487a44bd3a9f9d180f15fb49a2e867a141a3604f6ea948ef84b1ec83f0d688d",
+  "privateCppReceiptSha256": "338dbe18345e4f903f7b91e143ee67a477b38022d253d1f958710b6e6f35e996",
+  "newGameBuild": false,
+  "actualBonusCaptionGameRenderingVerified": false,
+  "physicalDeviceVerified": false,
+  "fullUiRemasterComplete": false
+}

@@ -46,7 +46,9 @@ class RightLabels(unittest.TestCase):
 
     def test_existing_layout_roundtrip(self):
         layout=(ROOT/'src/FrontendWordLayout.inc').read_text()
-        self.assertEqual(extend_layout(base_layout(layout),self.rows()),layout)
+        from frontend_bonus_car_word_art import strip_layout
+        legacy=strip_layout(layout)
+        self.assertEqual(extend_layout(base_layout(legacy),self.rows()),legacy)
     def test_unknown_duplicate_and_missing_words(self):
         for mutate in [lambda c:c['words'][0].update(text='other'),lambda c:c['words'].append(c['words'][0]),lambda c:c['words'].pop(),lambda c:c['words'].__setitem__(1,copy.deepcopy(c['words'][0]))]:
             c=copy.deepcopy(self.catalog);mutate(c)
@@ -75,8 +77,8 @@ class RightLabels(unittest.TestCase):
         from unittest.mock import patch
         from generate_frontend_pixels import generate_frontend_layout
         metadata=json.loads((ROOT/'assets/hud/frontend/generated.json').read_text())
-        relatives=set(metadata['sourceHashes']) | {'src/'+name for name in metadata['headerHashes']}
-        relatives.update('assets/hud/frontend/'+name for name in ['generated.json','catalog.json',
+        relatives=set(metadata['sourceHashes']) | {'src/'+name for name in metadata['headerHashes']} | {'src/FrontendFontLayout.inc'}
+        relatives.update('assets/hud/frontend/'+name for name in ['generated.json','bonus-car-word-art.json','catalog.json',
             'location/catalog.json','setup/catalog.json','player/catalog.json','opponents/catalog.json',
             'opponents/packing.json','options/catalog.json','options/packing.json','right-labels/catalog.json',
             'main-word-art.json','player-word-art-0.json','player-word-art-1.json','player-heading-art.json','remaining-menu-word-art-0.json','remaining-menu-word-art-1.json','remaining-menu-word-art-2.json'])
@@ -93,6 +95,7 @@ class RightLabels(unittest.TestCase):
                                  'assets/hud/frontend/opponents/packing.json',
                                  'assets/hud/frontend/options/catalog.json','assets/hud/frontend/options/packing.json',
                                  'assets/hud/frontend/main-word-art.json',
+                                 'assets/hud/frontend/bonus-car-word-art.json',
                                  'assets/hud/frontend/player-heading-art.json',
                                  'assets/hud/frontend/remaining-menu-word-art-0.json','assets/hud/frontend/remaining-menu-word-art-1.json','assets/hud/frontend/remaining-menu-word-art-2.json',
                                  'assets/hud/frontend/player-word-art-0.json','assets/hud/frontend/player-word-art-1.json',

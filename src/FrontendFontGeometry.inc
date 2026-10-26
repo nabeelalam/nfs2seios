@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "FrontendTextContext.h"
+#include "FrontendFontCapacity.h"
 static int nfs_front_legacy_geometry(const GrVertex *a,const GrVertex *b,const GrVertex *c,GrVertex output[3]){
  if(!nfs_hd_builtin_enabled || !nfs_hd_visible || (nfs_hd_selected!=41 && nfs_hd_selected!=42) || !nfs_front_font_texture || !nfs_hd_cell_layout_available)return 0;
  const GrVertex *v[3]={a,b,c};float uv[6],u0=256,u1=0,v0=256,v1=0;
@@ -34,13 +35,14 @@ static int nfs_front_font_geometry(const GrVertex *a,const GrVertex *b,const GrV
  for(unsigned n=0;n<sizeof(nfs_front_word_glyphs)/sizeof(nfs_front_word_glyphs[0]);++n){const NfsFrontWordGlyph *g=nfs_front_word_glyphs+n;
   if(g->cell!=cell || fabsf(g->x-x0)>.01f || fabsf(g->y-y0)>.01f || fabsf(g->w-(x1-x0))>.01f || fabsf(g->h-(y1-y0))>.01f)continue;
   if(g->word && g->word!=nfs_front_text_context())continue;
+  if(!nfs_front_atlas_row_fits(g->atlasX,g->atlasY,g->width,g->inkHeight,nfs_front_font_uploaded_height,NFS_FRONT_FONT_HEIGHT))continue;
   if(g->word==UINT64_C(0x385db5487d40488d) && !nfs_front_extended_ready)continue;
   unsigned corner[3],bits=0;
   for(unsigned i=0;i<3;++i){float x=v[i]->x-786432,y=v[i]->y-786432;int rx=fabsf(x-x1)<.01f,ry=fabsf(y-y1)<.01f;
    if((!rx && fabsf(x-x0)>.01f) || (!ry && fabsf(y-y0)>.01f) || fabsf(legacy[i].tmuvtx[0].sow-(rx?u1:u0))>.01f || fabsf(legacy[i].tmuvtx[0].tow-(ry?v1:v0))>.01f)return 0;
    corner[i]=rx+2*ry;bits|=1u<<corner[i];}
   if(bits!=7 && bits!=11 && bits!=13 && bits!=14)return 0;
-  for(unsigned i=0;i<3;++i){unsigned rx=corner[i]&1,ry=corner[i]&2;float edge=rx?g->right:g->left;output[i]=*v[i];float sx=g->outputScaleX>0?g->outputScaleX:1,sy=g->outputScaleY>0?g->outputScaleY:1;output[i].x=786432+g->outputX+edge*g->width*sx;output[i].y=786432+g->y+g->inkTop*sy+(ry?g->inkHeight*sy:0);output[i].tmuvtx[0].sow=g->atlasX+edge*g->width;output[i].tmuvtx[0].tow=g->atlasY+(ry?g->inkHeight*nfs_front_font_v_scale:0);}
+  for(unsigned i=0;i<3;++i){unsigned rx=corner[i]&1,ry=corner[i]&2;float edge=rx?g->right:g->left;output[i]=*v[i];float sx=g->outputScaleX>0?g->outputScaleX:1,sy=g->outputScaleY>0?g->outputScaleY:1;output[i].x=786432+g->outputX+edge*g->width*sx;output[i].y=786432+g->y+g->inkTop*sy+(ry?g->inkHeight*sy:0);output[i].tmuvtx[0].sow=g->atlasX+edge*g->width;output[i].tmuvtx[0].tow=nfs_front_atlas_tow(g->atlasY+(ry?g->inkHeight*nfs_front_font_v_scale:0),nfs_front_font_uploaded_height);}
   return cell;
  }
  return 0;

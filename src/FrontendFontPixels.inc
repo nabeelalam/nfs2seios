@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.
-enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2048,NFS_FRONT_FONT_PIXELS=2097152,NFS_FRONT_FONT_RGBA_BYTES=8388608};
+// Bonus fixed-word graphics: assets/hud/frontend/BONUS_CAR_WORD_ART.md.
+enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2120,NFS_FRONT_FONT_PIXELS=2170880,NFS_FRONT_FONT_RGBA_BYTES=8683520};
 static const float nfs_front_font_v_scale=.5f;
 static const unsigned char nfs_front_font_rle[]={
 #include "FrontendFontPixelsPart0.inc"
@@ -82,6 +83,9 @@ static const unsigned char nfs_front_font_rle[]={
 #include "FrontendFontPixelsPart76.inc"
 #include "FrontendFontPixelsPart77.inc"
 #include "FrontendFontPixelsPart78.inc"
+#include "FrontendFontPixelsPart79.inc"
+#include "FrontendFontPixelsPart80.inc"
+#include "FrontendFontPixelsPart81.inc"
 };
 
 static int nfs_front_font_expand(unsigned char *rgba,size_t capacity){

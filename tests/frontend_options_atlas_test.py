@@ -21,7 +21,7 @@ def identity(text):
     for c in text.encode('latin1'):h=((h^c)*1099511628211)&0xffffffffffffffff
     return h
 
-def decode_current():
+def decode_current(*, full=False):
     header=(ROOT/'src/FrontendFontPixels.inc').read_text();names=re.findall(r'#include "(FrontendFontPixelsPart[0-9]+\.inc)"',header)
     if not 1<=len(names)<=FRONTEND_PIXEL_MAX_PARTS:raise AssertionError('Bounded current generated part inventory')
     encoded=bytearray()
@@ -32,10 +32,11 @@ def decode_current():
     pixels=bytearray()
     for at in range(0,len(encoded),6):
         n=encoded[at]|(encoded[at+1]<<8)
-        if not n or len(pixels)+4*n>8388608:raise AssertionError('Bounded generated raster')
+        if not n or len(pixels)+4*n>8683520:raise AssertionError('Bounded generated raster')
         pixels.extend(encoded[at+2:at+6]*n)
-    if len(pixels)!=8388608:raise AssertionError('Full generated raster')
-    return pixels
+    if len(pixels)!=8683520:raise AssertionError('Full generated raster')
+    # Existing legacy compositor tests intentionally verify the unchanged prefix.
+    return pixels if full else pixels[:8388608]
 
 def fixture():
     """Reconstruct historical packing input before the fixed text overrides.
@@ -44,7 +45,7 @@ def fixture():
     retain every independent old recipe digest and geometry assertion. Separate
     fixed-art tests verify the later overrides and alias inventory.
     """
-    current=decode_current();meta=json.loads((DIR/'generated.json').read_text());assert sha(current)==meta['rasterSha256']
+    current=decode_current();meta=json.loads((DIR/'generated.json').read_text());assert sha(current)==meta['legacyRasterSha256']
     from frontend_player_word_art import WORDS
     overridden = {alias for word in WORDS for alias in word[-1]}
     from frontend_player_heading_art import WORDS as HEADINGS

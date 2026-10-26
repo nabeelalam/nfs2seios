@@ -2,6 +2,8 @@
 #include "FrontendFontPixels.inc"
 #include "FrontendFontLayout.inc"
 static GLuint nfs_front_font_texture;
+static unsigned nfs_front_font_uploaded_height;
+#include "FrontendFontCapacity.h"
 static unsigned char nfs_front_font_original[2][131072];
 static int nfs_front_font_valid[2];
 static TextureInfo *nfs_front_source_owner[2];
@@ -28,8 +30,13 @@ static int nfs_front_font_upload(TextureInfo *ti){
  }
  if(page<0){nfs_front_source_refresh();return 0;}
  GLint limit=0;glGetIntegerv(GL_MAX_TEXTURE_SIZE,&limit);
- if(limit<NFS_FRONT_FONT_WIDTH || limit<NFS_FRONT_FONT_HEIGHT){nfs_front_source_refresh();return 0;}
+ unsigned upload_height=nfs_front_atlas_upload_height(limit>0?(unsigned)limit:0,NFS_FRONT_FONT_HEIGHT);
+ if(!upload_height){nfs_front_source_refresh();return 0;}
  if(!nfs_front_font_texture){
+  /* Require a clean optional-allocation boundary. A pre-existing error causes
+     original fallback before any texture mutation; it is not upload evidence.
+     Read once, never drain the original context with an error-clearing loop. */
+  if(glGetError()!=GL_NO_ERROR){nfs_front_source_refresh();return 0;}
   unsigned char *pixels=(unsigned char *)malloc(NFS_FRONT_FONT_RGBA_BYTES);if(!pixels){nfs_front_source_refresh();return 0;}
   if(!nfs_front_font_expand(pixels,NFS_FRONT_FONT_RGBA_BYTES)){free(pixels);nfs_front_source_refresh();return 0;}
   glActiveTexture(GL_TEXTURE1);glGenTextures(1,&nfs_front_font_texture);
@@ -37,7 +44,9 @@ static int nfs_front_font_upload(TextureInfo *ti){
   glBindTexture(GL_TEXTURE_2D,nfs_front_font_texture);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-  glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,NFS_FRONT_FONT_WIDTH,NFS_FRONT_FONT_HEIGHT,0,GL_RGBA,GL_UNSIGNED_BYTE,pixels);free(pixels);
+  glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,NFS_FRONT_FONT_WIDTH,upload_height,0,GL_RGBA,GL_UNSIGNED_BYTE,pixels);free(pixels);
+  if(glGetError()!=GL_NO_ERROR){glDeleteTextures(1,&nfs_front_font_texture);nfs_front_font_texture=0;nfs_front_font_uploaded_height=0;nfs_hd_bound_aux_texture=0;glActiveTexture(GL_TEXTURE0);nfs_front_source_refresh();return 0;}
+  nfs_front_font_uploaded_height=upload_height;
   nfs_hd_bound_aux_texture=nfs_front_font_texture;glActiveTexture(GL_TEXTURE0);++nfs_hd_uploads;
  }
  if(ti->data!=nfs_front_font_original[page])memcpy(nfs_front_font_original[page],ti->data,131072);

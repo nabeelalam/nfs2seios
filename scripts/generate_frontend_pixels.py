@@ -2,6 +2,7 @@
 import hashlib
 import json
 import math
+import re
 from frontend_pixel_limits import FRONTEND_PIXEL_PART_BYTES, FRONTEND_PIXEL_MAX_PARTS
 from hud_asset_review import ROOT, FRONTEND_WORDS, LOCATION_WORDS, SETUP_WORDS, SETUP_SHARED
 from hud_font_environment import project_fonts
@@ -384,19 +385,23 @@ def generate_frontend(check=False):
     template = json.loads((ROOT/'scripts/hud_templates/FrontendFontPixels.json').read_text())['template']
     if template.count('@PIXEL_ARRAY@') != 1:
         raise ValueError('Invalid frontend decoder template')
+    notice = '// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.\n'
+    from frontend_bonus_car_word_art import apply as apply_bonus_words
+    pixels, bonus_table, bonus_art = apply_bonus_words(
+        pixels, notice+layout, directory, ROOT/'src/FrontendFontLayout.inc')
     encoded = rle(pixels)
     aggregate, parts = chunked_pixels(encoded)
-    dimensions = 'enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2048,NFS_FRONT_FONT_PIXELS=2097152,NFS_FRONT_FONT_RGBA_BYTES=8388608};\nstatic const float nfs_front_font_v_scale=.5f;\n'
+    dimensions = 'enum {NFS_FRONT_FONT_WIDTH=1024,NFS_FRONT_FONT_HEIGHT=2120,NFS_FRONT_FONT_PIXELS=2170880,NFS_FRONT_FONT_RGBA_BYTES=8683520};\nstatic const float nfs_front_font_v_scale=.5f;\n'
     header = dimensions+template.replace('@PIXEL_ARRAY@', aggregate)
-    notice = '// SPDX-License-Identifier: MIT\n// Font artwork: OFL Bebas Neue/Oxanium plus fixed Main/Player text graphics; see assets/hud/frontend/MAIN_WORD_ART.md and PLAYER_WORD_ART.md.\n'
-    outputs = {'FrontendFontPixels.inc': notice+header, 'FrontendWordLayout.inc': notice+layout, **parts}
+    outputs = {'FrontendFontPixels.inc': notice+'// Bonus fixed-word graphics: assets/hud/frontend/BONUS_CAR_WORD_ART.md.\n'+header, 'FrontendWordLayout.inc': bonus_table, **parts}
     metadata = dict(originalGamePixelsIncluded=False, sourceHashes=hashes,
-                    mainWordArt=main_word_art, playerWordArt=player_word_art,
+                    mainWordArt=main_word_art, playerWordArt=player_word_art, bonusCarWordArt=bonus_art,
+                    legacyRasterSha256=bonus_art['legacyRasterSha256'], legacyRasterBytes=8388608,
                     playerHeadingArt=heading_art, headingInkFit=heading_ink, playerInkFit=player_ink,
                     remainingWordArt=remaining_art, remainingInkFit=remaining_ink,
                     catalogSha256=hashlib.sha256((directory/'catalog.json').read_bytes()).hexdigest(),
-                    rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2048],
-                    rleBytes=len(encoded), glyphPartitions=len(rows)+len(right_rows), inkFit=ink,
+                    rasterSha256=hashlib.sha256(pixels).hexdigest(), raster=[1024,2120],
+                    rleBytes=len(encoded), glyphPartitions=len(re.findall(r'^\{.*UINT64_C',bonus_table,re.M)), inkFit=ink,
                     baseWordLayoutSha256=base_layout_hash, rightLabelCatalogSha256=hashlib.sha256(right_path.read_bytes()).hexdigest(),
                     locationCatalogSha256=location_catalog_hash, locationPlacements=location_placements,
                     setupCatalogSha256=setup_catalog_hash, setupPlacements=setup_placements,
@@ -404,7 +409,7 @@ def generate_frontend(check=False):
                     playerCatalogSha256=compact['playerCatalogSha256'],playerPlacements=opponents['playerPlacements'],
                     opponentsCatalogSha256=opponents['catalogSha256'],opponentsPlacements=opponents['opponentsPlacements'],mainPlacements=opponents['mainPlacements'],
                     optionsAtlas=options,
-                    packingRecipeSha256=opponents['recipeSha256'],compactAtlas=opponents['packing'],additionalCachedTextureBytesForOpponents=0,additionalCachedTextureBytesForPlayer=0, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304,
+                    packingRecipeSha256=opponents['recipeSha256'],compactAtlas=opponents['packing'],additionalCachedTextureBytesForOpponents=0,additionalCachedTextureBytesForPlayer=0, rasterBytes=len(pixels), additionalCachedTextureBytes=4194304+bonus_art['addedRGBABytes'],
                     headerHashes={n:hashlib.sha256(s.encode()).hexdigest() for n,s in outputs.items()})
     for name, content in outputs.items():
         if len(content.encode()) > 1048576:
@@ -484,7 +489,8 @@ def generate_frontend_layout(check=False):
         if hashlib.sha256((ROOT/'src'/name).read_bytes()).hexdigest() != expected:
             raise ValueError('Modified generated header; run full generation')
     table_path = ROOT/'src/FrontendWordLayout.inc'
-    base = base_layout(table_path.read_text())
+    from frontend_bonus_car_word_art import strip_layout as strip_bonus_layout, verify as verify_bonus_words
+    base = base_layout(strip_bonus_layout(table_path.read_text()))
     if hashlib.sha256(base.encode()).hexdigest() != metadata['baseWordLayoutSha256']:
         raise ValueError('Stale base word layout')
     # Cross-check metadata regions against the already-authenticated base rows.
@@ -512,14 +518,21 @@ def generate_frontend_layout(check=False):
     pixels = bytearray()
     for at in range(0,len(encoded),6):
         count = encoded[at] | (encoded[at+1]<<8)
-        if not count or len(pixels)+4*count>8388608:
+        if not count or len(pixels)+4*count>8683520:
             raise ValueError('Unbounded authenticated frontend RLE')
         pixels.extend(encoded[at+2:at+6]*count)
-    if len(pixels)!=8388608 or hashlib.sha256(pixels).hexdigest()!=metadata['rasterSha256']:
+    if len(pixels)!=8683520 or hashlib.sha256(pixels).hexdigest()!=metadata['rasterSha256']:
         raise ValueError('Authenticated frontend raster changed')
+    from frontend_bonus_car_word_art import apply as apply_bonus_words
+    _, expected_table, expected_bonus = apply_bonus_words(
+        pixels[:8388608],table,directory,ROOT/'src/FrontendFontLayout.inc')
+    verify_bonus_words(pixels,expected_table,metadata['bonusCarWordArt'],directory,ROOT/'src/FrontendFontLayout.inc')
+    if expected_bonus!=metadata['bonusCarWordArt']:
+        raise ValueError('Bonus source metadata differs')
+    table=expected_table
     from frontend_remaining_ink_fit import remaining_ink_fit
     metadata['remainingInkFit'] = remaining_ink_fit(
-        directory,pixels,[line.rstrip(',') for line in base.splitlines() if line.startswith('{')],
+        directory,pixels[:8388608],[line.rstrip(',') for line in base.splitlines() if line.startswith('{')],
         {f+'Placements': metadata['optionsAtlas']['optionsPlacements'] if f=='options' else metadata[f+'Placements']
          for f in ('main','location','setup','player','opponents','options')},rows)
     metadata['rightLabelCatalogSha256'] = hashlib.sha256(catalog_path.read_bytes()).hexdigest()

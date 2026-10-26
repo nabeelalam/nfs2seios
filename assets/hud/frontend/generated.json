@@ -1481,6 +1481,198 @@
     ],
     "changedPixels": 556022
   },
+  "bonusCarWordArt": {
+    "sourceSha256": "b70f216494fb34a4c7d52a491136f7806b8f5c67ad08151b3721c80af1f7f140",
+    "legacyRasterSha256": "3cfbcbe7c3b9f0330b629b9bbfdc75dc6a5ecb25c3a64c8a063d8e798c2340a4",
+    "legacyLayoutSha256": "d03f5b97ba4a69f40986395c77da48325a7f12d9242e08c002f2c2f34853ebb7",
+    "sourceGeometrySha256": "696f65f84a1a0df18dbbf425dbd10cded26ce191cc326a87c223219d3799b5d8",
+    "dimensions": [
+      1024,
+      2120
+    ],
+    "legacyDimensions": [
+      1024,
+      2048
+    ],
+    "addedRGBABytes": 294912,
+    "newRows": 54,
+    "words": [
+      {
+        "text": "Bomber BFS",
+        "context": "93a5cbd30dad057f",
+        "sourceCells": [
+          [
+            62,
+            9
+          ],
+          [
+            107,
+            8
+          ],
+          [
+            105,
+            11
+          ],
+          [
+            94,
+            8
+          ],
+          [
+            97,
+            8
+          ],
+          [
+            110,
+            5
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            62,
+            9
+          ],
+          [
+            66,
+            7
+          ],
+          [
+            79,
+            9
+          ]
+        ],
+        "atlas": [
+          2,
+          2050,
+          312,
+          68
+        ],
+        "sourceCrop": [
+          0,
+          10,
+          312,
+          68
+        ],
+        "rgbaSha256": "860a131781e668159dc2b85141e3f2989af3016f58fa471b9cf83c2069bbd56b"
+      },
+      {
+        "text": "Tombstone",
+        "context": "7b8fa054abe43f28",
+        "sourceCells": [
+          [
+            80,
+            7
+          ],
+          [
+            107,
+            8
+          ],
+          [
+            105,
+            11
+          ],
+          [
+            94,
+            8
+          ],
+          [
+            111,
+            7
+          ],
+          [
+            112,
+            5
+          ],
+          [
+            107,
+            8
+          ],
+          [
+            106,
+            8
+          ],
+          [
+            97,
+            8
+          ]
+        ],
+        "atlas": [
+          318,
+          2050,
+          280,
+          68
+        ],
+        "sourceCrop": [
+          0,
+          10,
+          280,
+          68
+        ],
+        "rgbaSha256": "f5648a5e6155308a8804b211028f44cba323b5e77735430203b3e5deda8f39c0"
+      },
+      {
+        "text": "FZR 2000",
+        "context": "92e3d1d6c6ede731",
+        "sourceCells": [
+          [
+            66,
+            7
+          ],
+          [
+            86,
+            8
+          ],
+          [
+            78,
+            9
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            46,
+            8
+          ],
+          [
+            44,
+            8
+          ],
+          [
+            44,
+            8
+          ],
+          [
+            44,
+            8
+          ]
+        ],
+        "atlas": [
+          602,
+          2050,
+          240,
+          68
+        ],
+        "sourceCrop": [
+          0,
+          10,
+          240,
+          68
+        ],
+        "rgbaSha256": "58ac00be0bfc7a8c621dc3acbe927abfc0a093d3a4db840cfd0295dd45347a4e"
+      }
+    ],
+    "oldPixelsAndRowsUnchanged": true,
+    "style": [
+      24,
+      0.88,
+      0.5
+    ],
+    "noOriginalPixels": true
+  },
+  "legacyRasterSha256": "3cfbcbe7c3b9f0330b629b9bbfdc75dc6a5ecb25c3a64c8a063d8e798c2340a4",
+  "legacyRasterBytes": 8388608,
   "playerHeadingArt": {
     "sourceHashes": {
       "player-heading-art.json": "d61620832e1e27f8257f09d102c39d1fc60da8c4c8e7666c9a2d34b2e511cd55"
@@ -5241,13 +5433,13 @@
     ]
   },
   "catalogSha256": "d04f36f2795a4201c5f5c9ac7a5ed6a586f8874238ecd3d73383ed4454b42458",
-  "rasterSha256": "3cfbcbe7c3b9f0330b629b9bbfdc75dc6a5ecb25c3a64c8a063d8e798c2340a4",
+  "rasterSha256": "84b561a78704e7d44469315bfc56321fd7372b3c8d46a54dfe0b3dbf79645c33",
   "raster": [
     1024,
-    2048
+    2120
   ],
-  "rleBytes": 5164410,
-  "glyphPartitions": 2163,
+  "rleBytes": 5346888,
+  "glyphPartitions": 2491,
   "inkFit": [
     {
       "text": "game setup",
@@ -9962,11 +10154,11 @@
   },
   "additionalCachedTextureBytesForOpponents": 0,
   "additionalCachedTextureBytesForPlayer": 0,
-  "rasterBytes": 8388608,
-  "additionalCachedTextureBytes": 4194304,
+  "rasterBytes": 8683520,
+  "additionalCachedTextureBytes": 4489216,
   "headerHashes": {
-    "FrontendFontPixels.inc": "105c00a39d5ef778da5b9ee9e36a9221b7d3301c842ab731621ab6964db5eeb8",
-    "FrontendWordLayout.inc": "d03f5b97ba4a69f40986395c77da48325a7f12d9242e08c002f2c2f34853ebb7",
+    "FrontendFontPixels.inc": "279f1b7bdb0125bc2522a87e7f0bdfe9a07beed7fd54917abddf8093a26157fc",
+    "FrontendWordLayout.inc": "f46c8815c8ae187ff2db6652603da2b51bad57648db2f433a697f334b5ced0dc",
     "FrontendFontPixelsPart0.inc": "d5396b708d2e122d18634d386f06c0f7b76722aec9ea2a5ff41c1bb97d4a3cc8",
     "FrontendFontPixelsPart1.inc": "df3875d1d3087335b982a3a9a36ebdc907268e298f309557b80a57f1fb7a3c72",
     "FrontendFontPixelsPart2.inc": "1cb335eece5a7ab0406d997f83b01e87d78036bf0974948e3a5bf807e19b1abc",
@@ -10045,6 +10237,9 @@
     "FrontendFontPixelsPart75.inc": "a173bb742c1f4396993eb00d1f195331c6d415a143dde4072ee0b8d72f677fbc",
     "FrontendFontPixelsPart76.inc": "df6b888909fd65538d83c1a431d88cd79b05500b421027587eb332f041f4d2c2",
     "FrontendFontPixelsPart77.inc": "596bc33415e78862caaadfd923ea52184dcf2dcf8bf16e60837988176419490d",
-    "FrontendFontPixelsPart78.inc": "c56825cd247f314acb888729350799717cdb07ab024bfad3f72ec726640c3c50"
+    "FrontendFontPixelsPart78.inc": "171d8304364d70063968043d75bbff5def550564ef8d9913921a13d0542edf41",
+    "FrontendFontPixelsPart79.inc": "7c857d93d6b3b416688692ae1232df1f91ac31b09c0e83b4d498e8a311d01101",
+    "FrontendFontPixelsPart80.inc": "bf5d8e1032da48258ddb034d8c03fad58e2a3d4f02a3bc9c18b26cecddd412f7",
+    "FrontendFontPixelsPart81.inc": "4544ce453b5ca6ac7794d1769c4ba453f60fea881bda36b8f7904805db222d2f"
   }
 }
