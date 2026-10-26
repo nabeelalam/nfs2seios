@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "scope": "Original bonus-car texture source validation; no remastered rendering or physical acceptance",
+  "observerBinarySha256": "08280f2458d99de6f375bfc5e3d42957d3bbe63818f90503406f6cc7cd855bb4",
+  "newCompiles": 0,
+  "records": 8,
+  "events": 7924,
+  "observerCaps": {
+    "records": 64,
+    "events": 16384
+  },
+  "route": "Ordinary keyboard unlocks in eligible Single Race mode, with two observed caption acknowledgements before each next code",
+  "unlockOrder": [
+    "BOMBER",
+    "TOMBSTONE",
+    "FZR2000"
+  ],
+  "sources": [
+    {
+      "entry": "bom5",
+      "inputSha256": "79b63b89f6898d4a1e14c3b988eff9635cc8453cfa46afc42c52bdc3358784b8",
+      "originalConvertedSha256": "883a2213c2003f72ba63f80011b81028aaf34047365412f86a5eb9e69f8250e0",
+      "sampledLiveEntryTriangles": 256,
+      "nativeCanvasOffset": [
+        1,
+        0
+      ],
+      "dimensions": [
+        122,
+        45
+      ],
+      "croppedInk": 0
+    },
+    {
+      "entry": "tom5",
+      "inputSha256": "4cf3581a9a33deb8e03bd7d74b0c55acf26d5423235763fe905549be866d8932",
+      "originalConvertedSha256": "d153c5f6e8d49bb5a6c7d2e232bc5d0db9d9415264ae9d654b9906834ea06816",
+      "sampledLiveEntryTriangles": 174,
+      "nativeCanvasOffset": [
+        0,
+        0
+      ],
+      "dimensions": [
+        124,
+        45
+      ],
+      "croppedInk": 0
+    },
+    {
+      "entry": "fzr5",
+      "inputSha256": "86ee71ac369783c2e9cfa178dd10fdc618b7523688916949ba3cc9e67103ea4f",
+      "originalConvertedSha256": "ceb032873b3a4be4348dadf43aa96c75d17a821eb0b2e2c267cea6e71d5c3862",
+      "sampledLiveEntryTriangles": 44,
+      "nativeCanvasOffset": [
+        1,
+        0
+      ],
+      "dimensions": [
+        122,
+        45
+      ],
+      "croppedInk": 0
+    }
+  ],
+  "privateIndependentCheckpointSha256": "539fbd0baf58cad844ec44de5752f05b4444456338ee33ff15cf77fbb2156495",
+  "priorFailedRunPreserved": true,
+  "recognitionThresholdsUnchanged": true,
+  "maskCorrection": "Private FFN pixel decoder corrected to original high-nibble-first order; maintained metric-only inspector unchanged",
+  "cleanShutdownAndCopiedDataRestoration": true,
+  "physicalDeviceVerified": false,
+  "replacementArtworkVerified": false,
+  "racePerformanceVerified": false,
+  "limitations": [
+    "Finite three-bonus-car source scope; not every hidden traffic or object path",
+    "Caption observations and source evidence do not prove each frame photo identity or GPU completion",
+    "Original textures, raw descriptors, captures and local paths remain private"
+  ]
+}
