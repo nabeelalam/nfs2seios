@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "scope": "Read-only source routing distinction; no current screen rendering acceptance",
+  "privateSourceAuthoritySha256": "08f4cebdfe7c2c678e6712a33f3ad12f6cd05946ce80ec9e399d5d52e72ef600",
+  "privateSourcePlanSha256": "b0db546ea3dde77d92a353dafad7a8de805c7699284c4a2a6b9bb8f89090de45",
+  "privateSourceReceiptSha256": "d36c1ed7b6496b5306a42dcacd45caaa1f38203f939cb95b9b7f931729ff805e",
+  "independentlyRehashedSourcePins": 21,
+  "sourcePinsBeforeAfterExact": true,
+  "routes": [
+    {
+      "area": "Track Records table",
+      "ordinaryRoute": "Location -> Track Records -> Escape",
+      "sourceHandler": "41C850",
+      "handlerIndex": 10,
+      "sourceReferences": [
+        "engine/Cpp/Memory.cpp:1508-1522",
+        "engine/Cpp/Memory.cpp:1843",
+        "engine/Cpp/Methods_01.cpp:19052-19056",
+        "engine/Cpp/Methods_02.cpp:9492-9777"
+      ],
+      "data": "31 backing records displayed in 10-row pages; original driver names, car labels, formatted times and modes",
+      "viewOnly": true,
+      "clearRecordsActionExcluded": true
+    },
+    {
+      "area": "Personal Statistics graph",
+      "ordinaryRoute": "Location -> Personal Statistics",
+      "sourceHandler": "426050",
+      "handlerIndex": 21,
+      "sourceReferences": [
+        "engine/Cpp/Memory.cpp:1500-1507",
+        "engine/Cpp/Memory.cpp:1522",
+        "engine/Cpp/Methods_03.cpp:5022-5221"
+      ],
+      "data": "Separate history-data graph with track, lap, car and graph-type selection",
+      "sameAsRecordsTable": false,
+      "currentRenderingVerified": false
+    },
+    {
+      "area": "Options personal-stats toggle",
+      "ordinaryRoute": "Options -> personal-stats setting",
+      "sourceReferences": [
+        "engine/Cpp/Memory.cpp:1753-1757"
+      ],
+      "childScreen": false,
+      "behavior": "Boolean configuration setting; do not confuse it with the Location statistics graph"
+    }
+  ],
+  "postRaceUpdateRoutinesAreNotDisplayHandlers": [
+    "413BF0",
+    "414400",
+    "414760"
+  ],
+  "nextImplementation": {
+    "firstStep": "Bounded view-only original-owner observation of the current Track Records table, then Escape without clearing or manufacturing records",
+    "ownerAndLifetimeProofRequired": true,
+    "actualSurfaceFontClipAndOrderedWritesRequired": true,
+    "preserveOriginalDriverNames": true,
+    "preserveOriginalTimeFormatting": true,
+    "preserveOriginalCarAndModeStrings": true,
+    "preserveOriginalOrderingAndRowCount": true,
+    "reuseOwnedSoftwareTextPacketFoundations": true,
+    "existingOwnerSpecificAdaptersRequireNewExactGate": true,
+    "unsupportedTextOrStateRetainsOriginal": true,
+    "hudRecordDigitsAndParentWordsDoNotProveChildCoverage": true
+  },
+  "unproven": [
+    "Current original table owner, surface, font admission and exact rendering order",
+    "Current normal-app replacement appearance and selected, disabled, empty or scrolling states",
+    "Personal Statistics graph materials, dynamic graph values and alternative modes",
+    "Unknown driver-name encodings and unsupported text behavior",
+    "Physical iPad acceptance and performance"
+  ],
+  "originalStringPayloadIncluded": false,
+  "originalPixelsIncluded": false,
+  "privatePathsIncluded": false,
+  "rawDescriptorsIncluded": false,
+  "maintainedImplementationChanged": false,
+  "gameRun": false,
+  "compilerRun": false,
+  "cloudBuild": false,
+  "currentRuntimeVerified": false,
+  "physicalDeviceVerified": false,
+  "remasterComplete": false,
+  "sourcePinVerificationPrecededInventoryLabelCorrection": true,
+  "inventoryCorrectionScope": "Area label only; all other historical inventory bytes retained"
+}
