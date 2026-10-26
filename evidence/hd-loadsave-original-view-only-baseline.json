@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Actual original Load/Save view-only baseline; no HD child replacement or physical acceptance",
+  "passed": true,
+  "binarySha256": "08ec8dbcdf92d8850f8fa4581a5b6b5839bff5933b2a7dbab796ad36ce023583",
+  "newCompiles": 0,
+  "route": "Main to Options to Load/Save; two positively identified child views; Escape to Options and Main",
+  "actualOwnedCaptureRecords": 27,
+  "sameSnapshotCanonicalBulkCaptureEquality": true,
+  "childSaveLoadDeleteReplayActionsSent": false,
+  "childDirectionalOrTextInputSent": false,
+  "copiedSaveReplayStatisticsFilesUnchanged": 49,
+  "inventoryDetectsCreationDeletionAndByteChanges": true,
+  "configArtworkAndGammaRestored": true,
+  "cleanExitZero": true,
+  "ownedGameDisplayAndLeaseAbsent": true,
+  "priorFailedObservationPreserved": true,
+  "fixedSourceAuthoredValueMasksAndThresholdsUnchanged": true,
+  "privateIndependentCheckpointSha256": "ec54e098555329d83f070f7de3955ccc43fca0784e68cabe7f11214b5ec1422a",
+  "rootViewedActualChildScreen": true,
+  "hdChildRenderingVerified": false,
+  "physicalDeviceVerified": false
+}
