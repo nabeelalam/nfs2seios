@@ -27,11 +27,11 @@ class Contracts(unittest.TestCase):
             self.assertNotIn(forbidden,s)
     def test_replay_checks_are_not_only_packet_labels(self):
         s=HEADER.read_text()
-        for required in ("fontBytes==p.fontBytes", "w.before!=replay[index]", "w.computed!=computed", "w.after!=computed", "store!=use.stores.size()", "replay==packet->original()", "packet->matches(", "writes==packet->writes()", "x%2?byte&15:byte>>4"):
+        for required in ("fontBytes==p.fontBytes", "w.before!=replay[index]", "w.computed!=computed", "w.after!=computed", "store!=use.stores.size()", "replay==packet->original()", "packet->matches(", "writes==packet->writes()", "parity?byte&15:byte>>4"):
             self.assertIn(required,s)
     def test_behavioral_fixture_includes_rejection_boundaries(self):
         s=(ROOT/"tests/loadsave_source_policy_tests.cpp").read_text()
-        for required in ("std::swap(f.evidence.strings[0]", "o.nested=true", "o.retired=true", "o.unwound=true", "owner.context", "profile.fontBytes[0]", "profile.glyphs[0].pitch", "profile.palettes[4]", "glyphs[0].stores.pop_back", "f.post[0]^=1", "!ls::supportedOriginalProfile"):
+        for required in ("std::swap(f.evidence.strings[0]", "o.nested=true", "o.retired=true", "o.unwound=true", "owner.context", "profile.fontBytes[0]", "profile.atlasStride", "profile.palettes[4]", "glyphs[0].stores.pop_back", "f.post[0]^=1", "!ls::supportedOriginalProfile"):
             self.assertIn(required,s)
         self.assertGreaterEqual(s.count("fault([&]"),50)
     def test_not_registered_into_current_renderer(self):

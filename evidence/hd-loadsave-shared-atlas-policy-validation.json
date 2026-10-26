@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "scope": "Pure LoadSave shared-atlas source consistency model; unregistered and no live HD activation",
+  "privateHandoffSha256": "4281ac26318a7c44fc1811cac89dd2627144a974c6c7bf458fc2283a371d69d9",
+  "independentModelReviewSha256": "fa2f44f62e1306b46c9159d99a3f7068b50680487dd9f50a991fcc93f6ea2d96",
+  "maintainedFiles": {
+    "src/hd/LoadSaveSourcePolicy.h": "2ed80575833dd077d9f0d857b8d3114f16b52ee8c83c5adb679351db3feef6ce",
+    "tests/loadsave_source_policy_tests.cpp": "687ef87a10d00aa55baff31fab05fda0b6e94e293b159091350688c4d43be973",
+    "tests/loadsave_source_policy_contract_test.py": "09a5a2f34da476e74ba0621f9c07fbaf9df6db5fca0f4e881e64c32023859b61"
+  },
+  "sharedAtlasSignedBearingsAndAdvanceOnlySpaces": true,
+  "exactOwnedMetricRecordBinding": true,
+  "evenRoundedCallbackWidths": true,
+  "exactSourceByteParityPaletteAndStoreOrder": true,
+  "bothRetainedSlotsRequire16BitFormat": true,
+  "transparentRetainedCopyVerified": true,
+  "optimizedAndAsanUbsanModelChecksEach": 46884,
+  "actualFramesPerMode": 2,
+  "actualStringsPerFrame": 16,
+  "actualGlyphsPerFrame": 178,
+  "actualStoresPerFrame": 18466,
+  "actualCompiledLocalDependenciesPerMode": 11,
+  "actualModelReceiptSha256": "671cb2367d2034486b6408ba28524843b37000486e090638107305854157fead",
+  "modelReceiptSha256": "eef7eebc4055d50f21574be299d085fa80873a7a6d0f1657400cb8f0e52125d4",
+  "actualDataProvenanceSha256": "dd15e6c882c94743bc30996855f20e6ae6a64076e55cba6eb95ed897d904881a",
+  "warningCount": 0,
+  "ownedCompilerAndRunGroupsEmpty": true,
+  "originalDataInPublicSource": false,
+  "sourceProfileRegistered": false,
+  "liveIssuerAdded": false,
+  "gpuActivationAdded": false,
+  "wholeOriginalRuntimePassed": false,
+  "physicalDeviceVerified": false,
+  "limits": [
+    "Actual private adapter covers the observed selection and disabled-save state; unseen palettes and nonzero kerning decline.",
+    "Caller-provided model labels do not establish live source ownership.",
+    "Original return-to-Options runtime failure remains preserved separately."
+  ]
+}
