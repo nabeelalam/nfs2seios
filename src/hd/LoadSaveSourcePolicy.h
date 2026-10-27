@@ -70,7 +70,7 @@ struct Snapshot {
 // Exact source callback arithmetic from opaque/unclipped 16-bit4A5830 branch.
 // Palette entries below0x10000000 perform no store and are represented by omission.
 inline uint16_t blend(uint16_t before,uint32_t p)noexcept{
- if(p<0xfc000000u){uint32_t packed=(((uint32_t(before)<<16)|(before&255u))&0xf800001fu)+((before&0x7e0u)<<8);uint64_t product=uint64_t(packed)*(255u-(p>>24));uint32_t low=uint32_t(product);p+=uint32_t(product>>32)<<16;p+=(low>>5)&255u;p+=(low>>11)&0xff00u;}
+ if(p<0xfc000000u){uint32_t packedColor=(((uint32_t(before)<<16)|(before&255u))&0xf800001fu)+((before&0x7e0u)<<8);uint64_t product=uint64_t(packedColor)*(255u-(p>>24));uint32_t low=uint32_t(product);p+=uint32_t(product>>32)<<16;p+=(low>>5)&255u;p+=(low>>11)&0xff00u;}
  return uint16_t(((p&0xf80000u)>>8)+((p>>3)&31u)+((p&0xfc00u)>>5));
 }
 struct Store {uint32_t index=0;uint16_t before=0,computed=0,after=0;

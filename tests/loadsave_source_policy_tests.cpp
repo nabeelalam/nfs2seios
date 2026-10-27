@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: MIT
 // Synthetic owned bytes only; not an original-source or live-owner acceptance.
-#include "hd/LoadSaveSourcePolicy.h"
 #include "hd/SoftwareFontBuiltin.h"
 #include <functional>
 #include <iostream>
 #include <stdexcept>
+// Production config.h defines this macro before frontend policy headers.
+#define packed __attribute__((__packed__))
+#include "hd/LoadSaveSourcePolicy.h"
+#undef packed
 namespace ls=nfs_loadsave_source;
 static unsigned checks=0;
 #define CHECK(x) do{++checks;if(!(x))throw std::runtime_error(#x);}while(0)
