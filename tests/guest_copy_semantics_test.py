@@ -1,11 +1,20 @@
 from pathlib import Path
-import argparse,subprocess,sys,shutil
+import argparse,subprocess,sys,shutil,os
 parser=argparse.ArgumentParser(description='Compare exact original and batched integer/FPU state')
 parser.add_argument('--thin-lto',action='store_true',help='Also exercise the bounded ThinLTO compiler/linker path')
 args=parser.parse_args()
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from batch_guest_copies import batch_copies as transform
 root=Path(__file__).resolve().parents[1]
+# Bind the mixed semantic translation to the exact engine selected by CI.
+# No fallback to a stale legacy preparation when an explicit choice is missing.
+requested_engine=Path(os.environ.get('NFS_CI_ENGINE_SOURCE','.build/fullmapped'))
+engine=(requested_engine if requested_engine.is_absolute() else root/requested_engine).resolve()
+try:engine.relative_to((root/'.build').resolve())
+except ValueError:raise ValueError('Selected CI engine must be inside the project build directory') from None
+if not engine.is_dir() or not (engine/'Game.h').is_file():
+    raise FileNotFoundError('Selected CI engine has not been prepared (Game.h missing)')
+
 (root/'.build').mkdir(exist_ok=True)
 index=1
 while (root/f'.build/copy-semantics-{index:03}').exists():index+=1
@@ -80,7 +89,7 @@ int main(){
 }
 '''
 path=out/'mixed_semantics.cpp';assert not path.exists();path.write_text(source)
-command=[shutil.which('clang++') or shutil.which('c++') or 'clang++','-std=c++14','-O3','-g','-pthread','-fwrapv','-fno-strict-aliasing','-Isrc','-I.build/fullmapped',str(path),'src/EngineMemory.cpp','src/GameTrace.cpp','-o',str(out/'mixed-semantics')]
+command=[shutil.which('clang++') or shutil.which('c++') or 'clang++','-std=c++14','-O3','-g','-pthread','-fwrapv','-fno-strict-aliasing','-Isrc','-I'+str(engine),str(path),'src/EngineMemory.cpp','src/GameTrace.cpp','-o',str(out/'mixed-semantics')]
 if args.thin_lto:
     if not shutil.which('clang++'):raise RuntimeError('ThinLTO validation requires clang++')
     backend='-Wl,-mllvm,-threads=2' if sys.platform=='darwin' else '-Wl,-plugin-opt,jobs=2'

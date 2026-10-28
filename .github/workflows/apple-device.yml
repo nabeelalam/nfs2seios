@@ -54,11 +54,13 @@ jobs:
           cmake --version
       - name: Prepare checked engine and selected isolated renderer
         run: python3 scripts/prepare_ci_sources.py
-      - name: Apple-only main queue regression
+      - name: Apple platform and native CPU checks
         run: |
+          python3 tests/guest_copy_semantics_test.py
+          if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
           cmake -S . -B .build/apple-host -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256"
-          cmake --build .build/apple-host --target apple_main_thread_tests -j "$NFS_BUILD_JOBS"
-          ctest --test-dir .build/apple-host --output-on-failure -R '^actual_apple_main_queue$'
+          cmake --build .build/apple-host --target apple_main_thread_tests system_cpu_provider_tests -j "$NFS_BUILD_JOBS"
+          ctest --test-dir .build/apple-host --output-on-failure -R '^(actual_apple_main_queue|system_cpu_native_provider)$'
       - name: Configure native iPadOS targets
         run: |
           cmake -S . -B .build/ios -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0 -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DNFS_THIN_LTO="$NFS_THIN_LTO" -DNFS_THIN_LTO_JOBS=2 -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256" -DNFS_CLASSIC_UI="$NFS_CLASSIC_UI" -DNFS_CLASSIC_DEFER_OWNER_TEMPLATE="$NFS_CLASSIC_DEFER_OWNER_TEMPLATE" -DNFS_FULL_MAPPED_ENGINE_DIR="$NFS_CI_ENGINE_SOURCE" -DNFS_RENDERER_SOURCE_DIR="$NFS_CI_RENDERER_SOURCE"
