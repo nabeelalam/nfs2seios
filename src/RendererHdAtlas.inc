@@ -69,6 +69,8 @@ static void nfs_hd_context_retired(int bound){
 }
 
 #include "StartLightRuntime.inc"
+#include "MinimapSourceRuntime.inc"
+#include "ReplayControlsRuntime.inc"
 static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const GrVertex *c){
     if(!nfs_hd_selected || !nfs_hd_builtin_enabled || !nfs_hd_visible || !nfs_hd_aux_texture)return 0;
     const GrVertex *vertices[3]={a,b,c};float uv[6];
@@ -77,6 +79,7 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         uv[2*i]=vertices[i]->tmuvtx[0].sow/q;uv[2*i+1]=vertices[i]->tmuvtx[0].tow/q;
     }
     if(nfs_front_font_source_page(nfs_hd_selected)>=0)return 0;
+    if(nfs_hd_selected>=1000 && nfs_hd_selected<=1063)return nfs_hd_cell_layout_available?nfs_minimap_source_triangle(nfs_hd_selected,uv):0;
     // hd_selected1 comes only from the existing exact builtin timing-atlas SHA.
     // The uniform availability guard also preserves basic/lowp original fallback.
     if(nfs_hd_selected==1 && nfs_hd_cell_layout_available){
@@ -85,6 +88,8 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
         const int selected=nfs_warning_word_triangle(warning,uv);if(selected)return selected;
     }
     if(nfs_hd_selected==1 && nfs_hd_cell_layout_available && nfs_start_light_triangle(a,b,c,uv))return 71;
+    if(nfs_hd_selected==1 && nfs_hd_cell_layout_available && (a->oow==1.f || a->oow==65535.f/65536) && b->oow==a->oow && c->oow==a->oow && nfs_replay_play_triangle(uv))return 78;
+    if(nfs_hd_selected==1 && nfs_hd_cell_layout_available && (a->oow==1.f || a->oow==65535.f/65536) && b->oow==a->oow && c->oow==a->oow){int replay=nfs_replay_controls_triangle(uv);if(replay)return replay;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gear=nfs_gear_triangle(uv);if(gear)return gear;if(nfs_hd_cell_layout_available && nfs_clock_punctuation_triangle(uv))return 69;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1){int gauge=nfs_gauge_mask_triangle(uv);if(gauge)return gauge;}
     if(nfs_hd_selected==1 && a->oow==1 && b->oow==1 && c->oow==1 && nfs_alternate_logo_triangle(uv))return 56;
@@ -117,6 +122,7 @@ static int nfs_hd_upload_texture(TextureInfo *ti){
     if(nfs_hd_builtin_enabled && nfs_pause_match(ti))return 0;
     if(nfs_hd_builtin_enabled && nfs_logo_match(ti))return 0;
     if(ti->fmt!=GR_TEXFMT_ARGB_1555)return 0;
+    if(nfs_hd_builtin_enabled && nfs_minimap_source_match(ti))return 0;
     if(nfs_hd_builtin_enabled && nfs_small_font_match(ti))return 0;
     if(nfs_hd_builtin_enabled && !nfs_hd_atlas.original)nfs_timing_build(&nfs_hd_atlas,ti->size,ti->data);
     if(!nfs_hd_atlas_matches(&nfs_hd_atlas,ti->size,ti->data))return 0;

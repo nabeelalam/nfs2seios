@@ -38,7 +38,10 @@
 // Original rounded plate profile: divider18/channel19, visible columns0..166, trailing allocation transparent.
 "if(vTexCoord.z>74.5 && vTexCoord.z<75.5){vec2 source=hdCoord*256.0/(255.0/256.0);float cap=min(source.x,167.0-source.x);pauseOutside=source.x<0.0 || source.x>=167.0;hdCoord=clamp(vec2(920.0+cap*4.0,398.0+(source.y-172.0)*4.0),vec2(920.5,398.5),vec2(999.5,509.5))/1024.0;}\n"
 #include "WarningWordShader.inc"
+#include "ReplayPlayShader.inc"
 		"vec4 hd = texture2D(uHdTextureSampler, hdCoord);if(pauseOutside)hd=vec4(0.0);\n"
+#include "ReplayControlsShader.inc"
+#include "MinimapMaterialShader.inc"
 		"if (vTexCoord.z > 0.5) sampled = hd;\n"
 		"#else\n"
 		"vec4 hd = texture2D(uHdTextureSampler, vTexCoord.st / vTexCoord.q);\n"

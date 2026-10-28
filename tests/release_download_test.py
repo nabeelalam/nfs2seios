@@ -10,12 +10,12 @@ import tempfile
 import unittest
 import zipfile
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from prepare_release_download import inspect, PREFIX, SUPPORT, LICENSES
+from prepare_release_download import inspect, PREFIX, SUPPORT, LICENSES, CLASSIC_LICENSES
 
 class DownloadTest(unittest.TestCase):
-    def fixture(self, folder, extra=None, binary=None):
+    def fixture(self, folder, extra=None, binary=None, classic=False):
         source = "a" * 40
-        data = {name: b"support fixture" for name in SUPPORT}
+        data = {name: b"support fixture" for name in (SUPPORT | (CLASSIC_LICENSES if classic else set()))}
         data["Info.plist"] = plistlib.dumps({"CFBundleIdentifier": "io.github.nabeelalam.nfsiise.game", "CFBundleExecutable": "NFSIISEGame", "UIDeviceFamily": [2]})
         data["PkgInfo"] = b"APPL????"
         data["NFSIISEGame"] = binary if binary is not None else struct.pack("<8I6I", 0xfeedfacf, 0x100000c, 0, 2, 1, 24, 0, 0, 0x32, 24, 2, 0, 0, 0)
@@ -25,9 +25,23 @@ class DownloadTest(unittest.TestCase):
         with zipfile.ZipFile(ipa, "w") as archive:
             for name, value in data.items():
                 archive.writestr(PREFIX + name, value)
-        metadata = {"executable": "NFSIISEGame", "bundle_id": "io.github.nabeelalam.nfsiise.game", "architecture": "arm64", "platform": "iOS device", "support_sha256": {name: hashlib.sha256(data[name]).hexdigest() for name in SUPPORT}, "source_commit": source, "ipa_sha256": hashlib.sha256(ipa.read_bytes()).hexdigest(), "configuration": "Release", "personal_signing_required": True, "installation_verified": False, "gameplay_verified": False}
+        metadata = {"executable": "NFSIISEGame", "bundle_id": "io.github.nabeelalam.nfsiise.game", "architecture": "arm64", "platform": "iOS device", "support_sha256": {name: hashlib.sha256(data[name]).hexdigest() for name in (SUPPORT | (CLASSIC_LICENSES if classic else set()))}, "source_commit": source, "ipa_sha256": hashlib.sha256(ipa.read_bytes()).hexdigest(), "configuration": "Release", "personal_signing_required": True, "installation_verified": False, "gameplay_verified": False}
+        if classic: metadata.update(classic_ui=True,classic_asset_manifest_sha256="a"*64)
         manifest.write_text(json.dumps(metadata), encoding="utf-8")
         return ipa, manifest, source
+
+    def test_classic_base_cannot_become_public_release(self):
+        with tempfile.TemporaryDirectory() as folder:
+            ipa,manifest,source=self.fixture(folder,classic=True)
+            metadata=json.loads(manifest.read_text())
+            metadata.update(classic_ui=True,classic_asset_manifest_sha256="a"*64)
+            manifest.write_text(json.dumps(metadata))
+            with self.assertRaisesRegex(ValueError,"personal artwork"):
+                inspect(ipa,manifest,source)
+            metadata["classic_ui"]=False
+            manifest.write_text(json.dumps(metadata))
+            with self.assertRaisesRegex(ValueError,"classic"):
+                inspect(ipa,manifest,source)
 
     def test_accept_and_source_or_digest_rejection(self):
         with tempfile.TemporaryDirectory() as folder:

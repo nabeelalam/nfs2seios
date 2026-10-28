@@ -80,3 +80,7 @@ std::string select_app_assets(int,char **){
     } @finally {SDL_DestroyWindow(window);}
 }
 }
+
+#ifdef NFS_CLASSIC_BUNDLED_ART
+namespace nfs {std::string app_artwork_template_path(){NSString*path=[NSBundle.mainBundle pathForResource:@"classic-ui" ofType:@"ownedz"];return path?std::string(path.UTF8String):std::string();}}
+#endif

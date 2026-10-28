@@ -182,7 +182,12 @@ def validate_game_helper_includes(dest, generated_files=None):
     return tuple(sorted(validated))
 
 
-def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=False):
+def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=False, classic_screens=False, classic_assets_dir=None):
+    if classic_screens:
+        from classic_screens_assets import require_assets
+        require_assets(ROOT,classic_assets_dir)
+        if output_dir is None:raise ValueError('Classic screens require a new explicit output directory')
+    elif classic_assets_dir is not None:raise ValueError('--classic-assets-dir requires --classic-screens')
     if (bounded_rep_words or checked_copy_bundle) and output_dir is None:
         raise ValueError("Experimental word-copy generation requires a new output directory")
     dest = ROOT / ".build/fullmapped"
@@ -380,6 +385,12 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
     dispatch += 'extern "C" bool register_original_game_functions() {\n' + ''.join(registrations) + 'return true;\n}\n'
     (dest / "FullDispatch.cpp").write_text(dispatch)
     generated_files.append("FullDispatch.cpp")
+    if classic_screens:
+        from classic_screens_hooks import prepare as prepare_classic_screens
+        from classic_screens_assets import stage_assets
+        prepared=prepare_classic_screens(dest,dest/'classic-source-stages')
+        for p in prepared.glob('Methods_*.cpp'):shutil.copyfile(p,dest/p.name)
+        stage_assets(ROOT,classic_assets_dir,dest)
     validate_game_helper_includes(dest, generated_files)
     if (bounded_rep_words or checked_copy_bundle) and rep_word_loops != 12:
         raise ValueError("Incomplete reviewed bounded-word-copy method set")
@@ -402,7 +413,10 @@ if __name__ == "__main__":
                         help="enable the reviewed word loops and two pinned complete-helper scopes")
     parser.add_argument("--output-dir", type=Path,
                         help="new output directory inside .build (required for experimental scopes)")
+    parser.add_argument('--classic-screens', action='store_true', help='opt in to completed classic screens')
+    parser.add_argument('--classic-assets-dir', type=Path, help='explicit private classic artwork header directory')
     arguments = parser.parse_args()
     prepare_full(bounded_rep_words=arguments.bounded_rep_words,
                  output_dir=arguments.output_dir,
-                 checked_copy_bundle=arguments.checked_copy_bundle)
+                 checked_copy_bundle=arguments.checked_copy_bundle,
+                 classic_screens=arguments.classic_screens, classic_assets_dir=arguments.classic_assets_dir)

@@ -1,0 +1,51 @@
+{
+  "headers": {
+    "BackdropAllCrestData.h": {
+      "license": "LicenseRef-Project-Authored-Art",
+      "notice": "assets/licenses/classic-ui/NOTICE.txt",
+      "sha256": "d68fb69295ff143302c140808f7fecc45c316d0eb86c7d9d08b0bdc5adc04200"
+    },
+    "BackdropCrestData.h": {
+      "license": "LicenseRef-Project-Authored-Art",
+      "notice": "assets/licenses/classic-ui/NOTICE.txt",
+      "sha256": "0187b221ae34a5c1d13cc52a8d52519b9415989e189cc93758cf4b6e5cabf76d"
+    },
+    "BackdropLabelData.h": {
+      "license": "LicenseRef-Project-Authored-Art",
+      "notice": "assets/licenses/classic-ui/NOTICE.txt",
+      "sha256": "a60ff659f27151cfc42853709329e35128bdd42a36963f43c1a2d39c60e97e54"
+    },
+    "CreditsFontData.h": {
+      "license": "OFL-1.1",
+      "notice": "assets/licenses/classic-ui/LeagueGothic-OFL.txt",
+      "sha256": "f208c6085364a983cc18f77ba9e2ef5f736fd7f70f0c1dfbcf603bbc602b52b8"
+    },
+    "RecordsFontData.h": {
+      "license": "OFL-1.1",
+      "notice": "assets/licenses/classic-ui/LeagueGothic-OFL.txt",
+      "sha256": "0d467b73d1658a5362c75584759bb846baf6bb160260ee9b7bfa24016b523980"
+    },
+    "ResultsFontData.h": {
+      "license": "OFL-1.1",
+      "notice": "assets/licenses/classic-ui/NOTICE.txt",
+      "sha256": "b498466cbc28b35aae9b2052bdb47a69896edf952ca3d3bc9d4b6e8db31d846d"
+    },
+    "ResultsHeadingData.h": {
+      "license": "LicenseRef-Project-Authored-Art",
+      "notice": "assets/licenses/classic-ui/NOTICE.txt",
+      "sha256": "877573e62c25f56efd9b1acacf7f3405fcf0c575f99b8250c4b86d147d5e2f24"
+    },
+    "VictoryFontData.h": {
+      "license": "OFL-1.1",
+      "notice": "assets/licenses/classic-ui/NOTICE.txt",
+      "sha256": "5e3f9d14d6e769dbd533384b4b4e5525ec68af9313db9abb7edd133c5de27e90"
+    },
+    "WordData.h": {
+      "license": "LicenseRef-Project-Authored-Art",
+      "notice": "assets/licenses/classic-ui/NOTICE.txt",
+      "sha256": "7a00ccde93846ab53de000346a85298f030084986dfe1a12a65d9aa656f53acf"
+    }
+  },
+  "redistributionApproved": true,
+  "schema": 1
+}

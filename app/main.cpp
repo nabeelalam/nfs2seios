@@ -46,7 +46,12 @@ int main(int argc,char **argv){
     try{
         const auto root=nfs::select_app_assets(argc,argv);
         if(!root.empty()){
-            if(nfs_hd::activateConfiguredArtwork(root))nfs::app_log("HD interface","Separate authored menu artwork loaded");
+            #ifdef NFS_CLASSIC_BUNDLED_ART
+            if(nfs_hd::activateConfiguredArtwork(root,nfs::app_artwork_template_path()))
+#else
+            if(nfs_hd::activateConfiguredArtwork(root))
+#endif
+            nfs::app_log("HD interface","Separate authored menu artwork loaded");
             HdAtlasLifetime hd_atlas(root);
             // No host process exit inside the engine. Retain the root context
             // and continue pumping SDL until renderer/worker cleanup finishes.

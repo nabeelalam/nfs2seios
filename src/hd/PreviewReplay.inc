@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: MIT
 // Private fixed-wrapper replay implementation; no runtime-selected form policy.
+#ifndef NFS_PREVIEW_REPLAY_DISPLAY_VIEW
+#define NFS_PREVIEW_REPLAY_DISPLAY_VIEW
+#define NFS_PREVIEW_REPLAY_DISPLAY_FINALIZE
+#define NFS_PREVIEW_REPLAY_DEFAULT_DISPLAY
+#endif
 namespace NFS_PREVIEW_REPLAY_NAMESPACE {
 using nfs_logo_capture::Target;using nfs_logo_capture::Plane;
 namespace original=nfs_small_logo_live;
@@ -64,7 +69,7 @@ public:
  const std::array<unsigned char,32>&sha256()const noexcept{return sha_;}
  const std::array<unsigned char,32>&coverageSha256()const noexcept{return coverageSha_;}
  // Borrowed view remains valid only while this immutable Packet is retained.
- NfsOriginalPreviewLayerView view()const noexcept{NfsOriginalPreviewLayerView v{};v.schema=NFS_ORIGINAL_PREVIEW_LAYER_SCHEMA;v.left=int32_t(rect_.left);v.top=int32_t(rect_.top);v.width=rect_.width;v.height=rect_.height;v.pixels565=pixels_.data();v.pixelCount=pixels_.size();std::copy(sha_.begin(),sha_.end(),v.sha256);v.coverage=coverage_.data();v.coverageCount=coverage_.size();std::copy(coverageSha_.begin(),coverageSha_.end(),v.coverageSha256);return v;}const std::vector<SourceMetadata>&sources()const noexcept{return sources_;}
+ NfsOriginalPreviewLayerView view()const noexcept{NfsOriginalPreviewLayerView v{};v.schema=NFS_ORIGINAL_PREVIEW_LAYER_SCHEMA;v.left=int32_t(rect_.left);v.top=int32_t(rect_.top);v.width=rect_.width;v.height=rect_.height;v.pixels565=pixels_.data();v.pixelCount=pixels_.size();std::copy(sha_.begin(),sha_.end(),v.sha256);NFS_PREVIEW_REPLAY_DISPLAY_VIEW v.coverage=coverage_.data();v.coverageCount=coverage_.size();std::copy(coverageSha_.begin(),coverageSha_.end(),v.coverageSha256);return v;}const std::vector<SourceMetadata>&sources()const noexcept{return sources_;}
  bool baseMatches(const Plane&base)const noexcept{std::array<unsigned char,32>sha{};return planeValid(base)&&nfs_logo_capture::same(target_,base.target)&&wordsSha(base.pixels.data(),Full,sha)&&sha==baseSha_;}
  // Accepted serial/lifetime/archive must come from CURRENT original-owner state,
  // never from this candidate itself; addresses are correlation, not read authority.
@@ -116,7 +121,14 @@ inline std::shared_ptr<const Packet>createPacket(const Input&i,const Plane&base,
   auto packet=std::shared_ptr<Packet>(new Packet);NFS_PREVIEW_REPLAY_PACKET_CAPTURE packet->target_=t;packet->lifetime_=i.lifetime;packet->serial_=i.serial;packet->archive_=i.archive;packet->rect_={uint32_t(left),uint32_t(top),uint32_t(right-left),uint32_t(bottom-top)};packet->post_=std::move(replay);packet->sources_=std::move(sources);packet->pixels_.resize(size_t(right-left)*(bottom-top));packet->coverage_.resize(packet->pixels_.size());
   for(int y=top;y<bottom;++y){std::copy_n(packet->post_.data()+y*640+left,right-left,packet->pixels_.data()+size_t(y-top)*(right-left));std::copy_n(coverage.data()+y*640+left,right-left,packet->coverage_.data()+size_t(y-top)*(right-left));}
   if(!wordsSha(packet->pixels_.data(),packet->pixels_.size(),packet->sha_)||!wordsSha(base.pixels.data(),Full,packet->baseSha_)||!nfs_texture_sha256(packet->coverage_.data(),packet->coverage_.size(),packet->coverageSha_.data()))return reject(Failure::Allocation);
+  NFS_PREVIEW_REPLAY_DISPLAY_FINALIZE
   return packet;
  }catch(...){return reject(Failure::Allocation);}
 }
 } // namespace NFS_PREVIEW_REPLAY_NAMESPACE
+
+#ifdef NFS_PREVIEW_REPLAY_DEFAULT_DISPLAY
+#undef NFS_PREVIEW_REPLAY_DISPLAY_VIEW
+#undef NFS_PREVIEW_REPLAY_DISPLAY_FINALIZE
+#undef NFS_PREVIEW_REPLAY_DEFAULT_DISPLAY
+#endif

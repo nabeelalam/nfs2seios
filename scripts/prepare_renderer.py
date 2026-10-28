@@ -6,6 +6,7 @@ scene integration remains separate.
 import shutil
 import subprocess
 import re
+from pathlib import Path
 from prepare_engine import ROOT, prepare
 from frontend_pixel_limits import FRONTEND_PIXEL_MAX_PARTS
 from pause_pixel_chunks import pause_pixel_parts
@@ -22,7 +23,26 @@ def frontend_pixel_parts(text):
     return parts
 
 
-def prepare_renderer():
+def prepare_renderer(classic_screens=False,classic_assets_dir=None,output_dir=None):
+    build_root=(ROOT/'.build').resolve()
+    default_destination=(build_root/'renderer').resolve()
+    if classic_screens and output_dir is None:
+        raise ValueError('Classic screens require a separate new --output-dir')
+    if output_dir is None:
+        dest=default_destination
+    else:
+        requested=Path(output_dir)
+        dest=(requested if requested.is_absolute() else ROOT/requested).resolve()
+        try:relative=dest.relative_to(build_root)
+        except ValueError:raise ValueError('Renderer output must stay inside the project build directory') from None
+        if not relative.parts:raise ValueError('Renderer output must be a child of the build directory')
+        if classic_screens and dest==default_destination:
+            raise ValueError('Classic screens cannot use the accepted default renderer destination')
+        if dest.exists():raise FileExistsError('Explicit renderer output directory must be new')
+    if classic_screens:
+        from classic_screens_assets import require_assets
+        require_assets(ROOT,classic_assets_dir)
+    elif classic_assets_dir is not None:raise ValueError('--classic-assets-dir requires --classic-screens')
     vendor = ROOT / ".build/vendor/SDL"
     if not vendor.exists():
         subprocess.run(["git", "clone", "--depth", "1", "--branch", SDL_TAG,
@@ -30,8 +50,7 @@ def prepare_renderer():
     actual = subprocess.check_output(["git", "-C", str(vendor), "rev-parse", "HEAD"], text=True).strip()
     if actual != SDL_PIN: raise ValueError(f"SDL source mismatch: {actual}")
     source = prepare()
-    dest = ROOT / ".build/renderer"
-    dest.mkdir(exist_ok=True)
+    dest.mkdir(parents=True,exist_ok=output_dir is None)
     for name in ["Glide2x.c", "Glide2x.h", "Wrapper.h"]:
         shutil.copyfile(source / name, dest / name)
     wrapper = dest / "Wrapper.h"
@@ -107,6 +126,12 @@ def prepare_renderer():
     text = add_feedback_modal_scene_renderer_hooks(text)
     copy_feedback_renderer_helpers(dest, FEEDBACK_OBSERVER_HELPERS + FEEDBACK_SCENE_HELPERS)
     path.write_text('#include "FramePresentation.h"\n' + text)
+    if classic_screens:
+        from classic_screens_assets import stage_assets
+        package=ROOT/'src/hd/ClassicScreens'
+        shutil.copytree(package,dest/'hd/ClassicScreens',dirs_exist_ok=True)
+        shutil.copyfile(package/'RendererHooks.inc',dest/'hd/BackgroundSceneRenderer.inc')
+        stage_assets(ROOT,classic_assets_dir,dest)
     prepare_glide_exports(source, dest)
     print(f"Prepared Glide GLES2 renderer and SDL {SDL_TAG} at {SDL_PIN}")
 
@@ -542,4 +567,11 @@ def prepare_glide_exports(source, dest):
 
 
 if __name__ == "__main__":
-    prepare_renderer()
+    import argparse
+    from pathlib import Path
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--classic-screens',action='store_true')
+    parser.add_argument('--classic-assets-dir',type=Path)
+    parser.add_argument('--output-dir',type=Path,help='new renderer output directory inside .build; required for classic screens')
+    args=parser.parse_args()
+    prepare_renderer(args.classic_screens,args.classic_assets_dir,args.output_dir)

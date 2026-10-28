@@ -24,7 +24,7 @@ class ArtworkWorkflowInput(unittest.TestCase):
             self.assertIn("      artwork_sha256:\n", text)
             self.assertIn("      NFS_HD_ARTWORK_SHA256: ${{ inputs.artwork_sha256 }}", text)
             self.assertLess(text.index("python3 scripts/validate_artwork_sha256.py"),
-                            text.index("python3 scripts/prepare_full_mapped.py"))
+                            text.index("python3 scripts/prepare_ci_sources.py"))
             for line in text.splitlines():
                 if "cmake -S . -B " in line:
                     self.assertIn('-DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256"', line)

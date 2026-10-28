@@ -1,0 +1,3 @@
+Dynamic classic-screen text uses League Gothic from The League of Moveable Type, distributed under the SIL Open Font License 1.1. Timing glyphs use Michroma, also under the SIL Open Font License 1.1. Full license texts accompany this notice. Existing fixed word and phrase artwork is separate from the dynamic font atlases.
+
+Fixed complete word and phrase graphics are separate from the openly licensed dynamic font atlases. Project-authored replacement UI graphics retain the classic game identities; original game names and trademarks remain with their respective owners. No original game asset files, Windows font software, personal artwork template or private reference photographs are supplied in this source-asset set.

@@ -1,5 +1,6 @@
 """Fail closed on publication hazards; reports never print matched values."""
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -9,13 +10,20 @@ from hud_asset_review import reviewed_font_file, reviewed_remaster_svg
 
 ROOT = Path(__file__).resolve().parents[1]
 PATTERNS = {
-    "personal_directory": re.compile(rb"(?i)([a-z]:[\\/](?:Users|Program Files)[\\/]|/mnt/[a-z]/" + rb"Users/|/(?:home|Users)/[^/\s\"']+/)"),
+    "personal_directory": re.compile(rb"(?i)([a-z]:[\\/]+(?:Users|Program Files|GPT)[\\/]+|/mnt/[a-z]/" + rb"(?:Users|GPT)/|/(?:home|Users)/[^/\s\"']+/)"),
     "private_key": re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----"),
     "github_token": re.compile(rb"(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})"),
     "other_token": re.compile(rb"(?:AKIA[A-Z0-9]{16}|xox[baprs]-[A-Za-z0-9-]{20,}|sk-proj-[A-Za-z0-9_-]{30,})"),
 }
 BLOCKED = re.compile(r"(?i)(^(?:game|gamedata|fedata|\.build|\.tools|candidates|upstream|\.aws|\.codex)/|(?:^|/)(?:gamedata|fedata)/|\.(?:p12|pfx|pem|key|mobileprovision|ipa|exe|dll|iso|bin|viv|qfs|fsh|mus|bnk|raw|wav|zip|log)$|(?:^|/)\.env(?:\.|$))")
-ALLOWED_SUFFIXES = {".md", ".json", ".py", ".cpp", ".c", ".h", ".inc", ".mm", ".plist", ".yml", ".yaml"}
+ALLOWED_SUFFIXES = {".md", ".json", ".py", ".cpp", ".c", ".h", ".inc", ".mm", ".plist", ".yml", ".yaml", ".cmake"}
+# Exact reviewed authored source payloads only; no general size/binary exception.
+REVIEWED_LARGE_SOURCE = {'assets/hud/classic-screens/BackdropAllCrestData.h': (8686021, 'd68fb69295ff143302c140808f7fecc45c316d0eb86c7d9d08b0bdc5adc04200'), 'assets/hud/classic-screens/BackdropCrestData.h': (2007984, '0187b221ae34a5c1d13cc52a8d52519b9415989e189cc93758cf4b6e5cabf76d'), 'assets/hud/classic-screens/BackdropLabelData.h': (1186805, 'a60ff659f27151cfc42853709329e35128bdd42a36963f43c1a2d39c60e97e54'), 'assets/hud/classic-screens/ResultsHeadingData.h': (2482711, '877573e62c25f56efd9b1acacf7f3405fcf0c575f99b8250c4b86d147d5e2f24'), 'src/hd/SetupBadgeData.h': (1964698, '4df2e62404a858e899501083c98541401d4cc0ac4464ecc69b92ab6a47336d8d')}
+
+def reviewed_large_source(name, data):
+    pin = REVIEWED_LARGE_SOURCE.get(name)
+    return bool(pin and len(data) == pin[0] and data.isascii() and hashlib.sha256(data).hexdigest() == pin[1])
+
 SAFE_EMAIL = re.compile(r"(?i)^(?:[^<>\s]+@users\.noreply\.github\.com|codex@(?:localhost|local|invalid)|[^<>\s]+@example\.(?:com|org|net))$")
 
 def reviewed_timing_svg(name, data):
@@ -78,7 +86,7 @@ def content_findings(name, data, mode="100644"):
         if not reviewed_timing_svg(name,data):found.append("unreviewed_svg")
     elif not pinned_font and Path(name).suffix not in ALLOWED_SUFFIXES and name not in {".gitignore", "CMakeLists.txt", ".githooks/pre-commit", ".githooks/pre-push"}:
         found.append("unreviewed_file_type")
-    if len(data) > 1024 * 1024: found.append("large_file_review")
+    if len(data) > 1024 * 1024 and not reviewed_large_source(name, data): found.append("large_file_review")
     if b"\0" in data and not pinned_font: found.append("binary_file")
     for category, pattern in PATTERNS.items():
         if pattern.search(data): found.append(category)

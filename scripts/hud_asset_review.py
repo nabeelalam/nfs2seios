@@ -7,6 +7,10 @@ import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 FONT_FILES={
+    'assets/licenses/classic-ui/LeagueGothic-OFL.txt':'44778c339892f79188c60b7471485dd5af92c59351c7f9629a00fc625c6cae5d',
+    'assets/licenses/classic-ui/Michroma-OFL.txt':'33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393',
+    'assets/licenses/classic-ui/NOTICE.txt':'fc23777927153da18745a3d06d594a1a3c2f92a9be0a2bed5929b505a9759739',
+
     'assets/hud/fonts/Oxanium-OFL.txt':'fe17c0f2581d71b4e1ea7e636e7f4877c29223e11bb1dd1a871e8c3f2a86336b',
     'assets/hud/fonts/Oxanium-Variable.ttf':'2ce01d946e1e1ffc8d7eecfffbda8623bedd63eaf811a20488c4b69af45babb0',
     'assets/hud/fonts/BebasNeue-Regular.ttf':'08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73',

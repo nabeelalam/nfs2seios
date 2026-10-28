@@ -1,0 +1,34 @@
+// PRIVATE dedicated Credits handler40A0B0; no original content/input/timing changes.
+#pragma once
+#include "CreditsPrepare.h"
+#include "hd/BackgroundSceneQueueAdapter.inc"
+#include "MainThreadBridge.h"
+#include "GuestCopyTransaction.h"
+#include <atomic>
+#include <cerrno>
+#include <cstdlib>
+#include <cstring>
+namespace nfs_credits_ui_live {
+inline bool enabled()noexcept{const char*p=std::getenv("NFS_PRIVATE_CREDITS_UI");return p&&p[0]=='1'&&!p[1];}
+inline uintptr_t token()noexcept{static thread_local unsigned char p;return reinterpret_cast<uintptr_t>(&p);}
+inline std::atomic<uintptr_t>&ownerThread(){static std::atomic<uintptr_t>p{0};return p;}
+struct State {uintptr_t game=0;unsigned depth=0;bool active=false,invalid=false,stringOpen=false;uint64_t request=0,serial=0;std::array<float,4>clip{{0,0,640,480}};std::shared_ptr<nfs_credits_ui::Payload>working;nfs_soft::TextCommand command{};uint32_t color=0,sourceSize=0;};
+inline State&storage(){static thread_local State s;return s;}
+inline State*current(Game&g)noexcept{auto&s=storage();return ownerThread().load(std::memory_order_acquire)==token()&&s.game==reinterpret_cast<uintptr_t>(&g)&&s.depth==1?&s:nullptr;}
+struct Errno {int saved=errno;~Errno(){errno=saved;}};
+inline void cancelFrame(Game&,State&s)noexcept{Errno e;const uint64_t request=s.request;s.request=0;s.active=false;s.stringOpen=false;s.working.reset();if(request&&nfs_background_scene_live::activeRequest()==request)nfs_background_scene_live::activeRequest()=0;if(request)try{(void)nfs::enqueue_owned_renderer([request](){return int32_t(nfs_private_credits_ui_cancel(request));});}catch(...){}}
+inline void beginFrame(Game&g)noexcept{Errno e;auto*s=current(g);if(!s||s->invalid)return;try{if(s->active||nfs_background_scene_live::activeRequest())return;if(s->serial==UINT64_MAX){s->invalid=true;return;}auto p=std::make_shared<nfs_credits_ui::Payload>();p->game=s->game;p->thread=token();p->form=uint32_t(guest_address(off_4D2C80));p->serial=++s->serial;{nfs::GuestCopyTransaction tx;p->archive=tx.load<uint32_t>(dword_4D40B8);if(!p->archive)return;}const uint64_t request=nfs_background_scene_live::nextRequest();if(!request)return;nfs::check_worker_stop();auto result=nfs::enqueue_owned_renderer([request](){return int32_t(nfs_private_credits_ui_begin(request));});if(result!=nfs::OwnedRendererAcceptance::Consumed)return;s->working=std::move(p);s->request=request;s->active=true;s->stringOpen=false;nfs_background_scene_live::activeRequest()=request;}catch(...){cancelFrame(g,*s);}}
+inline void finishFrame(Game&g)noexcept{Errno e;auto*s=current(g);if(!s||!s->active)return;try{if(s->invalid||s->stringOpen||!s->working||!s->request||nfs_background_scene_live::activeRequest()!=s->request){cancelFrame(g,*s);return;}uint32_t archive;{nfs::GuestCopyTransaction tx;archive=tx.load<uint32_t>(dword_4D40B8);}if(archive!=s->working->archive){cancelFrame(g,*s);return;}std::shared_ptr<const nfs_credits_ui::Payload>payload=s->working;auto prepared=nfs_credits_ui::Prepared::create(std::move(payload));if(!prepared){cancelFrame(g,*s);return;}const uint64_t request=s->request;const auto keep=prepared;nfs::check_worker_stop();(void)nfs::enqueue_owned_renderer([keep,request](){const auto v=keep->view(request);return int32_t(nfs_private_credits_ui_finish(&v));});nfs_background_scene_live::activeRequest()=0;s->request=0;s->active=false;s->working.reset();}catch(...){cancelFrame(g,*s);}}
+struct OwnerScope {Game&g;State*s=nullptr;bool entered=false;explicit OwnerScope(Game&v)noexcept:g(v){if(!enabled()||uint32_t(g.eax)!=uint32_t(guest_address(off_4D2C80)))return;Errno e;uintptr_t expected=0;if(!ownerThread().compare_exchange_strong(expected,token())&&expected!=token())return;s=&storage();if(s->depth++){s->invalid=true;entered=true;return;}s->game=reinterpret_cast<uintptr_t>(&g);s->active=s->invalid=s->stringOpen=false;s->request=0;s->working.reset();s->clip={{0,0,640,480}};entered=true;try{nfs::GuestCopyTransaction tx;if(tx.load<uint16_t>(uint32_t(guest_address(off_4D2C80))+8)!=0x12)s->invalid=true;}catch(...){s->invalid=true;}}
+ ~OwnerScope(){if(!entered||!s)return;Errno e;if(s->active)cancelFrame(g,*s);if(s->depth&&!--s->depth){s->game=0;s->working.reset();auto expected=token();ownerThread().compare_exchange_strong(expected,0);}}
+};
+// 427B30 source backgrounds are retained. A mid-scroll logo/backdrop draw first
+// publishes accumulated HD text, then a fresh snapshot starts after that draw.
+struct BackdropScope {Game&g;bool owned=false;explicit BackdropScope(Game&v)noexcept:g(v){auto*s=current(g);if(!s||s->invalid)return;owned=true;if(s->active)finishFrame(g);}~BackdropScope(){if(owned)beginFrame(g);}};
+struct SwapScope {explicit SwapScope(Game&g)noexcept{finishFrame(g);}};
+struct ClipScope {explicit ClipScope(Game&g)noexcept{Errno e;auto*s=current(g);if(!s||s->invalid)return;try{nfs::GuestCopyTransaction tx;const uint32_t sp=uint32_t(g.esp);std::array<float,4>c{};for(unsigned k=0;k<4;++k)c[k]=float(tx.load<int32_t>(sp+4+4*k));if(c[0]<0||c[1]<0||c[2]>640||c[3]>480||c[0]>c[2]||c[1]>c[3]){s->invalid=true;return;}s->clip=c;}catch(...){s->invalid=true;}}};
+struct StringScope {Game&g;State*s=nullptr;bool entered=false;explicit StringScope(Game&v)noexcept:g(v){Errno e;s=current(g);if(!s||!s->active||s->invalid)return;try{if(s->stringOpen||!s->working||s->working->commands.size()>=128){s->invalid=true;return;}nfs::GuestCopyTransaction tx;if(!tx.load<uint32_t>(dword_4D20A0))return;nfs_soft::TextCommand c{};for(unsigned k=0;k<96;++k){if(uint64_t(uint32_t(g.eax))+k>UINT32_MAX)throw 1;uint8_t ch=tx.load<uint8_t>(uint32_t(g.eax)+k);if(!ch){c.length=k;break;}if(k==95||(ch<32)||(ch>126&&ch!=0x99&&ch!=0xa9&&ch!=0xe0)||ch==96||ch==123||ch==124)throw 1;c.text[k]=ch;}if(!c.length)return;c.sourceSize=tx.load<uint32_t>(dword_4E54AC);if(c.sourceSize!=16&&c.sourceSize!=18&&c.sourceSize!=24&&c.sourceSize!=36)throw 1;s->color=tx.load<uint32_t>(dword_4D20A4)|0xff000000u;s->sourceSize=c.sourceSize;c.x=int32_t(g.edx);c.y=int32_t(g.ebx);c.role=c.sourceSize>=24?0:1;c.alignment=0;c.clip={s->clip[0],s->clip[1],s->clip[2],s->clip[3]};const uint32_t color=s->color;c.color=uint16_t(((color>>8)&0xf800)|((color>>5)&0x7e0)|((color>>3)&31));s->command=c;s->stringOpen=true;entered=true;}catch(...){s->invalid=true;}}
+ ~StringScope(){if(entered&&s==current(g)&&s->stringOpen){s->invalid=true;s->stringOpen=false;}}
+};
+inline void hardwareEnd(Game&g,int32_t endX)noexcept{Errno e;auto*s=current(g);if(!s||!s->active||s->invalid||!s->stringOpen)return;try{nfs::GuestCopyTransaction tx;if(!tx.load<uint32_t>(dword_4D20A0)||tx.load<uint32_t>(dword_4E54AC)!=s->sourceSize||(tx.load<uint32_t>(dword_4D20A4)|0xff000000u)!=s->color)throw 1;int64_t width=int64_t(endX)-s->command.x;if(width<=0||width>4096)throw 1;s->command.advance=int32_t(width);s->working->commands.push_back(s->command);s->working->argb.push_back(s->color);s->stringOpen=false;}catch(...){s->invalid=true;}}
+}

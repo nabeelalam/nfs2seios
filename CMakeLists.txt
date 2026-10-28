@@ -38,7 +38,21 @@ add_library(mapped_translation OBJECT "${MAPPED_ENGINE}/SelectedMethods.cpp"
 target_include_directories(mapped_translation PRIVATE src "${MAPPED_ENGINE}")
 target_compile_options(mapped_translation PRIVATE -fwrapv -fno-strict-aliasing
   -Wno-c++11-narrowing)
-set(FULL_MAPPED_ENGINE "${CMAKE_SOURCE_DIR}/.build/fullmapped")
+# Separate generated inputs let the UI branch retain the accepted baseline.
+set(NFS_FULL_MAPPED_ENGINE_DIR "${CMAKE_SOURCE_DIR}/.build/fullmapped" CACHE PATH
+  "Prepared statically translated engine source directory")
+set(NFS_RENDERER_SOURCE_DIR "${CMAKE_SOURCE_DIR}/.build/renderer" CACHE PATH
+  "Prepared Glide renderer source directory")
+set(FULL_MAPPED_ENGINE "${NFS_FULL_MAPPED_ENGINE_DIR}")
+# Copied native helpers retain their canonical project-header fallback.
+set_property(SOURCE "${NFS_RENDERER_SOURCE_DIR}/Glide2x.c" APPEND PROPERTY INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/src/hd")
+option(NFS_CLASSIC_UI "Enable the opt-in classic-screen UI build" OFF)
+if(NFS_CLASSIC_UI)
+  if(NFS_HD_ARTWORK_SHA256 STREQUAL "" OR NOT EXISTS "${NFS_RENDERER_SOURCE_DIR}/hd/ClassicScreens/RendererHooks.inc")
+    message(FATAL_ERROR "Classic UI requires its prepared renderer and explicit artwork pin")
+  endif()
+  set_property(SOURCE src/hd/ArtworkActivation.cpp APPEND PROPERTY COMPILE_DEFINITIONS NFS_CLASSIC_UI=1)
+endif()
 if(EXISTS "${FULL_MAPPED_ENGINE}/FullDispatch.cpp")
   file(GLOB FULL_MAPPED_METHODS "${FULL_MAPPED_ENGINE}/Methods_*.cpp")
   add_library(full_mapped_translation OBJECT ${FULL_MAPPED_METHODS}
@@ -60,14 +74,14 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
     set(SDL_EXAMPLES OFF CACHE BOOL "" FORCE)
     set(SDL_FRAMEWORK OFF CACHE BOOL "" FORCE)
     add_subdirectory(.build/vendor/SDL .build/sdl EXCLUDE_FROM_ALL)
-    add_library(glide_gles2 OBJECT .build/renderer/Glide2x.c)
-    target_include_directories(glide_gles2 PRIVATE .build/renderer src)
+    add_library(glide_gles2 OBJECT "${NFS_RENDERER_SOURCE_DIR}/Glide2x.c")
+    target_include_directories(glide_gles2 PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src)
     target_compile_definitions(glide_gles2 PRIVATE GLES2 NFS_CPP)
     target_link_libraries(glide_gles2 PRIVATE SDL3::SDL3)
     add_library(platform_bridges OBJECT src/MemoryWrappers.cpp src/FileBridge.cpp src/SandboxPaths.cpp src/SystemWrappers.cpp
       src/FormatWrappers.cpp src/EventBridge.cpp src/CriticalSectionBridge.cpp src/ThreadBridge.cpp src/ThreadWrappers.cpp src/GameContexts.cpp src/ClockWrappers.cpp src/SDLClock.cpp src/TimerBridge.cpp src/GameTimer.cpp src/WindowBridge.cpp src/SDLWindow.cpp src/MainThreadBridge.cpp src/SDLMainThread.cpp src/RendererSurface.c src/ExitCallbacks.cpp src/AudioBridge.cpp src/SDLAudio.cpp
-      .build/renderer/GlideBridge.cpp src/FrontendWordMode.cpp src/FrontendTextContext.cpp)
-    target_include_directories(platform_bridges PRIVATE src .build/renderer "${FULL_MAPPED_ENGINE}")
+      "${NFS_RENDERER_SOURCE_DIR}/GlideBridge.cpp" src/FrontendWordMode.cpp src/FrontendTextContext.cpp)
+    target_include_directories(platform_bridges PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src "${FULL_MAPPED_ENGINE}")
     target_link_libraries(platform_bridges PRIVATE SDL3::SDL3)
     target_compile_definitions(platform_bridges PRIVATE NFS_SDL_RUNTIME)
     target_compile_options(platform_bridges PRIVATE -fwrapv -fno-strict-aliasing)
@@ -80,7 +94,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
     target_sources(platform_bridges PRIVATE src/GameSession.cpp src/GameTrace.cpp src/GameAssets.cpp src/AssetImport.cpp src/MenuInput.cpp src/GraphicsLifecycle.cpp)
     add_executable(NFSIISEEngineCheck MACOSX_BUNDLE tests/engine_link_check.cpp
       $<TARGET_OBJECTS:full_mapped_translation> $<TARGET_OBJECTS:platform_bridges> $<TARGET_OBJECTS:glide_gles2>)
-    target_include_directories(NFSIISEEngineCheck PRIVATE src "${FULL_MAPPED_ENGINE}" .build/renderer)
+    target_include_directories(NFSIISEEngineCheck PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src "${FULL_MAPPED_ENGINE}")
     target_link_libraries(NFSIISEEngineCheck PRIVATE SDL3::SDL3 "-framework OpenGLES")
     set_target_properties(NFSIISEEngineCheck PROPERTIES
       MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/ios/EngineCheck.plist"
@@ -107,7 +121,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
     set_source_files_properties("${CMAKE_BINARY_DIR}/SDLLicense.txt" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     add_executable(NFSIISEGame MACOSX_BUNDLE app/main.cpp app/RunLog.cpp ios/game_assets.mm ${GAME_SUPPORT_FILES} "${CMAKE_BINARY_DIR}/SDLLicense.txt"
       $<TARGET_OBJECTS:full_mapped_translation> $<TARGET_OBJECTS:platform_bridges> $<TARGET_OBJECTS:glide_gles2>)
-    target_include_directories(NFSIISEGame PRIVATE src app "${FULL_MAPPED_ENGINE}" .build/renderer)
+    target_include_directories(NFSIISEGame PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src app "${FULL_MAPPED_ENGINE}")
     target_compile_options(NFSIISEGame PRIVATE "$<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>")
     target_link_libraries(NFSIISEGame PRIVATE SDL3::SDL3 "-framework OpenGLES" "-framework UIKit" "-framework Foundation" "-framework UniformTypeIdentifiers")
     set_target_properties(NFSIISEGame PROPERTIES
@@ -254,7 +268,7 @@ else()
   target_link_libraries(exit_tests PRIVATE Threads::Threads)
   add_test(NAME game_exit_callbacks COMMAND exit_tests)
   add_executable(surface_tests tests/surface_tests.cpp src/RendererSurface.c)
-  target_include_directories(surface_tests PRIVATE src .build/renderer)
+  target_include_directories(surface_tests PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src)
   target_link_libraries(surface_tests PRIVATE Threads::Threads)
   add_test(NAME renderer_surface_contract COMMAND surface_tests)
   option(NFS_RENDERER_PIXELS "Test the actual GLES backend with an SDL window" OFF)
@@ -272,9 +286,9 @@ else()
     set(SDL_HAPTIC OFF CACHE BOOL "" FORCE)
     set(SDL_JOYSTICK ON CACHE BOOL "" FORCE)
     add_subdirectory(.build/vendor/SDL .build/sdl EXCLUDE_FROM_ALL)
-    add_executable(renderer_pixel_tests tests/renderer_pixel_tests.cpp src/RendererSurface.c src/MainThreadBridge.cpp src/SDLMainThread.cpp src/SDLWindow.cpp src/GraphicsLifecycle.cpp src/FrontendWordMode.cpp src/FrontendTextContext.cpp .build/renderer/Glide2x.c .build/renderer/GlideBridge.cpp)
+    add_executable(renderer_pixel_tests tests/renderer_pixel_tests.cpp src/RendererSurface.c src/MainThreadBridge.cpp src/SDLMainThread.cpp src/SDLWindow.cpp src/GraphicsLifecycle.cpp src/FrontendWordMode.cpp src/FrontendTextContext.cpp "${NFS_RENDERER_SOURCE_DIR}/Glide2x.c" "${NFS_RENDERER_SOURCE_DIR}/GlideBridge.cpp")
     target_sources(renderer_pixel_tests PRIVATE src/SDLFrameRate.cpp src/EngineThreadMetrics.cpp)
-    target_include_directories(renderer_pixel_tests PRIVATE src .build/renderer)
+    target_include_directories(renderer_pixel_tests PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src)
     target_compile_definitions(renderer_pixel_tests PRIVATE GLES2 NFS_CPP)
     target_link_libraries(renderer_pixel_tests PRIVATE SDL3::SDL3 GLESv2 Threads::Threads)
     add_test(NAME real_gles_pixels COMMAND renderer_pixel_tests)
@@ -329,24 +343,24 @@ else()
     file(GLOB NFS_NATIVE_LINK_SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
     list(REMOVE_ITEM NFS_NATIVE_LINK_SOURCES "${CMAKE_SOURCE_DIR}/src/CoreProbe.cpp")
     add_executable(engine_link_check tests/engine_link_check.cpp ${NFS_NATIVE_LINK_SOURCES}
-      src/RendererSurface.c .build/renderer/Glide2x.c .build/renderer/GlideBridge.cpp
+      src/RendererSurface.c "${NFS_RENDERER_SOURCE_DIR}/Glide2x.c" "${NFS_RENDERER_SOURCE_DIR}/GlideBridge.cpp"
       $<TARGET_OBJECTS:full_mapped_translation>)
-    target_include_directories(engine_link_check PRIVATE src "${FULL_MAPPED_ENGINE}" .build/renderer)
+    target_include_directories(engine_link_check PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src "${FULL_MAPPED_ENGINE}")
     target_compile_definitions(engine_link_check PRIVATE GLES2 NFS_CPP)
     target_compile_options(engine_link_check PRIVATE -fwrapv -fno-strict-aliasing)
     target_link_libraries(engine_link_check PRIVATE SDL3::SDL3 GLESv2 Threads::Threads)
     add_test(NAME full_native_engine_link COMMAND engine_link_check)
     add_executable(engine_startup_check tests/engine_startup_check.cpp ${NFS_NATIVE_LINK_SOURCES}
-      src/RendererSurface.c .build/renderer/Glide2x.c .build/renderer/GlideBridge.cpp
+      src/RendererSurface.c "${NFS_RENDERER_SOURCE_DIR}/Glide2x.c" "${NFS_RENDERER_SOURCE_DIR}/GlideBridge.cpp"
       $<TARGET_OBJECTS:full_mapped_translation>)
-    target_include_directories(engine_startup_check PRIVATE src "${FULL_MAPPED_ENGINE}" .build/renderer)
+    target_include_directories(engine_startup_check PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src "${FULL_MAPPED_ENGINE}")
     target_compile_definitions(engine_startup_check PRIVATE GLES2 NFS_CPP)
     target_compile_options(engine_startup_check PRIVATE -fwrapv -fno-strict-aliasing)
     target_link_libraries(engine_startup_check PRIVATE SDL3::SDL3 GLESv2 Threads::Threads)
     add_executable(nfs_game_app app/main.cpp app/RunLog.cpp app/desktop_assets.cpp ${NFS_NATIVE_LINK_SOURCES}
-      src/RendererSurface.c .build/renderer/Glide2x.c .build/renderer/GlideBridge.cpp
+      src/RendererSurface.c "${NFS_RENDERER_SOURCE_DIR}/Glide2x.c" "${NFS_RENDERER_SOURCE_DIR}/GlideBridge.cpp"
       $<TARGET_OBJECTS:full_mapped_translation>)
-    target_include_directories(nfs_game_app PRIVATE src app "${FULL_MAPPED_ENGINE}" .build/renderer)
+    target_include_directories(nfs_game_app PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src app "${FULL_MAPPED_ENGINE}")
     target_compile_definitions(nfs_game_app PRIVATE GLES2 NFS_CPP NFS_APP_HEADLESS_MESSAGES)
     target_compile_options(nfs_game_app PRIVATE -fwrapv -fno-strict-aliasing)
     target_link_libraries(nfs_game_app PRIVATE SDL3::SDL3 GLESv2 Threads::Threads)
@@ -428,9 +442,9 @@ else()
   add_executable(format_tests tests/format_tests.cpp src/FormatWrappers.cpp)
   target_include_directories(format_tests PRIVATE src)
   add_test(NAME guest_varargs COMMAND format_tests)
-  if(EXISTS "${CMAKE_SOURCE_DIR}/.build/renderer/PointerGlideBridge.cpp")
-    add_executable(glide_tests tests/glide_tests.cpp src/MainThreadBridge.cpp src/FrontendTextContext.cpp .build/renderer/PointerGlideBridge.cpp)
-    target_include_directories(glide_tests PRIVATE src .build/renderer)
+  if(EXISTS "${NFS_RENDERER_SOURCE_DIR}/PointerGlideBridge.cpp")
+    add_executable(glide_tests tests/glide_tests.cpp src/MainThreadBridge.cpp src/FrontendTextContext.cpp "${NFS_RENDERER_SOURCE_DIR}/PointerGlideBridge.cpp")
+    target_include_directories(glide_tests PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src)
     target_link_libraries(glide_tests PRIVATE Threads::Threads)
     add_test(NAME glide_pointer_abi COMMAND glide_tests)
     if(BOUNDARY_SANITIZERS)
@@ -446,7 +460,7 @@ else()
     src/MemoryWrappers.cpp src/SystemWrappers.cpp src/FormatWrappers.cpp src/EventBridge.cpp src/CriticalSectionBridge.cpp src/ThreadBridge.cpp src/ThreadWrappers.cpp src/GameContexts.cpp src/TimerBridge.cpp src/GameTimer.cpp src/ExitCallbacks.cpp src/RendererSurface.c src/AudioBridge.cpp src/InputAxes.cpp src/GameInput.cpp src/InputDevices.cpp src/GameInputDevices.cpp
     "${MAPPED_ENGINE}/RelocationChecks.cpp"
     $<TARGET_OBJECTS:mapped_translation>)
-  target_include_directories(mapped_engine_tests PRIVATE src "${MAPPED_ENGINE}" .build/renderer)
+  target_include_directories(mapped_engine_tests PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src "${MAPPED_ENGINE}")
   target_link_libraries(mapped_engine_tests PRIVATE Threads::Threads)
   target_compile_options(mapped_engine_tests PRIVATE -fwrapv -fno-strict-aliasing)
   if(BOUNDARY_SANITIZERS)
@@ -1537,3 +1551,15 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NFS_HD_CPU_TESTS)
       ENVIRONMENT "EGL_PLATFORM=surfaceless;LIBGL_ALWAYS_SOFTWARE=1;MESA_GLES_VERSION_OVERRIDE=2.0;ASAN_OPTIONS=detect_leaks=0")
   endif()
 endif()
+
+# Carry the licenses with compiled dynamic classic-screen glyph artwork.
+if(NFS_CLASSIC_UI AND TARGET NFSIISEGame)
+  set(NFS_CLASSIC_FONT_NOTICES
+    "${CMAKE_SOURCE_DIR}/assets/licenses/classic-ui/LeagueGothic-OFL.txt"
+    "${CMAKE_SOURCE_DIR}/assets/licenses/classic-ui/Michroma-OFL.txt"
+    "${CMAKE_SOURCE_DIR}/assets/licenses/classic-ui/NOTICE.txt")
+  set_source_files_properties(${NFS_CLASSIC_FONT_NOTICES} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/Fonts")
+  target_sources(NFSIISEGame PRIVATE ${NFS_CLASSIC_FONT_NOTICES})
+endif()
+
+include(cmake/BundledOwnedArtwork.cmake)

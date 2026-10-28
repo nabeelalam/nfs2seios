@@ -10,7 +10,13 @@ HUD_NOTICE_SOURCES = {
     "HUDArtworkNotice.md": ROOT / "assets/hud/HUDArtworkNotice.md",
 }
 
-def validate_game_resources(app: Path) -> dict[str, str]:
+CLASSIC_NOTICE_SOURCES = {
+    "Fonts/LeagueGothic-OFL.txt": ROOT / "assets/licenses/classic-ui/LeagueGothic-OFL.txt",
+    "Fonts/Michroma-OFL.txt": ROOT / "assets/licenses/classic-ui/Michroma-OFL.txt",
+    "Fonts/NOTICE.txt": ROOT / "assets/licenses/classic-ui/NOTICE.txt",
+}
+
+def validate_game_resources(app: Path, classic_ui: bool = False) -> dict[str, str]:
     support = ROOT / "candidates/link4/Need For Speed II SE"
     sources = {name: support / name for name in (
         "install.win", "text.eng", "text.ger", "text.fre", "text.ita", "text.spa", "text.swe"
@@ -18,6 +24,7 @@ def validate_game_resources(app: Path) -> dict[str, str]:
     sources["GameSupportLicense.txt"] = ROOT / "candidates/link4/LICENSE"
     sources["SDLLicense.txt"] = ROOT / ".build/vendor/SDL/LICENSE.txt"
     sources.update(HUD_NOTICE_SOURCES)
+    if classic_ui: sources.update(CLASSIC_NOTICE_SOURCES)
     hashes = {}
     for name, source in sources.items():
         target = app / name

@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "scope": "Combined maintained classic UI local checkpoint",
+  "binarySha256": "3049985d2060a2c448085923618ed6a9954cfaffed939ddbd3e7e3f573a5f6e2",
+  "buildPassed": true,
+  "maximumCompilerWorkers": 2,
+  "automaticOwnedArtworkStartup": true,
+  "externalArtworkPackStaged": false,
+  "startupArtworkActivationLogged": true,
+  "nativePublications": {
+    "RECORDS": 0,
+    "STATS": 0,
+    "CREDITS": 0,
+    "LOADSAVE": 5,
+    "LOADSAVE CHILD": 57
+  },
+  "completeUiRoutePassed": false,
+  "chooserIssues": [],
+  "restoration": {
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "baselineArtworkRestored": true,
+    "saveInventoryUnchanged": true,
+    "resourceLifecycleBalanced": true,
+    "allSealedPinsStableAfter": true
+  },
+  "sourceAndRuntimeReceiptsSha256": {
+    "build": "3366b29539881a8549e34745c2c51d6839201f2ae0c00e9fb879455fa2e57f95",
+    "runtime": "84a35e9dac92e37eb26fae7d74f716faf03c141ff5356cb5099ab6967ffd4961"
+  },
+  "physicalIpadAcceptance": false,
+  "performanceOrBatteryAcceptance": false,
+  "cloudBuildStarted": false,
+  "previousCombinedMenuCheckpoint": {
+    "binarySha256": "dcbc139a0be8f5ea60bd049a363ea5176de321a4ddbfa0974f8d4c69184ebe27",
+    "nativePublications": {
+      "RECORDS": 6,
+      "STATS": 6,
+      "CREDITS": 42,
+      "LOADSAVE": 4,
+      "LOADSAVE CHILD": 39
+    },
+    "sourceAndRuntimeReceiptsSha256": {
+      "build": "ccdbd36a298e5d6efb7da6c677a21c80bc9e3096540a21901e2dfdecb34111ab",
+      "runtime": "4a253ba27e31675ef3b29aa4fcb5fb1c36451b9f7de06b2599a64a8f47199634"
+    }
+  },
+  "focusedChooserRoutePassed": true,
+  "normalEscapeReturnObserved": true,
+  "chooserTextTrailsResolved": true,
+  "parentRestoreVisualAccepted": true,
+  "setupArtworkCompiled": true,
+  "setupArtworkActualRenderingObserved": false
+}

@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "requiredHeaders": [
+    "BackdropAllCrestData.h",
+    "BackdropCrestData.h",
+    "BackdropLabelData.h",
+    "CreditsFontData.h",
+    "RecordsFontData.h",
+    "ResultsFontData.h",
+    "ResultsHeadingData.h",
+    "VictoryFontData.h",
+    "WordData.h"
+  ],
+  "redistributionApproved": false,
+  "configuration": "Supply these headers only through an explicitly configured ignored private include directory."
+}

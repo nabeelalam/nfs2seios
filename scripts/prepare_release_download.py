@@ -13,6 +13,7 @@ from publication_audit import PATTERNS
 
 PREFIX = "Payload/NFSIISEGame.app/"
 LICENSES = {"GameSupportLicense.txt", "SDLLicense.txt", "BebasNeue-OFL.txt", "Michroma-OFL.txt", "Oxanium-OFL.txt", "HUDArtworkNotice.md"}
+CLASSIC_LICENSES = {"Fonts/LeagueGothic-OFL.txt", "Fonts/Michroma-OFL.txt", "Fonts/NOTICE.txt"}
 SUPPORT = {"install.win", "text.eng", "text.ger", "text.fre", "text.ita", "text.spa", "text.swe"} | LICENSES
 FILES = SUPPORT | {"Info.plist", "PkgInfo", "NFSIISEGame"}
 MANIFEST_KEYS = {"executable", "bundle_id", "architecture", "platform", "support_sha256", "source_commit", "ipa_sha256", "configuration", "personal_signing_required", "installation_verified", "gameplay_verified"}
@@ -26,14 +27,19 @@ def inspect(ipa, manifest, source, assets_separate=False):
     if ipa.stat().st_size > LIMIT or manifest.stat().st_size > 16384:
         raise ValueError("Package exceeds delivery budget")
     metadata = json.loads(manifest.read_text(encoding="utf-8"))
-    if set(metadata) != MANIFEST_KEYS:
+    if metadata.get("classic_ui") is True:
+        raise ValueError("Classic public base requires personal artwork; release publication is prohibited")
+    extra=set(metadata)-MANIFEST_KEYS
+    if not MANIFEST_KEYS.issubset(metadata) or extra not in (set(), {"classic_ui", "classic_asset_manifest_sha256"}):
         raise ValueError("Unexpected manifest fields")
+    if extra and (metadata["classic_ui"] is not True or re.fullmatch(r"[0-9a-f]{64}",metadata["classic_asset_manifest_sha256"]) is None):
+        raise ValueError("Invalid classic UI manifest identity")
     expected = {"executable": "NFSIISEGame", "bundle_id": "io.github.nabeelalam.nfsiise.game", "architecture": "arm64", "platform": "iOS device", "source_commit": source, "configuration": "Release", "personal_signing_required": True, "installation_verified": False, "gameplay_verified": False}
     if any(metadata[key] != value for key, value in expected.items()):
         raise ValueError("Package identity or acceptance claims differ")
     if metadata["ipa_sha256"] != hashlib.sha256(ipa.read_bytes()).hexdigest():
         raise ValueError("IPA digest differs")
-    required_support = LICENSES if assets_separate else SUPPORT
+    required_support = (LICENSES if assets_separate else SUPPORT) | (CLASSIC_LICENSES if extra else set())
     if set(metadata["support_sha256"]) != required_support:
         raise ValueError("Unexpected support manifest")
     with zipfile.ZipFile(ipa) as archive:
@@ -51,7 +57,7 @@ def inspect(ipa, manifest, source, assets_separate=False):
                 if pattern.search(data):
                     raise ValueError("IPA privacy check failed: " + category)
             name = entry.filename[len(PREFIX):]
-            if name in SUPPORT and hashlib.sha256(data).hexdigest() != metadata["support_sha256"][name]:
+            if name in required_support and hashlib.sha256(data).hexdigest() != metadata["support_sha256"][name]:
                 raise ValueError("Support digest differs")
         info = plistlib.loads(archive.read(PREFIX + "Info.plist"))
         if info.get("CFBundleIdentifier") != expected["bundle_id"] or info.get("CFBundleExecutable") != expected["executable"] or info.get("UIDeviceFamily") != [2]:
@@ -97,7 +103,7 @@ def main():
         for entry in original.infolist():
             if entry.filename[len(PREFIX):] not in SUPPORT - LICENSES:
                 stripped.writestr(entry, original.read(entry))
-    metadata["support_sha256"] = {name: metadata["support_sha256"][name] for name in LICENSES}
+    metadata["support_sha256"] = {name: metadata["support_sha256"][name] for name in (LICENSES | (CLASSIC_LICENSES if metadata.get("classic_ui") is True else set()))}
     metadata["ipa_sha256"] = hashlib.sha256(payload.getvalue()).hexdigest()
     import tempfile
     with tempfile.TemporaryDirectory(prefix="nfs-release-", dir=args.output.parent) as folder:
