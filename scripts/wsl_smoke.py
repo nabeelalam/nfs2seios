@@ -93,6 +93,8 @@ def main():
                         help="X key names sent after the first capture, one per stage")
     parser.add_argument("--stages", type=int, default=3)
     parser.add_argument("--audio-driver", choices=("dummy", "disk"), default="dummy")
+    parser.add_argument("--graphics", choices=("software", "d3d12"), default="software",
+                        help="Per-process Mesa driver request; d3d12 uses existing WSL GPU support")
     parser.add_argument("--shutdown-timeout", type=int, default=30,
                         help="Bounded shutdown allowance, including sanitizer exit checks")
     args = parser.parse_args()
@@ -101,14 +103,24 @@ def main():
     if not 1 <= args.shutdown_timeout <= 60:
         parser.error("Shutdown timeout must be between 1 and 60 seconds")
     args.output.mkdir(parents=True, exist_ok=True)
-    environment = dict(os.environ, LIBGL_ALWAYS_SOFTWARE="1",
-                       MESA_GLES_VERSION_OVERRIDE="2.0", SDL_AUDIODRIVER=args.audio_driver)
+    environment = dict(os.environ, MESA_GLES_VERSION_OVERRIDE="2.0",
+                       SDL_AUDIODRIVER=args.audio_driver)
+    if args.graphics == "software":
+        environment["LIBGL_ALWAYS_SOFTWARE"] = "1"
+        # Keep the software driver resident for meaningful leak checks.
+        driver = Path("/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so")
+        if driver.exists():
+            environment["LD_PRELOAD"] = str(driver)
+    else:
+        if not Path("/dev/dxg").exists():
+            parser.error("d3d12 requires existing WSL GPU support (/dev/dxg)")
+        for name in ("LIBGL_ALWAYS_SOFTWARE", "MESA_LOADER_DRIVER_OVERRIDE",
+                     "LIBGL_ALWAYS_INDIRECT", "MESA_D3D12_DEFAULT_ADAPTER_NAME"):
+            environment.pop(name, None)
+        environment.update(EGL_PLATFORM="x11", GALLIUM_DRIVER="d3d12")
+    print(f"Local graphics request: {args.graphics}; actual renderer must be verified separately")
     if args.audio_driver == "disk":
         environment["SDL_AUDIO_DISK_OUTPUT_FILE"] = str((args.output / "game-audio.raw").resolve())
-    # Keep this Mesa driver resident for meaningful leak checks at shutdown.
-    driver = Path("/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so")
-    if driver.exists():
-        environment["LD_PRELOAD"] = str(driver)
     with (args.output / "run.log").open("w") as log:
         process = subprocess.Popen([str(args.executable.resolve()), str(args.assets.resolve())],
                                    env=environment, stdout=log, stderr=subprocess.STDOUT,

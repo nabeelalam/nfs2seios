@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "scope": "Existing WSL graphics capability and bounded original-input UI attempts",
+  "existingGpuWindowProbePassed": true,
+  "probeDriverFamily": "Mesa D3D12",
+  "gameRendererStringObserved": false,
+  "gameLoadedRelatedDriverModules": true,
+  "ordinaryVictoryObserved": false,
+  "raceStarted": false,
+  "attemptsStoppedAtBound": true,
+  "normalGameShutdownObserved": true,
+  "copiedSettingsAndArtworkRestored": true,
+  "copiedSaveFileContentsUnchanged": 49,
+  "remainingOwnedProcesses": 0,
+  "persistentSystemOrDriverSettingsChanged": false,
+  "existingRunnerHasOptionalChildOnlyGraphicsSelection": true,
+  "defaultRunnerGraphics": "software",
+  "gameCodeChangedByRunnerOption": false,
+  "physicalIpadAcceptanceClaimed": false
+}

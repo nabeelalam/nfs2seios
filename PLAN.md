@@ -18,6 +18,41 @@ Two requirements are part of the goal:
    material, original assets, captures, private evidence and personal filesystem
    information outside the public repository.
 
+## Current UI checkpoint and next work
+
+The classic UI remains on `codex/hd-ui`, separate from the performance branch.
+The first combined Apple ARM64 UI preview was built, inspected and privately
+delivered; physical UI acceptance is still pending. Later refinements have a
+successful local Release build, not a new Apple package.
+
+The car-stat panel and bars have been observed in both Player screens through
+normal car changes and graph toggles. Race HUD, minimap and pause controls have
+also been observed locally. The six localized Victory congratulations phrases
+have confirmed original source consumers and validated GLES materials. Six
+champion graphics are prepared, but their consuming game path is unconfirmed.
+A bounded ordinary-input attempt did not reach Victory; clean shutdown and
+copied-data restoration do not establish that screen's gameplay acceptance.
+
+Next work, in order:
+
+1. Finish concrete UI issues in coherent batches, then perform one combined
+   visual/function check. Preserve accepted artwork and original behavior.
+2. Complete the remaining real Victory observation only through a practical
+   normal-game route. Avoid repeating the slow software-rendered attempt or
+   introducing forced winner state merely to obtain a passing screenshot.
+3. Freeze the coherent UI batch and deliver one current device preview for
+   physical feedback. Reuse existing packages when no relevant code changed;
+   do not rebuild after individual artwork edits. Keep unfinished UI separate
+   from the performance branch.
+4. Continue measured Low Power Mode frame-time and battery work using recorded
+   device sessions. Local rendering checks and CPU percentages do not prove
+   iPad energy savings or sustained Low Power Mode 60 FPS.
+
+Current evidence: `evidence/hd-classic-ui-apple-preview.json`,
+`evidence/hd-classic-ui-refinement-batch.json` and
+`evidence/hd-victory-finite-words.json`. Earlier build entries below are retained
+as history; they do not supersede this checkpoint.
+
 ## Current shared implementation
 
 - Explicit mapped 32-bit game values with full-width native pointers.

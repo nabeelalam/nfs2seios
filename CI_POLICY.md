@@ -2,7 +2,8 @@
 
 Reviewed against official GitHub documentation on 13 October 2026. This is the
 operating plan for standard hosted machines, not a claim that the native iPad
-game is finished. The workflow in `.github/workflows/ipados.yml` accepts manual
+game is finished. Standard-runner billing and the pinned ARM64 Xcode inventory
+were rechecked against the official sources on 29 October 2026. The workflow in `.github/workflows/ipados.yml` accepts manual
 dispatch only. Publishing source does not start cloud jobs. Every dispatch must
 identify the revision and specific unresolved Apple SDK or packaging question.
 
@@ -11,12 +12,12 @@ identify the revision and specific unresolved Apple SDK or packaging question.
 | Resource | GitHub rule | Project policy |
 | --- | --- | --- |
 | Public standard runner minutes | Free and unlimited | Only manual runs against reviewed main or codex/hd-ui revisions |
-| Private minutes | GitHub Free includes 2,000 monthly minutes | Workflow refuses private-repository execution |
+| Private compute | GitHub Free currently includes a shared $12 monthly compute allowance, rather than a fixed minute count | Workflow refuses private-repository execution |
 | Larger runners | Always paid | Never selected |
 | Concurrent standard jobs on Free | 20 total, including at most 5 macOS | One active workflow; Linux completes before macOS starts |
 | Standard hosted job duration | At most 6 hours | Linux timeout 15 minutes; macOS timeout 30 minutes |
-| Standard macOS ARM runner | 3 M1 cores, 7 GB RAM, 14 GB SSD | macos-15, three compiler tasks; measure before changing parallelism |
-| Public Ubuntu standard runner | 4 cores, 16 GB RAM, 14 GB SSD | ubuntu-24.04, three compiler tasks |
+| Standard macOS ARM runner | 3 M1 cores, 7 GB RAM, 14 GB SSD | macos-15, at most two compiler tasks and two ThinLTO backend jobs |
+| Public Ubuntu standard runner | 4 cores, 16 GB RAM, 14 GB SSD | ubuntu-24.04, at most two compiler tasks |
 | Free artifact allowance | 500 MB, shared with Packages | No automatic uploads; optional IPA payload capped at 64 MiB per run |
 | Public artifact retention | Configurable between 1 and 90 days | Optional IPA artifacts expire after one day |
 | Cache allowance | Default 10 GB per repository; old entries expire after seven days without access | No caches enabled; never increase the allowance |
@@ -77,14 +78,14 @@ a distinct next validation target, after storage allowance is confirmed.
    test. WSL success alone does not prove iPad behavior.
 2. Audit source, prospective commit metadata and all publishable history. The
    independent Gitleaks scanner and project publication policy must both pass.
-3. Manually dispatch one reviewed public main-branch revision. Record its SHA,
+3. Manually dispatch one reviewed public main or codex/hd-ui revision. Record its SHA,
    target and expected evidence. No scheduled builds, automatic push builds,
    automatic PR builds or unattended rerun loops.
 4. Linux runs publication gates before fetching dependencies or compiling. It
    then validates actual native linkage, startup failure handling, GLES pixels,
    SDL audio and controller reconnect. macOS waits for success.
 5. macOS uses the previously successful Xcode 16.4/iOS 18.5 toolchain, explicitly
-   selected by DEVELOPER_DIR. The official [macos-15 image inventory](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md)
+   selected by DEVELOPER_DIR. The official [macos-15 image inventory](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md)
    lists that installation. If it disappears, stop and review a replacement;
    do not silently switch compilers. Record Xcode and SDK versions in every run.
 6. Compile the actual mapped engine and native game bundle. The older unmodified
