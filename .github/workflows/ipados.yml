@@ -46,7 +46,7 @@ jobs:
   renderer-pixels:
     if: github.event.repository.visibility == 'public' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codex/hd-ui')
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 15
     env:
       NFS_HD_ARTWORK_SHA256: ${{ inputs.artwork_sha256 }}
       NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
