@@ -4,6 +4,6 @@ Twelve authored League Gothic OFL italic phrase masks reproduce the exact existi
 
 Within exact owner4154C0, named source draws capture complete pre/post planes. Both original0400 and2800 modes use the intrinsic signed12-bit source coordinates. The exact resolved palette/image span must match its full source SHA. Dynamic text stores are reversed first; finite-word effects are reversed only if their complete post planes still match. The private FBO draws thin gold contour relief/shadow and then existing dynamic text; originals still execute. Unknown/mismatched sources retain the original presentation.
 
-Champion owner47D5E0 has its own exact resolved-source draw scope atloc47D8F2 and owns the two original428770 presentation calls atloc47D91E; its frame may contain finite words without dynamic text. Unknown slide resources retain the original path. This does not broaden the ordinary Victory owner.
+Six congratulations phrases have the exact verified4154C0 consumer. The six champion phrase graphics are prepared and actual-GLES validated, but no consuming source path has been verified. They are not claimed unused globally or activated through an invented owner. The optional4154C0 bitmap is a winner car photograph; its original draw remains intact.
 
 Each phrase alpha texture is decoded/uploaded lazily only on use, then cached within the renderer context. Retirement/loss discards its private cache. No photograph, trophy, animation criterion, timing or original source write is replaced.

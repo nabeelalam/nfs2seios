@@ -1,12 +1,11 @@
 {
   "schema": 1,
-  "scope": "Finite gold Victory typography in both original word paths",
+  "scope": "Six source-confirmed Victory congratulations phrases; twelve authored GPU-validated phrase assets",
   "localizedPhrases": 12,
   "font": "League Gothic",
   "license": "SIL OFL",
   "originalBitmapPixelsPublished": false,
   "congratulationsOwner": "4154C0",
-  "championOwner": "47D5E0",
   "sourceNameAndFullShaRequired": true,
   "originalCallsPreservedByExactGenerationReversal": true,
   "photosTrophyAndOriginalTimingPreserved": true,
@@ -16,11 +15,51 @@
   "allTwelveCoverageStreamsValidated": true,
   "localReleaseBuildPassed": true,
   "buildPlatform": "Linux host",
-  "binarySHA256": "09836d4a130f02bed2239e69ef3dc7f97bce960bd3aeafce75270adf9c7a7936",
+  "binarySHA256": "78331e1a1864085c4ae72323a57b6000b5cfdf7dedc0ee6da6be3e7ed19d248b",
   "maximumCompilerWorkers": 2,
   "sourcePinsStableDuringBuild": true,
   "newWordMaterialObservedInOriginalGame": false,
   "physicalIpadAccepted": false,
   "newAppleBuildStarted": false,
-  "uiMergedToMain": false
+  "uiMergedToMain": false,
+  "verifiedSourceConsumers": {
+    "owner": "4154C0",
+    "entries": [
+      "econ",
+      "gcon",
+      "fcon",
+      "scon",
+      "icon",
+      "wcon"
+    ],
+    "optionalBitmap": "Winner car photograph from off414C48; unchanged"
+  },
+  "preparedUnverifiedConsumers": {
+    "entries": [
+      "eng2",
+      "ger2",
+      "fre2",
+      "spa2",
+      "ita2",
+      "swe2"
+    ],
+    "status": "Authored graphics prepared and actual GLES validated; no source consumption route verified; no global-unused claim"
+  },
+  "unsupportedSlideRouteRemoved": true,
+  "dynamicTextRequired": true,
+  "actualGles": {
+    "passed": true,
+    "wordCount": 12,
+    "pixelsChecked": 14745600,
+    "foreignCleanupCalls": 0,
+    "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "gameExecuted": false,
+    "testedShaderAndCoveragePinsMatch": true
+  },
+  "sourceConfirmedPhraseCount": 6,
+  "cleanupBatchBuilt": true,
+  "sourceConfirmedCongratulationsPhrases": 6,
+  "preparedChampionPhrases": 6,
+  "championConsumerVerified": false,
+  "unsupportedLoadingScreenHooksRemoved": true
 }

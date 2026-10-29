@@ -6,7 +6,7 @@ H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--source-dir',type=Path,required=True);ap.add_argument('--fallback-dir',type=Path);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
  assert not a.output.exists();a.output.mkdir(parents=True);rows=[]
- for unit in [1,2,3,9,10,13]:
+ for unit in [1,2,3,10,13]:
   name='Methods_%02d.cpp'%unit;source=a.source_dir/name
   if not source.exists()and a.fallback_dir:source=a.fallback_dir/name
   old=source.read_text();text=old;serial=0
@@ -39,18 +39,6 @@ def main():
     call='\tesp -= 4; _sub_426B70(); esp += 4; //call';assert part.count(call)==1;return part.replace(call,block(' { nfs_victory_ui_live::Presentation nfs_victory_present(*this);')+call+block(' }'))
    edit('4154C0',victory)
   elif unit==3:entry('426950',' nfs_victory_ui_live::DrawScope nfs_victory_native(*this);')
-  elif unit==9:
-   entry('47D5E0',' nfs_victory_ui_live::OwnerScope nfs_victory_slide_owner(*this,true);')
-   def champion(part):
-    start=part.index('loc_47D8AA:\n');middle=part.index('loc_47D8F2:\n',start);region=part[start:middle]
-    call='\tesp -= 4; _sub_483460(); esp += 4; //call';assert region.count(call)==1
-    region=region.replace(call,block(' nfs_victory_ui_live::slideBackground(*this);')+call);part=part[:start]+region+part[middle:]
-    start=part.index('loc_47D8F2:\n');end=part.index('loc_47D91E:\n',start);region=part[start:end];assert region.count(call)==1
-    region=region.replace(call,block(' { nfs_victory_ui_live::SlideWordScope nfs_victory_champion(*this);')+call+block(' }\n nfs_victory_ui_live::Adapter::begin(*this);\n nfs_victory_ui_live::Adapter::end(*this);'))
-    part=part[:start]+region+part[end:];label='loc_47D91E:\n';start=part.index(label)+len(label);tail='\tesp -= 4; _sub_428770(); esp += 4; //call';assert part[start:].count(tail)==2
-    end=part.index(tail,part.index(tail,start)+len(tail))+len(tail);region=part[start:end];assert 'goto 'not in region
-    return part[:start]+block(' { nfs_victory_ui_live::Presentation nfs_victory_slide_present(*this);')+region+block(' }')+part[end:]
-   edit('47D5E0',champion)
   elif unit==10:
    for symbol in ['482DA0','4848FC']:entry(symbol,' nfs_victory_ui_live::retire(*this,uint32_t(eax));')
   elif unit==13:

@@ -15,7 +15,7 @@ inline uintptr_t threadToken()noexcept{static thread_local char value;return rei
 struct Measurement {bool ready=false;uint32_t text=0;int width=0,anchor=0;unsigned alignment=0;};
 struct BitmapCapture {unsigned index=12;uint32_t source=0,span=0,mode=0;NfsVictoryWordView view{};nfs_logo_capture::Target target{};std::vector<uint16_t>before,after;bool resolved=false;};
 struct State {
- Game*game=nullptr;uintptr_t thread=0;uint64_t epoch=0,serial=0;unsigned owner=0,presenting=0;bool ready=false,slideOwner=false;
+ Game*game=nullptr;uintptr_t thread=0;uint64_t epoch=0,serial=0;unsigned owner=0,presenting=0;bool ready=false;
  bool failed=false,capturing=false,string=false,word=false;
  uint32_t textAddress=0,metricAddress=0,fontAddress=0,form=0;uint16_t formType=0;
  struct Store{uint32_t index;uint16_t before,after;};std::vector<Store>stores;
@@ -54,20 +54,13 @@ inline void metricTable(State&s,uint32_t font,uint32_t table,unsigned count){
 }
 struct OwnerScope {
  Game&g;bool entered=false;
- explicit OwnerScope(Game&x,bool slide=false)noexcept:g(x){if(!enabled())return;safe(g,[&]{
+ explicit OwnerScope(Game&x)noexcept:g(x){if(!enabled())return;safe(g,[&]{
   auto&s=state();if(s.owner){s.invalidate();return;}static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;
-  s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;if(slide){s.slideOwner=true;s.ready=true;s.form=uint32_t(guest_address(off_4DADB4));s.formType=0;}entered=true;
+  s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;entered=true;
  });}
  ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);state()=State{};}}
 };
 inline void archiveReady(Game&g)noexcept{auto*s=current(g);if(!s)return;safe(g,[&]{uint32_t form=uint32_t(guest_address(off_4D3DB8));nfs::GuestCopyTransaction tx;if(tx.load<uint16_t>(form+8)!=0||!tx.load<uint32_t>(form))throw 1;s->form=form;s->formType=0;s->ready=true;});}
-inline void slideBackground(Game&g)noexcept{auto*s=current(g);if(!s||!s->slideOwner)return;safe(g,[&]{s->bitmapWords.clear();s->activeBitmap.reset();s->published.reset();if(s->capturing||s->string||s->word)throw 1;});}
-struct SlideWordScope {
- Game&g;State*s=nullptr;std::shared_ptr<BitmapCapture>b;int unwind=0;
- explicit SlideWordScope(Game&x)noexcept:g(x){s=current(g);if(!s||!s->slideOwner||!s->ready||s->capturing)return;safe(g,[&]{if(s->activeBitmap||!s->bitmapWords.empty())throw 1;uint32_t source=uint32_t(g.eax);nfs::GuestCopyTransaction tx;uint32_t wh=tx.load<uint32_t>(source+4);for(unsigned k=0;k<12;++k){const auto&a=nfs_victory_words[k];if((wh&65535)!=a.width||(wh>>16)!=a.height||uint64_t(source)+a.span>UINT64_C(0x100000000))continue;auto candidate=std::make_shared<BitmapCapture>();candidate->index=k;candidate->source=source;candidate->span=a.span;if(!bitmapSha(*candidate))continue;uint32_t pos=tx.load<uint32_t>(source+12);candidate->view={k,int32_t(pos<<20)>>20,int32_t(pos<<4)>>20,a.width,a.height};if(int32_t(g.edx)!=candidate->view.left||int32_t(g.ebx)!=candidate->view.top)throw 1;candidate->mode=0x400;candidate->target=target();candidate->before=plane(candidate->target);candidate->resolved=true;b=std::move(candidate);s->activeBitmap=b;unwind=nfs_logo_publisher::exceptions();break;}});}
- ~SlideWordScope()noexcept{if(!b||!s||s!=current(g))return;safe(g,[&]{if(s->activeBitmap!=b||nfs_logo_publisher::exceptions()>unwind||!bitmapSha(*b)||!nfs_logo_capture::same(b->target,target()))throw 1;b->after=plane(b->target);if(b->after!=b->before)s->bitmapWords.push_back(b);s->activeBitmap.reset();});}
-};
-
 struct Adapter {
  static void begin(Game&g)noexcept{auto*s=current(g);if(!s||!s->ready)return;safe(g,[&]{
   if(s->capturing||s->string||s->word||s->serial==UINT64_MAX)throw 1;
@@ -75,7 +68,7 @@ struct Adapter {
   s->stores.clear();s->replay.clear();s->building=std::move(p);s->published.reset();s->metricAddress=s->fontAddress=0;s->capturing=true;
  });}
  static void end(Game&g)noexcept{auto*s=current(g);if(!s||!s->capturing)return;safe(g,[&]{
-  if(s->string||s->word||!s->building||(s->building->commands.empty()&&s->bitmapWords.empty()))throw 1;
+  if(s->string||s->word||!s->building||s->building->commands.empty())throw 1;
   auto p=s->building;if(!nfs_logo_capture::same(p->target,target()))throw 1;p->original=plane(p->target);p->clean=p->original;
   for(auto i=s->stores.rbegin();i!=s->stores.rend();++i){if(p->clean[i->index]!=i->after)throw 1;p->clean[i->index]=i->before;}
   // Reverse only authenticated finite-word effects after reversing live text.
@@ -85,7 +78,7 @@ struct Adapter {
    unsigned red=(c.color>>11)&31,green=(c.color>>5)&63,blue=c.color&31;if(numeric&&red>12&&green>20&&blue<12)c.role=1;
    if(n&&c.role==1){auto&shadow=p->commands[n-1];if(shadow.color==0&&shadow.text==c.text&&shadow.x==c.x+1&&shadow.y==c.y+1)shadow.role=1;}
   }
-  std::shared_ptr<const nfs_victory_text::PreparedText>display;if(!p->commands.empty()){display=nfs_victory_text::PreparedText::createCommands(p->commands,nfs_victory_text::victoryFont(),p);if(!display)throw 1;}else if(p->words.empty())throw 1;
+  auto display=nfs_victory_text::PreparedText::createCommands(p->commands,nfs_victory_text::victoryFont(),p);if(!display)throw 1;
   auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->building.reset();s->replay.clear();s->capturing=false;
  });}
  static std::shared_ptr<const Frame>acquire(Game&g)noexcept{auto*s=current(g);if(!s||s->presenting!=1||s->capturing||s->string||s->word||!s->published)return {};std::shared_ptr<const Frame>out;safe(g,[&]{
