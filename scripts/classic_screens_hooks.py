@@ -1,4 +1,4 @@
-"""Insertion-only Results, Victory and Credits pipeline for generated engine units.
+"""Insertion-only classic screens and loading pipeline for generated engine units.
 Applies maintained LoadSave and font-lifetime hooks before the screen insertions.
 """
 from pathlib import Path
@@ -15,7 +15,7 @@ def prepare(source,output):
         text=p.read_text();text=add_loadsave_hooks(text,p.name);text=add_font_lifetime_hooks(text,p.name)
         (current/p.name).write_text(text)
     scripts=Path(__file__).parent/'classic_screens'
-    for index,name in enumerate(('records','stats','results','victory','credits','child_dialog','child_material','child_actual')):
+    for index,name in enumerate(('records','stats','results','victory','credits','child_dialog','child_material','child_actual','loading')):
         inserted=output/(str(index)+'-'+name+'-inserted')
         option='--output-dir' if name in ('stats','credits','child_dialog','child_material','child_actual') else '--output'
         subprocess.run([sys.executable,str(scripts/(name+'_hooks.py')),'--source-dir',str(current),option,str(inserted)],check=True)
