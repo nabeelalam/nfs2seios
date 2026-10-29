@@ -30,8 +30,8 @@ The later loading-status batch covers the six active language entries across eig
 source-authenticated original photos. Its grouped local Release build passed;
 English Loading was observed through normal Race selection over the original
 North Country photo at 640x480, with two completed native publications and exact
-copied-data restoration. Other-language runtime and Apple/device acceptance
-remain pending. It is not
-in the second delivered preview. The separately prepared music-cache and champion
+copied-data restoration. Other-language runtime and physical iPad acceptance
+remain pending. This batch is included in the third privately delivered Apple
+preview, app version 22; its ARM64 build and package inspection passed. The separately prepared music-cache and champion
 phrases have no verified consumer and remain outside this new loading integration.
 See `evidence/hd-loading-finite-words.json`.

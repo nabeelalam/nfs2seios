@@ -21,8 +21,9 @@ Two requirements are part of the goal:
 ## Current UI checkpoint and next work
 
 The classic UI remains on `codex/hd-ui`, separate from the performance branch.
-The second coherent Apple ARM64 UI preview was built, inspected and privately
-delivered, including the Player-statistics and Victory refinements. Its package
+The third coherent Apple ARM64 UI preview (app version 22) was built, inspected
+and privately delivered, including the loading-screen typography plus the
+earlier Player-statistics and Victory refinements. Its package
 and uploaded digest are verified; physical UI and gameplay acceptance remain
 pending. The same app identity and personal SideStore signing path are retained.
 
@@ -49,7 +50,8 @@ Next work, in order:
    device sessions. Local rendering checks and CPU percentages do not prove
    iPad energy savings or sustained Low Power Mode 60 FPS.
 
-Current evidence: `evidence/hd-classic-ui-preview2-delivery.json`,
+Current evidence: `evidence/hd-classic-ui-preview3-delivery.json`,
+`evidence/hd-classic-ui-preview2-delivery.json`,
 `evidence/hd-classic-ui-refinement-batch.json` and
 `evidence/hd-victory-finite-words.json`. The first preview is retained separately
 in `evidence/hd-classic-ui-apple-preview.json`. The next loading-screen typography
@@ -57,9 +59,10 @@ batch is implemented and its combined local release build passed. It covers six
 active languages across eight original photo backgrounds, preserving the photos
 and original game operations. English Loading was observed through normal
 Race selection over the preserved North Country photo at 640x480; both native
-publications completed and copied files were restored. Other-language runtime
-and Apple/device acceptance remain pending. This batch is not in the delivered
-second preview. See
+publications completed and copied files were restored. Other-language
+runtime coverage and physical iPad acceptance remain pending. This batch is
+in the third delivered preview (version 22), whose Apple build and package
+inspection passed. See
 `evidence/hd-loading-finite-words.json`. The separate music-cache caption and
 champion assets still need verified source consumers before any new integration.
 Earlier build entries below are retained

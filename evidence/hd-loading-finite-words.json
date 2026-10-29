@@ -21,7 +21,7 @@
   "sourcePinsStableDuringBuild": true,
   "originalGameObservationPending": false,
   "physicalIpadAccepted": false,
-  "appleBuildStartedForThisBatch": false,
+  "appleBuildStartedForThisBatch": true,
   "uiMergedToMain": false,
   "musicCacheCaptionConsumerVerified": false,
   "originalGameObservation": {
@@ -42,5 +42,11 @@
     "sourcePinsStable": true,
     "remainingOwnedProcesses": 0,
     "sixLanguageRuntimeClaimed": false
-  }
+  },
+  "appleBuildPassed": true,
+  "appleSourceCommit": "5b64182c97d168da1e82e739560236723d08ee0d",
+  "appleWorkflowRun": 40941545707,
+  "appleExecutableSha256": "7bec770cafaa846c05592da66c0cbb6b4616474baf9bf01059631fc3700ae312",
+  "devicePreviewDelivered": true,
+  "bundleVersion": 22
 }
