@@ -89,7 +89,11 @@ a distinct next validation target, after storage allowance is confirmed.
    lists that installation. If it disappears, stop and review a replacement;
    do not silently switch compilers. Record Xcode and SDK versions in every run.
 6. Compile the actual mapped engine and native game bundle. The older unmodified
-   engine object audit is not repeated by default. The separate Probe is optional
+   engine object audit is not repeated by default. The separate full-engine
+   diagnostic app link also runs only when include_probe is selected: the normal
+   game bundle links the same complete engine, platform and renderer object
+   groups. Linux still executes the memory/link tests, and Apple-specific host
+   checks remain required. The separate Probe is optional
    because its physical platform checks already passed; rebuild it only for a
    relevant platform change. Preserve macOS host checks because platform behavior
    differs from Linux even when the shared code passes there.
@@ -192,3 +196,17 @@ One manual dispatch39093193712 at source1b9a561. Standard sequential Ubuntu
 No Probe,Actions artifacts,caches,paid runner,billing change or duplicate build.
 All source/staged/history/metadata/independent secret checks passed;package
 privacy and source/digests inspected. Physical energy/FPS remain unverified.
+
+## Build 22 resource review
+
+The successful reviewed UI run 40941545707 used Linux for 300 seconds and Apple
+for 984 seconds. Apple configuration took 567 seconds, engine compilation 90,
+renderer/platform compilation 108, the separate diagnostic link 80 and the real
+game app build 80. Its diagnostic step compiled one test entry and linked a
+separate app; it did not execute those tests on iPad or contribute object files
+to the game app. Routine future game builds omit that extra link while keeping
+it available with the optional platform diagnostics. The actual game bundle
+still compiles, links and passes ARM64/package checks. The next required Apple
+build will measure the net saving; no extra run is justified solely to time
+this workflow edit. Configuration remains the largest measured cost, and its
+SDK checks have not been bypassed. See `evidence/build22-cloud-resource-review.json`.

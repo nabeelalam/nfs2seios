@@ -72,7 +72,8 @@ jobs:
         run: |
           set -o pipefail
           cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target glide_gles2 platform_bridges -j "$NFS_BUILD_JOBS" 2>&1 | tee .build/renderer-ipados.log
-      - name: Link the complete translated engine with native platform services
+      - name: Optional full-engine diagnostic link
+        if: inputs.include_probe
         run: |
           set -o pipefail
           cmake --build .build/ios --config "$NFS_BUILD_CONFIGURATION" --target NFSIISEEngineCheck -j "$NFS_BUILD_JOBS" 2>&1 | tee .build/engine-link-ipados.log

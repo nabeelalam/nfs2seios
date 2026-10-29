@@ -22,7 +22,7 @@ on:
         type: string
         default: ''
       include_probe:
-        description: Also rebuild the separate platform diagnostic
+        description: Also rebuild the platform diagnostic and full-engine link audit
         type: boolean
         default: false
       thin_lto:

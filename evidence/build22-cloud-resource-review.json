@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "sourceWorkflowRun": 40941545707,
+  "sourceCommit": "5b64182c97d168da1e82e739560236723d08ee0d",
+  "linuxSeconds": 300,
+  "appleSeconds": 984,
+  "appleStepSeconds": {
+    "configuration": 567,
+    "engineCompile": 90,
+    "rendererPlatformCompile": 108,
+    "engineDiagnosticAppLink": 80,
+    "gameAppBuild": 80
+  },
+  "diagnosticStepCompiledEntries": 1,
+  "diagnosticStepLinkedExecutables": 1,
+  "diagnosticExecutedOnIpad": false,
+  "gameAppSharesFullEnginePlatformRendererObjectGroups": true,
+  "routineDiagnosticLinkMadeOptional": true,
+  "optionalDiagnosticSelection": "include_probe",
+  "linuxMemoryLinkExecutionRetained": true,
+  "appleSpecificHostChecksRetained": true,
+  "actualGameLinkAndArm64PackageChecksRetained": true,
+  "sdkConfigurationChecksRetained": true,
+  "maximumCompilerWorkers": 2,
+  "maximumThinLtoWorkers": 2,
+  "newCloudRunStarted": false,
+  "netTimeSavingMeasured": false,
+  "deliveredPackage22Unchanged": true,
+  "runtimeOrBatteryImprovementClaimed": false
+}
