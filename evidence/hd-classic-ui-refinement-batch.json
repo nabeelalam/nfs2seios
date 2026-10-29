@@ -14,9 +14,19 @@
   "thinLto": true,
   "sourcePinsStableDuringBuild": true,
   "artworkComparisonsReviewed": true,
-  "newMaterialObservedInGame": false,
+  "newMaterialObservedInGame": true,
   "physicalIpadAccepted": false,
   "newAppleBuildStarted": false,
   "existingPreviewDeliveryChanged": false,
-  "uiMergedToMain": false
+  "uiMergedToMain": false,
+  "bothPlayersCarChangeAndGraphToggleObserved": true,
+  "normalMainReturnAndShutdownObserved": true,
+  "copiedConfigurationAndArtworkRestored": true,
+  "saveInventoryUnchanged": 49,
+  "remainingOwnedProcesses": 0,
+  "visualAcceptanceComplete": false,
+  "observedVisualIssues": [],
+  "splitScreenBothPlayerBrandingMatchesOriginalSource": true,
+  "brandingReview": "Both selected cars are deliberately shown in split-screen. Retained captures and original slot-loading/drawing code agree; no branding removal was made.",
+  "localStatPanelVisualAcceptance": true
 }
