@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "scope": "Car statistics material and localized completed-track typography refinement batch",
+  "changes": [
+    "Authored amber drafting-paper statistics panel with recessed channels and beveled colored bars",
+    "All six original completion-label languages retain exact wording, casing, accents, placement and source identity",
+    "Completion cloth and glyph artwork decoded once and reused"
+  ],
+  "originalGraphValuesAndPositionsPreserved": true,
+  "unknownSourceFallbackPreserved": true,
+  "localReleaseBuildPassed": true,
+  "localBinarySHA256": "d8d4c6d9ff5e5863ecd774e6d98cada7fca199f2c8381b80dff393bf3dcfb08c",
+  "maximumCompilerWorkers": 2,
+  "thinLto": true,
+  "sourcePinsStableDuringBuild": true,
+  "artworkComparisonsReviewed": true,
+  "newMaterialObservedInGame": false,
+  "physicalIpadAccepted": false,
+  "newAppleBuildStarted": false,
+  "existingPreviewDeliveryChanged": false,
+  "uiMergedToMain": false
+}

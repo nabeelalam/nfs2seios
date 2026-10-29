@@ -8,6 +8,7 @@
 #include "PlayerInitialSidebarProof.h"
 #include "PlayerCaptionDisplay.h"
 #include <new>
+#include "PlayerStatMaterial.h"
 namespace nfs_player_scene_cpu {
 namespace bg=nfs_background_scene_cpu;namespace pv=nfs_player_preview;namespace sw=nfs_player_swatch;
 using namespace nfs_background_scene_cpu;
@@ -36,8 +37,8 @@ inline bool sameCaptionOwner(const Target&a,const Target&b)noexcept{
 struct OriginalOverlay {
  int32_t left=0,top=0;uint32_t width=0,height=0;
  std::vector<uint16_t>pixels;std::vector<uint8_t>coverage;
- std::array<unsigned char,32>sha{},coverageSha{};
- NfsOriginalPreviewLayerView view()const noexcept{NfsOriginalPreviewLayerView v{};v.schema=NFS_ORIGINAL_PREVIEW_LAYER_SCHEMA;v.left=left;v.top=top;v.width=width;v.height=height;v.pixels565=pixels.data();v.pixelCount=pixels.size();v.coverage=coverage.data();v.coverageCount=coverage.size();std::copy(sha.begin(),sha.end(),v.sha256);std::copy(coverageSha.begin(),coverageSha.end(),v.coverageSha256);return v;}
+ std::array<unsigned char,32>sha{},coverageSha{},authoredSha{};std::vector<unsigned char>authored;
+ NfsOriginalPreviewLayerView view()const noexcept{NfsOriginalPreviewLayerView v{};v.schema=NFS_ORIGINAL_PREVIEW_LAYER_SCHEMA;v.left=left;v.top=top;v.width=width;v.height=height;v.pixels565=pixels.data();v.pixelCount=pixels.size();v.coverage=coverage.data();v.coverageCount=coverage.size();std::copy(sha.begin(),sha.end(),v.sha256);std::copy(coverageSha.begin(),coverageSha.end(),v.coverageSha256);if(!authored.empty()){v.schema=NFS_AUTHORED_PREVIEW_LAYER_SCHEMA;v.authoredRGBA=authored.data();v.authoredBytes=authored.size();v.authoredWidth=width*4;v.authoredHeight=height*4;std::copy(authoredSha.begin(),authoredSha.end(),v.authoredSha256);}return v;}
 };
 struct Prepared:bg::Prepared {
  uint32_t form=0;std::shared_ptr<const nfs_soft::FramePacket>caption;uint64_t captionSerial=0,captionLifetime=0;
@@ -122,7 +123,7 @@ inline std::shared_ptr<const OriginalOverlay>makeOverlay(const pv::Packet&previe
  // differently antialiased remastered edges.
  if(swatch){const auto s=swatch->bounds();if(!add(s.left,s.top,s.width,s.height,swatch->pixels(),swatch->coverage()))return {};}
  unsigned left=640,top=480,right=0,bottom=0;for(unsigned y=0;y<480;++y)for(unsigned x=0;x<640;++x)if(coverage[y*640+x]){left=std::min(left,x);top=std::min(top,y);right=std::max(right,x+1);bottom=std::max(bottom,y+1);}
- if(left>=right||top>=bottom)return {};std::shared_ptr<OriginalOverlay>out(new OriginalOverlay);out->left=int32_t(left);out->top=int32_t(top);out->width=right-left;out->height=bottom-top;for(unsigned y=top;y<bottom;++y)for(unsigned x=left;x<right;++x){out->pixels.push_back(whole[y*640+x]);out->coverage.push_back(coverage[y*640+x]);}if(!pv::wordsSha(out->pixels.data(),out->pixels.size(),out->sha)||!nfs_texture_sha256(out->coverage.data(),out->coverage.size(),out->coverageSha.data()))return {};return out;
+ if(left>=right||top>=bottom)return {};std::shared_ptr<OriginalOverlay>out(new OriginalOverlay);out->left=int32_t(left);out->top=int32_t(top);out->width=right-left;out->height=bottom-top;for(unsigned y=top;y<bottom;++y)for(unsigned x=left;x<right;++x){out->pixels.push_back(whole[y*640+x]);out->coverage.push_back(coverage[y*640+x]);}if(!pv::wordsSha(out->pixels.data(),out->pixels.size(),out->sha)||!nfs_texture_sha256(out->coverage.data(),out->coverage.size(),out->coverageSha.data()))return {};nfs_player_stat_material::decorate(preview,swatch,*out);return out;
 }
 // Metadata is supplemental display authority only; immutable original packet,
 // full343 replay and side/logo/copy verification remain independently required.
