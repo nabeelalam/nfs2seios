@@ -28,7 +28,10 @@ The first combined preview has passed the gated Linux checks and Apple ARM64 Rel
 
 The later loading-status batch covers the six active language entries across eight
 source-authenticated original photos. Its grouped local Release build passed;
-original-game observation and Apple/device acceptance remain pending. It is not
+English Loading was observed through normal Race selection over the original
+North Country photo at 640x480, with two completed native publications and exact
+copied-data restoration. Other-language runtime and Apple/device acceptance
+remain pending. It is not
 in the second delivered preview. The separately prepared music-cache and champion
 phrases have no verified consumer and remain outside this new loading integration.
 See `evidence/hd-loading-finite-words.json`.

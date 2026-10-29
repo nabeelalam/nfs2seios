@@ -19,9 +19,28 @@
   "maximumCompilerWorkers": 2,
   "linkBackendJobs": 2,
   "sourcePinsStableDuringBuild": true,
-  "originalGameObservationPending": true,
+  "originalGameObservationPending": false,
   "physicalIpadAccepted": false,
   "appleBuildStartedForThisBatch": false,
   "uiMergedToMain": false,
-  "musicCacheCaptionConsumerVerified": false
+  "musicCacheCaptionConsumerVerified": false,
+  "originalGameObservation": {
+    "language": "English",
+    "track": "North Country",
+    "resolution": [
+      640,
+      480
+    ],
+    "normalRaceSelection": true,
+    "nativePublications": 2,
+    "uploadsPerPublication": 300,
+    "selectionsPerPublication": 300,
+    "trianglesPerPublication": 600,
+    "actualCaptureReviewed": true,
+    "cleanShutdown": true,
+    "copiedConfigGammaArtworkAnd49SaveContentsRestored": true,
+    "sourcePinsStable": true,
+    "remainingOwnedProcesses": 0,
+    "sixLanguageRuntimeClaimed": false
+  }
 }

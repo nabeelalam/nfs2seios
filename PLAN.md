@@ -55,8 +55,11 @@ Current evidence: `evidence/hd-classic-ui-preview2-delivery.json`,
 in `evidence/hd-classic-ui-apple-preview.json`. The next loading-screen typography
 batch is implemented and its combined local release build passed. It covers six
 active languages across eight original photo backgrounds, preserving the photos
-and original game operations. Original-game observation and Apple/device
-acceptance remain pending; it is not in the delivered second preview. See
+and original game operations. English Loading was observed through normal
+Race selection over the preserved North Country photo at 640x480; both native
+publications completed and copied files were restored. Other-language runtime
+and Apple/device acceptance remain pending. This batch is not in the delivered
+second preview. See
 `evidence/hd-loading-finite-words.json`. The separate music-cache caption and
 champion assets still need verified source consumers before any new integration.
 Earlier build entries below are retained
