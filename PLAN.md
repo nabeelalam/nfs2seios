@@ -21,9 +21,10 @@ Two requirements are part of the goal:
 ## Current UI checkpoint and next work
 
 The classic UI remains on `codex/hd-ui`, separate from the performance branch.
-The first combined Apple ARM64 UI preview was built, inspected and privately
-delivered; physical UI acceptance is still pending. Later refinements have a
-successful local Release build, not a new Apple package.
+The second coherent Apple ARM64 UI preview was built, inspected and privately
+delivered, including the Player-statistics and Victory refinements. Its package
+and uploaded digest are verified; physical UI and gameplay acceptance remain
+pending. The same app identity and personal SideStore signing path are retained.
 
 The car-stat panel and bars have been observed in both Player screens through
 normal car changes and graph toggles. Race HUD, minimap and pause controls have
@@ -48,9 +49,12 @@ Next work, in order:
    device sessions. Local rendering checks and CPU percentages do not prove
    iPad energy savings or sustained Low Power Mode 60 FPS.
 
-Current evidence: `evidence/hd-classic-ui-apple-preview.json`,
+Current evidence: `evidence/hd-classic-ui-preview2-delivery.json`,
 `evidence/hd-classic-ui-refinement-batch.json` and
-`evidence/hd-victory-finite-words.json`. Earlier build entries below are retained
+`evidence/hd-victory-finite-words.json`. The first preview is retained separately
+in `evidence/hd-classic-ui-apple-preview.json`. Loading-screen status typography
+remains a known content gap; its photographic backing must be preserved.
+Earlier build entries below are retained
 as history; they do not supersede this checkpoint.
 
 ## Current shared implementation
