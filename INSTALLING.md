@@ -1,14 +1,22 @@
 # Personal installation without a Mac
 
-The separate HD branch offers build 21, an independently inspected thin ARM64 iOS-device Release package. It adds gold speed digits and the timing-digit correction; main remains on its separate build 19 baseline.
-Personal SideStore signing is still required. Original game files stay separate.
+The current classic UI preview is **app version 22**, an inspected thin ARM64
+iOS-device Release package delivered privately for personal testing. It includes
+the current UI remaster and loading-screen lettering. The main performance
+branch retains its separate build 19 baseline. Personal SideStore signing is
+required; original game files stay separate.
+
+The public classic CI artifact is a base requiring personal artwork. Use the
+finished personal ZIP provided with your preview, rather than installing that
+base directly. Package provenance is recorded in
+[evidence/hd-classic-ui-preview3-delivery.json](evidence/hd-classic-ui-preview3-delivery.json).
 
 ## Update the existing game
 
-1. Download the [build 21 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip) in Files and extract it.
-2. Update the existing app through your ready SideStore setup, importing
-   NFSIISEGame-development-unsigned.ipa with the same Apple Account. SideStore
-   performs personal signing; the ZIP itself is unsigned.
+1. Download the privately supplied version 22 ZIP and extract it in Files.
+2. Import `NFSIISEGame-classic-ui-personal-unsigned.ipa` into SideStore to update
+   the existing app using the same Apple Account. SideStore performs personal
+   signing; the ZIP itself is unsigned.
 3. Keep using the same separately stored original game folder. Build 12's
    automatic saved-folder startup is retained.
 4. Diagnostics start hidden. Tap with four fingers to show or hide them. Tap
@@ -51,11 +59,11 @@ Pause before changing render size. Settings offer 640x480, 960x720, 1280x960
 and native screen pixels in the original 4:3 view; the overlay shows actual
 render size. CPU/app is the share of total CPU capacity, so one busy core can
 limit performance despite a low percentage. GPU utilization is not estimated.
-Build 19 diagnostics, controlled battery savings and HD artwork still need physical validation.
+Current recorder operation, controlled battery savings and UI appearance still need physical validation.
 
 ## Separately supplied game files
 
-The current public IPA contains only the executable, app metadata and license
+The public development IPA contains only the executable, app metadata and license
 notices. It excludes GAMEDATA, FEDATA, install.win and all text.* language files.
 For a folder import, supply install.win and text.eng beside GAMEDATA/FEDATA
 in the selected folder before opening it. Other text.* languages are optional.

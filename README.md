@@ -4,7 +4,18 @@ Development of a native ARM64 iPadOS port of Need for Speed II Special Edition,
 targeting iPad Air M3 and an external controller, without x86 emulation or JIT.
 **An experimental development IPA is available; full iPad acceptance remains open.**
 
-On the separate HD branch, the inspected [build 21 ZIP](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip) adds all ten gold speedometer digits and fixes timing-digit 7-9 recognition. Use HUD digits in rendering settings to compare Original and HD while recording a session. Other HUD art remains original. Main is unchanged; device appearance, performance and battery acceptance remain open.
+The separate `codex/hd-ui` branch now has an inspected **UI preview 3, app
+version 22**, delivered privately for personal signing. It includes the current
+menu and race-interface remaster plus the localized loading-screen lettering.
+The Apple build and finished package passed inspection; physical appearance,
+current race stability and battery acceptance remain open. Source and delivery
+provenance are in [the version 22 evidence](evidence/hd-classic-ui-preview3-delivery.json).
+Personal artwork is supplied separately; the public CI artifact is a base that
+requires it. The main performance branch remains independent.
+
+The earlier public [build 21 HUD proof](https://github.com/nabeelalam/nfs2seios/releases/download/development-39161478449-1/NFSIISEGame-development-unsigned.zip)
+contains the gold speed-digit and timing-digit changes. It predates the complete
+classic UI previews.
 
 The project adapts a pinned original-game C++ translation, the existing Glide
 GLES2 renderer and SDL3 platform services. Original game assets must be supplied
@@ -43,7 +54,7 @@ keyboard button, touch gestures and controller remapping remain available. The
 app requests fullscreen and opts into Apple Game Mode; Gaming Focus separately
 controls notification filtering. Stable 60 FPS in Low Power Mode, controlled
 battery efficiency, broader stability and OS lifecycle/signing refresh tests,
-and sharper HUD artwork remain open.
+and current UI appearance acceptance remain open.
 
 Use the [installation guide](INSTALLING.md) to update through SideStore with the
 same Apple Account and keep using the separately stored original game folder.

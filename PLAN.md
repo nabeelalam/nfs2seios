@@ -37,24 +37,25 @@ copied-data restoration do not establish that screen's gameplay acceptance.
 
 Next work, in order:
 
-1. Finish concrete UI issues in coherent batches, then perform one combined
-   visual/function check. Preserve accepted artwork and original behavior.
-2. Complete the remaining real Victory observation only through a practical
-   normal-game route. Avoid repeating the slow software-rendered attempt or
-   introducing forced winner state merely to obtain a passing screenshot.
-3. Freeze the coherent UI batch and deliver one current device preview for
-   physical feedback. Reuse existing packages when no relevant code changed;
-   do not rebuild after individual artwork edits. Keep unfinished UI separate
-   from the performance branch.
-4. Continue measured Low Power Mode frame-time and battery work using recorded
-   device sessions. Local rendering checks and CPU percentages do not prove
-   iPad energy savings or sustained Low Power Mode 60 FPS.
+1. Review the delivered version 22 on the physical iPad: current UI appearance,
+   ordinary menu/race behavior, controller/audio and a completed split-screen
+   event. No new artwork gap is confirmed by the current source audit.
+2. Address concrete UI feedback in coherent batches, with one combined check.
+   Keep the current package available until a relevant change justifies another
+   Apple build. Preserve accepted artwork and original behavior.
+3. Observe Victory through a practical normal-game route when available. Do not
+   repeat the slow host attempts or force winner state to obtain a screenshot.
+4. Use privately recorded matched normal/Low Power Mode sessions for frame-time
+   and battery decisions. Local pixels and approximate CPU percentages do not
+   establish physical energy savings or sustained Low Power Mode 60 FPS.
+5. Keep unfinished UI separate from main until visual, gameplay and performance
+   acceptance is established. The recorder and personal signing path are retained.
 
 Current evidence: `evidence/hd-classic-ui-preview3-delivery.json`,
 `evidence/hd-classic-ui-preview2-delivery.json`,
 `evidence/hd-classic-ui-refinement-batch.json` and
 `evidence/hd-victory-finite-words.json`. The first preview is retained separately
-in `evidence/hd-classic-ui-apple-preview.json`. The next loading-screen typography
+in `evidence/hd-classic-ui-apple-preview.json`. The loading-screen typography
 batch is implemented and its combined local release build passed. It covers six
 active languages across eight original photo backgrounds, preserving the photos
 and original game operations. English Loading was observed through normal
@@ -68,7 +69,7 @@ champion assets still need verified source consumers before any new integration.
 Earlier build entries below are retained
 as history; they do not supersede this checkpoint.
 
-## Current shared implementation
+## Historical implementation and performance log
 
 - Explicit mapped 32-bit game values with full-width native pointers.
 - Original translated functions linked to native platform services.
