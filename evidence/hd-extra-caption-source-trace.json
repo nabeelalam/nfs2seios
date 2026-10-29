@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "scope": "Deeper bounded original-source investigation of prepared champion and music-cache captions",
+  "originalAsmSha256": "9d2dbfe1a9460d67aab7da59a2440aafbf02a7d298697138c50e659c72df2213",
+  "musicCopy": {
+    "owner": "476A00",
+    "originalAsmLines": [
+      155605,
+      155713
+    ],
+    "directCaller": "47D5E0",
+    "callerLabel": "47D943",
+    "afterOriginalPresentationCalls": 2,
+    "bufferBytes": 524288,
+    "operation": "Source music file copied into temporary music file through seek/read/write/close helpers",
+    "bitmapLookupDrawOrPresentationFound": false,
+    "secondCaptionConsumerFound": false
+  },
+  "champion": {
+    "archiveDescriptor": "4D3DB8",
+    "descriptorCodeUses": 2,
+    "normalVictoryOwner": "4154C0",
+    "congratulationsNamesCopied": 6,
+    "winnerCarPhotoNamesCopied": 15,
+    "helper": "4159E0",
+    "helperImageNames": [
+      "omg6",
+      "rec6",
+      "car6"
+    ],
+    "alternateChampionWordConsumerFound": false,
+    "packedNameImmediateConsumerFound": false
+  },
+  "limitations": [
+    "Bounded investigation of the pinned original source and translated functions",
+    "External-data-driven paths are not globally excluded",
+    "Generic file resource callback exists; no symbolic assignment was found"
+  ],
+  "preparedArtworkRetained": true,
+  "existingOriginalFallbackRetained": true,
+  "newCaptionHookAdded": false,
+  "deliveredBuild22Unchanged": true,
+  "gameExecuted": false,
+  "compilerExecuted": false,
+  "testsExecuted": false,
+  "cloudBuildStarted": false,
+  "globalUnusedClaimed": false
+}

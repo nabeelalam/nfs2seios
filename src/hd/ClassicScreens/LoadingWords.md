@@ -9,3 +9,11 @@ The original47D91E two428770 calls execute unchanged. A separate Loading nativep
 Artwork contains only authored League Gothic OFL finite alpha and metadata, in five bounded coverage chunks; original photos and bitmap pixels are runtime-only. License is assets/licenses/classic-ui/LeagueGothic-OFL.txt. Default builds remain unchanged; classic owner activation enables NFS_PRIVATE_LOADING_UI.
 
 Generate via the maintained classic_screens pipeline, whose final loading stage changes Methods03+09 only. RendererHooks includes the dedicated LoadingRenderer; normal opt-in package copying includes these helpers automatically. No new private asset inventory or bundled original data is needed. Source/data implementation is not runtime or physical-iPad acceptance.
+
+The original-source follow-up located music copying in 476A00, called at
+47D943 after the two loading presentations. It allocates a 512 KiB buffer
+and performs file I/O; no caption lookup, draw or presentation was found there.
+The second caption group therefore remains outside this integration. The
+bounded result does not rule out all external-data paths or other executables.
+Prepared artwork and original fallback remain intact. See
+`evidence/hd-extra-caption-source-trace.json`.
