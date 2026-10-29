@@ -28,5 +28,10 @@
   "observedVisualIssues": [],
   "splitScreenBothPlayerBrandingMatchesOriginalSource": true,
   "brandingReview": "Both selected cars are deliberately shown in split-screen. Retained captures and original slot-loading/drawing code agree; no branding removal was made.",
-  "localStatPanelVisualAcceptance": true
+  "localStatPanelVisualAcceptance": true,
+  "singlePlayerNativeHudObserved": true,
+  "minimapObserved": true,
+  "pauseMenuAndVolumeBarsObserved": true,
+  "quitToMainFromRaceVerified": false,
+  "singlePlayerRouteLimitation": "Harness timed out waiting for visual-review response; ordinary window close exited normally and preserved copied data. This was not a game crash."
 }
