@@ -259,17 +259,21 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
     static BOOL powerKnown=NO,previousPower=NO;
     if(powerKnown && previousPower!=lowPower){if(!nfs_recording_active())nfs_reset_engine_metrics();reset_core_load();}
     powerKnown=YES;previousPower=lowPower;
-    mach_task_basic_info_data_t info{};mach_msg_type_number_t count=MACH_TASK_BASIC_INFO_COUNT;
-    const BOOL memoryAvailable=task_info(mach_task_self(),MACH_TASK_BASIC_INFO,reinterpret_cast<task_info_t>(&info),&count)==KERN_SUCCESS;
-    NSString *cpuText=cpu>=0?[NSString stringWithFormat:@"%.1f%%",cpu]:@"—";
-    NSString *memoryText=memoryAvailable?[NSString stringWithFormat:@"%.0f MB",double(info.resident_size)/1048576.0]:@"—";
     [overlay setDeviceMonitoring:YES];
     const float battery=UIDevice.currentDevice.batteryLevel;
     NSString *batteryText=battery>=0 && battery<=1?[NSString stringWithFormat:@"%.0f%%",double(battery)*100]:@"…";
-    const double engineCpu=nfs_engine_cpu_ms_per_frame();
-    NSString *engineLine=engineCpu>=0?[NSString stringWithFormat:@"Game CPU time: %.2f ms/frame",engineCpu]:@"Game CPU time: measuring…";
-    NSString *cores=overlay.detailed?system_core_text():@"";
-    overlay.label.text=overlay.detailed?[NSString stringWithFormat:@"FPS %.1f · Frame %.1f ms\n%@\nApp CPU (all cores): %@\nRAM %@ · Battery %@%@\nRender %d × %d\nLow Power Mode: %@",fps,fps>0?1000.0/fps:0,engineLine,cpuText,memoryText,batteryText,cores,width,height,lowPower?@"On":@"Off"]:[NSString stringWithFormat:@"FPS %.1f · Battery %@ · Tap",fps,batteryText];
+    if(overlay.detailed){
+        mach_task_basic_info_data_t info{};mach_msg_type_number_t count=MACH_TASK_BASIC_INFO_COUNT;
+        const BOOL memoryAvailable=task_info(mach_task_self(),MACH_TASK_BASIC_INFO,reinterpret_cast<task_info_t>(&info),&count)==KERN_SUCCESS;
+        NSString *cpuText=cpu>=0?[NSString stringWithFormat:@"%.1f%%",cpu]:@"—";
+        NSString *memoryText=memoryAvailable?[NSString stringWithFormat:@"%.0f MB",double(info.resident_size)/1048576.0]:@"—";
+        const double engineCpu=nfs_engine_cpu_ms_per_frame();
+        NSString *engineLine=engineCpu>=0?[NSString stringWithFormat:@"Game CPU time: %.2f ms/frame",engineCpu]:@"Game CPU time: measuring…";
+        NSString *cores=overlay.detailed?system_core_text():@"";
+        overlay.label.text=[NSString stringWithFormat:@"FPS %.1f · Frame %.1f ms\n%@\nApp CPU (all cores): %@\nRAM %@ · Battery %@%@\nRender %d × %d\nLow Power Mode: %@",fps,fps>0?1000.0/fps:0,engineLine,cpuText,memoryText,batteryText,cores,width,height,lowPower?@"On":@"Off"];
+    }else{
+        overlay.label.text=[NSString stringWithFormat:@"FPS %.1f · Battery %@ · Tap",fps,batteryText];
+    }
     overlay.label.hidden=!overlay.visible;overlay.limitRow.hidden=!overlay.visible;
     if(nfs_recording_active())overlay.label.text=[@"● REC · " stringByAppendingString:overlay.label.text];
     [native bringSubviewToFront:overlay.label];

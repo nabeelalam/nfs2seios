@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "scope": "Avoid detail-only diagnostic work in the visible compact overlay",
+  "beforeSourceSha256": "9e72569dbea37c0d9c239b1cf4448b84797425d499791e6095d048ccd1f8fc7d",
+  "afterSourceSha256": "78e4adcac7b1e4b34caace5f2247163c05c89620b45b46787e9b0366ee80d86d",
+  "detailOnlyOperationsGated": [
+    "RAM task_info query",
+    "App CPU and RAM text formatting",
+    "Published engine CPU sample lookup and text formatting"
+  ],
+  "compactDisplayTextUnchanged": true,
+  "detailedDisplayTextUnchanged": true,
+  "hiddenGuardUnchanged": true,
+  "cachedRecordingFrameUpdatesRetained": true,
+  "powerTransitionBookkeepingRetained": true,
+  "batteryMonitoringRetained": true,
+  "recordingUnchanged": true,
+  "gameEngineMetricsCapturePolicyUnchanged": true,
+  "stallWatchdogRetained": true,
+  "sourceReviewed": true,
+  "appleCompilationPending": true,
+  "physicalMeasurementPending": true,
+  "batteryImprovementClaimed": false,
+  "cloudBuildStarted": false,
+  "deliveredBuild22Unchanged": true
+}
