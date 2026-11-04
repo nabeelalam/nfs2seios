@@ -11,15 +11,22 @@ ENTRY = ('Fn(void) Game::_sub_423CA0()\n{\n'
 BODY = '\n\tpush32(ebx);\n\treturn;\n}\n'
 
 
+def original_function(address):
+    return ENTRY.replace('423CA0', address) + BODY
+
+
+WIDGET_ENTRIES = original_function('423EA0') + original_function('423C40')
+
+
 class FrontendWordHooks(unittest.TestCase):
     def test_other_units_unchanged(self):
-        self.assertEqual(add_frontend_word_hooks(ENTRY + BODY, 'Methods_02.cpp'), ENTRY + BODY)
+        self.assertEqual(add_frontend_word_hooks(ENTRY + BODY, 'Methods_04.cpp'), ENTRY + BODY)
 
     def test_original_tail_and_trace_unchanged(self):
-        original = '// preceding source\n' + ENTRY + BODY
+        original = '// preceding source\n' + ENTRY + BODY + WIDGET_ENTRIES
         updated = add_frontend_word_hooks(original, 'Methods_03.cpp')
         trace = '\tnfs_trace_guest_call(game_id_sub_423CA0,uint32_t(esp));'
-        self.assertEqual(updated.split(trace)[1], original.split(trace)[1])
+        self.assertEqual(updated.split(trace)[1].split('Fn(void)', 1)[0], BODY)
         self.assertEqual(updated.count(trace), 1)
         self.assertIn('// preceding source\nFn(void)', updated)
         self.assertIn('guest_store<int16_t>(dword_4E8A56 + 2 + 2*i, value)', updated)
@@ -31,15 +38,15 @@ class FrontendWordHooks(unittest.TestCase):
                 add_frontend_word_hooks(original, 'Methods_03.cpp')
 
     def test_double_preparation_rejected(self):
-        updated = add_frontend_word_hooks(ENTRY + BODY, 'Methods_03.cpp')
+        updated = add_frontend_word_hooks(ENTRY + BODY + WIDGET_ENTRIES, 'Methods_03.cpp')
         with self.assertRaises(ValueError):
             add_frontend_word_hooks(updated, 'Methods_03.cpp')
 
     def test_complete_text_scope_preserves_original_entry_and_tail(self):
         entry=ENTRY.replace('423CA0','405CF0')
-        original=entry+BODY
+        original=original_function('40DC40')+entry+BODY
         updated=add_frontend_word_hooks(original,'Methods_01.cpp')
-        self.assertEqual(updated.count('nfs_trace_guest_call'),1)
+        self.assertEqual(updated.count('nfs_trace_guest_call'),2)
         self.assertTrue(updated.endswith(BODY))
         self.assertIn('uint32_t(eax), [](uint32_t address) { return guest_load<uint8_t>(address); }',updated)
         self.assertIn('nfs::FrontendTextScope nfs_front_text_scope',updated)
