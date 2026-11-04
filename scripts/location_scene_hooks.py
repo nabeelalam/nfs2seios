@@ -33,9 +33,13 @@ def add_location_scene_hooks(text,name):
         entry("40BBE0"," nfs_location_scene_live::IterationScope nfs_location_iteration(*this);")
         entry("405B60"," nfs_location_scene_live::ResolvedScope nfs_location_resolved(*this);")
         after(" nfs_hd_scene_iteration.start();","lazy"," nfs_location_iteration.start();")
-        for call,tag in (("beginGroup","group"),("postGroup","group-end"),("copyEnd","copy")):
-            after(" nfs_background_scene_live::"+call+"(*this);",tag," nfs_location_scene_live::"+call+"(*this);")
         def redraw(part):
+            # Location shares the real40BBE0 redraw route only. Main's separate
+            # first-assembly copy in40D3D0 must never acquire Location hooks.
+            for call,tag in (("beginGroup","group"),("postGroup","group-end"),("copyEnd","copy")):
+                anchor=" nfs_background_scene_live::"+call+"(*this);"
+                if part.count(anchor)!=1:raise ValueError("Location redraw anchor changed: "+call)
+                part=part.replace(anchor,anchor+block(tag," nfs_location_scene_live::"+call+"(*this);"),1)
             part=wrap(part,"guest_address(aSide)","405B30","side"," { nfs_location_scene_live::RoleScope nfs_location_side(*this,nfs_location_scene_live::Phase::Side);")
             return wrap(part,"off_4D2474+ecx*4","405B30","word"," { nfs_location_scene_live::RoleScope nfs_location_word(*this,nfs_location_scene_live::Phase::Word);")
         body("40BBE0",redraw)

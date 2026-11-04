@@ -5,6 +5,22 @@
 #endif
 #ifdef NFS_CLASSIC_BUNDLED_ART
 #include "OwnedArtwork.h"
+#include "ClassicScreens/IntroArtworkLoader.h"
+#include "ClassicScreens/IntroArtworkPin.h"
+#include "ClassicScreens/IntroArtProvider.h"
+#include "ClassicScreens/TrackInfoArtworkLoader.h"
+#include "ClassicScreens/TrackInfoArtworkPin.h"
+#include "ClassicScreens/TrackInfoArtProvider.h"
+#include "ClassicScreens/CarInfoArtworkLoader.h"
+#include "ClassicScreens/CarInfoArtworkPin.h"
+#include "ClassicScreens/CarInfoArtProvider.h"
+#include "PlayerPhotoArtProvider.h"
+#include "PlayerPhotoArtworkLoader.h"
+#include "PlayerPhotoArtworkPin.h"
+#include "TrackBadgeArtProvider.h"
+#include "TrackBadgeArtworkLoader.h"
+#include "TrackBadgeArtworkPin.h"
+#include <cstdio>
 #endif
 #include "BackgroundSceneCatalog.h"
 #include "SoftwareFontBuiltin.h"
@@ -35,7 +51,7 @@ bool enableVariable(const char*name)noexcept{
 bool enableScene()noexcept{
  if(!enableVariable("NFS_PRIVATE_BACKGROUND_SCENE_HD"))return false;
 #ifdef NFS_CLASSIC_UI
- const char*names[]={"NFS_PRIVATE_LOADSAVE_HD","NFS_PRIVATE_LOADSAVE_WORD_ART","NFS_PRIVATE_LOADSAVE_FULLSCENE","NFS_PRIVATE_RECORDS_HD","NFS_PRIVATE_STATS_UI","NFS_PRIVATE_RESULTS_HD","NFS_PRIVATE_VICTORY_HD","NFS_PRIVATE_LOADING_UI","NFS_PRIVATE_CREDITS_UI","NFS_PRIVATE_LOADSAVE_CHILD_UI"};
+ const char*names[]={"NFS_PRIVATE_LOADSAVE_HD","NFS_PRIVATE_LOADSAVE_WORD_ART","NFS_PRIVATE_LOADSAVE_FULLSCENE","NFS_PRIVATE_RECORDS_HD","NFS_PRIVATE_STATS_UI","NFS_PRIVATE_RESULTS_HD","NFS_PRIVATE_VICTORY_HD","NFS_PRIVATE_LOADING_UI","NFS_PRIVATE_TRACK_INFO_UI","NFS_PRIVATE_CAR_INFO_UI","NFS_PRIVATE_INTRO_UI","NFS_PRIVATE_CREDITS_UI","NFS_PRIVATE_LOADSAVE_CHILD_UI"};
  for(const auto*name:names)if(!enableVariable(name))return false;
 #endif
  return true;
@@ -79,13 +95,42 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
  // Called by app startup before GameSession creates a worker. Font failure is
  // optional and cannot change existing artwork-pack or original-rendering paths.
  (void)nfs_soft::installFontCatalog(nfs_soft::createBuiltinFontCatalog());
- Digest d{};if(!pin(d))return false;if(activateArtworkPack(root,d))return true;
+ Digest d{};if(!pin(d))return false;bool activated=activateArtworkPack(root,d);
 #ifdef NFS_CLASSIC_BUNDLED_ART
- if(!bundledTemplate.empty())return installArtworkPack(loadBundledOwnedArtwork(root,bundledTemplate,d),d);
+ if(!activated&&!bundledTemplate.empty())activated=installArtworkPack(loadBundledOwnedArtwork(root,bundledTemplate,d),d);
+ if(activated&&!nfs_intro_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string intro=slash==std::string::npos?root+"/gamedata/"+NFS_INTRO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_INTRO_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_intro_art_load_file(intro.c_str(),error,sizeof error))std::fprintf(stderr,"Optional intro artwork: %s\n",error);
+  }catch(...){}
+ }
+
+ // An empty pin deliberately disables unfinished track-info artwork. Install
+ // immutable scene assets before the worker can seal their provider registry.
+ if(activated&&NFS_TRACK_INFO_ARTWORK_SHA256[0]&&!nfs_track_info_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string trackInfo=slash==std::string::npos?root+"/gamedata/"+NFS_TRACK_INFO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_TRACK_INFO_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_track_info_art_load_file(trackInfo.c_str(),error,sizeof error))std::fprintf(stderr,"Optional track-info artwork: %s\n",error);
+  }catch(...){}
+ }
+ if(activated&&NFS_CAR_INFO_ARTWORK_SHA256[0]&&!nfs_car_info_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string carInfo=slash==std::string::npos?root+"/gamedata/"+NFS_CAR_INFO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_CAR_INFO_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_car_info_art_load_file(carInfo.c_str(),error,sizeof error))std::fprintf(stderr,"Optional car-info artwork: %s\n",error);
+  }catch(...){}
+ }
+ if(activated&&NFS_PLAYER_PHOTO_ARTWORK_SHA256[0]&&!nfs_player_photo_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string playerPhoto=slash==std::string::npos?root+"/gamedata/"+NFS_PLAYER_PHOTO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_PLAYER_PHOTO_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_player_photo_art_load_file(playerPhoto.c_str(),error,sizeof error))std::fprintf(stderr,"Optional player-photo artwork: %s\n",error);
+  }catch(...){}
+ }
+ if(activated&&NFS_TRACK_BADGE_ARTWORK_SHA256[0]&&!nfs_track_badge_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string trackBadge=slash==std::string::npos?root+"/gamedata/"+NFS_TRACK_BADGE_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_TRACK_BADGE_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_track_badge_art_load_file(trackBadge.c_str(),error,sizeof error))std::fprintf(stderr,"Optional track-badge artwork: %s\n",error);
+  }catch(...){}
+ }
+
 #else
  (void)bundledTemplate;
 #endif
- return false;
+ return activated;
 }
 bool activateConfiguredArtwork(const std::string&root)noexcept{return activateConfiguredArtwork(root,std::string());}
 

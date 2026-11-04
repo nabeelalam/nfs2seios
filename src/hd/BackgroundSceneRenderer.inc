@@ -5,6 +5,10 @@
 #include "NativeSceneProvenance.h"
 #include "BackgroundSceneCompositor.c.inc"
 static NfsBackgroundSceneCompositor nfs_bg_compositor;
+static void nfs_menu_wide_prepare(const NfsBackgroundSceneFrameView*,const NfsNativeLogoTargetProof*);
+static void nfs_menu_wide_native_done(uint64_t,int);
+static void nfs_menu_wide_cancel(void);
+static void nfs_menu_wide_cancel_at(unsigned);
 /* NFS_PLAYER_RENDERER_BEGIN:forward */
 static void nfs_player_renderer_created(void);
 static void nfs_player_renderer_retired(int);
@@ -151,6 +155,7 @@ static int nfs_bg_refuse(const char*why,uint64_t serial,const NfsNativeLogoTarge
 static int nfs_bg_native_begin(const NfsBackgroundSceneFrameView*v,const NfsLocationSceneFrameView*location){
  uint32_t ids[300];unsigned i,x,y;NfsNativeLogoTargetProof target;
  if(!nfs_bg_feature())return 0;
+ nfs_menu_wide_cancel_at(201);
  /* NFS_PLAYER_RENDERER_BEGIN:other-scene */nfs_player_renderer_other();/* NFS_PLAYER_RENDERER_END:other-scene */
  nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);
  nfs_bg_content=v?v->contentRevision:0;nfs_bg_map=v?v->mapRole:0;nfs_bg_words=v?v->wordCount:0;
@@ -166,6 +171,7 @@ static int nfs_bg_native_begin(const NfsBackgroundSceneFrameView*v,const NfsLoca
  if(!nfs_bg_scene_prepare(&nfs_bg_compositor)||(location?!nfs_bg_scene_begin_location(&nfs_bg_compositor,location,&target):!nfs_bg_scene_begin(&nfs_bg_compositor,v,&target))){
   nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);return nfs_bg_refuse("art-or-core",v->serial,&target);
  }
+ if(!location)nfs_menu_wide_prepare(v,&target);else nfs_menu_wide_cancel_at(204);
  nfs_bg_pending_target=target;nfs_bg_trace("begin-accepted",location?"location-staging-only":"staging-only",v->serial,&target);return 1;
 }
 static int nfs_bg_native_finish(uint64_t serial,unsigned tailKind){
@@ -174,8 +180,8 @@ static int nfs_bg_native_finish(uint64_t serial,unsigned tailKind){
  target.sampling.magFilter=nfs_bg_pending_target.sampling.magFilter;
  if(memcmp(&target,&nfs_bg_pending_target,sizeof target))goto fail;
  if(!nfs_logo_p_finish(&nfs_logo_provenance,serial,target.framebuffer))goto fail;
- ok=tailKind==NFS_BACKGROUND_TAIL_LOCATION_CAPTION?nfs_bg_scene_finish_location(&nfs_bg_compositor,serial,&target):nfs_bg_scene_finish(&nfs_bg_compositor,serial,&target);nfs_bg_trace(ok?"finish-published":"finish-refused",ok?"core-commit":"core",serial,&target);return ok;
- fail:nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);nfs_bg_trace("finish-refused","target-or-original-pass",serial,0);return 0;
+ ok=tailKind==NFS_BACKGROUND_TAIL_LOCATION_CAPTION?nfs_bg_scene_finish_location(&nfs_bg_compositor,serial,&target):nfs_bg_scene_finish(&nfs_bg_compositor,serial,&target);nfs_menu_wide_native_done(serial,ok&&tailKind==NFS_BACKGROUND_TAIL_MAIN_SKIP);nfs_bg_trace(ok?"finish-published":"finish-refused",ok?"core-commit":"core",serial,&target);return ok;
+ fail:nfs_menu_wide_cancel_at(203);nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);nfs_bg_trace("finish-refused","target-or-original-pass",serial,0);return 0;
 }
 
 int nfs_private_background_scene_begin(const NfsBackgroundSceneFrameView*v){return nfs_bg_native_begin(v,NULL);}
@@ -197,3 +203,20 @@ int nfs_private_location_scene_finish(uint64_t serial){return nfs_bg_native_fini
 #include "PlayerCaptionRenderer.inc"
 #include "PlayerSceneRenderer.inc"
 /* NFS_PLAYER_RENDERER_END:implementation */
+
+/* The maintained ClassicScreens renderer owns transition replay. The legacy
+   renderer preserves original animation until independently integrated. */
+#include "hd/MenuTransitionAbi.h"
+int nfs_private_menu_transition_begin(const NfsMenuTransitionView*view){(void)view;return 0;}
+int nfs_private_menu_transition_finish(uint64_t serial){(void)serial;return 0;}
+
+#include "hd/PlayerPhotoAnimationAbi.h"
+int nfs_private_player_photo_upload(const NfsPlayerPhotoAnimation*v){(void)v;return 0;}
+int nfs_private_player_photo_begin(uint64_t s,int32_t x,int32_t y){(void)s;(void)x;(void)y;return 0;}
+int nfs_private_player_photo_end(uint64_t s){(void)s;return 0;}
+
+#include "hd/TrackBadgeAnimationAbi.h"
+int nfs_private_track_badge_upload(const NfsTrackBadgeUpload*v){(void)v;return 0;}
+int nfs_private_track_badge_begin(uint64_t s,uint64_t e){(void)s;(void)e;return 0;}
+int nfs_private_track_badge_quad(uint64_t s,const float*v){(void)s;(void)v;return 0;}
+int nfs_private_track_badge_end(uint64_t s){(void)s;return 0;}

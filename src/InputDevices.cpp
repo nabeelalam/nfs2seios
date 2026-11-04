@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "InputDevices.h"
+#include "MenuResponsivePointerHooks.h"
 #include "GuestAccess.h"
 #include <cstring>
 #include <limits>
@@ -14,7 +15,7 @@ struct Instance {uint32_t size,instance[4],product[4],type;char name[260],produc
 static_assert(sizeof(Instance)==580,"Original device instance ABI");
 Instance instance(uint32_t kind,uint32_t slot){Instance value{};value.size=sizeof(value);value.instance[0]=kind;value.instance[1]=slot;value.product[0]=kind;value.type=kind==joystick?4:2;std::strcpy(value.name,kind==joystick?"iPad Controller":"iPad Menu Pointer");std::strcpy(value.product_name,value.name);return value;}
 struct GuestAllocation {void *pointer;explicit GuestAllocation(size_t size):pointer(malloc32(size)){}~GuestAllocation(){if(pointer)free32(pointer);}GuestAllocation(const GuestAllocation &)=delete;};
-struct PointerEvent {uint32_t offset,data,time,sequence;};
+using PointerEvent=NfsMenuPointerEvent;
 static_assert(sizeof(PointerEvent)==16,"Pinned legacy buffered mouse ABI");
 struct PointerQueue {
     std::array<PointerEvent,64> events{};unsigned count=0;uint32_t sequence=0;bool overflow=false;
@@ -55,7 +56,8 @@ void InputDevices::pointer_click(uint32_t now){
     std::lock_guard<std::mutex> lock(mutex);for(auto &entry:objects)if(entry.second->pointer)entry.second->pointer->click(now);
 }
 void InputDevices::clear_pointer(uint32_t now){
-    std::lock_guard<std::mutex> lock(mutex);for(auto &entry:objects)if(entry.second->pointer)entry.second->pointer->reset(now);
+    {std::lock_guard<std::mutex> lock(mutex);for(auto &entry:objects)if(entry.second->pointer)entry.second->pointer->reset(now);}
+    const int saved_errno=errno;try{nfs_menu_pointer_queue_reset();}catch(...){nfs_menu_pointer_metadata_failure();}errno=saved_errno;
 }
 std::shared_ptr<InputDevices::Object> InputDevices::find(uint32_t handle){std::lock_guard<std::mutex> lock(mutex);auto it=objects.find(handle);return it==objects.end()?nullptr:it->second;}
 uint32_t input_argument_count(InputMethod method){
@@ -305,7 +307,12 @@ int32_t InputDevices::invoke(void *context,InputMethod method,const uint32_t *a)
             }
         }
         if(a[2] && take){check_worker_stop();std::lock_guard<std::mutex> lock(guest_copy_mutex());std::memcpy(nfs_host_address(a[2],size_t(take)*16),copied.data(),size_t(take)*16);}
-        guest_store<uint32_t>(a[3],take);return result;
+        guest_store<uint32_t>(a[3],take);
+        // Both queue and guest-copy locks are released before host metadata.
+        const int saved_errno=errno;
+        try{nfs_menu_pointer_read_receipt(copied.data(),take,result,a[4]&1,a[2]!=0,a[0]);}catch(...){nfs_menu_pointer_metadata_failure();}
+        errno=saved_errno;
+        return result;
     }
     case InputMethod::format:if(!a[1])return invalid;return guest_load<uint32_t>(a[1])==24?0:invalid;
     case InputMethod::effect:if(a[3])guest_store<uint32_t>(a[3],0);return unsupported;

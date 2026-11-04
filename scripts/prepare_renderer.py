@@ -93,6 +93,7 @@ def prepare_renderer(classic_screens=False,classic_assets_dir=None,output_dir=No
     text = text.replace('g_lfb = (uint8_t *)malloc32(640*480*2);', 'g_lfb = (uint8_t *)malloc32(640*480*2);\n\t\tif (!g_lfb) return false;')
     text = prepare_surfaces(text, dest)
     text = prepare_hd_atlas(text, dest)
+    text = prepare_aspect_layout(text, dest)
     opening='\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);\n\n\thandleDpr();'
     if text.count(opening)!=1: raise ValueError('Unexpected drawable initialization order')
     text=text.replace(opening,'\thandleDpr();\n\tcreateContext();\n\tcreateFrameBuffer();\n\tuseGameProgram(true);')
@@ -108,6 +109,14 @@ def prepare_renderer(classic_screens=False,classic_assets_dir=None,output_dir=No
     text = add_player_intro_renderer_hooks(text)
     for name in HELPERS:
         shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
+    from menu_responsive_renderer_hooks import add_menu_responsive_renderer_hooks
+    text = add_menu_responsive_renderer_hooks(text)
+    shutil.copyfile(ROOT / 'src/hd/MenuResponsiveRenderer.inc',dest / 'hd/MenuResponsiveRenderer.inc')
+    shutil.copyfile(ROOT / 'src/MenuResponsiveLayout.h',dest / 'hd/MenuResponsiveLayout.h')
+    shutil.copyfile(ROOT / 'src/MenuResponsiveDebug.h',dest / 'hd/MenuResponsiveDebug.h')
+    shutil.copyfile(ROOT / 'src/MenuResponsiveCached.h',dest / 'hd/MenuResponsiveCached.h')
+    shutil.copyfile(ROOT / 'src/hd/MainOriginalBrandingSource.h',dest / 'hd/MainOriginalBrandingSource.h')
+    shutil.copyfile(ROOT / 'src/hd/MenuOriginalBranding.inc',dest / 'hd/MenuOriginalBranding.inc')
     from controls_renderer_hooks import add_controls_renderer_hooks, HELPERS as CONTROLS_HELPERS
     text = add_controls_renderer_hooks(text)
     for name in CONTROLS_HELPERS:
@@ -280,7 +289,7 @@ static void nfs_logo_native_triangle(const GrVertex*,const GrVertex*,const GrVer
     restored = re.sub(r'\n/\* NFS_HD_SCENE_BEGIN:([^*]+) \*/\n.*?\n/\* NFS_HD_SCENE_END:\1 \*/\n', '', text, flags=re.S)
     if restored != original: raise ValueError('Scene source reverse audit failed')
     target=dest/'hd';target.mkdir(exist_ok=True)
-    names=['BackgroundSceneRenderer.inc','NativeSceneProvenance.h','BackgroundSceneCompositor.h',
+    names=['TrackBadgeAnimationAbi.h','TrackBadgeArtProvider.h','TrackBadgeRenderer.inc','PlayerPhotoAnimationAbi.h','PlayerPhotoArtProvider.h','PlayerPhotoRenderer.inc','MenuTransitionAbi.h','MenuTransitionRenderer.inc','BackgroundSceneRenderer.inc','NativeSceneProvenance.h','BackgroundSceneCompositor.h',
            'BackgroundSceneCompositor.c.inc','NativeSceneTarget.h','SceneGpuSupport.h',
            'SceneGpuSupport.inc','SmallLogoGpu.h','SmallLogoGpu.c.inc','HdArtProvider.h',
            'BackgroundSceneArt.h','SmallLogoArtAbi.h','BackgroundSceneRuntimeAbi.h','SmallLogoLayerAbi.h',
@@ -390,6 +399,61 @@ def prepare_hd_atlas(text, dest):
     for name in ('HdAtlas.h', 'RendererHdAtlas.inc', 'BuiltinTiming.h', 'TextureDigest.h', 'TimingFontPixels.inc', 'HdGlyphSelect.h', 'BuiltinSpeed.h', 'SpeedFontPixels.inc', 'SpeedShader.inc', 'BuiltinSmallFont.h', 'SmallFontPixels.inc', 'SmallFontIdentity.h', 'SmallFontRuntime.inc', 'BuiltinRecordFont.h', 'RecordFontPixels.inc', 'RecordFontIdentity.h', 'RecordFontRuntime.inc', 'SmallGlyphShader.inc', 'LogoPixels.inc', 'PauseFontPixels.inc', 'PauseHeaderPixels.inc', 'VolumeBarPixels.inc', 'PauseFontRuntime.inc', 'PanelMaterialRuntime.inc', 'GaugeMaskPixels.inc', 'GearPixels.inc', 'WideLabelPixels.inc', 'LabelCellLayout.inc', 'ClockPunctuationPixels.inc', 'SilverSlashPixels.inc', 'SilverSlashRuntime.inc', 'StartLightPixels.inc', 'StartLightRuntime.inc', 'FrontendWordMode.h', 'FrontendTextContext.h', 'FrontendFontPixels.inc', 'FrontendFontLayout.inc', 'FrontendFontGeometry.inc', 'FrontendFontCapacity.h', 'FrontendFontRuntime.inc', 'FrontendWordLayout.inc', 'WarningWordPixels.inc', 'WarningWordSelect.h', 'WarningWordShader.inc', 'MinimapSourceRuntime.inc', 'ReplayControlsRuntime.inc', 'ReplayPlayPixels.inc', 'ReplayPlayShader.inc', 'ReplayControlsShader.inc', 'MinimapMaterialShader.inc',*font_parts,*pause_parts):
         shutil.copyfile(ROOT/'src'/name, dest/'Glide2x'/name)
     return text
+
+
+def prepare_aspect_layout(text, dest):
+    """Use actual drawable pixels and an explicitly contained legacy canvas."""
+    wrapper=dest/'Glide2x.c'
+    original=wrapper.read_text()
+    def replace_body(source, signature, replacement):
+        marker=signature+'\n{'
+        if source.count(marker)!=1:raise ValueError('Unexpected aspect helper: '+signature)
+        start=source.index(marker);at=start+len(marker);depth=1
+        while depth and at<len(source):
+            depth+=(source[at]=='{')-(source[at]=='}');at+=1
+        if depth:raise ValueError('Unterminated aspect helper')
+        return source[:start]+replacement+source[at:]
+    original=replace_body(original,'static inline void handleDpr()', """
+static inline void handleDpr()
+{
+    extern float dpr;
+    int width=0,height=0;
+    if(!SDL_GetWindowSizeInPixels(sdlWin,&width,&height)||width<=0||height<=0)return;
+    // Never reconstruct pixel dimensions from rounded logical points/density.
+    winWidth=width;winHeight=height;
+    const float density=SDL_GetWindowPixelDensity(sdlWin);
+    if(isfinite(density)&&density>0.0f)dpr=density;
+}""".lstrip())
+    original=replace_body(original,'static inline BOOL clearUnusedArea(int32_t xOffset, int32_t yOffset, int32_t visibleWidth, int32_t visibleHeight)', """
+static inline BOOL clearUnusedArea(int32_t xOffset, int32_t yOffset, int32_t visibleWidth, int32_t visibleHeight)
+{
+    if(!keepAspectRatio||winWidth<=0||winHeight<=0||visibleWidth<=0||visibleHeight<=0||xOffset<0||yOffset<0||visibleWidth>winWidth-xOffset||visibleHeight>winHeight-yOffset)return false;
+    const int32_t left=xOffset,right=winWidth-visibleWidth-xOffset;
+    const int32_t top=yOffset,bottom=winHeight-visibleHeight-yOffset;
+    if(!left&&!right&&!top&&!bottom)return false;
+    glClearColor(0.0f,0.0f,0.0f,1.0f);
+    if(left){glScissor(0,0,left,winHeight);glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);}
+    if(right){glScissor(xOffset+visibleWidth,0,right,winHeight);glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);}
+    if(bottom){glScissor(0,0,winWidth,bottom);glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);}
+    if(top){glScissor(0,winHeight-top,winWidth,top);glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);}
+    return true;
+}""".lstrip())
+    if original.count('#include "Glide2x.h"')!=1:raise ValueError('Unexpected aspect wrapper include')
+    original=original.replace('#include "Glide2x.h"','#include "Glide2x.h"\n#include <math.h>')
+    wrapper.write_text(original)
+    start=text.index('static BOOL presentFrontSurface(void)')
+    begin=text.index('	int32_t xOffset = 0, yOffset = 0;',start)
+    end=text.index('\n\tglBindTexture(GL_TEXTURE_2D, g_frontTexture);',begin)
+    text=text[:begin]+"""
+    NfsAspectRect viewport;
+    if(!nfs_aspect_viewport(640,480,winWidth,winHeight,keepAspectRatio,&viewport))return false;
+    clearUnusedArea(viewport.left,viewport.top,viewport.width,viewport.height);
+    glViewport(viewport.left,winHeight-viewport.height-viewport.top,viewport.width,viewport.height);
+    glScissor(viewport.left,winHeight-viewport.height-viewport.top,viewport.width,viewport.height);
+"""+text[end:]
+    (dest/'hd').mkdir(parents=True,exist_ok=True)
+    shutil.copyfile(ROOT/'src/hd/AspectLayout.h',dest/'hd/AspectLayout.h')
+    return '#include "hd/AspectLayout.h"\n'+text
 
 
 def prepare_palettes(text, dest):

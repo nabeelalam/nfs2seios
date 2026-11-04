@@ -7,7 +7,7 @@ def span(t,n):
 
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--source-dir',type=Path,required=True);ap.add_argument('--output-dir',type=Path,required=True);a=ap.parse_args();assert a.source_dir.is_dir()and not a.output_dir.exists();a.output_dir.mkdir(parents=True)
- routes={'40938C':'nfs_ls_child_live::OwnerScope nfs_ls_child_owner(*this);','401090':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x401090);','401AE0':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x401ae0);','402460':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x402460);','402CD0':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x402cd0);','405CF0':'nfs_ls_child_live::StringScope nfs_ls_child_string(*this);','426950':'nfs_ls_child_live::PresentScope nfs_ls_child_present(*this);'}
+ routes={'40938C':'nfs_ls_child_live::OwnerScope nfs_ls_child_owner(*this);','401090':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x401090);','401AE0':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x401ae0);','401F40':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x401f40);','402460':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x402460);','402CD0':'nfs_ls_child_live::ChildScope nfs_ls_child_scope(*this,0x402cd0);','405CF0':'nfs_ls_child_live::StringScope nfs_ls_child_string(*this);','426950':'nfs_ls_child_live::PresentScope nfs_ls_child_present(*this);'}
  found=set();rows=[]
  for f in sorted(a.source_dir.glob('Methods_*.cpp')):
   original=f.read_bytes();t=original.decode().replace('\r\n','\n');tags=[]

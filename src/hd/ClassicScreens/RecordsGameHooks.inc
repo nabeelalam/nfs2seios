@@ -7,6 +7,8 @@
 #include <cstring>
 #include <cerrno>
 #include <limits>
+#include <memory>
+#include <utility>
 namespace nfs_records_ui_live {
 constexpr unsigned Pixels=640*480;
 inline bool enabled()noexcept{const char*p=std::getenv("NFS_PRIVATE_RECORDS_HD");return p&&p[0]=='1'&&!p[1];}
@@ -14,7 +16,7 @@ inline uintptr_t threadToken()noexcept{static thread_local char value;return rei
 struct Measurement {bool ready=false;uint32_t text=0;int width=0,anchor=0;unsigned alignment=0;};
 struct State {
  Game*game=nullptr;uintptr_t thread=0;uint64_t epoch=0,serial=0;unsigned owner=0,presenting=0;
- bool failed=false,capturing=false,string=false,word=false;
+ bool failed=false,capturing=false,string=false,word=false,postrace=false;
  uint32_t textAddress=0,metricAddress=0,fontAddress=0;
  std::array<int16_t,256>advances{};std::array<bool,256>known{};
  std::shared_ptr<Payload>building;std::shared_ptr<const Frame>published;
@@ -23,7 +25,8 @@ struct State {
  void invalidate()noexcept{failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();}
 };
 inline State&state()noexcept{static thread_local State s;return s;}
-inline State*current(Game&g)noexcept{auto&s=state();return s.owner==1&&s.game==&g&&s.thread==threadToken()&&!s.failed?&s:nullptr;}
+inline State*ownerCurrent(Game&g)noexcept{auto&s=state();return s.owner==1&&s.game==&g&&s.thread==threadToken()?&s:nullptr;}
+inline State*current(Game&g)noexcept{auto*s=ownerCurrent(g);return s&&!s->failed?s:nullptr;}
 struct CpuErrno {
  Game&g;std::array<unsigned char,sizeof(CPU)>saved{};int error;
  explicit CpuErrno(Game&x)noexcept:g(x),error(errno){std::memcpy(saved.data(),static_cast<CPU*>(&g),sizeof(CPU));}
@@ -41,18 +44,26 @@ inline void metricTable(State&s,uint32_t font,uint32_t table,unsigned count){
 }
 struct OwnerScope {
  Game&g;bool entered=false;
- explicit OwnerScope(Game&x)noexcept:g(x){if(!enabled()||uint32_t(g.eax)!=uint32_t(guest_address(dword_4D2944)))return;safe(g,[&]{
-  auto&s=state();if(s.owner){s.invalidate();return;}uint16_t type;{nfs::GuestCopyTransaction tx;type=tx.load<uint16_t>(uint32_t(g.eax)+8);}if(type!=10)return;
-  static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;entered=true;
- });}
+ explicit OwnerScope(Game&x,bool postrace=false)noexcept:g(x){
+  const uint32_t expected=uint32_t(postrace?guest_address(dword_4D28C4):guest_address(dword_4D2944));
+  if(!enabled()||uint32_t(g.eax)!=expected)return;safe(g,[&]{
+   uint16_t type;{nfs::GuestCopyTransaction tx;type=tx.load<uint16_t>(expected+8);}if(type!=(postrace?22:10))return;
+   auto&s=state();if(s.owner){s.invalidate();return;}
+   static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;
+   s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;s.postrace=postrace;entered=true;
+  });
+ }
  ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);state()=State{};}}
 };
-inline NfsRecordsBackdropView readBackdrop(uint32_t stack,uint64_t epoch,uint64_t serial){NfsRecordsBackdropView v{};nfs::GuestCopyTransaction tx;v.schema=1;v.trackIndex=tx.load<uint16_t>(stack+0xf0);v.language=tx.load<uint8_t>(byte_512DFB);v.frameEpoch=epoch;v.content=serial;v.sourceArchive=tx.load<uint32_t>(dword_4D40B8);if(v.trackIndex>7||v.language>5||!v.sourceArchive)throw 1;return v;}
-inline bool backdropCurrent(const Payload&p){return nfs_records_backdrop_same(p.backdrop,readBackdrop(p.handlerStack,p.epoch,p.serial));}
+inline NfsRecordsBackdropView readBackdrop(uint32_t stack,uint64_t epoch,uint64_t serial,bool postrace){NfsRecordsBackdropView v{};nfs::GuestCopyTransaction tx;v.schema=1;const uint32_t form=uint32_t(postrace?guest_address(dword_4D28C4):guest_address(dword_4D2944));if(tx.load<uint16_t>(form+8)!=(postrace?22:10))throw 1;v.trackIndex=tx.load<uint16_t>(stack+0xf0);v.language=tx.load<uint8_t>(byte_512DFB);v.frameEpoch=epoch;v.content=serial;v.sourceArchive=tx.load<uint32_t>(dword_4D40B8);if(v.trackIndex>7||v.language>5||!v.sourceArchive)throw 1;return v;}
+inline bool backdropCurrent(const Payload&p){return nfs_records_backdrop_same(p.backdrop,readBackdrop(p.handlerStack,p.epoch,p.serial,p.postrace));}
 struct Adapter {
- static void begin(Game&g)noexcept{auto*s=current(g);if(!s)return;safe(g,[&]{
+ static void begin(Game&g)noexcept{auto*s=ownerCurrent(g);if(!s)return;safe(g,[&]{
+  // A refused frame must not poison this handler's later complete frames.
+  // Retry only at its original full-frame boundary; every proof is recaptured.
+  if(s->failed){const auto epoch=s->epoch,serial=s->serial;const bool postrace=s->postrace;*s=State{};s->game=&g;s->thread=threadToken();s->epoch=epoch;s->serial=serial;s->owner=1;s->postrace=postrace;}
   if(s->capturing||s->string||s->word||s->serial==UINT64_MAX)throw 1;
-  auto p=std::make_shared<Payload>();p->target=target();p->clean=plane(p->target);p->recordsAddress=uint32_t(g.ebp);p->records=records(p->recordsAddress);p->epoch=s->epoch;p->serial=++s->serial;p->handlerStack=uint32_t(g.esp);p->backdrop=readBackdrop(p->handlerStack,p->epoch,p->serial);
+  auto p=std::make_shared<Payload>();p->target=target();p->clean=plane(p->target);p->recordsAddress=uint32_t(g.ebp);p->records=records(p->recordsAddress);p->epoch=s->epoch;p->serial=++s->serial;p->handlerStack=uint32_t(g.esp);p->postrace=s->postrace;p->backdrop=readBackdrop(p->handlerStack,p->epoch,p->serial,p->postrace);
   s->replay=p->clean;s->building=std::move(p);s->published.reset();s->metricAddress=s->fontAddress=0;s->capturing=true;
  });}
  static void end(Game&g)noexcept{auto*s=current(g);if(!s||!s->capturing)return;safe(g,[&]{
@@ -82,7 +93,10 @@ struct StringScope {
   auto&c=s->command;c={};s->textBefore.fill(0);s->textAddress=uint32_t(g.eax);
   uint32_t font=0,table=0,count=0,size=0,callback=0;
   {nfs::GuestCopyTransaction tx;for(unsigned k=0;k<96;++k){uint8_t value=tx.load<uint8_t>(s->textAddress+k);s->textBefore[k]=value;if(!value){c.length=k;break;}}
-   if(!c.length||c.length>95||s->textBefore[c.length])throw 1;
+   // Original 405CF0 draws no glyphs for an empty string (e.g. a blank name).
+   // Skip that command; any unexpected original stores still fail final replay.
+   if(!c.length){if(!s->textBefore[0])return;throw 1;}
+   if(c.length>95||s->textBefore[c.length])throw 1;
    font=tx.load<uint32_t>(dword_4DD770);table=tx.load<uint32_t>(dword_4DD76C);count=tx.load<uint32_t>(dword_4DD75C);size=tx.load<uint32_t>(dword_4E54AC);callback=tx.load<uint32_t>(dword_4DD77C);
    c.color=uint16_t(tx.load<uint32_t>(dword_4DD714));c.originX=tx.load<int32_t>(dword_4DD6F4);c.originY=tx.load<int32_t>(dword_4DD6F8);
   }

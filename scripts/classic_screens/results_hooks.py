@@ -24,6 +24,8 @@ def main():
   anchor='#include "FunctionIds.h"';assert text.count(anchor)==1;text=text.replace(anchor,anchor+block('#include "'+('hd/ClassicScreens/ResultsQueueAdapter.inc'if unit==3 else'hd/ClassicScreens/ResultsGameHooks.inc')+'"'),1)
   if unit==1:
    entry('405CF0',' nfs_results_ui_live::StringScope nfs_results_string(*this);')
+   entry('413BF0',' nfs_results_ui_live::RecordQualificationScope nfs_results_record_qualification(*this);')
+   entry('413914',' nfs_results_ui_live::NameEntryCallerScope nfs_results_name_caller(*this);')
    for symbol in ['405580','4054E0']:entry(symbol,' nfs_results_ui_live::ResourceScope nfs_results_resource(*this);')
    def measures(part):
     call='\tesp -= 4; _sub_482424(); esp += 4; //call';assert part.count(call)==2;pieces=part.split(call)

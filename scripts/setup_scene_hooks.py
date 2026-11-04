@@ -35,9 +35,12 @@ def add_setup_scene_hooks(text,name):
         entry("40BBE0"," nfs_setup_scene_live::IterationScope nfs_setup_iteration(*this);")
         entry("405B60"," nfs_setup_scene_live::ResolvedScope nfs_setup_resolved(*this);")
         after(" nfs_hd_scene_iteration.start();","lazy"," nfs_setup_iteration.start();")
-        for call,tag in (("beginGroup","group"),("postGroup","group-end"),("copyEnd","copy")):
-            after(" nfs_background_scene_live::"+call+"(*this);",tag," nfs_setup_scene_live::"+call+"(*this);")
         def redraw(part):
+            # Shared40BBE0 redraw only; exclude Main's initial40D3D0 copy.
+            for call,tag in (("beginGroup","group"),("postGroup","group-end"),("copyEnd","copy")):
+                anchor=" nfs_background_scene_live::"+call+"(*this);"
+                if part.count(anchor)!=1:raise ValueError("Setup redraw anchor changed: "+call)
+                part=part.replace(anchor,anchor+block(tag," nfs_setup_scene_live::"+call+"(*this);"),1)
             part=wrap(part,"guest_address(aSide)","405B30","side"," { nfs_setup_scene_live::RoleScope nfs_setup_side(*this,nfs_setup_scene_live::Phase::Side);")
             return wrap(part,"off_4D2474+ecx*4","405B30","word"," { nfs_setup_scene_live::RoleScope nfs_setup_word(*this,nfs_setup_scene_live::Phase::Word);")
         body("40BBE0",redraw)

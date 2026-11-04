@@ -31,14 +31,16 @@ def main():
    edit('405580',measures)
   elif unit==2:
    entry('41C850',' nfs_records_ui_live::OwnerScope nfs_records_owner(*this);')
+   entry('41B8D0',' nfs_records_ui_live::OwnerScope nfs_records_owner(*this,true);')
    def records(part):
-    start=part.index('loc_41CA0F:\n');end=part.index('loc_41CA75:\n',start);call='\tesp -= 4; _sub_405B30(); esp += 4; //call';region=part[start:end];assert region.count(call)==2;at=start+region.rindex(call)+len(call);part=part[:at]+block(' nfs_records_ui_live::Adapter::begin(*this);')+part[at:]
+    call='\tesp -= 4; _sub_405B30(); esp += 4; //call';assert part.count(call)==2;at=part.rindex(call)+len(call);part=part[:at]+block(' nfs_records_ui_live::Adapter::begin(*this);')+part[at:]
     call='\tesp -= 4; _sub_40FA90(); esp += 4; //call';assert part.count(call)==1;part=part.replace(call,call+block(' nfs_records_ui_live::Adapter::end(*this);'))
     call='\tesp -= 4; _sub_426B70(); esp += 4; //call';tail='\tesp -= 4; _sub_4274F0(); esp += 4; //call';assert part.count(call)==1
     at=part.index(call);end=part.index(tail,at)+len(tail);region=part[at:end];assert region.count(tail)==1 and 'goto ' not in region
     region=region.replace(call,call+block(' nfs_records_native.stage();'),1)
     return part[:at]+block(' { nfs_records_ui_live::Presentation nfs_records_present(*this);\n nfs_records_ui_live::DrawScope nfs_records_native(*this);')+region+block(' }')+part[end:]
    edit('41C850',records)
+   edit('41B8D0',records)
   elif unit==3:pass # Records DrawScope now owns the complete handler presentation tail.
   elif unit==10:
    for symbol in ['482DA0','4848FC']:entry(symbol,' nfs_records_ui_live::retire(*this,uint32_t(eax));')

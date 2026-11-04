@@ -15,8 +15,10 @@ class TouchPointer {
     uint64_t device=0;uint32_t started=0;
     unsigned count=0,peak=0;bool rejected=false;
     double path=0,remainder_x=0,remainder_y=0;
+    double logical_width=640;
     void clear_state(){for(auto &f:fingers)f.used=false;count=peak=0;rejected=false;path=remainder_x=remainder_y=0;}
 public:
+    void set_logical_width(double width){logical_width=std::isfinite(width)&&width>=640&&width<=854?width:640;}
     TouchResult reset(){clear_state();TouchResult r;r.clear=true;return r;}
     TouchResult update(TouchPhase phase,uint64_t touch,uint64_t finger,double x,double y,uint32_t now){
         TouchResult result;
@@ -35,7 +37,7 @@ public:
             return result;
         }
         if(!found)return result;
-        const double dx=(x-found->x)*640,dy=(y-found->y)*480;
+        const double dx=(x-found->x)*logical_width,dy=(y-found->y)*480;
         path+=std::hypot(dx,dy);found->x=x;found->y=y;
         if(peak==1){
             remainder_x+=dx;remainder_y+=dy;

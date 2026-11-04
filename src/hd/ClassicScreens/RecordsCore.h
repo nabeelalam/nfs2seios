@@ -12,7 +12,7 @@ struct Payload {
  std::vector<uint16_t>clean,original;
  std::vector<nfs_soft::TextCommand>commands;
  std::array<uint8_t,620>records{};
- uint32_t recordsAddress=0,handlerStack=0;NfsRecordsBackdropView backdrop{};
+ uint32_t recordsAddress=0,handlerStack=0;bool postrace=false;NfsRecordsBackdropView backdrop{};
  uint64_t epoch=0,serial=0;
 };
 class Frame final {

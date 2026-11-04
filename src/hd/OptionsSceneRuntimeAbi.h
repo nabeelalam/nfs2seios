@@ -4,7 +4,8 @@
 #include "BackgroundSceneRuntimeAbi.h"
 #include "SoftwareTextLayerAbi.h"
 #include "CompactCaptionWordRuntimeAbi.h"
-#define NFS_OPTIONS_SCENE_RUNTIME_SCHEMA 2u
+#include "MenuResponsiveCached.h"
+#define NFS_OPTIONS_SCENE_RUNTIME_SCHEMA 3u
 /* Separate tag; Main and Location guards retain their original1/2 values. */
 enum {NFS_BACKGROUND_TAIL_OPTIONS_CAPTION=3};
 /* Explicit Options-only tail. The original Main entry still requires MAIN_SKIP.
@@ -15,6 +16,7 @@ typedef struct NfsOptionsSceneFrameView {
  NfsBackgroundSceneFrameView scene;
  NfsSoftwareTextLayerView caption;
  NfsCompactCaptionWordView captionWord;
+ NfsMenuCachedSnapshot responsive;
 } NfsOptionsSceneFrameView;
 #ifdef __cplusplus
 extern "C" {

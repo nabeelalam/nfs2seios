@@ -50,7 +50,7 @@ def add_background_scene_hooks(text, name):
             raise ValueError("Original background call missing: "+tag)
         return part[:at]+block(tag+"-open",before)+call+block(tag+"-close",after)+part[at+len(call):]
     include = '#include "FunctionIds.h"\n'
-    unique(include, include+block("include", '#include "hd/BackgroundSceneQueueAdapter.inc"'))
+    unique(include, include+block("include", '#include "hd/BackgroundSceneQueueAdapter.inc"\n#include "hd/MenuTransitionGameHooks.inc"'))
     if name == "Methods_01.cpp":
         entry("40D3D0", " nfs_logo_publisher::MenuOwnerScope nfs_hd_menu(*this);\n nfs_background_scene_live::MainScope nfs_hd_scene_menu(*this);")
         entry("40BBE0", " nfs_logo_publisher::OwnerScope nfs_hd_iteration(*this,1);\n nfs_background_scene_live::IterationScope nfs_hd_scene_iteration(*this);")
@@ -71,23 +71,40 @@ def add_background_scene_hooks(text, name):
             return part
         body("40BBE0",redraw)
         def main(part):
-            part=wrap_next(part,"loc_40D63E:\n","405B30","base"," { nfs_background_scene_live::RoleScope nfs_hd_base(*this,nfs_background_scene_live::Phase::Base);")
+            # Exact first343sidebar-to-temporary opaque copy, before word4D232C
+            # presentation. This is not the previous title or a640frame copy.
+            part=wrap_next(part,"loc_40D4D6:\n","405B60","initial-sidebar-temp"," { nfs_initial_sidebar_transition::CopyScope nfs_hd_initial_sidebar_copy(*this);")
+            part=wrap_next(part,"loc_40D63E:\n","405B30","base"," { nfs_background_scene_live::resetForBaseDraw(*this);\n nfs_background_scene_live::RoleScope nfs_hd_base(*this,nfs_background_scene_live::Phase::Base);")
+            part=wrap_next(part,"loc_40D794:\n","405B30","base-reload"," { nfs_background_scene_live::resetForBaseDraw(*this);\n nfs_background_scene_live::RoleScope nfs_hd_base_reload(*this,nfs_background_scene_live::Phase::Base);")
+            # Initial40BBE0 precedes the base. Re-observe the actual later
+            # sidebar copy and full upload; never relabel its earlier events.
+            start=part.index("loc_40D63E:\n")
+            end=part.index("loc_40D6B7:\n",start)
+            initial=part[start:end]
+            copy="\tesp -= 4; _sub_405B60(); esp += 4; //call"
+            upload="\tesp -= 4; _sub_428250(); esp += 4; //call"
+            initial=checked_replace(initial,copy,block("initial-copy-open"," { nfs_background_scene_live::InitialAssemblyScope nfs_hd_initial(*this);")+copy+block("initial-copy-end"," nfs_background_scene_live::copyEnd(*this);"))
+            initial=checked_replace(initial,upload,upload+block("initial-copy-close"," }"))
+            part=part[:start]+initial+part[end:]
             call="\tesp -= 4; _sub_427B30(); esp += 4; //call"
             begin=" {\n nfs_logo_publisher::NativePresentationScope nfs_hd_route(*this);\n nfs_background_scene_live::Intent nfs_hd_intent;\n try {\n nfs_background_scene_live::begin(*this,nfs_hd_intent);"
             end=" nfs_background_scene_live::finish(nfs_hd_intent);\n } catch(...) {\n nfs_background_scene_live::cancel(nfs_hd_intent);\n throw;\n }\n }"
             return checked_replace(part,call,block("native-begin",begin)+call+block("native-finish",end))
         body("40D3D0",main)
     elif name == "Methods_03.cpp":
-        entry("428250"," nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);")
+        entry("427B30"," nfs_menu_transition_live::PlainDrawScope nfs_hd_plain_transition(*this);")
+        entry("427C70"," nfs_menu_transition_live::DrawScope nfs_hd_transition(*this);")
+        entry("428250"," nfs_menu_transition_live::UploadScope nfs_hd_transition_upload(*this);\n nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);")
         def upload(part):
             call="\tesp -= 4; _sub_49755C(); esp += 4; //call"
-            return checked_replace(part,call,block("tile-open"," { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);")+call+block("tile-close"," }"))
+            return checked_replace(part,call,block("tile-open"," { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n nfs_menu_transition_live::TileScope nfs_hd_transition_tile(*this);")+call+block("tile-close"," }"))
         body("428250",upload)
         for symbol in ("4284B0","4287F0","4289F0"):
             entry(symbol," nfs_background_scene_live::invalidateCache();\n nfs_logo_publisher::resetNativeCache();")
     elif name == "Methods_10.cpp":
         # Central free entry covers all callers before the original window retires.
-        entry("482DA0"," nfs_background_scene_live::retire(*this);\n nfs_logo_publisher::retireNative(*this);")
+        entry("482DA0"," nfs_initial_sidebar_transition::retire(*this,uint32_t(eax));\n nfs_background_scene_live::retire(*this);\n nfs_logo_publisher::retireNative(*this);")
+        entry("4848FC"," nfs_initial_sidebar_transition::retire(*this,uint32_t(eax));")
         for symbol in ("482BD4","482ED4","482FD4","483070","483100","4831A8","483288"):
             code=" nfs_logo_publisher::row(*this,uint32_t(game_id_sub_"+symbol+"));"
             if symbol=="482BD4":
@@ -95,7 +112,7 @@ def add_background_scene_hooks(text, name):
             entry(symbol,code)
         entry("483438"," nfs_background_scene_live::row(*this,uint32_t(game_id_sub_483438));\n nfs_background_scene_live::CopyWrapperScope nfs_hd_copy_wrapper(*this);")
     else:
-        entry("4A14D4"," nfs_background_scene_live::byteCopyRow(*this);")
+        entry("4A14D4"," nfs_background_scene_live::byteCopyRow(*this);\n nfs_initial_sidebar_transition::CopyLeafScope nfs_hd_initial_sidebar_leaf(*this);")
         def dispatch(part):
             call="\tcall(to32i(esp+0x38));"
             return checked_replace(part,call,block("indexed-open"," { nfs_background_scene_live::IndexedSideCallScope nfs_hd_indexed(*this,nfs_background_scene_live::indexedSideCallee(*this));")+call+block("indexed-close"," }"),4)

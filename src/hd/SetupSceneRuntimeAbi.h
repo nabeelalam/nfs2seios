@@ -4,7 +4,8 @@
 #include "BackgroundSceneRuntimeAbi.h"
 #include "SoftwareTextLayerAbi.h"
 #include "CompactCaptionWordRuntimeAbi.h"
-#define NFS_SETUP_SCENE_RUNTIME_SCHEMA 2u
+#include "MenuResponsiveCached.h"
+#define NFS_SETUP_SCENE_RUNTIME_SCHEMA 3u
 /* Independent Setup tag; Options/Location/Main retain their exact3/2/1 guards. */
 enum {NFS_BACKGROUND_TAIL_SETUP_CAPTION=4};
 /* Source joins and retained caption are independently Setup-owned. Borrows are
@@ -15,6 +16,7 @@ typedef struct NfsSetupSceneFrameView {
  NfsBackgroundSceneFrameView scene;
  NfsSoftwareTextLayerView caption;
  NfsCompactCaptionWordView captionWord;
+ NfsMenuCachedSnapshot responsive;
 } NfsSetupSceneFrameView;
 #ifdef __cplusplus
 extern "C" {

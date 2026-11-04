@@ -9,6 +9,7 @@
 #include "PlayerCaptionDisplay.h"
 #include <new>
 #include "PlayerStatMaterial.h"
+#include "PlayerPhotoPrepare.h"
 namespace nfs_player_scene_cpu {
 namespace bg=nfs_background_scene_cpu;namespace pv=nfs_player_preview;namespace sw=nfs_player_swatch;
 using namespace nfs_background_scene_cpu;
@@ -123,7 +124,7 @@ inline std::shared_ptr<const OriginalOverlay>makeOverlay(const pv::Packet&previe
  // differently antialiased remastered edges.
  if(swatch){const auto s=swatch->bounds();if(!add(s.left,s.top,s.width,s.height,swatch->pixels(),swatch->coverage()))return {};}
  unsigned left=640,top=480,right=0,bottom=0;for(unsigned y=0;y<480;++y)for(unsigned x=0;x<640;++x)if(coverage[y*640+x]){left=std::min(left,x);top=std::min(top,y);right=std::max(right,x+1);bottom=std::max(bottom,y+1);}
- if(left>=right||top>=bottom)return {};std::shared_ptr<OriginalOverlay>out(new OriginalOverlay);out->left=int32_t(left);out->top=int32_t(top);out->width=right-left;out->height=bottom-top;for(unsigned y=top;y<bottom;++y)for(unsigned x=left;x<right;++x){out->pixels.push_back(whole[y*640+x]);out->coverage.push_back(coverage[y*640+x]);}if(!pv::wordsSha(out->pixels.data(),out->pixels.size(),out->sha)||!nfs_texture_sha256(out->coverage.data(),out->coverage.size(),out->coverageSha.data()))return {};nfs_player_stat_material::decorate(preview,swatch,*out);return out;
+ if(left>=right||top>=bottom)return {};std::shared_ptr<OriginalOverlay>out(new OriginalOverlay);out->left=int32_t(left);out->top=int32_t(top);out->width=right-left;out->height=bottom-top;for(unsigned y=top;y<bottom;++y)for(unsigned x=left;x<right;++x){out->pixels.push_back(whole[y*640+x]);out->coverage.push_back(coverage[y*640+x]);}if(!pv::wordsSha(out->pixels.data(),out->pixels.size(),out->sha)||!nfs_texture_sha256(out->coverage.data(),out->coverage.size(),out->coverageSha.data()))return {};nfs_player_stat_material::decorate(preview,swatch,*out);nfs_player_photo::decorate(preview,swatch,*out);return out;
 }
 // Metadata is supplemental display authority only; immutable original packet,
 // full343 replay and side/logo/copy verification remain independently required.

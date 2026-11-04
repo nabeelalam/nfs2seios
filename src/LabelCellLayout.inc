@@ -24,7 +24,11 @@ static int nfs_hd_label_geometry(int selector,const GrVertex *a,const GrVertex *
  const float expectedWidth=raised?4.0f:8.0f;
  const int timeRow=timeGlyph && fabsf(x1-x0-expectedWidth)<.01f && fabsf(y1-y0-8)<.01f && x0>=8 && x1<=100 &&
    (fabsf(y0-(raised?227:228))<.01f || fabsf(y0-(raised?467:468))<.01f);
- if(!wide && !timeRow){
+ // FXTEXT uppercase I has an original -8 top bearing; the other capitals
+ // use -7. The authored font has one shared baseline, so remove only that
+ // one-pixel source-bearing difference on its complete 4x8 glyph quad.
+ const int upperI=selector==20 && fabsf(x1-x0-4)<.01f && fabsf(y1-y0-8)<.01f;
+ if(!wide && !timeRow && !upperI){
   static const int glyph[6]={29,16,14,26,29,15};
   if(fabsf(x1-x0-8)<.01f && fabsf(y1-y0-8)<.01f && (fabsf(y0-212)<.01f || fabsf(y0-452)<.01f))
    for(unsigned j=0;j<6;++j)if(selector==glyph[j] && fabsf(x0-(26+9*(int)j))<.01f){heading=1;headingShift=1.5f-.22f*((x0+4)-52.5f);break;}
@@ -41,6 +45,7 @@ static int nfs_hd_label_geometry(int selector,const GrVertex *a,const GrVertex *
  if(!(x1>x0 && y1>y0))return -1;unsigned corners=0;
  for(unsigned i=0;i<3;++i){float x=v[i]->x-VertexSnap,y=v[i]->y-VertexSnap;int right=fabsf(x-x1)<.01f,bottom=fabsf(y-y1)<.01f;if((!right && !(fabsf(x-x0)<.01f)) || (!bottom && !(fabsf(y-y0)<.01f)))return -1;corners|=1u<<(right+2*bottom);}
  if(corners!=7 && corners!=11 && corners!=13 && corners!=14)return -1;
+ if(upperI){if(y1>479.0f)return -1;for(unsigned i=0;i<3;++i){output[i]=*v[i];output[i].y+=1.0f;}return 1;}
  if(heading){for(unsigned i=0;i<3;++i){output[i]=*v[i];output[i].x+=headingShift;}return 1;}
  if(timeRow){
   // Original full-string advance measurement is retained. Move its common

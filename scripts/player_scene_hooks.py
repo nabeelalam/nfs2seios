@@ -75,7 +75,7 @@ def add_player_scene_hooks(text, name):
     def captions(kind, args="*this"):
         return "\n".join(" nfs_player" + str(p) + "_caption::" + kind + "(" + args + ");" for p in (1, 2))
     include = '#include "FunctionIds.h"\n'
-    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"\n#include "hd/PlayerIntroQueueAdapter.inc"'))
+    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"\n#include "hd/PlayerIntroQueueAdapter.inc"\n#include "hd/PlayerPhotoGameHooks.inc"'))
     if name == "Methods_01.cpp":
         entry("40C160", " nfs_logo_publisher::PlayerMenuOwnerScope nfs_player_menu(*this);\n nfs_player1_caption::OwnerScope nfs_player1_owner(*this);\n nfs_player2_caption::OwnerScope nfs_player2_owner(*this);\n nfs_player_scene_live::PlayerScope nfs_player_scene(*this);\n nfs_player_scene_live::SourceLifetimeScope nfs_player_source_lifetime(*this);\n nfs_player_initial_native_live::SourceLifetimeScope nfs_player_initial_source_lifetime(*this);")
         entry("40C110", " nfs_player_scene_live::TailScope nfs_player_tail(*this);\n nfs_player1_caption::TailScope nfs_player1_tail(*this);\n nfs_player2_caption::TailScope nfs_player2_tail(*this);")
@@ -83,13 +83,16 @@ def add_player_scene_hooks(text, name):
         entry("405580", " nfs_player1_caption::ResourceScope nfs_player1_resource(*this);\n nfs_player2_caption::ResourceScope nfs_player2_resource(*this);")
         entry("40BBE0", " nfs_player_scene_live::IterationScope nfs_player_iteration(*this);")
         entry("405B30", " nfs_player_preview_live::NameScope nfs_player_preview_name(*this);")
-        entry("405B60", " nfs_player_scene_live::ResolvedScope nfs_player_resolved(*this);\n nfs_player_preview_live::ResolvedScope nfs_player_preview_resolved(*this);")
+        entry("405B60", " nfs_player_scene_live::ResolvedScope nfs_player_resolved(*this);\n nfs_player_preview_live::ResolvedScope nfs_player_preview_resolved(*this);\n nfs_player_photo_live::resolved(*this);")
         anchor = " nfs_hd_scene_iteration.start();"
         unique(anchor, anchor + block("lazy-start", " nfs_player_iteration.start();"))
-        for fn in ("beginGroup", "postGroup", "copyEnd"):
-            anchor = " nfs_background_scene_live::" + fn + "(*this);"
-            unique(anchor, anchor + block("scene-" + fn.lower(), " nfs_player_scene_live::" + fn + "(*this);"))
         def lazy(part):
+            # Player shares40BBE0; Main's initial40D3D0 assembly is separate.
+            for fn in ("beginGroup", "postGroup", "copyEnd"):
+                anchor = " nfs_background_scene_live::" + fn + "(*this);"
+                if part.count(anchor) != 1:
+                    raise ValueError("Player redraw anchor changed: " + fn)
+                part = part.replace(anchor, anchor + block("scene-" + fn.lower(), " nfs_player_scene_live::" + fn + "(*this);"), 1)
             counts(part, {"405B30": 5, "405B60": 1, "428250": 2})
             part = wrap(part, "guest_address(aSide)", "405B30", "side", "nfs_player_scene_live::RoleScope nfs_player_side(*this,nfs_player_scene_live::Phase::Side);")
             part = wrap(part, "off_4D2474+ecx*4", "405B30", "word", "nfs_player_scene_live::RoleScope nfs_player_word(*this,nfs_player_scene_live::Phase::Word);")
@@ -158,6 +161,14 @@ def add_player_scene_hooks(text, name):
             return part
         body("410090", swatch)
     elif name == "Methods_03.cpp":
+        entry("427ED0", " nfs_player_photo_live::BuildScope nfs_player_photo_build(*this);")
+        entry("4279E0", " nfs_player_photo_live::DrawScope nfs_player_photo_animation(*this);")
+        def photo_tiles(part):
+            counts(part, {"40CD70": 2, "4850B0": 2, "49A118": 1, "428440": 1, "49755C": 2})
+            for symbol,tag,scope,count in [("40CD70","photo-canvas","nfs_player_photo_live::PhotoScope nfs_photo_canvas(*this);",2),("4850B0","photo-crop","nfs_player_photo_live::CropScope nfs_photo_crop(*this);",2),("49A118","photo-convert32","nfs_player_photo_live::ConvertScope nfs_photo_convert(*this,true);",1),("428440","photo-convert16","nfs_player_photo_live::ConvertScope nfs_photo_convert(*this,false);",1),("49755C","photo-tile-upload","nfs_player_photo_live::UploadScope nfs_photo_upload(*this);",2)]:
+                part=wrap_all(part,symbol,tag,scope,count)
+            return part
+        body("427ED0",photo_tiles)
         anchor = " nfs_logo_publisher::UploadScope nfs_hd_upload(*this);"
         unique(anchor, block("upload-end", " nfs_player_scene_live::UploadEndScope nfs_player_upload_end(*this);") + anchor + block("native-upload", " nfs_player_native_live::UploadScope nfs_player_native_upload(*this);") + block("initial-native-upload", " nfs_player_initial_native_live::UploadScope nfs_player_initial_native_upload(*this);"))
         def tiles(part):

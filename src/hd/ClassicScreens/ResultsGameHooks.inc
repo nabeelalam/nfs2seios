@@ -21,11 +21,12 @@ struct State {
  std::array<int16_t,256>advances{};std::array<bool,256>known{};
  std::shared_ptr<Payload>building;std::shared_ptr<const Frame>published;
  std::vector<uint16_t>replay;nfs_soft::TextCommand command{};
- std::array<uint8_t,96>textBefore{};Measurement measurement{};unsigned resourceDepth=0;
+ std::array<uint8_t,96>textBefore{};Measurement measurement{};unsigned resourceDepth=0,nameEntryDepth=0,recordQualificationDepth=0;
  void invalidate()noexcept{failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();}
 };
 inline State&state()noexcept{static thread_local State s;return s;}
-inline State*current(Game&g)noexcept{auto&s=state();return s.owner==1&&s.game==&g&&s.thread==threadToken()&&!s.failed?&s:nullptr;}
+inline State*ownerCurrent(Game&g)noexcept{auto&s=state();return s.owner==1&&s.game==&g&&s.thread==threadToken()?&s:nullptr;}
+inline State*current(Game&g)noexcept{auto*s=ownerCurrent(g);return s&&!s->failed?s:nullptr;}
 struct CpuErrno {
  Game&g;std::array<unsigned char,sizeof(CPU)>saved{};int error;
  explicit CpuErrno(Game&x)noexcept:g(x),error(errno){std::memcpy(saved.data(),static_cast<CPU*>(&g),sizeof(CPU));}
@@ -50,9 +51,12 @@ struct OwnerScope {
  ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);state()=State{};}}
 };
 struct Adapter {
- static void begin(Game&g)noexcept{auto*s=current(g);if(!s)return;safe(g,[&]{
+ static void begin(Game&g)noexcept{auto*s=ownerCurrent(g);if(!s)return;safe(g,[&]{
+  // A refused frame must not poison this handler's later complete frames.
+  // Retry only at its original full-frame boundary; every proof is recaptured.
+  if(s->failed){const auto epoch=s->epoch,serial=s->serial;const auto form=s->form;const auto formType=s->formType;*s=State{};s->game=&g;s->thread=threadToken();s->epoch=epoch;s->serial=serial;s->owner=1;s->form=form;s->formType=formType;}
   if(s->capturing||s->string||s->word||s->serial==UINT64_MAX)throw 1;
-  auto p=std::make_shared<Payload>();p->target=target();p->form=s->form;p->formType=s->formType;p->headingIndex=headingForType(p->formType);{nfs::GuestCopyTransaction tx;if(!p->headingIndex||tx.load<uint8_t>(byte_512DFB)!=0)throw 1;}p->epoch=s->epoch;p->serial=++s->serial;
+  auto p=std::make_shared<Payload>();p->target=target();p->sourceGame=reinterpret_cast<uintptr_t>(&g);p->form=s->form;p->formType=s->formType;p->headingIndex=headingForType(p->formType);{nfs::GuestCopyTransaction tx;if(!p->headingIndex||tx.load<uint8_t>(byte_512DFB)!=0)throw 1;}p->epoch=s->epoch;p->serial=++s->serial;
   s->stores.clear();s->replay.clear();s->building=std::move(p);s->published.reset();s->metricAddress=s->fontAddress=0;s->capturing=true;
  });}
  static void end(Game&g)noexcept{auto*s=current(g);if(!s||!s->capturing)return;safe(g,[&]{
@@ -71,6 +75,26 @@ struct Adapter {
   auto f=s->published;const auto&d=f->data();if(d.epoch!=s->epoch||!nfs_logo_capture::same(d.target,target())||d.original!=plane(d.target))throw 1;out=std::move(f);
  });return out;}
  static bool reacquire(Game&g,const std::shared_ptr<const Frame>&f)noexcept{auto now=acquire(g);return now&&now.get()==f.get()&&!now.owner_before(f)&&!f.owner_before(now);}
+ // 413914 -> 401F40 is the original record-name prompt, after a complete
+ // Results frame. Reuse only that exact source frame, never current GPU pixels.
+ static std::shared_ptr<const Frame>nameEntryParent(Game&g)noexcept{
+  auto*s=current(g);if(!s||s->formType!=3||s->form!=uint32_t(guest_address(off_4D3D90))||s->nameEntryDepth!=1||s->recordQualificationDepth!=1||s->capturing||s->presenting||s->string||s->word||!s->published)return {};
+  std::shared_ptr<const Frame>out;safe(g,[&]{auto f=s->published;const auto&d=f->data();{nfs::GuestCopyTransaction tx;if(tx.load<uint16_t>(d.form+8)!=3)throw 1;}
+   if(d.epoch!=s->epoch||d.form!=s->form||d.formType!=3||d.sourceGame!=reinterpret_cast<uintptr_t>(&g)||!nfs_logo_capture::same(d.target,target())||d.original!=plane(d.target))throw 1;
+   out=std::move(f);
+  });return out;
+ }
+
+};
+struct RecordQualificationScope {
+ Game&g;State*s=nullptr;uint64_t epoch=0;bool entered=false;
+ explicit RecordQualificationScope(Game&x)noexcept:g(x){s=current(g);if(!s||s->formType!=3||s->capturing||s->presenting||s->string||s->word||!s->published||s->recordQualificationDepth)return;epoch=s->epoch;++s->recordQualificationDepth;entered=true;}
+ ~RecordQualificationScope()noexcept{if(entered&&s==ownerCurrent(g)&&s->epoch==epoch&&s->recordQualificationDepth)--s->recordQualificationDepth;}
+};
+struct NameEntryCallerScope {
+ Game&g;State*s=nullptr;uint64_t epoch=0;bool entered=false;
+ explicit NameEntryCallerScope(Game&x)noexcept:g(x){s=current(g);if(!s||s->formType!=3||s->capturing||s->presenting||s->string||s->word||s->recordQualificationDepth!=1||s->nameEntryDepth)return;epoch=s->epoch;++s->nameEntryDepth;entered=true;}
+ ~NameEntryCallerScope()noexcept{if(entered&&s==ownerCurrent(g)&&s->epoch==epoch&&s->nameEntryDepth)--s->nameEntryDepth;}
 };
 struct ResourceScope {
  Game&g;State*s=nullptr;Measurement old{};bool entered=false;
@@ -88,7 +112,10 @@ struct StringScope {
   auto&c=s->command;c={};s->textBefore.fill(0);s->textAddress=uint32_t(g.eax);
   uint32_t font=0,table=0,count=0,size=0,callback=0;
   {nfs::GuestCopyTransaction tx;for(unsigned k=0;k<96;++k){uint8_t value=tx.load<uint8_t>(s->textAddress+k);s->textBefore[k]=value;if(!value){c.length=k;break;}}
-   if(!c.length||c.length>95||s->textBefore[c.length])throw 1;
+   // Original 405CF0 draws no glyphs for an empty string (e.g. a blank name).
+   // Skip that command; any unexpected original stores still fail final replay.
+   if(!c.length){if(!s->textBefore[0])return;throw 1;}
+   if(c.length>95||s->textBefore[c.length])throw 1;
    font=tx.load<uint32_t>(dword_4DD770);table=tx.load<uint32_t>(dword_4DD76C);count=tx.load<uint32_t>(dword_4DD75C);size=tx.load<uint32_t>(dword_4E54AC);callback=tx.load<uint32_t>(dword_4DD77C);
    c.color=uint16_t(tx.load<uint32_t>(dword_4DD714));c.originX=tx.load<int32_t>(dword_4DD6F4);c.originY=tx.load<int32_t>(dword_4DD6F8);
   }

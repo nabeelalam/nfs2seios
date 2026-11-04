@@ -16,6 +16,7 @@ extern "C" void native_grGlideShutdown();
 #include "SDLKeyboardInput.h"
 #include "SDLTouchInput.h"
 #include "SDLDesktopPointer.h"
+#include "MenuResponsiveLayout.h"
 #include "FramePresentation.h"
 #include "EngineThreadMetrics.h"
 #include "GraphicsLifecycle.h"
@@ -29,6 +30,7 @@ extern "C" void native_grGlideShutdown();
 #include <atomic>
 #include <thread>
 #include <cstring>
+#include <cstdio>
 #include <vector>
 #include <stdexcept>
 #include "Game.h"
@@ -52,8 +54,13 @@ struct GameSession::Impl {
     std::unique_ptr<SDLGamepadInput> gamepads;
     MenuInput menu;
     TouchPointer touch;
+    uint64_t responsive_input_generation=0;
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
     DesktopPointer desktop_pointer;
+    SDL_WindowID desktop_relative_window=0;
+    bool desktop_relative_prior=false,desktop_relative_changed=false;
+    bool desktop_relative_attempted=false,desktop_relative_wanted=false;
+    unsigned desktop_relative_logs=0;
 #endif
     TouchKeyPulse touch_keys;
     bool foreground=true,background_shutdown=false,pointer_focused=true;
@@ -62,6 +69,48 @@ struct GameSession::Impl {
     std::vector<void *> bootstrap;std::thread thread;WorkerControl control,exit_control;
     std::mutex result_mutex;GameSessionResult state;bool started=false;
     int32_t(*present)(const std::string &,const std::string &,uint32_t);
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+    void desktop_relative_log(const char *phase,SDL_Window *owned,bool wanted,bool okay)noexcept{
+        if(desktop_relative_logs>=16)return;++desktop_relative_logs;
+        const auto id=owned?SDL_GetWindowID(owned):0;
+        const bool actual=owned&&SDL_GetWindowRelativeMouseMode(owned);
+        const bool focused=owned&&SDL_GetKeyboardFocus()==owned;
+        std::fprintf(stderr,"DESKTOP POINTER relative-mode phase=%s window=%u requested=%u actual=%u focused=%u apiSucceeded=%u\n",phase,unsigned(id),unsigned(wanted),unsigned(actual),unsigned(focused),unsigned(okay));
+    }
+    void desktop_relative_restore(bool forget)noexcept{
+        if(!SDL_IsMainThread())return;
+        SDL_Window *owned=desktop_relative_window?SDL_GetWindowFromID(desktop_relative_window):nullptr;
+        if(owned&&desktop_relative_changed){
+            const bool okay=SDL_SetWindowRelativeMouseMode(owned,desktop_relative_prior);
+            desktop_relative_log("restore",owned,desktop_relative_prior,okay);
+            if(okay&&SDL_GetWindowRelativeMouseMode(owned)==desktop_relative_prior)desktop_relative_changed=false;
+        }
+        desktop_relative_wanted=false;desktop_relative_attempted=false;desktop_pointer.reset();
+        if(forget||!owned){desktop_relative_window=0;desktop_relative_changed=false;}
+    }
+    void desktop_relative_sync()noexcept{
+        if(!SDL_IsMainThread())return;
+        const SDL_WindowID current=sdlWin?SDL_GetWindowID(sdlWin):0;
+        if(current!=desktop_relative_window){
+            desktop_relative_restore(true);
+            if(current){desktop_relative_window=current;desktop_relative_prior=SDL_GetWindowRelativeMouseMode(sdlWin);}
+        }
+        SDL_Window *owned=current?SDL_GetWindowFromID(current):nullptr;
+        if(!owned||owned!=sdlWin)return;
+        const bool wanted=foreground&&pointer_focused&&!control.stop.load()&&SDL_GetKeyboardFocus()==owned;
+        if(!wanted){if(desktop_relative_wanted)desktop_relative_restore(false);return;}
+        desktop_relative_wanted=true;
+        if(desktop_relative_attempted)return;
+        desktop_relative_attempted=true;
+        // Per-window request only. SDL rolls back this flag if unsupported;
+        // retain ordinary bounded desktop input instead of crashing/retrying.
+        const bool before=SDL_GetWindowRelativeMouseMode(owned);
+        const bool okay=before||SDL_SetWindowRelativeMouseMode(owned,true);
+        const bool actual=SDL_GetWindowRelativeMouseMode(owned);
+        if(okay&&actual&&!before)desktop_relative_changed=true;
+        desktop_pointer.reset();desktop_relative_log("enable",owned,true,okay&&actual);
+    }
+#endif
     static bool post_input(void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);}
     static bool SDLCALL lifecycle_watch(void *context,SDL_Event *event){
         auto &self=*static_cast<Impl *>(context);
@@ -72,12 +121,15 @@ struct GameSession::Impl {
         if(type==SDL_EVENT_TERMINATING){request_stop();return;}
         if(type==SDL_EVENT_WILL_ENTER_BACKGROUND && foreground){
             nfs_diagnostics_activity(0);
-            touch.reset();input.clear_pointer(uint32_t(SDL_GetTicks()));pointer_focused=false;
+            touch.reset();nfs_menu_responsive_revoke();input.clear_pointer(uint32_t(SDL_GetTicks()));pointer_focused=false;
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
             desktop_pointer.reset();
 #endif
             touch_keys.cancel(uint32_t(SDL_GetTicks()),post_input,this);
             foreground=false;graphics.set_suspended(true);audio.set_suspended(true);
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+            desktop_relative_sync();
+#endif
             menu.update(0,SDL_GetTicks(),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},this);
             window.post({0,8,0,0,uint32_t(SDL_GetTicks()),0,0});
         }
@@ -97,6 +149,7 @@ struct GameSession::Impl {
         bind_event_bridge(&events);bind_critical_sections(&critical);bind_thread_bridge(&workers);
         bind_main_thread_bridge(&main);bind_window_bridge(&window);bind_input_devices(&input);
         bind_audio_bridge(&audio);bind_exit_callbacks(&exits);bind_track_record_files(&files);bind_runtime_services(&services);active=this;
+        nfs_menu_responsive_source_form(0,0,0);
     }
     ~Impl(){
         nfs_diagnostics_activity(0);
@@ -104,6 +157,10 @@ struct GameSession::Impl {
         // Destruction before completion would deadlock the app main queue or
         // free bindings still borrowed by workers. App iterate must finish first.
         if(thread.joinable()){if(!state.finished)std::terminate();thread.join();}
+        nfs_menu_responsive_source_form(0,0,0);
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+        desktop_relative_restore(true);
+#endif
         gamepads.reset();game.reset();for(auto p:bootstrap)memory.release(p);
         bind_runtime_services(nullptr);bind_track_record_files(nullptr);bind_exit_callbacks(nullptr);bind_audio_bridge(nullptr);
         bind_input_devices(nullptr);bind_window_bridge(nullptr);bind_main_thread_bridge(nullptr);bind_thread_bridge(nullptr);
@@ -183,35 +240,56 @@ void GameSession::poll(){
         impl->failure(error);impl->request_stop();
     }
     nfs_diagnostics_activity(impl->foreground?1:0);
+    const auto responsiveGeneration=nfs_menu_responsive_input_generation();
+    if(responsiveGeneration!=impl->responsive_input_generation){
+        impl->responsive_input_generation=responsiveGeneration;
+        impl->touch.reset();impl->input.clear_pointer(uint32_t(SDL_GetTicks()));
+        impl->touch_keys.cancel(uint32_t(SDL_GetTicks()),Impl::post_input,impl.get());
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+        impl->desktop_pointer.reset();
+#endif
+    }
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+    impl->desktop_relative_sync();
+#endif
     SDL_Event event;while(SDL_PollEvent(&event)){
         if(event.type==SDL_EVENT_QUIT || event.type==SDL_EVENT_TERMINATING)impl->request_stop();
         sdl_window_event(event);
+        if(event.type==SDL_EVENT_WINDOW_RESIZED || event.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)nfs_menu_responsive_revoke();
         impl->lifecycle(event.type); // Fallback for events pushed from other threads; owner notifications were handled immediately.
         const auto now=uint32_t(SDL_GetTicks());
-        if(event.type==SDL_EVENT_WINDOW_FOCUS_LOST){impl->pointer_focused=false;impl->touch.reset();impl->input.clear_pointer(now);impl->touch_keys.cancel(now,Impl::post_input,impl.get());
+        if(event.type==SDL_EVENT_WINDOW_FOCUS_LOST){impl->pointer_focused=false;impl->touch.reset();nfs_menu_responsive_revoke();impl->input.clear_pointer(now);impl->touch_keys.cancel(now,Impl::post_input,impl.get());
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
             impl->desktop_pointer.reset();
 #endif
         }
         if(event.type==SDL_EVENT_WINDOW_FOCUS_GAINED)impl->pointer_focused=true;
         if(impl->foreground && impl->pointer_focused){
+            impl->touch.set_logical_width(nfs_menu_responsive_logical_width());
             const auto touch=original_touch_event(impl->touch,event,sdlWin?SDL_GetWindowID(sdlWin):0,now);
             if(touch.clear){impl->input.clear_pointer(now);impl->touch_keys.cancel(now,Impl::post_input,impl.get());}
-            if(touch.dx || touch.dy)impl->input.pointer_motion(touch.dx,touch.dy,now);
-            if(touch.action==TouchAction::click)impl->input.pointer_click(now);
+            int32_t pointerDx=0,pointerDy=0;int pointerClick=0;
+            nfs_menu_responsive_pointer_route(touch.dx,touch.dy,touch.action==TouchAction::click,&pointerDx,&pointerDy,&pointerClick);
+            if(pointerDx || pointerDy)impl->input.pointer_motion(pointerDx,pointerDy,now);
+            if(pointerClick)impl->input.pointer_click(now);
             if(touch.action==TouchAction::diagnostics)nfs_toggle_diagnostics(sdlWin);
             impl->touch_keys.push(touch.action);
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
             if(sdlWin && (event.type==SDL_EVENT_MOUSE_MOTION || event.type==SDL_EVENT_MOUSE_BUTTON_DOWN || event.type==SDL_EVENT_MOUSE_BUTTON_UP)){
                 int width=0,height=0;SDL_GetWindowSize(sdlWin,&width,&height);
-                const auto mouse=impl->desktop_pointer.update(event,SDL_GetWindowID(sdlWin),width,height);
-                if(mouse.dx || mouse.dy)impl->input.pointer_motion(mouse.dx,mouse.dy,now);
-                if(mouse.click)impl->input.pointer_click(now);
+                const auto mouse=impl->desktop_pointer.update(event,SDL_GetWindowID(sdlWin),width,height,nfs_menu_responsive_logical_width());
+                int32_t mouseDx=0,mouseDy=0;int mouseClick=0;
+                nfs_menu_responsive_pointer_route(mouse.dx,mouse.dy,mouse.click,&mouseDx,&mouseDy,&mouseClick);
+                if(mouseDx || mouseDy)impl->input.pointer_motion(mouseDx,mouseDy,now);
+                if(mouseClick)impl->input.pointer_click(now);
             }
 #endif
         }
         original_keyboard_event(event,uint32_t(SDL_GetTicks()),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},impl.get());
     }
+#if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
+    impl->desktop_relative_sync();
+#endif
     if(impl->foreground && impl->pointer_focused)impl->touch_keys.update(uint32_t(SDL_GetTicks()),Impl::post_input,impl.get());
     if(!impl->foreground && impl->control.stop.load() && !impl->background_shutdown){
         impl->main.retire_renderer();

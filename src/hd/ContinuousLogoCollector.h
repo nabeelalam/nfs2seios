@@ -69,6 +69,12 @@ struct Collector {
   for(unsigned i=0;i<std::min(group.draws,3u);++i){group.error|=group.draw[i].error;if(!group.draw[i].complete)group.error|=Incomplete;}
   group.stage=2;group.complete=group.error==0;groupFinished=group.complete;groupActive=false;pending=-1;
  }
+ // Actual first-menu assembly copies a previously completed sidebar after the
+ // map draw, outside40BBE0. This scope retains its original group revision.
+ bool beginRetainedCopy(uintptr_t game,uint64_t ownerThread)noexcept {
+  if(!inMenu||invalid||gameOwner!=game||thread!=ownerThread||depth||invocationDepth||groupActive||copyActive||!groupFinished||!group.complete||!copy.complete||!prepared||group.serial!=iterationRevision||copy.linkedGroup!=group.serial)return false;
+  invalidate(Stop::Order);depth=1;std::fill_n(reinterpret_cast<unsigned char*>(&copy),sizeof(copy),0);return armCopy();
+ }
  bool armCopy()noexcept {
   if(!inMenu||invalid||depth!=1||!groupFinished||groupActive||copyActive||copy.serial){invalidate(Stop::Order);return false;}
   copy.serial=iterationRevision;copy.thread=thread;copy.linkedGroup=group.serial;copyActive=true;return true;

@@ -1,4 +1,4 @@
-"""Add one authenticated personal artwork resource to a verified unsigned iPad IPA.
+"""Add authenticated personal artwork resources to a verified unsigned iPad IPA.
 
 No signing, credentials, extraction, native-code changes or Mac is involved.
 The input IPA and original game files are never modified. Python3 stdlib only.
@@ -18,10 +18,34 @@ import tempfile
 import unicodedata
 import zipfile
 
-TEMPLATE_BYTES = 8909910
-TEMPLATE_SHA256 = "90d429cceb1965894ae650b665290aa549eb1d653d0879bb2f6622747eb6a57d"
-OUTPUT_PACK_SHA256 = "8d60efeb04d3cc4e7bf665746f33fbb0bab91d2d573648f1af0ab74b6af3243c"
+TEMPLATE_BYTES = 17608381
+TEMPLATE_SHA256 = "41b109149594c301f5ce09d1beb5c91c2112745e42df77afb3847ca0ce665610"
+OUTPUT_PACK_SHA256 = "031772db3e13357930aee736a42666b34655601d900711f39a6b995b6ceda946"
 RESOURCE = "classic-ui.ownedz"
+INTRO_RESOURCE = "intro-ui.ownedz"
+INTRO_BYTES = 3202202
+INTRO_SHA256 = "af4677103a79488f64b55538885bcf798038c549683aa1a955c4a4e4d5aab1a5"
+TRACK_INFO_RESOURCE = "track-info-ui.ownedz"
+TRACK_INFO_BYTES = 45860407
+TRACK_INFO_SHA256 = "497d2dea3f3c4db843ee69b37a5abc59fe73fc9e7e34640c24a9edcac79c1b88"
+CAR_INFO_RESOURCE = "car-info-ui.ownedz"
+CAR_INFO_BYTES = 47430764
+CAR_INFO_SHA256 = "d52d6ba9eb6fccecf25f4e20ea4253f10194b5e2e0560a2a89cdf8eec7936759"
+PLAYER_PHOTO_RESOURCE = "player-photo-ui.ownedz"
+PLAYER_PHOTO_BYTES = 22688859
+PLAYER_PHOTO_SHA256 = "752ef12f7e0345ebef890e6ba984e46495aaa6332a3034ee932021b174472342"
+TRACK_BADGE_RESOURCE = "track-badge-ui.ownedz"
+TRACK_BADGE_BYTES = 10139595
+TRACK_BADGE_SHA256 = "896e16ea5412951370f9263891273bac4b660f7a1a35060e6e91aa64873b1536"
+
+
+def resource_pins():
+    return {RESOURCE: (TEMPLATE_BYTES, TEMPLATE_SHA256),
+            INTRO_RESOURCE: (INTRO_BYTES, INTRO_SHA256),
+            TRACK_INFO_RESOURCE: (TRACK_INFO_BYTES, TRACK_INFO_SHA256),
+            CAR_INFO_RESOURCE: (CAR_INFO_BYTES, CAR_INFO_SHA256),
+            PLAYER_PHOTO_RESOURCE: (PLAYER_PHOTO_BYTES, PLAYER_PHOTO_SHA256),
+            TRACK_BADGE_RESOURCE: (TRACK_BADGE_BYTES, TRACK_BADGE_SHA256)}
 MAX_IPA = 512 * 1024 * 1024
 MAX_UNPACKED = 1024 * 1024 * 1024
 MAX_MEMBERS = 10000
@@ -72,7 +96,7 @@ def safe_name(info, allow_artwork=False):
             "Signed or protected bundle; use the unsigned base IPA")
     require(folded[-1] not in ("embedded.mobileprovision", "embedded.provisionprofile"),
             "Provisioned bundle; use the unsigned base IPA")
-    require(allow_artwork or folded[-1] != RESOURCE, "Artwork resource already present")
+    require(allow_artwork or folded[-1] not in resource_pins(), "Artwork resource already present")
     return name, parts
 
 
@@ -146,13 +170,13 @@ def inspect(path, allow_resource=False):
         total = 0
         members = {}
         for info in infos:
-            if allow_resource and info.filename.endswith("/" + RESOURCE):
-                # The new entry is checked against its one exact expected path below.
+            if allow_resource and info.filename.rsplit("/", 1)[-1] in resource_pins():
+                # Each new entry must be a pinned resource at the app root.
                 require(info.filename.count("/") == 2 and info.filename.startswith("Payload/"),
                         "Unexpected artwork entry location")
                 name, parts = safe_name(info, allow_artwork=True)
                 require(parts[1].endswith(".app") and not info.is_dir()
-                        and info.file_size == TEMPLATE_BYTES
+                        and info.file_size == resource_pins()[parts[-1]][0]
                         and info.compress_type == zipfile.ZIP_STORED
                         and not info.flag_bits & 1, "Invalid injected artwork entry")
             else:
@@ -212,7 +236,7 @@ def inspect(path, allow_resource=False):
                     unpackedBytes=total, comment=z.comment)
 
 
-def inject(base_ipa, base_sha256, template, output):
+def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None):
     require(re.fullmatch("[0-9a-f]{64}", base_sha256 or ""), "Provide the trusted base IPA SHA-256")
     base = Path(base_ipa).resolve(strict=True)
     source = Path(template).resolve(strict=True)
@@ -228,11 +252,71 @@ def inject(base_ipa, base_sha256, template, output):
         artwork = f.read(TEMPLATE_BYTES + 1)
     require(len(artwork) == TEMPLATE_BYTES and hashlib.sha256(artwork).hexdigest() == TEMPLATE_SHA256,
             "Wrong or mutated personal artwork template")
+    extra_inputs = {}
+    artwork_inputs = {RESOURCE: artwork}
+    if intro is not None:
+        intro_source = Path(intro).resolve(strict=True)
+        require(intro_source.is_file() and intro_source != target, "Expected regular intro artwork input")
+        require(intro_source.stat().st_size == INTRO_BYTES, "Wrong intro artwork size")
+        with intro_source.open("rb") as f:
+            intro_artwork = f.read(INTRO_BYTES + 1)
+        require(len(intro_artwork) == INTRO_BYTES
+                and hashlib.sha256(intro_artwork).hexdigest() == INTRO_SHA256,
+                "Wrong or mutated intro artwork")
+        extra_inputs[intro_source] = INTRO_SHA256
+        artwork_inputs[INTRO_RESOURCE] = intro_artwork
+    if track_info is not None:
+        track_source = Path(track_info).resolve(strict=True)
+        require(track_source.is_file() and track_source != target, "Expected regular track-info artwork input")
+        require(track_source.stat().st_size == TRACK_INFO_BYTES, "Wrong track-info artwork size")
+        with track_source.open("rb") as f:
+            track_artwork = f.read(TRACK_INFO_BYTES + 1)
+        require(len(track_artwork) == TRACK_INFO_BYTES
+                and hashlib.sha256(track_artwork).hexdigest() == TRACK_INFO_SHA256,
+                "Wrong or mutated track-info artwork")
+        extra_inputs[track_source] = TRACK_INFO_SHA256
+        artwork_inputs[TRACK_INFO_RESOURCE] = track_artwork
+    if car_info is not None:
+        car_source = Path(car_info).resolve(strict=True)
+        require(car_source.is_file() and car_source != target, "Expected regular car-info artwork input")
+        require(car_source.stat().st_size == CAR_INFO_BYTES, "Wrong car-info artwork size")
+        with car_source.open("rb") as f:
+            car_artwork = f.read(CAR_INFO_BYTES + 1)
+        require(len(car_artwork) == CAR_INFO_BYTES
+                and hashlib.sha256(car_artwork).hexdigest() == CAR_INFO_SHA256,
+                "Wrong or mutated car-info artwork")
+        extra_inputs[car_source] = CAR_INFO_SHA256
+        artwork_inputs[CAR_INFO_RESOURCE] = car_artwork
+    if player_photo is not None:
+        player_source = Path(player_photo).resolve(strict=True)
+        require(player_source.is_file() and player_source != target, "Expected regular player-photo artwork input")
+        require(player_source.stat().st_size == PLAYER_PHOTO_BYTES, "Wrong player-photo artwork size")
+        with player_source.open("rb") as f:
+            player_artwork = f.read(PLAYER_PHOTO_BYTES + 1)
+        require(len(player_artwork) == PLAYER_PHOTO_BYTES
+                and hashlib.sha256(player_artwork).hexdigest() == PLAYER_PHOTO_SHA256,
+                "Wrong or mutated player-photo artwork")
+        extra_inputs[player_source] = PLAYER_PHOTO_SHA256
+        artwork_inputs[PLAYER_PHOTO_RESOURCE] = player_artwork
+    if track_badge is not None:
+        badge_source = Path(track_badge).resolve(strict=True)
+        require(badge_source.is_file() and badge_source != target, "Expected regular track-badge artwork input")
+        require(badge_source.stat().st_size == TRACK_BADGE_BYTES, "Wrong track-badge artwork size")
+        with badge_source.open("rb") as f:
+            badge_artwork = f.read(TRACK_BADGE_BYTES + 1)
+        require(len(badge_artwork) == TRACK_BADGE_BYTES
+                and hashlib.sha256(badge_artwork).hexdigest() == TRACK_BADGE_SHA256,
+                "Wrong or mutated track-badge artwork")
+        extra_inputs[badge_source] = TRACK_BADGE_SHA256
+        artwork_inputs[TRACK_BADGE_RESOURCE] = badge_artwork
+    added_bytes = sum(len(value) for value in artwork_inputs.values())
+    require(base.stat().st_size <= MAX_IPA - added_bytes - 65536, "Combined IPA size limit")
     require(digest_file(base) == base_sha256, "Base IPA identity mismatch")
     with base.open("rb") as f:
         require(f.read(4) == b"PK\x03\x04", "Expected a plain IPA ZIP archive")
     before = inspect(base)
     resource = before["app"] + "/" + RESOURCE
+    additions = {before["app"] + "/" + name: data for name, data in artwork_inputs.items()}
     temporary = None
     try:
         fd, name = tempfile.mkstemp(prefix=".personal-classic-ui-", suffix=".ipa.tmp", dir=parent)
@@ -245,7 +329,7 @@ def inject(base_ipa, base_sha256, template, output):
                 if not b:
                     break
                 copied += len(b)
-                require(copied <= MAX_IPA - TEMPLATE_BYTES - 65536, "Base grew while copying")
+                require(copied <= MAX_IPA - added_bytes - 65536, "Base grew while copying")
                 h.update(b)
                 out.write(b)
             out.flush()
@@ -253,19 +337,24 @@ def inject(base_ipa, base_sha256, template, output):
         require(h.hexdigest() == base_sha256, "Base IPA changed while copying")
         # Append preserves every original local header and compressed member byte.
         with zipfile.ZipFile(temporary, "a", allowZip64=True) as z:
-            member = zipfile.ZipInfo(resource, (1980, 1, 1, 0, 0, 0))
-            member.create_system = 3
-            member.external_attr = (stat.S_IFREG | 0o644) << 16
-            member.compress_type = zipfile.ZIP_STORED
-            z.writestr(member, artwork)
+            for entry, data in additions.items():
+                member = zipfile.ZipInfo(entry, (1980, 1, 1, 0, 0, 0))
+                member.create_system = 3
+                member.external_attr = (stat.S_IFREG | 0o644) << 16
+                member.compress_type = zipfile.ZIP_STORED
+                z.writestr(member, data)
         require(temporary.stat().st_size <= MAX_IPA, "Finished IPA size limit")
         after = inspect(temporary, allow_resource=True)
         require(after["app"] == before["app"] and after["comment"] == before["comment"],
                 "App identity or ZIP comment changed")
-        require(set(after["members"]) == set(before["members"]) | {resource},
+        require(set(after["members"]) == set(before["members"]) | set(additions),
                 "Unexpected added/removed IPA member")
         require(after["members"][resource] == TEMPLATE_SHA256,
                 "Injected artwork identity mismatch")
+        require(all(after["members"][entry] == hashlib.sha256(data).hexdigest()
+                    for entry, data in additions.items()), "Injected resource identity mismatch")
+        require(all(digest_file(path) == expected for path, expected in extra_inputs.items()),
+                "An optional artwork input changed")
         require(all(after["members"][k] == v for k, v in before["members"].items()),
                 "Existing executable/resource bytes changed")
         require(all(after["storage"][k] == v for k, v in before["storage"].items()),
@@ -281,12 +370,16 @@ def inject(base_ipa, base_sha256, template, output):
                       outputBytes=temporary.stat().st_size,
                       templateSha256=TEMPLATE_SHA256, templateBytes=TEMPLATE_BYTES,
                       reconstructedPackSha256=OUTPUT_PACK_SHA256,
-                      resourceEntry=resource, addedMembers=1,
+                      resourceEntry=resource, addedMembers=len(additions),
                       existingMembersPreserved=len(before["members"]),
                       allExistingMemberBytesIdentical=True,
                       allExistingCompressedStorageIdentical=True,
                       machOHashes=after["machos"], signed=False,
                       originalInputsUnchanged=True)
+        if intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None:
+            result["additionalResources"] = {
+                name: dict(sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
+                for name, data in artwork_inputs.items() if name != RESOURCE}
         # Atomic create-only publication: no overwrite fallback on unsupported FS.
         os.link(temporary, target)
         return result
@@ -302,8 +395,13 @@ def main():
                    help="Trusted SHA-256 from the public unsigned build artifact")
     p.add_argument("--template", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--intro", type=Path, help="Optional separately pinned splash artwork")
+    p.add_argument("--track-info", type=Path, help="Optional separately pinned track-info artwork")
+    p.add_argument("--car-info", type=Path, help="Optional separately pinned car-info artwork")
+    p.add_argument("--player-photo", type=Path, help="Optional separately pinned Player-menu photos")
+    p.add_argument("--track-badge", type=Path, help="Optional separately pinned animated track badges")
     args = p.parse_args()
-    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output), indent=2))
+    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge), indent=2))
 
 
 if __name__ == "__main__":

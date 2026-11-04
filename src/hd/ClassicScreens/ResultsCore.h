@@ -11,7 +11,7 @@ struct Payload {
  nfs_logo_capture::Target target{};
  std::vector<uint16_t>clean,original;
  std::vector<nfs_soft::TextCommand>commands;
- uint32_t form=0;uint16_t formType=0;unsigned headingIndex=0;
+ uintptr_t sourceGame=0;uint32_t form=0;uint16_t formType=0;unsigned headingIndex=0;
  uint64_t epoch=0,serial=0;
 };
 class Frame final {
@@ -27,6 +27,6 @@ class Lease final {
  static void release(void*p){auto*s=static_cast<Lease*>(p);if(s->refs_.fetch_sub(1,std::memory_order_acq_rel)==1)delete s;}
 public:
  static std::shared_ptr<const Lease>create(std::shared_ptr<const Frame>f)noexcept{if(!f||!f->display())return {};try{auto p=std::shared_ptr<Lease>(new Lease,[](const Lease*x){release(const_cast<Lease*>(x));});p->frame_=std::move(f);return p;}catch(...){return {};}}
- NfsResultsLiveView view(uint64_t request)const noexcept{NfsResultsLiveView v{};if(!request||!frame_)return v;const auto&d=frame_->data();v.schema=2;v.headingIndex=d.headingIndex;v.width=640;v.height=480;v.request=request;v.content=d.serial;v.clean=d.clean.data();v.original=d.original.data();v.pixels=d.original.size();v.text=frame_->display()->layer();v.owner=const_cast<Lease*>(this);v.retain=retain;v.release=release;return v;}
+ NfsResultsLiveView view(uint64_t request)const noexcept{NfsResultsLiveView v{};if(!request||!frame_)return v;const auto&d=frame_->data();v.schema=2;v.headingIndex=d.headingIndex;v.width=640;v.height=480;v.request=request;v.content=d.serial;v.sourceGame=d.sourceGame;v.sourceEpoch=d.epoch;v.clean=d.clean.data();v.original=d.original.data();v.pixels=d.original.size();v.text=frame_->display()->layer();v.owner=const_cast<Lease*>(this);v.retain=retain;v.release=release;return v;}
 };
 }
