@@ -288,6 +288,14 @@ else()
     add_subdirectory(.build/vendor/SDL .build/sdl EXCLUDE_FROM_ALL)
     add_executable(renderer_pixel_tests tests/renderer_pixel_tests.cpp src/RendererSurface.c src/MainThreadBridge.cpp src/SDLMainThread.cpp src/SDLWindow.cpp src/GraphicsLifecycle.cpp src/FrontendWordMode.cpp src/MenuResponsiveLayout.cpp src/FrontendTextContext.cpp "${NFS_RENDERER_SOURCE_DIR}/Glide2x.c" "${NFS_RENDERER_SOURCE_DIR}/GlideBridge.cpp")
     target_sources(renderer_pixel_tests PRIVATE src/SDLFrameRate.cpp src/EngineThreadMetrics.cpp)
+    if(NFS_CLASSIC_UI)
+      target_sources(renderer_pixel_tests PRIVATE
+        src/hd/ClassicScreens/IntroArtProvider.cpp
+        src/hd/ClassicScreens/TrackInfoArtProvider.cpp
+        src/hd/ClassicScreens/CarInfoArtProvider.cpp
+        src/hd/PlayerPhotoArtProvider.cpp
+        src/hd/TrackBadgeArtProvider.cpp)
+    endif()
     target_include_directories(renderer_pixel_tests PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src)
     target_compile_definitions(renderer_pixel_tests PRIVATE GLES2 NFS_CPP)
     target_link_libraries(renderer_pixel_tests PRIVATE SDL3::SDL3 GLESv2 Threads::Threads)
