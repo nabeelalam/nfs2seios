@@ -1,0 +1,24 @@
+{
+  "scope": "Local WSL original-engine race to Main Menu",
+  "route": [
+    "Proving Grounds, McLaren F1, two laps",
+    "Results",
+    "Lap Times",
+    "Main Menu"
+  ],
+  "before": {
+    "targetFailure": 128,
+    "textureEnabled": true,
+    "fogEnabled": true,
+    "fogTableAtOne": 3,
+    "remasteredMainOraclePassed": false
+  },
+  "after": {
+    "replayPassed": true,
+    "remasteredMainOraclePassed": true,
+    "copiedProfileRestored": true,
+    "baselineArtworkRestored": true,
+    "binarySha256": "c9175d6d68925f77583a1b11cbc369a2e84929731fcb69635213348ab479c47d"
+  },
+  "physicalIpadVerified": false
+}

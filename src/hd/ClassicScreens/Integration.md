@@ -35,3 +35,5 @@ remain pending. This batch is included in the third privately delivered Apple
 preview, app version 22; its ARM64 build and package inspection passed. The separately prepared music-cache and champion
 phrases have no verified consumer and remain outside this new loading integration.
 See `evidence/hd-loading-finite-words.json`.
+
+For personal packaging, use the matching base and the verified resource inputs listed in the packaging evidence. The optional `--wide-menu` and `--results-backdrop` inputs carry the responsive map layers and post-race backgrounds separately. The runtime keeps the classic artwork available when an optional resource is absent or fails authentication.

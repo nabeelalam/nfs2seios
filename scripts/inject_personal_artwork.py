@@ -18,9 +18,9 @@ import tempfile
 import unicodedata
 import zipfile
 
-TEMPLATE_BYTES = 17608381
-TEMPLATE_SHA256 = "41b109149594c301f5ce09d1beb5c91c2112745e42df77afb3847ca0ce665610"
-OUTPUT_PACK_SHA256 = "031772db3e13357930aee736a42666b34655601d900711f39a6b995b6ceda946"
+TEMPLATE_BYTES = 10117442
+TEMPLATE_SHA256 = "e765e2f016b30e568e774320b7612fd7d410f3d982c101732723fbbc09406d8a"
+OUTPUT_PACK_SHA256 = "58883305c9949be79a504f57142087bc9346b362cd7d02df57348a85676f8c95"
 RESOURCE = "classic-ui.ownedz"
 INTRO_RESOURCE = "intro-ui.ownedz"
 INTRO_BYTES = 3202202
@@ -29,14 +29,22 @@ TRACK_INFO_RESOURCE = "track-info-ui.ownedz"
 TRACK_INFO_BYTES = 45860407
 TRACK_INFO_SHA256 = "497d2dea3f3c4db843ee69b37a5abc59fe73fc9e7e34640c24a9edcac79c1b88"
 CAR_INFO_RESOURCE = "car-info-ui.ownedz"
-CAR_INFO_BYTES = 47430764
-CAR_INFO_SHA256 = "d52d6ba9eb6fccecf25f4e20ea4253f10194b5e2e0560a2a89cdf8eec7936759"
+CAR_INFO_BYTES = 114434893
+CAR_INFO_SHA256 = "54549f6c5986ccc6e2ab7c6d9dfd51eb44905dd8dc6532e0cdf7ee3e914a39b0"
 PLAYER_PHOTO_RESOURCE = "player-photo-ui.ownedz"
 PLAYER_PHOTO_BYTES = 22688859
 PLAYER_PHOTO_SHA256 = "752ef12f7e0345ebef890e6ba984e46495aaa6332a3034ee932021b174472342"
 TRACK_BADGE_RESOURCE = "track-badge-ui.ownedz"
 TRACK_BADGE_BYTES = 10139595
 TRACK_BADGE_SHA256 = "896e16ea5412951370f9263891273bac4b660f7a1a35060e6e91aa64873b1536"
+
+WIDE_MENU_RESOURCE = "wide-menu-ui.ownedz"
+WIDE_MENU_BYTES = 3079017
+WIDE_MENU_SHA256 = "d7125f3c9650ef875e8dc16f454403246c8f4cf80762680873167586a10e271c"
+
+RESULTS_BACKDROP_RESOURCE = "results-backdrop-ui.ownedz"
+RESULTS_BACKDROP_BYTES = 5711653
+RESULTS_BACKDROP_SHA256 = "caf29a73af8966385c1a48d46be59950be6f88b92459566d67bf67146bfa81ae"
 
 
 def resource_pins():
@@ -45,7 +53,9 @@ def resource_pins():
             TRACK_INFO_RESOURCE: (TRACK_INFO_BYTES, TRACK_INFO_SHA256),
             CAR_INFO_RESOURCE: (CAR_INFO_BYTES, CAR_INFO_SHA256),
             PLAYER_PHOTO_RESOURCE: (PLAYER_PHOTO_BYTES, PLAYER_PHOTO_SHA256),
-            TRACK_BADGE_RESOURCE: (TRACK_BADGE_BYTES, TRACK_BADGE_SHA256)}
+            TRACK_BADGE_RESOURCE: (TRACK_BADGE_BYTES, TRACK_BADGE_SHA256),
+            WIDE_MENU_RESOURCE: (WIDE_MENU_BYTES, WIDE_MENU_SHA256),
+            RESULTS_BACKDROP_RESOURCE: (RESULTS_BACKDROP_BYTES, RESULTS_BACKDROP_SHA256)}
 MAX_IPA = 512 * 1024 * 1024
 MAX_UNPACKED = 1024 * 1024 * 1024
 MAX_MEMBERS = 10000
@@ -157,7 +167,7 @@ def raw_storage(path, info):
     return (info.header_offset, count, h.hexdigest())
 
 
-def inspect(path, allow_resource=False):
+def inspect(path, allow_resource=False, required_artwork_sha256=None):
     # Complete stream reads also validate ZIP CRCs; no member is extracted to disk.
     result = {}
     storage = {}
@@ -216,6 +226,11 @@ def inspect(path, allow_resource=False):
                     first, macho = macho_check(prefix, f, name, name == main_name)
                     h = hashlib.sha256(first)
                     count = len(first)
+                    # The owned-artwork loader embeds this exact digest as bytes.
+                    pin = (bytes.fromhex(required_artwork_sha256)
+                           if required_artwork_sha256 and name == main_name else None)
+                    matched = pin is None or pin in first
+                    tail = first[-31:] if not matched else b""
                     while True:
                         b = f.read(CHUNK)
                         if not b:
@@ -223,7 +238,12 @@ def inspect(path, allow_resource=False):
                         count += len(b)
                         require(count <= info.file_size, "ZIP member grew")
                         h.update(b)
+                        if not matched:
+                            window = tail + b
+                            matched = pin in window
+                            tail = window[-31:]
                     require(count == info.file_size, "ZIP member length mismatch")
+                    require(matched, "Base executable lacks the required artwork release pin")
                     result[name] = h.hexdigest()
                     if macho:
                         machos[name] = h.hexdigest()
@@ -236,7 +256,7 @@ def inspect(path, allow_resource=False):
                     unpackedBytes=total, comment=z.comment)
 
 
-def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None):
+def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None, wide_menu=None, results_backdrop=None):
     require(re.fullmatch("[0-9a-f]{64}", base_sha256 or ""), "Provide the trusted base IPA SHA-256")
     base = Path(base_ipa).resolve(strict=True)
     source = Path(template).resolve(strict=True)
@@ -309,12 +329,26 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                 "Wrong or mutated track-badge artwork")
         extra_inputs[badge_source] = TRACK_BADGE_SHA256
         artwork_inputs[TRACK_BADGE_RESOURCE] = badge_artwork
+    for value, resource in ((wide_menu, WIDE_MENU_RESOURCE),
+                            (results_backdrop, RESULTS_BACKDROP_RESOURCE)):
+        if value is None:
+            continue
+        source_path = Path(value).resolve(strict=True)
+        size, expected = resource_pins()[resource]
+        require(source_path.is_file() and source_path != target, f"Expected regular input for {resource}")
+        require(source_path.stat().st_size == size, f"Wrong size for {resource}")
+        with source_path.open("rb") as f:
+            artwork_bytes = f.read(size + 1)
+        require(len(artwork_bytes) == size and hashlib.sha256(artwork_bytes).hexdigest() == expected,
+                f"Wrong or mutated {resource}")
+        extra_inputs[source_path] = expected
+        artwork_inputs[resource] = artwork_bytes
     added_bytes = sum(len(value) for value in artwork_inputs.values())
     require(base.stat().st_size <= MAX_IPA - added_bytes - 65536, "Combined IPA size limit")
     require(digest_file(base) == base_sha256, "Base IPA identity mismatch")
     with base.open("rb") as f:
         require(f.read(4) == b"PK\x03\x04", "Expected a plain IPA ZIP archive")
-    before = inspect(base)
+    before = inspect(base, required_artwork_sha256=OUTPUT_PACK_SHA256)
     resource = before["app"] + "/" + RESOURCE
     additions = {before["app"] + "/" + name: data for name, data in artwork_inputs.items()}
     temporary = None
@@ -376,7 +410,7 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                       allExistingCompressedStorageIdentical=True,
                       machOHashes=after["machos"], signed=False,
                       originalInputsUnchanged=True)
-        if intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None:
+        if intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None or wide_menu is not None or results_backdrop is not None:
             result["additionalResources"] = {
                 name: dict(sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
                 for name, data in artwork_inputs.items() if name != RESOURCE}
@@ -400,8 +434,10 @@ def main():
     p.add_argument("--car-info", type=Path, help="Optional separately pinned car-info artwork")
     p.add_argument("--player-photo", type=Path, help="Optional separately pinned Player-menu photos")
     p.add_argument("--track-badge", type=Path, help="Optional separately pinned animated track badges")
+    p.add_argument("--wide-menu", type=Path, help="Optional separately pinned widescreen map and panel")
+    p.add_argument("--results-backdrop", type=Path, help="Optional separately pinned Results backdrops")
     args = p.parse_args()
-    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge), indent=2))
+    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge, args.wide_menu, args.results_backdrop), indent=2))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+{
+  "scope": "Combined frontend fog handoff WSL race replay",
+  "passed": true,
+  "recordsPublications": 40,
+  "completeTransitionPublications": 133,
+  "copiedProfileRestored": true,
+  "baselineArtworkRestored": true,
+  "saveInventoryUnchanged": true,
+  "binarySha256": "9bdf90d130a45230289c44801497a7225d9a10894252407acf9418d991387f93",
+  "everyAnimationFrameVisuallyVerified": false,
+  "physicalIpadVerified": false
+}

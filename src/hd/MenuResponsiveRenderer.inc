@@ -9,6 +9,7 @@
 static struct {
  uintptr_t context; uint64_t generation,ownerEpoch,serial,revision;
  GLuint color,fbo,nativeFbo,nativeColor,nativeDepth;
+ GLuint artwork[2]; unsigned artworkRatio;
  unsigned width,height,nativeHeight,phase,tailTriangles,cursorSeen;
  float logicalWidth,delta,matrix[16]; NfsMenuResponsiveLayout selected;
  uint32_t ownerForm;NfsMenuCachedSnapshot cached;
@@ -71,9 +72,10 @@ static int nfs_menu_wide_current(void){return nfs_menu_wide.generation&&nfs_menu
    revokes that layout; preparation itself must not reset a trackpad each frame. */
 static void nfs_menu_wide_cancel(void){nfs_menu_wide.phase=0;nfs_menu_wide.serial=0;nfs_menu_wide.tailTriangles=0;nfs_menu_wide.cursorSeen=0;}
 static void nfs_menu_wide_cancel_at(unsigned site){if(nfs_menu_wide.phase||nfs_menu_wide.serial)nfs_menu_wide_diag(5,site,-1,0,0,0,0);nfs_menu_wide_cancel();}
-static void nfs_menu_wide_abandon(void){nfs_menu_original_forget();nfs_menu_wide_cancel_at(220);nfs_menu_wide.color=nfs_menu_wide.fbo=0;nfs_menu_wide.width=nfs_menu_wide.height=0;nfs_menu_wide.context=0;nfs_menu_wide.generation=0;nfs_menu_responsive_revoke();}
+static void nfs_menu_wide_abandon(void){nfs_menu_original_forget();nfs_menu_wide_cancel_at(220);nfs_menu_wide.color=nfs_menu_wide.fbo=0;nfs_menu_wide.artwork[0]=nfs_menu_wide.artwork[1]=0;nfs_menu_wide.width=nfs_menu_wide.height=0;nfs_menu_wide.context=0;nfs_menu_wide.generation=0;nfs_menu_responsive_revoke();}
 static void nfs_menu_wide_retire(int owner){
  if(owner&&nfs_menu_wide_current()){
+  if(nfs_menu_wide.artwork[0]){NFS_MENU_WIDE_GL(glDeleteTextures(2,nfs_menu_wide.artwork));}
   if(nfs_menu_wide.fbo){NFS_MENU_WIDE_GL(glDeleteFramebuffers(1,&nfs_menu_wide.fbo));}
   if(nfs_menu_wide.color){NFS_MENU_WIDE_GL(glDeleteTextures(1,&nfs_menu_wide.color));}
  }
@@ -99,6 +101,44 @@ static int nfs_menu_wide_target(unsigned width,unsigned height){
  if(nfs_menu_wide.fbo){NFS_MENU_WIDE_GL(glDeleteFramebuffers(1,&nfs_menu_wide.fbo));}if(nfs_menu_wide.color){NFS_MENU_WIDE_GL(glDeleteTextures(1,&nfs_menu_wide.color));}
  nfs_menu_wide.fbo=fbo;nfs_menu_wide.color=color;nfs_menu_wide.width=width;nfs_menu_wide.height=height;return 1;
  lost:nfs_menu_wide_abandon();return 0;
+}
+/* Cache only the active aspect's two layers for this GL context. */
+static int nfs_menu_wide_artwork(unsigned ratio,const NfsWideMenuLayers* layers){
+ GLuint next[2]={0,0};
+ if(nfs_menu_wide.artwork[0]&&nfs_menu_wide.artworkRatio==ratio)return 1;
+ NFS_MENU_WIDE_GL(glActiveTexture(GL_TEXTURE0));
+ NFS_MENU_WIDE_GL(glPixelStorei(GL_UNPACK_ALIGNMENT,1));
+ NFS_MENU_WIDE_GL(glGenTextures(2,next));
+ for(unsigned i=0;i<2;++i){
+  if(!next[i])goto failed;
+  NFS_MENU_WIDE_GL(glBindTexture(GL_TEXTURE_2D,next[i]));
+  NFS_MENU_WIDE_GL(nfs_frame_texture_params());
+  NFS_MENU_WIDE_GL(glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,layers->width,layers->height,0,GL_RGBA,GL_UNSIGNED_BYTE,i?layers->panel:layers->map));
+  if(glGetError()!=GL_NO_ERROR)goto failed;
+ }
+ if(nfs_menu_wide.artwork[0]){NFS_MENU_WIDE_GL(glDeleteTextures(2,nfs_menu_wide.artwork));}
+ memcpy(nfs_menu_wide.artwork,next,sizeof next);
+ nfs_menu_wide.artworkRatio=ratio;
+ return 1;
+ failed:NFS_MENU_WIDE_GL(glDeleteTextures(2,next));return 0;
+ lost:nfs_menu_wide_abandon();return 0;
+}
+static void nfs_menu_wide_draw_layer(unsigned role,float width){
+ const GLfloat quad[]={0,0,0,0,width,0,1,0,0,480,0,1,
+                      0,480,0,1,width,0,1,0,width,480,1,1};
+ glUniform1i(nfs_bg_compositor.sampler,0);
+ glUniform1f(nfs_bg_compositor.opacity,1.f);
+ glActiveTexture(GL_TEXTURE0);
+ glBindTexture(GL_TEXTURE_2D,nfs_menu_wide.artwork[role]);
+ glEnableVertexAttribArray(0);
+ glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);
+ glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,quad);
+ if(role){
+  glEnable(GL_BLEND);
+  glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);
+  glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+ }else glDisable(GL_BLEND);
+ glDrawArrays(GL_TRIANGLES,0,6);
 }
 static void nfs_menu_wide_prepare_owner(const NfsBackgroundSceneFrameView*v,const NfsNativeLogoTargetProof*target,const NfsMenuCachedSnapshot*cached,int(*captionDraw)(const float*,void*),void*captionUser){
  NfsBgSaved saved;uint64_t epoch=0;float cursorX=0,cursorY=0;int dw=0,dh=0,ok=0;GLint type=0,name=0;NfsLogoVertex logos[18];size_t count=0;float bounds[4],mapMatrix[16],clearColor[4];static const int32_t full[4]={0,0,640,480};
@@ -131,12 +171,23 @@ static void nfs_menu_wide_prepare_owner(const NfsBackgroundSceneFrameView*v,cons
  /* Opaque dark negative space behind the left cutout sheets. Never present
     uninitialized attachment pixels through their transparent teeth/edges. */
  NFS_MENU_WIDE_GL(glClearColor(0,0,0,1));NFS_MENU_WIDE_GL(glClear(GL_COLOR_BUFFER_BIT));
- /* Full-height semantic layers: map right anchored, original gold sheet,
-    original animated words and original clipped rotating logo left anchored. */
- NFS_MENU_WIDE_GL(glUseProgram(nfs_bg_compositor.program));NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,mapMatrix));
- if(!nfs_bg_quad(&nfs_bg_compositor,v->mapRole,0,0,640,480,0,0,nfs_bg_compositor.art[v->mapRole].width,nfs_bg_compositor.art[v->mapRole].height,full,256,0))goto done;
- NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,nfs_menu_wide.matrix));
- if(!nfs_bg_quad(&nfs_bg_compositor,2,0,0,343,480,0,0,1372,1920,v->panelClip,256,1))goto done;
+ {
+  const unsigned ratio=width>=772.f;
+  NfsWideMenuLayers authored={0};
+  const int hasAuthored=nfs_wide_menu_layers(ratio,&authored)&&nfs_menu_wide_artwork(ratio,&authored);
+  if(!nfs_menu_wide_current())goto lost;
+  NFS_MENU_WIDE_GL(glUseProgram(nfs_bg_compositor.program));
+  if(hasAuthored){
+   NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,nfs_menu_wide.matrix));
+   NFS_MENU_WIDE_GL(nfs_menu_wide_draw_layer(0,width));
+   NFS_MENU_WIDE_GL(nfs_menu_wide_draw_layer(1,width));
+  }else{
+   NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,mapMatrix));
+   if(!nfs_bg_quad(&nfs_bg_compositor,v->mapRole,0,0,640,480,0,0,nfs_bg_compositor.art[v->mapRole].width,nfs_bg_compositor.art[v->mapRole].height,full,256,0))goto done;
+   NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,nfs_menu_wide.matrix));
+   if(!nfs_bg_quad(&nfs_bg_compositor,2,0,0,343,480,0,0,1372,1920,v->panelClip,256,1))goto done;
+  }
+ }
  for(unsigned i=0;i<v->wordCount;++i){const NfsBackgroundSceneWordLayer*w=v->words+i;const NfsBackgroundSceneWord*r=nfs_bg_compositor.regions+w->sourceRole-1;
   if(!nfs_bg_quad(&nfs_bg_compositor,r->textureRole,(float)w->left,(float)w->top,(float)r->logicalWidth,(float)r->logicalHeight,r->x,r->y,r->width,r->height,w->clip,w->scalar256,1))goto done;
  }

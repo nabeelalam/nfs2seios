@@ -4,6 +4,42 @@
 static NfsHdArtProvider installed;
 static atomic_int sealed;
 static int ready;
+static NfsWideMenuLayers wideLayers[2];
+static atomic_int wideReady;
+static NfsResultsBackdropImage resultsBackdrops[2];
+static atomic_int resultsReady;
+int nfs_results_install_backdrops(const NfsResultsBackdropImage images[2]){
+    if(!images || images[0].width!=1440 || images[1].width!=1920 ||
+       images[0].height!=1080 || images[1].height!=1080 ||
+       !images[0].pixels || !images[1].pixels) return 0;
+    int empty=0;
+    if(!atomic_compare_exchange_strong(&resultsReady,&empty,1)) return 0;
+    resultsBackdrops[0]=images[0];
+    resultsBackdrops[1]=images[1];
+    atomic_store_explicit(&resultsReady,2,memory_order_release);
+    return 1;
+}
+int nfs_results_backdrop_image(unsigned ratio,NfsResultsBackdropImage *out){
+    if(!out || ratio>=2 || atomic_load_explicit(&resultsReady,memory_order_acquire)!=2) return 0;
+    *out=resultsBackdrops[ratio];
+    return 1;
+}
+int nfs_wide_menu_install_layers(const NfsWideMenuLayers layers[2]){
+    if(!layers || layers[0].width!=1180 || layers[0].height!=820 ||
+       layers[1].width!=1280 || layers[1].height!=720 ||
+       !layers[0].map || !layers[0].panel || !layers[1].map || !layers[1].panel) return 0;
+    int empty=0;
+    if(!atomic_compare_exchange_strong(&wideReady,&empty,1)) return 0;
+    wideLayers[0]=layers[0];
+    wideLayers[1]=layers[1];
+    atomic_store_explicit(&wideReady,2,memory_order_release);
+    return 1;
+}
+int nfs_wide_menu_layers(unsigned ratio,NfsWideMenuLayers *out){
+    if(!out || ratio>=2 || atomic_load_explicit(&wideReady,memory_order_acquire)!=2) return 0;
+    *out=wideLayers[ratio];
+    return 1;
+}
 int nfs_hd_art_provider_available(void){return ready;}
 int nfs_hd_install_art_provider(const NfsHdArtProvider*p){
  if(atomic_load_explicit(&sealed,memory_order_relaxed)||ready||!p||p->schema!=NFS_HD_ART_PROVIDER_SCHEMA||

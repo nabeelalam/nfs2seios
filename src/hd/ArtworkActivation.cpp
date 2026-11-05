@@ -5,6 +5,8 @@
 #endif
 #ifdef NFS_CLASSIC_BUNDLED_ART
 #include "OwnedArtwork.h"
+#include "WideMenuArtwork.h"
+#include "ResultsBackdropArtwork.h"
 #include "ClassicScreens/IntroArtworkLoader.h"
 #include "ClassicScreens/IntroArtworkPin.h"
 #include "ClassicScreens/IntroArtProvider.h"
@@ -98,6 +100,31 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
  Digest d{};if(!pin(d))return false;bool activated=activateArtworkPack(root,d);
 #ifdef NFS_CLASSIC_BUNDLED_ART
  if(!activated&&!bundledTemplate.empty())activated=installArtworkPack(loadBundledOwnedArtwork(root,bundledTemplate,d),d);
+ if(activated){
+  try{
+   NfsWideMenuLayers existing{};
+   if(!nfs_wide_menu_layers(0,&existing)){
+    const auto slash=bundledTemplate.find_last_of("/\\");
+    const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+    auto wide=std::make_unique<WideMenuArtwork>();
+    if(wide->load(directory+"wide-menu-ui.ownedz")){
+     const auto a=wide->layers(0),b=wide->layers(1);
+     const NfsWideMenuLayers layers[2]={{a.width,a.height,a.map,a.panel},{b.width,b.height,b.map,b.panel}};
+     if(nfs_wide_menu_install_layers(layers)) (void)wide.release(); // Immutable process-lifetime provider.
+    }
+   }
+  }catch(...){}
+ }
+ if(activated){
+  try{
+   NfsResultsBackdropImage image{};
+   if(!nfs_results_backdrop_image(0,&image)){
+    const auto slash=bundledTemplate.find_last_of("/\\");
+    const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+    (void)loadResultsBackdrops(directory+"results-backdrop-ui.ownedz");
+   }
+  }catch(...){}
+ }
  if(activated&&!nfs_intro_art_generation()){
   try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string intro=slash==std::string::npos?root+"/gamedata/"+NFS_INTRO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_INTRO_ARTWORK_FILENAME;char error[128]{};
    if(!nfs_intro_art_load_file(intro.c_str(),error,sizeof error))std::fprintf(stderr,"Optional intro artwork: %s\n",error);

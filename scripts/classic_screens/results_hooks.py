@@ -23,8 +23,18 @@ def main():
    lo,hi,at=section(symbol);text=text[:lo]+fn(text[lo:hi])+text[hi:]
   anchor='#include "FunctionIds.h"';assert text.count(anchor)==1;text=text.replace(anchor,anchor+block('#include "'+('hd/ClassicScreens/ResultsQueueAdapter.inc'if unit==3 else'hd/ClassicScreens/ResultsGameHooks.inc')+'"'),1)
   if unit==1:
+   entry('405B60',' nfs_results_ui_live::Adapter::resolveBackdrop(*this);')
    entry('405CF0',' nfs_results_ui_live::StringScope nfs_results_string(*this);')
    entry('413BF0',' nfs_results_ui_live::RecordQualificationScope nfs_results_record_qualification(*this);')
+   def qualification(part):
+    participant='\tesp -= 4; _sub_41A240(); esp += 4; //call'
+    placement='loc_413FEC:'
+    comparison='\tif (jg())\n\t\tgoto loc_4141A0;'
+    assert all(part.count(anchor)==1 for anchor in (participant,placement,comparison))
+    part=part.replace(participant,participant+block(' nfs_results_ui_live::trace("record-participant-eligible",uint16_t(eax));'))
+    part=part.replace(comparison,block(' nfs_results_ui_live::trace("record-time-vs-cutoff",uint32_t(edx),uint32_t(esi));')+comparison)
+    return part.replace(placement,placement+block(' nfs_results_ui_live::trace("record-placement-evaluated");'))
+   edit('413BF0',qualification)
    entry('413914',' nfs_results_ui_live::NameEntryCallerScope nfs_results_name_caller(*this);')
    for symbol in ['405580','4054E0']:entry(symbol,' nfs_results_ui_live::ResourceScope nfs_results_resource(*this);')
    def measures(part):
@@ -36,6 +46,11 @@ def main():
    for symbol,form,kind in forms:
     entry(symbol,' nfs_results_ui_live::OwnerScope nfs_results_owner(*this,uint32_t(guest_address('+form+')),'+str(kind)+');')
     def results(part):
+     bitmap='\tesp -= 4; _sub_405B30(); esp += 4; //call'
+     heading='\tesp -= 4; _sub_415CC0(); esp += 4; //call'
+     before,after=part.split(heading,1)
+     before=re.sub(re.escape(bitmap),lambda match:match[0]+block(' nfs_results_ui_live::Adapter::observeBackdrop(*this);'),before)
+     part=before+heading+after
      call='\tesp -= 4; _sub_415CC0(); esp += 4; //call';assert part.count(call)==1;part=part.replace(call,block(' nfs_results_ui_live::Adapter::begin(*this);')+call)
      call='\tesp -= 4; _sub_40FA90(); esp += 4; //call';assert part.count(call)==1;part=part.replace(call,call+block(' nfs_results_ui_live::Adapter::end(*this);'))
      call='\tesp -= 4; _sub_426B70(); esp += 4; //call';assert part.count(call)==1;return part.replace(call,block(' { nfs_results_ui_live::Presentation nfs_results_present(*this);')+call+block(' }'))

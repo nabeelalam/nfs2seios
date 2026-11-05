@@ -1,0 +1,21 @@
+{
+  "scope": "Maintained current UI renderer generation and local compilation",
+  "generatedByMaintainedPipeline": true,
+  "compilePassed": true,
+  "rendererObjectSha256": "dbd31b5c8ca34846b2950f1c9105d8bacb8239ec7e01978dd077a83b44411c05",
+  "glideExports": 46,
+  "sourcePins": {
+    "main": "2f7911d34ccf14840d3143d0ad2a2d6f15f3779b6b18746b0cb5529af73bff87",
+    "records": "22ff84212d6e28cd4727e97eec67a4806c27f30e42510cd67fa33756f96a59b6",
+    "transitions": "3fec2cf45ab88c3f1878d57b900c9b0c23ced650234fc83d6a744fe8e558c241"
+  },
+  "fullGameLinked": true,
+  "appleCompiled": false,
+  "physicalIpadVerified": false,
+  "startupReachedRemasteredMain": true,
+  "cleanShutdown": true,
+  "profileRestored": true,
+  "saveInventoryUnchanged": true,
+  "engineObjectsReused": true,
+  "binarySha256": "a624de3790779b9f6a6f7c2129dfdbadc16b28ccf278f2e92e48703e78839ab7"
+}

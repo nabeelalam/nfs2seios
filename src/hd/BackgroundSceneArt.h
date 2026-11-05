@@ -19,6 +19,19 @@ extern "C" {
    RGB is already floor(originalStraightRGB*A/255); opacity is not baked. */
 int nfs_private_background_scene_texture(uint32_t role,NfsBackgroundSceneTexture*out);
 int nfs_private_background_scene_word(uint32_t sourceRole,NfsBackgroundSceneWord*out);
+typedef struct NfsWideMenuLayers {
+    unsigned width, height;
+    const unsigned char *map, *panel;
+} NfsWideMenuLayers;
+/* Startup publishes two immutable pairs before the game worker is started. */
+int nfs_wide_menu_install_layers(const NfsWideMenuLayers layers[2]);
+int nfs_wide_menu_layers(unsigned ratio, NfsWideMenuLayers *out);
+typedef struct NfsResultsBackdropImage {
+    unsigned width, height;
+    const unsigned char *pixels;
+} NfsResultsBackdropImage;
+int nfs_results_install_backdrops(const NfsResultsBackdropImage images[2]);
+int nfs_results_backdrop_image(unsigned ratio, NfsResultsBackdropImage *out);
 #ifdef __cplusplus
 }
 #endif

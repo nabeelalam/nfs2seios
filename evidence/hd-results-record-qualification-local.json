@@ -1,0 +1,21 @@
+{
+  "scope": "WSL original two-lap Proving Grounds race",
+  "replayPassed": true,
+  "saveInventoryUnchanged": true,
+  "qualificationTrace": [
+    "RESULTS SOURCE record-qualification-entered a=0 b=0",
+    "RESULTS SOURCE record-qualification-mode a=0 b=0",
+    "RESULTS SOURCE record-qualification-rules a=0 b=0",
+    "RESULTS SOURCE record-participant-eligible a=1 b=0",
+    "RESULTS SOURCE record-time-vs-cutoff a=23526 b=9339",
+    "RESULTS SOURCE record-qualification-returned a=0 b=0"
+  ],
+  "initialModeAndRulesExcludeThisRun": false,
+  "participantEligibilityReturn": 1,
+  "placementMarkerReached": false,
+  "namePromptReached": false,
+  "physicalIpadVerified": false,
+  "raceTimeEngineTicks": 23526,
+  "tenthPlaceCutoffEngineTicks": 9339,
+  "raceTimeExceededCutoff": true
+}

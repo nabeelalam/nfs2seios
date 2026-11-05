@@ -9,10 +9,15 @@ struct QueueErrno {int value=errno;~QueueErrno()noexcept{errno=value;}};
 struct DrawScope {
  Game&g;std::shared_ptr<const Frame>frame;std::shared_ptr<const Lease>lease;uint64_t request=0;bool consumed=false,unwinding=false;
  explicit DrawScope(Game&x):g(x){QueueErrno preserve;
-  if(nfs_background_scene_live::activeRequest())return;frame=Adapter::acquire(g);if(!frame)return;lease=Lease::create(frame);if(!lease)return;
+  auto* state=ownerCurrent(g);
+  if(!state||!state->presenting)return;
+  if(nfs_background_scene_live::activeRequest()){trace("draw-busy");return;}
+  frame=Adapter::acquire(g);if(!frame){trace("draw-frame-unavailable");return;}
+  lease=Lease::create(frame);if(!lease){trace("draw-lease-unavailable");return;}
   request=nfs_background_scene_live::nextRequest();if(!request){lease.reset();return;}nfs::check_worker_stop();
   auto keep=lease;uint64_t serial=request;auto result=nfs::enqueue_owned_renderer([keep,serial]{auto view=keep->view(serial);return int32_t(nfs_private_results_begin(&view));});
-  if(result!=nfs::OwnedRendererAcceptance::Consumed){lease.reset();request=0;return;}
+  if(result!=nfs::OwnedRendererAcceptance::Consumed){trace("renderer-begin-refused",uint32_t(result));lease.reset();request=0;return;}
+  trace("renderer-begin-consumed");
   consumed=true;nfs_background_scene_live::activeRequest()=request;unwinding=std::uncaught_exception();
  }
  ~DrawScope()noexcept(false){QueueErrno preserve;if(!consumed||!request)return;

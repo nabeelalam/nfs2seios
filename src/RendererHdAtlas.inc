@@ -96,6 +96,19 @@ static int nfs_hd_triangle_selected(const GrVertex *a,const GrVertex *b,const Gr
     if(nfs_hd_selected==40)return a->oow==1 && b->oow==1 && c->oow==1?nfs_pause_triangle(uv):0;
     if(nfs_hd_selected==39)return a->oow==1 && b->oow==1 && c->oow==1 && nfs_logo_triangle(uv)?49:0;
     if(nfs_hd_selected>=2 && nfs_hd_selected<=27){
+        // Opt-in observation of source HUD placement; no atlas or vertex edits.
+        static int trace=-1;
+        static unsigned traceCount=0;
+        if(trace<0){
+            const char* value=getenv("NFS_PRIVATE_HUD_BASELINE_TRACE");
+            trace=value&&value[0]=='1'&&!value[1];
+        }
+        if(trace&&traceCount<192&&a->x-VertexSnap>=400&&a->y-VertexSnap>=300){
+            ++traceCount;
+            fprintf(stderr,"HUD GLYPH source=%d xy=%g,%g/%g,%g/%g,%g uv=%g,%g/%g,%g/%g,%g\n",
+                nfs_hd_selected-2,a->x-VertexSnap,a->y-VertexSnap,b->x-VertexSnap,b->y-VertexSnap,
+                c->x-VertexSnap,c->y-VertexSnap,uv[0],uv[1],uv[2],uv[3],uv[4],uv[5]);
+        }
         if(a->oow!=1 || b->oow!=1 || c->oow!=1)return 0;
         unsigned d=nfs_hd_selected-2;
         return nfs_hd_small_font_triangle(uv,nfs_small_font_edge[d])?12+d:0;

@@ -1,5 +1,6 @@
 // PRIVATE source-bound Load/Save text-only native pass. Original draws continue.
 #include "ResultsLayerAbi.h"
+#include <stdlib.h>
 #include "hd/ClassicScreens/private/ResultsHeadingData.h"
 #include "hd/AudioNativePass.h"
 // Results uses its own font/pass lifetime; no extra per-session capture writer.
@@ -10,7 +11,9 @@ static struct {
  NfsAudioNativePass pass;NfsResultsLiveView view;NfsNativeLogoTargetProof target;
  NfsSoftwareTextGpu text;uintptr_t context,thread;uint64_t generation;
  unsigned uploadPending,width,height,traceLines;TextureInfo*uploadTexture;
- GLuint color,fbo,clean,copyProgram,headingProgram,headingTexture;GLint copySampler,headingSampler,headingRow;
+ GLuint backdrop;unsigned backdropRatio;
+ GLuint color,fbo,clean,copyProgram,headingProgram,headingTexture;GLint copySampler,copyFog,headingSampler,headingRow;
+ unsigned fogAmount;float fogColor[3];
 } nfs_results_renderer;
 // Retain only the last fully published Results parent in its private FBO.
 // Source game/epoch/content must all match before a record-name child may copy it.
@@ -21,8 +24,23 @@ static int nfs_results_context(uint64_t generation,uintptr_t context){return gen
 static void nfs_results_trace(const char*event,const char*why){if(!nfs_logo_trace_enabled()||nfs_results_renderer.traceLines>=256)return;++nfs_results_renderer.traceLines;fprintf(stderr,"RESULTS NATIVE %s reason=%s request=%llu content=%llu size=%ux%u uploads=%u selections=%u triangles=%u\n",event,why,(unsigned long long)nfs_results_renderer.view.request,(unsigned long long)nfs_results_renderer.view.content,nfs_results_renderer.target.width,nfs_results_renderer.target.height,nfs_results_renderer.pass.uploads,nfs_results_renderer.pass.selects,nfs_results_renderer.pass.triangles);}
 static void nfs_results_clear_view(void){void*owner=nfs_results_renderer.view.owner;void(*release)(void*)=nfs_results_renderer.view.release;memset(&nfs_results_renderer.view,0,sizeof nfs_results_renderer.view);if(owner&&release)release(owner);}
 static void nfs_results_cancel(const char*why){if(nfs_results_renderer.view.request)nfs_results_trace("canceled",why);nfs_audio_native_fail(&nfs_results_renderer.pass,NFS_AUDIO_NATIVE_OTHER);nfs_results_clear_view();nfs_results_renderer.uploadPending=0;nfs_results_renderer.uploadTexture=NULL;}
-static void nfs_results_abandon(void){nfs_results_parent_seed_clear();nfs_soft_gpu_context_retired(&nfs_results_renderer.text,nfs_results_renderer.text.generation,0);nfs_audio_native_retired(&nfs_results_renderer.pass,nfs_results_renderer.generation);nfs_results_renderer.headingProgram=nfs_results_renderer.headingTexture=0;nfs_results_renderer.color=nfs_results_renderer.fbo=nfs_results_renderer.clean=nfs_results_renderer.copyProgram=0;nfs_results_renderer.width=nfs_results_renderer.height=0;nfs_results_cancel("owner-lost");}
-static int nfs_results_read_target(NfsNativeLogoTargetProof*out,uint64_t serial){if(!out||!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context))return 0;return nfs_logo_target(out,serial);}
+static void nfs_results_abandon(void){nfs_results_parent_seed_clear();nfs_soft_gpu_context_retired(&nfs_results_renderer.text,nfs_results_renderer.text.generation,0);nfs_audio_native_retired(&nfs_results_renderer.pass,nfs_results_renderer.generation);nfs_results_renderer.backdrop=0;nfs_results_renderer.headingProgram=nfs_results_renderer.headingTexture=0;nfs_results_renderer.color=nfs_results_renderer.fbo=nfs_results_renderer.clean=nfs_results_renderer.copyProgram=0;nfs_results_renderer.width=nfs_results_renderer.height=0;nfs_results_cancel("owner-lost");}
+static int nfs_results_read_target(NfsNativeLogoTargetProof*out,uint64_t serial){
+ unsigned width=0,height=0;NfsFrameLegacySampling sampling;
+ if(!out||!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context))return 0;
+ if(nfs_logo_target(out,serial))return 1;
+ /* The original pass can leave texture/fog state between draws. The Results
+    triangle observer independently requires texturing and verifies constant fog on
+    every tile. All other target proof failures still reject immediately. */
+ if(nfs_logo_target_failbits!=128||
+    !nfs_logo_native_target_base(&width,&height,&sampling))return 0;
+ memset(out,0,sizeof *out);
+ out->framebuffer=g_framebuffer;out->width=width;out->height=height;
+ out->contextGeneration=nfs_logo_provenance.context;
+ out->depthClearSerial=serial;out->depthClearProven=1;out->depthClearValue=1;
+ out->sampling=sampling;
+ return 1;
+}
 static int nfs_results_stamp(NfsAudioNativeStamp*out){NfsNativeLogoTargetProof target;if(!out||!nfs_results_renderer.view.request||!nfs_results_read_target(&target,nfs_results_renderer.view.request)||memcmp(&target,&nfs_results_renderer.target,sizeof target))return 0;out->generation=nfs_results_renderer.generation;out->context=nfs_results_renderer.context;out->thread=NFS_RESULTS_THREAD_TOKEN();out->framebuffer=target.framebuffer;out->width=target.width;out->height=target.height;return 1;}
 static void nfs_results_renderer_upload_begin(TextureInfo*ti){NfsAudioNativeStamp stamp;if(!nfs_results_renderer.view.request)return;if(nfs_results_renderer.uploadPending||!nfs_results_stamp(&stamp)||!nfs_audio_native_transition(&nfs_results_renderer.pass,&stamp)||nfs_results_renderer.pass.phase!=1||!ti){nfs_results_cancel("upload-begin");return;}nfs_results_renderer.uploadPending=1;nfs_results_renderer.uploadTexture=ti;}
 static void nfs_results_upload_diagnostic(const TextureInfo*ti,uint32_t address){
@@ -37,7 +55,26 @@ static void nfs_results_renderer_upload_done(TextureInfo*ti){NfsAudioNativeStamp
 }
 static void nfs_results_renderer_select(unsigned tmu,uint32_t address,uint32_t evenOdd,const GrTexInfo*info,TextureInfo*ti){NfsAudioNativeStamp stamp;if(!nfs_results_renderer.view.request)return;if(nfs_results_renderer.uploadPending||!info||!ti||!nfs_results_stamp(&stamp)||!nfs_audio_native_select(&nfs_results_renderer.pass,&stamp,tmu,address,ti->id,evenOdd,info->format,ti->size,info->smallLod,info->largeLod,info->aspectRatio))nfs_results_cancel("selection");}
 static NfsAudioNativeVertex nfs_results_vertex(const GrVertex*v){NfsAudioNativeVertex out;out.x=v->x;out.y=v->y;out.r=v->r;out.g=v->g;out.b=v->b;out.a=v->a;out.oow=v->oow;out.sow=v->tmuvtx[0].sow;out.tow=v->tmuvtx[0].tow;return out;}
-static void nfs_results_renderer_triangle(const GrVertex*a,const GrVertex*b,const GrVertex*c){NfsAudioNativeStamp stamp;NfsAudioNativeVertex av,bv,cv;if(!nfs_results_renderer.view.request)return;if(nfs_results_renderer.uploadPending||!a||!b||!c||!nfs_results_stamp(&stamp)){nfs_results_cancel("triangle-owner");return;}av=nfs_results_vertex(a);bv=nfs_results_vertex(b);cv=nfs_results_vertex(c);if(!nfs_audio_native_triangle(&nfs_results_renderer.pass,&stamp,&av,&bv,&cv,g_textureEnabled?1u:0u,g_fogEnabled?1u:0u))nfs_results_cancel("triangle");}
+static void nfs_results_renderer_triangle(const GrVertex*a,const GrVertex*b,const GrVertex*c){NfsAudioNativeStamp stamp;NfsAudioNativeVertex av,bv,cv;if(!nfs_results_renderer.view.request)return;if(nfs_results_renderer.uploadPending||!a||!b||!c||!nfs_results_stamp(&stamp)){nfs_results_cancel("triangle-owner");return;}av=nfs_results_vertex(a);bv=nfs_results_vertex(b);cv=nfs_results_vertex(c);/* Every validated tile corner has oow=1. Capture the original
+    shader's constant fog at that depth and reproduce it in staging. */
+ const unsigned fog=g_fogEnabled?g_fogTable[1]:0;
+ if(!nfs_results_renderer.pass.triangles){
+  nfs_results_renderer.fogAmount=fog;
+  memcpy(nfs_results_renderer.fogColor,g_fogColor,sizeof nfs_results_renderer.fogColor);
+ }else if(fog!=nfs_results_renderer.fogAmount||
+          (fog&&memcmp(nfs_results_renderer.fogColor,g_fogColor,sizeof nfs_results_renderer.fogColor))){
+  nfs_results_cancel("tile-fog-changed");return;
+ }
+ if(!nfs_audio_native_triangle(&nfs_results_renderer.pass,&stamp,&av,&bv,&cv,g_textureEnabled?1u:0u,0)){
+ if(nfs_logo_trace_enabled()&&nfs_results_renderer.traceLines<16){
+  const unsigned index=nfs_results_renderer.pass.triangles,tile=index/2,half=index&1;
+  fprintf(stderr,"RESULTS TRIANGLE index=%u texture=%u fog=%u fogAtOne=%u corners=%d,%d,%d reason=%u\n",
+    index,g_textureEnabled?1u:0u,g_fogEnabled?1u:0u,(unsigned)g_fogTable[1],
+    nfs_audio_native_corner(&av,tile,0),nfs_audio_native_corner(&bv,tile,half?2:1),
+    nfs_audio_native_corner(&cv,tile,half?3:2),nfs_results_renderer.pass.reason);
+ }
+ nfs_results_cancel("triangle");
+}}
 static int nfs_results_font_prepare(NfsSoftwareTextGpu*s,const NfsSoftwareTextFontView*f){
  unsigned char sha[32];GLuint vs=0,fs=0,program=0,texture=0;GLint linked=0,sampler=-1,matrix=-1,maxSize=0;NfsFrameSaved saved;int ok=0;
  static const char vertex[]="attribute vec4 vertex;attribute vec4 color;uniform mat4 matrix;varying highp vec2 uv;varying highp vec4 tint;void main(){gl_Position=matrix*vec4(vertex.xy,1.0,1.0);uv=vertex.zw;tint=color;}";
@@ -55,16 +92,16 @@ static int nfs_results_color_target(unsigned w,unsigned h){NfsFrameSaved saved;G
  done:if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}if(!ok){if(fbo)glDeleteFramebuffers(1,&fbo);if(texture)glDeleteTextures(1,&texture);}nfs_frame_restore(&saved);if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}if(!ok)return 0;if(nfs_results_renderer.fbo)glDeleteFramebuffers(1,&nfs_results_renderer.fbo);if(nfs_results_renderer.color)glDeleteTextures(1,&nfs_results_renderer.color);nfs_results_renderer.fbo=fbo;nfs_results_renderer.color=texture;nfs_results_renderer.width=w;nfs_results_renderer.height=h;return 1;
 }
 static void nfs_results_renderer_created(void){nfs_results_parent_seed_clear();uint64_t generation=nfs_logo_provenance.context;uintptr_t context=(uintptr_t)g_glCtx;if(!nfs_bg_feature()||!generation||!context||SDL_GL_GetCurrentContext()!=g_glCtx)return;nfs_results_renderer.generation=generation;nfs_results_renderer.context=context;nfs_results_renderer.thread=NFS_RESULTS_THREAD_TOKEN();nfs_results_renderer.uploadPending=0;nfs_results_clear_view();(void)nfs_audio_native_created(&nfs_results_renderer.pass,generation,context,nfs_results_renderer.thread);(void)nfs_soft_gpu_context_created(&nfs_results_renderer.text,generation);}
-static void nfs_results_renderer_retired(int owner){nfs_results_parent_seed_clear();int actual=owner&&nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context);nfs_soft_gpu_context_retired(&nfs_results_renderer.text,nfs_results_renderer.text.generation,actual);if(actual){if(nfs_results_renderer.headingProgram)glDeleteProgram(nfs_results_renderer.headingProgram);if(nfs_results_renderer.headingTexture)glDeleteTextures(1,&nfs_results_renderer.headingTexture);if(nfs_results_renderer.fbo)glDeleteFramebuffers(1,&nfs_results_renderer.fbo);if(nfs_results_renderer.color)glDeleteTextures(1,&nfs_results_renderer.color);if(nfs_results_renderer.clean)glDeleteTextures(1,&nfs_results_renderer.clean);if(nfs_results_renderer.copyProgram)glDeleteProgram(nfs_results_renderer.copyProgram);}nfs_audio_native_retired(&nfs_results_renderer.pass,nfs_results_renderer.generation);nfs_results_renderer.headingProgram=nfs_results_renderer.headingTexture=0;nfs_results_renderer.color=nfs_results_renderer.fbo=nfs_results_renderer.clean=nfs_results_renderer.copyProgram=0;nfs_results_renderer.width=nfs_results_renderer.height=0;nfs_results_cancel("context-retired");nfs_results_renderer.generation=0;nfs_results_renderer.context=nfs_results_renderer.thread=0;}
+static void nfs_results_renderer_retired(int owner){nfs_results_parent_seed_clear();int actual=owner&&nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context);nfs_soft_gpu_context_retired(&nfs_results_renderer.text,nfs_results_renderer.text.generation,actual);if(actual){if(nfs_results_renderer.backdrop)glDeleteTextures(1,&nfs_results_renderer.backdrop);if(nfs_results_renderer.headingProgram)glDeleteProgram(nfs_results_renderer.headingProgram);if(nfs_results_renderer.headingTexture)glDeleteTextures(1,&nfs_results_renderer.headingTexture);if(nfs_results_renderer.fbo)glDeleteFramebuffers(1,&nfs_results_renderer.fbo);if(nfs_results_renderer.color)glDeleteTextures(1,&nfs_results_renderer.color);if(nfs_results_renderer.clean)glDeleteTextures(1,&nfs_results_renderer.clean);if(nfs_results_renderer.copyProgram)glDeleteProgram(nfs_results_renderer.copyProgram);}nfs_audio_native_retired(&nfs_results_renderer.pass,nfs_results_renderer.generation);nfs_results_renderer.backdrop=0;nfs_results_renderer.headingProgram=nfs_results_renderer.headingTexture=0;nfs_results_renderer.color=nfs_results_renderer.fbo=nfs_results_renderer.clean=nfs_results_renderer.copyProgram=0;nfs_results_renderer.width=nfs_results_renderer.height=0;nfs_results_cancel("context-retired");nfs_results_renderer.generation=0;nfs_results_renderer.context=nfs_results_renderer.thread=0;}
 static void nfs_results_renderer_other(void){if(nfs_results_renderer.view.request)nfs_results_cancel("unknown-operation");}
 // Raw clean565 is composited before the existing final display uGamma pass.
 // CPU rows are top-first; GL staging textures are copied with the opposite V.
-static int nfs_results_copy_prepare(void){GLuint vs=0,fs=0,program=0,texture=0;GLint linked=0,sampler=-1;NfsFrameSaved saved;int ok=0;
+static int nfs_results_copy_prepare(void){GLuint vs=0,fs=0,program=0,texture=0;GLint linked=0,sampler=-1,fog=-1;NfsFrameSaved saved;int ok=0;
  static const char vertex[]="attribute vec4 vertex;varying highp vec2 uv;void main(){gl_Position=vec4(vertex.xy,0.,1.);uv=vertex.zw;}";
- static const char fragment[]="precision highp float;uniform sampler2D image;varying highp vec2 uv;void main(){gl_FragColor=texture2D(image,uv);}";
+ static const char fragment[]="precision highp float;uniform sampler2D image;uniform vec4 fog;varying highp vec2 uv;void main(){gl_FragColor=fog.a>0.0?fog:texture2D(image,uv);}";
  if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context))return 0;if(nfs_results_renderer.copyProgram&&nfs_results_renderer.clean&&glIsProgram(nfs_results_renderer.copyProgram)&&glIsTexture(nfs_results_renderer.clean))return 1;
- nfs_frame_save(&saved);vs=nfs_text_gpu_shader(GL_VERTEX_SHADER,vertex);fs=nfs_text_gpu_shader(GL_FRAGMENT_SHADER,fragment);if(!vs||!fs)goto done;program=glCreateProgram();if(!program)goto done;glAttachShader(program,vs);glAttachShader(program,fs);glBindAttribLocation(program,0,"vertex");glLinkProgram(program);glGetProgramiv(program,GL_LINK_STATUS,&linked);if(!linked)goto done;sampler=glGetUniformLocation(program,"image");if(sampler<0)goto done;glGenTextures(1,&texture);if(!texture)goto done;glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,texture);nfs_frame_texture_params();ok=texture&&glGetError()==GL_NO_ERROR;
- done:if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}if(vs)glDeleteShader(vs);if(fs)glDeleteShader(fs);if(!ok){if(program)glDeleteProgram(program);if(texture)glDeleteTextures(1,&texture);}nfs_frame_restore(&saved);if(!ok)return 0;nfs_results_renderer.copyProgram=program;nfs_results_renderer.copySampler=sampler;nfs_results_renderer.clean=texture;return 1;}
+ nfs_frame_save(&saved);vs=nfs_text_gpu_shader(GL_VERTEX_SHADER,vertex);fs=nfs_text_gpu_shader(GL_FRAGMENT_SHADER,fragment);if(!vs||!fs)goto done;program=glCreateProgram();if(!program)goto done;glAttachShader(program,vs);glAttachShader(program,fs);glBindAttribLocation(program,0,"vertex");glLinkProgram(program);glGetProgramiv(program,GL_LINK_STATUS,&linked);if(!linked)goto done;sampler=glGetUniformLocation(program,"image");fog=glGetUniformLocation(program,"fog");if(sampler<0||fog<0)goto done;glGenTextures(1,&texture);if(!texture)goto done;glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,texture);nfs_frame_texture_params();ok=texture&&glGetError()==GL_NO_ERROR;
+ done:if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}if(vs)glDeleteShader(vs);if(fs)glDeleteShader(fs);if(!ok){if(program)glDeleteProgram(program);if(texture)glDeleteTextures(1,&texture);}nfs_frame_restore(&saved);if(!ok)return 0;nfs_results_renderer.copyProgram=program;nfs_results_renderer.copySampler=sampler;nfs_results_renderer.copyFog=fog;nfs_results_renderer.clean=texture;return 1;}
 static int nfs_results_aliases(void){GLuint a=nfs_results_renderer.clean,b=nfs_results_renderer.color,t=nfs_results_renderer.text.texture;return(nfs_results_renderer.headingTexture&&(nfs_results_renderer.headingTexture==a||nfs_results_renderer.headingTexture==b||nfs_results_renderer.headingTexture==t||nfs_results_renderer.headingTexture==g_framebufferTexture))||(a&&(a==b||a==t||a==g_framebufferTexture))||(b&&(b==t||b==g_framebufferTexture))||(nfs_results_renderer.fbo&&nfs_results_renderer.fbo==g_framebuffer)||(nfs_results_renderer.copyProgram&&nfs_results_renderer.copyProgram==nfs_results_renderer.text.program);}
 static int nfs_results_stage_owned(void){GLint fbo=0,type=0,name=0;if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)||!nfs_results_renderer.clean||!nfs_results_renderer.color||nfs_results_aliases())return 0;glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);if((GLuint)fbo!=nfs_results_renderer.fbo)return 0;glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type);glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name);return nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)&&type==GL_TEXTURE&&(GLuint)name==nfs_results_renderer.color&&glGetError()==GL_NO_ERROR;}
 static int nfs_results_target_equal(uint64_t request){NfsNativeLogoTargetProof target;return nfs_results_read_target(&target,request)&&!memcmp(&target,&nfs_results_renderer.target,sizeof target);}
@@ -115,18 +152,129 @@ static int nfs_results_heading_draw(unsigned index){
  glActiveTexture(GL_TEXTURE0);glUseProgram(nfs_results_renderer.headingProgram);glUniform1i(nfs_results_renderer.headingSampler,0);glUniform1f(nfs_results_renderer.headingRow,(float)(index-1));glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.headingTexture);
  glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,quad);glDrawArrays(GL_TRIANGLES,0,6);return nfs_results_stage_owned()&&glGetError()==GL_NO_ERROR;
 }
-int nfs_private_results_begin(const NfsResultsLiveView*v){NfsAudioNativeStamp stamp;NfsNativeLogoTargetProof target;if(!v||v->schema!=2||v->headingIndex<1||v->headingIndex>6||v->width!=640||v->height!=480||!v->request||!v->content||v->pixels!=307200||!v->original||!v->clean||!v->owner||!v->retain||!v->release||v->text.logicalWidth!=640||v->text.logicalHeight!=480||!v->text.vertices||!v->text.vertexCount||v->text.vertexCount>16384||!nfs_bg_feature()||!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context))return 0;if(nfs_results_renderer.view.request){nfs_results_cancel("nested-begin");return 0;}nfs_results_parent_seed_clear();drawTriangles();if(!nfs_results_read_target(&target,v->request))return 0;v->retain(v->owner);nfs_results_renderer.view=*v;nfs_results_renderer.target=target;if(!nfs_results_stamp(&stamp)||!nfs_audio_native_begin(&nfs_results_renderer.pass,&stamp,v->request,v->original,v->pixels)){nfs_results_cancel("begin-native-source");return 0;}nfs_results_trace("begin-accepted","current-original-pass");return 1;}
-int nfs_private_results_finish(uint64_t request){NfsAudioNativeStamp stamp;NfsBgSaved saved;NfsSoftwareTextStage textStage;int ok=0;
+int nfs_private_results_begin(const NfsResultsLiveView*v){
+ NfsAudioNativeStamp stamp;NfsNativeLogoTargetProof target;
+ if(!v||v->schema!=2||v->headingIndex<1||v->headingIndex>6||
+    v->width!=640||v->height!=480||!v->request||!v->content||
+    v->pixels!=307200||!v->original||!v->clean||!v->owner||!v->retain||!v->release){
+  nfs_results_trace("begin-refused","invalid-source-view");return 0;
+ }
+ if(v->text.logicalWidth!=640||v->text.logicalHeight!=480||!v->text.vertices||
+    !v->text.vertexCount||v->text.vertexCount>16384){
+  nfs_results_trace("begin-refused","invalid-text-layer");return 0;
+ }
+ if(!nfs_bg_feature()||!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){
+  nfs_results_trace("begin-refused","renderer-context");return 0;
+ }
+ if(nfs_results_renderer.view.request){nfs_results_cancel("nested-begin");return 0;}
+ drawTriangles();
+ if(!nfs_results_read_target(&target,v->request)){
+  if(nfs_logo_trace_enabled()&&nfs_results_renderer.traceLines<16){
+   GLint framebuffer=0,viewport[4]={0};
+   glGetIntegerv(GL_FRAMEBUFFER_BINDING,&framebuffer);
+   glGetIntegerv(GL_VIEWPORT,viewport);
+   fprintf(stderr,"RESULTS TARGET refusal=%u framebuffer=%d expected=%u renderBuffer=%u viewport=%d,%d,%d,%d\n",
+     nfs_logo_target_failbits,framebuffer,g_framebuffer,(unsigned)g_renderBuffer,
+     viewport[0],viewport[1],viewport[2],viewport[3]);
+  }
+  nfs_results_trace("begin-refused","original-render-target");return 0;
+ }
+ v->retain(v->owner);nfs_results_renderer.view=*v;nfs_results_renderer.target=target;
+ if(!nfs_results_stamp(&stamp)||!nfs_audio_native_begin(&nfs_results_renderer.pass,&stamp,v->request,v->original,v->pixels)){
+  nfs_results_cancel("begin-native-source");return 0;
+ }
+ nfs_results_trace("begin-accepted","current-original-pass");return 1;
+}
+static int nfs_results_stage_base(const GLfloat* quad,int* authored){
+ const NfsResultsLiveView* view=&nfs_results_renderer.view;
+ const GLint* viewport=nfs_results_renderer.target.sampling.viewport;
+ NfsResultsBackdropImage image={0};
+ const unsigned ratio=viewport[2]*9>=viewport[3]*14;
+ unsigned char* overlay=NULL;
+ *authored=0;
+ if(view->backdropMask&&nfs_results_backdrop_image(ratio,&image)){
+  overlay=(unsigned char*)malloc(view->pixels*4);
+  if(overlay){
+   for(size_t i=0;i<view->pixels;++i){
+    const unsigned value=view->clean[i],r=value>>11,g=(value>>5)&63,b=value&31;
+    unsigned char* pixel=overlay+4*i;
+    if(view->backdropMask[i])memset(pixel,0,4);
+    else{
+     pixel[0]=(r<<3)|(r>>2);pixel[1]=(g<<2)|(g>>4);
+     pixel[2]=(b<<3)|(b>>2);pixel[3]=255;
+    }
+   }
+  }
+ }
+ glActiveTexture(GL_TEXTURE0);
+ glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+ if(overlay&&(!nfs_results_renderer.backdrop||nfs_results_renderer.backdropRatio!=ratio)){
+  if(!nfs_results_renderer.backdrop)glGenTextures(1,&nfs_results_renderer.backdrop);
+  glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.backdrop);
+  nfs_frame_texture_params();
+  glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,image.width,image.height,0,GL_RGBA,GL_UNSIGNED_BYTE,image.pixels);
+  if(!nfs_results_renderer.backdrop||glGetError()!=GL_NO_ERROR){
+   if(nfs_results_renderer.backdrop)glDeleteTextures(1,&nfs_results_renderer.backdrop);
+   nfs_results_renderer.backdrop=0;free(overlay);overlay=NULL;
+  }else nfs_results_renderer.backdropRatio=ratio;
+ }
+ glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
+ nfs_frame_draw_state();
+ glUseProgram(nfs_results_renderer.copyProgram);
+ glUniform1i(nfs_results_renderer.copySampler,0);
+ glUniform4f(nfs_results_renderer.copyFog,0,0,0,0);
+ glEnableVertexAttribArray(0);
+ glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);
+ glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,quad);
+ if(overlay){
+  glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.backdrop);
+  glDrawArrays(GL_TRIANGLES,0,6);
+  glEnable(GL_BLEND);
+  glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);
+  glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+ }
+ glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.clean);
+ glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,nfs_results_renderer.target.sampling.magFilter);
+ if(overlay)glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,640,480,0,GL_RGBA,GL_UNSIGNED_BYTE,overlay);
+ else glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,640,480,0,GL_RGB,GL_UNSIGNED_SHORT_5_6_5,view->clean);
+ glDrawArrays(GL_TRIANGLES,0,6);
+ *authored=overlay!=NULL;
+ free(overlay);
+ return glGetError()==GL_NO_ERROR;
+}
+static int nfs_results_stage_fog(const GLfloat* quad){
+ if(!nfs_results_renderer.fogAmount)return 1;
+ if(!nfs_results_stage_owned())return 0;
+ const float a=nfs_results_renderer.fogAmount/255.f;
+ const float* rgb=nfs_results_renderer.fogColor;
+ nfs_frame_draw_state();
+ glUseProgram(nfs_results_renderer.copyProgram);
+ glUniform4f(nfs_results_renderer.copyFog,rgb[0]*a,rgb[1]*a,rgb[2]*a,a);
+ glActiveTexture(GL_TEXTURE0);
+ glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.clean);
+ glEnableVertexAttribArray(0);
+ glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);
+ glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,quad);
+ glEnable(GL_BLEND);
+ glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);
+ glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+ glDrawArrays(GL_TRIANGLES,0,6);
+ glUniform4f(nfs_results_renderer.copyFog,0,0,0,0);
+ return glGetError()==GL_NO_ERROR;
+}
+int nfs_private_results_finish(uint64_t request){NfsAudioNativeStamp stamp;NfsBgSaved saved;NfsSoftwareTextStage textStage;int ok=0,authored=0,baseOK=0;
  static const GLfloat cpuQuad[]={-1,1,0,0,-1,-1,0,1,1,1,1,0,1,1,1,0,-1,-1,0,1,1,-1,1,1};
  static const GLfloat stageQuad[]={-1,1,0,1,-1,-1,0,0,1,1,1,1,1,1,1,1,-1,-1,0,0,1,-1,1,0};
  if(!request||request!=nfs_results_renderer.view.request)return 0;if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}drawTriangles();if(nfs_results_renderer.uploadPending||!nfs_results_stamp(&stamp)||!nfs_audio_native_finish(&nfs_results_renderer.pass,&stamp,request)||!nfs_results_target_equal(request)){nfs_results_cancel("incomplete-original-native-pass");return 0;}
  if(nfs_results_aliases()){nfs_results_cancel("resource-alias");return 0;}
  if(!nfs_results_font_prepare(&nfs_results_renderer.text,&nfs_results_renderer.view.text.font)||!nfs_results_copy_prepare()||!nfs_results_heading_prepare()||!nfs_results_color_target(nfs_results_renderer.target.width,nfs_results_renderer.target.height)||!nfs_results_target_equal(request)){nfs_results_cancel("prepare-stage");return 0;}
  // Every optional operation until final copy targets only our private FBO.
- nfs_bg_save(&saved);glBindFramebuffer(GL_FRAMEBUFFER,nfs_results_renderer.fbo);if(!nfs_results_stage_owned()){if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}nfs_bg_restore(&saved);nfs_results_cancel("stage-owner-before-writes");return 0;}glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.clean);glPixelStorei(GL_UNPACK_ALIGNMENT,2);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,nfs_results_renderer.target.sampling.magFilter);glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,640,480,0,GL_RGB,GL_UNSIGNED_SHORT_5_6_5,nfs_results_renderer.view.clean);glBindFramebuffer(GL_FRAMEBUFFER,nfs_results_renderer.fbo);glViewport(nfs_results_renderer.target.sampling.viewport[0],nfs_results_renderer.target.sampling.viewport[1],nfs_results_renderer.target.sampling.viewport[2],nfs_results_renderer.target.sampling.viewport[3]);nfs_frame_draw_state();glUseProgram(nfs_results_renderer.copyProgram);glUniform1i(nfs_results_renderer.copySampler,0);glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.clean);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,cpuQuad);glDrawArrays(GL_TRIANGLES,0,6);
- memset(&textStage,0,sizeof textStage);textStage.framebuffer=nfs_results_renderer.fbo;textStage.width=nfs_results_renderer.target.width;textStage.height=nfs_results_renderer.target.height;textStage.sampling=nfs_results_renderer.target.sampling;textStage.logicalWidth=640;textStage.logicalHeight=480;ok=nfs_results_stage_owned()&&glGetError()==GL_NO_ERROR&&nfs_results_heading_draw(nfs_results_renderer.view.headingIndex)&&nfs_soft_gpu_draw_into_staging(&nfs_results_renderer.text,&textStage,nfs_results_renderer.view.text.vertices,nfs_results_renderer.view.text.vertexCount);
+ nfs_bg_save(&saved);glBindFramebuffer(GL_FRAMEBUFFER,nfs_results_renderer.fbo);if(!nfs_results_stage_owned()){if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}nfs_bg_restore(&saved);nfs_results_cancel("stage-owner-before-writes");return 0;}
+ baseOK=nfs_results_stage_base(cpuQuad,&authored);
+ memset(&textStage,0,sizeof textStage);textStage.framebuffer=nfs_results_renderer.fbo;textStage.width=nfs_results_renderer.target.width;textStage.height=nfs_results_renderer.target.height;textStage.sampling=nfs_results_renderer.target.sampling;textStage.logicalWidth=640;textStage.logicalHeight=480;ok=baseOK&&nfs_results_stage_owned()&&glGetError()==GL_NO_ERROR&&nfs_results_heading_draw(nfs_results_renderer.view.headingIndex)&&nfs_soft_gpu_draw_into_staging(&nfs_results_renderer.text,&textStage,nfs_results_renderer.view.text.vertices,nfs_results_renderer.view.text.vertexCount);
+ if(ok)ok=nfs_results_stage_fog(cpuQuad);
  if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}nfs_bg_restore(&saved);if(!ok||!nfs_results_target_equal(request)){nfs_results_cancel("private-stage-failed");return 0;}
- nfs_bg_save(&saved);nfs_frame_draw_state();glUseProgram(nfs_results_renderer.copyProgram);glUniform1i(nfs_results_renderer.copySampler,0);glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.color);glViewport(0,0,nfs_results_renderer.target.width,nfs_results_renderer.target.height);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,stageQuad);glDrawArrays(GL_TRIANGLES,0,6);if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}ok=glGetError()==GL_NO_ERROR;nfs_bg_restore(&saved);nfs_results_trace(ok?"finish-published":"finish-refused",ok?"clean565-plus-HD-text":"commit-error");if(ok&&nfs_results_renderer.view.headingIndex==1&&nfs_results_renderer.view.sourceGame&&nfs_results_renderer.view.sourceEpoch){nfs_results_renderer.view.retain(nfs_results_renderer.view.owner);nfs_results_parent_seed=nfs_results_renderer.view;nfs_results_parent_seed_target=nfs_results_renderer.target;}nfs_results_clear_view();return ok;
+ nfs_bg_save(&saved);nfs_frame_draw_state();glUseProgram(nfs_results_renderer.copyProgram);glUniform1i(nfs_results_renderer.copySampler,0);glBindTexture(GL_TEXTURE_2D,nfs_results_renderer.color);glViewport(0,0,nfs_results_renderer.target.width,nfs_results_renderer.target.height);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,stageQuad);glDrawArrays(GL_TRIANGLES,0,6);if(!nfs_results_context(nfs_results_renderer.generation,nfs_results_renderer.context)){nfs_results_abandon();return 0;}ok=glGetError()==GL_NO_ERROR;nfs_bg_restore(&saved);nfs_results_trace(ok?"finish-published":"finish-refused",ok?(authored?"authored-backdrop-plus-HD-text":"clean565-plus-HD-text"):"commit-error");if(ok&&nfs_results_renderer.view.headingIndex==1&&nfs_results_renderer.view.sourceGame&&nfs_results_renderer.view.sourceEpoch){nfs_results_renderer.view.retain(nfs_results_renderer.view.owner);nfs_results_parent_seed=nfs_results_renderer.view;nfs_results_parent_seed_target=nfs_results_renderer.target;}nfs_results_clear_view();return ok;
 }
 
 int nfs_private_results_cancel(uint64_t request){if(!request||request!=nfs_results_renderer.view.request||nfs_results_renderer.thread!=NFS_RESULTS_THREAD_TOKEN())return 0;nfs_results_cancel("source-invalidated-before-finish");return 1;}

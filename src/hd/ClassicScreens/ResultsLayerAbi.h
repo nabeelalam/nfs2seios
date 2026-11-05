@@ -9,6 +9,7 @@ typedef struct NfsResultsLiveView {
  NfsSoftwareTextLayerView text;
  void*owner;void(*retain)(void*);void(*release)(void*);
  uintptr_t sourceGame;uint64_t sourceEpoch;
+ const uint8_t*backdropMask;
 } NfsResultsLiveView;
 #ifdef __cplusplus
 extern "C" {

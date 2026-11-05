@@ -41,11 +41,16 @@ static inline int nfs_adaptive_aspect_projection(
        originalHalfAngle1024>=256)return 0;
     /* The per-view target/original aspect quotient cancels view dimensions.
      * Thus stacked split-screen gets the SAME factor, not twice the factor. */
-    const double factor=((double)in->drawableWidth/in->drawableHeight)/(640.0/480.0);
+    const int64_t scaledWidth=(int64_t)in->drawableWidth*3;
+    const int64_t scaledHeight=(int64_t)in->drawableHeight*4;
+    const double factor=(double)scaledWidth/scaledHeight;
     /* Hor+ never removes visible subjects on a narrower portrait surface.
      * Such surfaces retain contain until an explicit Vert+ path is supplied. */
     if(!isfinite(factor)||factor<1.0||factor>4.0)return 0;
-    const double angle=atan(tan(originalHalfAngle1024*pi/512.0)*factor)*512.0/pi;
+    /* Exact 4:3 is an identity, including the integer angle. Evaluating
+       atan(tan(angle)) and rounding up can otherwise add an angle unit. */
+    const double angle=scaledWidth==scaledHeight?originalHalfAngle1024:
+        atan(tan(originalHalfAngle1024*pi/512.0)*factor)*512.0/pi;
     const double focal=originalIntegerFocalX/factor;
     if(!isfinite(angle)||angle>=256||!isfinite(focal)||fabs(focal)<1)return 0;
     NfsAdaptiveAspectProjection result;
