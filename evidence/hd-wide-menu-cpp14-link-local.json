@@ -1,0 +1,30 @@
+{
+  "scope": "Exact C++14 O0 multi-unit link regression and real selected resource load",
+  "oldFailureReproduced": true,
+  "oldFailureSymbol": "WideMenuArtwork::dimensions",
+  "fixedLinkExit": 0,
+  "fixedRuntimeExit": 0,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "layoutsChecked": [
+    [
+      1180,
+      820
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "outOfRangeLayerRefused": true,
+  "artworkBytesUnchanged": true,
+  "artworkSHA256": "655d43557cec2f013b3d519e5919839ff1a278bde7b3995f17be3830df80d980",
+  "sourceHeaderSha256": "ac77f4dcf665e0cef5ea2e1c07d1259ee5d859320099a4a274d5b98c35735c3e",
+  "newCloudRun": false,
+  "physicalIpadVerified": false,
+  "failedCloudRun": 42163506478,
+  "appleJobStarted": false,
+  "fix": "C++14 inline accessor with function-local immutable storage; no geometry or artwork changes"
+}

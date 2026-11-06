@@ -48,8 +48,8 @@ public:
 
         std::array<std::array<size_t, 2>, 2> offsets{};
         size_t cursor = 0;
-        for (size_t ratio = 0; ratio < dimensions.size(); ++ratio) {
-            const auto& size = dimensions[ratio];
+        for (size_t ratio = 0; ratio < dimensions().size(); ++ratio) {
+            const auto& size = dimensions()[ratio];
             const size_t bytes = size[0] * size[1] * 4;
             for (unsigned role = 0; role < 2; ++role) {
                 constexpr size_t recordBytes = 48;
@@ -76,8 +76,8 @@ public:
     }
 
     Layers layers(size_t ratio) const {
-        if (data_.empty() || ratio >= dimensions.size()) return {};
-        return {dimensions[ratio][0], dimensions[ratio][1],
+        if (data_.empty() || ratio >= dimensions().size()) return {};
+        return {dimensions()[ratio][0], dimensions()[ratio][1],
                 data_.data() + offsets_[ratio][0], data_.data() + offsets_[ratio][1]};
     }
 
@@ -90,7 +90,13 @@ private:
         return nfs_texture_sha256(data, bytes, actual.data()) &&
                std::memcmp(actual.data(), expected, actual.size()) == 0;
     }
-    static constexpr std::array<std::array<unsigned, 2>, 2> dimensions{{{1180, 820}, {1280, 720}}};
+    // C++14: odr-used constexpr data members still need separate storage.
+    // An inline accessor gives the immutable table one defined lifetime in
+    // unoptimized/multi-unit builds as well as optimized app builds.
+    static const std::array<std::array<unsigned, 2>, 2>& dimensions() {
+        static const std::array<std::array<unsigned, 2>, 2> value{{{1180, 820}, {1280, 720}}};
+        return value;
+    }
     std::vector<uint8_t> data_;
     std::array<std::array<size_t, 2>, 2> offsets_{};
 };

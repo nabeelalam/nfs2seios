@@ -285,3 +285,11 @@ and no total release storage/bandwidth limit:
 This is an opt-in transfer mechanism, not a public finished release or device
 acceptance. It never enables billing, selects larger machines, increases quotas
 or changes repository visibility.
+
+Run42163506478 reached the Linux debug startup link and failed on the C++14
+WideMenuArtwork dimension-table storage definition; no Apple machine ran. The
+old missing-symbol error is reproduced locally across two units at O0 with
+ASan/UBSan. The corrected source loads both exact selected layouts without
+changing artwork bytes. One replacement validation against that corrected
+revision is justified; no unchanged-revision retry or additional Apple builds
+for artwork iteration are authorized by this failure.
