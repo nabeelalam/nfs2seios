@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "scope": "Private local CPU experiments, not shipping changes or iPad FPS/energy proof",
+  "staticDestinationOnly": {
+    "realOriginalResolverSHA256": "f5fb4d20071484eb7c6f467196cc17819899ff37d4f4ef47f183ab817138275a",
+    "optimizedSemanticCases": 4320,
+    "addressUndefinedSanitizerCases": 4320,
+    "matchingCheckpointCancellationCases": 3960,
+    "alternatingKernelPairs": 6,
+    "medianKernelCPUReductionPercent": 12.857921347203572,
+    "gatePassed": true,
+    "independentSourceReview": "No must-fix found; source/lifetime/testing limits retained",
+    "privateGameCandidate": {
+      "binarySHA256": "0a484dba159c30698eb35f3dfec8ce28cbfba9c5fd29217c7e4001ab19cc25c7",
+      "changedSites": 3,
+      "originalMethod": "4326E0",
+      "oldObjectsAndLibrariesPreserved": true,
+      "scenario": "North Country split-screen, Ford Indigo and Nazca C2, manual first gear, full grid; both moving observed",
+      "cleanShutdown": true,
+      "frameRecords": 7554,
+      "sessionSamples": 428,
+      "droppedRecords": 0,
+      "actualRecorderSeconds": 428.923,
+      "nominalCommandLoopLimitSeconds": 420,
+      "measuredRaceWindowCompleted": false,
+      "reason": "Setup consumed the available window; finishing current command/capture/cleanup exceeded nominal loop cutoff. No gain inferred from menu or short race samples."
+    },
+    "promoted": false
+  },
+  "directStaticResolver": {
+    "scope": "Two checked DATA/BSS direct lookup paths after unchanged heap path",
+    "optimizedAndAddressUndefinedSanitizerOracles": "PASS",
+    "medianKernelCPUReductionPercent": {
+      "DATA": 4.498707101725941,
+      "BSS": 15.712168711987978,
+      "mixedHeapToDATA": 8.815151276821215,
+      "unchangedHeapNegativeControl": 2.49
+    },
+    "requiredDATAAndMixedReductionPercent": 10,
+    "gatePassed": false,
+    "promoted": false,
+    "gameCandidateBuilt": false,
+    "decision": "Retain negative evidence; no unchanged retiming or new Game build justified"
+  },
+  "nextAction": "Collect current paused-through-menus CPU profiling on the unchanged baseline before selecting another optimization",
+  "cloudDispatched": false,
+  "physicalIpadVerified": false,
+  "energyMeasured": false,
+  "wholeGameFPSImprovementEstablished": false
+}
