@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
 #include <SDL3/SDL.h>
+#if !defined(SDL_PLATFORM_IOS)
+#include "DesktopDiagnosticRecorder.h"
+#endif
 #include <SDL3/SDL_main.h>
 #include "AssetSelection.h"
 #include "GameSession.h"
@@ -39,6 +42,11 @@ void report(const std::string &error){
 }
 }
 int main(int argc,char **argv){
+#if !defined(SDL_PLATFORM_IOS)
+    std::string recording_path;
+    try{recording_path=nfs::desktop_recording_option(argc,argv);}
+    catch(const std::exception &error){std::fprintf(stderr,"Diagnostic option: %s\n",error.what());return 1;}
+#endif
     nfs::open_app_log(nfs::app_log_path(argc,argv));
     nfs::app_log("Native app","Need for Speed II SE; platform="+std::string(SDL_GetPlatform()));
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMEPAD)){nfs::app_log("SDL initialization failed",SDL_GetError());SDL_Quit();nfs::close_app_log();return 1;}
@@ -56,10 +64,17 @@ int main(int argc,char **argv){
             // No host process exit inside the engine. Retain the root context
             // and continue pumping SDL until renderer/worker cleanup finishes.
             auto session=std::unique_ptr<nfs::GameSession>(new nfs::GameSession(root,present));
+#if !defined(SDL_PLATFORM_IOS)
+            std::unique_ptr<nfs::DesktopDiagnosticRecorder> recorder;
+            if(!recording_path.empty())recorder.reset(new nfs::DesktopDiagnosticRecorder(recording_path));
+#endif
             session->start();std::string app_error;Uint64 timing_start=SDL_GetTicks();
             while(!session->result().finished){
                 try{session->poll();}
                 catch(const std::exception &error){if(app_error.empty())app_error=error.what();session->request_stop();SDL_PumpEvents();}
+#if !defined(SDL_PLATFORM_IOS)
+                if(recorder)recorder->poll();
+#endif
                 const auto now=SDL_GetTicks();
                 if(now-timing_start>=5000){
                     const auto timing=nfs::take_renderer_timing();
@@ -73,6 +88,9 @@ int main(int argc,char **argv){
             }
             const auto result=session->result();
             nfs::app_log("Native game app stopped","exit="+std::to_string(result.exit_code)+" error="+result.error);
+#if !defined(SDL_PLATFORM_IOS)
+            if(recorder){recorder->stop(app_error.empty()&&result.error.empty()?"session_end":"session_error");if(recorder->failed())nfs::app_log("Diagnostic recording","Recording ended with a writer failure");}
+#endif
             session.reset();
             if(!app_error.empty())report(app_error);
             else if(!result.error.empty())report(result.error);

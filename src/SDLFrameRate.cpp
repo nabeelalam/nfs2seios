@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "FrameRate.h"
+#include "FrameTimingCapture.h"
 #include "FramePresentation.h"
 #include "FramePacer.h"
 #include "EngineThreadMetrics.h"
@@ -17,7 +18,7 @@ extern "C" void nfs_show_frame_rate(void *window,double fps,double cpu,int width
 extern "C" void nfs_toggle_performance_overlay(void *window);
 extern "C" void nfs_monitor_activity(int state);
 #endif
-namespace {nfs::FrameRate rate;void *last_window=nullptr;std::atomic<double> last_fps{0};std::atomic<int> render_width{640},render_height{480};uint64_t cpu_wall=0;double cpu_time=0;}
+namespace {nfs::FrameTimingCapture timing; nfs::FrameRate rate;void *last_window=nullptr;std::atomic<double> last_fps{0};std::atomic<int> render_width{640},render_height{480};uint64_t cpu_wall=0;double cpu_time=0;}
 extern "C" void nfs_render_target_changed(int width,int height){render_width=width;render_height=height;}
 extern "C" int nfs_render_width(){return render_width.load();}
 namespace {std::atomic<int> frame_limit{0};}
@@ -60,12 +61,18 @@ extern "C" void nfs_diagnostics_activity(int state){
 #endif
 }
 extern "C" int nfs_render_height(){return render_height.load();}
-extern "C" void nfs_reset_frame_rate(){rate.reset();last_window=nullptr;last_fps=0;cpu_wall=0;cpu_time=0;nfs_reset_engine_metrics();}
+extern "C" void nfs_frame_timing_capture(int enabled){timing.capture(enabled!=0);}
+extern "C" unsigned nfs_frame_timing_drain(NfsFrameTiming *out,unsigned capacity){return timing.drain(out,capacity);}
+extern "C" NfsFrameTimingSnapshot nfs_frame_timing_snapshot(){return timing.snapshot();}
+extern "C" void nfs_reset_frame_rate(){timing.reset();rate.reset();last_window=nullptr;last_fps=0;cpu_wall=0;cpu_time=0;nfs_reset_engine_metrics();}
 extern "C" double nfs_frame_rate_value(){return last_fps.load(std::memory_order_relaxed);}
 extern "C" void nfs_frame_presented(void *window){
     nfs_diagnostics_activity(2);
-    if(window!=last_window){rate.reset();last_window=window;}
-    double fps=0;if(!rate.presented(SDL_GetTicksNS(),fps))return;
+    if(window!=last_window){rate.reset();last_window=window;timing.reset();}
+    const auto presented_now=SDL_GetTicksNS();
+    timing.presented(presented_now);
+    double fps=0;if(!rate.presented(presented_now,fps))return;
+    timing.published(presented_now,fps);
     last_fps.store(fps,std::memory_order_relaxed);
 #if defined(__APPLE__) && TARGET_OS_IOS
     const auto now=SDL_GetTicksNS();struct rusage usage{};double cpu=-1;
