@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "scope": "Actual selected49-image history resource, native loader/provider only",
+  "resourceSha256": "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c",
+  "resourceBytes": 26467971,
+  "payloadBytes": 75975736,
+  "archiveFamilies": 7,
+  "localizedTitleRoles": 6,
+  "acquiredPairs": 42,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "passed": true,
+  "logicalBoundsCheckedAgainstExactSourceCatalog": true,
+  "opaqueBackgroundsAndPremultipliedTitlesChecked": true,
+  "allTitlesContainVisibleAndTransparentPixels": true,
+  "crossFamilyAndInvalidSourceRequestsRejected": true,
+  "heldLeaseSurvivedClear": true,
+  "generationClearedAndAdvancedOnReinstall": true,
+  "sharedWiringStaticReviewPassed": true,
+  "appBuilt": false,
+  "gameExecuted": false,
+  "physicalIpadVerified": false
+}

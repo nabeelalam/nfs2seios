@@ -16,6 +16,9 @@
 #include "ClassicScreens/CarInfoArtworkLoader.h"
 #include "ClassicScreens/CarInfoArtworkPin.h"
 #include "ClassicScreens/CarInfoArtProvider.h"
+#include "ClassicScreens/HistoryArtworkLoader.h"
+#include "ClassicScreens/HistoryArtworkPin.h"
+#include "ClassicScreens/HistoryArtProvider.h"
 #include "SlideshowStartup.h"
 #if defined(__has_include)
 #if __has_include("hd/ClassicScreens/private/SlideshowFooterData.h")
@@ -61,7 +64,7 @@ bool enableVariable(const char*name)noexcept{
 bool enableScene()noexcept{
  if(!enableVariable("NFS_PRIVATE_BACKGROUND_SCENE_HD"))return false;
 #ifdef NFS_CLASSIC_UI
- const char*names[]={"NFS_PRIVATE_LOADSAVE_HD","NFS_PRIVATE_LOADSAVE_WORD_ART","NFS_PRIVATE_LOADSAVE_FULLSCENE","NFS_PRIVATE_RECORDS_HD","NFS_PRIVATE_STATS_UI","NFS_PRIVATE_RESULTS_HD","NFS_PRIVATE_VICTORY_HD","NFS_PRIVATE_LOADING_UI","NFS_PRIVATE_TRACK_INFO_UI","NFS_PRIVATE_CAR_INFO_UI","NFS_PRIVATE_INTRO_UI","NFS_PRIVATE_CREDITS_UI","NFS_PRIVATE_LOADSAVE_CHILD_UI"};
+ const char*names[]={"NFS_PRIVATE_LOADSAVE_HD","NFS_PRIVATE_LOADSAVE_WORD_ART","NFS_PRIVATE_LOADSAVE_FULLSCENE","NFS_PRIVATE_RECORDS_HD","NFS_PRIVATE_STATS_UI","NFS_PRIVATE_RESULTS_HD","NFS_PRIVATE_VICTORY_HD","NFS_PRIVATE_LOADING_UI","NFS_PRIVATE_TRACK_INFO_UI","NFS_PRIVATE_CAR_INFO_UI","NFS_PRIVATE_HISTORY_UI","NFS_PRIVATE_INTRO_UI","NFS_PRIVATE_CREDITS_UI","NFS_PRIVATE_LOADSAVE_CHILD_UI"};
  for(const auto*name:names)if(!enableVariable(name))return false;
 #endif
  return true;
@@ -167,6 +170,11 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
  if(activated&&NFS_CAR_INFO_ARTWORK_SHA256[0]&&!nfs_car_info_art_generation()){
   try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string carInfo=slash==std::string::npos?root+"/gamedata/"+NFS_CAR_INFO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_CAR_INFO_ARTWORK_FILENAME;char error[128]{};
    if(!nfs_car_info_art_load_file(carInfo.c_str(),error,sizeof error))std::fprintf(stderr,"Optional car-info artwork: %s\n",error);
+  }catch(...){}
+ }
+ if(activated&&NFS_HISTORY_ARTWORK_SHA256[0]&&!nfs_history_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string history=slash==std::string::npos?root+"/gamedata/"+NFS_HISTORY_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_HISTORY_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_history_art_load_file(history.c_str(),error,sizeof error))std::fprintf(stderr,"Optional history artwork: %s\n",error);
   }catch(...){}
  }
  if(activated&&NFS_PLAYER_PHOTO_ARTWORK_SHA256[0]&&!nfs_player_photo_art_generation()){

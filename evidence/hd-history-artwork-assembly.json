@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "scope": "Private remastered manufacturer-history artwork assembly",
+  "backgrounds": 7,
+  "localizedTitles": 42,
+  "photographicMethod": "Seven source-referenced built-in AI remasters, individually compared with original collage composition and subjects",
+  "titleMethod": "Finite whole-word rendering from selected font; no font software copied",
+  "logicalGeometryPreserved": true,
+  "losslessResource": {
+    "fileBytes": 26467971,
+    "payloadBytes": 75975736,
+    "sha256": "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c"
+  },
+  "appRun": false,
+  "physicalIpadVerified": false,
+  "publicArtworkPublished": false,
+  "limitation": "Reconstructed photo details are visual remastering, not certified archival photography."
+}

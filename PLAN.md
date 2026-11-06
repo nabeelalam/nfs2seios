@@ -78,7 +78,7 @@ All packed pixels were independently compared with authored inputs before trust
 pins were set. All 36 technical inset drafts now have a private integration
 bundle. The production loader returns the correct asset for each car and tab
 and preserves the original transparent divider. The Ford Indigo Showcase route
-displayed all three tabs at 640×480 on Linux. Fidelity review and wider runtime
+displayed all three tabs at 640Ã—480 on Linux. Fidelity review and wider runtime
 coverage remain open. See `evidence/hd-carinfo-insets-local-runtime.json`.
 
 History, slideshow, and videos still need separate coverage. The earlier
@@ -778,7 +778,7 @@ zero owned children. Child wide acceptance, other-menu/gameplay aspect and a new
 physical iPad package remain unproven. No cloud build or publication occurred.
 
 
-6 November � Slideshow renderer implementation checkpoint
+6 November — Slideshow renderer implementation checkpoint
 
 The grouped prepared-native-engine compile now passes for Methods_01, Methods_03
 and Methods_13. The complete current renderer also passes syntax compilation
@@ -804,7 +804,7 @@ Evidence: evidence/hd-slideshow-renderer-implementation-local.json and
 evidence/hd-slideshow-surface-renderer-local.json.
 
 
-6 November � Slideshow startup connected and original route observed
+6 November — Slideshow startup connected and original route observed
 
 The maintained classic transformation now adds slideshow owner/text/presentation
 hooks, optionally stages the private identity catalog, and uses the existing
@@ -829,7 +829,7 @@ packaging; no artwork should be discarded to meet the cap. No cloud build/push.
 Evidence: hd-slideshow-startup-live-checkpoint.json,
 hd-slideshow-format126-source.json and hd-slideshow-format126-native.json.
 
-6 November — Corrected configuration result: the separate v2 native candidate
+6 November â€” Corrected configuration result: the separate v2 native candidate
 linked successfully, loaded the matching authored UI pack in a real local
 startup, and completed SDL shutdown with status0. This resolves the observed
 activation/configuration mismatch. The remastered slideshow drawing itself
@@ -839,7 +839,7 @@ candidate does not yet contain the separately validated format126 source change;
 include that change in the next grouped engine build. No iPad/cloud acceptance.
 
 
-6 November � Slideshow idle persistence observed; Indigo artwork reviewed
+6 November — Slideshow idle persistence observed; Indigo artwork reviewed
 
 The corrected local candidate reached the actual Ford Indigo slideshow. Its
 first version published a remaster once but later showed the original again.
@@ -874,7 +874,7 @@ Evidence: hd-slideshow-owner-persistence-live.json and
 hd-slideshow-indigo-artwork-review.json.
 
 
-6 November � Parallel photo review and deterministic footer foundation
+6 November — Parallel photo review and deterministic footer foundation
 
 Source-based photographic review now covers39/98 slideshow pictures:8 Indigo,
 8 Ferrari355F1,8 McLarenF1,8 JaguarXJ220 and7 FordGT90. Material corrections
@@ -915,7 +915,7 @@ hd-slideshow-shared-footer-syntax-local.json and
 hd-slideshow-native-footer-foundation.json.
 
 
-6 November — Autonomous continuation / shared footer loading
+6 November â€” Autonomous continuation / shared footer loading
 
 User is unavailable and explicitly authorizes routine decisions without waiting
 for approval. Complete all UI/artwork/integration before one grouped iPad build;
@@ -934,7 +934,7 @@ not game, linked app or iPad validation. Evidence: hd-slideshow-footer-resource-
 Original assets unchanged; no runtime pack regenerated, public upload or push.
 
 
-6 November — All98 slideshow photographs source-reviewed
+6 November â€” All98 slideshow photographs source-reviewed
 
 Hash-verified selections from Cala/Esprit/Nazca/Mustang and three bonus cars are
 merged into the private draft/correction manifests. All98 photographs now have
@@ -955,7 +955,7 @@ Jaguar/McLaren/Ford footer authors are active; next integrate finalized all-car
 footers, resolve brand details, complete remaining UI and responsive coverage.
 
 
-6 November — Shared footer artwork assembly
+6 November â€” Shared footer artwork assembly
 
 Jaguar and McLaren native footer previews inspected against original layouts;
 period vector brand paths preserved. Four shared footers (two Ferrari, Jaguar,
@@ -975,7 +975,7 @@ Evidence: hd-slideshow-four-footer-resource.json and
 hd-slideshow-footer-artwork-checkpoint.json.
 
 
-6 November — All15 footer candidates assembled
+6 November â€” All15 footer candidates assembled
 
 Native source-reviewed footer candidates now cover all15 car/bonus families.
 A private resource binds all98 exact original identities, contains5,321,403bytes
@@ -1003,7 +1003,7 @@ modification. Final reviewed photograph pack remains deliberately unregenerated.
 Evidence: hd-slideshow-all-car-footer-resource.json.
 
 
-6 November — Clean photo inputs and actual-selection correction
+6 November â€” Clean photo inputs and actual-selection correction
 
 Selected8 Jaguar +16 Lotus source-reviewed clean plates as authoritative photo
 inputs, with previous draft names/hashes preserved. Private assembler accepts
@@ -1027,7 +1027,7 @@ HD_UI_PLAN current checkpoint so historical notes do not conceal remaining work.
 No full-game/Apple build, public upload, push or original-data modification.
 
 
-6 November — Background matched selection and lossless photo transport
+6 November â€” Background matched selection and lossless photo transport
 
 Inspected corrected main-background16:9/iPad offline composites and applied all
 four prepared pin changes only after exact current/candidate hash preflight.
@@ -1054,7 +1054,7 @@ Evidence: hd-main-background-matched-selection.json and
 hd-slideshow-lossless-row-filter-local.json.
 
 
-6 November — Complete slideshow resource preparation / remaining technical art
+6 November â€” Complete slideshow resource preparation / remaining technical art
 
 The full98-photo version3 resource measures240,423,232bytes versus the previous
 337,028,055 raw-zlib resource:96,604,823bytes saved without changing decoded RGBA.
@@ -1086,7 +1086,7 @@ Evidence: hd-slideshow-lossless-resource-assembly.json,
 hd-slideshow-final-layer-resource.json, hd-main-background-matched-selection.json.
 
 
-6 November — Personal IPA slideshow wiring and aspect boundary
+6 November â€” Personal IPA slideshow wiring and aspect boundary
 
 Added the two completed slideshow resources to existing authenticated personal
 IPA injection, retaining exact resource digests, archive name/CRC/MachO checks,
@@ -1111,7 +1111,7 @@ Evidence: hd-slideshow-personal-ipa-wiring.json and
 hd-ui-current-aspect-boundary.json.
 
 
-6 November — Technical-image cleanup progress
+6 November â€” Technical-image cleanup progress
 
 First9-image group complete and exact selected-file hashes checked: McLaren,
 FerrariF50 and Ferrari355F1 technical panels. Four reviewed corrections remove
@@ -1128,7 +1128,7 @@ No Apple/full-app build or public upload. Evidence:
 hd-carinfo-technical-group-c-selection.json.
 
 
-6 November — Source-reviewed artwork batch assembled for grouped integration
+6 November â€” Source-reviewed artwork batch assembled for grouped integration
 
 All36 CarInfo technical selections merged by original sourceIndex, with six
 corrected native insets and one genuine Mustang background title. Preserve41
@@ -1164,3 +1164,9 @@ The isolated Release app built successfully (339 seconds) with the matched ten-r
 
 ### Showcase runtime and publication checkpoint
 Actual local ordinary-input Showcase, technical-page change, Slideshow and next-slide/next-car routes run with the selected resources and clean exits. The Ford information-page mark rotates through front, edge and reversed backface; it is not an incorrectly mirrored static replacement. Source privacy and independent staged secret scans pass, and the real tracked metadata CI approval passes after the new notice uses Markdown. No push/cloud job. History has HD text but its photographic collage remains original; investigate this coverage gap before claiming the complete artwork batch.
+
+### Seven manufacturer histories and grouped local completion checkpoint
+Seven previously original history collages now have source-referenced remasters, with42finite localized transparent headings. Source-authenticated type8 history module preserves original locale behavior and live text, proves complete original-plane replay and300tile/600triangle native publication. One grouped local build reused unchanged objects and completed in127.77seconds. Ordinary keyboard cycling visibly reaches all seven manufacturers and returns to menus with clean shutdown. NativeASan/UBSan accepts all42family/title pairs and rejects invalid pairs; leases survive clearing. The11resource packaging fixture passes,494,757,492artwork bytes under the unchanged512MiBfinished-package bound; no real newIPA yet. Italdesign Calà accent glyph is under review.
+The prior remote Apple attempt was cancelled before any step due to ARMrunner capacity, not a code error. A documented standardfree IntelMac route with pinned Xcode16.4 is prepared, still compilingARM64devicecode. A separate optional unpublished base-draft transfer avoids unverified accountwide Actions/Packages storage and strips supportfiles/artwork; current public-release refusal stays default. No new cloud dispatch/push/finishedpackage or physicalacceptance is claimed.
+
+Final history accent checkpoint: exactLatin1byte224 nowuses genuineLeagueGothicgravecoverage with the approvedvowelbody; allotherglyphdescriptors, advances, sourcebytes andmetrics stayunchanged. FocusedASan/UBSan andactualItaldesignhistorypage confirm Calà withouttofu; finalincrementalappbuild andcleanshutdown pass. All16existingLinuxfastsource/policychecks and6newunpublishedtransfertests plus5publicreleaseregressiontests pass. An independentread-only review found no must-fix issue in the drafttransfer. No newApplejob orpublicpush yet.

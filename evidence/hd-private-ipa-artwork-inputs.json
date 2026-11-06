@@ -40,10 +40,14 @@
     "slideshow-footer.ownedz": {
       "bytes": 6229762,
       "sha256": "ac3b1083ae688e8ea34862e0e011450167506052d13c3bae747b671588e4452a"
+    },
+    "history-ui.ownedz": {
+      "bytes": 26467971,
+      "sha256": "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c"
     }
   },
-  "totalArtworkBytes": 468289521,
-  "maximumBaseBytes": 68581391,
+  "totalArtworkBytes": 494757492,
+  "maximumBaseBytes": 42113420,
   "baseInspected": false,
   "ipaProduced": false,
   "artworkPublished": false,
@@ -88,5 +92,14 @@
     "allExistingMemberBytesIdentical": true,
     "allExistingCompressedStorageIdentical": true,
     "originalInputsUnchanged": true
-  }
+  },
+  "elevenResourceFixture": {
+    "syntheticOnly": true,
+    "runnableApp": false,
+    "passed": true,
+    "inputCount": 11,
+    "allOriginalMemberBytesAndCompressedStorageUnchanged": true,
+    "allResourceDigestsAndZipCrcsPassed": true
+  },
+  "newElevenResourceInjectionVerified": true
 }

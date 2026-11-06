@@ -55,8 +55,14 @@ SLIDESHOW_FOOTER_BYTES = 6229762
 SLIDESHOW_FOOTER_SHA256 = "ac3b1083ae688e8ea34862e0e011450167506052d13c3bae747b671588e4452a"
 
 
+HISTORY_RESOURCE = "history-ui.ownedz"
+HISTORY_BYTES = 26467971
+HISTORY_SHA256 = "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c"
+
+
 def resource_pins():
     return {RESOURCE: (TEMPLATE_BYTES, TEMPLATE_SHA256),
+            HISTORY_RESOURCE: (HISTORY_BYTES, HISTORY_SHA256),
             INTRO_RESOURCE: (INTRO_BYTES, INTRO_SHA256),
             TRACK_INFO_RESOURCE: (TRACK_INFO_BYTES, TRACK_INFO_SHA256),
             CAR_INFO_RESOURCE: (CAR_INFO_BYTES, CAR_INFO_SHA256),
@@ -266,7 +272,7 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
                     unpackedBytes=total, comment=z.comment)
 
 
-def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None, wide_menu=None, results_backdrop=None, slideshow=None, slideshow_footer=None):
+def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None, wide_menu=None, results_backdrop=None, slideshow=None, slideshow_footer=None, history=None):
     require(re.fullmatch("[0-9a-f]{64}", base_sha256 or ""), "Provide the trusted base IPA SHA-256")
     base = Path(base_ipa).resolve(strict=True)
     source = Path(template).resolve(strict=True)
@@ -344,7 +350,8 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
     for value, resource in ((wide_menu, WIDE_MENU_RESOURCE),
                             (results_backdrop, RESULTS_BACKDROP_RESOURCE),
                             (slideshow, SLIDESHOW_RESOURCE),
-                            (slideshow_footer, SLIDESHOW_FOOTER_RESOURCE)):
+                            (slideshow_footer, SLIDESHOW_FOOTER_RESOURCE),
+                            (history, HISTORY_RESOURCE)):
         if value is None:
             continue
         source_path = Path(value).resolve(strict=True)
@@ -424,7 +431,7 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                       allExistingCompressedStorageIdentical=True,
                       machOHashes=after["machos"], signed=False,
                       originalInputsUnchanged=True)
-        if intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None or wide_menu is not None or results_backdrop is not None:
+        if intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None or wide_menu is not None or results_backdrop is not None or slideshow is not None or history is not None:
             result["additionalResources"] = {
                 name: dict(sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
                 for name, data in artwork_inputs.items() if name != RESOURCE}
@@ -452,8 +459,9 @@ def main():
     p.add_argument("--results-backdrop", type=Path, help="Optional separately pinned Results backdrops")
     p.add_argument("--slideshow", type=Path, help="Pinned lossless slideshow photos; supply with --slideshow-footer")
     p.add_argument("--slideshow-footer", type=Path, help="Pinned matching slideshow overlay resource")
+    p.add_argument("--history", type=Path, help="Pinned manufacturer-history photographs and localized headings")
     args = p.parse_args()
-    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge, args.wide_menu, args.results_backdrop, args.slideshow, args.slideshow_footer), indent=2))
+    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge, args.wide_menu, args.results_backdrop, args.slideshow, args.slideshow_footer, args.history), indent=2))
 
 
 if __name__ == "__main__":

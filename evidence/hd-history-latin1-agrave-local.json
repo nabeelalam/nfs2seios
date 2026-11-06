@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "scope": "History-only genuine Latin-1 agrave glyph fix; no globalfont change",
+  "sourceByte": 224,
+  "decoderSlot": 95,
+  "cause": "Existing Resultsfont slot95 contained U+007F missingglyph coverage despite decoder assigning the slot to Latin-1 U+00E0.",
+  "font": "League Gothic",
+  "fontLicense": "OFL-1.1",
+  "fontSourceSha256": "3b0e998c9a0034222394ffecdd383e6948259ad037b95555b139a217629ce1d0",
+  "baseApprovedAtlasSha256": "8fc4e2c84fb32ec06552524986a6dd289793e7a1e7335dd5043e197b4dc00557",
+  "historyAtlasSha256": "f2c8049da090052b3dc78764dcfec1cc759044f6ebb28e53839da5a020e5e153",
+  "approvedVowelBodyByteExact": true,
+  "genuineAgraveUpperAccent": true,
+  "all192AdvancesUnchanged": true,
+  "all191OtherGlyphDescriptorsUnchanged": true,
+  "allKernsAndBaselinesUnchanged": true,
+  "allExistingAtlasPixelsPreserved": true,
+  "originalTextBytesAndMetricsUnchanged": true,
+  "sourceWitnessesAndOwnershipUnchanged": true,
+  "globalFontFilesModified": false,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "focusedValidationPassed": true,
+  "finiteWordPreviewVisuallyConfirmed": true,
+  "appBuilt": true,
+  "runtimeGlyphVerified": true,
+  "physicalIpadVerified": false,
+  "actualGameCaptureSha256": "dd769ac3d0ac8f5f15d11c21dcfb97578688c02f4383ea324940b1dce0e954ca",
+  "binarySha256": "0d9a8972d97b309d5f68d538a9b0bbc5333e0cf737164fab814daa21fd62e6c1",
+  "cleanShutdown": true
+}

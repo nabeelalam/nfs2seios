@@ -40,10 +40,14 @@
     "slideshow-footer.ownedz": {
       "bytes": 6229762,
       "sha256": "ac3b1083ae688e8ea34862e0e011450167506052d13c3bae747b671588e4452a"
+    },
+    "history-ui.ownedz": {
+      "bytes": 26467971,
+      "sha256": "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c"
     }
   },
   "count": 10,
-  "totalBytes": 468289521,
+  "totalBytes": 494757492,
   "allSourceAndCopyHashesVerified": true,
   "slideshowSourceReviewedImages": 98,
   "slideshowNativeLayers": 17,
@@ -53,5 +57,7 @@
   "appBuilt": false,
   "runtimeVerified": false,
   "physicalIpadVerified": false,
-  "publicUpload": false
+  "publicUpload": false,
+  "matchingNewARM64BaseVerified": false,
+  "historyResourceIncluded": true
 }

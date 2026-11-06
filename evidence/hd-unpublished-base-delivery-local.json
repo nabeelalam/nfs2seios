@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "scope": "Bounded unfinished classic-base draft transfer preparation",
+  "standardRunner": "macos-15-intel",
+  "deviceOutput": "arm64 iOS, no host architecture substitution",
+  "xcode": "16.4",
+  "priorArmJob": "41884649481: no runner acquired, zero Apple steps",
+  "privateRepositoryVisibilityVerified": true,
+  "publicSourceRepositoryVisibilityVerified": true,
+  "actionsArtifactUpload": false,
+  "personalArtworkUpload": false,
+  "configurationAndLanguageFilesStripped": true,
+  "defaultClassicPublicReleaseStillRefused": true,
+  "draftTransportTests": 6,
+  "existingReleaseTests": 5,
+  "linuxFastGateScripts": 16,
+  "checksPassed": true,
+  "independentReadOnlyReviewPassed": true,
+  "realDraftTransferVerified": false,
+  "newCloudBuild": false,
+  "physicalIpadVerified": false,
+  "sources": [
+    "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md",
+    "https://docs.github.com/en/rest/releases/releases",
+    "https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases"
+  ]
+}

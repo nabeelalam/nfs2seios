@@ -23,13 +23,16 @@ on:
       publish_ipa:
         type: boolean
         default: false
+      publish_base_draft:
+        type: boolean
+        default: false
       publish_release:
         type: boolean
         default: false
 jobs:
   build:
     if: inputs.linux_gate_passed && github.event.repository.visibility == 'public' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codex/hd-ui')
-    runs-on: macos-15
+    runs-on: macos-15-intel
     timeout-minutes: 30
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
@@ -112,6 +115,11 @@ jobs:
           name: NFSIISEProbe-unsigned
           path: .build/NFSIISEProbe-unsigned.ipa
           if-no-files-found: error
+      - name: Deliver unpublished classic base without Actions artifact storage
+        if: inputs.publish_base_draft && inputs.classic_ui && !inputs.publish_release && !inputs.publish_ipa && !inputs.include_probe
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/deliver_classic_base_draft.py --source "$GITHUB_SHA"
       - name: Prepare allowlisted public download
         if: inputs.publish_release && !inputs.classic_ui
         run: python3 scripts/prepare_release_download.py .build/NFSIISEGame-development-unsigned.ipa .build/NFSIISEGame-development-unsigned.json .build/NFSIISEGame-development-unsigned.zip --source "$GITHUB_SHA"

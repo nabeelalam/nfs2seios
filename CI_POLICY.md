@@ -16,7 +16,8 @@ identify the revision and specific unresolved Apple SDK or packaging question.
 | Larger runners | Always paid | Never selected |
 | Concurrent standard jobs on Free | 20 total, including at most 5 macOS | One active workflow; Linux completes before macOS starts |
 | Standard hosted job duration | At most 6 hours | Linux timeout 15 minutes; macOS timeout 30 minutes |
-| Standard macOS ARM runner | 3 M1 cores, 7 GB RAM, 14 GB SSD | macos-15, at most two compiler tasks and two ThinLTO backend jobs |
+| Standard macOS Intel runner (current Apple build route) | 4 cores, 14 GB RAM, 14 GB SSD | macos-15-intel; ARM64 iOS cross-compilation, at most two compiler tasks and two ThinLTO backend jobs |
+| Standard macOS ARM runner | 3 M1 cores, 7 GB RAM, 14 GB SSD | macos-15 remains a documented free alternative; not selected while its observed pool is capacity constrained |
 | Public Ubuntu standard runner | 4 cores, 16 GB RAM, 14 GB SSD | ubuntu-24.04, at most two compiler tasks |
 | Free artifact allowance | 500 MB, shared with Packages | No automatic uploads; optional IPA payload capped at 64 MiB per run |
 | Public artifact retention | Configurable between 1 and 90 days | Optional IPA artifacts expire after one day |
@@ -244,3 +245,43 @@ or bandwidth limit. Public Actions artifacts retain their 64 MiB base-only bound
 Source and personal artwork use the existing separate publication paths.
 
 Source: [GitHub Release storage and bandwidth quotas](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases#storage-and-bandwidth-quotas).
+## 6 November: bounded unpublished base transfer
+
+The prior Apple job of run41884649481 never started a step: GitHub reported that
+no hosted runner acquired it and the macOS ARM pool was capacity constrained.
+The Linux gate passed. The next grouped build therefore selects the documented
+standard `macos-15-intel` runner, retaining Xcode16.4, explicit ARM64 device
+output, two compiler jobs, two ThinLTO jobs and the existing timeouts. Host CPU
+checks on Intel do not establish ARM runtime acceptance.
+
+Current official references confirm this label is a free standard runner in a
+public repository and its image includes the pinned Xcode16.4:
+[runner specifications](https://docs.github.com/en/actions/reference/runners/github-hosted-runners),
+[macOS15 Intel image](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md).
+
+This repository currently has no Actions artifacts, but account-wide Packages
+usage cannot be read with the existing login. Do not assume that proves shared
+storage headroom or request more credentials. The optional `publish_base_draft`
+route avoids Actions artifact upload entirely. It requires classic UI, Release,
+the successful Linux gate, no diagnostic rebuild, no public-release request and
+no artifact-upload request. The existing write-enabled release job alone creates
+a separate UNPUBLISHED draft. Its checked ZIP contains only the unsigned ARM64
+executable, app metadata and licenses; configuration/language files and all owned
+artwork are excluded. The original public classic-release refusal remains the
+default. No command in this route publishes the draft.
+
+The base transfer remains below64MiB. The helper verifies the exact source,
+unfinished-package flags, allowlisted members, privacy patterns, executable
+identity, draft state before/after upload, server SHA256 and unchanged public
+repository visibility. Only source and licenses go to the draft; personal
+artwork is injected locally and delivered through the original private repository.
+After verified local download, remove only this generated temporary draft.
+
+GitHub documents draft-release listings as restricted to users with push access,
+and release assets separately from Actions storage, with each asset below2GiB
+and no total release storage/bandwidth limit:
+[release API](https://docs.github.com/en/rest/releases/releases),
+[release quotas](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
+This is an opt-in transfer mechanism, not a public finished release or device
+acceptance. It never enables billing, selects larger machines, increases quotas
+or changes repository visibility.

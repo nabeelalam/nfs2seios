@@ -28,17 +28,18 @@ package, resume performance and battery work without waiting for device feedback
   genuine Mustang title assembled once in the selected48-image resource.
   All41 other image records and all48 layout metadata remain exact. One native
   provider check passes all36car/tab pairs, dividers, ownership and clearing.
-- All10 final resources are staged as a hash-verified set,468,289,521bytes total.
+- All11 final resources are staged as a hash-verified set,494,757,492bytes total.
   Local/personal Apple bundling and IPA injection now include the matched
-  slideshow pair, wide menu and Results companions. The grouped Release app
+  slideshow pair, History, wide menu and Results companions. The grouped Release app
   builds and ordinary-input Showcase/Slideshow routes publish remastered artwork.
 - Footer variants may use up to98 source slots, still under the unchanged256MiB
   decoded budget. A variant must preserve paired source identity and ownership.
 - Corrected main background is now selected with four matched source pin files,
   verified private resources and preserved rollback. Actual Main publication
   passes at1280x720 and1180x820; old v5 selection drift is corrected.
-- History text is HD, but its photographic collage remains original and needs
-  a separate source-bound artwork pass before full visual completion.
+- All7 manufacturer-history collages and42 localized headings are assembled;
+  all7 English pages display through ordinary-input cycling in the local game.
+  The isolated faithful Calà glyph fix also passes an actual-game observation.
 - Broad UI routes, true aspect ratios, matching ARM64 package and physical iPad
   acceptance remain incomplete. No cloud build or public artwork upload here.
 

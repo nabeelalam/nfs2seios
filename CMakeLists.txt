@@ -293,6 +293,7 @@ else()
         src/hd/ClassicScreens/IntroArtProvider.cpp
         src/hd/ClassicScreens/TrackInfoArtProvider.cpp
         src/hd/ClassicScreens/CarInfoArtProvider.cpp
+        src/hd/ClassicScreens/HistoryArtProvider.cpp
         src/hd/PlayerPhotoArtProvider.cpp
         src/hd/TrackBadgeArtProvider.cpp)
     endif()

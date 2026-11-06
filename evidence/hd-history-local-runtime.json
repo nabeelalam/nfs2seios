@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "scope": "Actual grouped local History screen integration and ordinary-input manufacturer cycling",
+  "build": {
+    "passed": true,
+    "seconds": 127.77062515800002,
+    "binarySha256": "5de9598aba9c163d8614cbc61dc928e0743341bf519330f98d2f1b81496a7133",
+    "compilerWorkers": 2
+  },
+  "runtime": {
+    "ordinaryKeyboardInput": true,
+    "guestStatePatched": false,
+    "softwareRenderingRequested": true,
+    "dummyAudio": true,
+    "exit": 0,
+    "cleanShutdown": true,
+    "historyNativePublicationsLogged": 128,
+    "loggedNativeWitnessesAll300Tiles600Triangles": true,
+    "traceBound": 256,
+    "photographIdentitiesObserved": [
+      "hisfer",
+      "hisfrd",
+      "hisisd",
+      "hisita",
+      "hisjag",
+      "hisltus",
+      "hismac"
+    ],
+    "captures": [
+      {
+        "file": "screen-005.bmp",
+        "sha256": "c2db44db1646994900ed535907a78ac8ba7dc1d96afe57db264cf8fde902ea25"
+      },
+      {
+        "file": "screen-006.bmp",
+        "sha256": "c2db44db1646994900ed535907a78ac8ba7dc1d96afe57db264cf8fde902ea25"
+      },
+      {
+        "file": "screen-007.bmp",
+        "sha256": "40d55a228ad6c939af27f4992c1040666989f627bb795e6cb55c2eb6cf4b0294"
+      },
+      {
+        "file": "screen-008.bmp",
+        "sha256": "f5bea9c40ef8d99c1aa62e541a17c2f7a214122b76f41ba1202e464fc5782b54"
+      },
+      {
+        "file": "screen-009.bmp",
+        "sha256": "90ec99a5e92bc72a6d474ce499d93b4093e734dd5dda8b0e524a8f718b5b9967"
+      },
+      {
+        "file": "screen-010.bmp",
+        "sha256": "f4a8175b104ea18adf5d8674033a08ddc6ce33fb730eb7824e1fbd567614372e"
+      },
+      {
+        "file": "screen-011.bmp",
+        "sha256": "eb421aa7a28f17be8f22f2695a922a0487a7096a30ac793021b8e82eb9c7f271"
+      },
+      {
+        "file": "screen-012.bmp",
+        "sha256": "305027de537b19344cc57cbb2ac67541334ed286e9d8816c0056f6c60ce6d3d3"
+      }
+    ]
+  },
+  "allSevenEnglishHistoryPagesVisuallyObserved": true,
+  "otherLanguagesActualRuntimeVerified": false,
+  "all42TitleProviderPairsSanitized": true,
+  "physicalIpadVerified": false,
+  "hardwarePerformanceVerified": false,
+  "claimLimit": "Virtual-display captures plus bounded publication traces; not every frame, locale, or physical-device behavior."
+}

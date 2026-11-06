@@ -19,7 +19,7 @@ FILES = SUPPORT | {"Info.plist", "PkgInfo", "NFSIISEGame"}
 MANIFEST_KEYS = {"executable", "bundle_id", "architecture", "platform", "support_sha256", "source_commit", "ipa_sha256", "configuration", "personal_signing_required", "installation_verified", "gameplay_verified"}
 LIMIT = 64 * 1024 * 1024
 
-def inspect(ipa, manifest, source, assets_separate=False):
+def inspect(ipa, manifest, source, assets_separate=False, unpublished_classic_base=False):
     if ipa.is_symlink() or manifest.is_symlink():
         raise ValueError("Package symlinks refused")
     if not re.fullmatch(r"[0-9a-f]{40}", source):
@@ -27,11 +27,17 @@ def inspect(ipa, manifest, source, assets_separate=False):
     if ipa.stat().st_size > LIMIT or manifest.stat().st_size > 16384:
         raise ValueError("Package exceeds delivery budget")
     metadata = json.loads(manifest.read_text(encoding="utf-8"))
-    if metadata.get("classic_ui") is True:
+    if metadata.get("classic_ui") is True and not unpublished_classic_base:
         raise ValueError("Classic public base requires personal artwork; release publication is prohibited")
     extra=set(metadata)-MANIFEST_KEYS
-    if not MANIFEST_KEYS.issubset(metadata) or extra not in (set(), {"classic_ui", "classic_asset_manifest_sha256"}):
+    classic_fields={"classic_ui", "classic_asset_manifest_sha256", "personal_artwork_required", "public_release_ready", "package_kind"}
+    if unpublished_classic_base:
+        if extra!=classic_fields or metadata.get("classic_ui") is not True or metadata.get("personal_artwork_required") is not True or metadata.get("public_release_ready") is not False or metadata.get("package_kind")!="classic-public-base-needs-personal-artwork":
+            raise ValueError("Unpublished delivery requires an exact unfinished classic base manifest")
+    elif not MANIFEST_KEYS.issubset(metadata) or extra not in (set(), {"classic_ui", "classic_asset_manifest_sha256"}):
         raise ValueError("Unexpected manifest fields")
+    if not MANIFEST_KEYS.issubset(metadata):
+        raise ValueError("Missing manifest fields")
     if extra and (metadata["classic_ui"] is not True or re.fullmatch(r"[0-9a-f]{64}",metadata["classic_asset_manifest_sha256"]) is None):
         raise ValueError("Invalid classic UI manifest identity")
     expected = {"executable": "NFSIISEGame", "bundle_id": "io.github.nabeelalam.nfsiise.game", "architecture": "arm64", "platform": "iOS device", "source_commit": source, "configuration": "Release", "personal_signing_required": True, "installation_verified": False, "gameplay_verified": False}
