@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "scope": "Source-only ARM64 iOS compiler comparison; no app, FPS or energy proof",
+  "sourceSHA": "c8370f53aebd4f2fe19f520328c1ec3bd85ce77a",
+  "runURL": "https://github.com/nabeelalam/nfs2seios/actions/runs/42281326046",
+  "runID": 42281326046,
+  "jobID": 128110755241,
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)",
+  "xcode": "16.4",
+  "runner": "macos-15-intel",
+  "otherJobsSkipped": true,
+  "artifacts": [],
+  "canonicalShippingHeadersChanged": false,
+  "variants": {
+    "candidate": {
+      "functions": {
+        "_nfs_probe_accessor": {
+          "indirect_calls": 0,
+          "live_atomic_loads": 1,
+          "printed_lines": 49,
+          "tlv_address_references": 0,
+          "truncated": false
+        },
+        "_nfs_probe_rep8": {
+          "indirect_calls": 0,
+          "live_atomic_loads": 2,
+          "printed_lines": 144,
+          "tlv_address_references": 0,
+          "truncated": false
+        },
+        "_nfs_probe_transform": {
+          "indirect_calls": 0,
+          "live_atomic_loads": 18,
+          "printed_lines": 240,
+          "tlv_address_references": 0,
+          "truncated": true
+        }
+      },
+      "header_sha256": "18f923b852e21c5869dc392964fa4dbd79d318269eb5fc67b7e61b6b657638ca",
+      "whole_translation_unit": {
+        "conditional_branches": 99,
+        "control_slot_symbols": 8,
+        "critical_depth_symbols": 8,
+        "deferral_symbols": 8,
+        "has_cleanup": true,
+        "has_worker_stop_exception": true,
+        "live_atomic_loads": 23,
+        "tlv_references": 6
+      }
+    },
+    "old": {
+      "functions": {
+        "_nfs_probe_accessor": {
+          "indirect_calls": 3,
+          "live_atomic_loads": 1,
+          "printed_lines": 67,
+          "tlv_address_references": 6,
+          "truncated": false
+        },
+        "_nfs_probe_rep8": {
+          "indirect_calls": 3,
+          "live_atomic_loads": 2,
+          "printed_lines": 166,
+          "tlv_address_references": 6,
+          "truncated": false
+        },
+        "_nfs_probe_transform": {
+          "indirect_calls": 3,
+          "live_atomic_loads": 18,
+          "printed_lines": 240,
+          "tlv_address_references": 6,
+          "truncated": true
+        }
+      },
+      "header_sha256": "72fb419cfed6acbcdfd0d1018820143c6081f1a1a9c0fc2dfd38811b30f2c76b",
+      "whole_translation_unit": {
+        "conditional_branches": 91,
+        "control_slot_symbols": 14,
+        "critical_depth_symbols": 14,
+        "deferral_symbols": 14,
+        "has_cleanup": true,
+        "has_worker_stop_exception": true,
+        "live_atomic_loads": 23,
+        "tlv_references": 24
+      }
+    }
+  },
+  "interpretation": [
+    "The tested address-cache accessor removes three indirect TLS address calls while retaining a live atomic stop load.",
+    "Transform and REP functions already hoist old TLS address lookups; static instruction counts are not per-word runtime call frequency.",
+    "Full-body metrics include code beyond the bounded printed transform excerpt; cleanup/symbol markers alone do not prove every checkpoint.",
+    "The alternative single POD TLS state has passed private semantic checks but awaits equivalent Apple code-generation and integration checks."
+  ],
+  "newIPAProduced": false,
+  "physicalIpadPerformanceVerified": false,
+  "energyMeasured": false
+}

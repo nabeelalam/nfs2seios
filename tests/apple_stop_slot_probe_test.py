@@ -1,20 +1,42 @@
 # SPDX-License-Identifier: MIT
 """Parser/command-policy checks only; synthetic assembly is not Apple evidence."""
-import importlib.util,pathlib,unittest
+import importlib.util,pathlib,unittest,tempfile,re
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location("probe",ROOT/"scripts/apple_stop_slot_probe.py")
 probe=importlib.util.module_from_spec(spec);spec.loader.exec_module(probe)
 class ProbeTests(unittest.TestCase):
  def test_commands_compile_only_and_shared_options(self):
-  old=probe.command("clang++","/SDK",pathlib.Path("/source"),"old",pathlib.Path("old.s"))
-  new=probe.command("clang++","/SDK",pathlib.Path("/source"),"candidate",pathlib.Path("new.s"))
-  for cmd in [old,new]:
+  old=probe.command("clang++","/SDK",pathlib.Path("/source"),"old",pathlib.Path("old.s"),pathlib.Path("/probe"))
+  new=probe.command("clang++","/SDK",pathlib.Path("/source"),"candidate",pathlib.Path("new.s"),pathlib.Path("/probe"))
+  unified=probe.command("clang++","/SDK",pathlib.Path("/source"),"unified",pathlib.Path("unified.s"),pathlib.Path("/probe"))
+  for cmd in [old,new,unified]:
    self.assertIn("-S",cmd);self.assertIn("arm64-apple-ios16.0",cmd)
    for flag in ["-O3","-fwrapv","-fno-strict-aliasing"]:self.assertIn(flag,cmd)
    self.assertFalse(any(flag in cmd for flag in ["-shared","-c","-flto"]))
   differences=[(a,b) for a,b in zip(old,new) if a!=b]
   self.assertEqual(len(differences),2)
-  self.assertIn("/src",differences[0][0].replace(chr(92),"/"));self.assertIn("/fixtures/",differences[0][1].replace(chr(92),"/"))
+  self.assertTrue(differences[0][0].replace(chr(92),"/").endswith("/probe/old"));self.assertTrue(differences[0][1].replace(chr(92),"/").endswith("/probe/candidate"))
+ def test_pinned_closure_materialization_and_mutation_refusal(self):
+  with tempfile.TemporaryDirectory() as folder:
+   base=pathlib.Path(folder);root=base/"source";dest=base/"headers";dest.mkdir()
+   for name in probe.PINNED_INPUTS:
+    target=root/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((ROOT/name).read_bytes())
+   result=probe.materialize(root,dest)
+   self.assertEqual(set(result),{"old","candidate","unified"})
+   self.assertEqual([n for n in probe.CLOSURE if result["old"][n]!=result["candidate"][n]],["GuestCopyTransaction.h"])
+   self.assertEqual([n for n in probe.CLOSURE if result["old"][n]!=result["unified"][n]],["WorkerControl.h"])
+   for variant in probe.VARIANTS:
+    for name in probe.CLOSURE:
+     for included in re.findall(r'#include "([^\"]+)"',(dest/variant/name).read_text()):self.assertTrue((dest/variant/included).is_file())
+   (root/"src/WorkerControl.h").write_text("drift")
+   with self.assertRaises(ValueError):probe.materialize(root,base/"refused")
+ def test_unified_parser_symbol_and_fixture_POD(self):
+  text="\n".join("_nfs_probe_"+n+":\n ldarb w8, [x9]\n .cfi_endproc\n" for n in ["accessor","transform","rep8"])+"\nworker_stop_thread_state@TLVPPAGE\n"
+  self.assertEqual(probe.inspect(text)["whole_translation_unit"]["unified_slot_symbols"],1)
+  fixture=(ROOT/"tests/fixtures/unified_stop_tls/WorkerControl.h").read_text()
+  self.assertIn("WorkerControl *control;unsigned critical,deferrals;",fixture)
+  self.assertIn("value{nullptr,0,0}",fixture)
+  self.assertIn("control->stop.load()",fixture)
  def test_parser_counts_and_rejects_missing_function(self):
   body=" adrpx0, symbol@TLVPPAGE\n blr x8\n ldarb w9, [x8]\n tbz w9, #0, Ldone\n"
   text="\n".join("_nfs_probe_"+name+":\n"+body+" .cfi_endproc\n" for name in ["accessor","transform","rep8"])
