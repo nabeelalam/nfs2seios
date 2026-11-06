@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Startup artwork loader ownership; no race FPS or iPad energy measurement",
+  "oldSource": "fb203f1",
+  "samePackSHA256": "4f21c6d024c0d370ea30299daacb39ce5a11c50756d8d7dc41b30134e2436f1c",
+  "all48ImagesMetadataAndPixelHashesUnchanged": true,
+  "actual36PairVerifier": "PASS",
+  "focusedAddressLifetimeNegativeBoundsAndCallerCopyTests": "PASS",
+  "focusedAddressAndUndefinedSanitizersExit": 0,
+  "linuxFreshProcessOptimizedPeakRSSKiB": {
+    "old": 605604,
+    "new": 359772,
+    "reduction": 245832,
+    "repetitionsPerVersion": 1
+  },
+  "peakRSSScope": "Identical optimized component verifier and actual resource, fresh Linux process per version; not app RAM, physical iPad or energy",
+  "historyCompressedBufferReleasedAfterInflate": true,
+  "historyActual49ResourcesSanitizers": {
+    "exit": 0,
+    "pairs": 42,
+    "crossFamilyRejected": true,
+    "retainedLeaseSurvivedClear": true,
+    "reinstallGenerationAdvanced": true,
+    "resourceSHA256": "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c"
+  },
+  "publicCInstallStillCopiesCallerData": true,
+  "artworkPixelsChanged": false,
+  "raceCodeChanged": false,
+  "newAppBuild": false,
+  "cloudDispatch": false,
+  "physicalIpadVerified": false
+}
