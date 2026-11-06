@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "scope": "One local software-rendered split-screen timing reference, not a physical-device or matched A/B benchmark",
+  "appSource": "fb203f1 with private native-two-pad main harness",
+  "binarySHA256": "4ff5082596b1237945803f70dd7e2f627bf302b419e90a17bbddcd552145491d",
+  "scenario": {
+    "track": "North Country",
+    "mode": "Split screen",
+    "player1": "Ford Indigo",
+    "player2": "Nazca C2",
+    "transmission": "Manual, both first gears engaged through original bound native shift-up",
+    "opponents": "Full grid observed",
+    "renderWidth": 640,
+    "renderHeight": 480,
+    "graphicsOptionsFullyVerified": false,
+    "input": "Both native SDL controllers; neutral steering and full throttle",
+    "limitation": "Wall contact; final speeds7/41. Not a controlled free-driving or identical rendered-work replay."
+  },
+  "requestedSeconds": 60,
+  "actualSDLMarkerSeconds": 65.607556078,
+  "actualMarkersUsedForAnalysis": true,
+  "noScreenshotsInsideWindow": true,
+  "submissions": 2229,
+  "submissionsPerSecond": 33.97474518559981,
+  "completeSwapIntervalsMS": {
+    "count": 2228,
+    "mean": 29.437570101436265,
+    "minimum": 14.306465,
+    "p50NearestRank": 28.452307,
+    "p95NearestRank": 42.942181,
+    "p99NearestRank": 57.228413,
+    "maximum": 93.184841
+  },
+  "uniqueOwnerCPU60SubmissionWindowsMS": {
+    "count": 36,
+    "mean": 13.555652777777778,
+    "minimum": 7.5449,
+    "p50NearestRank": 13.0166,
+    "p95NearestRank": 19.9194,
+    "p99NearestRank": 21.3815,
+    "maximum": 21.3815
+  },
+  "CPUWindowBoundaryPolicy": "Repeated prior sample195 and first new possibly straddling sample196 excluded; IDs197..232 counted once each; nearest-rank quantiles, no interpolation",
+  "recordingIntegrity": {
+    "allSessionFrames": 13907,
+    "allSessionSamples": 442,
+    "contiguousFrameIDs": true,
+    "captureDropped": 0,
+    "discardedFrames": 0,
+    "writerFailed": false,
+    "cleanShutdown": true
+  },
+  "raceCompleted": null,
+  "audio": "Dummy output; audible continuity unverified",
+  "physicalIpadVerified": false,
+  "energyMeasured": false,
+  "FPSImprovementEstablished": false,
+  "cloudDispatched": false
+}

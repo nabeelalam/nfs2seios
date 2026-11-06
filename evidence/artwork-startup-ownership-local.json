@@ -28,5 +28,10 @@
   "raceCodeChanged": false,
   "newAppBuild": false,
   "cloudDispatch": false,
-  "physicalIpadVerified": false
+  "physicalIpadVerified": false,
+  "retainedGenericCMakeCTestTarget": {
+    "name": "car_info_owned_lifetime",
+    "exit": 0,
+    "appBuilt": false
+  }
 }
