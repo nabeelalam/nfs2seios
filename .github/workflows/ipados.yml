@@ -41,14 +41,18 @@ on:
         description: Publish a checked development ZIP as a GitHub prerelease
         type: boolean
         default: false
+      stop_slot_probe:
+        description: Source-only Apple stop-slot assembly comparison (no app or upload)
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
-  group: reviewed-native-build
+  group: ${{ inputs.stop_slot_probe && 'reviewed-stop-slot-probe' || 'reviewed-native-build' }}
   cancel-in-progress: true
 jobs:
   renderer-pixels:
-    if: github.event.repository.visibility == 'public' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codex/hd-ui')
+    if: github.event.repository.visibility == 'public' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codex/hd-ui') && !inputs.stop_slot_probe
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -180,7 +184,7 @@ jobs:
           timeout 15s .build/pixels/pointer_buffer_tests
   build:
     needs: renderer-pixels
-    if: inputs.build_ios && !inputs.publish_release && !inputs.publish_base_draft
+    if: inputs.build_ios && !inputs.publish_release && !inputs.publish_base_draft && !inputs.stop_slot_probe
     permissions:
       contents: read
     uses: ./.github/workflows/apple-device.yml
@@ -194,7 +198,7 @@ jobs:
       thin_lto: ${{ inputs.thin_lto }}
   release:
     needs: renderer-pixels
-    if: inputs.build_ios && ((inputs.publish_release && !inputs.classic_ui) || (inputs.publish_base_draft && inputs.classic_ui && !inputs.publish_release)) && !inputs.publish_ipa && !inputs.include_probe
+    if: inputs.build_ios && ((inputs.publish_release && !inputs.classic_ui) || (inputs.publish_base_draft && inputs.classic_ui && !inputs.publish_release)) && !inputs.publish_ipa && !inputs.include_probe && !inputs.stop_slot_probe
     permissions:
       contents: write
     uses: ./.github/workflows/apple-device.yml
@@ -206,3 +210,21 @@ jobs:
       publish_release: ${{ inputs.publish_release }}
       publish_base_draft: ${{ inputs.publish_base_draft }}
       thin_lto: ${{ inputs.thin_lto }}
+  stop-slot-assembly:
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/lpm-performance' && inputs.stop_slot_probe && !inputs.build_ios && !inputs.classic_ui && !inputs.include_probe && !inputs.thin_lto && !inputs.publish_ipa && !inputs.publish_base_draft && !inputs.publish_release && inputs.artwork_sha256 == ''
+    runs-on: macos-15-intel
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    concurrency:
+      group: stop-slot-assembly-only
+      cancel-in-progress: true
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Compare source-only ARM64 stop-slot assembly
+        run: python3 scripts/apple_stop_slot_probe.py
