@@ -1,0 +1,58 @@
+{
+  "scope": "Shared deterministic slideshow footer foundation and first authored Ferrari asset",
+  "previousGoalTurn": "progress: fixed and observed slideshow idle persistence, performed initial Indigo photo review",
+  "sourceBoundImmutableCatalog": true,
+  "catalogComponentChecks": [
+    "C++14 optimized harness",
+    "ASan/UBSan harness"
+  ],
+  "combinedEngineAndRendererSyntaxPassed": true,
+  "abiSchema": 2,
+  "drawOrder": [
+    "Original-source native frame validation",
+    "Remastered photograph",
+    "Premultiplied shared footer",
+    "HD controls"
+  ],
+  "footerDigestCaching": true,
+  "footerRequiredForNonPreviewSelection": true,
+  "resourceLoaderImplemented": false,
+  "footerInstalledInGame": false,
+  "footerAsset": {
+    "name": "ferrari355-footer-native-v3",
+    "dimensions": [
+      2048,
+      1536
+    ],
+    "rgbaBytes": 12582912,
+    "compressedBytes": 301171,
+    "rgbaSHA256": "b11b9cf27c789e5f1a53a30dcb4dd81401149620de6dad41476a6f50de807ee6",
+    "sourceVectorPaths": 66,
+    "sourceURL": "https://www.stellantis.com/content/dam/stellantis-corporate/archives/fca/past-corporate-transactions/ferrari-separation/Prospectus.pdf",
+    "sourcePDFSHA256": "f50c6f4a6630600ba7f48f5e9e46ebdaf165c9d5307a914e57603150a962e05c",
+    "brandGeometryRedrawnByAI": false,
+    "captionFont": "Michroma (UI caption only; Ferrari brand wordmark uses original paths)",
+    "visualReviewPassed": true,
+    "userApproved": false
+  },
+  "otherVectorCandidates": [
+    "Period Jaguar1982 compound mark",
+    "Period McLarenF1 plus McLaren wordmark paths",
+    "Source-matched Ford oval and Ford-hosted script geometry"
+  ],
+  "photoReviews": 39,
+  "remainingPhotoReviews": 59,
+  "wholeArtworkReviewComplete": 0,
+  "newAppLinked": false,
+  "newAppleBuild": false,
+  "publicUpload": false,
+  "physicalIpadVerified": false,
+  "remaining": [
+    "Install footer resource loading/bindings",
+    "Create remaining car footer assets",
+    "Integrate clean Jaguar photo plates and correct GT90 photo6 body Ford oval",
+    "Finish remaining59 photo reviews/corrections",
+    "Complete all UI and responsive layout coverage before one grouped iPad package",
+    "Resume performance/battery work after UI package"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "source": "User physical build22 report",
+  "build": 22,
+  "raceAndPostRaceReached": true,
+  "reportedIssues": [
+    "Original opening splash",
+    "Low-resolution videos, low priority",
+    "Original art during startup and menu animations",
+    "Uneven radar-name text baseline",
+    "Original post-race name-entry/summary and Track Records",
+    "Main background/logo and opponent tier reverting after race",
+    "Original track-info pages"
+  ],
+  "additionalRequest": "AI remake of car and track/location pictures at high quality; compression deferred",
+  "overallUiAccepted": false,
+  "matchedPerformanceLogsReceived": false,
+  "nextCloudBuildStarted": false
+}

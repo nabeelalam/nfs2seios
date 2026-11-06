@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "scope": "Grouped local information-screen and menu-transition runtime checkpoint",
+  "build": {
+    "passed": true,
+    "binarySha256": "6057cc8147d81ccd2f10ab70a1da904db1e35438bf99e90c5945f37eaf9ce2c1",
+    "compilerWorkers": 2,
+    "linkBackendJobs": 2,
+    "sourcePinsStable": true
+  },
+  "runtime": {
+    "passed": true,
+    "platform": "Linux WSL",
+    "ordinaryKeyboardInput": true,
+    "guestStatePatched": false,
+    "trackInfo": {
+      "track": "North Country",
+      "authoredStaticAndTextPublished": true,
+      "publications": 3
+    },
+    "carInfo": {
+      "car": "Ford Indigo",
+      "carIndex": 4,
+      "observedPages": [
+        1,
+        2,
+        3
+      ],
+      "authoredBackgroundAndTextPublished": true,
+      "publications": 59,
+      "technicalInsetPhotos": "Original source-bound fallback"
+    },
+    "menuTransitions": {
+      "publications": 175,
+      "sourceKinds": [
+        1,
+        2,
+        3
+      ]
+    },
+    "loadingNativePublished": true,
+    "cleanShutdown": true,
+    "profileAndArtworkRestored": true,
+    "all49SaveFilesRestored": true,
+    "sealedPinsStableAfter": true,
+    "noRemainingOwnedChildren": true
+  },
+  "packaging": {
+    "scope": "Old app used only to validate four-resource packaging, not a new device build",
+    "bytes": 118361636,
+    "within128MiB": true,
+    "addedResources": 4,
+    "allExistingMemberBytesIdentical": true,
+    "allExistingCompressedStorageIdentical": true,
+    "originalInputsUnchanged": true
+  },
+  "coverageLimits": [
+    "One selected track and one selected car; asset pixel validation does not prove runtime coverage of other selections",
+    "Not every transition frame or dialog route observed",
+    "Post-race/name-entry and Track Records acceptance remains pending",
+    "Small technical pictures and Player menu carousel photos still need remastering and integration",
+    "True widescreen world, HUD, menu reflow and matching touch coordinates remain incomplete",
+    "No new race, iPad performance, battery, lifecycle or signing acceptance"
+  ],
+  "newAppleBuild": false,
+  "sourceCommitted": false
+}

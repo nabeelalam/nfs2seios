@@ -1,0 +1,11 @@
+{
+  "scope": "Current source-only presentation boundary; not true widescreen completion",
+  "rendererDefaultKeepAspectRatio": 1,
+  "defaultSource": "src/RendererConfig.cpp",
+  "viewportInjection": "scripts/prepare_renderer.py prepare_aspect block",
+  "policy": "640x480 source canvas contained inside actual drawable pixel rectangle; Main-only proven responsive texture may use full drawable",
+  "photoCropOrStretchRequired": false,
+  "worldHorPlusIntegrated": false,
+  "worldAspectStage": "src/hd/AdaptiveAspectIntegration.md remains inactive",
+  "runtimeOrDeviceVerificationThisTurn": false
+}

@@ -1,0 +1,19 @@
+{
+  "scope": "Original slideshow format126 to target120 surface conversion source trace",
+  "formatClassifier": "499C98",
+  "sourceClass": 2,
+  "targetClass": 3,
+  "conversionTableIndex": 19,
+  "tables": [
+    "off_4DD048",
+    "off_4DD148"
+  ],
+  "converter": "4A6A03",
+  "converterSourceSHA256": "d55e247837ce4ba57739144e7b1eb341156b6c0fff71de1aac7650b8e0edda7d",
+  "expression": "((word & 0x7fe0) << 1) | (word & 0x001f)",
+  "alphaTreatment": "Original raw-copy conversion discards the source alpha bit",
+  "implemented": true,
+  "specialSource": "sldmus8",
+  "physicalIpadVerified": false,
+  "liveSpecialSourceVerified": false
+}

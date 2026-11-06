@@ -16,6 +16,14 @@
 #include "ClassicScreens/CarInfoArtworkLoader.h"
 #include "ClassicScreens/CarInfoArtworkPin.h"
 #include "ClassicScreens/CarInfoArtProvider.h"
+#include "SlideshowStartup.h"
+#if defined(__has_include)
+#if __has_include("hd/ClassicScreens/private/SlideshowFooterData.h")
+#include "SlideshowFooterResource.h"
+#include "hd/ClassicScreens/private/SlideshowFooterData.h"
+#define NFS_PRIVATE_SLIDESHOW_FOOTER_PINS 1
+#endif
+#endif
 #include "PlayerPhotoArtProvider.h"
 #include "PlayerPhotoArtworkLoader.h"
 #include "PlayerPhotoArtworkPin.h"
@@ -100,6 +108,24 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
  Digest d{};if(!pin(d))return false;bool activated=activateArtworkPack(root,d);
 #ifdef NFS_CLASSIC_BUNDLED_ART
  if(!activated&&!bundledTemplate.empty())activated=installArtworkPack(loadBundledOwnedArtwork(root,bundledTemplate,d),d);
+ if(activated){
+  try{
+   const auto slash=bundledTemplate.find_last_of("/\\");
+   const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+   const char*overridePath=std::getenv("NFS_PRIVATE_SLIDESHOW_PACK");
+   const char*preview=std::getenv("NFS_PRIVATE_SLIDESHOW_PREVIEW");
+   nfs_slideshow::setStartup(overridePath&&*overridePath?overridePath:directory+"slideshow-ui.ownedz",preview&&preview[0]=='1'&&!preview[1]);
+#ifdef NFS_PRIVATE_SLIDESHOW_FOOTER_PINS
+   // Private generated identities, never routing read from an untrusted pack.
+   const auto footerPath=directory+"slideshow-footer.ownedz";
+   nfs_slideshow::setStartupFooters(nfs_slideshow_footer::loadResource(
+       footerPath.c_str(),nfs_slideshow_footer_private::fileBytes,
+       nfs_slideshow_footer_private::images,
+       sizeof(nfs_slideshow_footer_private::images)/sizeof(nfs_slideshow_footer_private::images[0]),
+       nfs_slideshow_footer_private::bindings()));
+#endif
+  }catch(...){}
+ }
  if(activated){
   try{
    NfsWideMenuLayers existing{};

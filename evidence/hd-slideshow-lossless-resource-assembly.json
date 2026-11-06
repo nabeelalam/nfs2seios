@@ -1,0 +1,23 @@
+{
+  "scope": "Complete98-photo lossless row-filter resource and corrected shared layers prepared locally",
+  "photoImages": 98,
+  "photoResourceBytes": 240423232,
+  "priorRawResourceBytes": 337028055,
+  "savedBytes": 96604823,
+  "photoPackSHA256": "e36dec6e311e55fad6d5824c0b746b3009e5ecf03e021143f03a4e3f1b25a6a4",
+  "schema": 3,
+  "pixelsLosslesslyPreserved": true,
+  "reusedUnchangedChunks": 97,
+  "newlyEncodedChunks": 1,
+  "acceptedImages": 0,
+  "footerResourceEvidence": "hd-slideshow-final-layer-resource.json",
+  "sourceSpecificCorrections": [
+    "sldfrd6.qfs",
+    "sldblk.qfs",
+    "sldgt12.qfs"
+  ],
+  "appBuilt": false,
+  "appRun": false,
+  "physicalIpadVerified": false,
+  "otherUiAssetsUnderReview": "36 CarInfo technical images, partitioned source review and bounded semantic corrections"
+}

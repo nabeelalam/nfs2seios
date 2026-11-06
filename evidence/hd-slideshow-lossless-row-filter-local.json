@@ -1,0 +1,23 @@
+{
+  "scope": "One grouped bounded native verification of actual PNG row-filter decode/runtime version guards",
+  "result": "PASS",
+  "nativeChecksPassed": 24,
+  "sanitizers": [
+    "Clang AddressSanitizer",
+    "Clang UndefinedBehaviorSanitizer"
+  ],
+  "actualHeadersSHA256": {
+    "src/hd/SlideshowPixels.h": "b9c1d76e7ef0b14f9ff44858da7f75f4fdfb62b5df3c221990ce81aa6d430e24",
+    "src/hd/SlideshowRuntimeImage.h": "7a7ad033c990015b10daa5fd498c2a53e2c94be4b23112bc3a9ea64c6ed788d0",
+    "src/TextureDigest.h": "9dfe7f34071d61a7c3495ad55a4473eddc784b3d07a60f85e4a556a2f8b3496e"
+  },
+  "testSourceSHA256": "b9038f9564e95ecbc68cd3f0dbc8efb6bd90f21b9068864a88eb5e2abb66b3cb",
+  "logSHA256": "87ee55b33614daacb0e9403ea9ae41956b1490bbf4eebf6e17e9a5913edd8f0a",
+  "reference": "https://www.w3.org/TR/PNG-Filters.html",
+  "outputAtomicOnFailure": true,
+  "legacyAggregateDefaultsVerified": true,
+  "neededFixes": [],
+  "appOrCloudBuild": false,
+  "physicalDeviceVerified": false,
+  "limitation": "Native Linux sanitizer check of actual C++ paths, not iPad runtime/performance or full artwork-pack/device acceptance"
+}

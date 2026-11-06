@@ -1,0 +1,26 @@
+{
+  "scope": "One grouped syntax compile of immutable shared-footer startup/session/ABI/rendering integration",
+  "units": [
+    {
+      "unit": "Methods_01.cpp",
+      "passed": true
+    },
+    {
+      "unit": "Methods_03.cpp",
+      "passed": true
+    },
+    {
+      "unit": "Methods_13.cpp",
+      "passed": true
+    },
+    {
+      "unit": "complete renderer",
+      "passed": true
+    }
+  ],
+  "appLinked": false,
+  "appRun": false,
+  "footerResourceLoaderImplemented": false,
+  "physicalIpadVerified": false,
+  "cloudBuild": false
+}

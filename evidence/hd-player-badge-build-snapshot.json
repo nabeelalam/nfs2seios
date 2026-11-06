@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "scope": "Approved faithful Player photos and AI badges integrated; bounded local normal UI flow accepted; physical iPad remains unverified",
+  "build": {
+    "passed": true,
+    "binarySha256": "0be473af49ae68da189d160f77accd1e5430a18dfaeaa5c060fa501dffe90efa",
+    "sourcePinsStableAtBuild": true,
+    "compilerWorkers": 2,
+    "linkBackendJobs": 2
+  },
+  "runtime": {
+    "completeRouteAccepted": true,
+    "failure": null,
+    "trackInfoObserved": true,
+    "trackRecordsObserved": true,
+    "trackBadgeNativeTrianglesObserved": true,
+    "playerPhotoAnimationObserved": true,
+    "cleanShutdown": true,
+    "copiedTestConfigRecovered": true,
+    "all49CopiedSaveHashesUnchanged": true,
+    "copiedArtworkUnchanged": true,
+    "all1800InputPinsStable": true,
+    "nativeResourceLifecycleBalanced": true,
+    "remainingOwnedChildren": 0,
+    "carShowcaseObserved": true,
+    "returnToMainObserved": true,
+    "raceLoadingObserved": true,
+    "all1803InputPinsStable": true,
+    "oracleColorPolicy": "Finite original normal/selected palette variants; unchanged glyph masks and score thresholds",
+    "changedCarExitAnimationObserved": true,
+    "all1811InputPinsStable": true,
+    "resourceLifecycleBalanced": true
+  },
+  "artwork": {
+    "privateAuthenticatedPlayerCanvases": 12,
+    "playerCanvasesUseProvisionalShowcasePhotographs": false,
+    "faithfulPlayerOriginalReferencesExported": 12,
+    "bonusOriginalReferencesExported": 3,
+    "actualPlayerPhotoCandidatesGenerated": 12,
+    "privateAuthenticatedBadgeCanvases": 18,
+    "independentAiBadgeDrafts": 8,
+    "aiDraftsAppliedToGame": true,
+    "userCorrections": [
+      "Jaguar plate ND 4 SPD",
+      "Isdera wheels mid-spin",
+      "F355 parked; static road and background"
+    ],
+    "faithfulPlayerBundlePrepared": true,
+    "faithfulPlayerBundleActivated": true,
+    "faithfulPlayerBundleSha256": "752ef12f7e0345ebef890e6ba984e46495aaa6332a3034ee932021b174472342",
+    "badgeDirectionApproved": true,
+    "lastResortSunRequiresCrescentWithoutFace": true,
+    "approvedBadgeBundleSha256": "896e16ea5412951370f9263891273bac4b660f7a1a35060e6e91aa64873b1536",
+    "allNewResourcePixelsIndependentlyValidated": true
+  },
+  "remaining": [
+    "Finish remaining information pictures, bonus source layouts, post-race acceptance and adaptive aspect integration",
+    "Assemble faithful Player car-picture candidates separately from provisional Showcase fixtures; bonus layout remains open",
+    "Refine and integrate new menu-background art without changing original layer identity; widescreen layout remains incomplete",
+    "Complete technical pictures, history/slideshow, post-race and adaptive-aspect work",
+    "Perform physical iPad validation after coherent reviewed delivery"
+  ],
+  "newAppleBuild": false,
+  "sourceCommitted": false
+}

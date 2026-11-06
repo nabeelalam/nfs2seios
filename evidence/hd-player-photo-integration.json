@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "scope": "Player-photo source and private artwork integration; next grouped build/runtime pending",
+  "source": {
+    "steadyAndAnimatedPathsImplemented": true,
+    "independentOriginalSourceReview": true,
+    "originalCallsAndTimingPreservedByDesign": true,
+    "runtimeAcceptance": false
+  },
+  "artwork": {
+    "images": 12,
+    "width": 1228,
+    "height": 584,
+    "logicalWidth": 307,
+    "logicalHeight": 146,
+    "wholeCarsContained": true,
+    "allDecodedPixelsMatchAuthoredPng": true,
+    "resourceSha256": "1afc66c64335f93c1c46d358a81a77468c28c5c3066a1261ad1f9c82ddc4a44d",
+    "resourceBytes": 16225530,
+    "payloadBytes": 34423880,
+    "privateResourcePinned": true,
+    "publicArtworkIncluded": false
+  },
+  "packaging": {
+    "scope": "Validation against old app only, not a new installable build",
+    "resources": 5,
+    "outputBytes": 134587334,
+    "existingAppBytesAndStorageUnchanged": true,
+    "sameSizeAlteredPlayerResourceRejected": true,
+    "withinCurrentPrivateRelease128MiBCap": false,
+    "uploaded": false
+  },
+  "pending": [
+    "Observe actual steady and original animated car-photo publications after combined generation/build",
+    "Complete separately rendered colored TrackInfo/Records badges",
+    "Review remaining technical picture remasters before activation",
+    "Resolve the measured final private release file envelope before any upload",
+    "True adaptive world, HUD, menus and touch coordinates remain incomplete"
+  ],
+  "newAppleBuild": false
+}

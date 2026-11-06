@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "scope": "Private unoccluded Main map registration and integration preparation",
+  "masterSha256": "73055235b274ac41da924ed4850510a89d40d60ed4b036c01195b8cdaacba855",
+  "mapRoles": [
+    0,
+    1
+  ],
+  "registeredSize": [
+    2048,
+    1536
+  ],
+  "rawSha256": "2e8f9f97da667e5a8fc4823648f48a88880ab12488eaf2942004afb4f7ae0b4c",
+  "rawBytes": 103492520,
+  "templateSha256": "8b217f6eed5a3944c6b45131cb44cbc14d183e430599ef33422bff42d7e3550e",
+  "templateBytes": 16354749,
+  "otherSectionPayloadsPreserved": 51,
+  "ownerHoleOffsetsPreserved": 24,
+  "sourcePinsPrepared": 3,
+  "sourcePinsActivated": false,
+  "artworkActivated": false,
+  "compositionReviewPending": true,
+  "newBuild": false,
+  "physicalIpadVerified": false,
+  "scopeLimit": "Registration and reconstruction evidence does not prove rendered widescreen or other menus",
+  "personalPackageBudgetResolved": false,
+  "canonicalIntegration": {
+    "sourceFilesApplied": 17,
+    "receiptSha256": "829dfd3d22632eda28de6cb22ed69ebc917b46d79a0b14fe7f5ce674c77a54f7",
+    "oldResourcesPreserved": true,
+    "offlineCompositionReviewed": true,
+    "ratios": [
+      "4:3",
+      "16:9",
+      "1180:820"
+    ],
+    "zeroCoveragePixels": 0,
+    "partialClearContributionPixels": 0,
+    "preparedSourcePinsApplied": true,
+    "newBuild": false,
+    "renderedAcceptance": false,
+    "physicalIpadAcceptance": false
+  }
+}

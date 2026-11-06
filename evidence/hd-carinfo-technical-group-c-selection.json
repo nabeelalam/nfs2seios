@@ -1,0 +1,22 @@
+{
+  "scope": "First completed source-review group for selected CarInfo technical artwork",
+  "reviewedPictures": 9,
+  "totalTechnicalPictures": 36,
+  "selectedHashesVerified": true,
+  "selectedFiles": [
+    "mac-gnrl-v3.png",
+    "mac-perf-v1.png",
+    "mac-mech-v2.png",
+    "ferr-gnrl-v1.png",
+    "ferr-perf-v1.png",
+    "ferr-mech-v2.png",
+    "f355-gnrl-v2.png",
+    "f355-perf-v1.png",
+    "f355-mech-v2.png"
+  ],
+  "sourceComparisonCompleted": true,
+  "sharedCarInfoPackUpdated": false,
+  "remainingGroupsInProgress": true,
+  "appBuilt": false,
+  "physicalIpadVerified": false
+}

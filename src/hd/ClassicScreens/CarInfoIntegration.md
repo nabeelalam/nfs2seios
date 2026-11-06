@@ -1,6 +1,6 @@
 # Source-bound car information photographs and text
 
-This optional module covers original owner `412670`, exact form `dword_4D2E78`, dispatcher type7. It does not replace the history/slideshow owner411BD0 (type8), videos, arbitrary pictures, or Player thumbnails.
+This optional module covers original owner `412670`, exact form `dword_4D2E78`, dispatcher type7. It does not replace the history owner411BD0 (type8), the slideshow owner412300 (type12), videos, arbitrary pictures, or Player thumbnails.
 
 Original source: `off_4D40C0` maps type7 to412670. Car selection is copied by413160 from `off_4119C0` in this exact order: mac, ferr, f355, gt90, indigo, mus, jag, gt1, lotus, nazca, ital, isdera. `mus` is the Mustang MachIII; generic `info.qfs` is not a car. The shared410E80 path installs the selected archive in4D40B8. At the actual frame boundary, selected car is `[esp+168h]`, selected page is `[esp+154h]`.
 

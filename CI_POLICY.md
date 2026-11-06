@@ -12,7 +12,7 @@ identify the revision and specific unresolved Apple SDK or packaging question.
 | Resource | GitHub rule | Project policy |
 | --- | --- | --- |
 | Public standard runner minutes | Free and unlimited | Only manual runs against reviewed main or codex/hd-ui revisions |
-| Private compute | GitHub Free currently includes a shared $12 monthly compute allowance, rather than a fixed minute count | Workflow refuses private-repository execution |
+| Private compute | Account-plan allowances are separate; the public-runner exemption does not apply | Workflow refuses private-repository execution |
 | Larger runners | Always paid | Never selected |
 | Concurrent standard jobs on Free | 20 total, including at most 5 macOS | One active workflow; Linux completes before macOS starts |
 | Standard hosted job duration | At most 6 hours | Linux timeout 15 minutes; macOS timeout 30 minutes |
@@ -45,6 +45,23 @@ and reusable Apple workflow require a public repository and one of these exact
 two branches. Other branches and private execution remain excluded. Manual
 dispatch, sequential standard machines, timeouts, privacy scans, package bounds,
 no caches and no paid resources remain required for the experimental branch.
+
+## Private personal release delivery
+
+Release-asset rules were checked against [official GitHub documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
+on 30 October 2026: each asset must be below 2 GiB; GitHub documents no total
+release-size or release-bandwidth limit. Releases are distinct from Actions
+artifacts, Packages and Git LFS.
+
+The public Actions artifact stays capped at 64 MiB and contains the unsigned
+base without personal artwork. Authenticated artwork is appended locally and
+can make the finished personal package larger than that public artifact. Use a
+separate 512 MiB bound for a finished personal ZIP uploaded to the original
+private repository's Release. Verify private visibility before and after upload,
+verify the uploaded digest, and keep original game data and signing material
+out. This does not raise an Actions quota, enable billing, permit private builds
+or change the manual-upload requirement. Measure the final package before
+upload; never enlarge this bound silently if the finished package exceeds it.
 
 ## Resource decisions
 
@@ -210,3 +227,20 @@ still compiles, links and passes ARM64/package checks. The next required Apple
 build will measure the net saving; no extra run is justified solely to time
 this workflow edit. Configuration remains the largest measured cost, and its
 SDK checks have not been bypassed. See `evidence/build22-cloud-resource-review.json`.
+
+
+## Current complete artwork delivery envelope
+
+Reviewed against GitHub's official Releases documentation on 5 November 2026.
+The eight private artwork bundles total 215,234,068 bytes. The former 128 MiB
+personal-package bound cannot hold these inputs. The personal ZIP bound is now
+512 MiB, matching the local injector's existing enforced limit. The injector
+also bounds decompressed ZIP members to 1 GiB and the member count to 10,000.
+The future finished package must be measured and verified against these bounds.
+
+The reviewed delivery destination is the original private repository's Release.
+GitHub documents a limit below 2 GiB per Release asset and no total release-size
+or bandwidth limit. Public Actions artifacts retain their 64 MiB base-only bound.
+Source and personal artwork use the existing separate publication paths.
+
+Source: [GitHub Release storage and bandwidth quotas](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases#storage-and-bandwidth-quotas).

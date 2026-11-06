@@ -1,0 +1,23 @@
+{
+  "images": 17,
+  "bindings": 98,
+  "fileBytes": 6229762,
+  "decodedBytes": 213909504,
+  "packSha256": "ac3b1083ae688e8ea34862e0e011450167506052d13c3bae747b671588e4452a",
+  "appIntegrated": false,
+  "physicalIpadVerified": false,
+  "sourceSpecificVariants": [
+    "sldblk.qfs",
+    "sldfrd6.qfs",
+    "sldgt12.qfs"
+  ],
+  "baseCarFamilies": 15,
+  "uniqueNativeLayers": 17,
+  "totalOriginalBindings": 98,
+  "photoPackBytes": 240423232,
+  "otherSelectedArtworkBytes": 222544011,
+  "totalCurrentArtworkBytes": 469197005,
+  "maximumRemainingBaseBytes": 67673907,
+  "allArtworkDeviceAccepted": false,
+  "otherUiAssetsStillUnderReview": true
+}

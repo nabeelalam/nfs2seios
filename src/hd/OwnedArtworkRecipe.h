@@ -1,9 +1,9 @@
 // Private fixedcompatibilityrecipe; no originalheaders or pixels.
 #pragma once
 namespace nfs_hd { namespace owned_recipe {
-static constexpr size_t OutputBytes=103492520,TemplateBytes=10117442,PayloadBytes=103492136;
-static const Digest OutputSha={88,136,51,5,201,148,155,231,154,80,79,87,20,32,135,188,147,70,179,98,205,125,2,223,87,52,138,133,103,111,140,149};
-static const Digest TemplateSha={231,101,226,240,22,179,14,86,142,119,67,32,183,97,47,215,212,16,243,217,130,193,1,115,39,35,251,188,9,64,109,138};
+static constexpr size_t OutputBytes=103492520,TemplateBytes=15681015,PayloadBytes=103492136;
+static const Digest OutputSha={217,219,4,20,38,201,197,115,90,48,21,229,28,226,163,123,105,74,46,253,47,240,223,32,76,180,58,115,126,3,179,114};
+static const Digest TemplateSha={99,101,24,11,202,185,251,246,125,0,10,119,198,110,51,225,98,189,51,139,37,87,40,4,1,182,192,70,247,110,130,90};
 static const Digest OwnerSha={1,81,20,122,205,4,240,82,115,105,168,74,139,112,141,200,36,166,207,143,96,197,56,66,222,85,245,178,41,29,38,99};
 static const Digest DecodedSha={43,235,4,189,178,255,192,87,1,39,155,116,133,74,58,142,102,67,168,158,94,149,137,156,52,87,24,95,215,220,172,129};
 struct Hole{size_t output,source,span;char name[5];Digest sha;};

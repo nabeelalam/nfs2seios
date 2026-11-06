@@ -1,0 +1,47 @@
+{
+  "scope": "Maintained slideshow startup and build integration; actual original slideshow route observed in isolated copied assets",
+  "previousGoalTurn": "progress: implemented and compiled dedicated slideshow renderer and immutable presentation lease",
+  "maintainedChanges": [
+    "Optional private catalog staging",
+    "Slideshow hooks added after existing classic screen transformations",
+    "Startup supplies application resource path with explicit local preview override",
+    "Compression dependency uses existing SDK/project library for bundled and separate resources"
+  ],
+  "engineObjectsCompiled": [
+    "Methods_01.cpp",
+    "Methods_03.cpp",
+    "Methods_13.cpp"
+  ],
+  "rendererAndStartupCompiled": true,
+  "firstCandidateLinked": true,
+  "firstCandidateSHA256": "f679cbc55ae421ab4bd11bdd58bfa09f05403f3c3d8d679489bba6f58c2c3f77",
+  "firstCandidateArtworkActivation": false,
+  "activationFailure": "The reused compiler recipe selected an older artwork configuration fingerprint; current pack was correctly refused",
+  "originalSlideshowRouteObserved": true,
+  "originalSlideshowCar": "Ford Indigo",
+  "originalSlideshowScreenshotSHA256": "df820c74aa75dc5fdf0a536016f5aec0aaaa4a9fca8acd1a4f0e3c40c753afec",
+  "cleanShutdown": true,
+  "isolatedConfigurationAndSaves": true,
+  "originalGameDataModified": false,
+  "remasteredSlideshowPublished": false,
+  "correctedConfigurationRelink": "Passed",
+  "physicalIpadVerified": false,
+  "cloudBuild": false,
+  "publicPush": false,
+  "packagingConcern": {
+    "existingEightResourceBytes": 215234068,
+    "draftSlideshowPackBytes": 337028055,
+    "combinedBytes": 552262123,
+    "privateCapBytes": 536870912,
+    "requiresLosslessReductionBeforePackaging": true
+  },
+  "next": [
+    "Inspect corrected-configuration link result",
+    "Revisit original slideshow and require renderer publication",
+    "Complete artwork fidelity corrections",
+    "Prepare one grouped iPad package after UI completion"
+  ],
+  "correctedCandidateSHA256": "9377f80d4d59c932f07bd10ef8647ede5a676ba9618567c06bf6b045b64d056b",
+  "correctedCandidateStartupPassed": true,
+  "correctedCandidateArtworkActivated": true
+}

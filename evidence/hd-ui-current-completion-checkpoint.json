@@ -1,0 +1,57 @@
+{
+  "scope": "Current UI engineering checkpoint",
+  "areas": [
+    {
+      "area": "Post-race Main return",
+      "status": "Local original race route passed",
+      "evidence": "hd-postrace-main-fog-local.json",
+      "evidenceSha256": "c944fca07d4667eadf6bfdcd28b837cff7321aacdc1b9653526e128fd43f4434"
+    },
+    {
+      "area": "Post-race Records",
+      "status": "Local original race route and remastered publication passed",
+      "evidence": "hd-postrace-records-local.json",
+      "evidenceSha256": "88028e00ff6ea3f10f26cbb564b2d468c19b3aa78a33d407cda928958367fd9f"
+    },
+    {
+      "area": "Name entry",
+      "status": "Disposable qualifying fixture displays prompt; submission unverified",
+      "evidence": "hd-results-name-prompt-local.json",
+      "evidenceSha256": "012c3bd9dda2fb618935d7b9aad81c7ba5478992df6647cb27c8cd83a8244a4b"
+    },
+    {
+      "area": "Results backdrop",
+      "status": "Local authored summary and Lap Times; other result modes require review",
+      "evidence": "hd-results-backdrop-transport.json",
+      "evidenceSha256": "9e18d31c82ed3f1ecb7b5be6e58a97de49df59581730b1c5100dac4abab74f49"
+    },
+    {
+      "area": "Main transition",
+      "status": "Startup and Main to Setup observations; remaining menu animations require review",
+      "evidence": "hd-menu-transition-observation-local.json",
+      "evidenceSha256": "80d8b8b3305bad08be4ba8145ef34835d07a4325fab6bd9ead07306be8d80ed9"
+    },
+    {
+      "area": "Wide menu",
+      "status": "Local authored menu aspect transport; gameplay aspect completion remains open",
+      "evidence": "hd-wide-menu-artwork-transport.json",
+      "evidenceSha256": "97bb7e566295d0884a95e7d03803850b2bdf831f4fbfe84bd4877d0266c8221b"
+    },
+    {
+      "area": "Car technical information",
+      "status": "Local runtime evidence; asset queue remains authoritative",
+      "evidence": "hd-carinfo-insets-local-runtime.json",
+      "evidenceSha256": "b8424c0306f2b18a45d7dd80e623806e1e61e74be1491873c27d2d357d80f3f6"
+    },
+    {
+      "area": "Private packaging",
+      "status": "Inputs checked; matching new ARM64 package pending",
+      "evidence": "hd-private-ipa-artwork-inputs.json",
+      "evidenceSha256": "d17b3b0f5c7531d7f35d4a29692f01ac23c5ebb9d490c85a62574937ab44a266"
+    }
+  ],
+  "fullUiComplete": false,
+  "nextApplePackageReady": false,
+  "physicalAcceptanceRequired": true,
+  "afterPackagePriority": "Performance and battery optimization"
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "Slideshow bridge implementation checkpoint",
+  "sourceOwner": "412300",
+  "dispatcherType": 12,
+  "implemented": [
+    "insertion-only lifecycle/draw event hooks",
+    "CPU and errno preservation around event callbacks",
+    "exact original archive and entry identification",
+    "bounded one-image lossless loading",
+    "immutable frame retirement on source change and exit",
+    "guest archive copied under lock; disk I/O and decompression after lock release"
+  ],
+  "pending": [
+    "generated trusted runtime/source pin catalog and exact form configuration",
+    "renderer consumer with original target and overlay proof",
+    "maintained source pipeline activation",
+    "grouped compile and actual slideshow navigation",
+    "artwork fidelity corrections",
+    "Apple package and physical iPad validation"
+  ],
+  "bridgeCompiled": false,
+  "bridgeGameExecuted": false,
+  "cloudBuildStarted": false
+}

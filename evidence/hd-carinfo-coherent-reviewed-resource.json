@@ -1,0 +1,39 @@
+{
+  "scope": "One grouped real-resource native CarInfo provider validation, not app build",
+  "passed": true,
+  "packSHA256": "4f21c6d024c0d370ea30299daacb39ce5a11c50756d8d7dc41b30134e2436f1c",
+  "packBytes": 113527409,
+  "payloadBytes": 251652104,
+  "actualCurrentSourceLoader": true,
+  "actualCurrentSourceProvider": true,
+  "actualCurrentPublicPin": true,
+  "oldHardcodedProbeUsed": false,
+  "testedCarTabPairs": 36,
+  "sourceIndicesCorrect": true,
+  "technicalDimensions": [
+    1444,
+    572
+  ],
+  "transparentGutterColumnsHalfOpen": [
+    836,
+    892
+  ],
+  "adjacentOpaqueColumns": [
+    835,
+    892
+  ],
+  "dividerPixelsPerInset": 32032,
+  "releaseEachBorrow": true,
+  "clearGenerationZero": true,
+  "sourceAndPackInputsUnchanged": true,
+  "compiler": "Existing WSL g++ C++14 O2",
+  "zlib": "Existing cached project libz.a",
+  "binarySHA256": "1497b9b4e18f8702c7058e8c19d28115e19285880d1492c07cafcd4bb5eec8a4",
+  "buildApp": false,
+  "gameExecuted": false,
+  "ipadVerified": false,
+  "correctedTechnicalPictures": 6,
+  "technicalSourceReviews": 36,
+  "unchangedRecords": 41,
+  "all48LayoutMetadataPreserved": true
+}

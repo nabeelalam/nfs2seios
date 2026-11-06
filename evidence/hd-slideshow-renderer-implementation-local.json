@@ -1,0 +1,46 @@
+{
+  "previousGoalTurn": "progress: isolated grouped compile exposed legacy macro collisions and established the next correction",
+  "scope": "Slideshow source/display binding, immutable image/text renderer lease and hardware renderer implementation",
+  "sourceSHA256": {
+    "src/hd/SlideshowPixels.h": "d23c05aeae841b65f71cfba3424bdb50cc61d026edb8f28bdce2ab241c6b547c",
+    "src/hd/SlideshowSourceIdentity.h": "ae6ba95563c8bef5856486cde6f9cb3f83f940a0ab747f46977ff5be2bc14745",
+    "src/hd/SlideshowSession.h": "c498b4662786db4b4698e62a242a6bde6b2527b97e572f9b1034124cd88ed625",
+    "src/hd/SlideshowSurfaceBinding.h": "ad86c2b5f03b4c0f69d6e3d7638d57d1cc60d03f939ae702afd99581b297c282",
+    "src/hd/ClassicScreens/SlideshowTextCapture.inc": "9822d9b620f18de844213cf46a0a85a9a6ab73d03d7416d0729c4237d4630afd",
+    "src/hd/ClassicScreens/SlideshowPresentation.inc": "9a32cb6aa17a20f5ece304627be2994408cbfc6518fbe42e7a83d413e630dc17",
+    "src/hd/ClassicScreens/SlideshowLayerAbi.h": "37501a686de07037ddb0e09319b86f0a5ef754382168f81c6842c0b100033a2c",
+    "src/hd/ClassicScreens/SlideshowQueueAdapter.inc": "fb753c3a6da6a1fc07747d669f86f8b73e56466a96fda9a0f9cb1f5f60fddbe7",
+    "src/hd/ClassicScreens/SlideshowRenderer.inc": "ef438863cd0cd55fe32c0cbbdd071d487dc0b12de9c52177157cf3d4b9f14845",
+    "src/hd/ClassicScreens/RendererHooks.inc": "f5220a9fa141931efee1e955113f631fcf16828480bf690d88ad4ec9ec4b66e7",
+    "scripts/classic_screens/slideshow_hooks.py": "ca192b0976a0a2fea48a3ff397c9678495acaf0e5797e60e796a2c8c3e223709"
+  },
+  "engineSyntaxUnits": [
+    "Methods_01.cpp",
+    "Methods_03.cpp",
+    "Methods_13.cpp"
+  ],
+  "engineSyntaxPassed": true,
+  "completeRendererSyntaxPassed": true,
+  "rendererWarnings": [
+    "Existing RendererLfbGL pointer-type warning"
+  ],
+  "nativeOriginalSurfaceSessionPassed": true,
+  "sourceFormat120SurfaceBinding": true,
+  "sourceFormat126SurfaceBinding": false,
+  "imageDecodeAndDigestFrequency": "Selected archive change; cached image digest copied into each lease",
+  "generatedOperations": "Insertion-only source transformer verifies exact reversal",
+  "runtimeActivated": false,
+  "linkedSlideshowVerified": false,
+  "physicalIpadVerified": false,
+  "artworkDrafts": 98,
+  "artworkFinalAccepted": 0,
+  "cloudBuild": false,
+  "publication": false,
+  "next": [
+    "Trace original format126 conversion",
+    "Configure source catalog and runtime pack at startup",
+    "Activate maintained engine transformation pipeline with compression dependency",
+    "Run actual slideshow navigation with both image and controls",
+    "Complete recorded artwork fidelity corrections before next iPad build"
+  ]
+}

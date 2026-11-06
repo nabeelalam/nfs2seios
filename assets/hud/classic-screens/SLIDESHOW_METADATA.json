@@ -1,0 +1,27 @@
+{
+  "counts": {
+    "bindings": 98,
+    "resourcePins": 17,
+    "runtimeImagePins": 98,
+    "sourcePins": 98
+  },
+  "headers": {
+    "SlideshowCatalogData.h": {
+      "kind": "source-and-runtime-image-pins",
+      "license": "MIT",
+      "notice": "assets/hud/classic-screens/SLIDESHOW_METADATA_NOTICE.md",
+      "sha256": "330eba4ab2811858e14dd1b070a57a4951d5ea214db018f82969f31e49ded0d8"
+    },
+    "SlideshowFooterData.h": {
+      "kind": "footer-resource-pins-and-bindings",
+      "license": "MIT",
+      "notice": "assets/hud/classic-screens/SLIDESHOW_METADATA_NOTICE.md",
+      "sha256": "6a055296d67cc06b2ed921b69f8f0441d8de2b6d32d56a71dbee5f35581b6cb5"
+    }
+  },
+  "imagePayloads": false,
+  "kind": "slideshow-compatibility-metadata",
+  "metadataApproved": true,
+  "pairRequired": true,
+  "schema": 1
+}

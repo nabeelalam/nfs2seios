@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "scope": "Actual grouped local Release runtime observation",
+  "buildSucceeded": true,
+  "buildSeconds": 339.0757,
+  "runtimeExit": {
+    "exit": 0,
+    "cleanShutdown": true,
+    "commands": 10,
+    "softwareRendererRequested": true,
+    "audioDriver": "dummy",
+    "physicalIpadVerified": false
+  },
+  "verifiedScreens": [
+    {
+      "file": "screen-003.bmp",
+      "sha256": "38cf65892d242217871de8988afaeb2a9b2095bfb0f3d9ee5d363dfaae76a1fb",
+      "observation": "Remastered main menu at 1280x720"
+    },
+    {
+      "file": "screen-004.bmp",
+      "sha256": "201131028df382d1268ed9757be1c56a3770565e3a3970e4689ff16a5c95d531",
+      "observation": "Remastered main menu at 1180x820"
+    },
+    {
+      "file": "screen-006.bmp",
+      "sha256": "58b1be846b04f52f099c1e73c176980823b4670ffeaa0fe445b0942e9a126f71",
+      "observation": "Player screen with remastered background, text and selected-car artwork"
+    }
+  ],
+  "slideshowVerified": true,
+  "carInfoVerified": true,
+  "physicalIpadVerified": false,
+  "performanceVerified": false,
+  "limitation": "Software-rendered virtual display with dummy audio; no physical iPad, energy, hardware performance, or all-car gameplay acceptance.",
+  "carHistoryPhotographsRemastered": false,
+  "carHistoryFollowupRequired": true,
+  "additionalRoutes": [
+    {
+      "run": "runtime-batch-v5",
+      "exit": {
+        "exit": 0,
+        "cleanShutdown": true,
+        "commands": 8,
+        "softwareRendererRequested": true,
+        "audioDriver": "dummy",
+        "physicalIpadVerified": false
+      },
+      "nativeSlideshowPublications": 5,
+      "captures": [
+        {
+          "file": "screen-004.bmp",
+          "sha256": "2038ec8788b7ee5dd5f243603a68047f59c7986a6cfd6a9a7081e8769768b63a"
+        },
+        {
+          "file": "screen-005.bmp",
+          "sha256": "a32800f8c9281cbe484e2a29d7758714574df31ff3244e7acd7274857c5ab2c2"
+        },
+        {
+          "file": "screen-006.bmp",
+          "sha256": "59eac4d8d0beadc53cbe021f1af9ad43c21627f32ca45839b638e21e4384e875"
+        },
+        {
+          "file": "screen-007.bmp",
+          "sha256": "d3c7a8315e5edf936b6fb6a86728dd4f12a3d3b08ac9db55948a31d6924d0774"
+        }
+      ]
+    },
+    {
+      "run": "runtime-batch-v6",
+      "exit": {
+        "exit": 0,
+        "cleanShutdown": true,
+        "commands": 10,
+        "softwareRendererRequested": true,
+        "audioDriver": "dummy",
+        "physicalIpadVerified": false
+      },
+      "nativeSlideshowPublications": 0,
+      "captures": [
+        {
+          "file": "screen-004.bmp",
+          "sha256": "02a214fe49b935c438da2b361f384e7b7f9d67f7b55e5e3cb6352e4008e80d79"
+        },
+        {
+          "file": "screen-006.bmp",
+          "sha256": "a7d7ebd877ffc31ede190e2f3b090535c3ef7a71471592e4b6de8fdc9150178f"
+        },
+        {
+          "file": "screen-007.bmp",
+          "sha256": "4c1da9e5c883237149cedee02040d5cefb3e997e3ac12f37896781297c8fb66d"
+        },
+        {
+          "file": "screen-008.bmp",
+          "sha256": "d4688efd5bd0986cbbf2b55c770fd1cd98b32cb362a4516d7d151c9174d575b6"
+        }
+      ]
+    }
+  ],
+  "badgeObservation": "Ford information-page logo is original rotating 3D artwork: backface, edge-on and frontface observed; no static artwork correction warranted."
+}

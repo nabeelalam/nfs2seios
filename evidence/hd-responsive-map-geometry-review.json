@@ -1,0 +1,58 @@
+{
+  "scope": "Offline proposed layout compared with current responsive draw transform",
+  "ratios": [
+    {
+      "drawable": [
+        1280,
+        720
+      ],
+      "logicalWidth": 853.3333333333334,
+      "liveMapOffsetLogical": 213.33333333333337,
+      "previewFirstWordBounds": [
+        129.16666666666666,
+        120.58333333333333,
+        95.0,
+        29.75
+      ],
+      "previewLogoTransform": "scale(1.36)",
+      "previewFirstBadgeXLogical": 720.6666666666666
+    },
+    {
+      "drawable": [
+        1180,
+        820
+      ],
+      "logicalWidth": 690.7317073170732,
+      "liveMapOffsetLogical": 50.73170731707319,
+      "previewFirstWordBounds": [
+        61.65951219512195,
+        105.8780487804878,
+        83.41463414634147,
+        26.121951219512194
+      ],
+      "previewLogoTransform": "translate(-88.4146 0) scale(1.36)",
+      "previewFirstBadgeXLogical": 490.0083512195122
+    },
+    {
+      "drawable": [
+        960,
+        720
+      ],
+      "logicalWidth": 640.0,
+      "liveMapOffsetLogical": 0.0,
+      "previewFirstWordBounds": [
+        51.833333333333336,
+        120.58333333333333,
+        95.0,
+        29.75
+      ],
+      "previewLogoTransform": "translate(-105.0000 0) scale(1.36)",
+      "previewFirstBadgeXLogical": 507.3333333333333
+    }
+  ],
+  "liveWords": "Source coordinates",
+  "liveBadgeShift": "logicalWidth minus 640",
+  "livePointer": "Mapped using published owner layout",
+  "limit": "The preview geometry is not an input layout. Move live drawing and input transforms together before activation.",
+  "runtimeVerified": false
+}

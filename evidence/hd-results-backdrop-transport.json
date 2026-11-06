@@ -1,0 +1,193 @@
+{
+  "scope": "Private Results backdrop bundle and immutable frame mask",
+  "sourcePixelSha256": "c74c24601c9aa033d437939fde97ebdb2a73dadd27aba59d1fda085d584ef914",
+  "images": [
+    {
+      "width": 1440,
+      "height": 1080,
+      "sha256": "52bae131c5cf7de5e67a2eb297e27168d8e154451f593405e0e84b05999659e3"
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "sha256": "16ab9f1e7ec8521574177b9d9f573b54f3d7b76e659de16c9b7e1c4b82bf3933"
+    }
+  ],
+  "sha256": "caf29a73af8966385c1a48d46be59950be6f88b92459566d67bf67146bfa81ae",
+  "bytes": 5711653,
+  "payloadBytes": 14515288,
+  "rendererCompositingVerified": true,
+  "localLink": {
+    "binarySha256": "4757e4db959b5c18c5a8c395205fbf1d3ce48e22aba12ecca513c0d157c221fb",
+    "generatedResultsUnits": 5,
+    "localLink": true
+  },
+  "privatePackagingFixture": {
+    "syntheticArm64": true,
+    "resultsAndWideResourcesAccepted": true,
+    "executableUnchanged": true
+  },
+  "linkedRaceAttempt": {
+    "raceReached": true,
+    "heldUpKey": true,
+    "neutralAndZeroSpeedObserved": true,
+    "resultsReached": false,
+    "cleanShutdown": true,
+    "savesUnchanged": true,
+    "profileRestored": true,
+    "baselineArtworkRestored": true
+  },
+  "controllerRaceAttempt": {
+    "raceReached": true,
+    "observedFirstGearAndSpeed": 60,
+    "resultsReached": false,
+    "stalledAgainstBarrier": true,
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "savesUnchanged": true
+  },
+  "maskTargetGuard": {
+    "sameOriginalTargetRequired": true,
+    "skipsCaptureWithoutArtwork": true,
+    "mappedEngineSyntaxPassed": true,
+    "includedInOngoingControllerRun": false
+  },
+  "completedRace": {
+    "track": "Proving Grounds",
+    "car": "McLaren F1",
+    "laps": 2,
+    "finishTime": "6:07.28",
+    "position": 8,
+    "summaryVisuallyObserved": true,
+    "captureSha256": "92a6fd271065eab8efdacfffad16833f6d4c3ea269e88b9beba88cf98df50be0",
+    "nativeResultsTraceCount": 0,
+    "nameEntryObserved": false,
+    "harnessStoppedAfterReview": true,
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "savesUnchanged": true,
+    "pixelComparison": {
+      "samples": 2067,
+      "gamma": 1.5,
+      "originalMedianMaxChannelError": 2,
+      "authoredMedianMaxChannelError": 30,
+      "originalWithinFour": 1730,
+      "authoredWithinFour": 25,
+      "originalBackdropConfirmed": true
+    }
+  },
+  "tracedRace": {
+    "ownerAccepted": true,
+    "formType": 3,
+    "captureBegan": true,
+    "collectorRefused": true,
+    "rendererHandoffObserved": false,
+    "backdropAuthenticationObserved": false
+  },
+  "tabbedResultsRefusal": {
+    "observed": true,
+    "afterTab": true,
+    "glyphKnown": true,
+    "originalTabAdvancesToColumn": true,
+    "tabbedRowsPreservedBySourceChange": true,
+    "fixRuntimeVerified": true,
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "nativeTextCommandsPublishedByCollector": 36,
+    "rendererPublicationObserved": false
+  },
+  "backdropCandidateCoverage": {
+    "preTextBitmapSites": 8,
+    "resultsForms": 6,
+    "originalDrawOperationsPreserved": true,
+    "exactBackdropHashStillRequired": true,
+    "runtimeVerified": false,
+    "authenticationObserved": false
+  },
+  "handoffTrace": {
+    "queueConsumed": true,
+    "rendererAcceptanceUnproven": true,
+    "backdropBundleAvailable": true,
+    "backdropPlaneRejected": true,
+    "candidatePrefixValues": [
+      3551862534,
+      1630308121
+    ],
+    "harnessStoppedOnQueueAcceptance": true,
+    "stopPredicateCorrected": true,
+    "cleanShutdown": true,
+    "profileRestored": true
+  },
+  "preBlitAuthenticationRuntime": {
+    "originalSourceAuthenticated": true,
+    "renderedBaselineCaptured": true,
+    "textCommands": 36,
+    "maskPublished": true,
+    "rendererBeginRefused": "original-render-target",
+    "finalCompositingObserved": false
+  },
+  "targetRefusal": {
+    "failBits": 128,
+    "textureOrFogGate": true,
+    "framebufferMatched": true,
+    "viewport": [
+      0,
+      0,
+      640,
+      480
+    ],
+    "cleanShutdown": true,
+    "copiedSavesUnchanged": true,
+    "change": "Validate texture and fog at original tile triangles; keep all other target gates",
+    "fixRuntimeVerified": true,
+    "firstUploadAndSelectionAccepted": true,
+    "firstTriangleAccepted": false,
+    "compositingVerified": false
+  },
+  "firstTriangleDiagnostic": {
+    "textureEnabled": true,
+    "fogFlagEnabled": true,
+    "allOriginalCornersAccepted": true,
+    "reason": 6,
+    "updatedPolicy": "Require zero effective fog at the exact original oow=1 vertices",
+    "fixRuntimeVerified": true,
+    "observedFogTableValueAtOne": 3,
+    "nextPolicy": "Validate unchanged original tile fog and composite its exact amount and color into the retained Results stage"
+  },
+  "authoredRaceSummaryRuntime": {
+    "scope": "WSL 640x480 after completed original Proving Grounds race",
+    "captureSha256": "f8bb6b1cbedbcdac1eecef38d2302d7c7cc8b4d74a365f872cf188bb42474dfa",
+    "samples": 2067,
+    "originalMedianMaxChannelError": 29,
+    "authoredMedianMaxChannelError": 2,
+    "originalTileUploads": 300,
+    "originalTriangles": 600,
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "savesUnchanged": true,
+    "nameEntryVerified": false,
+    "physicalIPadVerified": false
+  },
+  "nameEntryQualificationRun": {
+    "scope": "WSL original Proving Grounds race with copied profile",
+    "authoredSummaryPublished": true,
+    "qualificationReturned": 0,
+    "nameEntryCalled": false,
+    "recordsPreseeded": false,
+    "saveInventoryUnchanged": true,
+    "cleanShutdown": true,
+    "captureSha256": "0116c0375a26ec1fd5e388a9fd8e4bd475a857da30feb519d43513f66fa0304a"
+  },
+  "postraceContinue": {
+    "summaryContinueReachedLapTimes": true,
+    "lapTimesMainMenuSelected": true,
+    "lapTimesCaptureSha256": "406dee9b9d761e0ef75743d57d8a4fb487ba74f86a85302a3a218ef89d55f694",
+    "mainReturnVerified": true,
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "mainArtworkFallbackReproduced": true,
+    "mainCaptureSha256": "3dd97f3d4b3807de7b87ebb47421aa2413a32df23190276a312bf655a301999a",
+    "backgroundBeginTargetRefusalCount": 36,
+    "cleanupVerified": true
+  }
+}

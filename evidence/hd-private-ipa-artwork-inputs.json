@@ -1,0 +1,92 @@
+{
+  "scope": "Verified private asset inputs for local injection into a matching future ARM64 base",
+  "assets": {
+    "classic-ui.ownedz": {
+      "bytes": 15681015,
+      "sha256": "6365180bcab9fbf67d000a77c66e33e162bd338b2557280401b6c046f76e825a"
+    },
+    "intro-ui.ownedz": {
+      "bytes": 3202202,
+      "sha256": "af4677103a79488f64b55538885bcf798038c549683aa1a955c4a4e4d5aab1a5"
+    },
+    "track-info-ui.ownedz": {
+      "bytes": 45860407,
+      "sha256": "497d2dea3f3c4db843ee69b37a5abc59fe73fc9e7e34640c24a9edcac79c1b88"
+    },
+    "car-info-ui.ownedz": {
+      "bytes": 113527409,
+      "sha256": "4f21c6d024c0d370ea30299daacb39ce5a11c50756d8d7dc41b30134e2436f1c"
+    },
+    "player-photo-ui.ownedz": {
+      "bytes": 22688859,
+      "sha256": "752ef12f7e0345ebef890e6ba984e46495aaa6332a3034ee932021b174472342"
+    },
+    "track-badge-ui.ownedz": {
+      "bytes": 10139595,
+      "sha256": "896e16ea5412951370f9263891273bac4b660f7a1a35060e6e91aa64873b1536"
+    },
+    "wide-menu-ui.ownedz": {
+      "bytes": 4825387,
+      "sha256": "655d43557cec2f013b3d519e5919839ff1a278bde7b3995f17be3830df80d980"
+    },
+    "results-backdrop-ui.ownedz": {
+      "bytes": 5711653,
+      "sha256": "caf29a73af8966385c1a48d46be59950be6f88b92459566d67bf67146bfa81ae"
+    },
+    "slideshow-ui.ownedz": {
+      "bytes": 240423232,
+      "sha256": "e36dec6e311e55fad6d5824c0b746b3009e5ecf03e021143f03a4e3f1b25a6a4"
+    },
+    "slideshow-footer.ownedz": {
+      "bytes": 6229762,
+      "sha256": "ac3b1083ae688e8ea34862e0e011450167506052d13c3bae747b671588e4452a"
+    }
+  },
+  "totalArtworkBytes": 468289521,
+  "maximumBaseBytes": 68581391,
+  "baseInspected": false,
+  "ipaProduced": false,
+  "artworkPublished": false,
+  "packagingFixture": {
+    "accepted": true,
+    "syntheticMachO": true,
+    "pinSpansReadBoundary": true,
+    "allSixResourcesVerified": true,
+    "baseUnchanged": true,
+    "executableUnchanged": true
+  },
+  "widePackagingFixture": {
+    "syntheticMachO": true,
+    "allSevenResourcesVerified": true,
+    "corruptWideRejected": true,
+    "baseUnchanged": true
+  },
+  "allArtworkPackagingFixture": {
+    "syntheticArm64": true,
+    "allEightResourcesVerified": true,
+    "baseUnchanged": true,
+    "executableUnchanged": true
+  },
+  "deferredHostConfigure": {
+    "currentPinAccepted": true,
+    "previousPinRejected": true,
+    "personalArtworkOmitted": true,
+    "offline": true,
+    "iosCompilerUsed": false,
+    "buildProduced": false
+  },
+  "priorFixtureScope": "Older six/seven/eight-resource fixtures retain their historical pins; the current ten-resource synthetic fixture validates selected injection only, not an actual Apple application.",
+  "currentSelectionRevalidatedInPackage": true,
+  "slideshowPairRequired": true,
+  "newTenResourceInjectionVerified": true,
+  "tenResourceFixture": {
+    "syntheticOnly": true,
+    "runnableApp": false,
+    "passed": true,
+    "outputBytes": 468291758,
+    "artworkBytes": 468289521,
+    "allExistingMemberBytesIdentical": true,
+    "allExistingCompressedStorageIdentical": true,
+    "originalInputsUnchanged": true
+  }
+}

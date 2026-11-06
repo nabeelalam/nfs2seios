@@ -18,9 +18,9 @@ import tempfile
 import unicodedata
 import zipfile
 
-TEMPLATE_BYTES = 10117442
-TEMPLATE_SHA256 = "e765e2f016b30e568e774320b7612fd7d410f3d982c101732723fbbc09406d8a"
-OUTPUT_PACK_SHA256 = "58883305c9949be79a504f57142087bc9346b362cd7d02df57348a85676f8c95"
+TEMPLATE_BYTES = 15681015
+TEMPLATE_SHA256 = "6365180bcab9fbf67d000a77c66e33e162bd338b2557280401b6c046f76e825a"
+OUTPUT_PACK_SHA256 = "d9db041426c9c5735a3015e51ce2a37b694a2efd2ff0df204cb43a737e03b372"
 RESOURCE = "classic-ui.ownedz"
 INTRO_RESOURCE = "intro-ui.ownedz"
 INTRO_BYTES = 3202202
@@ -29,8 +29,8 @@ TRACK_INFO_RESOURCE = "track-info-ui.ownedz"
 TRACK_INFO_BYTES = 45860407
 TRACK_INFO_SHA256 = "497d2dea3f3c4db843ee69b37a5abc59fe73fc9e7e34640c24a9edcac79c1b88"
 CAR_INFO_RESOURCE = "car-info-ui.ownedz"
-CAR_INFO_BYTES = 114434893
-CAR_INFO_SHA256 = "54549f6c5986ccc6e2ab7c6d9dfd51eb44905dd8dc6532e0cdf7ee3e914a39b0"
+CAR_INFO_BYTES = 113527409
+CAR_INFO_SHA256 = "4f21c6d024c0d370ea30299daacb39ce5a11c50756d8d7dc41b30134e2436f1c"
 PLAYER_PHOTO_RESOURCE = "player-photo-ui.ownedz"
 PLAYER_PHOTO_BYTES = 22688859
 PLAYER_PHOTO_SHA256 = "752ef12f7e0345ebef890e6ba984e46495aaa6332a3034ee932021b174472342"
@@ -39,12 +39,20 @@ TRACK_BADGE_BYTES = 10139595
 TRACK_BADGE_SHA256 = "896e16ea5412951370f9263891273bac4b660f7a1a35060e6e91aa64873b1536"
 
 WIDE_MENU_RESOURCE = "wide-menu-ui.ownedz"
-WIDE_MENU_BYTES = 3079017
-WIDE_MENU_SHA256 = "d7125f3c9650ef875e8dc16f454403246c8f4cf80762680873167586a10e271c"
+WIDE_MENU_BYTES = 4825387
+WIDE_MENU_SHA256 = "655d43557cec2f013b3d519e5919839ff1a278bde7b3995f17be3830df80d980"
 
 RESULTS_BACKDROP_RESOURCE = "results-backdrop-ui.ownedz"
 RESULTS_BACKDROP_BYTES = 5711653
 RESULTS_BACKDROP_SHA256 = "caf29a73af8966385c1a48d46be59950be6f88b92459566d67bf67146bfa81ae"
+
+
+SLIDESHOW_RESOURCE = "slideshow-ui.ownedz"
+SLIDESHOW_BYTES = 240423232
+SLIDESHOW_SHA256 = "e36dec6e311e55fad6d5824c0b746b3009e5ecf03e021143f03a4e3f1b25a6a4"
+SLIDESHOW_FOOTER_RESOURCE = "slideshow-footer.ownedz"
+SLIDESHOW_FOOTER_BYTES = 6229762
+SLIDESHOW_FOOTER_SHA256 = "ac3b1083ae688e8ea34862e0e011450167506052d13c3bae747b671588e4452a"
 
 
 def resource_pins():
@@ -55,7 +63,9 @@ def resource_pins():
             PLAYER_PHOTO_RESOURCE: (PLAYER_PHOTO_BYTES, PLAYER_PHOTO_SHA256),
             TRACK_BADGE_RESOURCE: (TRACK_BADGE_BYTES, TRACK_BADGE_SHA256),
             WIDE_MENU_RESOURCE: (WIDE_MENU_BYTES, WIDE_MENU_SHA256),
-            RESULTS_BACKDROP_RESOURCE: (RESULTS_BACKDROP_BYTES, RESULTS_BACKDROP_SHA256)}
+            RESULTS_BACKDROP_RESOURCE: (RESULTS_BACKDROP_BYTES, RESULTS_BACKDROP_SHA256),
+            SLIDESHOW_RESOURCE: (SLIDESHOW_BYTES, SLIDESHOW_SHA256),
+            SLIDESHOW_FOOTER_RESOURCE: (SLIDESHOW_FOOTER_BYTES, SLIDESHOW_FOOTER_SHA256)}
 MAX_IPA = 512 * 1024 * 1024
 MAX_UNPACKED = 1024 * 1024 * 1024
 MAX_MEMBERS = 10000
@@ -256,7 +266,7 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
                     unpackedBytes=total, comment=z.comment)
 
 
-def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None, wide_menu=None, results_backdrop=None):
+def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None, wide_menu=None, results_backdrop=None, slideshow=None, slideshow_footer=None):
     require(re.fullmatch("[0-9a-f]{64}", base_sha256 or ""), "Provide the trusted base IPA SHA-256")
     base = Path(base_ipa).resolve(strict=True)
     source = Path(template).resolve(strict=True)
@@ -272,6 +282,8 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
         artwork = f.read(TEMPLATE_BYTES + 1)
     require(len(artwork) == TEMPLATE_BYTES and hashlib.sha256(artwork).hexdigest() == TEMPLATE_SHA256,
             "Wrong or mutated personal artwork template")
+    require((slideshow is None) == (slideshow_footer is None),
+            "Slideshow photos and overlay resources must be supplied together")
     extra_inputs = {}
     artwork_inputs = {RESOURCE: artwork}
     if intro is not None:
@@ -330,7 +342,9 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
         extra_inputs[badge_source] = TRACK_BADGE_SHA256
         artwork_inputs[TRACK_BADGE_RESOURCE] = badge_artwork
     for value, resource in ((wide_menu, WIDE_MENU_RESOURCE),
-                            (results_backdrop, RESULTS_BACKDROP_RESOURCE)):
+                            (results_backdrop, RESULTS_BACKDROP_RESOURCE),
+                            (slideshow, SLIDESHOW_RESOURCE),
+                            (slideshow_footer, SLIDESHOW_FOOTER_RESOURCE)):
         if value is None:
             continue
         source_path = Path(value).resolve(strict=True)
@@ -436,8 +450,10 @@ def main():
     p.add_argument("--track-badge", type=Path, help="Optional separately pinned animated track badges")
     p.add_argument("--wide-menu", type=Path, help="Optional separately pinned widescreen map and panel")
     p.add_argument("--results-backdrop", type=Path, help="Optional separately pinned Results backdrops")
+    p.add_argument("--slideshow", type=Path, help="Pinned lossless slideshow photos; supply with --slideshow-footer")
+    p.add_argument("--slideshow-footer", type=Path, help="Pinned matching slideshow overlay resource")
     args = p.parse_args()
-    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge, args.wide_menu, args.results_backdrop), indent=2))
+    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge, args.wide_menu, args.results_backdrop, args.slideshow, args.slideshow_footer), indent=2))
 
 
 if __name__ == "__main__":

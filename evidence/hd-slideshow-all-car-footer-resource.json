@@ -1,0 +1,153 @@
+{
+  "images": 15,
+  "bindings": 98,
+  "fileBytes": 5321403,
+  "decodedBytes": 188743680,
+  "packSha256": "c0cebe3a14d5d537b2e923147d6f77a7fea0f514b3d91b967adf9d8de758091b",
+  "appIntegrated": false,
+  "physicalIpadVerified": false,
+  "scope": "All15 private shared-footer candidates bound to all98 exact original slides",
+  "rows": [
+    {
+      "prefix": "sld355f",
+      "sourceAsset": "hd-slideshow-footer-v1/ferrari355-footer-native-v3.rgba.z",
+      "rgbaSha256": "b11b9cf27c789e5f1a53a30dcb4dd81401149620de6dad41476a6f50de807ee6",
+      "originalBindings": 8,
+      "footerIndex": 0,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldfer",
+      "sourceAsset": "hd-slideshow-footer-v1/ferrari-f50-footer-native-v1.rgba.z",
+      "rgbaSha256": "0371c97882608b23804c14a70bf33ea890824aa6c301e5a0be24e28fdbcfc947",
+      "originalBindings": 8,
+      "footerIndex": 1,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldfrd",
+      "sourceAsset": "hd-slideshow-remaster-v1/Ford-footer-v1/native/ford-gt90-footer-native-v1.rgba.z",
+      "rgbaSha256": "f71babb086c46f4ee95831204f3d9239b426219e20f467f244db32af0d5920f0",
+      "originalBindings": 7,
+      "footerIndex": 2,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldgt1",
+      "sourceAsset": "hd-slideshow-remaster-v1/Lotus-footer-v1/lotus-gt1-footer-native-v1.rgba.z",
+      "rgbaSha256": "0a4af2a9656e054d55ce48f33004977192b4105a7ce2d7bc795ba780e2371400",
+      "originalBindings": 8,
+      "footerIndex": 3,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldind",
+      "sourceAsset": "hd-slideshow-remaster-v1/Ford-footer-v1/native/ford-indigo-footer-native-v1.rgba.z",
+      "rgbaSha256": "3f3a884747e2c2c762414b77e4f6368b1749f232b5ef23793d0825bbf70c1442",
+      "originalBindings": 8,
+      "footerIndex": 4,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldisd",
+      "sourceAsset": "hd-slideshow-remaster-v1/Isdera-footer-v1/isdera-footer-native-v1.rgba.z",
+      "rgbaSha256": "e60192d8917fd273c5c5e802482bcbbdc4840f123c8d48221e26796211899686",
+      "originalBindings": 8,
+      "footerIndex": 5,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldita",
+      "sourceAsset": "hd-slideshow-remaster-v1/Cala-footer-v1/cala-footer-native-v1.rgba.z",
+      "rgbaSha256": "ca33f5972e375b09b546084b8cfc6b0a83ed83b6b2d10ec1df75c5fcacf9fe1b",
+      "originalBindings": 8,
+      "footerIndex": 6,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldjag",
+      "sourceAsset": "hd-slideshow-remaster-v1/Jaguar-footer-v1/native-jaguar-footer-v2.rgba.z",
+      "rgbaSha256": "5c526f6cfce00c60553d2b980b84b6b53a19327fdce1965f85345589a3fac1d3",
+      "originalBindings": 8,
+      "footerIndex": 7,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldmac",
+      "sourceAsset": "hd-slideshow-remaster-v1/McLaren-footer-v1/mclaren-footer-native-v1.rgba.z",
+      "rgbaSha256": "3c89fe1c68e5cff351851351c7866b870468e432f940317235a14c070861583c",
+      "originalBindings": 8,
+      "footerIndex": 8,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldmus",
+      "sourceAsset": "hd-slideshow-remaster-v1/Mustang-footer-v1/ford-mustang-footer-native-v2.rgba.z",
+      "rgbaSha256": "158d3214b526c899152dc312971d2bb25e9f80e0f2bf9b6deec14b4573a856ab",
+      "originalBindings": 8,
+      "footerIndex": 9,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldnaz",
+      "sourceAsset": "hd-slideshow-footer-v1/nazca-footer-native-v1.rgba.z",
+      "rgbaSha256": "ce9a373a37d6d2f4b46e15a364bca1cad322f9856b2fcbf968144739ca166a91",
+      "originalBindings": 8,
+      "footerIndex": 10,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldv8",
+      "sourceAsset": "hd-slideshow-remaster-v1/Lotus-footer-v1/lotus-v8-footer-native-v1.rgba.z",
+      "rgbaSha256": "c3980f66644954e200fbaa0e0f95c88f37e062187ee485d5acb2173807e5980b",
+      "originalBindings": 8,
+      "footerIndex": 11,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldblk",
+      "sourceAsset": "hd-slideshow-footer-v1/tombstone-footer-native-v1.rgba.z",
+      "rgbaSha256": "c847d97e0a91cc167623da812bf2e493a04647472d1375f860d0e3b4ad0642e3",
+      "originalBindings": 1,
+      "footerIndex": 12,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldbra",
+      "sourceAsset": "hd-slideshow-footer-v1/bomber-footer-native-v1.rgba.z",
+      "rgbaSha256": "936003eba124326020cc6db6237cfe48055e91d9ec2536f8ed28c1d7912c71b0",
+      "originalBindings": 1,
+      "footerIndex": 13,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    },
+    {
+      "prefix": "sldfzr",
+      "sourceAsset": "hd-slideshow-footer-v1/fzr2000-footer-native-v1.rgba.z",
+      "rgbaSha256": "8366b777e1945c00f12ce5c85c0e7cddc2a0304a32770fe321ff8dfb3005db08",
+      "originalBindings": 1,
+      "footerIndex": 14,
+      "sourceBasedVisualReview": true,
+      "appIntegrated": false
+    }
+  ],
+  "fullUiComplete": false,
+  "photoCleanupPending": [
+    "Lotus16 photo plates",
+    "GT90photo6 sill badge",
+    "Tombstone sponsor fidelity"
+  ]
+}

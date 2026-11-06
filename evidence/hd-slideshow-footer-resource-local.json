@@ -1,0 +1,26 @@
+{
+  "scope": "Bounded footer resource loader component validation",
+  "asanUbsanPassed": true,
+  "checks": [
+    "valid image retains paired identity",
+    "corrupt chunk rejected",
+    "trailing bytes rejected",
+    "decoded byte budget enforced",
+    "invalid chunk offset rejected",
+    "duplicate source binding rejected"
+  ],
+  "appBuilt": false,
+  "appRun": false,
+  "physicalIpadVerified": false,
+  "actualFerrariRoundTrip": {
+    "passed": true,
+    "images": 1,
+    "sourceBindings": 8,
+    "width": 2048,
+    "height": 1536,
+    "packBytes": 301187,
+    "sha256": "cc6c7191d74233a9eabe2dda8538d3b8c6c9f8d041a6a94d114042b2dc3ef047"
+  },
+  "privatePackAuthoringImplemented": true,
+  "privateHeaderStagingImplemented": true
+}

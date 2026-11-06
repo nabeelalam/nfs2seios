@@ -1,0 +1,12 @@
+{
+  "scope": "Select eight visually reviewed clean Jaguar photo plates as authoritative photo inputs",
+  "photos": 8,
+  "inputHashesVerified": true,
+  "priorDraftReferencesPreserved": true,
+  "nativeFooterRequired": true,
+  "nativeFooterPmaSha256": "5c526f6cfce00c60553d2b980b84b6b53a19327fdce1965f85345589a3fac1d3",
+  "packRegenerated": false,
+  "appBuilt": false,
+  "physicalIpadVerified": false,
+  "originalAssetsChanged": false
+}

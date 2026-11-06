@@ -1,0 +1,19 @@
+{
+  "scope": "Personal IPA assembly wiring for all ten pinned private artwork resources",
+  "resources": 10,
+  "totalArtworkBytes": 469197005,
+  "maximumBaseBytesBeforeZipReserve": 67673907,
+  "slideshowPairRequired": true,
+  "existingExecutableAndZipStorageChecksRetained": true,
+  "newArguments": [
+    "--slideshow",
+    "--slideshow-footer"
+  ],
+  "scriptSha256": "76e1c242831db436c2a4a4bc6ccb70ab6ae9bd0c10b2a00ef6c89ed71492dfa2",
+  "pythonSyntaxParsed": true,
+  "newTenResourceInjectionExecuted": false,
+  "matchingArm64BaseBuilt": false,
+  "ipaProduced": false,
+  "installationVerified": false,
+  "physicalIpadVerified": false
+}

@@ -1,0 +1,30 @@
+{
+  "scope": "Original slideshow surface binding and image-session lifetime using original McLaren archive and private draft runtime pack",
+  "passed": true,
+  "checks": [
+    "unaccepted artwork rejected by default",
+    "preview selects matching original archive",
+    "complete RGB565 background matches",
+    "single altered pixel rejected",
+    "short surface rejected",
+    "untraced format126 refused",
+    "changed archive clears selected image",
+    "retained renderer image survives session retirement"
+  ],
+  "rendererCombinedSyntaxPassed": true,
+  "engineUnitsSyntaxPassed": [
+    "Methods_01.cpp",
+    "Methods_03.cpp",
+    "Methods_13.cpp"
+  ],
+  "runtimeActivated": false,
+  "liveSlideshowVerified": false,
+  "physicalIpadVerified": false,
+  "cloudBuild": false,
+  "remaining": [
+    "startup configuration and maintained pipeline activation",
+    "actual slideshow navigation and presentation",
+    "format126 original conversion trace",
+    "artwork fidelity corrections"
+  ]
+}

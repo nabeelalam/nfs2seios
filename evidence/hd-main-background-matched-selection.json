@@ -1,0 +1,26 @@
+{
+  "scope": "Matched main-background source pin selection; next build must use matching private resources",
+  "sourceFiles": [
+    "src/hd/OwnedArtworkRecipe.h",
+    "src/hd/WideMenuArtwork.h",
+    "cmake/BundledOwnedArtwork.cmake",
+    "scripts/inject_personal_artwork.py"
+  ],
+  "oldSourceHashesPreserved": true,
+  "sourceHashPreflightPassed": true,
+  "rawSHA256": "d9db041426c9c5735a3015e51ce2a37b694a2efd2ff0df204cb43a737e03b372",
+  "templateSHA256": "6365180bcab9fbf67d000a77c66e33e162bd338b2557280401b6c046f76e825a",
+  "wideSHA256": "655d43557cec2f013b3d519e5919839ff1a278bde7b3995f17be3830df80d980",
+  "otherRawSectionsPreserved": 51,
+  "widePanelRecordsPreserved": 2,
+  "appBuilt": false,
+  "appRun": false,
+  "physicalIpadVerified": false,
+  "publicUpload": false,
+  "preparedLineEndingNormalization": "Removed doubled CR introduced by private prepared-file export; settings/content unchanged",
+  "postNormalizationSourceHashes": {
+    "scripts/inject_personal_artwork.py": "a47940d0974c4213047387a5e0ee58d19b363724ed2ba680ebba26b7cd242f45",
+    "cmake/BundledOwnedArtwork.cmake": "ede54806362518526577351d21d5b3148419ec1d7f3b0fcd0b1d133d3e3f7ffe",
+    "src/hd/OwnedArtworkRecipe.h": "9bda6690c43a04a919feea14a0c814ee95ac5d958631c9cecedb9aef27ed895a"
+  }
+}

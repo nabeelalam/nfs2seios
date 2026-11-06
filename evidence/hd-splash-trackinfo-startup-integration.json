@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "scope": "Splash and track-info startup/resource integration",
+  "sourceHashes": {
+    "cmake/BundledOwnedArtwork.cmake": "2b8ab31b73c807b3b8c73a5cf9451f5025a25d2f56c2eef2f9b969f5bf61a014",
+    "src/hd/ArtworkActivation.cpp": "c1ed6b2ffb302666da7f75fda4a48f185dd383cd46b72d31e35f31611d0b1e35",
+    "scripts/inject_personal_artwork.py": "a3ca48438eed21f464e181960a19f64c4256e0fed73c86892709b41825f08709"
+  },
+  "localSourceCheck": {
+    "passed": true,
+    "compiler": "WSL clang++",
+    "language": "C++17",
+    "units": [
+      "ArtworkActivation.cpp",
+      "IntroArtProvider.cpp",
+      "IntroArtworkLoader.cpp",
+      "TrackInfoArtProvider.cpp",
+      "TrackInfoArtworkLoader.cpp"
+    ],
+    "existingProjectZlibHeaders": true,
+    "fullGameBuild": false
+  },
+  "packagingCheck": {
+    "passed": true,
+    "preservedUnsignedBaseBuild": 22,
+    "legacyOutputByteIdentical": true,
+    "allExistingMemberBytesIdentical": true,
+    "allExistingCompressedStorageIdentical": true,
+    "addedResources": [
+      "classic-ui.ownedz",
+      "intro-ui.ownedz"
+    ],
+    "invalidIntroRejected": true,
+    "duplicateResourcesRejected": true,
+    "incorrectBaseHashRejected": true,
+    "originalInputsUnchanged": true
+  },
+  "trackInfoArtFinalized": false,
+  "trackInfoPinEnabled": false,
+  "gameExecuted": false,
+  "newAppleBuild": false,
+  "physicalIpadValidation": false
+}

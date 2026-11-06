@@ -1,0 +1,15 @@
+{
+  "scope": "Original slideshow source route, static source evidence only",
+  "owner": "412300",
+  "dispatcherIndex": 12,
+  "selector": "413100",
+  "nameTable": "off_4119F0",
+  "previousOwner": "411BD0",
+  "previousOwnerIsHistory": true,
+  "initialArchiveLoad": "410E80",
+  "subsequentImageLoad": "412580",
+  "backgroundDraw": "405B30",
+  "sourceMethodsSha256": "de4c5ebae3ce0236ef7b6b3063a07585f6fbb157d91e8962c1592b75ef65d6e9",
+  "runtimeHookImplemented": false,
+  "ipadValidated": false
+}

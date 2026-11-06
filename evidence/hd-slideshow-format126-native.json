@@ -1,0 +1,10 @@
+{
+  "scope": "Original sldmus8 1555 surface binding using traced original conversion",
+  "passed": true,
+  "sourcePixels": 307200,
+  "all16BitInputsCompared": 65536,
+  "alteredPixelRejected": true,
+  "unsupportedFormatRejected": true,
+  "liveSpecialSourceVerified": false,
+  "physicalIpadVerified": false
+}

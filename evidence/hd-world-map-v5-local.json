@@ -1,0 +1,30 @@
+{
+  "scope": "Private WSL 640x480 Main map v5 preview",
+  "binarySha256": "22ebf56dcdcc21b2577e9dc7c426aaf58f0d57853412a646aaa35066a9aa5248",
+  "ownedSha256": "e765e2f016b30e568e774320b7612fd7d410f3d982c101732723fbbc09406d8a",
+  "rawSha256": "58883305c9949be79a504f57142087bc9346b362cd7d02df57348a85676f8c95",
+  "authoredMenuLoaded": true,
+  "nativeMapPublications": 37,
+  "captureSha256": "b229252212f2abcd849d383399f1cefb685aa79f601b3c76a3f1944fed53c344",
+  "routePassed": false,
+  "failure": "Separate CarInfo bundle size differs from compiled pin",
+  "cleanShutdown": true,
+  "copiedSavesUnchanged": true,
+  "profileRestored": true,
+  "baselineArtworkRestored": true,
+  "widerLayoutVerified": false,
+  "ipadVerified": false,
+  "combinedPreview": {
+    "routePassed": true,
+    "binarySha256": "38196dda4e366813f5843da3b51e874c2787a14aa6eaa0d255dbc1b18c6dd847",
+    "carInfoSha256": "54549f6c5986ccc6e2ab7c6d9dfd51eb44905dd8dc6532e0cdf7ee3e914a39b0",
+    "carInfoRejectionObserved": false,
+    "nativeMapPublications": 49,
+    "captureSha256": "87e41d025d0d8301263a362a4b75f68aaad56f08d525cd0735c33ae11486dcab",
+    "cleanShutdown": true,
+    "savesUnchanged": true,
+    "profileRestored": true,
+    "baselineArtworkRestored": true,
+    "carInfoPagesVisited": false
+  }
+}

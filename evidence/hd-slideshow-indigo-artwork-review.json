@@ -1,0 +1,27 @@
+{
+  "scope": "Complete eight-image Ford Indigo slideshow source-based artwork review",
+  "sourceImages": 8,
+  "reviewComplete": 0,
+  "slideshowTotal": 98,
+  "allSlideshowReviewed": false,
+  "correctedImage": "sldind2-remaster-v4.png",
+  "userApprovalClaimed": false,
+  "physicalAcceptanceClaimed": false,
+  "existingPreviewPackChanged": false,
+  "finalPackAndCatalogRegenerationPending": true,
+  "research": [
+    {
+      "url": "https://www.christies.com/lot/lot-3942111",
+      "usedFor": "Full-interior concept, polished multi-piece wheels, Goodyear Eagle custom-cut tires, forward-hinged doors and mirror-housed headlights"
+    },
+    {
+      "url": "https://www.christies.com/en/lot/lot-3942112",
+      "usedFor": "Separate display concept has slick tires; do not assume every photographed Indigo uses the same tire variant"
+    }
+  ],
+  "remainingReviewImages": 90,
+  "publicImagesPublished": false,
+  "photoReviewComplete": 8,
+  "footerIdentityPending": 8,
+  "correctionToPriorReview": "The8 pictures passed photographic source comparison. Cross-review identified generated branding approximations; whole-artwork approval now waits for shared native footer integration."
+}

@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "scope": "Exact original CarInfo technical-picture reference inventory and private remaster drafts; no technical-picture activation",
+  "sourceImages": 36,
+  "providerImagesTotal": 48,
+  "providerTechnicalRoles": 3,
+  "originalInsetSize": [
+    361,
+    143
+  ],
+  "logicalBounds": [
+    242,
+    23,
+    603,
+    166
+  ],
+  "referenceManifestSha256": "98a6d88de98d94ebab3b950860ff28d92c66e72cd6a8fc09a9bb0a439a54e0d1",
+  "promptQueueSha256": "49319bd628859bb8ce9dd56c8ae393eb2c30c669cc58cba239d6a17823161a4d",
+  "draftSourcePictures": 8,
+  "technicalPicturesActivated": 0,
+  "originalAssetsChanged": false,
+  "unknownMarkingsRequireConfirmation": true,
+  "mechanicalTopologyRequiresSourceComparison": true,
+  "remaining": [
+    "Finish reference-guided remasters for all technical insets",
+    "Resolve source-authentic wheel hub and selector markings without invented brand or control symbols",
+    "Validate and integrate complete picture set as a coherent private resource update"
+  ]
+}

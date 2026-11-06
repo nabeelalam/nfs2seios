@@ -23,7 +23,11 @@ def prepare(source,output):
         for p in current.glob('Methods_*.cpp'):shutil.copyfile(p,merged/p.name)
         for p in inserted.glob('Methods_*.cpp'):shutil.copyfile(p,merged/p.name)
         current=merged
-    return current
+    from classic_screens.slideshow_hooks import add_slideshow_hooks
+    final=output/'slideshow-merged';final.mkdir()
+    for p in current.glob('Methods_*.cpp'):
+        (final/p.name).write_text(add_slideshow_hooks(p.read_text(),p.name))
+    return final
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--source-dir',type=Path,required=True);ap.add_argument('--output',type=Path,required=True)

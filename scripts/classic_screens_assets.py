@@ -15,4 +15,10 @@ def stage_assets(root,directory,destination):
     directory,names=require_assets(root,directory)
     target=Path(destination)/'hd/ClassicScreens/private';target.mkdir(parents=True,exist_ok=True)
     for n in names:shutil.copyfile(directory/n,target/n)
+    # Optional slideshow compatibility metadata is staged only when explicitly
+    # supplied. Public CI separately verifies its exact approved metadata pair;
+    # drawable private resources remain excluded and drafts remain gated.
+    for name in ('SlideshowCatalogData.h','SlideshowFooterData.h'):
+        slideshow=directory/name
+        if slideshow.is_file():shutil.copyfile(slideshow,target/slideshow.name)
     (target/'.gitignore').write_text('*\n')

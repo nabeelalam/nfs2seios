@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "scope": "Grouped cached-menu source build and first actual Main16:9 observation; child acceptance remains unproven",
+  "build": {
+    "checkpoint": "hd-responsive-cached-menu-build-v3",
+    "receiptSha256": "af005b1fa16ab7fa8deeeda7487a68c8c241aba1f8f6ca0c734f41e3b4bb688b",
+    "passed": true,
+    "binarySha256": "08f0e8ace1c16813a9284cded5ce1a4371d436edc4063a3e01c5bad61d58a607",
+    "compiledObjects": 10,
+    "reusedObjects": 360,
+    "byteIdenticalRecompiles": 4,
+    "originalEngineAndRendererOperationsPreserved": true,
+    "dependencyCoverageSha256": "7eccfb171701b0ae69d668a09a379cfd1c42e0ed5a2e0aafa6fa2ef7ff8d4772",
+    "uncoveredDependencies": 0,
+    "missingDependencies": 0,
+    "compilerWorkers": 2,
+    "linkBackendJobs": 2
+  },
+  "actualMain": {
+    "checkpoint": "hd-responsive-cached-menu-runtime-v1",
+    "dimensions": [
+      1280,
+      720
+    ],
+    "freshPresentations": [
+      {
+        "line": 217,
+        "epoch": 1,
+        "serial": 80,
+        "revision": 1,
+        "width": 1280,
+        "height": 720,
+        "logical": 853.333,
+        "tail": 136,
+        "cursor": 1
+      },
+      {
+        "line": 230,
+        "epoch": 1,
+        "serial": 81,
+        "revision": 2,
+        "width": 1280,
+        "height": 720,
+        "logical": 853.333,
+        "tail": 136,
+        "cursor": 1
+      }
+    ],
+    "uniformHeightScale": true,
+    "newMapRawSha256": "2e8f9f97da667e5a8fc4823648f48a88880ab12488eaf2942004afb4f7ae0b4c",
+    "backgroundGapVisuallyRemoved": true,
+    "fullUiVisualAcceptance": false
+  },
+  "firstChildRoute": {
+    "passed": false,
+    "reason": "RuntimeError('Finite responsive readiness captures exhausted: main-setup-hover')",
+    "setupClicked": false,
+    "setupPresentationObserved": false,
+    "failedCheck": "Upper-brand static RGB oracle during Setup hover; screenshot shows highlighted badge and mode labels",
+    "unaffectedMainMeasurements": {
+      "mainMenu": false,
+      "wordDice": {
+        "location": 0.9078014184397163,
+        "player-one": 0.933728981206726,
+        "opponents": 0.9079189686924494,
+        "race": 0.96816158849709,
+        "options": 0.9280397022332506,
+        "exit": 0.9247787610619469
+      },
+      "logoDice": 0.9669530733641771,
+      "goldBackgroundFraction": 0.9648342764753436,
+      "mapAnchorRGBErrors": [
+        0.0,
+        0.3333333333333333,
+        1.3333333333333333,
+        0.0,
+        0.3333333333333333,
+        1.3333333333333333
+      ],
+      "wrongUnshiftedMapErrors": [
+        16.333333333333332,
+        99.66666666666667,
+        107.66666666666667,
+        77.0,
+        70.33333333333333,
+        51.333333333333336
+      ],
+      "rightBrandLandmarks": [
+        {
+          "name": "upper-brand",
+          "samples": 128,
+          "meanRGBError": 99.86197916666667,
+          "fractionWithin30": 0.0078125,
+          "unshiftedMeanError": 60.760416666666664
+        },
+        {
+          "name": "track-crest",
+          "samples": 128,
+          "meanRGBError": 1.0520833333333333,
+          "fractionWithin30": 0.9921875,
+          "unshiftedMeanError": 34.393229166666664
+        }
+      ],
+      "deltaLandmarkProven": true,
+      "physicalDimensions": [
+        1280,
+        720
+      ],
+      "heightScale": 1.5,
+      "logicalWidth": 853.3333333333334,
+      "mapAndBrandDelta": 213.33333333333337,
+      "projection": "One uniform physicalH/480 scale; left origin0, map/brand logical+xDelta; no horizontal image resize",
+      "responsiveClaim": true
+    },
+    "cleanShutdown": true,
+    "all49SavesUnchanged": true,
+    "configurationRestored": true,
+    "artworkRestored": true,
+    "all6648PinsStable": true,
+    "resourceLifecycleBalanced": true,
+    "ownedChildrenRemaining": 0
+  },
+  "scopeLimits": [
+    "No Setup/Options actual runtime acceptance",
+    "No new iPad ratio runtime observation for this executable",
+    "No gameplay/HUD widescreen claim",
+    "No Apple build or physical iPad acceptance",
+    "No performance claim"
+  ],
+  "newCloudBuild": false,
+  "published": false,
+  "secondChildRoute": {
+    "checkpoint": "hd-responsive-cached-menu-runtime-v2",
+    "resultSha256": "e511d5ca8f4f245c6b61f3b93ab17a772ee3b0014b4e6b5660e52e8e5f7baee4",
+    "passed": false,
+    "setupClickObserved": true,
+    "setupSourceOwnerObserved": true,
+    "originalCachedNativePassObserved": true,
+    "wideChildPresentationObserved": false,
+    "rendererRefusal": "Unknown/unproven original native branding: checked slot5 metadata absent in child source observation",
+    "actualTextureAddress": 1992704,
+    "sourceSlot5Valid": false,
+    "originalRendererGuardRetained": true,
+    "cleanupPassed": true,
+    "all49SavesUnchanged": true,
+    "all6645PinsStable": true,
+    "ownedChildrenRemaining": 0,
+    "next": "Capture slot5 descriptor/address atomically with the same checked original widget snapshot; keep all renderer identity guards"
+  },
+  "pendingBrandingFix": {
+    "activationCheckpoint": "hd-responsive-cached-branding-activation-v1",
+    "activationSha256": "3108b06c4bd3de584ed4b4be51ff327f23da12dbc197bd00f5aa60d3331c42fe",
+    "sourceFilesApplied": 5,
+    "scope": "Atomic original slot5 witness with cursor/widgets; exact original A/B/C full texture identities",
+    "rendererGuardsUnchanged": true,
+    "coreLayoutAbiUnchanged": true,
+    "originalPixelsEmbedded": false,
+    "compiled": false,
+    "runtimeAccepted": false,
+    "physicalIpadAccepted": false
+  }
+}

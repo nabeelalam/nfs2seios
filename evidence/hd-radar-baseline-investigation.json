@@ -1,0 +1,29 @@
+{
+  "scope": "Radar name baseline investigation",
+  "atlasGlyphs": 26,
+  "nonEmptyGlyphs": 25,
+  "commonTopAtAlpha192": 3,
+  "commonBottomExclusiveAtAlpha192": 51,
+  "exceptions": [
+    "Q descender",
+    "W empty in small atlas"
+  ],
+  "sourceGeometryTraceAdded": true,
+  "observedInGame": true,
+  "runtime": {
+    "scope": "Local single-player 640x480 Zipper radar label",
+    "sourceNarrowITop": 464,
+    "sourceOtherLettersTop": 465,
+    "renderedGoldRowsInclusive": [
+      465,
+      470
+    ],
+    "thresholdRedMinusBlue": 15,
+    "existingUpperIBearingCorrectionVerified": true,
+    "captureSha256": "60b1b80b9a05b844dfcc3d9282a8987b4953013f04387e545f1c01105d70c1d6",
+    "cleanShutdown": true,
+    "savesUnchanged": true,
+    "splitScreenVerified": false,
+    "ipadVerified": false
+  }
+}

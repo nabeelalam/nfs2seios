@@ -1,0 +1,39 @@
+{
+  "scope": "Actual Ford Indigo slideshow owner-lifetime persistence in native Linux game",
+  "previousGoalTurn": "progress: connected startup/build pipeline, identified wrong artwork configuration and verified corrected startup",
+  "binarySHA256": "b60bb03615918c18d6fa17e44f489bbe96eb5a8862eecc6f41fe13101232c015",
+  "originalOperationsRetained": true,
+  "completeOriginalPresentationsValidated": 2,
+  "eachPresentation": {
+    "tileUploads": 300,
+    "textureSelections": 300,
+    "triangles": 600
+  },
+  "remasteredPictureAndTextCaptured": true,
+  "captureSHA256": "c23c4fcaa586a1d01ffd8550e1825491ef79f3a45374205d87719fe8540af1a6",
+  "sourceOfObservation": "Native publication trace plus visual comparison of the captured game frame against original and remastered Indigo artwork",
+  "liveImageCoverage": 1,
+  "idlePersistenceObserved": true,
+  "cleanShutdown": true,
+  "slideSwitchingVerified": false,
+  "carSwitchingVerified": false,
+  "returnFromSlideshowVerified": false,
+  "groupedTimedGpuAttempt": {
+    "cleanShutdown": true,
+    "slideshowPublicationCount": 0,
+    "passedSlideshowRoute": false,
+    "reason": "Timing-only navigation did not reach slideshow; captures show attract video and other menus",
+    "actualGpuDriverVerified": false
+  },
+  "originalGameDataChanged": false,
+  "privateCopiedTestRootUsed": true,
+  "physicalIpadVerified": false,
+  "cloudBuild": false,
+  "publicPush": false,
+  "next": [
+    "Validate slide/car changes and return during the next grouped UI run",
+    "Complete remaining90 source-based slideshow artwork reviews/corrections",
+    "Regenerate reviewed pack/catalog together with lossless size reduction",
+    "Finish remaining UI coverage before next Apple package"
+  ]
+}

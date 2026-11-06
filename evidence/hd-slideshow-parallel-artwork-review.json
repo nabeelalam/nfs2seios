@@ -1,0 +1,59 @@
+{
+  "scope": "All98 slideshow photographs source-compared; branding, body marks, integration and device acceptance remain separate",
+  "photoReviewComplete": 98,
+  "totalSourcePictures": 98,
+  "remainingPhotoReviews": 0,
+  "wholeArtworkReviewComplete": 98,
+  "sets": {
+    "Ford Indigo": 8,
+    "Ferrari355F1": 8,
+    "McLarenF1": 8,
+    "JaguarXJ220": 8,
+    "FordGT90": 7,
+    "FerrariF50": 8,
+    "Isdera112i": 8,
+    "LotusGT1": 8,
+    "LamborghiniCala": 8,
+    "LotusEsprit": 8,
+    "BMWNazca": 8,
+    "FordMustang": 8,
+    "Tombstone": 1,
+    "BomberBFS": 1,
+    "FZR2000": 1
+  },
+  "correctedFerrari": [
+    "sld355f3-remaster-v3.png",
+    "sld355f6-remaster-v3.png"
+  ],
+  "correctedMcLaren": [
+    "sldmac5-remaster-v2.png",
+    "sldmac6-remaster-v4.png"
+  ],
+  "correctedGT90": [
+    "sldfrd4-remaster-v2.png",
+    "sldfrd5-remaster-v2.png"
+  ],
+  "cleanJaguarPhotoPlates": 8,
+  "remainingBodyCorrection": null,
+  "sharedFooterBrandingRequired": true,
+  "newAppBuild": false,
+  "cloudBuild": false,
+  "publicUpload": false,
+  "originalGameAssetsModified": false,
+  "userApprovalClaimed": false,
+  "physicalIpadVerified": false,
+  "additionalReviewEvidence": [
+    "F50-REVIEW-SUMMARY.json",
+    "ISDERA-REVIEW-SUMMARY.json",
+    "LOTUS-GT1-REVIEW-SUMMARY.json",
+    "CALA-REVIEW-SUMMARY.json",
+    "ESPRIT-REVIEW-SUMMARY.json",
+    "NAZCA-REVIEW-SUMMARY.json",
+    "REMAINING-BONUS-MUSTANG-REVIEW-SUMMARY.json"
+  ],
+  "remainingBodyCorrections": [],
+  "wholeArtworkReviewScope": "Source-based visual composition review; not user/device/runtime acceptance",
+  "remainingObservedMaterialIssues": 0,
+  "finalLayerCount": 17,
+  "liveRuntimeVerified": false
+}

@@ -1,0 +1,324 @@
+{
+  "scope": "Local authored compositor commit observations, startup and Main-to-Setup only",
+  "binarySha256": "94ca2e8a4ffc2e6be0bfe77b8cbfecbd183cbc0004def92f75fc5baa62c9edde",
+  "logSha256": "5baccfb3d61e8260b76171373dce0788b50738f2c904e6c9feadb41356cb1a7a",
+  "commitCount": 43,
+  "rows": [
+    {
+      "serial": 2,
+      "kind": 1,
+      "phase": 0,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 3,
+      "kind": 1,
+      "phase": 10,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 4,
+      "kind": 1,
+      "phase": 20,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 5,
+      "kind": 1,
+      "phase": 30,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 6,
+      "kind": 1,
+      "phase": 40,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 7,
+      "kind": 1,
+      "phase": 50,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 8,
+      "kind": 1,
+      "phase": 60,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 9,
+      "kind": 1,
+      "phase": 70,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 10,
+      "kind": 1,
+      "phase": 80,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 11,
+      "kind": 1,
+      "phase": 90,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 12,
+      "kind": 1,
+      "phase": 100,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 13,
+      "kind": 1,
+      "phase": 110,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 14,
+      "kind": 1,
+      "phase": 120,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 15,
+      "kind": 1,
+      "phase": 130,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 16,
+      "kind": 1,
+      "phase": 140,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 17,
+      "kind": 1,
+      "phase": 150,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 18,
+      "kind": 1,
+      "phase": 160,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 19,
+      "kind": 1,
+      "phase": 170,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 20,
+      "kind": 1,
+      "phase": 180,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 21,
+      "kind": 1,
+      "phase": 190,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 22,
+      "kind": 1,
+      "phase": 200,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 23,
+      "kind": 1,
+      "phase": 210,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 24,
+      "kind": 1,
+      "phase": 220,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 25,
+      "kind": 1,
+      "phase": 230,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 26,
+      "kind": 1,
+      "phase": 240,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 27,
+      "kind": 1,
+      "phase": 250,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 132,
+      "kind": 3,
+      "phase": 230,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 133,
+      "kind": 3,
+      "phase": 220,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 134,
+      "kind": 3,
+      "phase": 210,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 135,
+      "kind": 3,
+      "phase": 200,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 136,
+      "kind": 3,
+      "phase": 190,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 137,
+      "kind": 3,
+      "phase": 180,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 138,
+      "kind": 3,
+      "phase": 170,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 139,
+      "kind": 3,
+      "phase": 160,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 140,
+      "kind": 3,
+      "phase": 150,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 141,
+      "kind": 3,
+      "phase": 140,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 142,
+      "kind": 3,
+      "phase": 130,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 143,
+      "kind": 3,
+      "phase": 120,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 144,
+      "kind": 3,
+      "phase": 110,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 145,
+      "kind": 3,
+      "phase": 100,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 146,
+      "kind": 3,
+      "phase": 90,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 147,
+      "kind": 3,
+      "phase": 80,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "serial": 148,
+      "kind": 3,
+      "phase": 70,
+      "selections": 300,
+      "triangles": 600
+    }
+  ],
+  "firstResponsiveSetupSerial": 149,
+  "earlierPlayerEntranceEvidence": {
+    "receipt": "hd-player-intro-display.json",
+    "scope": "Earlier Linux binary, normal Player One and Player Two entrances",
+    "observedFramesPerPlayer": 21,
+    "carChangesAndMainReturnObserved": true,
+    "intermediatePixelsVerified": false,
+    "captureGap": "The entrance harness waits one second after Enter before the initial screenshot. GPU phase events cover the slide, but the screenshots cannot establish whether every displayed frame used the remastered art.",
+    "remainingRoute": "Capture each displayed frame from before input through both Player entrances, car changes, and return to Main. Compare the sidebar and changed art regions against known original and remastered references at each aspect ratio."
+  },
+  "playerOneSwapCapture": {"platform": "Linux GLES", "dimensions": [640, 480], "capturePoint": "Immediately before SDL swap", "framesReviewed": 120, "resultSha256": "1f64a7bd821b202e792e0984dec4bbcade25c9400fe5c7d3ce75448e0dce4a70", "entrance": "Player One", "carChange": ["Ford Indigo", "Mustang Mach III"], "visualReview": "All frames reviewed as 128x96 thumbnails. No obvious full-screen original-art flash.", "limits": ["No full-resolution comparison against original artwork", "Capture cap reached before Main return", "Player Two, responsive widths and iPad unverified"], "copiedConfigurationAndArtworkRestored": true, "saveInventoryUnchanged": true},
+  "playerOneReturnCapture": {"platform": "Linux GLES", "dimensions": [640, 480], "framesReviewed": 45, "resultSha256": "45848c48786a47c039eb0c2123434459db11533d8548d21f7ed534b5c9f7ae1b", "firstFrameWithMainLabels": 20, "observation": "No obvious full-screen flash in thumbnails. At full size, frames 20 and 44 show the same Main menu and the Ford Indigo graphic in its right-side Player One selection area at different brightness.", "limits": ["No original-art reference comparison", "Post-race return, responsive widths and iPad unverified"], "copiedConfigurationAndArtworkRestored": true, "saveInventoryUnchanged": true},
+  "transitionSwapPixelsVerified": false,
+  "otherAnimationRoutesVerified": false,
+  "ipadVerified": false
+}

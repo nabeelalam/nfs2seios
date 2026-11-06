@@ -1,0 +1,10 @@
+{
+  "scope": "Current UI worktree publication scanner",
+  "checkedFiles": 1717,
+  "passed": true,
+  "findings": 0,
+  "commitsScanned": 0,
+  "reportSha256": "6c02b524463358f6476230c627034f50a9fc3b134d0abe965ef36e74be30f87d",
+  "stagedPublicationReviewed": false,
+  "remotePublished": false
+}

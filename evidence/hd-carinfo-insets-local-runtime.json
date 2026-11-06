@@ -1,0 +1,22 @@
+{
+  "scope": "Ford Indigo Showcase via ordinary keyboard navigation, Linux 640x480, private draft artwork",
+  "binarySha256": "78f6dadbef6748e6090ecee8d1898717c2c29b91b80bc477e91d78ee57f1c566",
+  "packSha256": "54549f6c5986ccc6e2ab7c6d9dfd51eb44905dd8dc6532e0cdf7ee3e914a39b0",
+  "resultSha256": "e912ebf7fe53632e8023a378f7b48598b90068663e61a2e06fb9ccecec9d8e13",
+  "screenshotsSha256": {
+    "general": "6555d60034002da52a874a39319e8f167c59e0a03626fa6ab907b31df012f355",
+    "performance": "73604495f4dc47e9cdee66eca3c70f26a2ee800cd51f34de6aeecabfc9782c4a",
+    "mechanical": "0d9950954fb663e055bf8f36b7352a07b9719b440b94a095df2357c5dd977fcd"
+  },
+  "rendererPublications": 56,
+  "visuallyReviewed": [
+    "General",
+    "Performance",
+    "Mechanical",
+    "transparent inset divider"
+  ],
+  "cleanShutdown": true,
+  "copiedSavesConfigAndArtworkRestored": true,
+  "otherCarsRuntimeVerified": false,
+  "ipadVerified": false
+}

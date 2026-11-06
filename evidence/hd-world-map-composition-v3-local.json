@@ -1,0 +1,69 @@
+{
+  "localBuildPassed": true,
+  "binarySha256": "94ca2e8a4ffc2e6be0bfe77b8cbfecbd183cbc0004def92f75fc5baa62c9edde",
+  "bundledMapSha256": "41b109149594c301f5ce09d1beb5c91c2112745e42df77afb3847ca0ce665610",
+  "mapRolesChanged": [
+    0,
+    1
+  ],
+  "unmodifiedResourceSections": 51,
+  "recompiledObjects": 2,
+  "runtimeVerified": true,
+  "ipadVerified": false,
+  "runtime": {
+    "scope": "Local 1280x720 Main and Setup presentation with pointer entry",
+    "resultSha256": "6946cc2508e5f2908255a2898376dbe926a842fcbf124916e814c1e135b648bf",
+    "profileRestored": true,
+    "artworkRestored": true,
+    "saveInventoryUnchanged": true,
+    "ownedChildrenRemaining": 0
+  },
+  "publicationPreflight": {
+    "sourceFiles": 1700,
+    "policyAuditPassed": true,
+    "independentSecretScanPassed": true,
+    "sourceManifestSha256": "06699b2837a807130ba388a69c3e06fa2c12320fe2d1171895a69d7ce978ec9e",
+    "published": false,
+    "cloudBuildStarted": false
+  },
+  "cloudDispatch": {
+    "runId": 41881592519,
+    "sourceSha": "e4e0bb88b12dc9bf00cf53a817bd837af854c0f8",
+    "configuration": "Release",
+    "classicUi": true,
+    "thinLto": true,
+    "workflowPythonFilesPassed": 18,
+    "oneDayBaseArtifactRequested": true,
+    "statusAtObservation": "in_progress"
+  },
+  "cloudCorrections": [
+    {
+      "failedRun": 41881592519,
+      "failure": "Standalone input test linkage",
+      "fixRevision": "7639161953f0a41e9ea1ed753160375ea0d1501e",
+      "localVerification": "Four affected tests passed"
+    },
+    {
+      "failedRun": 41882530518,
+      "failure": "Classic artwork provider linkage in renderer_pixel_tests",
+      "fixRevision": "d3eb3a4baa51eb40732af1247be85f05d058a96b",
+      "localVerification": "real_gles_pixels passed under Mesa",
+      "retryRun": 41884649481
+    }
+  ],
+  "currentHandoff": {
+    "runId": 41884649481,
+    "sourceSha": "d3eb3a4baa51eb40732af1247be85f05d058a96b",
+    "linuxConclusion": "success",
+    "appleStatus": "completed",
+    "artworkRevisionInBuild": 3,
+    "geographicRevisionUnderReview": 4,
+    "geographicApprovalPending": true,
+    "newBuildsHeldForUiApproval": true,
+    "geographicReviewManifestSha256": "375bfa8e383a110e6c68d3bc1679f724e7ec7a295615c0bf87e3d8d1f4e0151d",
+    "appleConclusion": "cancelled",
+    "appleRunnerAssigned": false,
+    "appleStepsStarted": 0,
+    "personalIpaProduced": false
+  }
+}

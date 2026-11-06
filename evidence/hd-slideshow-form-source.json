@@ -1,0 +1,16 @@
+{
+  "scope": "Original slideshow form and control identity trace",
+  "owner": "412300",
+  "form": "dword_4D2C64",
+  "type": 12,
+  "controlPointers": [
+    "dword_4D2C3C",
+    "dword_4D2C28",
+    "dword_4D2C50"
+  ],
+  "nullTerminatorOffset": 24,
+  "carInfoLink": "dword_4D2D10",
+  "bridgeChecksExactFormAndControls": true,
+  "bridgeCompiled": false,
+  "gameRuntimeObserved": false
+}

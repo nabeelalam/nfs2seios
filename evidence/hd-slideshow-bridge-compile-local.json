@@ -1,0 +1,17 @@
+{
+  "scope": "Prepared native engine slideshow lifecycle, image loader and HD text capture combined syntax compile",
+  "units": [
+    {
+      "unit": "Methods_01.cpp",
+      "passed": true
+    },
+    {
+      "unit": "Methods_13.cpp",
+      "passed": true
+    }
+  ],
+  "runtimeActivated": false,
+  "gameplayVerified": false,
+  "physicalIpadVerified": false,
+  "cloudBuild": false
+}

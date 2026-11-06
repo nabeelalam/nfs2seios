@@ -1,0 +1,11 @@
+{
+  "nativeCompile": true,
+  "actualOriginalAndRemasterUsed": true,
+  "unacceptedDeliveryRejected": true,
+  "sourceChangeRetiresPublishedFrame": true,
+  "exitRetiresPublishedFrame": true,
+  "immutableLeaseSurvivesRetirement": true,
+  "gameHooksConnected": false,
+  "rendererConnected": false,
+  "ipadValidated": false
+}

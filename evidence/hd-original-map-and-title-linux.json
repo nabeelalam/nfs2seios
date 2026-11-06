@@ -1,0 +1,16 @@
+{
+  "titleVisuallyConfirmed": true,
+  "introMoviesStillOriginal": true,
+  "platform": "Linux GLES",
+  "ipadVerified": false,
+  "mainScreenshotSha256": "5BF1D48FBB17F44761426282D7DFE5415D44CD4E0AC3174421D661BB3EA4A9F4",
+  "copiedStateRestored": true,
+  "binarySha256": "1915DAC55A10F9458984B502317D6416D2F199B981E0E8CDD4E4DA1F65347A91",
+  "mapRevision": "v4, earlier than the blue shading correction",
+  "titleScreenshotSha256": "149D2697C3BB0AD9BCEFD42307503F81BEE07CABC56FA66F25D4541848E90CEB",
+  "dimensions": [
+    640,
+    480
+  ],
+  "introPublication": "INTRO NATIVE finish-published reason=authored-title-photo-logo-copyright request=1 content=1 size=640x480 uploads=300 selections=300 triangles=600"
+}

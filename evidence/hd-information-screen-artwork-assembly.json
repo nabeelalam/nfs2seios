@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "scope": "Complete private information-screen artwork assembly, combined local build and selected normal-flow observation",
+  "trackInfo": {
+    "backgrounds": 8,
+    "panels": 8,
+    "localizedHeadings": 36,
+    "sourceImages": 52,
+    "fileBytes": 45860407,
+    "payloadBytes": 173253768,
+    "sha256": "497d2dea3f3c4db843ee69b37a5abc59fe73fc9e7e34640c24a9edcac79c1b88",
+    "allPixelsMatchAuthoredInputs": true,
+    "sourceTrustPinSet": true
+  },
+  "carInfo": {
+    "backgrounds": 12,
+    "completeWidePhotoMasters": 12,
+    "fileBytes": 47430764,
+    "payloadBytes": 132710984,
+    "sha256": "d52d6ba9eb6fccecf25f4e20ea4253f10194b5e2e0560a2a89cdf8eec7936759",
+    "allPixelsMatchAuthoredInputs": true,
+    "sourceTrustPinSet": true,
+    "technicalInsetPhotosStillOriginal": 36
+  },
+  "artworkPrivacy": {
+    "originalFilesModified": false,
+    "artworkInPublicSource": false,
+    "sourceContainsIdentityMetadataOnly": true
+  },
+  "layout": {
+    "wholePhotosUniformlyContained": true,
+    "independentRoutesMarkersTitlesAndPanels": true,
+    "trueAdaptiveWorldAndHudComplete": false
+  },
+  "verificationLimits": [
+    "One track and one car observed in normal local flow; other selections remain unverified",
+    "Post-race and every animation/dialog frame remain unverified",
+    "Technical inset photographs, Player carousel pictures and history/slideshow/videos remain pending",
+    "True adaptive aspect layouts and physical iPad verification remain pending"
+  ],
+  "newAppleBuild": false,
+  "sourceCommitted": false,
+  "localRuntimeEvidence": "hd-information-screen-local-runtime.json"
+}

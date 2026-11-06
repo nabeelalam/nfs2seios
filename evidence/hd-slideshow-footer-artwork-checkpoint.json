@@ -1,0 +1,38 @@
+{
+  "scope": "Private source-based footer asset assembly checkpoint",
+  "nativeFootersAuthored": 7,
+  "carSets": [
+    "Ferrari355F1",
+    "FerrariF50",
+    "JaguarXJ220",
+    "McLarenF1",
+    "Tombstone",
+    "BomberBFS",
+    "FZR2000"
+  ],
+  "nativeCanvas": [
+    2048,
+    1536
+  ],
+  "allCarFootersComplete": false,
+  "fourLayerResource": {
+    "images": 4,
+    "originalSourceBindings": 32,
+    "fileBytes": 1272371,
+    "decodedBytes": 50331648
+  },
+  "McLarenCoverageEvidence": "MCLAREN-COVERAGE-SUMMARY-v1.json",
+  "appBuilt": false,
+  "appIntegrated": false,
+  "cloudBuild": false,
+  "publicUpload": false,
+  "physicalIpadVerified": false,
+  "remaining": [
+    "Remaining car footer identities and artwork",
+    "Ferrari above-seam ghost coverage",
+    "Body and scene brand defects including Tombstone/GT90",
+    "Final reviewed pack and memory/size optimization",
+    "Grouped local runtime and aspect-ratio coverage",
+    "Remaining broad UI completion before Apple build"
+  ]
+}

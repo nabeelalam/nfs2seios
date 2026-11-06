@@ -1,0 +1,21 @@
+{
+  "scope": "Grouped slideshow source insertion only",
+  "owner": "412300",
+  "events": [
+    "entry",
+    "exit",
+    "archiveBefore",
+    "archiveAfter",
+    "backgroundBefore",
+    "backgroundAfter",
+    "presentBefore",
+    "presentAfter"
+  ],
+  "allOriginalOperationsPreserved": true,
+  "sourceSha256": "de4c5ebae3ce0236ef7b6b3063a07585f6fbb157d91e8962c1592b75ef65d6e9",
+  "outputSha256": "4f0a924696d92838c90b53b7ff04379d4ecfac92e659d5e38d67c2ea2db73ed8",
+  "compilerExecuted": false,
+  "gameExecuted": false,
+  "pipelineActivated": false,
+  "rendererConnected": false
+}

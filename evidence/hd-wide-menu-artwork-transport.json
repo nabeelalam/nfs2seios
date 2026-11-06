@@ -1,0 +1,99 @@
+{
+  "scope": "Private responsive menu artwork transport candidate",
+  "schema": 1,
+  "roles": [
+    {
+      "role": "map",
+      "width": 1180,
+      "height": 820,
+      "bytes": 3870400,
+      "sha256": "87b8fce78d8fd0237df53cd755af4e63a81be2b1a578ca0ffda2b6322063a44a"
+    },
+    {
+      "role": "panel",
+      "width": 1180,
+      "height": 820,
+      "bytes": 3870400,
+      "sha256": "1663e086efd5a76c70e2230e73fb2b24f8de36b0a3d62580cff22c7828e86944"
+    },
+    {
+      "role": "map",
+      "width": 1280,
+      "height": 720,
+      "bytes": 3686400,
+      "sha256": "d6fbb2254ab0e9b6128b04e5c9856b07547007f82970a279563c4654266e5227"
+    },
+    {
+      "role": "panel",
+      "width": 1280,
+      "height": 720,
+      "bytes": 3686400,
+      "sha256": "686b3ee31ced2cf585dde41595e4019c592bbb605877ab2eb6f64c9c3dc420e3"
+    }
+  ],
+  "bytes": 3079017,
+  "payloadBytes": 15113792,
+  "sha256": "d7125f3c9650ef875e8dc16f454403246c8f4cf80762680873167586a10e271c",
+  "runtimeActivated": false,
+  "readerProbe": {
+    "compiled": true,
+    "bothPairsLoaded": true,
+    "corruptReloadRejected": true,
+    "previousLayersPreserved": true
+  },
+  "runtimePreview": {
+    "scope": "Local WSL Main menu only",
+    "linked": true,
+    "resizeSequence": [
+      "1280x720",
+      "1180x820",
+      "1280x720"
+    ],
+    "responsiveSelectionObserved": [
+      true,
+      true,
+      false
+    ],
+    "pixelMatchesWithin4": [
+      0,
+      0,
+      0
+    ],
+    "pixelSamplesPerCapture": 48,
+    "authoredLayerPresentationVerified": true,
+    "cleanShutdown": true,
+    "profileRestored": true,
+    "savesUnchanged": true,
+    "presentationComparison": {
+      "gamma": 1.5,
+      "samples": [
+        {
+          "width": 1280,
+          "height": 720,
+          "samples": 1444,
+          "withinFour": 1189,
+          "medianMaxChannelError": 0.0,
+          "captureSha256": "23cdcaec071295643614e5fc87bf9e9f0f19e83c4546054731c97a1b4329ae37"
+        },
+        {
+          "width": 1180,
+          "height": 820,
+          "samples": 1521,
+          "withinFour": 1179,
+          "medianMaxChannelError": 0,
+          "captureSha256": "c6276b2b48935bb18682fdfd5cab44a131d112bf5d00a5e53b6fabc443aab6eb"
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "samples": 1444,
+          "withinFour": 1190,
+          "medianMaxChannelError": 0.0,
+          "captureSha256": "5a59feafb2a993cc07e5856a290865b88bb08053c1cf1a2f84ecd4e20f137d9c"
+        }
+      ],
+      "scope": "Actual Main captures compared to authored premultiplied layer composite after copied profile presentation gamma. Live words, badges and pointer overlap some samples.",
+      "freshReturnSelectionDiagnostic": false
+    }
+  }
+}

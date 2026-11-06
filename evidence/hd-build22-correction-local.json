@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "scope": "Combined local build and ordinary startup/Main/Race-to-Loading observation for build22 UI corrections",
+  "build": {
+    "passed": true,
+    "configuration": "Release",
+    "compilerWorkers": 2,
+    "linkBackendJobs": 2,
+    "seconds": 189.248,
+    "binarySha256": "8776a550fe8637451c14aef5cd5d59fba2a30d732ab6c2f58f6b98b34dafdfcb",
+    "sourcePinsStable": true,
+    "fullGeneratedEngine": true,
+    "fullGeneratedRenderer": true
+  },
+  "runtime": {
+    "passed": true,
+    "nativeAuthoredTitlePublished": true,
+    "nativeMainPublished": true,
+    "mainScreenshotVisuallyReviewed": true,
+    "normalRaceMenuReachedLoading": true,
+    "nativeLoadingPublished": true,
+    "cleanShutdown": true,
+    "settingsRestored": true,
+    "artworkRestored": true,
+    "saveFileCount": 49,
+    "saveContentsRestored": true,
+    "remainingOwnedChildren": 0,
+    "exclusiveLeaseReleased": true
+  },
+  "receiptHashes": {
+    "build": "4022c2e5d3fece772360ecea69c18aa310b3c6fecb513c3ca686a29b844614a4",
+    "runtime": "c9f138118b8a5b904675578d2ee5c7b31224d64c9b7815146a3fd2597c2044d9",
+    "outer": "a7addeffd56f668bcbb623293ffeaf936328eebfb207b4f17f7069307f7b808a",
+    "saveRestoration": "0d453fd3e7c92f5bc70dcfbc872d765c5631923d4b464c3ca55adc0701581b96"
+  },
+  "notVerified": [
+    "Every menu-animation frame",
+    "Postrace records and name-entry runtime",
+    "Track-info static remaster (unfinished pack disabled)",
+    "Full race and physical iPad performance",
+    "Adaptive 16:9 and native iPad world/HUD rendering"
+  ],
+  "newAppleBuild": false,
+  "physicalIpadAccepted": false,
+  "publicArtworkPublished": false
+}
