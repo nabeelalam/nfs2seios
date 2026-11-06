@@ -1,0 +1,251 @@
+{
+  "schema": 1,
+  "scope": "Build23 real native ARM64 cloud build and private personal artwork delivery",
+  "nativeSourceCommit": "35ce32851f8273d3842420f66d15996372caf4ec",
+  "cloudRun": 42165885240,
+  "jobs": [
+    {
+      "name": "renderer-pixels",
+      "conclusion": "success",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Publication and independent secret gates",
+          "conclusion": "success",
+          "seconds": 22.0
+        },
+        {
+          "name": "Install GLES and headless window dependencies",
+          "conclusion": "success",
+          "seconds": 12.0
+        },
+        {
+          "name": "Prepare checked engine and selected isolated renderer",
+          "conclusion": "success",
+          "seconds": 9.0
+        },
+        {
+          "name": "Generic host regression suite (Linux, once)",
+          "conclusion": "success",
+          "seconds": 83.0
+        },
+        {
+          "name": "Build actual GLES pixel tests",
+          "conclusion": "success",
+          "seconds": 248.0
+        },
+        {
+          "name": "Validate full native engine linkage and memory ownership",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Execute original startup with a missing-assets sandbox",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Execute original startup with configuration present",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Execute original startup with configuration and language present",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Execute original startup across background and foreground",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Validate actual rendered pixels under Mesa GLES2",
+          "conclusion": "success",
+          "seconds": 2.0
+        },
+        {
+          "name": "Execute the shared SDL game app entry",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Validate actual SDL audio stream callbacks",
+          "conclusion": "success",
+          "seconds": 0.0
+        },
+        {
+          "name": "Validate actual SDL gamepad input and reconnect",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "release / build",
+      "conclusion": "success",
+      "labels": [
+        "macos-15-intel"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success",
+          "seconds": 4.0
+        },
+        {
+          "name": "Toolchain information",
+          "conclusion": "success",
+          "seconds": 3.0
+        },
+        {
+          "name": "Prepare checked engine and selected isolated renderer",
+          "conclusion": "success",
+          "seconds": 20.0
+        },
+        {
+          "name": "Apple platform and native CPU checks",
+          "conclusion": "success",
+          "seconds": 25.0
+        },
+        {
+          "name": "Configure native iPadOS targets",
+          "conclusion": "success",
+          "seconds": 570.0
+        },
+        {
+          "name": "Compile translated engine to ARM64 objects",
+          "conclusion": "success",
+          "seconds": 149.0
+        },
+        {
+          "name": "Compile existing renderer and native platform bridges",
+          "conclusion": "success",
+          "seconds": 132.0
+        },
+        {
+          "name": "Optional full-engine diagnostic link",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Build unsigned native platform diagnostic",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Build the original engine game app entry",
+          "conclusion": "success",
+          "seconds": 111.0
+        },
+        {
+          "name": "Validate ARM64 bundle and package unsigned IPA",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Validate and package the development game bundle",
+          "conclusion": "success",
+          "seconds": 5.0
+        },
+        {
+          "name": "Bound optional artifact payload",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Upload development game (personal signing and gameplay validation required)",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Upload diagnostic (requires personal signing before installation)",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Deliver unpublished classic base without Actions artifact storage",
+          "conclusion": "success",
+          "seconds": 16.0
+        },
+        {
+          "name": "Prepare allowlisted public download",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Publish checked development download",
+          "conclusion": "skipped",
+          "seconds": 0.0
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success",
+          "seconds": 1.0
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "conclusion": "skipped",
+      "labels": [],
+      "steps": []
+    }
+  ],
+  "bundleVersion": "23",
+  "ipaBytes": 507934801,
+  "ipaSha256": "a438f45eda9a27ae0f9fbd582502e4ccf32719e017653bce46a258e06dc6d19b",
+  "zipBytes": 507938966,
+  "zipSha256": "c0ff35c13694c1e8ac0a1e721ea7cde634cea1fab81e7dcd96e9277be3ead4d1",
+  "resourceCount": 11,
+  "baseServerDigestVerified": true,
+  "allOriginalBaseMemberBytesAndStoragePreserved": true,
+  "privateDeliveryServerDigestVerified": true,
+  "privateRepositoryVisibilityVerified": true,
+  "existingPrivateTagAndOlderAssetsPreserved": true,
+  "noPrivateTagPush": true,
+  "temporaryPublicBaseDraftDeleted": true,
+  "originalGameAssetsIncluded": false,
+  "personalSigningRequired": true,
+  "newPackageInstalled": false,
+  "newPackageGameplayVerified": false,
+  "physicalIpadVerified": false,
+  "remaining": [
+    "Physical UI and gameplay acceptance",
+    "Performance and battery improvement, including Low Power Mode60",
+    "True widescreen world/HUD support",
+    "Low-priority movie and horizon remastering"
+  ]
+}

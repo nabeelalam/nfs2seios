@@ -40,8 +40,12 @@ package, resume performance and battery work without waiting for device feedback
 - All7 manufacturer-history collages and42 localized headings are assembled;
   all7 English pages display through ordinary-input cycling in the local game.
   The isolated faithful Calà glyph fix also passes an actual-game observation.
-- Broad UI routes, true aspect ratios, matching ARM64 package and physical iPad
-  acceptance remain incomplete. No cloud build or public artwork upload here.
+- Build23 ARM64 code passed the corrected Linux and Apple gates and was joined
+  locally with all11 private resources. The digest-verified private download
+  preserves the existing private delivery tag and older build22 asset. No
+  personal artwork or original game data was uploaded publicly.
+- Physical acceptance, true race/world aspect ratios and further battery/LPM60
+  work remain open; performance work resumes without waiting for user feedback.
 
 ## Scope and order
 
