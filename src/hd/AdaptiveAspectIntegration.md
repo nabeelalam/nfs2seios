@@ -290,3 +290,50 @@ confirmed that the vertical seam was gone. A fresh source preparation
 reproduced the exact renderer used by the replay. The replay covers race
 startup, aspect switches and the observed record panel. Physical device
 verification and full race completion remain open.
+
+
+### Single-player normal-world view
+
+The mode-zero, player-zero full-size camera now applies the same matched
+horizontal focal and culling adjustment as the two split views. The renderer
+admits the full original clip and retains the centered HUD transform. A
+clear for the contained rear-view mirror now stays in that subview instead
+of spilling across the widened world.
+
+A local original-data North Country single-player run displayed the world,
+car, HUD, minimap and mirror through 16:9, an iPad-like ratio, and 4:3 before
+returning to 16:9. The first prototype exposed the mirror clear as a cyan
+rectangle; the corrected replay showed the mirror contained at both wider
+ratios and exited cleanly. This replay covers the default chase camera and
+live resizing. Other camera modes, moving race completion and physical
+performance remain open.
+
+
+### Consistent Location cards
+
+All eight Location masters share one 280x133 rectangular card with small
+rounded corners and a separate soft offset shadow. A feathered scenery
+backing fills transparent master edges, while the entire sharp image is
+contained inside the card. The original image identity and native fill,
+draw and row replay still authorize the replacement. Their pixel coverage
+does not define the visible silhouette of the new card.
+
+The lossless version-two pack is 9,468,676 bytes, down from 10,816,400.
+Independent decoding verified eight identical shadow masks at shared
+pixels, premultiplied color, and deterministic output. Seven selectable
+tracks were observed through the normal local Location menu, including
+resizing to 708x492 and 800x450 and clean shutdown. Monolithic Studios
+was checked in the decoded pack and contact sheet. The copied local
+profile does not offer it in this menu. The animation fallback and
+physical iPad verification remain open.
+
+
+### Slideshow presentation
+
+Authenticated Slideshow frames now fill wider drawables with a soft
+continuation of their edge colors. The photo, footer, text and cursor retain
+their original proportions. The local Ford Indigo Slideshow opened at
+708x492 and displayed a subsequent image at 800x450. Both frames filled the
+drawable, and Escape returned to Showcase. The process exited cleanly.
+Resizing a stationary desktop slide can leave its old frame in place until
+the next input triggers a game presentation. Physical verification is open.

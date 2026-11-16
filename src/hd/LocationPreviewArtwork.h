@@ -4,6 +4,7 @@
 #include "LocationPhotoSourceCatalog.h"
 #include "LocationCompletedFlag.h"
 #include "TextureDigest.h"
+#include <algorithm>
 #include <memory>
 #include <vector>
 #include <cstring>
@@ -27,17 +28,17 @@ public:
   std::shared_ptr<Prepared>out(new Prepared);out->catalog_=i.sourceCatalog;if(!nfs_location_photo_art_acquire(i.selection,&out->art_))return {};const auto&im=out->art_.images[0];
   if(!out->current()||out->art_.schema!=1||out->art_.count!=1||im.sourceIndex!=i.selection||im.width!=source->width*4||im.height!=source->height*4||im.bytes!=size_t(im.width)*im.height*4||!im.pixels)return {};
   const unsigned W=r.width*4,H=r.height*4;out->rgba_.assign(size_t(W)*H*4,0);
-  // Real native fill is the independent280x128 black prefix. No final-screen
-  // pixels or prior authored surface is copied into this derivative.
-  for(unsigned y=316;y<444;++y)for(unsigned x=211;x<491;++x){if(x<r.left||y<r.top||x>=r.left+r.width||y>=r.top+r.height)continue;for(unsigned yy=0;yy<4;++yy)for(unsigned xx=0;xx<4;++xx)out->rgba_[4*((size_t(y-r.top)*4+yy)*W+(x-r.left)*4+xx)+3]=255;}
-  // Source coordinates remain307x146/147 even when native visible bounds are
-  //305x144. Clip by destination bounds; NEVER stretch the master to that crop.
-  const auto*indices=d.sourceBefore.data()+16;
-  for(unsigned sy=0;sy<source->height;++sy)for(unsigned sx=0;sx<source->width;++sx){const unsigned index=indices[size_t(sy)*source->width+sx];if(index==255||index>=256||d.paletteBefore[index]<0x10000000u)continue;const unsigned x=211+sx,y=316+sy;if(x<r.left||y<r.top||x>=r.left+r.width||y>=r.top+r.height)continue;
-   for(unsigned yy=0;yy<4;++yy)for(unsigned xx=0;xx<4;++xx){const auto*at=im.pixels+4*((size_t(sy)*4+yy)*im.width+sx*4+xx);if(at[3]!=255)return {};std::memcpy(out->rgba_.data()+4*((size_t(y-r.top)*4+yy)*W+(x-r.left)*4+xx),at,4);}}
+  // The original union is still required to authenticate the draw. Its
+  // silhouette does not mask the independent card and soft shadow.
+  const unsigned left=std::max(r.left,211u),right=std::min(r.left+r.width,211u+source->width);
+  const unsigned top=std::max(r.top,316u),bottom=std::min(r.top+r.height,316u+source->height);
+  if(left>=right||top>=bottom)return {};
+  for(unsigned y=top*4;y<bottom*4;++y){
+   const auto* row=im.pixels+4*(size_t(y-316*4)*im.width+(left-211)*4);
+   auto* destination=out->rgba_.data()+4*(size_t(y-r.top*4)*W+(left-r.left)*4);
+   std::memcpy(destination,row,size_t(right-left)*16);
+  }
   if(i.draws.size()==3){auto over=nfs_location_completed_flag::prepare(i,p,&out->rgba_);if(over.empty())return {};out->rgba_=std::move(over);}
-  // Preserve exactly the independently replayed native union footprint.
-  for(unsigned y=0;y<H;++y)for(unsigned x=0;x<W;++x)if(!p.coverage()[size_t(y/4)*r.width+x/4])std::memset(out->rgba_.data()+4*(size_t(y)*W+x),0,4);
   if(!out->current()||!nfs_texture_sha256(out->rgba_.data(),out->rgba_.size(),out->sha_.data()))return {};return out;
  }catch(...){return {};}}
 };

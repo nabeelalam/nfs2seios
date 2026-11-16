@@ -92,6 +92,22 @@ Fn(void) Game::_sub_477C40()
 
 #include "hd/AdaptiveAspect.h"
 extern "C" int nfs_adaptive_race_admit_target(int *,int *);
+static void nfs_adaptive_race_apply_camera(int viewportHeight)
+{
+	int targetWidth=0,targetHeight=0;
+	if(nfs_adaptive_race_admit_target(&targetWidth,&targetHeight)){
+	    nfs::GuestCopyTransaction transaction;
+	    NfsAdaptiveAspectProjection projection;
+	    const NfsAdaptiveAspectInput view={targetWidth,targetHeight,0,0,640,viewportHeight,NFS_ASPECT_REQUIRED,1,1};
+	    if(nfs_adaptive_aspect_projection(&view,transaction.load<float>(dword_4D5294),
+	        transaction.load<int32_t>(dword_4DAC24),transaction.load<int32_t>(dword_4DAC30),&projection)){
+	        transaction.store<float>(dword_4D5294,projection.focalX);
+	        transaction.store<int32_t>(dword_4DAC24,projection.integerFocalX);
+	        transaction.store<int32_t>(dword_4DAC30,projection.horizontalHalfAngle1024);
+
+	    }
+	}
+}
 Fn(void) Game::_sub_477C40()
 {
 """),
@@ -106,23 +122,28 @@ loc_4807CC:
 	const bool splitRaceViewport=int32_t(eax)==0 && int32_t(ebx)==640 &&
 	    int32_t(ecx)==480 && (int32_t(edx)==-120 || int32_t(edx)==120);
 	esp -= 4; _sub_4808D0(); esp += 4; //call
-	int targetWidth=0,targetHeight=0;
-	if(splitRaceViewport && nfs_adaptive_race_admit_target(&targetWidth,&targetHeight)){
-	    nfs::GuestCopyTransaction transaction;
-	    NfsAdaptiveAspectProjection projection;
-	    const NfsAdaptiveAspectInput view={targetWidth,targetHeight,0,0,640,240,NFS_ASPECT_REQUIRED,1,1};
-	    if(nfs_adaptive_aspect_projection(&view,transaction.load<float>(dword_4D5294),
-	        transaction.load<int32_t>(dword_4DAC24),transaction.load<int32_t>(dword_4DAC30),&projection)){
-	        transaction.store<float>(dword_4D5294,projection.focalX);
-	        transaction.store<int32_t>(dword_4DAC24,projection.integerFocalX);
-	        transaction.store<int32_t>(dword_4DAC30,projection.horizontalHalfAngle1024);
-
-	    }
-	}
+	if(splitRaceViewport)nfs_adaptive_race_apply_camera(240);
 	}
 
 	goto loc_480757;
 loc_4807CC:
+"""),
+            (r"""	edx = esi; //mov
+	eax = edi; //mov
+	esp -= 4; _sub_4808D0(); esp += 4; //call
+	pop32(edi);
+	add(esp, (int32_t)0x20);
+""", r"""	edx = esi; //mov
+	eax = edi; //mov
+	{
+	const bool singleRaceViewport=int32_t(eax)==0 && int32_t(edx)==0 &&
+	    int32_t(ebx)==640 && int32_t(ecx)==480 &&
+	    to32i(dword_5222DC)==0 && to32i(dword_5222E0)==0;
+	esp -= 4; _sub_4808D0(); esp += 4; //call
+	if(singleRaceViewport)nfs_adaptive_race_apply_camera(480);
+	}
+	pop32(edi);
+	add(esp, (int32_t)0x20);
 """),
         ],
     },
@@ -265,7 +286,9 @@ void nfs_adaptive_race_apply_race_raster(unsigned scope)
 {
     const int world=scope==1 || scope==2;
     if(!wideRace){
-        if(!world || raceLogicalClip.width!=640 || raceLogicalClip.height!=240)return;
+        const int splitView=raceLogicalClip.height==240;
+        const int singleView=scope==1 && raceLogicalClip.top==0 && raceLogicalClip.height==480;
+        if(!world || raceLogicalClip.left!=0 || raceLogicalClip.width!=640 || (!splitView && !singleView))return;
         if(!nfs_adaptive_race_admitted_target(&wideRaceWidth,&wideRaceHeight))return;
         drawTriangles();
         GLint bound=0;glGetIntegerv(GL_TEXTURE_BINDING_2D,&bound);
@@ -354,7 +377,9 @@ REALIGN STDCALL void native_grBufferClear(GrColor_t color, GrAlpha_t alpha, uint
 """, r"""#endif
 
     NfsAdaptiveAspectRasterLayout wideClear;
-    const int adjustClear=wideRace && nfs_adaptive_aspect_raster_layout(
+    // A rear-view mirror clear belongs to its contained HUD clip.
+    const int primaryView=raceLogicalClip.left==0 && raceLogicalClip.width==640;
+    const int adjustClear=wideRace && primaryView && nfs_adaptive_aspect_raster_layout(
         raceFramebufferWidth,g_framebufferHeight,raceLogicalClip,&wideClear);
     if(adjustClear){
         const NfsAdaptiveAspectPixelRect r=wideClear.world;

@@ -21,8 +21,9 @@ bool copy(Image&to,const NfsLocationPhotoArtImage&in,size_t&total){
  const double x=double(r.right)-r.left,y=double(r.bottom)-r.top;if(std::fabs(double(in.width)*y-double(in.height)*x)>1e-5*double(in.width)*y)return false;
  const bool background=true;if(background&&(r.left!=0||r.top!=0||r.right!=307||r.bottom!=(in.sourceIndex==2?147.f:146.f)))return false;
  const size_t count=size_t(in.width)*in.height*4;if(in.bytes!=count||count>Limit-total)return false;to.bytes.assign(in.pixels,in.pixels+count);unsigned char sha[32];if(!nfs_texture_sha256(to.bytes.data(),count,sha)||std::memcmp(sha,in.sha,32))return false;
- for(size_t k=0;k<count;k+=4){const unsigned a=to.bytes[k+3];if(to.bytes[k]>a||to.bytes[k+1]>a||to.bytes[k+2]>a||(a!=0&&a!=255))return false;}
- std::vector<unsigned char>coverage(count/4);for(size_t k=0;k<coverage.size();++k)coverage[k]=to.bytes[k*4+3];std::array<unsigned char,32>coverageSha{};const auto catalog=nfs_location_photo_source::acquire();const auto*source=catalog?catalog->entry(in.sourceIndex):nullptr;if(!source||!nfs_texture_sha256(coverage.data(),coverage.size(),coverageSha.data())||coverageSha!=source->coverageSha)return false;
+ for(size_t k=0;k<count;k+=4){const unsigned a=to.bytes[k+3];if(to.bytes[k]>a||to.bytes[k+1]>a||to.bytes[k+2]>a)return false;}
+ const auto catalog=nfs_location_photo_source::acquire();
+ if(!catalog||!catalog->entry(in.sourceIndex))return false;
  to.view=in;to.view.pixels=to.bytes.data();to.present=true;total+=count;return true;
 }
 struct Lease {std::atomic<unsigned>refs{1};std::shared_ptr<const Art>art;static void retain(void*p){static_cast<Lease*>(p)->refs.fetch_add(1,std::memory_order_relaxed);}static void release(void*p){auto*l=static_cast<Lease*>(p);if(l->refs.fetch_sub(1,std::memory_order_acq_rel)==1)delete l;}};

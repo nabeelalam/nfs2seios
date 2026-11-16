@@ -20,6 +20,28 @@ Two requirements are part of the goal:
 
 ## Current UI checkpoint and next work
 
+### Latest physical widescreen preview feedback
+
+The iPad test confirms the HD splash and settled fullscreen Main. Startup,
+Location list/track changes, Player car changes, and Opponents entry still
+show original 4:3 frames during animation. Opponents entry crashed after
+the four car cards slid into view. Prioritize the crash and trace each
+native presentation through the affected transitions before another build.
+
+Use a common foreground mask and soft shadow for every Location card.
+Keep photo framing independent of the shadow, and compare all cards
+together. Keep the consistent rectangular Player photos while checking
+their shadow treatment independently. Slideshow photos are HD but contained
+in 4:3, and spinning manufacturer marks remain low-resolution and contained.
+Single-player racing also remains 4:3 in the tested package. The current
+camera and renderer admission code covers stacked split-screen views only;
+single-player needs its own validated camera, culling and HUD path.
+
+The physical test covers the device's native ratio. Use local 16:9 validation
+for that target. The user observed 40-60 FPS in single-player Low Power Mode;
+the target of sustained 60 FPS remains open.
+
+
 ### Build 22 physical feedback and active correction batch
 
 The device test reached the race, post-race screens and return to Main. It

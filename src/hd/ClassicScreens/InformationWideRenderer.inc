@@ -3,7 +3,7 @@
 // preserves the native art, text, graph and cursor at a uniform scale.
 static struct {
  GLuint program, fbo, color;
- GLint image, centerWidth, leftTint, rightTint, edgeInset, reflectionDepth;
+ GLint image, centerWidth, leftTint, rightTint, edgeInset, reflectionDepth, photoBackdrop;
  unsigned width, height, page, nativeWidth;
  uintptr_t context;
  uint64_t generation, clearEvent;
@@ -41,11 +41,21 @@ static int nfs_info_wide_prepare_program(void){
  const char* vertex="attribute vec4 vertex;varying highp vec2 uv;"
   "void main(){gl_Position=vec4(vertex.xy,0.,1.);uv=vertex.zw;}";
  const char* fragment="precision highp float;varying highp vec2 uv;"
-  "uniform sampler2D image;uniform float centerWidth,edgeInset,reflectionDepth;uniform vec3 leftTint,rightTint;"
+  "uniform sampler2D image;uniform float centerWidth,edgeInset,reflectionDepth;uniform vec3 leftTint,rightTint;uniform bool photoBackdrop;"
   "void main(){float x=(uv.x-.5)/centerWidth+.5;"
   "if(x>=0.&&x<=1.){gl_FragColor=texture2D(image,vec2(clamp(x,edgeInset,1.-edgeInset),uv.y));return;}"
   "float edge=x<0.?0.:1.;vec3 extensionTint=mix(leftTint,rightTint,edge);"
   "float distanceFromEdge=abs(x-edge);"
+  "if(photoBackdrop){"
+  "float sampleX=mix(edgeInset,1.-edgeInset,edge);"
+  "vec3 original=texture2D(image,vec2(sampleX,uv.y)).rgb;"
+  "vec3 soft=original*.30;"
+  "soft+=.23*texture2D(image,vec2(sampleX,clamp(uv.y-.025,0.,1.))).rgb;"
+  "soft+=.23*texture2D(image,vec2(sampleX,clamp(uv.y+.025,0.,1.))).rgb;"
+  "soft+=.12*texture2D(image,vec2(sampleX,clamp(uv.y-.065,0.,1.))).rgb;"
+  "soft+=.12*texture2D(image,vec2(sampleX,clamp(uv.y+.065,0.,1.))).rgb;"
+  "float fade=smoothstep(0.,.09,distanceFromEdge);"
+  "gl_FragColor=vec4(mix(original,soft*.58,fade),1.);return;}"
   "float keep=1.-clamp(distanceFromEdge/.045,0.,1.);"
   "if(keep==0.){gl_FragColor=vec4(extensionTint,1.);return;}"
   "float borderX=mix(edgeInset,1.-edgeInset,edge+clamp(edge-x,-reflectionDepth,reflectionDepth));"
@@ -71,7 +81,8 @@ static int nfs_info_wide_prepare_program(void){
  nfs_info_wide.rightTint=glGetUniformLocation(program,"rightTint");
  nfs_info_wide.edgeInset=glGetUniformLocation(program,"edgeInset");
  nfs_info_wide.reflectionDepth=glGetUniformLocation(program,"reflectionDepth");
- if(nfs_info_wide.reflectionDepth<0||nfs_info_wide.edgeInset<0||nfs_info_wide.image<0||nfs_info_wide.centerWidth<0||nfs_info_wide.leftTint<0||nfs_info_wide.rightTint<0){
+ nfs_info_wide.photoBackdrop=glGetUniformLocation(program,"photoBackdrop");
+ if(nfs_info_wide.photoBackdrop<0||nfs_info_wide.reflectionDepth<0||nfs_info_wide.edgeInset<0||nfs_info_wide.image<0||nfs_info_wide.centerWidth<0||nfs_info_wide.leftTint<0||nfs_info_wide.rightTint<0){
   glDeleteProgram(program);
   return 0;
  }
@@ -112,6 +123,7 @@ static GLuint nfs_info_wide_present(GLuint front,GLuint source,int width,int hei
   nfs_frame_draw_state();glDepthMask(GL_FALSE);glViewport(0,0,width,height);
   glUseProgram(nfs_info_wide.program);glBindTexture(GL_TEXTURE_2D,source);
   glUniform1i(nfs_info_wide.image,0);
+  glUniform1i(nfs_info_wide.photoBackdrop,page==5);
   glUniform1f(nfs_info_wide.centerWidth,(4.f*height)/(3.f*width));
   // Skip the narrow antialiased edge of the original viewport before
   // extending it into a side panel. Keep all interior sampling in place.
