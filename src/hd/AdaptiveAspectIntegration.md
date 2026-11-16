@@ -156,3 +156,32 @@ and renderer queue and execution time per call by Low Power Mode. It excludes
 the first sample, gaps and observed mode transitions from that comparison.
 These measurements require matched race and graphics settings and do not
 measure GPU time or energy use.
+
+## Preview artwork storage measurements
+
+The delivered ZIP for run 43930095947 is 502.9 MiB. Its 13 pinned artwork
+resources total 489.9 MiB. Slideshow (229.29 MiB), Car Info (108.27 MiB) and
+Track Info (43.74 MiB) account for most of that total. The 98 stored slideshow
+images average 2.34 MiB, with a 3.23 MiB maximum. Applying outer ZIP deflate
+would save about 2.7 MiB.
+
+An in-memory Car Info trial applied reversible row deltas and individually
+compressed each of 48 images. Each decoded RGBA row matched the original exactly.
+The estimated resource size was 81.14 MiB, including record overhead, compared
+with 108.27 MiB today. Filtered chunks averaged 1.69 MiB and peaked at 3.03 MiB.
+No resource file, package, or runtime decoder was changed in this trial.
+
+The follow-up added a version 2 decoder and a local converter. The converter
+filters each image independently and uses one bounded zlib stream for the
+metadata and image bytes. The private candidate measures 85,094,133 bytes
+(81.15 MiB), a reduction of 28,433,276 bytes (25.0%). Both versions were read
+by the native loader under ASan and UBSan, using their own exact size and SHA
+pins. All 48 published image indices, dimensions and decoded pixel hashes
+matched. The native build and private assembly tool now pin the verified version 2
+candidate for the next package batch. The already delivered IPA uses version 1.
+
+Track Info now shares the lossless row decoder. Its version 2 candidate is
+36,501,092 bytes (34.81 MiB), down from 45,860,407 bytes (43.74 MiB).
+Native loader checks under ASan and UBSan matched all 52 image indices,
+dimensions, and decoded pixel hashes across the two versions. Build and
+packaging pins select the verified files for both information packs.
