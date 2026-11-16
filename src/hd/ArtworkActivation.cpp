@@ -189,19 +189,25 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
  }
  // An empty pin deliberately disables unfinished track-info artwork. Install
  // immutable scene assets before the worker can seal their provider registry.
- if(activated&&NFS_TRACK_INFO_ARTWORK_SHA256[0]&&!nfs_track_info_art_generation()){
-  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string trackInfo=slash==std::string::npos?root+"/gamedata/"+NFS_TRACK_INFO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_TRACK_INFO_ARTWORK_FILENAME;char error[128]{};
-   if(!nfs_track_info_art_load_file(trackInfo.c_str(),error,sizeof error))std::fprintf(stderr,"Optional track-info artwork: %s\n",error);
+ if(activated&&NFS_TRACK_INFO_ARTWORK_SHA256[0]){
+  try{
+   const auto slash=bundledTemplate.find_last_of("/\\");
+   const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+   nfs_track_info_art_scope::configure(directory+NFS_TRACK_INFO_ARTWORK_FILENAME);
   }catch(...){}
  }
- if(activated&&NFS_CAR_INFO_ARTWORK_SHA256[0]&&!nfs_car_info_art_generation()){
-  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string carInfo=slash==std::string::npos?root+"/gamedata/"+NFS_CAR_INFO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_CAR_INFO_ARTWORK_FILENAME;char error[128]{};
-   if(!nfs_car_info_art_load_file(carInfo.c_str(),error,sizeof error))std::fprintf(stderr,"Optional car-info artwork: %s\n",error);
+ if(activated&&NFS_CAR_INFO_ARTWORK_SHA256[0]){
+  try{
+   const auto slash=bundledTemplate.find_last_of("/\\");
+   const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+   nfs_car_info_art_scope::configure(directory+NFS_CAR_INFO_ARTWORK_FILENAME);
   }catch(...){}
  }
- if(activated&&NFS_HISTORY_ARTWORK_SHA256[0]&&!nfs_history_art_generation()){
-  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string history=slash==std::string::npos?root+"/gamedata/"+NFS_HISTORY_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_HISTORY_ARTWORK_FILENAME;char error[128]{};
-   if(!nfs_history_art_load_file(history.c_str(),error,sizeof error))std::fprintf(stderr,"Optional history artwork: %s\n",error);
+ if(activated&&NFS_HISTORY_ARTWORK_SHA256[0]){
+  try{
+   const auto slash=bundledTemplate.find_last_of("/\\");
+   const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+   nfs_history_art_scope::configure(directory+NFS_HISTORY_ARTWORK_FILENAME);
   }catch(...){}
  }
  if(activated&&NFS_PLAYER_PHOTO_ARTWORK_SHA256[0]&&!nfs_player_photo_art_generation()){

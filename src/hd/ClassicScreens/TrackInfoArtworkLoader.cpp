@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "TrackInfoArtworkLoader.h"
+#include "ScopedArtworkResidency.h"
 #include "TrackInfoArtworkPin.h"
 #include "TrackInfoArtProvider.h"
 #include "TrackInfoSourceCatalog.h"
@@ -34,4 +35,12 @@ extern "C" int nfs_track_info_art_load_file(const char*path,char*error,size_t ca
  if(error&&capacity)error[0]=0;
  try{if(nfs_track_info_art_generation())return 1;const auto expected=pin();const size_t fileBytes=NFS_TRACK_INFO_ARTWORK_FILE_BYTES,payloadBytes=NFS_TRACK_INFO_ARTWORK_PAYLOAD_BYTES;need(fileBytes>16&&fileBytes<=MaxFile&&payloadBytes>=8&&payloadBytes<=MaxPayload,"TrackInfo artwork size pin is not configured");need(path&&*path,"TrackInfo artwork is not bundled");std::ifstream stream(path,std::ios::binary);need(bool(stream),"TrackInfo artwork is not bundled");stream.seekg(0,std::ios::end);const auto count=stream.tellg();need(count>=0&&uint64_t(count)==fileBytes,"TrackInfo artwork size differs from pin");stream.seekg(0,std::ios::beg);std::vector<unsigned char>file(fileBytes);need(bool(stream.read(reinterpret_cast<char*>(file.data()),std::streamsize(file.size())))&&stream.peek()==std::char_traits<char>::eof(),"TrackInfo artwork read was incomplete");unsigned char sha[32];need(nfs_texture_sha256(file.data(),file.size(),sha)&&!std::memcmp(sha,expected.data(),32),"TrackInfo artwork digest differs from pin");const auto version=le32(file.data()+8);need(!std::memcmp(file.data(),"NFSTRKIF",8)&&(version==1||version==2)&&le32(file.data()+12)==payloadBytes,"TrackInfo artwork header is invalid");auto payload=inflateExact(file,payloadBytes);need(payload.size()>=8,"TrackInfo metadata is truncated");const uint32_t imageCount=le32(payload.data());need(imageCount&&imageCount<=NFS_TRACK_INFO_SOURCE_COUNT&&le32(payload.data()+4)==0,"TrackInfo image count is invalid");std::vector<NfsTrackInfoArtImage>images(imageCount);size_t at=8;for(auto&i:images)image(i,payload,at,version==2);need(at==payload.size(),"TrackInfo artwork payload has trailing bytes");NfsTrackInfoArtInput input{};input.schema=1;input.count=images.size();input.images=images.data();need(nfs_track_info_art_install(&input)!=0,"TrackInfo immutable artwork was refused");return 1;
  }catch(const char*why){if(error&&capacity){const size_t n=std::strlen(why)<capacity-1?std::strlen(why):capacity-1;std::memcpy(error,why,n);error[n]=0;}return 0;}catch(...){const char*why="TrackInfo artwork could not be loaded";if(error&&capacity){const size_t n=std::strlen(why)<capacity-1?std::strlen(why):capacity-1;std::memcpy(error,why,n);error[n]=0;}return 0;}
+}
+
+namespace nfs_track_info_art_scope {
+namespace {
+nfs_hd::ScopedArtworkResidency residency("track-info",nfs_track_info_art_load_file,nfs_track_info_art_clear);
+}
+void configure(std::string path){residency.configure(std::move(path));}
+std::shared_ptr<void> acquire() noexcept{return residency.acquire();}
 }

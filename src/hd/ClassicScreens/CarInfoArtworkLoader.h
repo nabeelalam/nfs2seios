@@ -8,3 +8,12 @@ int nfs_car_info_art_load_file(const char*path,char*error,size_t capacity);
 #ifdef __cplusplus
 }
 #endif
+
+#ifdef __cplusplus
+#include <memory>
+#include <string>
+namespace nfs_car_info_art_scope {
+void configure(std::string path);
+std::shared_ptr<void> acquire() noexcept;
+}
+#endif

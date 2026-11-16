@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "HistoryArtworkLoader.h"
+#include "ScopedArtworkResidency.h"
 #include "HistoryArtworkPin.h"
 #include "HistoryArtProvider.h"
 #include "HistorySourceCatalog.h"
@@ -33,4 +34,12 @@ extern "C" int nfs_history_art_load_file(const char*path,char*error,size_t capac
  if(error&&capacity)error[0]=0;
  try{if(nfs_history_art_generation())return 1;const auto expected=pin();const size_t fileBytes=NFS_HISTORY_ARTWORK_FILE_BYTES,payloadBytes=NFS_HISTORY_ARTWORK_PAYLOAD_BYTES;need(fileBytes>16&&fileBytes<=MaxFile&&payloadBytes>=8&&payloadBytes<=MaxPayload,"History artwork size pin is not configured");need(path&&*path,"History artwork is not bundled");std::ifstream stream(path,std::ios::binary);need(bool(stream),"History artwork is not bundled");stream.seekg(0,std::ios::end);const auto count=stream.tellg();need(count>=0&&uint64_t(count)==fileBytes,"History artwork size differs from pin");stream.seekg(0,std::ios::beg);std::vector<unsigned char>file(fileBytes);need(bool(stream.read(reinterpret_cast<char*>(file.data()),std::streamsize(file.size())))&&stream.peek()==std::char_traits<char>::eof(),"History artwork read was incomplete");unsigned char sha[32];need(nfs_texture_sha256(file.data(),file.size(),sha)&&!std::memcmp(sha,expected.data(),32),"History artwork digest differs from pin");need(!std::memcmp(file.data(),"NFSHIST1",8)&&le32(file.data()+8)==1&&le32(file.data()+12)==payloadBytes,"History artwork header is invalid");const auto payload=inflateExact(file,payloadBytes);/* Inflater is finished; only the decoded owner is needed below. */std::vector<unsigned char>().swap(file);need(payload.size()>=8,"History metadata is truncated");const uint32_t imageCount=le32(payload.data());need(imageCount&&imageCount<=NFS_HISTORY_SOURCE_COUNT&&le32(payload.data()+4)==0,"History image count is invalid");std::vector<NfsHistoryArtImage>images(imageCount);size_t at=8;for(auto&i:images)image(i,payload,at);need(at==payload.size(),"History artwork payload has trailing bytes");NfsHistoryArtInput input{};input.schema=1;input.count=images.size();input.images=images.data();need(nfs_history_art_install(&input)!=0,"History immutable artwork was refused");return 1;
  }catch(const char*why){if(error&&capacity){const size_t n=std::strlen(why)<capacity-1?std::strlen(why):capacity-1;std::memcpy(error,why,n);error[n]=0;}return 0;}catch(...){const char*why="History artwork could not be loaded";if(error&&capacity){const size_t n=std::strlen(why)<capacity-1?std::strlen(why):capacity-1;std::memcpy(error,why,n);error[n]=0;}return 0;}
+}
+
+namespace nfs_history_art_scope {
+namespace {
+nfs_hd::ScopedArtworkResidency residency("history",nfs_history_art_load_file,nfs_history_art_clear);
+}
+void configure(std::string path){residency.configure(std::move(path));}
+std::shared_ptr<void> acquire() noexcept{return residency.acquire();}
 }

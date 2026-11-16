@@ -242,7 +242,12 @@ public:
   if(!o->semantic&&(form==uint32_t(guest_address(off_4D3204))||
                     form==uint32_t(guest_address(off_4D2A20)))){
    o->semantic=old::captureHistory(g_,form,id,o->life);
-   if(o->semantic)note(32);
+   if(o->semantic){
+    // History authenticates the completed sidebar and full scene. The
+    // independently current moving photo still needs its own receipt.
+    attachPhoto(g_,*o->semantic);
+    note(32);
+   }
   }
   if(!o->semantic&&!initialSemantic(g_,*o,id)){note(1);return;}
   auto&v=o->view;v.schema=1;v.route=route;v.semantic=o->semantic->view;v.semantic.owner=o.get();v.semantic.retain=Owner::retain;v.semantic.release=Owner::release;v.semantic.current=Owner::current;note(31,o.get());

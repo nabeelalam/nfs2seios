@@ -1,6 +1,8 @@
 // Dedicated car-information type7 collector. Original calls/stores are unchanged.
 #pragma once
 #include "CarInfoCore.h"
+#include "CarInfoArtworkLoader.h"
+#include "MainThreadBridge.h"
 #include "GuestCopyTransaction.h"
 #include "hd/ContinuousLogoGameHooks.inc"
 #include "hd/SmallLogoPrepare.h"
@@ -44,12 +46,23 @@ inline void metricTable(State&s,uint32_t font,uint32_t table,unsigned count){
  s.metricAddress=table;s.fontAddress=font;
 }
 struct OwnerScope {
- Game&g;bool entered=false;
+ Game&g;bool entered=false;std::shared_ptr<void> artVisit;
  explicit OwnerScope(Game&x)noexcept:g(x){const uint32_t expected=uint32_t(guest_address(dword_4D2E78));const uint16_t typeExpected=7;if(!enabled()||uint32_t(g.eax)!=expected)return;safe(g,[&]{
   auto&s=state();if(s.owner){s.invalidate();return;}uint16_t type;{nfs::GuestCopyTransaction tx;type=tx.load<uint16_t>(uint32_t(g.eax)+8);}if(type!=typeExpected)return;
-  static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;s.form=expected;s.formType=type;entered=true;
+  static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;s.form=expected;s.formType=type;entered=true;artVisit=nfs_car_info_art_scope::acquire();
  });}
- ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);state()=State{};}}
+ ~OwnerScope()noexcept{
+  if(!entered)return;
+  CpuErrno preserve(g);
+  state()=State{};
+  if(artVisit){
+   // Release after all queued draws that validate this generation.
+   try{
+    nfs::ScopedWorkerStopDeferral defer;
+    (void)nfs::enqueue_owned_renderer([visit=std::move(artVisit)]{(void)visit;return int32_t(0);});
+   }catch(...){}
+  }
+ }
 };
 // A complete source-derived static scene is optional. Refusal preserves the
 // old static layer while the separately proved dynamic text remains available.

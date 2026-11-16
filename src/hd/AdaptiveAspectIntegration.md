@@ -337,3 +337,78 @@ their original proportions. The local Ford Indigo Slideshow opened at
 drawable, and Escape returned to Showcase. The process exited cleanly.
 Resizing a stationary desktop slide can leave its old frame in place until
 the next input triggers a game presentation. Physical verification is open.
+
+
+### Location transition route on the current local build
+
+A source-traced Location entry and three consecutive track changes used
+only wide presentation routes at a stable 708x492 drawable and again at
+2360x1640. At the larger extent, entry passed through the 17-frame fade
+and 21-frame incoming photo. Each track change showed 21 outgoing frames
+followed by its incoming wide presentation. The native route did recur
+for 19 frames on the subsequent Escape to Main. At that point the
+Location child-return source sealed, the outgoing-sidebar path reported
+kind 13, and the kind 7 fallback published before Main resumed wide.
+The reduced-size run changed drawable size before Escape, so it does
+not contradict the fixed-size exit finding. This is local evidence on
+the current source. The reported device transition behavior remains open.
+
+The return fallback was reproduced at 708x492. A temporary local trace
+showed that the reverse pass expected the original texture even though the
+photo renderer had bound the independently authenticated authored tile.
+The historical sidebar recovery now attaches the current photo just as the
+fresh source path does. It retains the existing source, lifetime, tile,
+geometry and target checks. The same Location -> change track -> Escape
+route now publishes all 19 frames through the wide return path and goes
+directly to wide Main. The tracing patch was excluded from the source.
+
+
+### Opponents native-size desktop replay
+
+Two pointer entries, two class changes per entry and both returns to Main
+completed at 2360x1640 with clean shutdown. The presentation trace used wide
+routes across the captured entries, class changes and returns. The reported
+on-device crash did not reproduce. One process-wide WSL resident-memory
+sample during the run was approximately 1.73 GiB, which includes desktop
+software rendering and is not an iPad footprint measurement. The startup
+loader currently holds approximately 478 MiB of decoded Car Info, Track Info
+and History artwork before any of those screens are opened. This makes
+artwork residency a concrete optimization target independently of the
+unconfirmed crash cause.
+
+
+### History artwork residency
+
+Startup records the private History resource location. The authenticated
+History handler loads it before its first frame and releases the visit after
+the last queued draw. Overlapping visits retain the same artwork generation.
+An isolated test with the pinned pack verified startup with no decoded
+generation, two holders, clearing after the final release, and reopening
+with a fresh generation. A normal local Ford History route displayed
+authored statics and HD text on two visits, returned to Showcase twice,
+and shut down cleanly. Process-wide WSL RSS readings were affected by the
+software renderer and do not quantify iPad memory savings.
+
+Car Info and Track Info now use the same visit lifetime. Together with
+History this moves 500,881,608 decoded bytes out of startup. The loader
+checks all existing pins before the first authored frame. The Track Info
+visit starts before its outgoing/incoming transition and is kept alive
+through the queued return work. The three-pack check verified overlap,
+final lease release and fresh generation on reopen for each pinned pack.
+A grouped local game run showed Ford Indigo Showcase and Pacific Spirit
+Track Info with the remastered graphics, then returned to Location and
+shut down cleanly. On-device footprint and cold menu-open timing remain
+unmeasured.
+
+
+### Showcase rotating badge source
+
+All twelve Showcase car archives have a source-verified car6 entry.
+They cover seven badge designs and ten distinct exact indexed entries.
+The Showcase handler builds that entry through the shared badge staging
+and alpha conversion path. The later draw uses the original signed
+horizontal width and tint, which produces the edge-on and reverse faces.
+A replacement must preserve that animation and use the current archive,
+selected car and converted native upload to bind the matching authored mark.
+The privately retained source inventory and decoded contact sheet cover all
+twelve cars. No new spinning logo artwork is installed yet.
