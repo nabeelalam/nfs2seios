@@ -168,6 +168,11 @@ def main():
     value=os.environ.get('NFS_CLASSIC_UI_REQUESTED','false')
     if value not in {'false','true'}:raise ValueError('Classic UI input must be boolean')
     classic=value=='true';fingerprint='';metadata_fingerprint=''
+    adaptive = os.environ.get('NFS_ADAPTIVE_RACE_REQUESTED', 'false')
+    if adaptive not in {'false', 'true'}:
+        raise ValueError('Adaptive race input must be boolean')
+    if adaptive == 'true' and not classic:
+        raise ValueError('Adaptive race requires the classic prepared sources')
     if classic and os.environ.get('NFS_PUBLISH_RELEASE_REQUESTED','false')=='true':
         raise ValueError('Classic public base requires personal artwork and cannot publish a finished public release')
     if classic:
@@ -184,6 +189,13 @@ def main():
         commands[0]+=['--classic-screens','--classic-assets-dir',ASSETS.as_posix()]
         commands[1]+=['--classic-screens','--classic-assets-dir',ASSETS.as_posix(),'--output-dir',renderer]
     for command in commands:subprocess.run(command,cwd=ROOT,check=True)
+    if adaptive == 'true':
+        from prepare_adaptive_race import prepare
+
+        pair = Path('.build/adaptive-race')
+        prepare(ROOT / engine, ROOT / renderer, ROOT / pair)
+        engine = (pair / 'engine').as_posix()
+        renderer = (pair / 'renderer').as_posix()
     values={'NFS_CLASSIC_UI':'ON'if classic else'OFF','NFS_CLASSIC_DEFER_OWNER_TEMPLATE':'ON'if classic else'OFF','NFS_CI_ENGINE_SOURCE':engine,'NFS_CI_RENDERER_SOURCE':renderer,'NFS_CLASSIC_ASSET_MANIFEST_SHA256':fingerprint,'NFS_CLASSIC_SLIDESHOW_METADATA_SHA256':metadata_fingerprint}
     target=os.environ.get('GITHUB_ENV')
     if target:

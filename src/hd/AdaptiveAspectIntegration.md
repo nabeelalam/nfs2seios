@@ -75,3 +75,56 @@ cockpit/mirror behavior, node lifetime/epoch coverage, all culling consumers and
 cross-target depth/blend composition still require implementation evidence.
 Status: inactive calculation and source investigation only; no true-widescreen
 runtime or physical-device acceptance is claimed.
+
+## Local split-screen prototype evidence
+
+A private desktop build verified North Country's two scenery clips and the
+shared HUD pass independently. The prototype commits a renderer-supplied
+extent immediately before the world frame, following the framebuffer change.
+The camera reads the committed extent for both players, including an empty
+extent for a contain frame. A newer offer is deferred to the next frame.
+
+The original split-screen replay stayed live through 800x450, 708x492, 800x600,
+and 800x450. The 800x600 frame used the normal 4:3 target. Earlier isolated
+results also reached the Race Summary, Lap Times, and Main Menu after Quit Race.
+The shared target helper is used by the private build. The normal generator
+and iPad package still need the coordinated engine and renderer hooks.
+
+An aborted local race establishes the menu return route. A normal finish,
+camera variants, and physical-device validation remain open.
+
+## Experimental paired preparation
+
+Run the standard engine and renderer preparers first, then prepare the pair
+explicitly in the same project:
+
+    python3 scripts/prepare_adaptive_race.py --engine .build/prepared-engine --renderer .build/prepared-renderer --output-dir .build/adaptive-race
+
+For a local experimental Release, point NFS_FULL_MAPPED_ENGINE_DIR to the
+pair's engine subdirectory and NFS_RENDERER_SOURCE_DIR to its renderer
+subdirectory. Both outputs are required because the engine and renderer share
+the camera and framebuffer handoff. The regular preparers leave it disabled.
+If a source anchor changes, the command fails during preflight before creating
+a destination.
+## Renderer-only coverage
+
+The viewport draw scope is shared by the engine and renderer on the calling
+thread. Submission captures it before handing work to the renderer thread.
+The standalone renderer can read the default scope with no engine callbacks.
+A two-translation-unit ASan/UBSan check verified that the reader sees the
+current player and nested draw scope, that scope exit restores the parent,
+and that another thread starts with an empty scope.
+The Release `renderer_pixel_tests` binary linked with the paired renderer and
+passed `real_gles_pixels` under Xvfb (2800x1900, software GLES). The larger
+virtual display let the test request its 2360x1640 drawable. Desktop GLES
+results cover the standalone suite and do not establish Apple device behavior.
+
+## Manual build selection
+
+The reviewed native iPadOS workflow accepts `adaptive_race` for a classic UI
+Release. The default is off. Both the Linux gates and the Apple packaging job
+use the paired directories emitted by the same source preparer. The classic
+base keeps its existing personal-artwork and draft-delivery requirements.
+Local preparation with both inputs enabled completed from the pinned sources.
+All six patched units matched the previously staged units after line-ending
+normalization. The existing workflow and artwork input checks passed.

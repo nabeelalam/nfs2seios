@@ -5,6 +5,9 @@ on:
       classic_ui:
         type: boolean
         default: false
+      adaptive_race:
+        type: boolean
+        default: false
       linux_gate_passed:
         type: boolean
         required: true
@@ -37,6 +40,7 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
+      NFS_ADAPTIVE_RACE_REQUESTED: ${{ inputs.adaptive_race && 'true' || 'false' }}
       NFS_CLASSIC_UI_REQUESTED: ${{ inputs.classic_ui && 'true' || 'false' }}
       NFS_PUBLISH_RELEASE_REQUESTED: ${{ inputs.publish_release && 'true' || 'false' }}
       NFS_THIN_LTO: ${{ inputs.thin_lto && 'ON' || 'OFF' }}

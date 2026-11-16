@@ -19,7 +19,7 @@ if(NFS_CLASSIC_UI)
     set(ZLIB_BUILD_STATIC ON CACHE BOOL "" FORCE)
     set(ZLIB_INSTALL OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(nfs_zlib
-      URL https://zlib.net/zlib-1.3.2.tar.gz
+      URL https://zlib.net/fossils/zlib-1.3.2.tar.gz
       URL_HASH SHA256=bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16
       DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
     FetchContent_MakeAvailable(nfs_zlib)

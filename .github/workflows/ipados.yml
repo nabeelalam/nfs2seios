@@ -10,6 +10,10 @@ on:
         description: Classic public base only (Release, approved art, personal artwork still required; no public release)
         type: boolean
         default: false
+      adaptive_race:
+        description: Enable the experimental widescreen race renderer for the classic UI build
+        type: boolean
+        default: false
       configuration:
         description: Apple device build configuration
         type: choice
@@ -58,6 +62,7 @@ jobs:
     env:
       NFS_HD_ARTWORK_SHA256: ${{ inputs.artwork_sha256 }}
       NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
+      NFS_ADAPTIVE_RACE_REQUESTED: ${{ inputs.adaptive_race && 'true' || 'false' }}
       NFS_CLASSIC_UI_REQUESTED: ${{ inputs.classic_ui && 'true' || 'false' }}
       NFS_PUBLISH_RELEASE_REQUESTED: ${{ inputs.publish_release && 'true' || 'false' }}
       NFS_THIN_LTO: ${{ inputs.thin_lto && 'ON' || 'OFF' }}
@@ -190,6 +195,7 @@ jobs:
     uses: ./.github/workflows/apple-device.yml
     with:
       classic_ui: ${{ inputs.classic_ui }}
+      adaptive_race: ${{ inputs.adaptive_race }}
       linux_gate_passed: ${{ needs.renderer-pixels.result == 'success' }}
       artwork_sha256: ${{ inputs.artwork_sha256 }}
       configuration: ${{ inputs.configuration }}
@@ -204,6 +210,7 @@ jobs:
     uses: ./.github/workflows/apple-device.yml
     with:
       classic_ui: ${{ inputs.classic_ui }}
+      adaptive_race: ${{ inputs.adaptive_race }}
       linux_gate_passed: ${{ needs.renderer-pixels.result == 'success' }}
       artwork_sha256: ${{ inputs.artwork_sha256 }}
       configuration: Release
@@ -211,7 +218,7 @@ jobs:
       publish_base_draft: ${{ inputs.publish_base_draft }}
       thin_lto: ${{ inputs.thin_lto }}
   stop-slot-assembly:
-    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/lpm-performance' && inputs.stop_slot_probe && !inputs.build_ios && !inputs.classic_ui && !inputs.include_probe && !inputs.thin_lto && !inputs.publish_ipa && !inputs.publish_base_draft && !inputs.publish_release && inputs.artwork_sha256 == ''
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/lpm-performance' && inputs.stop_slot_probe && !inputs.build_ios && !inputs.classic_ui && !inputs.adaptive_race && !inputs.include_probe && !inputs.thin_lto && !inputs.publish_ipa && !inputs.publish_base_draft && !inputs.publish_release && inputs.artwork_sha256 == ''
     runs-on: macos-15-intel
     timeout-minutes: 10
     permissions:

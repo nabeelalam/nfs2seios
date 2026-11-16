@@ -18,6 +18,58 @@ typedef struct NfsAdaptiveAspectProjection {
     int32_t integerFocalX,horizontalHalfAngle1024;
     double physicalLeft,physicalTop,physicalWidth,physicalHeight;
 } NfsAdaptiveAspectProjection;
+typedef struct NfsAdaptiveAspectPixelRect {
+    int32_t left,top,width,height;
+} NfsAdaptiveAspectPixelRect;
+typedef struct NfsAdaptiveAspectRasterLayout {
+    NfsAdaptiveAspectPixelRect world,hud;
+} NfsAdaptiveAspectRasterLayout;
+
+/* Resolve the real drawable aspect at the selected render height. Returning
+ * zero leaves the existing contain target in use. The renderer and the world
+ * camera must both use the same accepted target dimensions. */
+static inline int32_t nfs_adaptive_aspect_target_width(
+    int32_t drawableWidth,int32_t drawableHeight,int32_t renderHeight,int32_t maximumExtent)
+{
+    if(drawableWidth<=0 || drawableHeight<=0 || renderHeight<=0 ||
+       maximumExtent<renderHeight)return 0;
+    const int64_t scaledWidth=(int64_t)drawableWidth*3;
+    const int64_t scaledHeight=(int64_t)drawableHeight*4;
+    if(scaledWidth<=scaledHeight || scaledWidth>scaledHeight*4)return 0;
+    const int64_t width=((int64_t)drawableWidth*renderHeight+drawableHeight/2)/drawableHeight;
+    const int64_t containWidth=((int64_t)renderHeight*4+1)/3;
+    return width>containWidth && width<=maximumExtent?(int32_t)width:0;
+}
+
+/* Use the renderer's logical clip here. In stacked split-screen, the original
+ * projection is 640x480 with a y offset, while the raster clip is 640x240.
+ * Snap shared edges once so adjacent views meet on odd framebuffer sizes. */
+static inline int nfs_adaptive_aspect_raster_layout(
+    int32_t targetWidth,int32_t targetHeight,NfsAdaptiveAspectPixelRect clip,
+    NfsAdaptiveAspectRasterLayout *out)
+{
+    if(!out || targetWidth<=0 || targetHeight<=0 ||
+       (int64_t)targetWidth*3 < (int64_t)targetHeight*4 ||
+       clip.left<0 || clip.top<0 || clip.width<=0 || clip.height<=0 ||
+       clip.width>640-clip.left || clip.height>480-clip.top)return 0;
+
+    const int32_t hudWidth=(int32_t)(((int64_t)targetHeight*4+1)/3);
+    const int32_t hudOrigin=(targetWidth-hudWidth)/2;
+    const int32_t bottom=clip.top+clip.height,right=clip.left+clip.width;
+    const int32_t topPx=(int32_t)(((int64_t)targetHeight*clip.top+240)/480);
+    const int32_t bottomPx=(int32_t)(((int64_t)targetHeight*bottom+240)/480);
+    const int32_t worldLeft=(int32_t)(((int64_t)targetWidth*clip.left+320)/640);
+    const int32_t worldRight=(int32_t)(((int64_t)targetWidth*right+320)/640);
+    const int32_t hudLeft=hudOrigin+(int32_t)(((int64_t)hudWidth*clip.left+320)/640);
+    const int32_t hudRight=hudOrigin+(int32_t)(((int64_t)hudWidth*right+320)/640);
+    if(bottomPx==topPx || worldRight==worldLeft || hudRight==hudLeft)return 0;
+    const NfsAdaptiveAspectRasterLayout result={
+        {worldLeft,topPx,worldRight-worldLeft,bottomPx-topPx},
+        {hudLeft,topPx,hudRight-hudLeft,bottomPx-topPx}};
+    *out=result;
+    return 1;
+}
+
 /* 4808D0 -> 433910 writes float focal 4D5294. The same setup calls
  * 4A0704 -> 4A05C8, writing integer focal 4DAC24 and half-angle 4DAC30.
  * Preserve vertical focal/angle, logical centers and 433A40 clip rectangles.
