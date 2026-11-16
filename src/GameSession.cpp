@@ -12,7 +12,6 @@ extern "C" void native_grGlideShutdown();
 #include "ThreadBridge.h"
 #include "MainThreadBridge.h"
 #include "WindowBridge.h"
-#include "MenuInput.h"
 #include "SDLKeyboardInput.h"
 #include "SDLTouchInput.h"
 #include "SDLDesktopPointer.h"
@@ -52,7 +51,6 @@ struct GameSession::Impl {
     InputDevices input{nfs_dispatch_game_input};AudioBridge audio;ExitCallbacks exits;
     RuntimeServices services{{initialize,exit_requested,message}};
     std::unique_ptr<SDLGamepadInput> gamepads;
-    MenuInput menu;
     TouchPointer touch;
     uint64_t responsive_input_generation=0;
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
@@ -130,7 +128,6 @@ struct GameSession::Impl {
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
             desktop_relative_sync();
 #endif
-            menu.update(0,SDL_GetTicks(),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},this);
             window.post({0,8,0,0,uint32_t(SDL_GetTicks()),0,0});
         }
         if(type==SDL_EVENT_DID_ENTER_FOREGROUND && !foreground){
@@ -297,6 +294,5 @@ void GameSession::poll(){
         impl->background_shutdown=true;
     }
     impl->gamepads->update(impl->foreground);
-    impl->menu.update(impl->foreground?impl->gamepads->menu_buttons():0,SDL_GetTicks(),[](void *context,const GameMessage &message){return static_cast<Impl *>(context)->window.post(message);},impl.get());
 }
 }

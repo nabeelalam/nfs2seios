@@ -248,3 +248,28 @@ initially writable executable segment. The archive contains 25 entries,
 including 13 separate remaster resources, with no original game data folders,
 PC executable, or game archive payloads. The segment inspection is static
 package evidence and does not establish device rendering or signing results.
+
+
+### Car Showcase information pages
+
+The authenticated authored Car Showcase frame uses the information-page
+presentation pass to extend the edge colors to wide drawables. A narrow
+reflected strip blends into warm and cool side fills and keeps lettering
+and imagery within the original centered 4:3 content rectangle.
+
+The local Release app displayed the Ford Indigo General page at 708x492
+and 800x450, with the full car and both inset photos visible. At 800x450
+a relative desktop pointer moved from Next Car to More Stats. A left click
+opened Performance, and Escape returned to Player One. The run shut down
+cleanly. These checks cover the selected car, aspect ratios and desktop
+pointer route. Physical touch and other cars remain to be verified.
+
+### Optional renderer timing
+
+Renderer bridge timing is opt-in. Previously ordinary gameplay collected
+three clock readings and three atomic updates per measured bridge execution
+until a diagnostic recording was stopped. The iPad recorder enables timing
+for its session, and the engine startup probe explicitly enables it for its
+reported timing. The bridge test verifies zero counters at startup and
+populated counters after opt-in. All 13 renderer bridge and queue regressions
+passed locally. The device FPS and battery impact remain unmeasured.

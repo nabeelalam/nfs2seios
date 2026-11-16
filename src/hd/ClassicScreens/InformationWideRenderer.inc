@@ -3,7 +3,7 @@
 // preserves the native art, text, graph and cursor at a uniform scale.
 static struct {
  GLuint program, fbo, color;
- GLint image, centerWidth, extensionTint, edgeInset;
+ GLint image, centerWidth, leftTint, rightTint, edgeInset, reflectionDepth;
  unsigned width, height, page, nativeWidth;
  uintptr_t context;
  uint64_t generation, clearEvent;
@@ -41,14 +41,14 @@ static int nfs_info_wide_prepare_program(void){
  const char* vertex="attribute vec4 vertex;varying highp vec2 uv;"
   "void main(){gl_Position=vec4(vertex.xy,0.,1.);uv=vertex.zw;}";
  const char* fragment="precision highp float;varying highp vec2 uv;"
-  "uniform sampler2D image;uniform float centerWidth,edgeInset;uniform vec3 extensionTint;"
+  "uniform sampler2D image;uniform float centerWidth,edgeInset,reflectionDepth;uniform vec3 leftTint,rightTint;"
   "void main(){float x=(uv.x-.5)/centerWidth+.5;"
   "if(x>=0.&&x<=1.){gl_FragColor=texture2D(image,vec2(clamp(x,edgeInset,1.-edgeInset),uv.y));return;}"
-  "float edge=x<0.?0.:1.;"
+  "float edge=x<0.?0.:1.;vec3 extensionTint=mix(leftTint,rightTint,edge);"
   "float distanceFromEdge=abs(x-edge);"
   "float keep=1.-clamp(distanceFromEdge/.045,0.,1.);"
   "if(keep==0.){gl_FragColor=vec4(extensionTint,1.);return;}"
-  "float borderX=mix(edgeInset,1.-edgeInset,2.*edge-x);"
+  "float borderX=mix(edgeInset,1.-edgeInset,edge+clamp(edge-x,-reflectionDepth,reflectionDepth));"
   "vec3 border=texture2D(image,vec2(borderX,uv.y)).rgb;"
   "gl_FragColor=vec4(mix(extensionTint,border,keep*keep),1.);}";
  if(nfs_info_wide.program)return 1;
@@ -67,9 +67,11 @@ static int nfs_info_wide_prepare_program(void){
  if(!linked){if(program)glDeleteProgram(program);return 0;}
  nfs_info_wide.image=glGetUniformLocation(program,"image");
  nfs_info_wide.centerWidth=glGetUniformLocation(program,"centerWidth");
- nfs_info_wide.extensionTint=glGetUniformLocation(program,"extensionTint");
+ nfs_info_wide.leftTint=glGetUniformLocation(program,"leftTint");
+ nfs_info_wide.rightTint=glGetUniformLocation(program,"rightTint");
  nfs_info_wide.edgeInset=glGetUniformLocation(program,"edgeInset");
- if(nfs_info_wide.edgeInset<0||nfs_info_wide.image<0||nfs_info_wide.centerWidth<0||nfs_info_wide.extensionTint<0){
+ nfs_info_wide.reflectionDepth=glGetUniformLocation(program,"reflectionDepth");
+ if(nfs_info_wide.reflectionDepth<0||nfs_info_wide.edgeInset<0||nfs_info_wide.image<0||nfs_info_wide.centerWidth<0||nfs_info_wide.leftTint<0||nfs_info_wide.rightTint<0){
   glDeleteProgram(program);
   return 0;
  }
@@ -114,8 +116,18 @@ static GLuint nfs_info_wide_present(GLuint front,GLuint source,int width,int hei
   // Skip the narrow antialiased edge of the original viewport before
   // extending it into a side panel. Keep all interior sampling in place.
   glUniform1f(nfs_info_wide.edgeInset,5.f/nfs_info_wide.nativeWidth);
-  if(page==3)glUniform3f(nfs_info_wide.extensionTint,.077f,.055f,.026f);
-  else glUniform3f(nfs_info_wide.extensionTint,.026f,.064f,.043f);
+  // Keep Showcase lettering outside the strip used to extend its background.
+  glUniform1f(nfs_info_wide.reflectionDepth,page==4?.018f:.045f);
+  if(page==4){
+   glUniform3f(nfs_info_wide.leftTint,.19f,.135f,.071f);
+   glUniform3f(nfs_info_wide.rightTint,.040f,.063f,.115f);
+  }else{
+   const GLfloat warm[]={.077f,.055f,.026f};
+   const GLfloat green[]={.026f,.064f,.043f};
+   const GLfloat* tint=page==3?warm:green;
+   glUniform3fv(nfs_info_wide.leftTint,1,tint);
+   glUniform3fv(nfs_info_wide.rightTint,1,tint);
+  }
   glBindBuffer(GL_ARRAY_BUFFER,0);glEnableVertexAttribArray(0);
   for(unsigned i=1;i<4;++i)glDisableVertexAttribArray(i);
   glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,quad);

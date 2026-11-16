@@ -17,6 +17,7 @@ int main(int argc,char **argv){
     if(argc==3 && !configuration_present && !language_present)return 2;
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMEPAD)){std::fprintf(stderr,"SDL startup failed: %s\n",SDL_GetError());return 1;}
     int status=0;try{
+        nfs::set_renderer_timing_capture(true);
         nfs::GameSession session(argv[1],message);
         if(suspended_start){
             SDL_Event event{};event.type=SDL_EVENT_WILL_ENTER_BACKGROUND;if(!SDL_PushEvent(&event))throw std::runtime_error("Could not queue background event");

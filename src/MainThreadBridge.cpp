@@ -8,7 +8,8 @@
 namespace nfs {
 namespace {
 using Clock=std::chrono::steady_clock;
-std::atomic<bool> render_timing_enabled{true};
+// The session recorder and timing probes opt in before collecting samples.
+std::atomic<bool> render_timing_enabled{false};
 std::atomic<uint64_t> render_calls{0},render_queue_ns{0},render_execution_ns{0};
 uint64_t elapsed_ns(Clock::time_point start,Clock::time_point end){
     return uint64_t(std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
