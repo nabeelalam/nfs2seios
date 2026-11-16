@@ -412,3 +412,23 @@ A replacement must preserve that animation and use the current archive,
 selected car and converted native upload to bind the matching authored mark.
 The privately retained source inventory and decoded contact sheet cover all
 twelve cars. No new spinning logo artwork is installed yet.
+
+The seven authored brand marks were isolated from the existing restoration
+artwork. The Italdesign mark keeps its original geometry and uses the
+silver finish seen in the spinning source. The engine's per-car placement
+table and original alpha-200 silhouette establish the twelve registered
+1024-square canvases. They preserve each logo's aspect ratio and include
+a soft shadow. Private receipts pin the exact original entries and the
+new canvases. The renderer still uses the original spinning texture until
+the registered artwork is wired into its upload and draw path.
+
+Showcase now publishes the twelve registered marks through the shared
+animated badge path. The authored texture is bound only after verifying
+the native archive entry, selector, placement, converted upload and both
+original draw triangles. One ordinary-input desktop visit cycled through
+all twelve cars at 708x492. All twelve source identities published, the
+captured front and back faces retained the original rotation and tint,
+and the game returned to Player One and exited cleanly. The new private
+version-two badge pack keeps the eighteen track records byte-for-byte and
+adds 1,552,022 compressed bytes and 48 MiB of decoded pixels. It is loaded
+at startup with the track marks. Apple and physical tests remain open.

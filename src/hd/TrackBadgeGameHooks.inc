@@ -28,10 +28,15 @@ inline void trace(const Build&b,const char*status,const char*reason)noexcept{if(
 
 inline bool sourceCurrent(const Proof&p){auto&s=nfs_track_badge_sources[p.index];nfs::GuestCopyTransaction tx;if(!p.archive||tx.load<uint32_t>(dword_4D40B8)!=p.archive||tx.load<uint32_t>(p.archive)!=0x49504853||tx.load<uint32_t>(p.archive+4)!=s.archiveBytes||tx.load<uint32_t>(p.archive+8)!=s.entries||uint64_t(p.archive)+s.archiveBytes>UINT64_C(0x100000000)||p.source.size()!=s.span)return false;unsigned found=0;for(unsigned k=0;k<s.entries;++k){uint32_t at=p.archive+16+8*k;if(!std::memcmp(nfs_host_address(at,4),s.name,4)){if(tx.load<uint32_t>(at+4)!=s.offset)return false;++found;}}return found==1&&!std::memcmp(p.source.data(),nfs_host_address(p.archive+s.offset,s.span),s.span);}
 inline bool current(Game&g,const Proof&p){auto&s=state();return s.owner&&s.owner==p.owner&&s.game==&g&&p.game==&g&&s.thread==p.thread&&p.thread==nfs_logo_publisher::threadToken()&&s.epoch==p.epoch&&s.track==nfs_track_badge_sources[p.index].track&&p.art&&p.art->current()&&sourceCurrent(p);}
-struct OwnerScope {bool entered=false;explicit OwnerScope(Game&g,unsigned owner)noexcept{Errno guard;auto&s=state();if(!nfs_track_badge_art_generation())return;if(s.owner||s.epoch==UINT64_MAX){s.published.reset();return;}s.game=&g;s.thread=nfs_logo_publisher::threadToken();s.owner=owner;s.track=UINT32_MAX;s.mesh=false;++s.epoch;s.published.reset();s.drawing.reset();entered=true;}~OwnerScope()noexcept{Errno guard;if(!entered)return;auto&s=state();s.published.reset();s.drawing.reset();s.building=nullptr;s.owner=0;s.game=nullptr;}};
+struct OwnerScope {bool entered=false;explicit OwnerScope(Game&g,unsigned owner)noexcept{Errno guard;auto&s=state();if(!owner||!nfs_track_badge_art_generation())return;if(s.owner||s.epoch==UINT64_MAX){s.published.reset();return;}s.game=&g;s.thread=nfs_logo_publisher::threadToken();s.owner=owner;s.track=UINT32_MAX;s.mesh=false;++s.epoch;s.published.reset();s.drawing.reset();entered=true;}~OwnerScope()noexcept{Errno guard;if(!entered)return;auto&s=state();s.published.reset();s.drawing.reset();s.building=nullptr;s.owner=0;s.game=nullptr;}};
 // This observes the real lookup input independently of the image name/size.
 inline void selected(Game&g)noexcept{Errno guard;auto&s=state();if(!s.owner||s.game!=&g)return;int32_t t=int16_t(uint32_t(g.eax));s.track=t>=0&&t<8?unsigned(t):UINT32_MAX;}
-struct BuildScope {Game&g;Build b;bool entered=false;int unwind=0;explicit BuildScope(Game&v)noexcept:g(v){Errno guard;auto&s=state();if(!s.owner||s.game!=&g||!nfs_track_badge_art_generation())return;s.published.reset();if(s.building){s.building->bad=true;return;}try{nfs::GuestCopyTransaction tx;if(tx.load<uint32_t>(uint32_t(g.edx))!=0x36636572||tx.load<uint8_t>(uint32_t(g.edx)+4)||uint32_t(g.eax)||tx.load<uint32_t>(uint32_t(g.esp)+4)){trace(b,"refused","build-input-name-eax-or-stackarg");return;}auto p=std::make_shared<Proof>();if(s.serial==UINT64_MAX)return;p->serial=++s.serial;p->game=&g;p->thread=s.thread;p->epoch=s.epoch;p->owner=s.owner;p->archive=tx.load<uint32_t>(dword_4D40B8);b.game=&g;b.p=p;b.x=int32_t(g.ecx);b.y=0;s.building=&b;entered=true;unwind=nfs_logo_publisher::exceptions();}catch(...){}}
+inline void selectedShowcase(Game&g)noexcept{
+ Errno guard;auto&s=state();if(s.owner!=4||s.game!=&g)return;
+ const int32_t car=int16_t(uint32_t(g.eax));
+ s.track=car>=0&&car<12?unsigned(car):UINT32_MAX;
+}
+struct BuildScope {Game&g;Build b;bool entered=false;int unwind=0;explicit BuildScope(Game&v)noexcept:g(v){Errno guard;auto&s=state();if(!s.owner||s.game!=&g||!nfs_track_badge_art_generation())return;s.published.reset();if(s.building){s.building->bad=true;return;}try{nfs::GuestCopyTransaction tx;const uint32_t expected=s.owner==4?0x36726163u:0x36636572u;if(tx.load<uint32_t>(uint32_t(g.edx))!=expected||tx.load<uint8_t>(uint32_t(g.edx)+4)||uint32_t(g.eax)||tx.load<uint32_t>(uint32_t(g.esp)+4)){trace(b,"refused","build-input-name-eax-or-stackarg");return;}auto p=std::make_shared<Proof>();if(s.serial==UINT64_MAX)return;p->serial=++s.serial;p->game=&g;p->thread=s.thread;p->epoch=s.epoch;p->owner=s.owner;p->archive=tx.load<uint32_t>(dword_4D40B8);b.game=&g;b.p=p;b.x=int32_t(g.ecx);b.y=0;s.building=&b;entered=true;unwind=nfs_logo_publisher::exceptions();}catch(...){}}
  ~BuildScope()noexcept{Errno guard;if(!entered)return;auto&s=state();s.building=nullptr;if(b.bad||b.phase!=4||!b.retired||nfs_logo_publisher::exceptions()>unwind){trace(b,"refused",b.bad?b.reason:!b.retired?"staging-not-retired":"incomplete-or-unwound");return;}try{if(!current(g,*b.p)){trace(b,"refused","owner-source-or-art-stale");return;}auto p=b.p;auto accepted=nfs::enqueue_owned_renderer([p]{NfsTrackBadgeUpload v{p->serial,p->art->view.generation,p->epoch,p->key,p->words.data(),p->art->view.images[0].pixels};return int32_t(nfs_private_track_badge_upload(&v));});if(accepted==nfs::OwnedRendererAcceptance::Consumed&&current(g,*p)){s.published=p;trace(b,"published","exact-source-stage-alpha200-upload");}else trace(b,"refused","renderer-upload-or-owner-refused");}catch(...){trace(b,"refused","publication-exception");}}
 };
 inline void resolved(Game&g)noexcept{
@@ -43,13 +48,14 @@ inline void resolved(Game&g)noexcept{
   bool matched=false;
   for(unsigned k=0;k<sizeof(nfs_track_badge_sources)/sizeof(*nfs_track_badge_sources);++k){
    const auto&r=nfs_track_badge_sources[k];
-   if(r.name[3]!='6'||r.track!=state().track||r.role!=(p.owner==1?0u:1u)||r.archiveBytes!=bytes||r.entries!=entries||uint64_t(p.archive)+r.offset!=uint32_t(g.eax)||r.x!=b->x||r.y!=b->y)continue;
+   const unsigned role=p.owner==4?2u:p.owner==1?0u:1u;
+   if(r.name[3]!='6'||r.track!=state().track||r.role!=role||r.archiveBytes!=bytes||r.entries!=entries||uint64_t(p.archive)+r.offset!=uint32_t(g.eax)||r.x!=b->x||r.y!=b->y)continue;
    p.index=k;p.source.resize(r.span);
    {nfs::GuestCopyTransaction tx;std::memcpy(p.source.data(),nfs_host_address(uint32_t(g.eax),r.span),r.span);}
    unsigned char sha[32];if(!nfs_texture_sha256(p.source.data(),p.source.size(),sha)||std::memcmp(sha,r.sha,32))throw 1;
    // Provider acquisition and current() may take their own locks. Neither may
    // execute while a checked guest-copy transaction is alive.
-   unsigned id=r.track*2;if(r.role&&r.track==2)id=16;p.art=Art::acquire(id);
+   unsigned id=r.role==2?18+r.track:r.track*2;if(r.role==1&&r.track==2)id=16;p.art=Art::acquire(id);
    if(!p.art||!current(g,p))throw 1;matched=true;break;
   }
   if(!matched)throw 1;b->phase=1;

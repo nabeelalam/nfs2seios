@@ -18,7 +18,10 @@ def main():
    nonlocal text
    lo,hi,at=section(symbol);text=text[:at]+block(code)+text[at:]
   anchor='#include "FunctionIds.h"';assert text.count(anchor)==1;text=text.replace(anchor,anchor+block('#include "hd/TrackBadgeGameHooks.inc"'),1)
-  if unit==1:entry('405B60',' nfs_track_badge_live::resolved(*this);')
+  if unit==1:
+   entry('405B60',' nfs_track_badge_live::resolved(*this);')
+   entry('412670',' nfs_track_badge_live::OwnerScope nfs_showcase_badge_owner(*this,uint32_t(eax)==uint32_t(guest_address(dword_4D2E78))?4u:0u);')
+   entry('412640',' nfs_track_badge_live::selectedShowcase(*this);')
   if unit==2:
    entry('419FD0',' nfs_track_badge_live::selected(*this);')
    for symbol,owner in [('41C1B0',1),('41B8D0',2),('41C850',3)]:entry(symbol,' nfs_track_badge_live::OwnerScope nfs_track_badge_owner(*this,'+str(owner)+');')
@@ -36,6 +39,6 @@ def main():
    part=part.replace(call,block(' nfs_track_badge_live::quad(*this);')+call,1);text=text[:lo]+part+text[hi:]
   reverse=re.sub(r'\n// NFS_PRIVATE_TRACK_BADGE_BEGIN:(\d+)\n.*?\n// NFS_PRIVATE_TRACK_BADGE_END:\1\n','',text,flags=re.S);assert reverse==old
   dest=a.output/name;dest.write_text(text);rows.append(dict(unit=name,source=str(source),sourceSHA256=H(source),output=str(dest),outputSHA256=H(dest),insertions=serial,originalOperationsPreserved=True))
- manifest=dict(scope='Dedicated rec6 native TrackInfo/Records badge source/staging/alpha200/upload and actual quad observers; rec7 catalogue only, no consumer admission',units=rows,rendererHooksRequired=['created','retired','upload_begin','upload_done','select','triangle'],renderPixelOrDeviceAcceptance=False,artworkPinMustRemainEmptyUntilPrivateValidation=True)
+ manifest=dict(scope='Dedicated rec6 TrackInfo/Records and car6 Showcase badge source/staging/alpha200/upload and actual quad observers; rec7 catalogue only, no consumer admission',units=rows,rendererHooksRequired=['created','retired','upload_begin','upload_done','select','triangle'],renderPixelOrDeviceAcceptance=False,artworkPinMustRemainEmptyUntilPrivateValidation=True)
  (a.output/'TRACK_BADGE-SOURCE-INSERTIONS.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps(dict(passed=True,units=[r['unit']for r in rows],output=str(a.output))))
 if __name__=='__main__':main()

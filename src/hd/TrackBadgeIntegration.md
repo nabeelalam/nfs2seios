@@ -15,3 +15,13 @@ The producer checks the actual selected native track index, exact archive/direct
 Renderer wiring requires created,retired,upload_begin,upload_done,select,triangle. The dedicated actual256 upload witness and overlap invalidation maintain texture epochs independently of the global32-pixel NativeMark profile. Renderer checks context/thread/native object/address/rotated1555 bytes, exact lod/format/parity, framebuffer/viewport/projection, and both actual60-byte native triangle vertices. Four fully constructed original497D6C vertices are captured immediately before its first real grDrawTriangle, without synthesizing pose, UV, tint, or positions. Only their two exact native triangles may bind the private texture, and original binding is restored after a flushed batch. Authored PMA is converted once to straight alpha for the existing native shader/blend contract; original1555 alpha is never treated as continuous alpha.
 
 Coverage is source implementation and insertion preservation. Grouped compilation, renderer execution, pixel inspection and physical-device acceptance remain separate gates. Empty pins deliberately make this path fall back.
+
+
+## Showcase extension
+
+The version-two pack contains thirty records. The first eighteen retain
+their original dimensions, IDs and bytes. IDs 18 through 29 supply the
+twelve Showcase selectors. The actual Showcase selector and form establish
+a separate source role for the car6 entry. The role uses its own archive
+span, digest and placement while following the same checked staging,
+alpha conversion, upload and two-triangle renderer path.

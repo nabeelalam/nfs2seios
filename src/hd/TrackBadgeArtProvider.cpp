@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "TrackBadgeArtProvider.h"
-enum {NFS_TRACK_BADGE_SOURCE_COUNT=18};
+enum {NFS_TRACK_BADGE_SOURCE_COUNT=30};
 #include "TextureDigest.h"
 #include <array>
 #include <atomic>
@@ -26,7 +26,7 @@ bool copy(Image&to,const NfsTrackBadgeArtImage&in,size_t&total){
 }
 struct Lease {std::atomic<unsigned>refs{1};std::shared_ptr<const Art>art;static void retain(void*p){static_cast<Lease*>(p)->refs.fetch_add(1,std::memory_order_relaxed);}static void release(void*p){auto*l=static_cast<Lease*>(p);if(l->refs.fetch_sub(1,std::memory_order_acq_rel)==1)delete l;}};
 }
-extern "C" int nfs_track_badge_art_install(const NfsTrackBadgeArtInput*in){if(!in||in->schema!=1||!in->images||!in->count||in->count>NFS_TRACK_BADGE_SOURCE_COUNT)return 0;try{auto art=std::make_shared<Art>();size_t total=0;for(size_t k=0;k<in->count;++k){const auto&i=in->images[k];if(i.sourceIndex>=NFS_TRACK_BADGE_SOURCE_COUNT||art->images[i.sourceIndex].present||!copy(art->images[i.sourceIndex],i,total))return 0;}for(unsigned car=0;car<18;++car)if(!art->images[car].present)return 0;std::lock_guard<std::mutex>lock(providerMutex);if(active||serial==UINT64_MAX)return 0;art->generation=++serial;active=std::move(art);published.store(active->generation,std::memory_order_release);return 1;}catch(...){return 0;}}
+extern "C" int nfs_track_badge_art_install(const NfsTrackBadgeArtInput*in){if(!in||in->schema!=1||!in->images||!in->count||in->count>NFS_TRACK_BADGE_SOURCE_COUNT)return 0;try{auto art=std::make_shared<Art>();size_t total=0;for(size_t k=0;k<in->count;++k){const auto&i=in->images[k];if(i.sourceIndex>=NFS_TRACK_BADGE_SOURCE_COUNT||art->images[i.sourceIndex].present||!copy(art->images[i.sourceIndex],i,total))return 0;}for(unsigned car=0;car<NFS_TRACK_BADGE_SOURCE_COUNT;++car)if(!art->images[car].present)return 0;std::lock_guard<std::mutex>lock(providerMutex);if(active||serial==UINT64_MAX)return 0;art->generation=++serial;active=std::move(art);published.store(active->generation,std::memory_order_release);return 1;}catch(...){return 0;}}
 extern "C" void nfs_track_badge_art_clear(){std::lock_guard<std::mutex>lock(providerMutex);published.store(0,std::memory_order_release);active.reset();}
 extern "C" uint64_t nfs_track_badge_art_generation(){return published.load(std::memory_order_acquire);}
-extern "C" int nfs_track_badge_art_acquire(uint32_t id,NfsTrackBadgeArtView*out){if(!out||id>=18)return 0;try{std::shared_ptr<const Art>a;{std::lock_guard<std::mutex>lock(providerMutex);a=active;}if(!a||!a->images[id].present)return 0;auto lease=std::unique_ptr<Lease>(new Lease);lease->art=a;NfsTrackBadgeArtView v{};v.schema=1;v.count=1;v.generation=a->generation;v.images[0]=a->images[id].view;v.owner=lease.get();v.retain=Lease::retain;v.release=Lease::release;*out=v;lease.release();return 1;}catch(...){return 0;}}
+extern "C" int nfs_track_badge_art_acquire(uint32_t id,NfsTrackBadgeArtView*out){if(!out||id>=NFS_TRACK_BADGE_SOURCE_COUNT)return 0;try{std::shared_ptr<const Art>a;{std::lock_guard<std::mutex>lock(providerMutex);a=active;}if(!a||!a->images[id].present)return 0;auto lease=std::unique_ptr<Lease>(new Lease);lease->art=a;NfsTrackBadgeArtView v{};v.schema=1;v.count=1;v.generation=a->generation;v.images[0]=a->images[id].view;v.owner=lease.get();v.retain=Lease::retain;v.release=Lease::release;*out=v;lease.release();return 1;}catch(...){return 0;}}
