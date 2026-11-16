@@ -432,3 +432,18 @@ and the game returned to Player One and exited cleanly. The new private
 version-two badge pack keeps the eighteen track records byte-for-byte and
 adds 1,552,022 compressed bytes and 48 MiB of decoded pixels. It is loaded
 at startup with the track marks. Apple and physical tests remain open.
+
+## Startup and Player selection replay
+
+The integrated desktop build presented the opening Main swipe at
+2360x1640 for 59 consecutive frames before the first steady wide Main
+frame. The original intro was dismissed through ordinary input.
+
+Player One entered, changed cars three times and returned to Main at
+708x492 and 800x450. At both sizes the opening, car changes and return
+used wide presentation throughout. The trace authenticated both photo
+layers and published 100 selects and 200 triangles for each observed
+photo animation draw. Captures included the moving photo layers and
+steady selection. Both sessions exited cleanly. These tests cover the
+desktop renderer. Physical iPad startup, car changes and the reported
+Opponents crash remain open for this revision.
