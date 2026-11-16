@@ -273,3 +273,20 @@ for its session, and the engine startup probe explicitly enables it for its
 reported timing. The bridge test verifies zero counters at startup and
 populated counters after opt-in. All 13 renderer bridge and queue regressions
 passed locally. The device FPS and battery impact remain unmeasured.
+
+
+### Lower split-screen record panel
+
+The stock line draw submitted two lower record-plaque bevel strokes with
+endpoints separated by an extra two half-viewport heights. The resulting
+line ran through Player Two's world at 16:9, an iPad-like ratio, and 4:3.
+The adaptive renderer corrects the endpoints of those exact two vertical
+strokes and preserves their existing colors and draw order.
+
+An original-data North Country split-screen replay confirmed the lower
+record panel and both player views at 800x450, 708x492, and 800x600, including
+a return to 800x450 and clean shutdown. Inspection of all three outputs
+confirmed that the vertical seam was gone. A fresh source preparation
+reproduced the exact renderer used by the replay. The replay covers race
+startup, aspect switches and the observed record panel. Physical device
+verification and full race completion remain open.

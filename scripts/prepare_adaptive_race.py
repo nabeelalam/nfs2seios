@@ -183,6 +183,23 @@ extern "C" void nfs_adaptive_race_apply_race_raster(unsigned);
 """),
         ],
         'Glide2x/OpenGL2.c': [
+            (r"""//	fprintf(stderr, "grDrawLine: [%d]\n", g_trianglesCount);
+	drawTriangles();
+""", r"""    // The lower record plaque's left bevel has endpoints displaced by
+    // one split viewport in opposite directions. Scope the repair to its
+    // two observed lines, preserving their colors and the other race lines.
+    GrVertex bevelStart,bevelEnd;
+    if(a->x==b->x && a->a==127
+       && ((a->x==VertexSnap+2 && a->y==VertexSnap+719 && b->y==VertexSnap+205
+            && a->r==140 && a->g==138 && a->b==140)
+           ||(a->x==VertexSnap+3 && a->y==VertexSnap+718 && b->y==VertexSnap+206
+              && a->r==107 && a->g==109 && a->b==107))){
+        bevelStart=*a;bevelEnd=*b;
+        bevelStart.y-=240;bevelEnd.y+=240;
+        a=&bevelStart;b=&bevelEnd;
+    }
+	drawTriangles();
+"""),
             (r"""static uint32_t g_framebufferDepth;
 static int32_t  g_framebufferHeight;
 
