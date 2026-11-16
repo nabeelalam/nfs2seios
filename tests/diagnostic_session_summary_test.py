@@ -45,6 +45,29 @@ class SummaryTests(unittest.TestCase):
         self.assertEqual(modes["off"]["renderer_queue_ms_interval"]["median"], 7.25)
         self.assertEqual(modes["on"]["renderer_execution_ms_interval"]["median"], 13)
 
+    def test_stable_intervals_exclude_gaps_and_mode_changes(self):
+        def timed(time, power, timing, calls, late):
+            return dict(sample(time, power), hd_timing_requested=timing,
+                        renderer_calls_interval=calls, renderer_queue_ms_interval=12,
+                        renderer_execution_ms_interval=20, swap_intervals_count=50,
+                        swap_intervals_over_20ms=late)
+        rows = [timed(0, False, True, 10, 50),
+                timed(1, False, True, 100, 5),
+                timed(2, True, True, 10, 50),
+                timed(3, True, True, 200, 10),
+                timed(8, True, True, 10, 50),
+                timed(9, True, False, 10, 50),
+                timed(10, True, False, 100, 20),
+                timed(11, True, False, 0, 55)]
+        modes = summary.summarize(fixture(rows))["stable_interval_comparison"]
+        self.assertEqual(modes["off"]["sample_intervals"], 1)
+        self.assertEqual(modes["off"]["swap_fraction_over_20ms"], 0.1)
+        self.assertEqual(modes["on"]["sample_intervals"], 3)
+        self.assertEqual(modes["on"]["observed_swap_intervals"], 100)
+        self.assertEqual(modes["on"]["swap_fraction_over_20ms"], 0.3)
+        self.assertEqual(modes["on"]["renderer_execution_ms_per_call"]["count"], 2)
+        self.assertAlmostEqual(modes["on"]["renderer_queue_ms_per_call"]["median"], 0.09)
+
     def test_interruption_and_gap(self):
         result = summary.summarize(fixture([sample(0), sample(8)]) + b'{"type":')
         self.assertTrue(result["ignored_incomplete_tail"])

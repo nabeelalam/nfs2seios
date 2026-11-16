@@ -234,23 +234,24 @@ REALIGN STDCALL void native_grClipWindow(uint32_t minX, uint32_t minY, uint32_t 
 {
 """, r"""// 	fprintf(stderr, "grAlphaTestReferenceValue: %f\n", value / 255.0f);
 }
-static void applyRaceClip(int world)
+static int applyRaceClip(int world)
 {
     NfsAdaptiveAspectRasterLayout layout;
-    if(!nfs_adaptive_aspect_raster_layout(raceFramebufferWidth,g_framebufferHeight,raceLogicalClip,&layout))return;
+    if(!nfs_adaptive_aspect_raster_layout(raceFramebufferWidth,g_framebufferHeight,raceLogicalClip,&layout))return 0;
     const NfsAdaptiveAspectPixelRect r=world?layout.world:layout.hud;
     glViewport(r.left,g_framebufferHeight-r.top-r.height,r.width,r.height);
     glScissor(r.left,g_framebufferHeight-r.top-r.height,r.width,r.height);
     raceWorldClip=world;
+    return 1;
 }
 void nfs_adaptive_race_apply_race_raster(unsigned scope)
 {
     const int world=scope==1 || scope==2;
     if(!wideRace){
         if(!world || raceLogicalClip.width!=640 || raceLogicalClip.height!=240)return;
+        if(!nfs_adaptive_race_admitted_target(&wideRaceWidth,&wideRaceHeight))return;
         drawTriangles();
         GLint bound=0;glGetIntegerv(GL_TEXTURE_BINDING_2D,&bound);
-        if(!nfs_adaptive_race_admitted_target(&wideRaceWidth,&wideRaceHeight))return;
         wideRace=1;
         createFrameBuffer();
         useGameProgram(true);
@@ -269,14 +270,17 @@ void nfs_adaptive_race_apply_race_raster(unsigned scope)
 REALIGN STDCALL void native_grClipWindow(uint32_t minX, uint32_t minY, uint32_t maxX, uint32_t maxY)
 {
 """),
-            (r"""	glScissor (scaledMinX, g_framebufferHeight - scaledMaxY, scaledMaxX - scaledMinX, scaledMaxY - scaledMinY);
+            (r"""	glViewport(scaledMinX, g_framebufferHeight - scaledMaxY, scaledMaxX - scaledMinX, scaledMaxY - scaledMinY);
+	glScissor (scaledMinX, g_framebufferHeight - scaledMaxY, scaledMaxX - scaledMinX, scaledMaxY - scaledMinY);
 
 	glLineWidth(2.0f * ratio);
 
-""", r"""	glScissor (scaledMinX, g_framebufferHeight - scaledMaxY, scaledMaxX - scaledMinX, scaledMaxY - scaledMinY);
-
-    raceLogicalClip=(NfsAdaptiveAspectPixelRect){(int32_t)minX,(int32_t)minY,(int32_t)(maxX-minX),(int32_t)(maxY-minY)};
-    if(wideRace){raceWorldClip=-1;applyRaceClip(0);}
+""", r"""    raceLogicalClip=(NfsAdaptiveAspectPixelRect){(int32_t)minX,(int32_t)minY,(int32_t)(maxX-minX),(int32_t)(maxY-minY)};
+    raceWorldClip=-1;
+    if(!wideRace || !applyRaceClip(0)){
+        glViewport(scaledMinX,g_framebufferHeight-scaledMaxY,scaledMaxX-scaledMinX,scaledMaxY-scaledMinY);
+        glScissor(scaledMinX,g_framebufferHeight-scaledMaxY,scaledMaxX-scaledMinX,scaledMaxY-scaledMinY);
+    }
 	glLineWidth(2.0f * ratio);
 
 """),

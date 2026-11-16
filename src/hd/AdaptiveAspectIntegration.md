@@ -87,8 +87,8 @@ extent for a contain frame. A newer offer is deferred to the next frame.
 The original split-screen replay stayed live through 800x450, 708x492, 800x600,
 and 800x450. The 800x600 frame used the normal 4:3 target. Earlier isolated
 results also reached the Race Summary, Lap Times, and Main Menu after Quit Race.
-The shared target helper is used by the private build. The normal generator
-and iPad package still need the coordinated engine and renderer hooks.
+The shared target helper is used by the private build. The opt-in paired generator enables the coordinated engine and renderer hooks
+for the experimental iPad package.
 
 An aborted local race establishes the menu return route. A normal finish,
 camera variants, and physical-device validation remain open.
@@ -128,3 +128,31 @@ base keeps its existing personal-artwork and draft-delivery requirements.
 Local preparation with both inputs enabled completed from the pinned sources.
 All six patched units matched the previously staged units after line-ending
 normalization. The existing workflow and artwork input checks passed.
+
+## iPad preview and local performance checks
+
+Workflow run 43930095947 passed the Linux and Apple checks and produced the
+experimental ARM64 preview. Its separately assembled personal install package
+still requires physical iPad validation. The bundled renderer predates the
+following local optimizations.
+
+- In 4:3 contain mode, a scenery draw with no admitted widescreen target leaves
+  the triangle batch untouched and skips the texture-binding query. A 1,000-call
+  sanitizer fixture verified the fast path. A local two-controller North
+  Country race then exercised wide-to-contain-to-wide resizing and shut down
+  cleanly.
+- A widescreen clip update now sets the viewport and scissor once. The ordinary
+  clip remains the fallback if widescreen layout cannot be calculated. A
+  sanitizer fixture verified upper and lower player clips and both fallback
+  cases. The standalone GLES pixel suite passed.
+  A North Country split-screen replay with both virtual controllers also
+  passed live resizes through 708x492, 800x600 and 800x450, with scenery at
+  both edges of both views and a clean shutdown. The first attempt timed out
+  in the Opponents return; the same executable passed after extending the
+  replay's menu wait from five to fifteen seconds.
+
+The session summarizer can compare the proportion of swap intervals over 20 ms
+and renderer queue and execution time per call by Low Power Mode. It excludes
+the first sample, gaps and observed mode transitions from that comparison.
+These measurements require matched race and graphics settings and do not
+measure GPU time or energy use.

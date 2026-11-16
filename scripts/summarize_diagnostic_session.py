@@ -20,6 +20,32 @@ def distribution(values):
             "median": statistics.median(values), "maximum": max(values)}
 
 
+def stable_interval_metrics(rows):
+    slow = total = 0
+    queue = []
+    execution = []
+    for row in rows:
+        swaps = row.get("swap_intervals_count")
+        late = row.get("swap_intervals_over_20ms")
+        if number(swaps) and number(late, swaps):
+            total += swaps
+            slow += late
+        calls = row.get("renderer_calls_interval")
+        if number(calls) and calls >= 1:
+            for key, values in (("renderer_queue_ms_interval", queue),
+                                ("renderer_execution_ms_interval", execution)):
+                elapsed = row.get(key)
+                if number(elapsed):
+                    values.append(elapsed / calls)
+    return {
+        "sample_intervals": len(rows),
+        "observed_swap_intervals": total,
+        "swap_fraction_over_20ms": slow / total if total else None,
+        "renderer_queue_ms_per_call": distribution(queue),
+        "renderer_execution_ms_per_call": distribution(execution),
+    }
+
+
 def summarize(data):
     if len(data) > MAX_BYTES:
         raise ValueError("Log exceeds the recorder size bound")
@@ -55,6 +81,8 @@ def summarize(data):
     count = 0
     timing_rows = []
     previous_timing = None
+    previous_power = None
+    stable_intervals = {False: [], True: []}
     for index, row in enumerate(rows[1:], start=1):
         if row.get("type") == "end":
             if index != len(rows) - 1 or partial_tail:
@@ -83,7 +111,11 @@ def summarize(data):
         # Do not assign a transition interval to either visual mode. Old logs
         # omit the additive field and remain valid with unavailable mode.
         timing_rows.append((power, timing, row, count == 0 or timing == previous_timing))
+        if (previous >= 0 and elapsed - previous <= 2.5
+                and power == previous_power and timing == previous_timing):
+            stable_intervals[power].append(row)
         previous_timing = timing
+        previous_power = power
         if previous >= 0 and elapsed - previous > 2.5:
             gaps += 1
         previous = elapsed
@@ -124,6 +156,15 @@ def summarize(data):
             "battery_first_observed_percent": batteries[0] if batteries else None,
             "battery_last_observed_percent": batteries[-1] if batteries else None,
             "battery_caution": "Coarse percentage; pooled mode samples may be noncontiguous. No energy or drain-rate inference."}
+    result["stable_interval_comparison"] = {
+        label: stable_interval_metrics(stable_intervals[power])
+        for label, power in (("off", False), ("on", True))
+    }
+    result["stable_interval_caution"] = (
+        "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power or timing-art change. "
+        "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "
+        "Swap spacing measures presentations, not GPU time."
+    )
     result["timing_art_comparison"] = {}
     for power in (False, True):
         modes = {}
