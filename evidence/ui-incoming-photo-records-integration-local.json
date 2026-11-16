@@ -1,0 +1,39 @@
+{
+  "scope": "Local native-resolution opponent animation and return integration",
+  "localIntegration": 64,
+  "binarySHA256": "ccbcc89e99040bc43ee3dbcbc2995fab84c9bc4647ee239c1c05dd85c9d77bcb",
+  "fullBuildPassed": true,
+  "sourcePinsUnchanged": true,
+  "inputExtent": [
+    2360,
+    1640
+  ],
+  "classChanges": 2,
+  "incomingAuthoredPhotosPublished": 2,
+  "hdAnimationFramesPerChange": 21,
+  "rejectedFrameScopesPerChange": 0,
+  "wholeTransitionPassed": false,
+  "return19Complete": true,
+  "twoFreshMainSamples": true,
+  "recordsResponsiveCodeBuilt": true,
+  "recordsRuntimeVerified": false,
+  "appGone": true,
+  "all13ResourcesUnchanged": true,
+  "copiedProfileRestored": true,
+  "physicalIpadVerified": false,
+  "cloudBuild": false,
+  "next": "Repair first static full-frame handoff after preview; exercise Records first/stable/return at both ratios",
+  "oldUiPresentationsAfterEachAnimation": 103,
+  "fallbackIntervals": [
+    {
+      "presentations": 103,
+      "nextWideFrame": 797,
+      "firstNativeFrame": 694
+    },
+    {
+      "presentations": 103,
+      "nextWideFrame": 967,
+      "firstNativeFrame": 864
+    }
+  ]
+}

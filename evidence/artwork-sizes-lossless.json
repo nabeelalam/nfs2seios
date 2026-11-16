@@ -1,0 +1,254 @@
+{
+  "schema": 1,
+  "units": "Bytes; MiB=1048576bytes",
+  "scope": "Current pinned artwork pack metadata; no original game data or local source paths",
+  "storedPackTotalBytes": 511140830,
+  "wholeStreamPackCount": 11,
+  "categories": [
+    {
+      "pack": "classic-ui.ownedz",
+      "storedPackBytes": 16043117,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 39,
+      "dimensions": {
+        "2048x1536": 2,
+        "1372x1920": 1,
+        "2012x1924": 1,
+        "1824x1924": 1,
+        "2048x768": 2,
+        "512x512": 29,
+        "128x128": 1,
+        "1376x188": 1,
+        "468x244": 1
+      },
+      "decodedImageAverageBytes": 2814700.3076923075,
+      "decodedImageLargestBytes": 15484352,
+      "note": "Counts stored texture atlases/planes, not individual glyphs or sprites within atlases; original16byte recipe holes not reconstructed."
+    },
+    {
+      "pack": "intro-ui.ownedz",
+      "storedPackBytes": 3202202,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 7,
+      "dimensions": {
+        "1448x1086": 1,
+        "1180x144": 1,
+        "1340x152": 1,
+        "1260x156": 1,
+        "1504x144": 1,
+        "1280x148": 1,
+        "1476x144": 1
+      },
+      "decodedImageAverageBytes": 1068404.5714285714,
+      "decodedImageLargestBytes": 6290112
+    },
+    {
+      "pack": "track-info-ui.ownedz",
+      "storedPackBytes": 45860407,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 52,
+      "dimensions": {
+        "1920x1440": 9,
+        "680x272": 2,
+        "652x268": 2,
+        "768x288": 1,
+        "760x260": 1,
+        "999x1440": 4,
+        "620x268": 1,
+        "1156x280": 1,
+        "528x268": 1,
+        "576x272": 1,
+        "792x272": 1,
+        "1168x264": 1,
+        "916x276": 1,
+        "1208x240": 1,
+        "920x276": 1,
+        "1232x260": 1,
+        "408x268": 1,
+        "548x304": 1,
+        "544x292": 1,
+        "1002x1440": 2,
+        "1192x264": 1,
+        "1256x280": 1,
+        "1000x304": 1,
+        "1248x268": 1,
+        "1224x264": 1,
+        "1104x300": 1,
+        "740x304": 1,
+        "904x296": 1,
+        "792x304": 1,
+        "724x300": 1,
+        "532x300": 1,
+        "732x296": 1,
+        "1005x1440": 1,
+        "844x268": 1,
+        "820x268": 1,
+        "924x264": 1,
+        "656x280": 1,
+        "676x268": 1
+      },
+      "decodedImageAverageBytes": 3331755.076923077,
+      "decodedImageLargestBytes": 11059200
+    },
+    {
+      "pack": "car-info-ui.ownedz",
+      "storedPackBytes": 113527409,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 48,
+      "dimensions": {
+        "1920x1440": 12,
+        "1444x572": 36
+      },
+      "decodedImageAverageBytes": 5242704.0,
+      "decodedImageLargestBytes": 11059200
+    },
+    {
+      "pack": "player-photo-ui.ownedz",
+      "storedPackBytes": 22688859,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 12,
+      "dimensions": {
+        "1228x584": 12
+      },
+      "decodedImageAverageBytes": 2868608.0,
+      "decodedImageLargestBytes": 2868608
+    },
+    {
+      "pack": "track-badge-ui.ownedz",
+      "storedPackBytes": 10139595,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 18,
+      "dimensions": {
+        "1024x1024": 18
+      },
+      "decodedImageAverageBytes": 4194304.0,
+      "decodedImageLargestBytes": 4194304
+    },
+    {
+      "pack": "wide-menu-ui.ownedz",
+      "storedPackBytes": 4822825,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 4,
+      "dimensions": {
+        "1180x820": 2,
+        "1280x720": 2
+      },
+      "decodedImageAverageBytes": 3778400.0,
+      "decodedImageLargestBytes": 3870400
+    },
+    {
+      "pack": "results-backdrop-ui.ownedz",
+      "storedPackBytes": 5711653,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 2,
+      "dimensions": {
+        "1440x1080": 1,
+        "1920x1080": 1
+      },
+      "decodedImageAverageBytes": 7257600.0,
+      "decodedImageLargestBytes": 8294400
+    },
+    {
+      "pack": "slideshow-ui.ownedz",
+      "storedPackBytes": 240423232,
+      "storage": "independently compressed lossless image chunks",
+      "imageCount": 98,
+      "dimensions": {
+        "1448x1086": 98
+      },
+      "decodedImageAverageBytes": 6290112.0,
+      "decodedImageLargestBytes": 6290112,
+      "compressedImageAverageBytes": 2453298.1224489794,
+      "compressedImageLargestBytes": 3387207
+    },
+    {
+      "pack": "slideshow-footer.ownedz",
+      "storedPackBytes": 6229762,
+      "storage": "independently compressed lossless image chunks",
+      "imageCount": 17,
+      "dimensions": {
+        "2048x1536": 17
+      },
+      "decodedImageAverageBytes": 12582912.0,
+      "decodedImageLargestBytes": 12582912,
+      "compressedImageAverageBytes": 366455.64705882355,
+      "compressedImageLargestBytes": 549758
+    },
+    {
+      "pack": "history-ui.ownedz",
+      "storedPackBytes": 26467971,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 49,
+      "dimensions": {
+        "1448x1086": 7,
+        "652x300": 2,
+        "876x300": 1,
+        "868x264": 2,
+        "532x272": 1,
+        "700x268": 2,
+        "428x300": 1,
+        "664x296": 1,
+        "884x296": 2,
+        "880x264": 1,
+        "532x264": 2,
+        "700x260": 1,
+        "420x296": 2,
+        "656x292": 1,
+        "888x292": 1,
+        "872x268": 1,
+        "532x256": 1,
+        "432x300": 1,
+        "660x300": 1,
+        "876x292": 1,
+        "536x252": 1,
+        "696x268": 1,
+        "420x292": 1,
+        "884x292": 1,
+        "868x272": 1,
+        "696x272": 1,
+        "420x300": 1,
+        "656x296": 1,
+        "892x292": 1,
+        "860x264": 1,
+        "536x264": 1,
+        "692x268": 1,
+        "416x296": 1,
+        "660x304": 1,
+        "876x268": 1,
+        "536x268": 1,
+        "708x272": 1
+      },
+      "decodedImageAverageBytes": 1550477.0612244897,
+      "decodedImageLargestBytes": 6290112
+    },
+    {
+      "pack": "class-picture-ui.ownedz",
+      "storedPackBytes": 5207398,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 3,
+      "dimensions": {
+        "1224x584": 3
+      },
+      "decodedImageAverageBytes": 2859264.0,
+      "decodedImageLargestBytes": 2859264
+    },
+    {
+      "pack": "location-photo-ui.ownedz",
+      "storedPackBytes": 10816400,
+      "storage": "whole-stream lossless zlib; per-image compressed bytes unavailable",
+      "imageCount": 8,
+      "dimensions": {
+        "1228x584": 7,
+        "1228x588": 1
+      },
+      "decodedImageAverageBytes": 2871064.0,
+      "decodedImageLargestBytes": 2888256
+    }
+  ],
+  "finalPackagingRequirements": [
+    "Lossless compression only; no quantization or resizing",
+    "Preserve editable masters separately from app",
+    "Verify exact decoded pixels and alpha against accepted artwork"
+  ],
+  "finalPackagingPixelRoundtripVerified": false
+}

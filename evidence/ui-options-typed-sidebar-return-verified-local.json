@@ -1,0 +1,57 @@
+{
+  "scope": "Actual local Options Escape fade at2360x1640; no physical-device, fullUI or alltiming acceptance",
+  "integration": 62,
+  "ELFSHA256": "1976d1e7c3771ee0f50fe2461b9c90e7b3a24af7dbc158ea158ece0bc6dbb2e3",
+  "gameLogSHA256": "d62a6e65080cc8c842ab9ee2ab4547e851b486693f3681144af8c9c8eb559f81",
+  "typedOptionsSidebarBound": true,
+  "sourceReturn": {
+    "sourceArm": true,
+    "route": 1,
+    "routeName": "EscapeFade12",
+    "runs": [
+      {
+        "startFrame": 2690,
+        "frames": 12,
+        "nextChoice": "menu-wide",
+        "presented": true,
+        "output": "2360x1640"
+      }
+    ],
+    "sourceLoopFrames": 12,
+    "sourceGpuFrameIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sourceGpuComplete": true,
+    "loopComplete": true,
+    "nativeRoutes": [],
+    "complete": true
+  },
+  "freshMainProofs": 2,
+  "reviewedCurrentOptionsImages": true,
+  "MainResizeHandoffExercised": true,
+  "followingOpponentFormReached": true,
+  "OpponentClassCycleVerified": false,
+  "separateRemainingIssue": "Earlier60d fullSource rejection not reproduced; independent class focus gate stopped safely before Right",
+  "cleanup": {
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0
+  },
+  "wholeUiComplete": false,
+  "physicalIpadVerified": false
+}

@@ -4,6 +4,9 @@
 #include "BackgroundSceneCatalog.h"
 #include <atomic>
 #include <new>
+#include <cerrno>
+#include <cstdio>
+#include <cstdlib>
 namespace nfs_main_sidebar_origin_live {
 namespace mo=nfs_main_sidebar_origin;namespace bg=nfs_background_scene_cpu;
 struct State{mo::Store origins;bg::Plane scratch;uintptr_t game=0;};
@@ -18,18 +21,21 @@ inline std::shared_ptr<const mo::Proof>publishMain(Game&g,const bg::JoinedInput&
  return p->origins.publish(i,binding,workspace,std::move(catalog));
 }
 inline std::shared_ptr<const mo::Proof>acquireForInitialCaption(Game&g)noexcept{
- auto*s=current(g);if(!s)return {};auto catalog=nfs_background_scene_runtime::acquireCatalog();if(!catalog)return {};
- try{uint32_t archive=0,selected=0,handle=0;std::array<uint32_t,4>handles{};
+ const char*reason="owner";unsigned entries=0;
+ struct TraceExit{const char*&reason;unsigned&entries;uint32_t form;~TraceExit(){const int saved=errno;static thread_local unsigned lines=0;const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");if(p&&p[0]=='1'&&!p[1]&&lines<64){++lines;std::fprintf(stderr,"MAIN ORIGIN INITIAL reason=%s child=%08x entries=%u\n",reason,form,entries);}errno=saved;}}trace{reason,entries,uint32_t(g.esi)};
+ auto*s=current(g);if(!s)return {};reason="catalog";auto catalog=nfs_background_scene_runtime::acquireCatalog();if(!catalog)return {};
+ for(const auto&p:s->origins.entries())if(p&&p->current())++entries;
+ try{reason="archive-or-selection";uint32_t archive=0,selected=0,handle=0;std::array<uint32_t,4>handles{};
   {nfs::GuestCopyTransaction tx;archive=tx.load<uint32_t>(dword_4D40B8);selected=tx.load<uint32_t>(dword_4D2314+2)>>16;if(selected>1||!archive)return {};
-   handles={{tx.load<uint32_t>(dword_4D231C),tx.load<uint32_t>(dword_4D2320),tx.load<uint32_t>(dword_4D4D24),tx.load<uint32_t>(dword_4DABE4)}};handle=handles[selected];if(!handle||handles[0]==handles[1])return {};
+   reason="selected-handle";handles={{tx.load<uint32_t>(dword_4D231C),tx.load<uint32_t>(dword_4D2320),tx.load<uint32_t>(dword_4D4D24),tx.load<uint32_t>(dword_4DABE4)}};handle=handles[selected];if(!handle||handles[0]==handles[1])return {};
   }
-  s->scratch.valid=0;uint32_t error=0;nfs_logo_publisher::plane(s->scratch,error);if(error||!bg::plane(s->scratch,343)||s->scratch.target.owner!=handle)return {};
-  {nfs::GuestCopyTransaction tx;if(tx.load<uint32_t>(dword_4D40B8)!=archive||tx.load<uint32_t>(dword_4D2314+2)!=s->scratch.target.ownerState[0])return {};
-   const std::array<uint32_t,4>now{{tx.load<uint32_t>(dword_4D231C),tx.load<uint32_t>(dword_4D2320),tx.load<uint32_t>(dword_4D4D24),tx.load<uint32_t>(dword_4DABE4)}};if(now!=handles)return {};
+  reason="selected-plane";s->scratch.valid=0;uint32_t error=0;nfs_logo_publisher::plane(s->scratch,error);if(error||!bg::plane(s->scratch,343)||s->scratch.target.owner!=handle)return {};
+  reason="archive-or-selected-state-changed";{nfs::GuestCopyTransaction tx;if(tx.load<uint32_t>(dword_4D40B8)!=archive||tx.load<uint32_t>(dword_4D2314+2)!=s->scratch.target.ownerState[0])return {};
+   const std::array<uint32_t,4>now{{tx.load<uint32_t>(dword_4D231C),tx.load<uint32_t>(dword_4D2320),tx.load<uint32_t>(dword_4D4D24),tx.load<uint32_t>(dword_4DABE4)}};reason="handle-set-changed";if(now!=handles)return {};reason="bitmap-alias";
    for(uint32_t other:handles)if(other&&other!=handle){nfs_logo_publisher::checked(other,56);if(tx.load<uint32_t>(other+32)==s->scratch.target.w[8])return {};}
   }
-  return s->origins.acquire(s->scratch,reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),archive,catalog);
- }catch(...){s->origins.clear();return {};}
+  auto proof=s->origins.acquire(s->scratch,reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),archive,catalog);reason=proof?"acquired":"history-or-pixels";return proof;
+ }catch(...){reason="read-exception";s->origins.clear();return {};}
 }
 inline void beforeOwnerRetire(Game&g,uint32_t at,bool selected=false)noexcept{
  auto*s=current(g);if(!s)return;try{if(!at&&selected){nfs::GuestCopyTransaction tx;nfs_logo_capture::Target t;nfs_logo_publisher::target(tx,t);at=t.owner;}s->origins.retireOwner(at);}catch(...){s->origins.clear();}

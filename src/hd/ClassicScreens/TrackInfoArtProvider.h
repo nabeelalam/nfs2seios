@@ -19,6 +19,15 @@ int nfs_track_info_art_install(const NfsTrackInfoArtInput*);
 void nfs_track_info_art_clear(void);
 uint64_t nfs_track_info_art_generation(void);
 int nfs_track_info_art_acquire(const uint32_t sourceIndices[3],NfsTrackInfoArtView*);
+/* Transition draws acquire the exact background or sidebar independently
+   of the completed page. */
+typedef struct NfsTrackInfoEntryArtView {
+    uint64_t generation;
+    NfsTrackInfoArtImage image;
+    void *owner;
+    void (*release)(void *);
+} NfsTrackInfoEntryArtView;
+int nfs_track_info_art_acquire_entry(uint32_t sourceIndex,NfsTrackInfoEntryArtView*);
 #ifdef __cplusplus
 }
 #endif

@@ -17,10 +17,11 @@ inline unsigned headingForType(unsigned t)noexcept{switch(t){case 3:return 1;cas
 inline void trace(const char* stage,uint32_t a=0,uint32_t b=0)noexcept{
  const char*flag=std::getenv("NFS_PRIVATE_RESULTS_TRACE");
  if(!flag||flag[0]!='1'||flag[1])return;
- static thread_local unsigned frameLines=0,recordLines=0;
+ static thread_local unsigned frameLines=0,recordLines=0,cursorLines=0;
  const bool record=std::strncmp(stage,"record-",7)==0;
- unsigned&lines=record?recordLines:frameLines;
- if(lines>=(record?12u:48u))return;
+ const bool cursor=std::strncmp(stage,"cursor-",7)==0;
+ unsigned&lines=record?recordLines:cursor?cursorLines:frameLines;
+ if(lines>=(record?12u:cursor?24u:48u))return;
  ++lines;
  const int saved=errno;
  std::fprintf(stderr,"RESULTS SOURCE %s a=%u b=%u\n",stage,a,b);
@@ -29,6 +30,7 @@ inline void trace(const char* stage,uint32_t a=0,uint32_t b=0)noexcept{
 inline uintptr_t threadToken()noexcept{static thread_local char value;return reinterpret_cast<uintptr_t>(&value);}
 struct Measurement {bool ready=false;uint32_t text=0;int width=0,anchor=0;unsigned alignment=0;};
 struct State {
+ std::shared_ptr<SourceLife>life;
  Game*game=nullptr;uintptr_t thread=0;uint64_t epoch=0,serial=0;unsigned owner=0,presenting=0;
  bool failed=false,capturing=false,string=false,word=false;
  uint32_t textAddress=0,metricAddress=0,fontAddress=0,form=0;uint16_t formType=0;
@@ -40,7 +42,7 @@ struct State {
  std::vector<uint16_t>backdrop;
  std::vector<uint16_t>replay;nfs_soft::TextCommand command{};
  std::array<uint8_t,96>textBefore{};Measurement measurement{};unsigned resourceDepth=0,nameEntryDepth=0,recordQualificationDepth=0;
- void invalidate()noexcept{failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();}
+ void invalidate()noexcept{if(life)life->content.store(0,std::memory_order_release);failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();}
 };
 inline State&state()noexcept{static thread_local State s;return s;}
 inline State*ownerCurrent(Game&g)noexcept{auto&s=state();return s.owner==1&&s.game==&g&&s.thread==threadToken()?&s:nullptr;}
@@ -64,9 +66,9 @@ struct OwnerScope {
  Game&g;bool entered=false;
  explicit OwnerScope(Game&x,uint32_t expected,uint16_t typeExpected)noexcept:g(x){if(!enabled())return;if(uint32_t(g.eax)!=expected){trace("owner-address-refused",uint32_t(g.eax),expected);return;}safe(g,[&]{
   auto&s=state();if(s.owner){s.invalidate();return;}uint16_t type;{nfs::GuestCopyTransaction tx;type=tx.load<uint16_t>(uint32_t(g.eax)+8);}if(type!=typeExpected){trace("owner-type-refused",type,typeExpected);return;}
-  static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;s.form=expected;s.formType=type;entered=true;trace("owner-entered",expected,type);
+  static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;s.form=expected;s.formType=type;s.life=std::make_shared<SourceLife>();s.life->game=reinterpret_cast<uintptr_t>(&g);s.life->epoch=epoch;entered=true;trace("owner-entered",expected,type);
  });}
- ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);state()=State{};}}
+ ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);if(state().life)state().life->alive.store(false,std::memory_order_release);state()=State{};}}
 };
 struct Adapter {
  static void resolveBackdrop(Game&g)noexcept{
@@ -108,9 +110,10 @@ struct Adapter {
  static void begin(Game&g)noexcept{auto*s=ownerCurrent(g);if(!s)return;safe(g,[&]{
   // A refused frame must not poison this handler's later complete frames.
   // Retry only at its original full-frame boundary; every proof is recaptured.
-  if(s->failed){const auto epoch=s->epoch,serial=s->serial;const auto form=s->form;const auto formType=s->formType;*s=State{};s->game=&g;s->thread=threadToken();s->epoch=epoch;s->serial=serial;s->owner=1;s->form=form;s->formType=formType;}
+  if(s->failed){const auto life=s->life;const auto epoch=s->epoch,serial=s->serial;const auto form=s->form;const auto formType=s->formType;*s=State{};s->game=&g;s->thread=threadToken();s->epoch=epoch;s->serial=serial;s->owner=1;s->form=form;s->formType=formType;s->life=life;}
   if(s->capturing||s->string||s->word||s->serial==UINT64_MAX)throw 1;
-  auto p=std::make_shared<Payload>();p->target=target();p->sourceGame=reinterpret_cast<uintptr_t>(&g);p->form=s->form;p->formType=s->formType;p->headingIndex=headingForType(p->formType);{nfs::GuestCopyTransaction tx;if(!p->headingIndex||tx.load<uint8_t>(byte_512DFB)!=0)throw 1;}p->epoch=s->epoch;p->serial=++s->serial;
+  if(!s->life||!s->life->alive.load(std::memory_order_acquire))throw 1;s->life->content.store(0,std::memory_order_release);
+  auto p=std::make_shared<Payload>();p->life=s->life;p->target=target();p->sourceGame=reinterpret_cast<uintptr_t>(&g);p->form=s->form;p->formType=s->formType;p->headingIndex=headingForType(p->formType);{nfs::GuestCopyTransaction tx;if(!p->headingIndex||tx.load<uint8_t>(byte_512DFB)!=0)throw 1;}p->epoch=s->epoch;p->serial=++s->serial;
   s->stores.clear();s->replay.clear();s->building=std::move(p);s->published.reset();s->metricAddress=s->fontAddress=0;s->capturing=true;
   trace("capture-began",s->formType);
  },"capture-begin-refused");}
@@ -129,7 +132,7 @@ struct Adapter {
    if(n&&c.role==1){auto&shadow=p->commands[n-1];if(shadow.color==0&&shadow.text==c.text&&shadow.x==c.x+1&&shadow.y==c.y+1)shadow.role=1;}
   }
   auto display=nfs_results_text::PreparedText::createCommands(p->commands,nfs_results_text::resultsFont(),p);if(!display)throw 1;
-  auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->building.reset();s->replay.clear();s->capturing=false;
+  auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->life->content.store(p->serial,std::memory_order_release);s->building.reset();s->replay.clear();s->capturing=false;
   trace("frame-published",static_cast<uint32_t>(p->commands.size()),!p->backdropMask.empty());
  },"frame-build-refused");}
  static std::shared_ptr<const Frame>acquire(Game&g)noexcept{auto*s=current(g);if(!s||s->presenting!=1||s->capturing||s->string||s->word||!s->published)return {};std::shared_ptr<const Frame>out;safe(g,[&]{

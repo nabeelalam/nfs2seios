@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "mainQfsSha256": "0151147acd04f0527369a84a8b708dc824a6cf8f60c53842de55f5b2291d2663",
+  "decodedMainSha256": "2beb04bdb2ffc05701279b74854a3a8e6643a89e5e95899c3457185fd7dcac81",
+  "policy": "source-alpha-nibble>=1 and source-index!=255, nearest4x native binary write coverage; authored RGB fitted withoutcrop/stretch, generatedalpha ignored; PMAwithnativecoverage",
+  "items": [
+    {
+      "index": 0,
+      "name": "trk6",
+      "offset": 3441972,
+      "span": 45876,
+      "width": 307,
+      "height": 146,
+      "sourceSha256": "191340cbd524d5d57af34f196659886d9192a95d8ed442bfbfbf75d23ae6b620",
+      "coverageSha256": "1a0bd6eaa7d77d367b9c58d737a16e1c0573e44f6ca2dc38addb6defda554f34",
+      "authoredFile": "trk6-location-remaster-v2.png",
+      "authoredSha256": "1915453687d360437da6f7f08a25500bb7654dfb150fcf66d3840f1c159ed2f2"
+    },
+    {
+      "index": 1,
+      "name": "trk5",
+      "offset": 3396096,
+      "span": 45876,
+      "width": 307,
+      "height": 146,
+      "sourceSha256": "26c36a3fed1ef9f03973045593db31ed6bd67014e85d79b9d88ef98a8f15d8f5",
+      "coverageSha256": "1a0bd6eaa7d77d367b9c58d737a16e1c0573e44f6ca2dc38addb6defda554f34",
+      "authoredFile": "trk5-location-remaster-v1.png",
+      "authoredSha256": "5eb6b21e1d50eece4bee9c085e6d5d9cc10ee3f8c9084e7b60952ca10d8f6f6b"
+    },
+    {
+      "index": 2,
+      "name": "trk8",
+      "offset": 3533720,
+      "span": 46168,
+      "width": 307,
+      "height": 147,
+      "sourceSha256": "4be249c41f98a6edbd2ab88bd6ece77a45ad25ed3a78c24236826fb25089277f",
+      "coverageSha256": "52b2bd36d5d05d26a0b7f2527f314d01db73b32d4a4c459af7fa04578bd3d539",
+      "authoredFile": "trk8-location-remaster-v1.png",
+      "authoredSha256": "642b0ba274117942f01ae6d982055c462bb37da63dbfe841d354a50fb3e0cf7a"
+    },
+    {
+      "index": 3,
+      "name": "trk4",
+      "offset": 3350228,
+      "span": 45868,
+      "width": 307,
+      "height": 146,
+      "sourceSha256": "d9b85dd342cc47cbaa9ee84649f047092e68a5eeede7bbaa850ba847583ad955",
+      "coverageSha256": "1a0bd6eaa7d77d367b9c58d737a16e1c0573e44f6ca2dc38addb6defda554f34",
+      "authoredFile": "trk4-location-remaster-v1.png",
+      "authoredSha256": "a51c16ca68b722229a80450e2915bad86fcd9736438b66cbbae1a44162693f4d"
+    },
+    {
+      "index": 4,
+      "name": "trk1",
+      "offset": 3212640,
+      "span": 45868,
+      "width": 307,
+      "height": 146,
+      "sourceSha256": "841f31a62dab288032d9cb1ccd49c89c991b8472d01253335683c11ab06e7844",
+      "coverageSha256": "1a0bd6eaa7d77d367b9c58d737a16e1c0573e44f6ca2dc38addb6defda554f34",
+      "authoredFile": "trk1-location-remaster-v1.png",
+      "authoredSha256": "3ca86b9008accd6d3b60c9917e66eee854d051bb377c54ee94ce7da34de22bb9"
+    },
+    {
+      "index": 5,
+      "name": "trk3",
+      "offset": 3304352,
+      "span": 45876,
+      "width": 307,
+      "height": 146,
+      "sourceSha256": "a542594ad6db77a530bed36f9510f3ac5425df5a5459f147224124555a00a7b9",
+      "coverageSha256": "1a0bd6eaa7d77d367b9c58d737a16e1c0573e44f6ca2dc38addb6defda554f34",
+      "authoredFile": "trk3-location-remaster-v1.png",
+      "authoredSha256": "a3686747dab56f40bc74a514a00d12737ebbc1816c8c4f7851c3c4a79f0daaf8"
+    },
+    {
+      "index": 6,
+      "name": "trk2",
+      "offset": 3258508,
+      "span": 45844,
+      "width": 307,
+      "height": 146,
+      "sourceSha256": "d5db046026339f32711da5bd08a53a29822f7f5600872a51a9112e3b68a94484",
+      "coverageSha256": "1a0bd6eaa7d77d367b9c58d737a16e1c0573e44f6ca2dc38addb6defda554f34",
+      "authoredFile": "trk2-location-remaster-v1.png",
+      "authoredSha256": "215780977557dd27dd2211f157be98d3adb37562d262af23a0be7e02064d0b02"
+    },
+    {
+      "index": 7,
+      "name": "trk7",
+      "offset": 3487848,
+      "span": 45872,
+      "width": 307,
+      "height": 146,
+      "sourceSha256": "ef10434943299509f617d91e5216f0eda51b59ea5b12e1ef11907ea93c14a927",
+      "coverageSha256": "1a0bd6eaa7d77d367b9c58d737a16e1c0573e44f6ca2dc38addb6defda554f34",
+      "authoredFile": "trk7-location-remaster-v1.png",
+      "authoredSha256": "5433fbb19f9ab3b7e7bed26b8bcb441d4a7f0809ae6cac99c8a1b4bcf40d46b6"
+    }
+  ]
+}

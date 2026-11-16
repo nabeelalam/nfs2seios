@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "localIntegration": 47,
+  "binarySHA256": "40c79da3aa9a6374e30a49ff0b24d5dd0528175bbecdfed291673e4c293c0fda",
+  "scope": "Local desktop known Network Setup Escape fade; physical iPad unverified",
+  "rootReviewedModes": [
+    "One Player",
+    "Split Screen",
+    "Modem",
+    "Serial Link",
+    "Network"
+  ],
+  "authenticatedHistoryBranchObserved": true,
+  "actualDescriptorBindingObserved": true,
+  "freshFadeFrames": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "fadePhases": [
+    140,
+    150,
+    160,
+    170,
+    180,
+    190,
+    200,
+    210,
+    220,
+    230,
+    240,
+    250
+  ],
+  "presentationStartFrame": 1507,
+  "presentationEndFrame": 1519,
+  "noNativeAfterSetupWideEntry": true,
+  "fullAndSidebarNativeProof": "300 selections/600 triangles each; actual frame1 GPU trace plus completion guards for all12freshpresentations",
+  "phase2RetainedReuseObserved": true,
+  "rootViewedReturnedMain": "setup-return-main-2.png",
+  "freshMainProofCount": 2,
+  "cleanExit": true,
+  "all13ResourcesUnchanged": true,
+  "copiedAssetsUnchanged": true,
+  "copiedProfileRestored": true,
+  "notYetProven": [
+    "Runtime phase0/3 interrupted-retention coverage",
+    "Car/track21frame preview changes",
+    "Resize one-frame fallback removal",
+    "Physical iPad UI acceptance",
+    "Final full UI completion"
+  ],
+  "cloudBuilds": 0
+}

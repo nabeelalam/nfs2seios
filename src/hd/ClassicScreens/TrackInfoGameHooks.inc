@@ -14,7 +14,7 @@ inline uintptr_t threadToken()noexcept{static thread_local char value;return rei
 struct Measurement {bool ready=false;uint32_t text=0;int width=0,anchor=0;unsigned alignment=0;};
 struct StaticBitmapScope;
 struct State {
- Game*game=nullptr;uintptr_t thread=0;uint64_t epoch=0,serial=0;unsigned owner=0,presenting=0;
+ Game*game=nullptr;uintptr_t thread=0;uint64_t epoch=0,serial=0;unsigned owner=0,presenting=0,entryPhase=0;
  bool failed=false,capturing=false,string=false,word=false;
  uint32_t textAddress=0,metricAddress=0,fontAddress=0,form=0;uint16_t formType=0;
  struct Store{uint32_t index;uint16_t before,after;};std::vector<Store>stores;
@@ -58,6 +58,57 @@ inline uint32_t staticArchiveIndex(uint32_t archive){nfs::GuestCopyTransaction t
 inline void staticSourceCurrent(const StaticProof&p,unsigned slot){if(slot>=3)throw 1;const auto&d=p.sources[slot];if(d.index>=NFS_TRACK_INFO_SOURCE_COUNT)throw 1;const auto&r=nfs_track_info_sources[d.index];if(r.archive!=p.archiveIndex||r.role!=slot||d.address!=p.archive+r.offset||uint64_t(d.address)+r.span>uint64_t(p.archive)+nfs_track_info_archives[p.archiveIndex].bytes)throw 1;
  if(staticArchiveIndex(p.archive)!=p.archiveIndex)throw 1;nfs::GuestCopyTransaction tx;if(tx.load<uint32_t>(dword_4D40B8)!=p.archive||tx.load<uint8_t>(byte_512DFB)!=p.locale)throw 1;unsigned found=0;for(unsigned k=0;k<nfs_track_info_archives[p.archiveIndex].entries;++k){const auto at=p.archive+16+8*k;bool same=true;for(unsigned j=0;j<4;++j)if(tx.load<uint8_t>(at+j)!=uint8_t(r.name[j]))same=false;if(same){if(tx.load<uint32_t>(at+4)!=r.offset)throw 1;++found;}}if(found!=1)throw 1;unsigned char sha[32];if(!nfs_texture_sha256(static_cast<const unsigned char*>(nfs_host_address(d.address,r.span)),r.span,sha)||std::memcmp(sha,r.sha,32))throw 1;
 }
+// The Track Info opening uses four distinct original animation calls.
+struct EntryPhaseScope {
+ State* owner;
+ unsigned previous=0;
+ EntryPhaseScope(Game& g,unsigned phase) noexcept : owner(ownerCurrent(g)) {
+  if (owner) {
+   previous=owner->entryPhase;
+   owner->entryPhase=phase;
+  }
+ }
+ ~EntryPhaseScope() noexcept {
+  if (owner) owner->entryPhase=previous;
+ }
+};
+
+struct EntryArtSource {
+ uint32_t index=0, address=0, archive=0;
+ uint64_t ownerEpoch=0;
+};
+
+inline bool identifyEntryArt(Game& g, EntryArtSource& result) noexcept {
+ const auto* owner=ownerCurrent(g);
+ const uint32_t slot=uint32_t(g.edx);
+ if (!owner || slot>1) return false;
+ if (slot==0 ? uint32_t(g.ebx)!=1 : uint32_t(g.ecx)!=0) return false;
+ const unsigned role=slot==0?2:0;
+ const uint32_t address=uint32_t(g.eax);
+ try {
+  StaticProof proof;
+  {
+   nfs::GuestCopyTransaction tx;
+   proof.archive=tx.load<uint32_t>(dword_4D40B8);
+   proof.locale=tx.load<uint8_t>(byte_512DFB);
+  }
+  proof.archiveIndex=staticArchiveIndex(proof.archive);
+  for (uint32_t index=0; index<NFS_TRACK_INFO_SOURCE_COUNT; ++index) {
+   const auto& entry=nfs_track_info_sources[index];
+   if (entry.archive!=proof.archiveIndex || entry.role!=role ||
+       uint64_t(proof.archive)+entry.offset!=address) continue;
+   proof.sources[role].index=index;
+   proof.sources[role].address=address;
+   staticSourceCurrent(proof,role);
+   result={index,address,proof.archive,owner->epoch};
+   return true;
+  }
+ } catch (...) {
+  return false;
+ }
+ return false;
+}
+
 inline void beginStatics(Game&g)noexcept{auto*s=ownerCurrent(g);if(!s)return;staticSafe(g,[&]{
  if(s->failed){const auto epoch=s->epoch,serial=s->serial;const auto form=s->form;const auto type=s->formType;*s=State{};s->game=&g;s->thread=threadToken();s->epoch=epoch;s->serial=serial;s->owner=1;s->form=form;s->formType=type;}
  if(s->capturing||s->string||s->word||s->staticScope||s->serial==UINT64_MAX)throw 1;s->staticFailed=false;s->published.reset();auto p=std::make_shared<StaticProof>();{nfs::GuestCopyTransaction tx;p->archive=tx.load<uint32_t>(dword_4D40B8);p->locale=tx.load<uint8_t>(byte_512DFB);}if(p->locale>=6)throw 1;p->archiveIndex=staticArchiveIndex(p->archive);p->target=target();p->plane=plane(p->target);p->epoch=s->epoch;p->serial=s->serial+1;s->staticBuilding=std::move(p);

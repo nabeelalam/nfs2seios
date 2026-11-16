@@ -1,0 +1,16 @@
+{
+  "scope": "Post-preview original-sidebar mismatch diagnostic",
+  "localIntegration": 65,
+  "sourceApplied": true,
+  "acceptanceUnchanged": true,
+  "defaultOff": true,
+  "boundedScalarLogging": true,
+  "rawGameDataLogged": false,
+  "engineHeaderSyntaxPassed": true,
+  "fullBuildPassed": false,
+  "runtimeVerified": false,
+  "reason": "Identify exact retained-target/header/pixel rejection and compare already-read current sidebar against accepted scoped history before implementing the handoff fix",
+  "records64Attempt": "Test stopped at startup before menu input; renderer not exercised",
+  "records64CleanShutdown": true,
+  "physicalIpadVerified": false
+}

@@ -1,0 +1,39 @@
+{
+  "scope": "Local60 Setup five-mode exact-approved-image regression and complete Network Escape return at2360x1640; desktop only",
+  "binarySHA256": "ea12c2fb10e35556b2a58530f948433a88b76e16f0cb519b7ddc8ec405d24954",
+  "modeReferenceMatches": 5,
+  "currentHumanModeReviewClaimed": false,
+  "returnComplete": true,
+  "returnGpuFrameIndices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "continuousOwnedFadeFrames": 12,
+  "nativeFallbacksDuringReturn": 0,
+  "directNextPresentation": "menu-wide",
+  "freshMainProofs": 2,
+  "returnedMainScreenshotReviewed": true,
+  "sourceFix": "Exact pre-composite caption pixels retained through explicit typed current Setup frame; all source/pixel/nativepass guards preserved",
+  "cleanShutdown": {
+    "appGone": true,
+    "copiedProfileRestored": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "ELFUnchanged": true,
+    "launcherExitCode": 0
+  },
+  "newRatioAcceptance": false,
+  "firstVisibleTitleProven": false,
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false
+}

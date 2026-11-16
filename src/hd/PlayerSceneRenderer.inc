@@ -4,6 +4,8 @@
    Queued immutable owners retain raw frame borrows during synchronous begin.
    Only GPU staging and scalar metadata survive begin; finish reads no borrow. */
 #include "PlayerSceneRuntimeAbi.h"
+static void nfs_menu_wide_prepare_player(const NfsPlayerSceneFrameView*,const NfsNativeLogoTargetProof*);
+static void nfs_menu_wide_native_done(uint64_t,int);
 #ifndef NFS_PLAYER_SCENE_THREAD_TOKEN
 #define NFS_PLAYER_SCENE_THREAD_TOKEN() ((uintptr_t)SDL_GetCurrentThreadID())
 #endif
@@ -212,6 +214,7 @@ static int nfs_player_cached_finish(uint64_t serial,unsigned expectedOwnerKind){
  if(memcmp(&target,&nfs_player_renderer.target,sizeof target)||!nfs_logo_p_finish(&nfs_logo_provenance,serial,target.framebuffer)){nfs_player_cancel("target-or-original-pass");return 0;}nfs_player_renderer.nativeArmed=0;
  guard=nfs_player_context_stage();if(!nfs_graphics_scene_save(&saved,&guard))goto lost;
  ok=nfs_player_copy_color(&target);if(!nfs_player_current())goto lost;if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;
+ nfs_menu_wide_native_done(serial,ok);
  nfs_player_trace(ok?"finish-published":"finish-refused",ok?"color-only-commit-before-native-text":"copy-error");nfs_player_renderer.serial=0;nfs_player_renderer.activeOwnerKind=NFS_PLAYER_OWNER_NONE;memset(&nfs_player_renderer.target,0,sizeof nfs_player_renderer.target);return ok;
  lost:nfs_player_abandon();return 0;
 }
@@ -221,14 +224,16 @@ int nfs_private_player_scene_begin(const NfsPlayerSceneFrameView*v){
  unsigned kind;if(!v||v->schema!=NFS_PLAYER_SCENE_RUNTIME_SCHEMA)return nfs_player_begin_refused("player-view",v?v->scene.serial:0);
  kind=v->form==0x4d3050?NFS_BACKGROUND_TAIL_PLAYER1_CAPTION:v->form==0x4d3100?NFS_BACKGROUND_TAIL_PLAYER2_CAPTION:0;
  if(!kind||v->scene.tailKind!=kind)return nfs_player_begin_refused("player-form-tail",v->scene.serial);
- return nfs_player_cached_begin(&v->scene,&v->caption,&v->preview,&v->captionWord,kind);
+ const int accepted=nfs_player_cached_begin(&v->scene,&v->caption,&v->preview,&v->captionWord,kind);
+ if(accepted)nfs_menu_wide_prepare_player(v,&nfs_player_renderer.target);
+ return accepted;
 }
 int nfs_private_player_scene_finish(uint64_t serial){unsigned kind=nfs_player_renderer.activeOwnerKind;if(kind!=NFS_PLAYER_OWNER_ONE&&kind!=NFS_PLAYER_OWNER_TWO)return 0;return nfs_player_cached_finish(serial,kind);}
 int nfs_private_player_scene_cancel(uint64_t serial){
  if(!serial||serial!=nfs_player_renderer.serial||!nfs_player_current()||(nfs_player_renderer.activeOwnerKind!=NFS_PLAYER_OWNER_ONE&&nfs_player_renderer.activeOwnerKind!=NFS_PLAYER_OWNER_TWO))return 0;
  /* CPU-only cancellation may clear only this pending Player image and its
     own matching native arm, never another scene's replacement global pass. */
- nfs_player_cancel("source-proof-revoked");return 1;
+ nfs_menu_wide_native_done(serial,0);nfs_player_cancel("source-proof-revoked");return 1;
 }
 static void nfs_player_renderer_other(void){if(nfs_player_renderer.serial)nfs_player_cancel("other-original-operation");}
 #undef NFS_PLAYER_RENDER_GL

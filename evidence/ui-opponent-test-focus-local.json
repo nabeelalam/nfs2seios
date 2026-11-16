@@ -1,0 +1,95 @@
+{
+  "scope": "Unchanged exact frozen gate evaluated on actual62 pixels; no app/input/source edits",
+  "threshold": 0.82,
+  "frames": [
+    {
+      "file": "frame-0026.png",
+      "fileSHA256": "fe586c5abac5676bfc185243bd926b51b3f1332fd66cbf34d1956fa61913190b",
+      "gate": {
+        "form": "opponents_source",
+        "score": 1.0,
+        "identity": "fixed source car/number/skill labels; roster and values excluded",
+        "classValue": "NOT inferred",
+        "artIdentity": "NOT inferred"
+      },
+      "whites": [
+        220,
+        13,
+        0
+      ],
+      "newestReferenceLabelDice": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "file": "frame-0027.png",
+      "fileSHA256": "6d2e977b48d5a6df7d1c57bb397b2da92951dfbd91e0bf9ba90f1ce133ef15dc",
+      "gate": {
+        "form": "opponents_source",
+        "score": 1.0,
+        "identity": "fixed source car/number/skill labels; roster and values excluded",
+        "classValue": "NOT inferred",
+        "artIdentity": "NOT inferred"
+      },
+      "whites": [
+        220,
+        13,
+        0
+      ],
+      "newestReferenceLabelDice": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "file": "frame-0028.png",
+      "fileSHA256": "d3641302ce33e9a6799c6e6a8eed622c642f8ddf32958763532b36f70146ed14",
+      "gate": {
+        "form": "unknown",
+        "score": 0.713436385255648,
+        "identity": "fixed source car/number/skill labels; roster and values excluded",
+        "classValue": "NOT inferred",
+        "artIdentity": "NOT inferred"
+      },
+      "whites": [
+        0,
+        0,
+        0
+      ],
+      "newestReferenceLabelDice": [
+        0.713436385255648,
+        0.9516728624535316,
+        1.0
+      ]
+    },
+    {
+      "file": "failure.png",
+      "fileSHA256": "344a4e4ab690f2e678887632b6c542cd2b265666705dfd0bd11311d4396e7445",
+      "gate": {
+        "form": "unknown",
+        "score": 0.713436385255648,
+        "identity": "fixed source car/number/skill labels; roster and values excluded",
+        "classValue": "NOT inferred",
+        "artIdentity": "NOT inferred"
+      },
+      "whites": [
+        0,
+        0,
+        0
+      ],
+      "newestReferenceLabelDice": [
+        0.713436385255648,
+        0.9516728624535316,
+        1.0
+      ]
+    }
+  ],
+  "cause": "Unnecessary absolute X11 warp removed existing correct car-row focus while SDL relative pointer mode enabled",
+  "recommendation": "No warp; require existing fresh_source_focus(True) before anyRight; stop unknown; no newreferences or lowerthreshold",
+  "thresholdsOrReferencesChanged": false,
+  "sourceFixRequired": false,
+  "focusedRuntimePending": true
+}

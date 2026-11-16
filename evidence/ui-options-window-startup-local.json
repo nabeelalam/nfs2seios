@@ -1,0 +1,31 @@
+{
+  "scope": "Host test window discovery only; no renderer or Options return acceptance",
+  "run": "B60c",
+  "result": {
+    "failure": "RuntimeError: Owned640x480 window startup timeout",
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0,
+    "observerElapsedSeconds": 141.61192628499998,
+    "preflightElapsedSeconds": 48.17142995500001,
+    "hardObserverBudgetSeconds": 900,
+    "driverAppDeadlineSeconds": 600,
+    "watchdogSIGINTSeconds": 605,
+    "watchdogSIGKILLSeconds": 630,
+    "hardAppBudgetSeconds": 630,
+    "noProfiler": true,
+    "noNewObjects": true,
+    "resolution": [
+      2360,
+      1640
+    ],
+    "wideRun": "Constant native2360x1640; source RGB-normalized Main keyboard input only",
+    "scope": "Desktop sampled pixels and source text gates; renderer acceptance is not artwork identity or first-native-frame/device proof"
+  },
+  "captureCount": 0,
+  "nextAction": "Inspect exact X11 window discovery and launch environment before rerun; preserve ownership gate; same60 binary"
+}

@@ -44,7 +44,7 @@ public:
   const auto&e=caption->evidence();const auto&packet=caption->packet();
   const bool player1=e.policy==nfs_compact_caption::Policy::Player1;
   if((!player1&&e.policy!=nfs_compact_caption::Policy::Player2)||binding.form!=(player1?0x4d3050u:0x4d3100u)||!binding.formGuest||binding.formGuest!=e.formGuest||!binding.game||binding.game!=origin->game()||binding.game!=e.game||!binding.thread||binding.thread!=origin->publisherThread()||!binding.archive||binding.archive!=origin->archive()||!binding.epoch||binding.captionEvent.ownerEpoch!=binding.epoch||!binding.captionEvent.sequence||binding.captionEvent.iteration||e.route!=nfs_compact_caption::Route::InitialMain||!e.policyThread||!e.lifetime||!e.serial||!e.resourceSerial||!packet||packet->serial()!=e.serial||packet->surface().lifetime!=e.lifetime||packet->pixels()!=bg::Side||packet->commands()!=1||!packet->font())return {};
-  if(e.incomingEbp!=origin->formGuest()&&e.incomingEbp!=UINT32_MAX&&e.incomingEbp!=UINT32_MAX-1)return {};
+  if(e.incomingEbp!=origin->formGuest()&&e.incomingEbp!=0&&e.incomingEbp!=UINT32_MAX&&e.incomingEbp!=UINT32_MAX-1)return {};
   // Recheck exact immutable source metadata; policy-local TLS is deliberately
   // not equated to the independently supplied publisher-thread occurrence.
   if(e.requestedResource!=(player1?2u:3u)||e.inputCategory!=1||e.inputAnchor!=168||e.inputY!=(player1?198:234)||e.measureWidth!=(player1?68:70)||e.measureAnchor!=168||e.measureKind!=2||e.command.role!=1||e.command.sourceSize!=18||e.command.alignment!=2||e.command.color!=0xffff||e.command.x!=(player1?100:98)||e.command.y!=e.inputY||e.command.advance!=e.measureWidth||e.command.length!=10||std::memcmp(e.command.text.data(),player1?"player one":"player two",10))return {};

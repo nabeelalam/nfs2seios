@@ -1,0 +1,24 @@
+{
+  "scope": "Local desktop opening handoff; no physical iPad acceptance",
+  "integrationVersion": 17,
+  "binarySHA256": "4ac31b31717cf6a6674d3554d516af33438d9ac85e20c010ff557e1dddcee9e0",
+  "widePublicationCounts": {
+    "1": 0,
+    "3": 0,
+    "4": 59,
+    "5": 0,
+    "8": 5,
+    "9": 0,
+    "10": 0
+  },
+  "cause": "Sidebar mapRole is a placeholder. Exact current destination/domain receipt supplies the actual producer role; stale, foreign and ambiguous matches reject.",
+  "integrity": {
+    "appGone": true,
+    "ELFUnchanged": true,
+    "all12ResourcesUnchanged": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true
+  },
+  "reviewedSamples": "Menu-entry frames2..5 have zero black left-side columns at mid-height; sample3 visually reviewed with HD panel/logo. Title0/1 remains independently aspect-fitted.",
+  "remaining": "Child sidebars and car-intro wide; no Apple package or publication"
+}

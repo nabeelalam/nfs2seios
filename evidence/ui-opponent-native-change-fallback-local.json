@@ -1,0 +1,112 @@
+{
+  "scope": "Actual local native2360 class changes reveal presentation fallback; separateReturn19 verified",
+  "integration": 62,
+  "gameLogSHA256": "0a9c01fe4a67580b310614b690059c1f6a1229e422e72fcf8f77aee756bec077",
+  "updates": [
+    {
+      "index": 1,
+      "selectionAfter": "13",
+      "sourceSerialAfter": "3",
+      "nativeInputExtent": [
+        2360,
+        1640
+      ],
+      "nativeFallbackRuns": [
+        {
+          "choice": "native",
+          "output": "2360x1640",
+          "frame": "2350",
+          "previousFrames": "14",
+          "presented": "1",
+          "capped": "0",
+          "framesUntilNextChoice": 124,
+          "nextChoice": "menu-wide"
+        }
+      ],
+      "HDPreviewArmPresent": false,
+      "currentHumanReview": false,
+      "priorReviewedReferenceMatched": true
+    },
+    {
+      "index": 2,
+      "selectionAfter": "14",
+      "sourceSerialAfter": "4",
+      "nativeInputExtent": [
+        2360,
+        1640
+      ],
+      "nativeFallbackRuns": [
+        {
+          "choice": "native",
+          "output": "2360x1640",
+          "frame": "2521",
+          "previousFrames": "47",
+          "presented": "1",
+          "capped": "0",
+          "framesUntilNextChoice": 124,
+          "nextChoice": "menu-wide"
+        }
+      ],
+      "HDPreviewArmPresent": false,
+      "currentHumanReview": false,
+      "priorReviewedReferenceMatched": true
+    }
+  ],
+  "rejectedOriginalFrameScopeNotes": 42,
+  "missingHDArmIsNotEvidenceOriginalAnimationSkipped": true,
+  "identifiedCause": "Opponent was not enrolled in existing scoped343 source history; capturestage2 lacksMTslot0 before incomingclasssource",
+  "return19Complete": true,
+  "returnSource": {
+    "sourceArm": true,
+    "route": 2,
+    "routeName": "EscapeReverse19",
+    "runs": [
+      {
+        "startFrame": 2734,
+        "frames": 19,
+        "nextChoice": "menu-wide",
+        "presented": true,
+        "output": "2360x1640"
+      }
+    ],
+    "sourceLoopFrames": 19,
+    "sourceGpuFrameIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sourceGpuComplete": true,
+    "loopComplete": true,
+    "nativeRoutes": [],
+    "complete": true
+  },
+  "freshMainProofsAfterReturn": 2,
+  "complete": false,
+  "runtimeSHAlogPresent": false,
+  "physicalIpadVerified": false,
+  "cleanup": {
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0
+  }
+}

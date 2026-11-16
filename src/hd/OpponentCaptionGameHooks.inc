@@ -1,0 +1,191 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+#include "SoftwareFramePacket.h"
+#include "SoftwareFontProvider.h"
+#ifndef NFS_OPPONENT_CAPTION_TEXT_TEST
+#include "ContinuousLogoGameHooks.inc"
+#endif
+#include <atomic>
+#include <exception>
+#include <limits>
+#include <new>
+#include <cstring>
+// Exact original selector4/dword4D3E74 -> resource4/off4D3204.
+// Source record: anchor168,y271; original swiss18 advances sum68,left100.
+namespace nfs_opponent_caption {
+struct CaptionPolicy final {
+ static constexpr uint32_t selector=4,resource=4;
+ static constexpr unsigned textLength=9;
+ static constexpr int32_t measureWidth=68,textLeft=100,textY=271;
+ static uint32_t formAddress()noexcept{return uint32_t(guest_address(off_4D3204));}
+ static uint32_t entryAddress()noexcept{return uint32_t(guest_address(dword_4D3E74));}
+ static const char*text()noexcept{return "opponents";}
+ static const char*unsupportedTextReason()noexcept{return "sidebar-opponents-text";}
+};
+}
+#include "OpponentCaptionProof.h"
+#include <algorithm>
+namespace nfs_opponent_caption {
+constexpr unsigned Width=343,Height=480;constexpr size_t Pixels=Width*Height;
+enum class Failure {none,owner,nested,read,target,fontState,unsupportedText,palette,sourceChanged,command,word,unwind,capacity,retired,selection,postPlane};
+inline const char*failureName(Failure f)noexcept{switch(f){case Failure::none:return "none";case Failure::owner:return "owner";case Failure::nested:return "nested";case Failure::read:return "read";case Failure::target:return "compact-target";case Failure::fontState:return "font-state";case Failure::unsupportedText:return CaptionPolicy::unsupportedTextReason();case Failure::palette:return "palette";case Failure::sourceChanged:return "state-changed";case Failure::command:return "command";case Failure::word:return "original-word";case Failure::unwind:return "unwind";case Failure::capacity:return "capacity";case Failure::retired:return "retired";case Failure::selection:return "selection";case Failure::postPlane:return "post-plane";}return "unknown";}
+enum class SourceMeasureAlignment : uint32_t {center=1,right=2};
+struct Current {nfs_logo_capture::Target target{};nfs_soft::SurfaceIdentity identity{};uint32_t archive=0,font=0,callback=0,palette=0,color=0,mode=0,flags=0,format=0,selector=0,entry=0,entryWord=0,resource=0;int32_t originX=0,originY=0,size=0;std::array<uint32_t,16> paletteWords{};std::array<uint8_t,16> fontHeader{};};
+struct State {
+ std::shared_ptr<const nfs_soft::FontCatalog> font; nfs_soft::FramePacketBuilder builder;
+ std::shared_ptr<const nfs_soft::FramePacket> packet;std::vector<uint16_t> pixels;
+ std::shared_ptr<const nfs_opponent_caption_source::Proof>proof;nfs_opponent_caption_source::Evidence evidence{};
+ std::shared_ptr<const nfs_main_sidebar_origin::Proof>initialOrigin;std::shared_ptr<std::atomic<bool>>initialLife;Current initialTarget{};uint32_t initialPreviousEbp=0;unsigned initialDepth=0;
+ bool resourceTracked=false,resourceActive=false,resourceInvalid=false,resolvedSeen=false,sourceStringComplete=false,resourceComplete=false;uint64_t nextResource=0;
+ void clearEvidence()noexcept{proof.reset();evidence={};resourceTracked=resourceActive=resourceInvalid=resolvedSeen=sourceStringComplete=resourceComplete=false;}
+ void invalidateEvidence()noexcept{proof.reset();resourceInvalid=true;}
+ uintptr_t game=0;unsigned ownerDepth=0,tailDepth=0,glyphDepth=0,stringsInTail=0;uint64_t lifetime=0,serial=0,nextString=0,string=0,glyph=0,failures=0;
+ int32_t diagnosticX=0,diagnosticY=0,diagnosticAdvance=0,diagnosticOriginX=0,diagnosticOriginY=0;int64_t diagnosticCenter=0;uint32_t diagnosticStage=0,diagnosticTargetDiff=0,diagnosticFontDiff=0,diagnosticBuilder=0;bool diagnosticCaptured=false,diagnosticTailAttempted=false,diagnosticTailCaptured=false,diagnosticAcquireAttempted=false,diagnosticAcquireCaptured=false,diagnosticAcquireMatch=false;uint32_t diagnosticTailTargetDiff=0,diagnosticAcquireTargetDiff=0;
+ bool tailInitial=false;bool recording=false,measureSeen=false,measureUsed=false;Failure failure=Failure::none;Current current{},measureFont{};uint32_t ownerWindow=0,measureString=0;int32_t measureWidth=0,measureAnchor=0;SourceMeasureAlignment measureKind=SourceMeasureAlignment::center;bool diagnosticMeasurePointerMatch=false;
+ explicit State(std::shared_ptr<const nfs_soft::FontCatalog> f):font(std::move(f)),builder(font),pixels(Pixels){}
+ void reject(Failure f)noexcept{diagnosticBuilder=uint32_t(builder.failure());failure=f;if(f!=Failure::none&&failures!=UINT64_MAX)++failures;builder.invalidate();packet.reset();invalidateEvidence();recording=false;string=glyph=0;glyphDepth=0;}
+ bool advance(uint64_t&v)noexcept{if(v==UINT64_MAX){reject(Failure::capacity);return false;}++v;return true;}
+};
+inline uintptr_t token()noexcept{static thread_local unsigned char t;return reinterpret_cast<uintptr_t>(&t);}
+inline std::atomic<uintptr_t>&ownerThread()noexcept{static std::atomic<uintptr_t> t{0};return t;}
+struct Storage{State*p=nullptr;~Storage(){delete p;if(ownerThread().load()==token())ownerThread().store(0);}};
+inline Storage&storage(){static thread_local Storage s;return s;}
+inline State*state()noexcept{if(ownerThread().load(std::memory_order_acquire)!=token())return nullptr;return storage().p;}
+inline State*current(Game&g)noexcept{auto*s=state();return s&&s->game==reinterpret_cast<uintptr_t>(&g)&&s->ownerDepth==1?s:nullptr;}
+inline bool sameTarget(const Current&a,const Current&b)noexcept{return a.archive==b.archive&&a.identity==b.identity&&nfs_logo_capture::same(a.target,b.target);}
+// CPU-only diagnostics compare observations already captured by the normal path.
+inline uint32_t targetDiff(const Current&a,const Current&b)noexcept{return uint32_t(a.target.w!=b.target.w)|(uint32_t(a.target.header!=b.target.header)<<1)|(uint32_t(a.target.x!=b.target.x)<<2)|(uint32_t(a.target.y!=b.target.y)<<3)|(uint32_t(a.target.owner!=b.target.owner)<<4)|(uint32_t(a.target.ownerWords!=b.target.ownerWords)<<5)|(uint32_t(a.target.ownerState!=b.target.ownerState)<<6)|(uint32_t(!(a.identity==b.identity))<<7)|(uint32_t(a.archive!=b.archive)<<8);}
+inline uint32_t fontDiff(const Current&a,const Current&b)noexcept{return uint32_t(a.font!=b.font)|(uint32_t(a.callback!=b.callback)<<1)|(uint32_t(a.palette!=b.palette)<<2)|(uint32_t(a.color!=b.color)<<3)|(uint32_t(a.mode!=b.mode)<<4)|(uint32_t(a.flags!=b.flags)<<5)|(uint32_t(a.format!=b.format)<<6)|(uint32_t(a.size!=b.size)<<7)|(uint32_t(a.originX!=b.originX||a.originY!=b.originY)<<8)|(uint32_t(a.paletteWords!=b.paletteWords)<<9)|(uint32_t(a.fontHeader!=b.fontHeader)<<10);}
+inline bool sameFont(const Current&a,const Current&b)noexcept{return sameTarget(a,b)&&a.font==b.font&&a.callback==b.callback&&a.palette==b.palette&&a.color==b.color&&a.mode==b.mode&&a.flags==b.flags&&a.format==b.format&&a.size==b.size&&a.originX==b.originX&&a.originY==b.originY&&a.paletteWords==b.paletteWords&&a.fontHeader==b.fontHeader;}
+// Each fixed policy authenticates its exact lexical40C160 incoming form and
+// incoming40BBE0 EBP, plus its own Main selector/table entry/resource tuple.
+// Ambient dword4D243C is not a substitute for this exact incoming owner.
+// Reads complete actual owner/header and all343X/480Y entries; never pads to640.
+inline bool capture(State&s,Current&c,bool pixels,bool fontState)noexcept{try{nfs::GuestCopyTransaction tx;if((tx.load<uint32_t>(byte_4D3ECC)>>16)!=CaptionPolicy::selector)return false;const uint32_t entry=tx.load<uint32_t>(uint32_t(guest_address(off_4D3ED0))+CaptionPolicy::selector*4);c.selector=CaptionPolicy::selector;c.entry=entry;if(entry!=CaptionPolicy::entryAddress())return false;c.entryWord=tx.load<uint32_t>(entry);c.resource=c.entryWord>>16;if(c.resource!=CaptionPolicy::resource)return false;nfs_logo_publisher::target(tx,c.target);const auto&w=c.target.w;if(w[1]!=Width||w[2]!=Height||w[7]!=0x7810||w[10]!=686||w[13]||!c.target.owner||(c.target.header[0]&127)!=0x78||c.target.header[1]!=(Width|(Height<<16))||w[3]>w[5]||w[5]>Width||w[4]>w[6]||w[6]>Height)return false;for(unsigned k=0;k<Width;++k)if(c.target.x[k]!=2*k)return false;for(unsigned k=0;k<Height;++k)if(c.target.y[k]!=16+686*k)return false;for(unsigned k:{0u,1u,2u,7u,8u,10u,11u,12u,13u})if(c.target.ownerWords[k]!=w[k])return false;
+ if(uint64_t(w[8])+16+Pixels*2>0x100000000ULL)return false;c.archive=tx.load<uint32_t>(dword_4D40B8);if(!c.archive)return false;c.identity.lifetime=s.lifetime;std::copy(w.begin(),w.end(),c.identity.geometry.begin());auto&a=c.identity.geometry;a[14]=c.target.x[0];a[15]=c.target.x[1];a[16]=c.target.x[342];a[17]=c.target.y[0];a[18]=c.target.y[1];a[19]=c.target.y[479];if(!c.identity.valid())return false;
+ if(fontState){c.font=tx.load<uint32_t>(dword_4DD770);c.callback=tx.load<uint32_t>(dword_4DD77C);c.palette=tx.load<uint32_t>(dword_4DD774);c.color=tx.load<uint32_t>(dword_4DD714);c.mode=tx.load<uint32_t>(dword_4D20A0);c.flags=tx.load<uint8_t>(byte_4DB25E);c.format=tx.load<uint8_t>(byte_4DB25C);c.originX=tx.load<int32_t>(dword_4DD6F4);c.originY=tx.load<int32_t>(dword_4DD6F8);c.size=tx.load<int32_t>(dword_4E54AC);if(!c.font||!c.palette||c.callback!=uint32_t(game_id_sub_4A5830)||c.mode||c.flags||c.format!=16||c.size!=18||c.color>65535)return false;if(uint64_t(c.font)+16>0x100000000ULL||uint64_t(c.palette)+64>0x100000000ULL)return false;nfs_logo_publisher::checked(c.font,16);std::memcpy(c.fontHeader.data(),nfs_host_address(c.font,16),16);nfs_logo_publisher::checked(c.palette,64);for(unsigned k=0;k<16;++k)c.paletteWords[k]=tx.load<uint32_t>(c.palette+4*k);}
+ if(pixels){nfs_logo_publisher::checked(w[8],16+Pixels*2);std::memcpy(s.pixels.data(),nfs_host_address(w[8]+16,Pixels*2),Pixels*2);}nfs_logo_capture::Target after{};nfs_logo_publisher::target(tx,after);return nfs_logo_capture::same(after,c.target);
+ }catch(...){return false;}}
+struct OwnerScope {State*s=nullptr;bool entered=false;int unwind=0;explicit OwnerScope(Game&g)noexcept{
+ if(uint32_t(g.eax)!=CaptionPolicy::formAddress()||!nfs_logo_publisher::enabled())return;
+ auto font=nfs_soft::acquireFontCatalog();if(!font)return;uintptr_t expected=0,t=token();if(!ownerThread().compare_exchange_strong(expected,t)&&expected!=t)return;
+ auto&slot=storage();if(!slot.p){try{slot.p=new State(std::move(font));}catch(...){ownerThread().store(0);return;}}s=slot.p;unwind=nfs_logo_publisher::exceptions();entered=true;if(s->ownerDepth++){s->reject(Failure::nested);return;}s->reject(Failure::owner);if(!s->advance(s->lifetime))return;s->game=reinterpret_cast<uintptr_t>(&g);s->ownerWindow=0;s->tailDepth=0;s->failure=Failure::none;
+ }~OwnerScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->reject(Failure::unwind);if(s->ownerDepth&&!--s->ownerDepth){s->reject(Failure::owner);s->game=0;s->tailDepth=0;}}};
+inline bool playerProofPolicy()noexcept{return false;}
+// Ordinary proofs are fixed policies; Main-origin admission remains Player-only.
+inline bool childInitialProofPolicy()noexcept{return CaptionPolicy::selector==4&&CaptionPolicy::resource==4&&CaptionPolicy::measureWidth==68&&CaptionPolicy::textLeft==100&&CaptionPolicy::textY==271;}
+inline bool ordinaryProofPolicy()noexcept{return childInitialProofPolicy();}
+inline nfs_opponent_caption_source::Policy proofPolicy()noexcept{return nfs_opponent_caption_source::Policy::Opponents;}
+// Admission is a separate exact caller observation, never a substitute for the
+// ordinary incoming-EBP guard. Publisher and policy TLS tokens are distinct.
+// Original410414 returns -2 for Escape at410743;40C160 copies the
+// result into EBP before40C6F2 and writes it to4D243C at40CA58, as for -1.
+// Preserve the actual prior value: Main, -1 and -2 are separate snapshots,
+// never interchangeable mid-scope even when EBP and the global change together.
+inline bool initialContext(State&s,Game&g,const Current&c)noexcept{
+ const auto&p=s.initialOrigin;if(s.initialDepth!=1||!s.initialLife||!s.initialLife->load(std::memory_order_acquire)||!p||!p->current()||!p->frame()||!p->catalog()||p->game()!=reinterpret_cast<uintptr_t>(&g)||p->publisherThread()!=nfs_logo_publisher::threadToken()||p->formGuest()!=uint32_t(guest_address(off_4D3EC4))||(s.initialPreviousEbp!=p->formGuest()&&s.initialPreviousEbp!=0&&s.initialPreviousEbp!=UINT32_MAX&&s.initialPreviousEbp!=UINT32_MAX-1)||uint32_t(g.ebp)!=s.initialPreviousEbp||c.archive!=p->archive())return false;
+ try{nfs::GuestCopyTransaction tx;if(tx.load<uint32_t>(dword_4D243C)!=s.initialPreviousEbp)return false;const uint32_t selection=tx.load<uint32_t>(dword_4D2314+2),slot=selection>>16;if(slot>1||selection!=c.target.ownerState[0])return false;const uint32_t h0=tx.load<uint32_t>(dword_4D231C),h1=tx.load<uint32_t>(dword_4D2320),chosen=slot?h1:h0,other=slot?h0:h1;if(!chosen||chosen!=c.target.owner||h0!=c.target.ownerState[1]||h1!=c.target.ownerState[2]||other==chosen)return false;if(uint64_t(chosen)+56>UINT64_C(0x100000000)||tx.load<uint32_t>(chosen+32)!=c.target.w[8])return false;if(other&&(uint64_t(other)+56>UINT64_C(0x100000000)||tx.load<uint32_t>(other+32)==c.target.w[8]))return false;return p->current();}catch(...){return false;}
+}
+inline bool initialPre(State&s,Game&g,const Current&c)noexcept{
+ if(!initialContext(s,g,c)||uint32_t(g.esi)!=CaptionPolicy::formAddress())return false;const auto&p=s.initialOrigin->post();return p.valid&&p.width==Width&&p.height==Height&&nfs_main_sidebar_origin::sameRetainedTarget(p.target,c.target)&&std::equal(s.pixels.begin(),s.pixels.end(),p.pixels.begin());
+}
+struct InitialCallerScope {Game&g;State*s=nullptr;bool entered=false;int unwind=0;
+ InitialCallerScope(Game&game,std::shared_ptr<const nfs_main_sidebar_origin::Proof>origin)noexcept:g(game){s=current(g);if(!s||!childInitialProofPolicy()||uint32_t(g.esi)!=CaptionPolicy::formAddress()){s=nullptr;return;}entered=true;unwind=nfs_logo_publisher::exceptions();if(s->initialDepth++){if(s->initialLife)s->initialLife->store(false,std::memory_order_release);s->reject(Failure::nested);return;}s->initialOrigin=std::move(origin);s->initialPreviousEbp=uint32_t(g.ebp);try{s->initialLife=std::make_shared<std::atomic<bool>>(true);}catch(...){s->initialLife.reset();s->reject(Failure::capacity);return;}Current c;if(s->recording||s->tailDepth||!capture(*s,c,true,false)||!initialPre(*s,g,c)){s->initialLife->store(false,std::memory_order_release);s->reject(Failure::owner);return;}s->initialTarget=c;
+ }
+ ~InitialCallerScope(){if(!entered)return;if(s->initialDepth==1){Current c;const bool okay=s==current(g)&&nfs_logo_publisher::exceptions()==unwind&&uint32_t(g.esi)==CaptionPolicy::formAddress()&&!s->recording&&!s->tailDepth&&s->packet&&capture(*s,c,true,false)&&initialContext(*s,g,c)&&sameTarget(c,s->initialTarget)&&s->packet->matches(c.identity,s->serial,s->pixels.data(),Pixels);if(!okay){if(s->initialLife)s->initialLife->store(false,std::memory_order_release);s->reject(Failure::sourceChanged);}s->initialOrigin.reset();s->initialLife.reset();}if(s->initialDepth)--s->initialDepth;}
+};
+struct TailScope {Game&g;State*s=nullptr;bool entered=false;int unwind=0;explicit TailScope(Game&game)noexcept:g(game){s=current(g);if(!s)return;const bool ordinary=uint32_t(g.ebp)==CaptionPolicy::formAddress();if(ordinary&&s->initialDepth){s->reject(Failure::owner);return;}s->tailInitial=!ordinary;if(!ordinary){Current c;if((!playerProofPolicy()&&!childInitialProofPolicy())||!capture(*s,c,true,false)||!initialPre(*s,g,c)){s->reject(Failure::owner);return;}}unwind=nfs_logo_publisher::exceptions();entered=true;if(s->tailDepth++){s->reject(Failure::nested);return;}s->reject(Failure::none);s->clearEvidence();s->stringsInTail=0;s->measureSeen=s->measureUsed=false;s->measureString=0;s->measureWidth=s->measureAnchor=0;s->diagnosticMeasurePointerMatch=false;s->measureKind=SourceMeasureAlignment::center;s->diagnosticStage=s->diagnosticTargetDiff=s->diagnosticFontDiff=s->diagnosticBuilder=0;s->diagnosticCaptured=s->diagnosticTailAttempted=s->diagnosticTailCaptured=s->diagnosticAcquireAttempted=s->diagnosticAcquireCaptured=s->diagnosticAcquireMatch=false;s->diagnosticTailTargetDiff=s->diagnosticAcquireTargetDiff=0;s->diagnosticX=s->diagnosticY=s->diagnosticAdvance=s->diagnosticOriginX=s->diagnosticOriginY=0;s->diagnosticCenter=0;Current c;if(!capture(*s,c,true,false)){s->reject(Failure::target);return;}if(!ordinary&&(!initialPre(*s,g,c)||!sameTarget(c,s->initialTarget))){s->reject(Failure::sourceChanged);return;}s->current=c;s->ownerWindow=c.target.owner;if(!s->advance(s->serial)||!s->builder.begin(c.identity,s->serial,s->pixels.data(),Pixels)){s->reject(Failure::command);return;}s->failure=Failure::none;s->recording=true;
+ }~TailScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->reject(Failure::unwind);if(s->tailDepth==1&&s->recording){Current c;const bool pending=s->string||s->glyph||s->glyphDepth;if(!pending){s->diagnosticTailAttempted=true;s->diagnosticTailCaptured=capture(*s,c,true,false);s->diagnosticTailTargetDiff=targetDiff(c,s->current);}if(pending||!s->diagnosticTailCaptured||!sameTarget(c,s->current)){s->reject(Failure::postPlane);}else{auto packet=s->builder.finish(c.identity,s->pixels.data(),Pixels);s->recording=false;if(!packet){s->diagnosticBuilder=uint32_t(s->builder.failure());s->reject(Failure::postPlane);}else{s->packet=std::move(packet);s->failure=Failure::none;
+ if(s->resourceTracked&&!s->resourceInvalid&&!s->resourceActive&&s->resourceComplete&&s->resolvedSeen&&s->sourceStringComplete&&s->measureSeen&&s->measureUsed&&s->stringsInTail==1&&s->packet->commands()==1&&s->evidence.lifetime==s->lifetime&&s->evidence.serial==s->serial&&s->evidence.game==s->game&&(s->evidence.route==nfs_opponent_caption_source::Route::OrdinaryEbp||initialContext(*s,g,c))){try{s->proof=std::shared_ptr<const nfs_opponent_caption_source::Proof>(new nfs_opponent_caption_source::Proof(s->packet,s->evidence,s->evidence.route==nfs_opponent_caption_source::Route::InitialMain?s->initialOrigin:std::shared_ptr<const nfs_main_sidebar_origin::Proof>{},s->evidence.route==nfs_opponent_caption_source::Route::InitialMain?s->initialLife:std::shared_ptr<std::atomic<bool>>{}));}catch(...){s->proof.reset();}}
+ }}}if(s->tailDepth)--s->tailDepth;}};
+inline nfs_opponent_caption_source::Snapshot proofSnapshot(const Current&c)noexcept{
+ nfs_opponent_caption_source::Snapshot p;p.target=c.target;p.identity=c.identity;p.archive=c.archive;p.font=c.font;p.callback=c.callback;p.palette=c.palette;p.color=c.color;p.mode=c.mode;p.flags=c.flags;p.format=c.format;p.selector=c.selector;p.entry=c.entry;p.entryWord=c.entryWord;p.resource=c.resource;p.originX=c.originX;p.originY=c.originY;p.size=c.size;p.paletteWords=c.paletteWords;p.fontHeader=c.fontHeader;return p;
+}
+inline bool evidenceText(State&s,uint32_t at)noexcept{if(!at||uint64_t(at)+CaptionPolicy::textLength+1>UINT64_C(0x100000000))return false;try{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<CaptionPolicy::textLength;++k)if(tx.load<uint8_t>(at+k)!=uint8_t(CaptionPolicy::text()[k]))return false;return tx.load<uint8_t>(at+CaptionPolicy::textLength)==0;}catch(...){return false;}}
+struct ResourceScope {Game&g;State*s=nullptr;bool entered=false;int unwind=0;
+ explicit ResourceScope(Game&game)noexcept:g(game){s=current(g);if(!s||!s->recording||s->tailDepth!=1||!ordinaryProofPolicy()){s=nullptr;return;}if(s->resourceActive||s->resourceTracked){s->invalidateEvidence();s=nullptr;return;}s->clearEvidence();s->resourceTracked=s->resourceActive=true;entered=true;unwind=nfs_logo_publisher::exceptions();auto&e=s->evidence;e.policy=proofPolicy();e.game=s->game;e.policyThread=token();e.formGuest=CaptionPolicy::formAddress();e.incomingEbp=uint32_t(g.ebp);e.lifetime=s->lifetime;e.serial=s->serial;e.requestedResource=uint32_t(g.eax);e.inputCategory=uint32_t(g.ecx);e.inputAnchor=int32_t(g.edx);e.inputY=int32_t(g.ebx);if(s->nextResource==UINT64_MAX){s->invalidateEvidence();return;}e.resourceSerial=++s->nextResource;if(s->tailInitial){e.route=nfs_opponent_caption_source::Route::InitialMain;if(!initialContext(*s,g,s->current))s->invalidateEvidence();}else if(e.incomingEbp!=e.formGuest)s->invalidateEvidence();if(e.requestedResource!=CaptionPolicy::resource||e.inputAnchor!=168||e.inputY!=CaptionPolicy::textY||e.inputCategory!=1)s->invalidateEvidence();}
+ ~ResourceScope(){if(!entered)return;if(s!=current(g)||nfs_logo_publisher::exceptions()>unwind||!s->recording||s->string||s->glyph||s->glyphDepth||!s->resolvedSeen||!s->measureSeen||!s->measureUsed||!s->sourceStringComplete||s->stringsInTail!=1||!evidenceText(*s,s->evidence.textGuest))s->invalidateEvidence();s->resourceActive=false;s->resourceComplete=!s->resourceInvalid;}
+};
+// Inserted only immediately after actual41B710 returns within405580.
+inline void resolvedResource(Game&g,uint32_t text)noexcept{auto*s=current(g);if(!s||!s->recording||!s->resourceActive)return;if(s->resourceInvalid||s->resolvedSeen||s->measureSeen||s->string||s->glyph||!text){s->invalidateEvidence();return;}Current c;if(!capture(*s,c,false,true)||!sameTarget(c,s->current)||!evidenceText(*s,text)){s->invalidateEvidence();return;}s->evidence.textGuest=text;s->evidence.resolved=proofSnapshot(c);s->resolvedSeen=true;}
+// Only the original405580 right/center482424 returns call this hook.
+// Measurement sums glyph advances; the renderer may apply kerning separately.
+// Original405D10 changes color/palette after measurement, so those are checked
+// at String entry/exit, not compared against this pre-color measurement snapshot.
+inline bool sameMeasureFont(const Current&a,const Current&b)noexcept{return sameTarget(a,b)&&a.font==b.font&&a.callback==b.callback&&a.mode==b.mode&&a.flags==b.flags&&a.format==b.format&&a.size==b.size&&a.originX==b.originX&&a.originY==b.originY&&a.fontHeader==b.fontHeader;}
+inline void measured(Game&g,uint32_t text,int32_t width,SourceMeasureAlignment kind)noexcept{auto*s=current(g);if(!s||!s->recording||s->tailDepth!=1)return;if(s->measureSeen||s->string||s->glyph||s->stringsInTail||!text||width!=CaptionPolicy::measureWidth||int32_t(g.esi)!=168||(kind!=SourceMeasureAlignment::center&&kind!=SourceMeasureAlignment::right)){s->reject(Failure::read);return;}Current c;if(!capture(*s,c,false,true)||!sameTarget(c,s->current)){s->reject(Failure::fontState);return;}s->measureFont=c;s->measureString=text;s->measureWidth=width;s->measureAnchor=int32_t(g.esi);s->measureKind=kind;s->measureSeen=true;if(s->resourceActive){if(s->resourceInvalid||!s->resolvedSeen||text!=s->evidence.textGuest||s->evidence.resolved.font!=c.font||s->evidence.resolved.callback!=c.callback||s->evidence.resolved.size!=c.size||s->evidence.resolved.fontHeader!=c.fontHeader||s->evidence.resolved.originX!=c.originX||s->evidence.resolved.originY!=c.originY)s->invalidateEvidence();else{s->evidence.measure=proofSnapshot(c);s->evidence.measureWidth=width;s->evidence.measureAnchor=s->measureAnchor;s->evidence.measureKind=uint32_t(kind);}}}
+struct StringScope {Game&g;State*s=nullptr;nfs_soft::TextCommand command{};uint64_t string=0;Current entered{};int unwind=0;explicit StringScope(Game&game)noexcept:g(game){s=current(g);if(!s||!s->recording||s->tailDepth!=1)return;if(s->string||s->glyph||s->stringsInTail){s->reject(Failure::nested);return;}unwind=nfs_logo_publisher::exceptions();s->diagnosticStage=1;s->diagnosticX=int32_t(g.edx);s->diagnosticY=int32_t(g.ebx);try{{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<96;++k){uint64_t at=uint64_t(uint32_t(g.eax))+k;if(at>UINT32_MAX)throw 1;uint8_t ch=tx.load<uint8_t>(uint32_t(at));if(!ch){command.length=k;break;}if(k==95||ch<32||ch>126)throw 1;command.text[k]=ch;}}if(command.length!=CaptionPolicy::textLength||std::memcmp(command.text.data(),CaptionPolicy::text(),CaptionPolicy::textLength)||g.ebx!=CaptionPolicy::textY||g.edx!=CaptionPolicy::textLeft){s->reject(Failure::unsupportedText);return;}s->diagnosticCaptured=capture(*s,entered,false,true);s->diagnosticTargetDiff=targetDiff(entered,s->current);s->diagnosticOriginX=entered.originX;s->diagnosticOriginY=entered.originY;s->diagnosticStage=2;if(!s->diagnosticCaptured||!sameTarget(entered,s->current)||entered.color!=0xffff){s->reject(Failure::fontState);return;}s->diagnosticMeasurePointerMatch=s->measureString==uint32_t(g.eax);if(!s->measureSeen||s->measureUsed||!s->diagnosticMeasurePointerMatch){s->reject(Failure::read);return;}if(s->measureKind!=SourceMeasureAlignment::right){s->reject(Failure::unsupportedText);return;}if(!sameMeasureFont(s->measureFont,entered)){s->reject(Failure::fontState);return;}s->measureUsed=true;if(s->resourceActive&&(s->resourceInvalid||!s->resolvedSeen||s->evidence.textGuest!=uint32_t(g.eax)))s->invalidateEvidence();command.advance=s->measureWidth;command.x=int32_t(g.edx);command.y=int32_t(g.ebx);command.role=1;command.alignment=uint32_t(s->measureKind);command.sourceSize=entered.size;command.originX=entered.originX;command.originY=entered.originY;command.color=uint16_t(entered.color);const auto&w=entered.target.w;command.clip={float(w[3]),float(w[4]),float(w[5]),float(w[6])};if(!s->builder.beginString(command)||!s->advance(s->nextString)){s->reject(Failure::command);return;}string=s->nextString;s->string=string;++s->stringsInTail;if(s->resourceActive&&!s->resourceInvalid){s->evidence.command=command;s->evidence.stringBefore=proofSnapshot(entered);}
+ }catch(...){s->reject(Failure::read);}}
+ ~StringScope(){if(!string||!s||s!=current(g)||!s->recording||s->string!=string)return;if(nfs_logo_publisher::exceptions()>unwind||s->glyph||s->glyphDepth){s->reject(Failure::unwind);return;}Current after;s->diagnosticCaptured=capture(*s,after,false,true);s->diagnosticTargetDiff=targetDiff(entered,after);s->diagnosticFontDiff=fontDiff(entered,after);if(!s->diagnosticCaptured||!sameFont(entered,after)){s->reject(Failure::sourceChanged);return;}try{nfs::GuestCopyTransaction tx;int64_t advance=int64_t(tx.load<int32_t>(dword_4DD6EC))-command.x;if(advance<=0||advance>4096)throw 1;s->diagnosticStage=3;s->diagnosticAdvance=int32_t(advance);s->diagnosticCenter=int64_t(command.x)+(s->measureKind==SourceMeasureAlignment::right?command.advance:command.advance/2);if(s->diagnosticCenter!=s->measureAnchor||s->measureAnchor!=168)throw 1;}catch(...){s->reject(Failure::read);return;}s->diagnosticStage=4;if(!s->builder.endString(command)){s->diagnosticBuilder=uint32_t(s->builder.failure());s->reject(Failure::command);return;}if(s->resourceActive&&!s->resourceInvalid){if(!evidenceText(*s,s->evidence.textGuest))s->invalidateEvidence();else{s->evidence.command=command;s->evidence.stringAfter=proofSnapshot(after);s->sourceStringComplete=true;}}s->string=0;}};
+struct GlyphScope {Game&g;State*s=nullptr;uint64_t string=0;int unwind=0;explicit GlyphScope(Game&game)noexcept:g(game){s=current(g);if(!s||!s->recording||!s->string)return;if(s->glyph||s->glyphDepth){s->reject(Failure::nested);return;}string=s->string;s->glyph=string;s->glyphDepth=1;unwind=nfs_logo_publisher::exceptions();}~GlyphScope(){if(!string||s!=current(g)||s->glyph!=string)return;if(nfs_logo_publisher::exceptions()>unwind){s->reject(Failure::unwind);return;}s->glyph=0;s->glyphDepth=0;}};
+struct WordCapture {State*s=nullptr;uint64_t string=0;uint32_t address=0;size_t index=0;uint16_t before=0,computed=0;int unwind=0;WordCapture(Game&g,uint32_t at,uint16_t value)noexcept{s=current(g);if(!s||!s->recording||!s->glyph||s->glyph!=s->string||s->glyphDepth!=1)return;const uint64_t first=uint64_t(s->current.identity.geometry[8])+16;if(at<first||uint64_t(at)>=first+Pixels*2||(at-first)%2){s->reject(Failure::word);return;}index=size_t((at-first)/2);const auto&w=s->current.target.w;unsigned x=unsigned(index%Width),y=unsigned(index/Width);if(x<w[3]||x>=w[5]||y<w[4]||y>=w[6]){s->reject(Failure::word);return;}unwind=nfs_logo_publisher::exceptions();address=at;computed=value;try{nfs::GuestCopyTransaction tx;before=tx.load<uint16_t>(at);string=s->string;}catch(...){s->reject(Failure::read);}}
+ ~WordCapture(){if(!string||!s||!s->recording||s->string!=string||s->glyph!=string)return;if(nfs_logo_publisher::exceptions()>unwind){s->reject(Failure::unwind);return;}uint16_t after=0;try{nfs::GuestCopyTransaction tx;after=tx.load<uint16_t>(address);}catch(...){s->reject(Failure::read);return;}if(!s->builder.word(index,before,computed,after))s->reject(Failure::word);}};
+inline bool related(State&s,uint32_t at,bool nullIsSelected)noexcept{if(!s.ownerWindow||(!at&&!nullIsSelected))return false;if(at==s.ownerWindow)return true;try{nfs::GuestCopyTransaction tx;uint32_t p=at?at:uint32_t(guest_address(dword_4DB240));if(uint64_t(p)+56>0x100000000ULL)return false;nfs_logo_publisher::checked(p,56);const auto&w=s.current.target.w;return tx.load<uint32_t>(p+32)==w[8]||tx.load<uint32_t>(p+44)==w[11]||tx.load<uint32_t>(p+48)==w[12];}catch(...){return false;}}
+inline void beforeOwnerRetire(Game&g,uint32_t at,bool nullIsSelected=false)noexcept{auto*s=current(g);if(!s||!related(*s,at,nullIsSelected))return;s->reject(Failure::retired);(void)s->advance(s->lifetime);s->ownerWindow=0;}
+// Descriptor destruction releases refcounted LUT references. A distinct scratch
+// descriptor sharing a table does not retire the still-owned policy sidebar table.
+// Bitmap aliases remain conservative because some descriptors coallocate pixels.
+inline bool descriptorRetires(State&s,uint32_t at)noexcept{
+ if(!s.ownerWindow||!at)return false;if(at==s.ownerWindow)return true;
+ try{nfs::GuestCopyTransaction tx;if(uint64_t(at)+56>0x100000000ULL)return true;nfs_logo_publisher::checked(at,56);const auto&w=s.current.target.w;
+  if(tx.load<uint32_t>(at+32)==w[8])return true;
+  for(unsigned k:{11u,12u})if(tx.load<uint32_t>(at+4*k)==w[k]){if(w[k]<4)return true;const uint32_t refs=tx.load<uint32_t>(w[k]-4);if(refs<=1||refs>uint32_t(INT32_MAX))return true;}
+  return false;
+ }catch(...){return true;}
+}
+inline void beforeDescriptorRetire(Game&g,uint32_t at)noexcept{auto*s=current(g);if(!s||!descriptorRetires(*s,at))return;s->reject(Failure::retired);(void)s->advance(s->lifetime);s->ownerWindow=0;}
+struct SelectionScope {Game&g;State*s=nullptr;explicit SelectionScope(Game&game)noexcept:g(game){s=current(g);if(!s||!s->recording)s=nullptr;}~SelectionScope(){if(!s||s!=current(g)||!s->recording)return;Current c;if(!capture(*s,c,false,false)||!sameTarget(c,s->current))s->reject(Failure::selection);}};
+// Each exact policy caption is RIGHT aligned at x168, size18, white.
+// Original source text/measure/left/y remain fixed by that policy, not callers.
+// Actual x is checked against the original full-width subtraction; center rejects.
+// Immutable artifact only: caller must separately join current base/copy/upload/GPU proofs.
+inline std::shared_ptr<const nfs_soft::FramePacket> lastPacket(Game&g)noexcept{auto*s=current(g);return s&&!s->recording&&!s->tailDepth?s->packet:std::shared_ptr<const nfs_soft::FramePacket>{};}
+inline std::shared_ptr<const nfs_soft::FramePacket> acquireCurrentPacket(Game&g)noexcept{auto*s=current(g);if(!s)return {};s->diagnosticAcquireAttempted=true;s->diagnosticAcquireCaptured=s->diagnosticAcquireMatch=false;if(!s->packet||s->recording||s->tailDepth)return {};Current c;s->diagnosticAcquireCaptured=capture(*s,c,true,false);s->diagnosticAcquireTargetDiff=targetDiff(c,s->current);s->diagnosticAcquireMatch=s->diagnosticAcquireCaptured&&s->packet->matches(c.identity,s->serial,s->pixels.data(),Pixels);if(!s->diagnosticAcquireMatch)return {};return s->packet;}
+// Historical artifact; acquireCurrentProof performs current target/resource and
+// complete plane revalidation without reinterpreting public metadata as a seal.
+inline std::shared_ptr<const nfs_opponent_caption_source::Proof>lastProof(Game&g)noexcept{auto*s=current(g);return s&&!s->recording&&!s->tailDepth?s->proof:std::shared_ptr<const nfs_opponent_caption_source::Proof>{};}
+inline std::shared_ptr<const nfs_opponent_caption_source::Proof>acquireCurrentProof(Game&g)noexcept{
+ auto*s=current(g);if(!s||!s->proof||!s->proof->current()||s->proof->packet()!=s->packet||s->proof->evidence().game!=s->game||s->proof->evidence().lifetime!=s->lifetime||s->proof->evidence().serial!=s->serial)return {};
+ auto proof=s->proof;const auto&e=proof->evidence();Current source;
+ // SurfaceIdentity authenticates geometry/lifetime, not the archive or selected
+ // resource entry. Re-read those independent current inputs before returning the
+ // historical seal; preserve the existing packet-only acquisition contract.
+ if(!capture(*s,source,false,false)||source.archive!=s->current.archive||source.archive!=e.resolved.archive||source.selector!=e.resolved.selector||source.entry!=e.resolved.entry||source.entryWord!=e.resolved.entryWord||source.resource!=e.resolved.resource)return {};
+ if(acquireCurrentPacket(g)!=proof->packet()||s!=current(g)||s->proof!=proof)return {};return proof;
+}
+// A normal full640 copy/upload may already be selected here. The actual
+// original Copy collector supplies its independently observed343 source owner
+// and raw bytes; never change guest selection or reinterpret640 as343.
+inline std::shared_ptr<const nfs_opponent_caption_source::Proof>acquireCopiedProof(Game&g,const std::shared_ptr<const nfs_opponent_caption_source::Proof>&expected,const std::shared_ptr<const nfs_soft::FramePacket>&packet,uint64_t serial,uint64_t lifetime,const nfs_logo_capture::Target&owner,const uint8_t*source,size_t bytes)noexcept{
+ auto*s=current(g);
+ if(!s||!ordinaryProofPolicy()||!expected||!packet||s->recording||s->tailDepth||s->string||s->glyph||s->glyphDepth||s->proof!=expected||s->packet!=packet||expected->packet()!=packet||!expected->current()||!serial||!lifetime||s->serial!=serial||s->lifetime!=lifetime||packet->serial()!=serial||packet->surface().lifetime!=lifetime||packet->pixels()!=Pixels||!source||bytes!=16+Pixels*2)return {};
+ const auto&e=expected->evidence();
+ if(e.route!=nfs_opponent_caption_source::Route::OrdinaryEbp||e.policy!=proofPolicy()||e.game!=reinterpret_cast<uintptr_t>(&g)||e.game!=s->game||e.policyThread!=token()||e.formGuest!=CaptionPolicy::formAddress()||e.incomingEbp!=e.formGuest||e.serial!=serial||e.lifetime!=lifetime||!e.resourceSerial||e.resolved.archive!=s->current.archive)return {};
+ // Resource identity is independent of the ambient selected surface. Read the
+// real current archive and exact selector/table entry under a bounded lease.
+ try{nfs::GuestCopyTransaction tx;
+  const uint32_t archive=tx.load<uint32_t>(dword_4D40B8);
+  const uint32_t selector=tx.load<uint32_t>(byte_4D3ECC)>>16;
+  if(!archive||archive!=s->current.archive||archive!=e.resolved.archive||selector!=CaptionPolicy::selector||selector!=e.resolved.selector)return {};
+  const uint32_t entry=tx.load<uint32_t>(uint32_t(guest_address(off_4D3ED0))+CaptionPolicy::selector*4);
+  if(entry!=CaptionPolicy::entryAddress()||entry!=e.resolved.entry)return {};
+  const uint32_t word=tx.load<uint32_t>(entry);
+  if(word!=e.resolved.entryWord||(word>>16)!=CaptionPolicy::resource||(word>>16)!=e.resolved.resource)return {};
+ }catch(...){return {};}
+ const auto&sealed=e.stringAfter.target;
+ if(owner.owner!=sealed.owner||owner.w!=sealed.w||owner.header!=sealed.header||owner.x!=sealed.x||owner.y!=sealed.y||owner.ownerWords!=sealed.ownerWords)return {};
+ // ownerState0 is the ambient double-buffer word, not ownership. The other
+// four independently captured source bindings must remain exact.
+ for(unsigned k=1;k<5;++k)if(owner.ownerState[k]!=sealed.ownerState[k])return {};
+ if(owner.w[1]!=343||owner.w[2]!=480)return {};
+ nfs_soft::SurfaceIdentity identity{};identity.lifetime=lifetime;
+ std::copy(owner.w.begin(),owner.w.end(),identity.geometry.begin());
+ auto&shape=identity.geometry;shape[14]=owner.x[0];shape[15]=owner.x[1];shape[16]=owner.x[342];shape[17]=owner.y[0];shape[18]=owner.y[1];shape[19]=owner.y[479];
+ if(!identity.valid()||!(identity==packet->surface())||!(e.stringAfter.identity==identity))return {};
+ // Compare all16 descriptor bytes and every original RGB565 word. A matching
+// digest, text string or serial alone cannot authorize this copied source.
+ for(unsigned k=0;k<4;++k){const size_t at=4*k;const uint32_t value=uint32_t(source[at])|(uint32_t(source[at+1])<<8)|(uint32_t(source[at+2])<<16)|(uint32_t(source[at+3])<<24);if(value!=owner.header[k])return {};}
+ for(size_t k=0;k<Pixels;++k)if(uint16_t(uint16_t(source[16+2*k])|(uint16_t(source[17+2*k])<<8))!=packet->original()[k])return {};
+ return s==current(g)&&s->proof==expected&&s->packet==packet&&expected->current()?expected:std::shared_ptr<const nfs_opponent_caption_source::Proof>{};
+}
+} // namespace nfs_opponent_caption

@@ -30,3 +30,29 @@ extern "C" int nfs_track_info_art_install(const NfsTrackInfoArtInput*in){if(!in|
 extern "C" void nfs_track_info_art_clear(){std::lock_guard<std::mutex>lock(providerMutex);published.store(0,std::memory_order_release);active.reset();}
 extern "C" uint64_t nfs_track_info_art_generation(){return published.load(std::memory_order_acquire);}
 extern "C" int nfs_track_info_art_acquire(const uint32_t ids[3],NfsTrackInfoArtView*out){if(!ids||!out)return 0;try{for(unsigned k=0;k<3;++k)if(ids[k]>=NFS_TRACK_INFO_SOURCE_COUNT)return 0;const auto&a=nfs_track_info_sources[ids[0]],&b=nfs_track_info_sources[ids[1]],&c=nfs_track_info_sources[ids[2]];if(a.role!=0||b.role!=1||c.role!=2||a.archive!=b.archive||a.archive!=c.archive)return 0;std::shared_ptr<const Art>art;{std::lock_guard<std::mutex>lock(providerMutex);art=active;}if(!art)return 0;for(unsigned k=0;k<3;++k)if(!art->images[ids[k]].present)return 0;auto lease=std::unique_ptr<Lease>(new Lease);lease->art=art;NfsTrackInfoArtView v{};v.schema=1;v.generation=art->generation;for(unsigned k=0;k<3;++k)v.images[k]=art->images[ids[k]].view;v.owner=lease.get();v.retain=Lease::retain;v.release=Lease::release;*out=v;lease.release();return 1;}catch(...){return 0;}}
+
+extern "C" int nfs_track_info_art_acquire_entry(uint32_t sourceIndex, NfsTrackInfoEntryArtView* out) {
+    if (!out) return 0;
+    *out = {};
+    if (sourceIndex >= NFS_TRACK_INFO_SOURCE_COUNT ||
+        nfs_track_info_sources[sourceIndex].role == 1) return 0;
+
+    try {
+        std::shared_ptr<const Art> art;
+        {
+            std::lock_guard<std::mutex> lock(providerMutex);
+            art = active;
+        }
+        if (!art || !art->images[sourceIndex].present) return 0;
+
+        auto lease = std::make_unique<Lease>();
+        lease->art = art;
+        out->generation = art->generation;
+        out->image = art->images[sourceIndex].view;
+        out->owner = lease.release();
+        out->release = Lease::release;
+        return 1;
+    } catch (...) {
+        return 0;
+    }
+}

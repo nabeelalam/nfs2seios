@@ -8,7 +8,7 @@ import json
 import hashlib
 import os
 import re
-from bundle_resources import ROOT, validate_game_resources
+from bundle_resources import ROOT, validate_bundle_payloads, validate_game_resources
 
 app, output = map(Path, sys.argv[1:])
 classic_ui = os.environ.get("NFS_CLASSIC_UI", "OFF") == "ON"
@@ -35,6 +35,7 @@ if info["CFBundleExecutable"] == "NFSIISEGame":
     if not info.get("UIFileSharingEnabled") or not info.get("LSSupportsOpeningDocumentsInPlace"):
         raise RuntimeError("Game bundle must expose import storage and diagnostic log in Files")
     resources = validate_game_resources(app, classic_ui=classic_ui)
+validate_bundle_payloads(app)
 output.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:
     for path in sorted(app.rglob("*")):

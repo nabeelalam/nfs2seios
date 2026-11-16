@@ -1,0 +1,96 @@
+{
+  "status": "Actual first complete Setup frame publishes wide; opening swipes and other form runtime coverage remain incomplete",
+  "scope": [
+    "fresh full-width map and complete Main swipe surfaces",
+    "first Main sidebar underlay reconstructed from exact source map motion",
+    "independent native 300 selections and 600 triangles remain required",
+    "exact host game lifetime serial, catalog, archive, native target and paint occurrence joins",
+    "nonpainting texture uploads preserve semantic commands; real writes and clears revoke them",
+    "completed wide display retained only across original nonpainting swap observer"
+  ],
+  "checked": [
+    "50886 independent geometry/native equivalence plans",
+    "exact host lifetime retirement and address reuse",
+    "semantic map receipt negative/lifecycle tests",
+    "independent source reviews"
+  ],
+  "remaining": [
+    "Source-backed opening/sidebar geometry and independent car-intro expansion",
+    "Actual Location/Opponents first-full wide preview/caption/foreground coverage",
+    "Matching Apple package and physical iPad verification"
+  ],
+  "publication": "no new push or cloud app build",
+  "localBuild": {
+    "rendererIntegrationVersion": 13,
+    "engineIntegrationVersion": 12,
+    "binarySHA256": "3a1c642ab47e390c21d82c8a4ec3f08e7c73c96a458070eb75b7458c972c96e6",
+    "sourcePinsUnchangedAtBuild": true,
+    "engineAndRendererLinked": true
+  },
+  "runtimeReview": {
+    "status": "local Setup first-full wide publication verified; opening swipes still incomplete",
+    "binarySHA256": "3a1c642ab47e390c21d82c8a4ec3f08e7c73c96a458070eb75b7458c972c96e6",
+    "engineVersionReused": 12,
+    "rendererVersion": 13,
+    "nativeTarget": [
+      2360,
+      1640
+    ],
+    "firstNativeKind8Serial": 169,
+    "firstWideKind8Serial": 169,
+    "wideKind8Publications": 11,
+    "samples": [
+      {
+        "image": "constant-setup-raw-0.png",
+        "leftBlackColumns": 86,
+        "rightBlackColumns": 87
+      },
+      {
+        "image": "constant-setup-raw-1.png",
+        "leftBlackColumns": 86,
+        "rightBlackColumns": 87
+      },
+      {
+        "image": "constant-setup-raw-2.png",
+        "leftBlackColumns": 86,
+        "rightBlackColumns": 87
+      },
+      {
+        "image": "constant-setup-raw-3.png",
+        "leftBlackColumns": 0,
+        "rightBlackColumns": 0
+      },
+      {
+        "image": "constant-setup-raw-4.png",
+        "leftBlackColumns": 0,
+        "rightBlackColumns": 0
+      }
+    ],
+    "observed": [
+      "The first accepted complete cached Setup pass also published its own full-width surface.",
+      "Reviewed later Setup samples contain HD map/panel/logo/caption, actual text/buttons/cursor, and zero black columns on either side.",
+      "Earlier opening-sidebar samples use HD artwork with native 4:3 layout."
+    ],
+    "correction": "Context-only save/restore guard now carries the actual nonzero native framebuffer, satisfying the existing GraphicsScene guard contract without relaxing draw ownership.",
+    "sourceSafeguards": [
+      "Actual cached-widget owner epoch is distinct from caption proof epoch.",
+      "Relocated guest descriptor is distinct from canonical form tag.",
+      "Native 300 selections/600 triangles, current target/context/source lifetime and known foreground batches remain required.",
+      "Failed staging restores native state; empty gameplay paths skip metadata locks, memory clearing and large replay stack."
+    ],
+    "limits": [
+      "Sampled desktop pixels and actual render events; not every native frame, Apple package or physical iPad acceptance.",
+      "Location/Opponents first-full and remaining sidebar/car intro wide paths still require their own coverage.",
+      "No device performance or battery improvement established."
+    ],
+    "integrity": {
+      "ELFUnchanged": true,
+      "all12ResourcesUnchanged": true,
+      "untouchedCopiedAssetsUnchanged": true,
+      "copiedProfileRestored": true,
+      "appGone": true,
+      "launcherExitCode": 0
+    },
+    "delivery": "No new cloud app build, push or release; latest delivered IPA remains Build23."
+  }
+}

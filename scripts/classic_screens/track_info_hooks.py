@@ -44,6 +44,11 @@ def main():
     for symbol in ('426B70','4274F0'):
      call='\tesp -= 4; _sub_'+symbol+'(); esp += 4; //call';assert call in part
      part=part.replace(call,block(' { nfs_track_info_ui_live::Presentation nfs_track_info_present(*this);')+call+block(' }'))
+    for phase,symbol in enumerate(('427280','4273B0','427450','427320'),1):
+     call='\tesp -= 4; _sub_'+symbol+'(); esp += 4; //call'
+     assert part.count(call)==1, symbol
+     scope=' { nfs_track_info_ui_live::EntryPhaseScope nfs_track_info_phase(*this,'+str(phase)+');'
+     part=part.replace(call,block(scope)+call+block(' }'))
     return part
    edit('41C1B0',track_info)
   elif unit==3:entry('426950',' nfs_track_info_ui_live::DrawScope nfs_track_info_native(*this);')

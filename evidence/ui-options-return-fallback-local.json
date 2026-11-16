@@ -1,0 +1,63 @@
+{
+  "scope": "Actual local Options Escape return failure; desktop only",
+  "ELFSHA256": "ea12c2fb10e35556b2a58530f948433a88b76e16f0cb519b7ddc8ec405d24954",
+  "rootCurrentOptionsReviewed": true,
+  "optionsReturnHDVerified": false,
+  "actualNativeFallbackFrames": 13,
+  "sourceWindow": [
+    "MAIN RESPONSIVE DIAG stage=3 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=1 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=1 nativeColor=2 nativeDepth=1 program=3 nativeProgram=3 texture=634 fontTag=0 mark=5 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1992704 selectedId=634 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482734104 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=3 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=1 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=1 nativeColor=2 nativeDepth=1 program=3 nativeProgram=3 texture=30 fontTag=0 mark=0 encoding=2 slot5=1992704 slot5Valid=1 selectedAddress=2025472 selectedId=30 selectedEdge=32 selectedFormat=12 originalRevision=78 markIdentity=5566821096482668549 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=4 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=1 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=0 nativeColor=2 nativeDepth=1 program=6 nativeProgram=3 texture=30 fontTag=0 mark=0 encoding=2 slot5=1992704 slot5Valid=1 selectedAddress=2025472 selectedId=30 selectedEdge=32 selectedFormat=12 originalRevision=78 markIdentity=5566821096482668549 actual=0 expected=0 z=0 q=0",
+    "MENU PRESENTATION choice=native output=2360x1640 frame=2625 previousFrames=109 presented=1 capped=0",
+    "CHILD RETURN source reason=30 route=0 family=0 side=0",
+    "CHILD EXIT source reason=4 family=2 session=908 upload=0 stage=1",
+    "CHILD RETURN source reason=1 route=0 family=0 side=0",
+    "MAIN RESPONSIVE DIAG stage=3 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=0 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=2 nativeColor=2 nativeDepth=1 program=3 nativeProgram=3 texture=626 fontTag=0 mark=1 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1828864 selectedId=626 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482668545 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=3 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=0 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=2 nativeColor=2 nativeDepth=1 program=3 nativeProgram=3 texture=628 fontTag=0 mark=2 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1861632 selectedId=628 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482668546 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=3 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=0 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=2 nativeColor=2 nativeDepth=1 program=3 nativeProgram=3 texture=630 fontTag=0 mark=3 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1894400 selectedId=630 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482668547 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=3 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=0 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=2 nativeColor=2 nativeDepth=1 program=3 nativeProgram=3 texture=632 fontTag=0 mark=4 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1927168 selectedId=632 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482668548 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=3 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=0 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=2 nativeColor=2 nativeDepth=1 program=3 nativeProgram=3 texture=634 fontTag=0 mark=5 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1992704 selectedId=634 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482734104 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=4 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=0 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=0 nativeColor=2 nativeDepth=1 program=6 nativeProgram=3 texture=634 fontTag=0 mark=5 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1992704 selectedId=634 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482734104 actual=0 expected=0 z=0 q=0",
+    "MAIN RESPONSIVE DIAG stage=4 reason=1 detail=-1 phase=0 serial=0 sourceForm=004d3a88 epoch=8 cursorValid=1 cursor=349,157 shown=0 output=2360x1640 prepared=2360x1640 nativeFbo=2 actualFbo=0 nativeColor=2 nativeDepth=1 program=6 nativeProgram=3 texture=634 fontTag=0 mark=5 encoding=1 slot5=1992704 slot5Valid=1 selectedAddress=1992704 selectedId=634 selectedEdge=128 selectedFormat=11 originalRevision=78 markIdentity=5566821096482734104 actual=0 expected=0 z=0 q=0",
+    "MAIN INITIAL stage=archive-return reason=same state=1 invalid=0 stateReason=0 stateStage=18 phase=0 iteration=0 archiveAtEntry=1 archiveBound=1 scene=0 collector=1 copy=0 cpu=0 native=0 stop=1",
+    "MAIN INITIAL stage=temp-copy reason=original-initial-flag state=1 invalid=0 stateReason=0 stateStage=13 phase=0 iteration=1 archiveAtEntry=1 archiveBound=1 scene=1 collector=1 copy=1 cpu=1 native=1 stop=0"
+  ],
+  "presentationRuns": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=2360x1640 frame=18 previousFrames=17 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=2360x1640 frame=1762 previousFrames=1744 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=2360x1640 frame=1821 previousFrames=59 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=640x480 frame=1891 previousFrames=70 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=2360x1640 frame=2516 previousFrames=625 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=2360x1640 frame=2625 previousFrames=109 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=2360x1640 frame=2638 previousFrames=13 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=2360x1640 frame=2807 previousFrames=169 presented=1 capped=0"
+  ],
+  "result": {
+    "failure": "ReadyError: Two fresh native Main proofs absent; STOP without another input",
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0,
+    "observerElapsedSeconds": 361.533389213,
+    "preflightElapsedSeconds": 46.90235009700001,
+    "hardObserverBudgetSeconds": 900,
+    "driverAppDeadlineSeconds": 600,
+    "watchdogSIGINTSeconds": 605,
+    "watchdogSIGKILLSeconds": 630,
+    "hardAppBudgetSeconds": 630,
+    "noProfiler": true,
+    "noNewObjects": true,
+    "resolution": [
+      2360,
+      1640
+    ],
+    "wideRun": "Constant native2360x1640; source RGB-normalized Main keyboard input only",
+    "scope": "Desktop sampled pixels and source text gates; renderer acceptance is not artwork identity or first-native-frame/device proof"
+  },
+  "hostProofFailure": "Observer waited48 seconds for absent child arm; Main was presented, then idle title before fresh Main check. Root reviewed final capture: authored title, not Main. No further input.",
+  "nextAction": "Fix Options completed-upload retention and stop host wait on fresh provenMain even when return failed; no weakened return pass"
+}

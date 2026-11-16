@@ -1,0 +1,16 @@
+{
+  "scope": "Local59 manual-checkpoint attempt; return unexercised",
+  "stopRequired": true,
+  "reason": "Stopped while manual review waits approached bounded publication log limit",
+  "returnExercised": false,
+  "repairRuntimeVerified": false,
+  "cleanShutdown": {
+    "appGone": true,
+    "launcherExitCode": 0,
+    "copiedProfileRestored": true,
+    "allSelectedResourcesUnchanged": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "ELFUnchanged": true
+  },
+  "next": "Same59 binary; exact immutable previously approved mode-image regression with unchanged fresh source and final native pass checks"
+}

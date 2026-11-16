@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+#include "SoftwareFramePacket.h"
+#include "OriginalUiRecords.h"
+#include "Main343OriginProof.h"
+namespace nfs_opponent_caption{struct TailScope;}
+namespace nfs_opponent_caption_source {
+enum class Policy:uint32_t{Opponents=0x4d3204};
+// Distinct lexical origins; InitialMain never changes the retained Main epoch.
+enum class Route:uint32_t{OrdinaryEbp=1,InitialMain=2};
+struct Snapshot {
+ nfs_logo_capture::Target target{};nfs_soft::SurfaceIdentity identity{};
+ uint32_t archive=0,font=0,callback=0,palette=0,color=0,mode=0,flags=0,format=0,selector=0,entry=0,entryWord=0,resource=0;
+ int32_t originX=0,originY=0,size=0;std::array<uint32_t,16>paletteWords{};std::array<uint8_t,16>fontHeader{};
+};
+// Public observation values carry no authority. Only a completed exact lexical
+// source observer may construct Proof, after original command and word replay.
+struct Evidence {
+ Policy policy=Policy::Opponents;Route route=Route::OrdinaryEbp;
+ // Namespace-local caption owner token; not comparable to publisher thread tokens.
+ uintptr_t game=0,policyThread=0;uint32_t formGuest=0,incomingEbp=0,requestedResource=0,inputCategory=0,textGuest=0;
+ uint64_t lifetime=0,serial=0,resourceSerial=0;int32_t inputAnchor=0,inputY=0,measureWidth=0,measureAnchor=0;uint32_t measureKind=0;
+ nfs_soft::TextCommand command{};Snapshot resolved{},measure{},stringBefore{},stringAfter{};
+};
+class Proof final {
+ std::shared_ptr<const nfs_soft::FramePacket>packet_;Evidence evidence_;
+ std::shared_ptr<const nfs_main_sidebar_origin::Proof>origin_;std::shared_ptr<const std::atomic<bool>>routeLife_;
+ Proof(std::shared_ptr<const nfs_soft::FramePacket>packet,const Evidence&e,std::shared_ptr<const nfs_main_sidebar_origin::Proof>origin={},std::shared_ptr<const std::atomic<bool>>life={}):packet_(std::move(packet)),evidence_(e),origin_(std::move(origin)),routeLife_(std::move(life)){}
+ friend struct nfs_opponent_caption::TailScope;
+public:
+ const Evidence&evidence()const noexcept{return evidence_;}
+ const std::shared_ptr<const nfs_main_sidebar_origin::Proof>&origin()const noexcept{return origin_;}
+ bool current()const noexcept{return evidence_.route==Route::OrdinaryEbp?(!origin_&&!routeLife_):(origin_&&origin_->current()&&routeLife_&&routeLife_->load(std::memory_order_acquire));}
+ const std::shared_ptr<const nfs_soft::FramePacket>&packet()const noexcept{return packet_;}
+ const std::shared_ptr<const nfs_soft::FontCatalog>&font()const noexcept{return packet_->font();}
+ // Immutable HISTORICAL source evidence only. A future join must acquire an
+ // independently current owner/archive/storage/serial and actual full plane.
+};
+} // namespace nfs_opponent_caption_source

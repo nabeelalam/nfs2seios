@@ -1,0 +1,46 @@
+{
+  "scope": "Local Location navigation appearance observation while approaching Track Records",
+  "compiledIntegration": 64,
+  "runtimeAttempt": "Records64d",
+  "track": "North Country",
+  "actualLocationDownKeys": 1,
+  "observedNativeFallback": {
+    "nextWideFrame": 684,
+    "presentations": 13,
+    "firstNativeFrame": 671
+  },
+  "rootVisualPageVerified": true,
+  "rootVisibleInitialSelection": "track - North Country",
+  "recordsEntered": false,
+  "rendererFailureCauseUnproven": true,
+  "appCleanExit": true,
+  "all13ResourcesAndCopiedAssetsUnchanged": true,
+  "copiedProfileRestored": true,
+  "physicalIpadVerified": false,
+  "next": "Record the Location appearance bug separately; continue owned visual navigation to Records without treating renderer failure as a GUI authorization barrier",
+  "build87Recheck": {
+    "track": "North Country",
+    "outputWidth": 2360,
+    "outputHeight": 1640,
+    "firstNativeFrame": 644,
+    "nextWideFrame": 663,
+    "nativeFrames": 19,
+    "observedDuringNormalLocationNavigationBeforeOpeningRecords": true,
+    "firstRefusal": "Current Location scene packet absent",
+    "sameIterationCollectedLogoDraws": 2,
+    "copyObserved": false,
+    "causeOfSkippedCopyVerified": false,
+    "cleanExit": true,
+    "copiedProfileRestored": true
+  },
+  "build87RecordsReturn": {
+    "outputWidth": 1280,
+    "outputHeight": 720,
+    "wideFadeFirstFrame": 783,
+    "widePhotoSlideFirstFrame": 800,
+    "wideFullLocationFirstFrame": 821,
+    "nativeFallbacks": 0,
+    "horizontalAlignmentVerifiedByVisualReview": true,
+    "physicalIpadVerified": false
+  }
+}

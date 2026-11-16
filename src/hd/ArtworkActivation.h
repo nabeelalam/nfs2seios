@@ -7,6 +7,7 @@ namespace nfs_hd {
 bool activateArtworkPack(const std::string& root,const Digest& expected) noexcept;
 // Build-time NFS_HD_ARTWORK_SHA256 enables the optional separate pack. Empty
 // configuration keeps original artwork without reading or allocating a pack.
+bool requiredArtworkReady() noexcept;
 bool activateConfiguredArtwork(const std::string& root) noexcept;
 bool activateConfiguredArtwork(const std::string& root,const std::string& bundledTemplate) noexcept;
 }

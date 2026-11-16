@@ -1,0 +1,25 @@
+{
+  "scope": "Local opponent native-resolution class transitions after scoped-history integration",
+  "localIntegration": 63,
+  "binarySHA256": "ac92deba12e63fb34cb73260684fcde2e4de48c72130a17e4d96969d6399c08c",
+  "buildPassed": true,
+  "sourcePinsUnchanged": true,
+  "nativeInputExtent": [
+    2360,
+    1640
+  ],
+  "classChanges": 2,
+  "outgoingHistoryCaptured": true,
+  "hdSourceArm": true,
+  "rejectedAnimationFramesPerChange": 21,
+  "oldUiFlashEliminated": false,
+  "returnAnimationPassed": false,
+  "appExitedCleanly": true,
+  "all13ArtworkResourcesUnchanged": true,
+  "copiedAssetsUnchanged": true,
+  "copiedProfileRestored": true,
+  "cloudBuild": false,
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false,
+  "next": "Trace earliest HD frame rejection and return regression before another build"
+}

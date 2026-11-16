@@ -1,0 +1,41 @@
+{
+  "scope": "Source-proven menu entrance corrections; integrated runtime verification pending",
+  "negativePhotoOrigin": {
+    "cause": "Unsigned column arithmetic changed negative off-screen picture X into a huge positive expected coordinate",
+    "fix": "Validate cell/corner bounds then add signed cell coordinates to signed picture pose",
+    "channels": [
+      "Player photo",
+      "Independent child photo"
+    ],
+    "focusedValidation": "3200 accepted source vertices and 28800 mutated field rejections; optimized and address/undefined-behavior sanitizer checks passed"
+  },
+  "brandingIdentity": {
+    "cause": "Descriptor payload pointer refers to a temporary upload canvas freed by the original engine",
+    "fix": "Do not read retired CPU scratch; authenticate current native upload bytes against immutable artwork and the retained upload binding",
+    "channels": [
+      "Typed sidebar swipe",
+      "Normal child intro"
+    ],
+    "focusedValidation": "Positive and payload/provider/binding/profile/alias rejection cases passed"
+  },
+  "staticSplash": {
+    "localRun": "Authored replacement published after 300 source selections and 600 source triangles; captured startup image visually reviewed",
+    "precedingMovie": "Original animated title movie remains a separate low-priority video remaster task"
+  },
+  "physicalIpadVerified": false,
+  "cloudBuild": false,
+  "localIntegration": 22,
+  "binarySHA256": "d202a4aed11277fed74d6094104ab47628de1ed32e6be58937a38e154d998d1e",
+  "runtimeResults": {
+    "Setup": "Main menu-wide directly to transition-wide with five actual branding slots completed, no native fallback during entrance",
+    "PlayerPhoto": "First countdown2 and1 plus19 countdown0 frames present intro-wide with100 selections/200 photo triangles and10 native tail triangles",
+    "remainingPlayerInitialFade": "17 earlier kind3+Player sidebar frames still native, uncovered typed source path being added",
+    "MainNavigation": "Two12-frame gaps before authenticated source publication; bounded upstream diagnosis pending",
+    "Location": "Initial typed swipe to full-width normal picture animation and complete menu; no native fallback after entry. Picture itself remains original source artwork, not yet HD-remastered.",
+    "Opponents": "Integration23 exact slot5 pulse recognized; menu-wide103 ->transition-wide160 ->intro-wide177 ->transition-wide198 with no native fallback through completed menu. App/data/profile checks all true.",
+    "PlayerInitialFade": "Typed11 real300 uploads sealed and all17 first-fade frames present fresh full-width authored content; five exact branding slots complete. Main menu-wide101 ->transition-wide171 ->intro-wide188, with no native fallback across entry.",
+    "MainNavigationLatest": "70 Main frames matched70 authenticated background submissions; no failure reproduced. Earlier intermittent12-frame gaps remain unproven fixed.",
+    "SetupLatest": "Longer23 passive hold stays full-width WTR; native Options/Setup cache path remains inactive, so its cache is not credited with cursor improvement. Active WTR cache implemented separately, runtime pending."
+  },
+  "runtimeIntegrity": "Setup, Player1 and Location exited cleanly with unchanged app/resources/copied original data and restored copied profile"
+}

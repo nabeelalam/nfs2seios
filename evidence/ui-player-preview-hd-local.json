@@ -1,0 +1,98 @@
+{
+  "scope": "Local Player1 preview21 and return19 with scoped HD incoming photo",
+  "integration": 54,
+  "binarySHA256": "b983d9dbb85ddb018bff85da354201ecb4bae129db7d040b9078c7e85428f852",
+  "preview": {
+    "sourceArm": true,
+    "runs": [
+      {
+        "frames": 21,
+        "output": "2360x1640",
+        "presented": true
+      }
+    ],
+    "sourceFunction": "40D1B0",
+    "actualRole": "preview-change",
+    "paintedMotion": [
+      -29,
+      -17,
+      -5,
+      7,
+      19,
+      31,
+      43,
+      55,
+      67,
+      79,
+      91,
+      103,
+      115,
+      127,
+      139,
+      151,
+      163,
+      175,
+      187,
+      199,
+      211
+    ],
+    "nativeRoutes": [],
+    "complete": true
+  },
+  "return": {
+    "sourceArm": true,
+    "route": 2,
+    "routeName": "EscapeReverse19",
+    "runs": [
+      {
+        "startFrame": 450,
+        "frames": 19,
+        "nextChoice": "menu-wide",
+        "presented": true,
+        "output": "2360x1640"
+      }
+    ],
+    "sourceLoopFrames": 19,
+    "sourceGpuFrameIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "sourceGpuComplete": true,
+    "loopComplete": true,
+    "nativeRoutes": [],
+    "complete": true
+  },
+  "scopedHdPhotoBeginCount": 19,
+  "scopedHdPhotoEndCount": 19,
+  "serial2Published100Tile200TriangleDrawsIncludingLaterSteadyFrames": 38,
+  "guardedSingleRight": true,
+  "holdMilliseconds": 500,
+  "integrity": {
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0
+  },
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false
+}

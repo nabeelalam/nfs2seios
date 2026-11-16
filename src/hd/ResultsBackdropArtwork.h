@@ -11,9 +11,9 @@
 
 namespace nfs_hd {
 inline bool loadResultsBackdrops(const std::string& path) {
-    constexpr size_t fileSize = 5711653;
-    constexpr size_t payloadSize = 14515288;
-    constexpr unsigned char expected[] = {0xca,0xf2,0x9a,0x73,0xaf,0x89,0x66,0x38,0x5c,0x1a,0x48,0xd4,0x6b,0xe5,0x99,0x50,0xbe,0x6f,0x88,0xb9,0x24,0x59,0x56,0x6d,0x67,0xbf,0x67,0x14,0x6b,0xfa,0x81,0xae};
+    constexpr size_t fileSize = 8286561;
+    constexpr size_t payloadSize = 20808068;
+    constexpr unsigned char expected[] = {0x1c,0x41,0xd5,0xd6,0x0c,0xf9,0x51,0xcc,0x5b,0xc1,0x34,0xfc,0xfc,0x2f,0x8e,0xe9,0xf4,0x83,0xff,0x5e,0x5c,0xdf,0xe0,0xcf,0xaa,0xc0,0x32,0x51,0x03,0x09,0x69,0x69};
     const auto le32 = [](const unsigned char* p) {
         return uint32_t(p[0]) | uint32_t(p[1]) << 8 | uint32_t(p[2]) << 16 | uint32_t(p[3]) << 24;
     };
@@ -27,7 +27,7 @@ inline bool loadResultsBackdrops(const std::string& path) {
     in.seekg(0);
     if (!in.read(reinterpret_cast<char*>(file.data()), file.size()) ||
         in.peek() != std::char_traits<char>::eof() || !matches(file.data(), file.size(), expected) ||
-        std::memcmp(file.data(), "NFSRESB1", 8) || le32(file.data()+8) != 2 ||
+        std::memcmp(file.data(), "NFSRESB1", 8) || le32(file.data()+8) != 3 ||
         le32(file.data()+12) != payloadSize) return false;
     auto pixels = std::make_unique<unsigned char[]>(payloadSize);
     z_stream stream{};
@@ -41,11 +41,12 @@ inline bool loadResultsBackdrops(const std::string& path) {
     inflateEnd(&stream);
     if (!exact) return false;
 
-    NfsResultsBackdropImage images[2]{};
+    NfsResultsBackdropImage images[3]{};
     size_t offset = 0;
-    for (unsigned i = 0; i < 2; ++i) {
-        const unsigned width = i ? 1920 : 1440;
-        constexpr unsigned height = 1080;
+    for (unsigned i = 0; i < 3; ++i) {
+        const unsigned widths[] = {1440,1920,1504};
+        const unsigned heights[] = {1080,1080,1046};
+        const unsigned width = widths[i], height = heights[i];
         const size_t bytes = size_t(width)*height*4;
         if (payloadSize-offset < 44+bytes) return false;
         const auto* record = pixels.get()+offset;
@@ -54,7 +55,7 @@ inline bool loadResultsBackdrops(const std::string& path) {
         images[i] = {width, height, record+44};
         offset += 44+bytes;
     }
-    if (offset != payloadSize || !nfs_results_install_backdrops(images)) return false;
+    if (offset != payloadSize || !nfs_results_install_backdrops_v2(images)) return false;
     (void)pixels.release(); // Published pixels have process lifetime.
     return true;
 }

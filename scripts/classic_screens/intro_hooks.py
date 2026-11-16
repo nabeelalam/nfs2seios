@@ -12,14 +12,26 @@ def add_intro_hooks(text,name):
  def entry(symbol,code):
   nonlocal text
   m=re.search(r'Fn\(void\) Game::_sub_'+symbol+r'\(\)\s*\{',text);assert m,symbol;text=text[:m.end()]+block(code)+text[m.end():]
- anchor='#include "FunctionIds.h"';assert text.count(anchor)==1;text=text.replace(anchor,anchor+block('#include "hd/ClassicScreens/'+('IntroQueueAdapter.inc'if name=='Methods_03.cpp'else'IntroGameHooks.inc')+'"'),1)
+ anchor='#include "FunctionIds.h"';assert text.count(anchor)==1;text=text.replace(anchor,anchor+block('#include "hd/ClassicScreens/'+('IntroQueueAdapter.inc'if name=='Methods_03.cpp'else'IntroGameHooks.inc')+'"'+('\n#include "hd/ClassicScreens/MoviePostFlushTrace.h"'if name=='Methods_03.cpp'else'')),1)
  if name=='Methods_01.cpp':
   entry('408558',' nfs_intro_ui_live::OwnerScope nfs_intro_owner(*this);')
   m=re.search(r'Fn\(void\) Game::_sub_408558\(\)\s*\{',text);assert m;end=text.find('\nFn(',m.end());end=len(text)if end<0 else end;part=text[m.start():end]
   for symbol,scope,count in [('483470','BackgroundScope',1),('486D10','CopyrightScope',2),('428770','Presentation',2)]:
    call='\tesp -= 4; _sub_'+symbol+'(); esp += 4; //call';assert part.count(call)==count,(symbol,part.count(call));part=part.replace(call,block(' { nfs_intro_ui_live::'+scope+' nfs_intro_'+symbol+'(*this);')+call+block(' }'))
   text=text[:m.start()]+part+text[end:]
- elif name=='Methods_03.cpp':entry('426950',' nfs_intro_ui_live::DrawScope nfs_intro_native(*this);')
+ elif name=='Methods_03.cpp':
+  entry('426950',' nfs_intro_ui_live::DrawScope nfs_intro_native(*this);')
+  entry('4242F0',' nfs_movie_postflush::Scope nfs_movie_postflush_scope;')
+  m=re.search(r'Fn\(void\) Game::_sub_4242F0\(\)\s*\{',text);assert m
+  end=text.find('\nFn(',m.end());end=len(text)if end<0 else end
+  part=text[m.start():end]
+  flush='\tesp -= 4; _sub_486F28(); esp += 4; //call'
+  frame='\tesp -= 4; _sub_424710(); esp += 4; //call'
+  assert part.count(flush)==2 and part.count(frame)==2
+  assert part.index(flush)<part.index('loc_424407:')<part.index('loc_42447A:')<part.index(frame)<part.rindex(flush)
+  part=part.replace(frame,frame+block(' nfs_movie_postflush_scope.presented();'))
+  text=text[:m.start()]+part+text[end:]
+
  else:
   for symbol in ['482DA0','4848FC']:entry(symbol,' nfs_intro_ui_live::retire(*this,uint32_t(eax));')
  assert re.sub(r'\n// '+MARK+r'_BEGIN:(\d+)\n.*?\n// '+MARK+r'_END:\1\n','',text,flags=re.S)==old

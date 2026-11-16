@@ -41,6 +41,9 @@ def add_setup_scene_hooks(text,name):
                 anchor=" nfs_background_scene_live::"+call+"(*this);"
                 if part.count(anchor)!=1:raise ValueError("Setup redraw anchor changed: "+call)
                 part=part.replace(anchor,anchor+block(tag," nfs_setup_scene_live::"+call+"(*this);"),1)
+            abort="loc_40BCFF:\n"
+            if part.count(abort)!=1:raise ValueError("Setup original abort label changed")
+            part=part.replace(abort,abort+block("original-abort"," nfs_setup_scene_live::observeOriginalAbort(*this);"),1)
             part=wrap(part,"guest_address(aSide)","405B30","side"," { nfs_setup_scene_live::RoleScope nfs_setup_side(*this,nfs_setup_scene_live::Phase::Side);")
             return wrap(part,"off_4D2474+ecx*4","405B30","word"," { nfs_setup_scene_live::RoleScope nfs_setup_word(*this,nfs_setup_scene_live::Phase::Word);")
         body("40BBE0",redraw)

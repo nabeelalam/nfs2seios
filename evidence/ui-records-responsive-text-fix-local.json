@@ -1,0 +1,27 @@
+{
+  "scope": "Records responsive text implementation plus exact remaining source diagnostics",
+  "localIntegration": 65,
+  "sourceFilesApplied": 9,
+  "legacyTextRendererUnchanged": true,
+  "ownedResponsiveTextPathAdded": true,
+  "recordsUsesOwnedResponsiveText": true,
+  "sourceLifetimeChecksPreserved": true,
+  "independentSourceReviewPassed": true,
+  "combinedEngineHeaderSyntaxPassed": true,
+  "privateRendererSyntaxPassed": true,
+  "fullBuildPassed": false,
+  "runtimeVerified": false,
+  "resultsAndNameDraftActivated": false,
+  "artworkPacksChanged": false,
+  "cloudBuild": false,
+  "physicalIpadVerified": false,
+  "firstCompileIntegration": 65,
+  "firstCompilePassed": false,
+  "firstCompileFailure": "Missing explicit upload event dependency in a generated engine context",
+  "correctedGeneratedContexts": [
+    "Methods_01.cpp",
+    "Methods_09.cpp"
+  ],
+  "bothCorrectedContextSyntaxPassed": true,
+  "retryIntegration": 66
+}

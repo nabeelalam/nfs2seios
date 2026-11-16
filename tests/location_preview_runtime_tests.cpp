@@ -3,7 +3,7 @@
 #define main existing_scene_runtime_fixture_main
 #include "hd_scene_runtime_tests.cpp"
 #undef main
-static constexpr uint32_t off_4DB648=0xc100,dword_564140=0xc200;
+static constexpr uint32_t off_4DB648=0xc100,dword_564140=0xc200,byte_512DB0=0xc204;
 #include "hd/LocationPreviewGameHooks.inc"
 namespace preview=nfs_location_preview_live;
 static constexpr uint32_t sourceAt=0x600000,paletteAt=0xd000,nameAt=0xc300;

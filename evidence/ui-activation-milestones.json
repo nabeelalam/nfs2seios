@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "scope": "Scoped local desktop UI milestone evidence; not an IPA build number or physical iPad acceptance",
+  "localIntegration": 28,
+  "binarySHA256": "f255208e090f85e751f07dea55020d878375b9340c2285d9cdba092e123d217c",
+  "verified": {
+    "Location": "Integration26: authenticated authored scenery during animation and two completed kind9 source captures; reviewed North Country remaster remains visible after animation.",
+    "Cars": "Integration27: typed11 first fade, independent Player photo animation and source-qualified final Player One menu captured; reviewed authored Ford Indigo photo, background, logo and text.",
+    "Opponents": "Integration27: authored class A collage, backdrop, logo, labels and tier badge visible on source-qualified final kind10 menu.",
+    "SetupModes": "Integration28 reaches all five modes and returns to Main under individually reviewed source gates; Modem, Serial and Network remastered badges visually confirmed. Stable captures are full-width, but continuous presentation is NOT gap-free.",
+    "RareModeArtwork": "All three new mode badges observed in actual integration28 screenshots; existing artwork bodies remain unchanged.",
+    "DataIntegrity": "All completed bounded runs exit0, preserve selected13 resources and isolated immutable game assets, restore copied profile and confirm app gone."
+  },
+  "open": {
+    "MainPartialFrame": "Integration28 records actual worker harvest event3 with sealed1/status2/token1. Pending event2 reuse has not been observed, so runtime reuse remains unverified.",
+    "IdleSwap": "Both physical outputs seal, but no idle select/present event2/3 occurs. Network still has97 native frames plus17 afterresize. Earlier source-quiet inference was too weak; producer/admission investigation continues.",
+    "ChildExit": "Integration28 still has12 native return frames. Actual Escape uses Network fade427320(12frames) or modes1..4 reverse40C9B3(19frames). Newly instrumented40D1B0 is a21frame preview-change animation, not Escape; it was not executed by this run. Independent actual return routes are being implemented.",
+    "Cursor": "Setup caching exists, but physical cursor smoothness improvement is unverified.",
+    "Device": "No new physical iPad test or IPA delivered during this investigation.",
+    "Performance": "Low Power Mode, energy and runtime performance work resumes after UI completion."
+  },
+  "originalGameDataChanged": false,
+  "cloudBuild": false,
+  "published": false,
+  "physicalIpadVerified": false,
+  "runtimeIntegrity28": "Exit0; appGone; all13 selected resources and isolated immutable game assets unchanged; copied profile restored; 251669695 capture bytes below335544320 cap. No cloud or iPad package."
+}

@@ -1,0 +1,36 @@
+{
+  "scope": "Focused local58b return diagnostic at constant2360x1640; not repeated ratio or physical-device acceptance",
+  "binarySHA256": "7593f62d07379a9e7b2a0cb5aa2f3389f5b46cb53895fd75e2a7f0f3fafa4797",
+  "rootReviewedModes": [
+    "One Player",
+    "Split Screen",
+    "Modem",
+    "Serial Link",
+    "Network"
+  ],
+  "cacheFailure": {
+    "category": "Exact pixel mismatch",
+    "firstTile": 0,
+    "textureProfileAndUploadWitnessPassed": true
+  },
+  "returnComplete": false,
+  "freshMainProofCount": 2,
+  "returnedMainScreenshotReviewed": true,
+  "cleanShutdown": {
+    "appGone": true,
+    "copiedProfileRestored": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "ELFUnchanged": true,
+    "launcherExitCode": 0
+  },
+  "repair": {
+    "applied": true,
+    "source": "Left343 of same authenticated current full scene; zero padded; actual cached pixel equality still mandatory",
+    "oldInitialSourceRetentionRemoved": true,
+    "headerContextSyntaxPassed": true,
+    "linkedRuntimeVerified": false
+  },
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false
+}

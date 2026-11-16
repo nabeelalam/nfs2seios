@@ -1,0 +1,94 @@
+{
+  "localBuild": 96,
+  "binarySHA256": "f4e31cd39e1d36200d0da124161df73b0fb91e0dff1c9b0c9b133c90bf2c5dd4",
+  "route": "Location to Track Records to Location to North Country Track Info and back to Location",
+  "outgoingSidebarDraws": 48,
+  "incomingSidebarDraws": 59,
+  "incomingBaseDraws": 26,
+  "nativeFallbackObservedInRouteTrace": false,
+  "entryRoutes": [
+    {
+      "choice": "child-return-wide",
+      "output": "2360x1640",
+      "frame": "955",
+      "previousFrames": "27",
+      "presented": "1",
+      "capped": "0"
+    },
+    {
+      "choice": "information-wide",
+      "output": "2360x1640",
+      "frame": "974",
+      "previousFrames": "19",
+      "presented": "1",
+      "capped": "0"
+    },
+    {
+      "choice": "information-wide",
+      "output": "1280x720",
+      "frame": "1181",
+      "previousFrames": "207",
+      "presented": "1",
+      "capped": "0"
+    },
+    {
+      "choice": "information-wide",
+      "output": "2360x1640",
+      "frame": "1208",
+      "previousFrames": "27",
+      "presented": "1",
+      "capped": "0"
+    }
+  ],
+  "returnRoutes": [
+    {
+      "choice": "transition-wide",
+      "output": "2360x1640",
+      "frame": "1236",
+      "previousFrames": "28",
+      "presented": "1",
+      "capped": "0"
+    },
+    {
+      "choice": "intro-wide",
+      "output": "2360x1640",
+      "frame": "1253",
+      "previousFrames": "17",
+      "presented": "1",
+      "capped": "0"
+    },
+    {
+      "choice": "transition-wide",
+      "output": "2360x1640",
+      "frame": "1274",
+      "previousFrames": "21",
+      "presented": "1",
+      "capped": "0"
+    }
+  ],
+  "settledAspectSamples": [
+    [
+      2360,
+      1640
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      2360,
+      1640
+    ]
+  ],
+  "returnSidebarVerified": true,
+  "cleanup": {
+    "appGone": true,
+    "copiedProfileRestored": true,
+    "allSelectedResourcesUnchanged": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "ELFUnchanged": true
+  },
+  "resourceCount": 13,
+  "physicalIpadVerified": false,
+  "cloudBuildStarted": false
+}

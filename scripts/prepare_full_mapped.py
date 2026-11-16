@@ -41,6 +41,14 @@ from graphics_scene_hooks import add_graphics_scene_hooks
 from options_scene_hooks import add_options_scene_hooks
 from setup_scene_hooks import add_setup_scene_hooks
 from player_scene_hooks import add_player_scene_hooks
+from child_photo_hooks import add_child_photo_hooks
+from child_exit_hooks import add_child_exit_hooks
+from child_return_hooks import add_child_return_hooks
+from child_initial_sidebar_hooks import add_child_initial_sidebar_hooks
+from location_initial_sidebar_hooks import add_location_initial_sidebar_hooks
+from opponent_caption_hooks import add_opponent_caption_hooks
+from opponent_scene_hooks import add_opponent_scene_hooks
+from opponent_preview_hooks import add_opponent_preview_hooks
 from batch_rep_words import batch_rep_words
 from batch_complete_helpers import batch_complete_helpers
 
@@ -352,6 +360,7 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         text = add_setup_scene_hooks(text, path.name)
         if path.name != "Methods_01.cpp":
             text = add_player_scene_hooks(text, path.name)
+        text = add_child_photo_hooks(text, path.name)
         text = add_audio_dialog_word_hooks(text, path.name)
         text = add_graphics_dialog_word_hooks(text, path.name)
         text = add_controls_text_hooks(text, path.name)
@@ -391,6 +400,18 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         prepared=prepare_classic_screens(dest,dest/'classic-source-stages')
         for p in prepared.glob('Methods_*.cpp'):shutil.copyfile(p,dest/p.name)
         stage_assets(ROOT,classic_assets_dir,dest)
+    # These insertion-only transition observers follow the established classic
+    # hook pipeline so its exact source-context anchors remain unchanged.
+    for path in sorted(dest.glob('Methods_*.cpp')):
+        text=path.read_text()
+        text=add_child_initial_sidebar_hooks(text,path.name)
+        text=add_location_initial_sidebar_hooks(text,path.name)
+        text=add_opponent_caption_hooks(text,path.name)
+        text=add_opponent_scene_hooks(text,path.name)
+        text=add_opponent_preview_hooks(text,path.name)
+        text=add_child_exit_hooks(text,path.name)
+        text=add_child_return_hooks(text,path.name)
+        path.write_text(text)
     validate_game_helper_includes(dest, generated_files)
     if (bounded_rep_words or checked_copy_bundle) and rep_word_loops != 12:
         raise ValueError("Incomplete reviewed bounded-word-copy method set")

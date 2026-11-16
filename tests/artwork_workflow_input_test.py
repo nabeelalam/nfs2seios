@@ -35,5 +35,23 @@ class ArtworkWorkflowInput(unittest.TestCase):
         self.assertIn("      NFS_BUILD_JOBS: '2'", child)
 
 
+    def test_deferred_classic_ui_requires_complete_location_photos(self):
+        flag = '-DNFS_CLASSIC_REQUIRE_LOCATION_PHOTO_ARTWORK="$NFS_CLASSIC_UI"'
+        child = (ROOT / ".github/workflows/apple-device.yml").read_text()
+        configure = [line for line in child.splitlines() if "cmake -S . -B " in line]
+        device = [line for line in configure if "-B .build/ios " in line]
+        self.assertEqual(len(device), 1)
+        self.assertIn(flag, device[0])
+        self.assertEqual(child.count(flag), 1)
+        for line in configure:
+            if line != device[0]:
+                self.assertNotIn(flag, line)
+        parent = (ROOT / ".github/workflows/ipados.yml").read_text()
+        self.assertEqual(parent.count("uses: ./.github/workflows/apple-device.yml"), 2)
+        self.assertNotIn(flag, parent)
+        cmake = (ROOT / "cmake/BundledOwnedArtwork.cmake").read_text()
+        self.assertIn("SOURCE src/hd/ArtworkActivation.cpp app/main.cpp APPEND PROPERTY COMPILE_DEFINITIONS NFS_REQUIRE_LOCATION_PHOTO_ARTWORK=1", cmake)
+
+
 if __name__ == "__main__":
     unittest.main()

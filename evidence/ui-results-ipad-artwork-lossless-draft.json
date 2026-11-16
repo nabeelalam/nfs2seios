@@ -1,0 +1,26 @@
+{
+  "scope": "Proposed authored iPad Results background and lossless pack",
+  "activated": false,
+  "published": false,
+  "masterDimensions": [
+    1504,
+    1046
+  ],
+  "requestedDimensions": [
+    2360,
+    1640
+  ],
+  "resampled": false,
+  "cropped": false,
+  "rootVisualReview": "Composition and material identity consistent with authored wide reference; not user acceptance",
+  "packBytes": 8286561,
+  "packSHA256": "1c41d5d60cf951cc5bc134fcfc2f8ee9f483ff5e5cdfe0cfaac0325103096969",
+  "entries": 3,
+  "existingTwoEntriesRGBAUnchanged": true,
+  "newEntryRGBUnchanged": true,
+  "newEntryAlpha": "Opaque255",
+  "strictLosslessRoundTrip": true,
+  "fullWindowResultsRendererIntegrated": false,
+  "runtimeVerified": false,
+  "physicalIpadVerified": false
+}

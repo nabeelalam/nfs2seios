@@ -75,7 +75,7 @@ def add_player_scene_hooks(text, name):
     def captions(kind, args="*this"):
         return "\n".join(" nfs_player" + str(p) + "_caption::" + kind + "(" + args + ");" for p in (1, 2))
     include = '#include "FunctionIds.h"\n'
-    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"\n#include "hd/PlayerIntroQueueAdapter.inc"\n#include "hd/PlayerPhotoGameHooks.inc"'))
+    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"\n#include "hd/PlayerIntroQueueAdapter.inc"\n#include "hd/PlayerPhotoGameHooks.inc"\n#include "hd/PlayerIntroWidePreludeQueueAdapter.inc"\n#include "hd/ChildIntroWidePreludeQueueAdapter.inc"'))
     if name == "Methods_01.cpp":
         entry("40C160", " nfs_logo_publisher::PlayerMenuOwnerScope nfs_player_menu(*this);\n nfs_player1_caption::OwnerScope nfs_player1_owner(*this);\n nfs_player2_caption::OwnerScope nfs_player2_owner(*this);\n nfs_player_scene_live::PlayerScope nfs_player_scene(*this);\n nfs_player_scene_live::SourceLifetimeScope nfs_player_source_lifetime(*this);\n nfs_player_initial_native_live::SourceLifetimeScope nfs_player_initial_source_lifetime(*this);")
         entry("40C110", " nfs_player_scene_live::TailScope nfs_player_tail(*this);\n nfs_player1_caption::TailScope nfs_player1_tail(*this);\n nfs_player2_caption::TailScope nfs_player2_tail(*this);")
@@ -141,6 +141,22 @@ def add_player_scene_hooks(text, name):
             slide = replace(slide, call("4276F0"), call("4276F0") + block("intro-tail-finish", " nfs_player_intro.tailFinished();"))
             slide = replace(slide, call("4976B8"), call("4976B8") + block("intro-close", " }"))
             part = part[:first] + slide + part[last:]
+            # Independent source-owned wide prelude starts before actual
+            # render-buffer selection/conditional clear, never across backedge.
+            ws, we = part.index("loc_40C342:\n"), part.index("loc_40C3CC:\n")
+            wide = part[ws:we]
+            counts(wide, {"497680": 1, "49769C": 1, "4279E0": 1, "427B30": 2, "4276F0": 1, "4976B8": 1})
+            wide = replace(wide, call("497680"), block("wide-prelude-open", " { nfs_player_intro_wide_live::PreludeScope nfs_player_wide(*this); nfs_child_intro_wide_live::PreludeScope nfs_child_wide(*this);") + call("497680"))
+            wide = replace(wide, call("49769C"), call("49769C") + block("wide-prelude-cleared", " nfs_player_wide.cleared(); nfs_child_wide.cleared();"))
+            first_slot = wide.index(call("427B30"))
+            wide = wide[:first_slot] + wide[first_slot:].replace(call("427B30"), call("427B30") + block("wide-prelude-slot1", " nfs_player_wide.slot1Finished(); nfs_child_wide.slot1Finished();"), 1)
+            wide = replace(wide, call("4279E0"), block("wide-prelude-photo-before", " nfs_player_wide.photoBegin(); nfs_child_wide.photoBegin();") + call("4279E0") + block("wide-prelude-photo-after", " nfs_player_wide.photoFinished(); nfs_child_wide.photoFinished();"))
+            for oldtag, newtag, statement in (("intro-slot0-finish", "wide-prelude-slot0", " nfs_player_wide.slot0Finished(); nfs_child_wide.slot0Finished();"), ("intro-tail-finish", "wide-prelude-tail", " nfs_player_wide.tailFinished(); nfs_child_wide.tailFinished();"), ("intro-close", "wide-prelude-close", " }")):
+                code = " nfs_player_intro.slot0Finished();" if oldtag=="intro-slot0-finish" else " nfs_player_intro.tailFinished();" if oldtag=="intro-tail-finish" else " }"
+                existing = "\n// " + MARKER + "_BEGIN:" + oldtag + "\n" + code + "\n// " + MARKER + "_END:" + oldtag + "\n"
+                wide = replace(wide, existing, existing + block(newtag, statement))
+            wide = replace(wide, call("4276F0"), block("wide-prelude-branding", " nfs_child_wide.brandingBegin();") + call("4276F0"))
+            part = part[:ws] + wide + part[we:]
             anchor = "\tpush32(0xFFFFFFFF);\n\tecx = 0x20; //mov\n\teax = 1; //mov\n\txor_(edx, edx);\n"
             return wrap(part, anchor, "427B30", "presentation", "nfs_player_scene_live::PresentationScope nfs_player_presentation(*this);")
         body("40C160", menu)

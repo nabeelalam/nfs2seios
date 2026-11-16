@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "localIntegration": 45,
+  "scope": "Desktop Setup source/return diagnostics; no physical iPad acceptance",
+  "returnedMain": true,
+  "freshMainProofs": 2,
+  "nativeIntervalsAfterSetupEntry": [
+    {
+      "start": 493,
+      "end": 494,
+      "frames": 1,
+      "output": [
+        1280,
+        720
+      ]
+    },
+    {
+      "start": 513,
+      "end": 514,
+      "frames": 1,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 1501,
+      "end": 1502,
+      "frames": 1,
+      "output": [
+        1280,
+        720
+      ]
+    },
+    {
+      "start": 1524,
+      "end": 1525,
+      "frames": 1,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 1689,
+      "end": 1701,
+      "frames": 12,
+      "output": [
+        2360,
+        1640
+      ]
+    }
+  ],
+  "returnDiagnosticReasons": [
+    30,
+    31,
+    2
+  ],
+  "returnFinding": "Original return arm and semantic capture succeeded, then sidebar copy acquisition/span/byte guard rejected. Keep the guard; carry same-candidate authenticated history.",
+  "retainedReuseProven": false,
+  "event2Observed": true,
+  "allAbortPhasesRuntimeProven": false,
+  "sourceAudit": "Seven original input polls can reach40BCFF: two before group, two after1/2draws, one after complete group, one after copy, one after upload. Last must not reuse old lease.",
+  "newGroupedSource": [
+    "Added partial-group phase3 with exactdrawcount/revision/record checks",
+    "Exclude published/new-upload aborts from receipt",
+    "Capture immutable sidebar history only with same fully verified candidate copy",
+    "Transfer history only through exact pending Setup return; prefer verified currentcopy; fade and reverse exactnativechecks retained",
+    "Added bounded source/GPU refusal and completion diagnostics to prove actual retained path"
+  ],
+  "newSourceCompiled": false,
+  "cleanExit": true,
+  "all13ResourcesUnchanged": true,
+  "copiedAssetsUnchanged": true,
+  "copiedProfileRestored": true,
+  "cloudBuilds": 0,
+  "remaining": [
+    "Compile and runtime-validate grouped46",
+    "Actual retained native sealing/reuse must be proven, not inferred from repeatedcontent rows",
+    "Resize one-frame fallback and actual21frame preview-change checks",
+    "Physical iPad fullUI acceptance and later LPM/performance"
+  ]
+}

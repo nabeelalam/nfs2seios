@@ -6,6 +6,10 @@ namespace mo=nfs_main_sidebar_origin;using MainFixture=main343_origin_fixture::F
 static_assert(!std::is_default_constructible<mo::Proof>::value,"Origins require full verification");
 static_assert(!std::is_copy_constructible<mo::Proof>::value,"Cannot clone revocation authority");
 int main(){try{
+ // The renderer can query an exact lifetime serial without guest reads. A
+ // retired host address never authorizes its next occupant's source commands.
+ {const uintptr_t game=0xfeddcbaau;auto old=mo::acquireGameLife(game);CHECK(old&&old->serial()&&mo::currentGameLife(game,old->serial()));CHECK(mo::acquireGameLife(game)==old&&!mo::currentGameLife(game,0)&&!mo::currentGameLife(game+1,old->serial()));std::thread retire([&](){mo::retireGame(game);});retire.join();CHECK(!old->current()&&!mo::currentGameLife(game,old->serial()));auto fresh=mo::acquireGameLife(game);CHECK(fresh&&fresh->serial()>old->serial()&&mo::currentGameLife(game,fresh->serial())&&!mo::currentGameLife(game,old->serial()));mo::retireGame(game);CHECK(!mo::currentGameLife(game,fresh->serial()));}
+
  auto f=std::unique_ptr<MainFixture>(new MainFixture);mo::Store store;auto proof=f->publish(store);CHECK(proof&&proof->current()&&proof->frame()->valid);CHECK(proof->post().target.owner==0x1800&&proof->post().target.w[8]==0x40000);CHECK(proof->archive()==f->binding.archive&&proof->formGuest()==f->binding.formGuest&&proof->game()==f->binding.game&&proof->publisherThread()==29&&proof->epoch()==1);CHECK(proof->scene().event.sequence==2&&proof->groupEvent().sequence==3&&proof->tailEvent().sequence==4&&proof->copyEvent().sequence==5&&proof->uploadEvent().sequence==6);
  auto actual=std::unique_ptr<bg::Plane>(new bg::Plane(proof->post()));auto catalog=f->trusted();CHECK(store.acquire(*actual,f->binding.game,29,f->binding.archive,catalog)==proof);actual->target.ownerState[0]^=0x10000;CHECK(store.acquire(*actual,f->binding.game,29,f->binding.archive,catalog)==proof);CHECK(proof->post().target.ownerState[0]!=actual->target.ownerState[0]);
  // Every owned record, catalog and prepared frame survives caller mutation.

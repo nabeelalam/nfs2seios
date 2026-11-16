@@ -28,11 +28,18 @@
 #endif
 #endif
 #include "PlayerPhotoArtProvider.h"
+#include "LocationPhotoArtProvider.h"
+#include "LocationPhotoArtworkLoader.h"
+#include "LocationPhotoArtworkPin.h"
 #include "PlayerPhotoArtworkLoader.h"
 #include "PlayerPhotoArtworkPin.h"
 #include "TrackBadgeArtProvider.h"
 #include "TrackBadgeArtworkLoader.h"
 #include "TrackBadgeArtworkPin.h"
+#include "ClassPictureArtProvider.h"
+#include "ClassPictureArtworkLoader.h"
+#include "ClassPictureArtworkPin.h"
+#include "OpponentPreviewCatalogData.h"
 #include <cstdio>
 #endif
 #include "BackgroundSceneCatalog.h"
@@ -104,6 +111,13 @@ static bool installArtworkPack(std::shared_ptr<const ArtworkPack>pack,const Dige
 }
 bool activateArtworkPack(const std::string&root,const Digest&expected)noexcept{try{if(retained())return retained()->digest()==expected&&enableScene();if(nfs_hd_art_provider_available())return false;return installArtworkPack(ArtworkPack::loadFile(root+"/gamedata/remaster.nfshd",expected),expected);}catch(...){return false;}}
 
+bool requiredArtworkReady()noexcept{
+#ifdef NFS_REQUIRE_LOCATION_PHOTO_ARTWORK
+ return nfs_location_photo_art_generation()!=0;
+#else
+ return true;
+#endif
+}
 bool activateConfiguredArtwork(const std::string&root,const std::string&bundledTemplate)noexcept{
  // Called by app startup before GameSession creates a worker. Font failure is
  // optional and cannot change existing artwork-pack or original-rendering paths.
@@ -160,6 +174,19 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
   }catch(...){}
  }
 
+ // Source authority is independent of authored image records. Hash the actual
+ // original compressed archive; the live collector separately verifies decoded
+ // archive/source bytes and precise native consumption before presentation.
+ if(activated&&!nfs_opponent_preview_source::acquire()){
+  Digest actual{};
+  if(readOwnerArchiveDigest(root,actual))
+   (void)nfs_opponent_preview_source::install(nfs_opponent_preview_catalog::catalog(),actual);
+ }
+ if(activated&&NFS_CLASS_PICTURE_ARTWORK_SHA256[0]&&!nfs_class_picture_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string classPicture=slash==std::string::npos?root+"/gamedata/"+NFS_CLASS_PICTURE_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_CLASS_PICTURE_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_class_picture_art_load_file(classPicture.c_str(),error,sizeof error))std::fprintf(stderr,"Optional class-picture artwork: %s\n",error);
+  }catch(...){}
+ }
  // An empty pin deliberately disables unfinished track-info artwork. Install
  // immutable scene assets before the worker can seal their provider registry.
  if(activated&&NFS_TRACK_INFO_ARTWORK_SHA256[0]&&!nfs_track_info_art_generation()){
@@ -180,6 +207,11 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
  if(activated&&NFS_PLAYER_PHOTO_ARTWORK_SHA256[0]&&!nfs_player_photo_art_generation()){
   try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string playerPhoto=slash==std::string::npos?root+"/gamedata/"+NFS_PLAYER_PHOTO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_PLAYER_PHOTO_ARTWORK_FILENAME;char error[128]{};
    if(!nfs_player_photo_art_load_file(playerPhoto.c_str(),error,sizeof error))std::fprintf(stderr,"Optional player-photo artwork: %s\n",error);
+  }catch(...){}
+ }
+ if(activated&&NFS_LOCATION_PHOTO_ARTWORK_SHA256[0]&&!nfs_location_photo_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string locationPhoto=slash==std::string::npos?root+"/gamedata/"+NFS_LOCATION_PHOTO_ARTWORK_FILENAME:bundledTemplate.substr(0,slash+1)+NFS_LOCATION_PHOTO_ARTWORK_FILENAME;char error[128]{};
+   if(!nfs_location_photo_art_load_file(locationPhoto.c_str(),error,sizeof error))std::fprintf(stderr,"Location-photo artwork: %s\n",error);
   }catch(...){}
  }
  if(activated&&NFS_TRACK_BADGE_ARTWORK_SHA256[0]&&!nfs_track_badge_art_generation()){

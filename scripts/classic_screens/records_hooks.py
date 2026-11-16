@@ -41,6 +41,12 @@ def main():
     return part[:at]+block(' { nfs_records_ui_live::Presentation nfs_records_present(*this);\n nfs_records_ui_live::DrawScope nfs_records_native(*this);')+region+block(' }')+part[end:]
    edit('41C850',records)
    edit('41B8D0',records)
+   def cursor_tail(part):
+    call='\tesp -= 4; _sub_4267C0(); esp += 4; //call';assert part.count(call)==1
+    return part.replace(call,block(' { nfs_records_ui_live::CursorScope nfs_records_cursor(*this);')+call+block(' }'))
+   edit('41C850',cursor_tail)
+   edit('41B8D0',cursor_tail)
+
   elif unit==3:pass # Records DrawScope now owns the complete handler presentation tail.
   elif unit==10:
    for symbol in ['482DA0','4848FC']:entry(symbol,' nfs_records_ui_live::retire(*this,uint32_t(eax));')

@@ -1,0 +1,30 @@
+{
+  "scope": "Typed Options current original343 caption sidebar for missing MT slot0 on fade; all native/GPU checks retained",
+  "version": 62,
+  "stages": [
+    {
+      "name": "generate-engine",
+      "exit": 0,
+      "seconds": 25.168929820000002
+    },
+    {
+      "name": "generate-renderer",
+      "exit": 0,
+      "seconds": 6.832471121999987
+    },
+    {
+      "name": "build",
+      "exit": 0,
+      "seconds": 124.77246647999999
+    }
+  ],
+  "changedGeneratedFiles": 1,
+  "sourcePinsUnchanged": true,
+  "binarySHA256": "1976d1e7c3771ee0f50fe2461b9c90e7b3a24af7dbc158ea158ece0bc6dbb2e3",
+  "appBuilt": true,
+  "eligibleForRuntime": true,
+  "appRun": false,
+  "cloud": false,
+  "physicalIpadVerified": false,
+  "runtimeVerified": false
+}

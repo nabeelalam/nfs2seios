@@ -56,11 +56,12 @@ static void locationQueueLifetime(Fixture&f){
  auto original=std::unique_ptr<nfs_location_preview_test::Fixture>(new nfs_location_preview_test::Fixture(f.base.post));auto preview=original->packet(f.base.post);CHECK(preview);
  std::shared_ptr<loc::Prepared>owned(new loc::Prepared);owned->valid=true;owned->caption=caption;owned->preview=preview;owned->contentRevision=1;
  std::weak_ptr<const loc::Prepared>weak=owned;std::weak_ptr<const nfs_soft::FramePacket>weakCaption=caption;std::weak_ptr<const nfs_location_preview::Packet>weakPreview=preview;
- location::Intent intent;location::enqueueBegin(owned,intent);CHECK(intent.beginConsumed&&intent.serial&&location::activeRequest()==intent.serial);location::finish(intent);CHECK(intent.finishConsumed&&!location::activeRequest());location::cancel(intent);owned.reset();caption.reset();preview.reset();CHECK(!weak.expired()&&!weakCaption.expired()&&!weakPreview.expired()&&!locationBegins&&!locationEnds);
+ location::State transportSource;transportSource.ownerEpoch=7;transportSource.game=0x1234;
+ location::Intent intent;location::enqueueBegin(owned,intent,transportSource);CHECK(intent.beginConsumed&&intent.serial&&location::activeRequest()==intent.serial);location::finish(intent);CHECK(intent.finishConsumed&&!location::activeRequest());location::cancel(intent);owned.reset();caption.reset();preview.reset();CHECK(!weak.expired()&&!weakCaption.expired()&&!weakPreview.expired()&&!locationBegins&&!locationEnds);
  nfs::flush_renderer_commands();CHECK(locationBegins==1&&locationEnds==1&&weak.expired()&&weakCaption.expired()&&weakPreview.expired());
  // Calling the queue entry on its owner thread returns to the existing path.
  std::shared_ptr<loc::Prepared>ownerPacket(new loc::Prepared);ownerPacket->valid=true;std::shared_ptr<const loc::Prepared>ownerView=ownerPacket;
- nfs::run_renderer_on_main([](void*p){auto&packet=*static_cast<std::shared_ptr<const loc::Prepared>*>(p);location::Intent ownerIntent;location::enqueueBegin(packet,ownerIntent);CHECK(!ownerIntent.beginConsumed&&!ownerIntent.serial&&!ownerIntent.owned&&!location::activeRequest());},&ownerView);
+ nfs::run_renderer_on_main([](void*p){auto&packet=*static_cast<std::shared_ptr<const loc::Prepared>*>(p);location::Intent ownerIntent;location::State ownerTransportSource;ownerTransportSource.ownerEpoch=8;ownerTransportSource.game=0x5678;location::enqueueBegin(packet,ownerIntent,ownerTransportSource);CHECK(!ownerIntent.beginConsumed&&!ownerIntent.serial&&!ownerIntent.owned&&!location::activeRequest());},&ownerView);
 }
 static void sharedRequestSequence(){
  namespace location=nfs_location_scene_live;
@@ -88,7 +89,12 @@ int main(int argc,char**argv){try{CHECK(argc==2);std::string mode=argv[1];if(mod
  if(mode=="off"||mode=="unset"||mode=="missing"||mode=="wrong"||mode=="suffix"){const auto before=reads,alloc=allocationCount.load();{pub::MenuOwnerScope menu(g);live::MainScope scene(g);pub::OwnerScope iteration(g,1);live::IterationScope sceneIteration(g);iteration.start();sceneIteration.start();live::RoleScope role(g,live::Phase::Side);pub::ResolvedScope logo(g);live::ResolvedScope input(g);live::row(g,game_id_sub_482BD4);live::IndexedSideCallScope indexed(g,live::indexedSideCallee(g));live::UploadEndScope after(g);pub::UploadScope uploadScope(g);live::Intent i;live::begin(g,i);live::finish(i);live::cancel(i);}CHECK(reads==before&&allocationCount==alloc&&!pub::stateSlot()&&!live::slot());std::printf("PASS %s zero reads/allocations\n",mode.c_str());return 0;}
  sharedRequestSequence();
  auto fixture=std::unique_ptr<Fixture>(new Fixture{});auto trusted=std::make_shared<const bg::SourceCatalog>(fixture->catalog);CHECK(!nfs_background_scene_runtime::installCatalog({}));CHECK(nfs_background_scene_runtime::installCatalog(trusted));prepareMemory(*fixture);MainThreadHarness renderer;
- {pub::MenuOwnerScope menu(g);live::MainScope scene(g);CHECK(pub::owner()&&live::current(g));CHECK(!nfs_background_scene_runtime::installCatalog(trusted));
+ {pub::MenuOwnerScope menu(g);live::MainScope scene(g);CHECK(pub::owner()&&live::lexicalCurrent(g)&&!live::current(g));CHECK(!nfs_background_scene_runtime::installCatalog(trusted));
+  // Simulate the exact original410E80 return before the first redraw.
+  g.esi=off_4D3EC4;live::bindInitialArchive(g);CHECK(live::slot()->archiveBound);
+  // This negative models an ordinary reload after a prior base, not the
+  // separately tested first pre-base sidebar assembly.
+  live::slot()->baseSeen=true;
   {pub::OwnerScope warmup(g,1);live::IterationScope pending(g);warmup.start();pending.start();live::invalidateCache();pub::resetNativeCache();live::postGroup(g);g.ebp=off_4D3EC4;live::tailBegin(g);live::tailEnd(g);live::copyEnd(g);CHECK(!live::slot()->invalid&&!live::slot()->iteration);}
   basePass(g,*fixture);g.eax=off_4D3EC4;{pub::OwnerScope redraw(g,1);live::IterationScope sceneRedraw(g);redraw.start();sceneRedraw.start();sidePass(g,*fixture);wordPass(g,*fixture);CHECK(!live::slot()->invalid);originalGroupCopy(*fixture,g);upload(g);}
   auto owned=live::slot()->published;CHECK(owned&&owned->valid);const auto revision=owned->contentRevision;

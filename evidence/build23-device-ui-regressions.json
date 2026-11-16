@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "build": 23,
+  "evidenceKind": "Physical iPad user report; not independently reproduced locally",
+  "acceptance": "UI replacement incomplete; do not claim first-frame or whole-menu coverage",
+  "reportedIssues": [
+    "Original splash remains.",
+    "Original backdrop appears during first Main swipe, followed later by remaster; badges/cursor/text are immediate.",
+    "Wide Main has a whitish vertical left-side line.",
+    "Location enters with original graphics then becomes HD but remains pillarboxed.",
+    "Setup enters original then becomes HD; wide only in One Player/Split, other types remain pillarboxed; cursor is jerky.",
+    "Cars and Opponents background/logo remain original.",
+    "Opponent class pictures remain original."
+  ],
+  "requiredBehavior": [
+    "The remastered version must be used from first visible frame through swipes, redraws, child menus and returns.",
+    "Do not treat faster loading, hiding a delay, or eventual stable HD as satisfying replacement.",
+    "Preserve correct animation, source identity, input alignment, and authored artwork at iPad/16:9 ratios."
+  ],
+  "workBranch": "codex/ui-activation",
+  "performanceProfilingDeferred": true,
+  "newCloudAppBuildAuthorizedAfterCoherentFixesOnly": true,
+  "sourceFindings": [
+    "Selected artwork loading is synchronous before worker startup; no asynchronous replacement queue explains the missing routes.",
+    "Actual classic renderer is ClassicScreens/RendererHooks.inc, copied into generated BackgroundSceneRenderer.inc; legacy renderer is not authoritative.",
+    "Location explicitly lacks responsive rendering enrollment.",
+    "Existing Player compositor must be repaired rather than duplicated.",
+    "Transition source provenance currently relies on Main proofs; child transitions require their own authenticated provenance."
+  ],
+  "unverified": [
+    "Specific failure gate for Player initial/cached frames.",
+    "Specific source of white vertical line.",
+    "Specific Setup mode foreground that rejects wide frame."
+  ],
+  "fixed": false
+}

@@ -1,0 +1,44 @@
+{
+  "scope": "Initial Setup host gate stopped before input; no game-render failure established",
+  "cleanup": {
+    "failure": "ReadyError: Two fresh exact setup native/source frames absent; no further input",
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0,
+    "observerElapsedSeconds": 262.256233077,
+    "preflightElapsedSeconds": 45.57432187699999,
+    "hardObserverBudgetSeconds": 900,
+    "driverAppDeadlineSeconds": 600,
+    "watchdogSIGINTSeconds": 605,
+    "watchdogSIGKILLSeconds": 630,
+    "hardAppBudgetSeconds": 630,
+    "noProfiler": true,
+    "noNewObjects": true,
+    "resolution": [
+      2360,
+      1640
+    ],
+    "wideRun": "Constant native2360x1640; source RGB-normalized Main keyboard input only",
+    "scope": "Desktop sampled pixels and source text gates; renderer acceptance is not artwork identity or first-native-frame/device proof"
+  },
+  "gameLogSHA256": "cd1e6bba40abb60f40a9b0693b2e7c5ed1d18025c41f4ef56fbc6a56f8d9fab6",
+  "SetupNativeRowsExistInFinalLog": true,
+  "lateNativeSerials": [
+    371,
+    372,
+    373,
+    374
+  ],
+  "exactSetupOwnerSeenAt2360": true,
+  "exactSetupForm": "004d2790",
+  "epoch": 3,
+  "initialRoute": "Typed MTkind8 fullnative300600; subsequentsteadySetupNative arrived late",
+  "failure": "Two fresh exact setup native/source frames absent under15s gate",
+  "checkpointCreated": false,
+  "keysSentAfterSetupEntry": 0,
+  "nextAction": "Fresh P2-62b recognizes initial typedMT and steadyrender within30s, then visualfocuscontinuity"
+}

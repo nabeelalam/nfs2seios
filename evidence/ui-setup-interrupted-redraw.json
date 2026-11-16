@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "scope": "Local desktop Setup source investigation; not physical iPad acceptance",
+  "qualifiedLocalIntegration": 41,
+  "observer": "setup-mode-mailbox-observer-v11",
+  "runtimeTerminal": true,
+  "runtimeExitCode": 0,
+  "copiedProfileRestored": true,
+  "all13ResourcesUnchanged": true,
+  "appGone": true,
+  "rootVisuallyIdentifiedModes": [
+    "One Player",
+    "Split Screen",
+    "Modem",
+    "Serial Link",
+    "Network"
+  ],
+  "returnToMainVerified": false,
+  "observerStop": "Root command deadline ended before return-to-Main; no return claim",
+  "observedNativeGaps": {
+    "ModemFrames": 113,
+    "SerialLinkFrames": 114,
+    "NetworkAfterResizeRestoreFrames": 1
+  },
+  "sourceCause": "Original lazy redraw can abort before slot1 upload after group or CPU copy; capture clears previous publication at redraw start",
+  "change": "Setup-only exact original abort-label receipt, scoped by owner/iteration/upload event and complete group/copy evidence",
+  "verification": [
+    "Python syntax",
+    "Reversible transform on actual generated Methods_01.cpp",
+    "Original input poll calls and abort branch counts unchanged",
+    "Scoped whitespace check"
+  ],
+  "runtimeOfNewReceiptVerified": false,
+  "next": "Retain last fully completed Setup native upload under exact identity and fresh GPU proof; never promote partial collector state",
+  "cloudBuildsStarted": 0
+}

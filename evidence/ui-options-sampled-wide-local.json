@@ -1,0 +1,21 @@
+{
+  "scope": "Desktop Options sampled appearance only; no first-frame, return-animation, opponent-cycle or iPad acceptance",
+  "runId": "b29a4ac76cb62fd2e9dfddfdc0b997db",
+  "humanReview": "Root viewed two current 2360x1640 captures plus 1280x720 and restored640 capture. Options visible, authored background/logo/badges/cursor; no black bars or obvious white vertical seam in reviewed wide samples.",
+  "imageRGBSHA256s": [
+    "54eb234bd0a6ba285e2172d96da4888de48371197010de18d708b95291f36854",
+    "1cfd99e4a8a4375283a881719ef28521eab3cfaed95aacc2df4604d1314ce275"
+  ],
+  "sourceLogSHA256": "37716d233d99c7af420c6238d50e82a44c640d7a6f3fc26e25a85bb6bf8d5f2b",
+  "typedOptionsProofsCurrent": true,
+  "continuation": "Fresh bounded same-binary return/class run; never ACK terminal run.",
+  "cleanup": {
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0
+  },
+  "returnAndClassCycleVerified": false
+}

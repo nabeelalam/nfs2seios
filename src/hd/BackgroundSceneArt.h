@@ -31,6 +31,8 @@ typedef struct NfsResultsBackdropImage {
     const unsigned char *pixels;
 } NfsResultsBackdropImage;
 int nfs_results_install_backdrops(const NfsResultsBackdropImage images[2]);
+/* V2 appends native iPad composition; legacy two-image install remains valid. */
+int nfs_results_install_backdrops_v2(const NfsResultsBackdropImage images[3]);
 int nfs_results_backdrop_image(unsigned ratio, NfsResultsBackdropImage *out);
 #ifdef __cplusplus
 }

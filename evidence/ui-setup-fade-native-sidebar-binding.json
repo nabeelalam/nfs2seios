@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "integration46Runs": [
+    {
+      "observer": "setup-mode-mailbox-observer-v15",
+      "integration": 46,
+      "cleanExit": true,
+      "profileRestored": true,
+      "all13ResourcesUnchanged": true,
+      "copiedAssetsUnchanged": true,
+      "returnedMain": false,
+      "nativeIntervalsAfterSetupEntry": [
+        {
+          "start": 463,
+          "end": 464,
+          "frames": 1,
+          "output": [
+            1280,
+            720
+          ]
+        },
+        {
+          "start": 484,
+          "end": 485,
+          "frames": 1,
+          "output": [
+            2360,
+            1640
+          ]
+        },
+        {
+          "start": 787,
+          "end": 788,
+          "frames": 1,
+          "output": [
+            1280,
+            720
+          ]
+        },
+        {
+          "start": 992,
+          "end": 993,
+          "frames": 1,
+          "output": [
+            1280,
+            720
+          ]
+        },
+        {
+          "start": 1014,
+          "end": 1015,
+          "frames": 1,
+          "output": [
+            2360,
+            1640
+          ]
+        },
+        {
+          "start": 1343,
+          "end": 1344,
+          "frames": 1,
+          "output": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "gpuCompletedSealObserved": true,
+      "retainedReuseObserved": false,
+      "deadlineStop": true,
+      "scope": "Desktop source/presentation only, not physical iPad acceptance",
+      "limitation": "Root missed final command deadline; return was not exercised. Keep as stopped run, not passing return."
+    },
+    {
+      "observer": "setup-return-native-only-v16",
+      "integration": 46,
+      "cleanExit": true,
+      "profileRestored": true,
+      "all13ResourcesUnchanged": true,
+      "copiedAssetsUnchanged": true,
+      "returnedMain": true,
+      "nativeIntervalsAfterSetupEntry": [
+        {
+          "start": 1466,
+          "end": 1478,
+          "frames": 12,
+          "output": [
+            2360,
+            1640
+          ]
+        }
+      ],
+      "gpuCompletedSealObserved": true,
+      "retainedReuseObserved": false,
+      "deadlineStop": false,
+      "scope": "Desktop source/presentation only, not physical iPad acceptance",
+      "returnSourceReasons": [
+        30,
+        31,
+        21
+      ],
+      "finding": "Authenticated semantic/copy path reached fade, but optional MT slot0 packet absent. Existing GPU checks can validate actual slot0 descriptors directly."
+    }
+  ],
+  "sourceChangePendingValidation": "Setup-only absent-cache fade binding from authenticated sidebar and checked300actualslot0descriptors; full GPU pixel/provenance/filter/native300/600 checks unchanged",
+  "presentButMismatchedCacheStillRejects": true,
+  "reverseUnchanged": true,
+  "physicalIpadVerified": false,
+  "cloudBuilds": 0
+}

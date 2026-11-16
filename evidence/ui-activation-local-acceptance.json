@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "scope": "Sampled local desktop UI activation; original Build23 device report is separate",
+  "binarySHA256": "68f9c76569fc3c9886c187ec6a2fc9b21fe1f6b53270b2a67ab2a379c005cba0",
+  "sourceGeneration": 9,
+  "sourceAndRendererCompile": {
+    "engine": "C++14",
+    "renderer": "C11",
+    "checkedTransactions": 9471,
+    "boundedWordLoops": 12,
+    "completeCopyHelpers": 2
+  },
+  "menuTransitionPublications": {
+    "4": 59,
+    "1": 26,
+    "3": 102,
+    "7": 38,
+    "9": 103,
+    "5": 51,
+    "8": 468,
+    "6": 38,
+    "10": 103
+  },
+  "firstFullMenuPasses": 674,
+  "allFirstFullPassesNativeSelections": 300,
+  "allFirstFullPassesNativeTriangles": 600,
+  "widePresented": {
+    "004d3050": [
+      "1280x720",
+      "2360x1640"
+    ],
+    "004d2a20": [
+      "1280x720",
+      "2360x1640"
+    ],
+    "004d2790": [
+      "1280x720",
+      "2360x1640"
+    ],
+    "004d3204": [
+      "2360x1640"
+    ],
+    "004d3a88": [
+      "1280x720",
+      "2360x1640"
+    ]
+  },
+  "nativeStaticTitle": {
+    "authoredPublicationObserved": true,
+    "actualTextureSize": [
+      2186,
+      1640
+    ],
+    "drawableSize": [
+      2360,
+      1640
+    ],
+    "actualCapturedPixelsReviewed": true
+  },
+  "classPictures": [
+    {
+      "name": "A",
+      "selector": 12,
+      "authoredSize": [
+        1224,
+        584
+      ],
+      "compositeSHA256": "9f125875e8a97c772dbeaf57a22e8b56b6e35c698039b105993fe011902b2e4b",
+      "actualRendererSchema": 2
+    },
+    {
+      "name": "B",
+      "selector": 13,
+      "authoredSize": [
+        1224,
+        584
+      ],
+      "compositeSHA256": "22b6072b0231a491b5d07b5442328562b9e6bbf21baeafac5e11bc84bfdc4852",
+      "actualRendererSchema": 2
+    },
+    {
+      "name": "C",
+      "selector": 14,
+      "authoredSize": [
+        1224,
+        584
+      ],
+      "compositeSHA256": "e07b959c798d1f71ada7edb9248516508b118b288b76a1630ce67d8c71d52e1c",
+      "actualRendererSchema": 2
+    }
+  ],
+  "setupEntry": {
+    "savedFramesReviewed": 14,
+    "oldRasterFallbackSeen": false,
+    "samplingLimit": "Saved observations approximately every0.2s; unsaved frames and physical iPad are not proven"
+  },
+  "leftPanelSeam": {
+    "vectorMaterialJoinCorrected": true,
+    "nativeLikeCaptureReviewed": true
+  },
+  "additionalSetupMode": {
+    "visibleLabel": "modem",
+    "fullWidthCaptureReviewed": true,
+    "modeBadgeArtwork": "Original exact-fingerprint mode badge retained; HD remaster deferred"
+  },
+  "runtimeIntegrity": {
+    "exit": 0,
+    "appGone": true,
+    "ELFUnchanged": true,
+    "all12ResourcesUnchanged": true,
+    "immutableCopiedGameAssetsUnchanged": true,
+    "copiedProfileRestored": true
+  },
+  "observerSeconds": 212.058821384,
+  "preflightSeconds": 47.621927536,
+  "originalGameDataModified": false,
+  "cloudAppBuildStarted": false,
+  "publicArtworkUpload": false,
+  "physicalIpadAcceptance": false,
+  "remaining": [
+    "Matching Apple compile/package and physical device verification remain separate.",
+    "Native intro videos remain low resolution.",
+    "Initial transition geometry retains native4:3 staging; stable menus use authored responsive layouts.",
+    "Original modem/link/network badges are source-authenticated but not remastered by this source fix."
+  ]
+}

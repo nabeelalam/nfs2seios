@@ -1,0 +1,56 @@
+{
+  "scope": "Local Location preview and subsequent return only",
+  "integration": 52,
+  "binarySHA256": "25d953bec24760688da14c84baa95e94dca1190eecbe252f4faf4d1af3d59d9e",
+  "preview": {
+    "sourceArm": true,
+    "runs": [
+      {
+        "frames": 21,
+        "output": "2360x1640",
+        "presented": true
+      }
+    ],
+    "sourceFunction": "40D1B0",
+    "actualRole": "preview-change",
+    "paintedMotion": [
+      -29,
+      -17,
+      -5,
+      7,
+      19,
+      31,
+      43,
+      55,
+      67,
+      79,
+      91,
+      103,
+      115,
+      127,
+      139,
+      151,
+      163,
+      175,
+      187,
+      199,
+      211
+    ],
+    "nativeRoutes": [],
+    "complete": true
+  },
+  "locationPreviewComplete": true,
+  "locationReturnComplete": true,
+  "remainingFailure": "P1 preview history missing at entry; ordinary current scene capture unavailable",
+  "integrity": {
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0
+  },
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false
+}

@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from bundle_resources import ROOT, HUD_NOTICE_SOURCES, validate_game_resources
+from bundle_resources import ROOT, HUD_NOTICE_SOURCES, validate_bundle_payloads, validate_game_resources
 
 class ResourcesTest(unittest.TestCase):
     def test_required_resources_and_rejections(self):
@@ -31,9 +31,29 @@ class ResourcesTest(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "missing"):
                 validate_game_resources(app)
             shutil.copyfile(support / "install.win", app / "install.win")
+            for name, message in [
+                ("classic-ui.OWNEDZ", "Personal artwork packs"),
+                ("NFS2SEA.EXE", "Original game data"),
+                ("example.VIV", "Original game data"),
+            ]:
+                stray = app / name
+                stray.write_bytes(b"placeholder for a prohibited resource")
+                with self.assertRaisesRegex(RuntimeError, message):
+                    validate_game_resources(app)
+                stray.unlink()
             (app / "GAMEDATA").mkdir()
             with self.assertRaisesRegex(RuntimeError, "supplied separately"):
                 validate_game_resources(app)
+
+    def test_payload_audit_redacts_private_values(self):
+        with tempfile.TemporaryDirectory(prefix="nfs-payload-check-") as folder:
+            app = Path(folder)
+            binary = app / "NFSIISEGame"
+            binary.write_bytes(b"native binary")
+            validate_bundle_payloads(app)
+            binary.write_bytes(b"prefix C:/" + b"Users/example/project/asset")
+            with self.assertRaisesRegex(RuntimeError, "^App bundle contains a prohibited personal_directory pattern$"):
+                validate_bundle_payloads(app)
 
 if __name__ == "__main__":
     unittest.main()

@@ -5,23 +5,42 @@
 #include "CompactCaptionWordIdentity.h"
 typedef struct NfsCompactCaptionGpu {uint64_t generation;GLuint program,texture;GLint matrix,sampler;unsigned word,traceLines;} NfsCompactCaptionGpu;
 static int nfs_compact_caption_empty(const NfsCompactCaptionWordView*v){unsigned i;if(!v)return 0;if(v->schema||v->word||v->width||v->height||v->rgba||v->bytes||v->left||v->top||v->right||v->bottom)return 0;for(i=0;i<32;++i)if(v->sha256[i])return 0;return 1;}
-static int nfs_compact_caption_valid(const NfsCompactCaptionWordView*v,unsigned word){unsigned char sha[32];unsigned width;float left,top;
+static int nfs_compact_caption_metadata_valid(const NfsCompactCaptionWordView*v,unsigned word){unsigned width;float left,top;
  if(nfs_compact_caption_empty(v))return 1;
  if(word<1||word>3)return 0;width=word==1?300u:word==2?208u:192u;left=word==1?93.f:word==2?116.f:120.f;top=word==1?126.f:word==2?162.f:364.f;
  if(!v||v->schema!=NFS_COMPACT_CAPTION_WORD_SCHEMA||v->word!=word||v->width!=width||v->height!=128||v->bytes!=(size_t)width*128u*4u||!v->rgba||v->left!=left||v->top!=top||v->right!=168.f||v->bottom!=top+32.f||memcmp(v->sha256,nfs_compact_caption_word_sha256[word-1],32))return 0;
+ return 1;
+}
+static int nfs_compact_caption_valid(const NfsCompactCaptionWordView*v,unsigned word){unsigned char sha[32];
+ if(!nfs_compact_caption_metadata_valid(v,word))return 0;if(nfs_compact_caption_empty(v))return 1;
  return nfs_texture_sha256(v->rgba,v->bytes,sha)&&!memcmp(sha,nfs_compact_caption_word_sha256[word-1],32);
 }
+// A validation loan belongs to one synchronous, strongly retained callback.
+// Self binding prevents copied tokens; end revokes the loan on every return.
+// It never authorizes a later frame or makes mutable pixel storage immutable.
+typedef struct NfsCompactCaptionValidation {const struct NfsCompactCaptionValidation*self;const NfsCompactCaptionWordView*view;NfsCompactCaptionWordView snapshot;unsigned word,active;}NfsCompactCaptionValidation;
+static int nfs_compact_caption_validation_begin(NfsCompactCaptionValidation*s,const NfsCompactCaptionWordView*v,unsigned word){
+ if(!s)return 0;memset(s,0,sizeof*s);if(!nfs_compact_caption_valid(v,word))return 0;
+ s->self=s;s->view=v;s->snapshot=*v;s->word=word;s->active=1;return 1;
+}
+static void nfs_compact_caption_validation_end(NfsCompactCaptionValidation*s){if(s)memset(s,0,sizeof*s);}
+static int nfs_compact_caption_validation_current(const NfsCompactCaptionValidation*s,const NfsCompactCaptionWordView*v,unsigned word){
+ const NfsCompactCaptionWordView*b;
+ if(!s||s->self!=s||!s->active||s->view!=v||s->word!=word||!nfs_compact_caption_metadata_valid(v,word))return 0;b=&s->snapshot;
+ return b->schema==v->schema&&b->word==v->word&&b->width==v->width&&b->height==v->height&&b->rgba==v->rgba&&b->bytes==v->bytes&&b->left==v->left&&b->top==v->top&&b->right==v->right&&b->bottom==v->bottom&&!memcmp(b->sha256,v->sha256,32);
+}
+
 /* Resource names cannot borrow an original/cache/background/font texture. */
 static int nfs_compact_caption_alias(GLuint texture,GLuint font,GLuint preview,GLuint color,const uint32_t ids[300]){if(!texture)return 0;if(texture==g_framebufferTexture||texture==font||texture==preview||texture==color||texture==nfs_bg_compositor.logo.texture)return 1;for(unsigned i=0;i<5;++i)if(texture==nfs_bg_compositor.textures[i])return 1;for(unsigned i=0;i<300;++i)if(texture==ids[i])return 1;return 0;}
 static void nfs_compact_caption_forget(NfsCompactCaptionGpu*s){memset(s,0,sizeof *s);}
 #define NFS_COMPACT_CAPTION_GL(call) do{if(!nfs_graphics_scene_current(t))goto lost;call;if(!nfs_graphics_scene_current(t))goto lost;}while(0)
 static int nfs_compact_caption_retire(NfsCompactCaptionGpu*s,const NfsBackgroundSceneStage*t,int owner){if(owner&&s->generation==t->generation&&nfs_graphics_scene_current(t)){if(s->program){NFS_COMPACT_CAPTION_GL(glDeleteProgram(s->program));}if(s->texture){NFS_COMPACT_CAPTION_GL(glDeleteTextures(1,&s->texture));}}nfs_compact_caption_forget(s);return 1;lost:nfs_compact_caption_forget(s);return 0;}
-static int nfs_compact_caption_prepare(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,unsigned word,const NfsBackgroundSceneStage*t){
+static int nfs_compact_caption_prepare_impl(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,unsigned word,const NfsBackgroundSceneStage*t,const NfsCompactCaptionValidation*validation){
  GLuint vs=0,fs=0,p=0,tex=0;GLint status=0,matrix=-1,sampler=-1,maxSize=0;GLboolean exists=0;GLenum error;NfsBgSaved saved;int ok=0;
  static const char vertex[]="attribute vec4 vertex;uniform mat4 matrix;varying highp vec2 uv;void main(){gl_Position=matrix*vec4(vertex.xy,1.0,1.0);uv=vertex.zw;}";
  static const char fragment[]="precision highp float;uniform sampler2D image;varying highp vec2 uv;void main(){vec4 p=texture2D(image,uv);gl_FragColor=vec4(p.rgb*p.a,p.a);}";
  const char*vp=vertex;const char*fp=fragment;
- if(!s||!nfs_compact_caption_valid(v,word)||!nfs_graphics_scene_current(t))return 0;if(nfs_compact_caption_empty(v))return 1;
+ if(!s||!(validation?nfs_compact_caption_validation_current(validation,v,word):nfs_compact_caption_valid(v,word))||!nfs_graphics_scene_current(t))return 0;if(nfs_compact_caption_empty(v))return 1;
  if(s->generation&&s->generation!=t->generation)return 0;
  if(s->program&&s->texture&&s->word==word){NFS_COMPACT_CAPTION_GL(exists=glIsProgram(s->program));if(!exists)return 0;NFS_COMPACT_CAPTION_GL(exists=glIsTexture(s->texture));return exists!=0;}
  NFS_COMPACT_CAPTION_GL(glGetIntegerv(GL_MAX_TEXTURE_SIZE,&maxSize));if(maxSize<(GLint)v->width)return 0;
@@ -35,9 +54,9 @@ static int nfs_compact_caption_prepare(NfsCompactCaptionGpu*s,const NfsCompactCa
  if(s->program){NFS_COMPACT_CAPTION_GL(glDeleteProgram(s->program));}if(s->texture){NFS_COMPACT_CAPTION_GL(glDeleteTextures(1,&s->texture));}s->program=p;s->texture=tex;s->matrix=matrix;s->sampler=sampler;s->word=word;s->generation=t->generation;return 1;
  lost:nfs_compact_caption_forget(s);return 0;
 }
-static int nfs_compact_caption_draw(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t){
+static int nfs_compact_caption_draw_impl(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t,const NfsCompactCaptionValidation*validation){
  GLint fbo=0,type=0,name=0,vp[4];GLenum error;GLboolean exists=0;GLfloat q[24];
- if(!s||!v||!nfs_graphics_scene_current(t)||nfs_compact_caption_empty(v)||!nfs_compact_caption_valid(v,s->word)||s->generation!=t->generation||!s->program||!s->texture||!nfs_frame_sampling_valid(t->width,t->height,&t->sampling))return 0;
+ if(!s||!v||!nfs_graphics_scene_current(t)||nfs_compact_caption_empty(v)||!(validation?nfs_compact_caption_validation_current(validation,v,s->word):nfs_compact_caption_valid(v,s->word))||s->generation!=t->generation||!s->program||!s->texture||!nfs_frame_sampling_valid(t->width,t->height,&t->sampling))return 0;
  NFS_COMPACT_CAPTION_GL(glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo));NFS_COMPACT_CAPTION_GL(glGetIntegerv(GL_VIEWPORT,vp));if((GLuint)fbo!=t->framebuffer||memcmp(vp,t->sampling.viewport,sizeof vp))return 0;
  NFS_COMPACT_CAPTION_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type));NFS_COMPACT_CAPTION_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name));if(type!=GL_TEXTURE||!name||(GLuint)name==s->texture)return 0;
  NFS_COMPACT_CAPTION_GL(exists=glIsProgram(s->program));if(!exists)return 0;NFS_COMPACT_CAPTION_GL(exists=glIsTexture(s->texture));if(!exists)return 0;
@@ -46,4 +65,8 @@ static int nfs_compact_caption_draw(NfsCompactCaptionGpu*s,const NfsCompactCapti
  if(nfs_logo_trace_enabled()&&s->traceLines<64){++s->traceLines;fprintf(stderr,"COMPACT CAPTION WORD word=%u generation=%llu fbo=%u\n",s->word,(unsigned long long)s->generation,(unsigned)t->framebuffer);}return 1;
  lost:nfs_compact_caption_forget(s);return 0;
 }
+static int nfs_compact_caption_prepare(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,unsigned word,const NfsBackgroundSceneStage*t){return nfs_compact_caption_prepare_impl(s,v,word,t,NULL);}
+static int nfs_compact_caption_draw(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t){return nfs_compact_caption_draw_impl(s,v,t,NULL);}
+static int nfs_compact_caption_prepare_in_scope(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,unsigned word,const NfsBackgroundSceneStage*t,const NfsCompactCaptionValidation*validation){return validation&&nfs_compact_caption_prepare_impl(s,v,word,t,validation);}
+static int nfs_compact_caption_draw_in_scope(NfsCompactCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t,const NfsCompactCaptionValidation*validation){return validation&&nfs_compact_caption_draw_impl(s,v,t,validation);}
 #undef NFS_COMPACT_CAPTION_GL

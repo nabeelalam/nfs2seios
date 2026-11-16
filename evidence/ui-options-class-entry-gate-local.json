@@ -1,0 +1,22 @@
+{
+  "scope": "Local60 broader Options/classes attempt; stopped before entry",
+  "failure": "ReadyError: Two fresh positive Main states absent; no recovery key",
+  "optionsExercised": false,
+  "classCycleExercised": false,
+  "failureScreenshotReviewed": "Actual HDMain640; exact failed predicate under investigation",
+  "renderingRegressionEstablished": false,
+  "cleanShutdown": {
+    "appGone": true,
+    "launcherExitCode": 0,
+    "copiedProfileRestored": true,
+    "allSelectedResourcesUnchanged": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "ELFUnchanged": true
+  },
+  "setupReturnMilestoneStillVerified": true,
+  "classifierPassed": true,
+  "confirmedFailurePredicate": "wide_now640 rejected intentional direct 4:3 HD native path",
+  "mainPixelScores": "0.987..1.0 across all10 post-resize Main captures",
+  "sourceEvidence": "Fresh BG core-commit map1 words4 size640x480 full300/600; renderer explicit logical<=640 exact accepted4:3 branch",
+  "hostCorrection": "Preserve exact640 source/image/owner proofs; require owned wide only at wide extents; actual12/19 returns at2360 with fresh native source"
+}

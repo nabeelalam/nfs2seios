@@ -19,10 +19,11 @@ struct State {
  bool failed=false,capturing=false,string=false,word=false,postrace=false;
  uint32_t textAddress=0,metricAddress=0,fontAddress=0;
  std::array<int16_t,256>advances{};std::array<bool,256>known{};
+ std::shared_ptr<std::atomic<uint64_t>>live;
  std::shared_ptr<Payload>building;std::shared_ptr<const Frame>published;
  std::vector<uint16_t>replay;nfs_soft::TextCommand command{};
  std::array<uint8_t,96>textBefore{};Measurement measurement{};unsigned resourceDepth=0;
- void invalidate()noexcept{failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();}
+ void invalidate()noexcept{if(live)live->store(0,std::memory_order_release);failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();}
 };
 inline State&state()noexcept{static thread_local State s;return s;}
 inline State*ownerCurrent(Game&g)noexcept{auto&s=state();return s.owner==1&&s.game==&g&&s.thread==threadToken()?&s:nullptr;}
@@ -50,10 +51,10 @@ struct OwnerScope {
    uint16_t type;{nfs::GuestCopyTransaction tx;type=tx.load<uint16_t>(expected+8);}if(type!=(postrace?22:10))return;
    auto&s=state();if(s.owner){s.invalidate();return;}
    static std::atomic<uint64_t>epochs{0};uint64_t epoch=epochs.fetch_add(1)+1;if(!epoch)throw 1;
-   s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;s.postrace=postrace;entered=true;
+   s=State{};s.game=&g;s.thread=threadToken();s.epoch=epoch;s.owner=1;s.postrace=postrace;s.live=std::make_shared<std::atomic<uint64_t>>(0);entered=true;
   });
  }
- ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);state()=State{};}}
+ ~OwnerScope()noexcept{if(entered){CpuErrno preserve(g);if(state().live)state().live->store(0,std::memory_order_release);state()=State{};}}
 };
 inline NfsRecordsBackdropView readBackdrop(uint32_t stack,uint64_t epoch,uint64_t serial,bool postrace){NfsRecordsBackdropView v{};nfs::GuestCopyTransaction tx;v.schema=1;const uint32_t form=uint32_t(postrace?guest_address(dword_4D28C4):guest_address(dword_4D2944));if(tx.load<uint16_t>(form+8)!=(postrace?22:10))throw 1;v.trackIndex=tx.load<uint16_t>(stack+0xf0);v.language=tx.load<uint8_t>(byte_512DFB);v.frameEpoch=epoch;v.content=serial;v.sourceArchive=tx.load<uint32_t>(dword_4D40B8);if(v.trackIndex>7||v.language>5||!v.sourceArchive)throw 1;return v;}
 inline bool backdropCurrent(const Payload&p){return nfs_records_backdrop_same(p.backdrop,readBackdrop(p.handlerStack,p.epoch,p.serial,p.postrace));}
@@ -63,14 +64,15 @@ struct Adapter {
   // Retry only at its original full-frame boundary; every proof is recaptured.
   if(s->failed){const auto epoch=s->epoch,serial=s->serial;const bool postrace=s->postrace;*s=State{};s->game=&g;s->thread=threadToken();s->epoch=epoch;s->serial=serial;s->owner=1;s->postrace=postrace;}
   if(s->capturing||s->string||s->word||s->serial==UINT64_MAX)throw 1;
-  auto p=std::make_shared<Payload>();p->target=target();p->clean=plane(p->target);p->recordsAddress=uint32_t(g.ebp);p->records=records(p->recordsAddress);p->epoch=s->epoch;p->serial=++s->serial;p->handlerStack=uint32_t(g.esp);p->postrace=s->postrace;p->backdrop=readBackdrop(p->handlerStack,p->epoch,p->serial,p->postrace);
+  if(!s->live)s->live=std::make_shared<std::atomic<uint64_t>>(0);s->live->store(0,std::memory_order_release);
+  auto p=std::make_shared<Payload>();p->live=s->live;p->game=reinterpret_cast<uintptr_t>(&g);p->gameLife=nfs_main_sidebar_origin::acquireGameLife(p->game);if(!p->gameLife)throw 1;p->target=target();p->clean=plane(p->target);p->recordsAddress=uint32_t(g.ebp);p->records=records(p->recordsAddress);p->epoch=s->epoch;p->serial=++s->serial;p->handlerStack=uint32_t(g.esp);p->postrace=s->postrace;p->backdrop=readBackdrop(p->handlerStack,p->epoch,p->serial,p->postrace);
   s->replay=p->clean;s->building=std::move(p);s->published.reset();s->metricAddress=s->fontAddress=0;s->capturing=true;
  });}
  static void end(Game&g)noexcept{auto*s=current(g);if(!s||!s->capturing)return;safe(g,[&]{
   if(s->string||s->word||!s->building||s->building->commands.empty())throw 1;
   auto p=s->building;if(!backdropCurrent(*p)||!nfs_logo_capture::same(p->target,target())||p->records!=records(p->recordsAddress))throw 1;p->original=plane(p->target);if(p->original!=s->replay)throw 1;
   auto display=nfs_classic_ui::PreparedText::createCommands(p->commands,nfs_classic_ui::recordsFont(),p);if(!display)throw 1;
-  auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->building.reset();s->replay.clear();s->capturing=false;
+  auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->live->store(p->serial,std::memory_order_release);s->building.reset();s->replay.clear();s->capturing=false;
  });}
  static std::shared_ptr<const Frame>acquire(Game&g)noexcept{auto*s=current(g);if(!s||s->presenting!=1||s->capturing||s->string||s->word||!s->published)return {};std::shared_ptr<const Frame>out;safe(g,[&]{
   auto f=s->published;const auto&d=f->data();if(!backdropCurrent(d)||d.epoch!=s->epoch||!nfs_logo_capture::same(d.target,target())||d.records!=records(d.recordsAddress)||d.original!=plane(d.target))throw 1;out=std::move(f);

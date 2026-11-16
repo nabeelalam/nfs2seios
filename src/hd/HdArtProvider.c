@@ -6,7 +6,8 @@ static atomic_int sealed;
 static int ready;
 static NfsWideMenuLayers wideLayers[2];
 static atomic_int wideReady;
-static NfsResultsBackdropImage resultsBackdrops[2];
+static NfsResultsBackdropImage resultsBackdrops[3];
+static unsigned resultsCount;
 static atomic_int resultsReady;
 int nfs_results_install_backdrops(const NfsResultsBackdropImage images[2]){
     if(!images || images[0].width!=1440 || images[1].width!=1920 ||
@@ -16,11 +17,24 @@ int nfs_results_install_backdrops(const NfsResultsBackdropImage images[2]){
     if(!atomic_compare_exchange_strong(&resultsReady,&empty,1)) return 0;
     resultsBackdrops[0]=images[0];
     resultsBackdrops[1]=images[1];
+    resultsCount=2;
+    atomic_store_explicit(&resultsReady,2,memory_order_release);
+    return 1;
+}
+int nfs_results_install_backdrops_v2(const NfsResultsBackdropImage images[3]){
+    if(!images || images[0].width!=1440 || images[0].height!=1080 ||
+       images[1].width!=1920 || images[1].height!=1080 ||
+       images[2].width!=1504 || images[2].height!=1046 ||
+       !images[0].pixels || !images[1].pixels || !images[2].pixels) return 0;
+    int empty=0;
+    if(!atomic_compare_exchange_strong(&resultsReady,&empty,1)) return 0;
+    for(unsigned i=0;i<3;++i) resultsBackdrops[i]=images[i];
+    resultsCount=3;
     atomic_store_explicit(&resultsReady,2,memory_order_release);
     return 1;
 }
 int nfs_results_backdrop_image(unsigned ratio,NfsResultsBackdropImage *out){
-    if(!out || ratio>=2 || atomic_load_explicit(&resultsReady,memory_order_acquire)!=2) return 0;
+    if(!out || ratio>=3 || atomic_load_explicit(&resultsReady,memory_order_acquire)!=2 || ratio>=resultsCount) return 0;
     *out=resultsBackdrops[ratio];
     return 1;
 }

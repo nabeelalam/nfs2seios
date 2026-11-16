@@ -1,0 +1,46 @@
+{
+  "integrationVersion": 18,
+  "runs": {
+    "ui-wide-constant-observation-v7": {
+      "clean": true,
+      "wide": {
+        "4": 59,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 9,
+        "9": 0,
+        "10": 0
+      },
+      "note": "Short passive sampling, no acceptance beyond observed first-full publications"
+    },
+    "ui-wide-constant-location-v3": {
+      "clean": true,
+      "wide": {
+        "4": 59,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 2,
+        "10": 0
+      },
+      "note": "Short passive sampling, no acceptance beyond observed first-full publications"
+    },
+    "ui-wide-constant-opponents-v3": {
+      "clean": true,
+      "wide": {
+        "4": 59,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0
+      },
+      "note": "Short passive sampling, no acceptance beyond observed first-full publications"
+    }
+  },
+  "verified": "Complete Setup and Location wide frames; source-backed child sidebar preparations compile and prepare, but post-sidebar branding still invalidates presentation.",
+  "pending": "Opponents longer passive observation, source-bound branding tail, independent Player intro wide implementation, integrated tier pack runtime/Apple package, physical iPad acceptance."
+}

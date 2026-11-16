@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "scope": "Authored widescreen panel join correction; source review only",
+  "resource": "wide-menu-ui.ownedz",
+  "bytes": 4822825,
+  "sha256": "c8bba49686d875377d929b0bd5f3d2836c8544d2382ee82f72f031f8ffb1d5e4",
+  "previousSha256": "655d43557cec2f013b3d519e5919839ff1a278bde7b3995f17be3830df80d980",
+  "method": "Reuse existing vector panel material at a fractional-pixel join before the unchanged drafting grid.",
+  "changedPanel": {
+    "width": 1180,
+    "height": 820,
+    "changedPixels": 820,
+    "diffBounds": [
+      31,
+      0,
+      32,
+      820
+    ],
+    "alphaBeforeMean": 229.94878048780487,
+    "alphaAfter": 255,
+    "allPixelsOutsideBoundsIdentical": true
+  },
+  "unchanged": [
+    "Both map records",
+    "1280 by 720 panel",
+    "All other pixels of the 1180 by 820 panel"
+  ],
+  "verification": [
+    "Reviewed SVG control reproduces previous resource RGBA and premultiplied bytes exactly",
+    "Record digests and premultiplied pixel constraints verified",
+    "Visual source comparison reviewed"
+  ],
+  "runtimeVerified": false,
+  "physicalDeviceVerified": false,
+  "sensitiveContent": "No source images, game data, credentials, or internal paths included."
+}

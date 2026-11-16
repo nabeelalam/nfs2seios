@@ -13,6 +13,7 @@
 #include "hd/ArtworkActivation.h"
 #include <cstdio>
 #include <memory>
+#include <stdexcept>
 #include <exception>
 namespace {
 struct HdAtlasLifetime {
@@ -60,6 +61,7 @@ int main(int argc,char **argv){
             if(nfs_hd::activateConfiguredArtwork(root))
 #endif
             nfs::app_log("HD interface","Separate authored menu artwork loaded");
+            if(!nfs_hd::requiredArtworkReady())throw std::runtime_error("Required Location photo artwork is missing or invalid");
             HdAtlasLifetime hd_atlas(root);
             // No host process exit inside the engine. Retain the root context
             // and continue pumping SDL until renderer/worker cleanup finishes.

@@ -3,8 +3,12 @@
 #include "BackgroundScenePrepare.h"
 #include "ContinuousNativeUploadHooks.inc"
 #include "Main343OriginGameHooks.inc"
+#include "MainUploadedSourceLease.h"
 #include <memory>
 #include <atomic>
+#include <cerrno>
+#include <cstdio>
+#include <cstdlib>
 
 namespace nfs_background_scene_live {
 namespace bg=nfs_background_scene_cpu;
@@ -15,12 +19,13 @@ inline bool enabled()noexcept{static const bool yes=[](){const char*p=std::geten
 struct State{
  bg::Base base;bg::Scene scene;bg::Workspace workspace;
  std::shared_ptr<const bg::Prepared>published;
+ std::shared_ptr<nfs_main_uploaded_source::OwnerLife>uploadedLife;
  uintptr_t game=0,thread=0;uint64_t nextOwner=0,ownerEpoch=0,sequence=0,iteration=0,nextIteration=0,nextContent=0;
  uint64_t groupSerial=0,copySerial=0,nativeUploadEvent=0;
  bg::Event groupEvent{},tailEvent{},copyEvent{},uploadEvent{};
  uint32_t mainDepth=0,invocationDepth=0,archive=0,baseName=0,baseNameWord=0,baseSource=0;
  Target baseTarget{};std::array<uint32_t,9>baseTable{};uint32_t baseRows=0,baseCount=0;bool baseRowsValid=true,baseVerified=false,on=false,invalid=false,baseResolved=false,resolved=false;
- uint32_t stage=0,detail=0;bool initialAssembly=false,baseSeen=false;
+ uint32_t stage=0,detail=0,archiveAtEntry=0;bool initialAssembly=false,baseSeen=false,archiveBound=false;
  std::shared_ptr<const bg::SourceCatalog> catalogue;
  Phase phase=Phase::None;int32_t pending=-1;unsigned copyWrapperDepth=0;bool captured483438=false;
  std::array<uint32_t,4>capturedArgs{};Reason reason=Reason::None;
@@ -31,13 +36,33 @@ struct State{
 };
 inline std::atomic<uintptr_t>&ownerThread()noexcept{static std::atomic<uintptr_t>t{0};return t;}
 inline State*&slot()noexcept{struct Storage{State*value=nullptr;~Storage(){delete value;}};static thread_local Storage storage;return storage.value;}
-inline State*current(Game&g)noexcept{if(!enabled())return nullptr;auto*s=slot();return s&&s->on&&s->mainDepth==1&&s->game==reinterpret_cast<uintptr_t>(&g)&&s->thread==nfs_logo_publisher::threadToken()?s:nullptr;}
+inline State*lexicalCurrent(Game&g)noexcept{if(!enabled())return nullptr;auto*s=slot();return s&&s->on&&s->mainDepth==1&&s->game==reinterpret_cast<uintptr_t>(&g)&&s->thread==nfs_logo_publisher::threadToken()?s:nullptr;}
+// The lexical owner exists during original archive loading, but source callbacks
+// may observe it only after the asserted initialization return has bound it.
+inline State*current(Game&g)noexcept{auto*s=lexicalCurrent(g);return s&&s->archiveBound?s:nullptr;}
+inline bool preSourceIdle(const State&s)noexcept{return s.on&&s.mainDepth==1&&s.thread==nfs_logo_publisher::threadToken()&&!s.archiveBound&&!s.sequence&&!s.iteration&&!s.nextIteration&&!s.invocationDepth&&!s.baseSeen&&!s.baseVerified&&!s.initialAssembly&&s.phase==Phase::None&&!s.resolved&&!s.published&&!s.groupSerial&&!s.copySerial&&!s.nativeUploadEvent&&!s.scene.complete;}
+
 inline bool unarmed(State*s)noexcept{return !s->iteration;}
+// Private, bounded source-admission diagnostics; never content or authority.
+inline void initialTrace(const char*stage,const char*reason,const State*s,const nfs_logo_publisher::Collector*c=nullptr)noexcept{
+ const int saved=errno;static thread_local unsigned lines=0;
+ const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");
+ if(p&&p[0]=='1'&&!p[1]&&lines<64){++lines;std::fprintf(stderr,"MAIN INITIAL stage=%s reason=%s state=%u invalid=%u stateReason=%u stateStage=%u phase=%u iteration=%llu archiveAtEntry=%u archiveBound=%u scene=%u collector=%u copy=%u cpu=%u native=%u stop=%u\n",stage,reason,unsigned(s!=nullptr),unsigned(s&&s->invalid),s?unsigned(s->reason):0,s?s->stage:0,s?unsigned(s->phase):0,(unsigned long long)(s?s->iteration:0),unsigned(s&&s->archiveAtEntry!=0),unsigned(s&&s->archiveBound),unsigned(s&&s->scene.complete),unsigned(c!=nullptr),unsigned(c&&c->copy.complete),unsigned(c&&c->copySourceVerified),unsigned(c&&c->prepared),c?unsigned(c->stop):0);}
+ errno=saved;
+}
 inline bool readPlane(Plane&p)noexcept{uint32_t error=0;p.valid=0;nfs_logo_publisher::plane(p,error);return !error&&p.valid;}
 inline bool readBytes(uint32_t at,size_t n,std::vector<uint8_t>&out)noexcept{try{out.resize(n);{nfs::GuestCopyTransaction tx;nfs_logo_publisher::checked(at,n);std::memcpy(out.data(),nfs_host_address(at,n),n);}return true;}catch(...){return false;}}
 inline bool readTable(std::array<uint32_t,9>&out,Phase phase)noexcept{try{nfs::GuestCopyTransaction tx;uint32_t at=uint32_t(guest_address(phase==Phase::Word?off_4DAD64:off_4DADB4));for(unsigned k=0;k<9;++k)out[k]=tx.load<uint32_t>(at+4*k);return true;}catch(...){return false;}}
-struct MainScope{State*s=nullptr;bool entered=false;int unwind=0;explicit MainScope(Game&g)noexcept{if(!enabled()||uint32_t(g.eax)!=uint32_t(guest_address(off_4D3EC4)))return;auto trusted=nfs_background_scene_runtime::acquireCatalog();if(!trusted)return;uintptr_t expected=0,t=nfs_logo_publisher::threadToken();if(!ownerThread().compare_exchange_strong(expected,t)&&expected!=t)return;auto*&p=slot();if(!p)p=new(std::nothrow)State;if(!p){ownerThread().store(0);return;}s=p;s->catalogue=std::move(trusted);entered=true;unwind=nfs_logo_publisher::exceptions();if(s->mainDepth++){s->fail(Reason::Nested,true);return;}if(s->nextOwner==UINT64_MAX){s->fail(Reason::Overflow,true);return;}s->detail=0;s->ownerEpoch=++s->nextOwner;s->sequence=s->iteration=s->nextIteration=0;s->on=true;s->invalid=false;s->baseVerified=false;s->initialAssembly=s->baseSeen=false;s->game=reinterpret_cast<uintptr_t>(&g);s->thread=nfs_logo_publisher::threadToken();s->freshScene();try{nfs::GuestCopyTransaction tx;s->archive=tx.load<uint32_t>(dword_4D40B8);if(!s->archive)s->fail(Reason::Source,true);}catch(...){s->fail(Reason::Read,true);}}~MainScope(){if(!entered)return;if(!s->mainDepth){s->fail(Reason::Order,true);return;}if(--s->mainDepth)return;s->stage=18;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind,true);else{s->reason=Reason::Owner;s->invalid=true;s->published.reset();s->baseVerified=false;}s->on=false;s->game=0;s->invocationDepth=0;ownerThread().store(0);}};
-struct IterationScope{State*s=nullptr;bool entered=false,started=false;uint32_t form=0;int unwind=0;explicit IterationScope(Game&g)noexcept{s=current(g);if(!s)return;entered=true;unwind=nfs_logo_publisher::exceptions();form=uint32_t(g.eax);if(s->invocationDepth++)s->fail(Reason::Nested);}void start()noexcept{if(!entered||started)return;started=true;if(!s->baseVerified&&s->baseSeen){s->published.reset();s->iteration=0;return;}if(s->invocationDepth!=1||form!=uint32_t(guest_address(off_4D3EC4))||s->nextIteration==UINT64_MAX){s->fail(Reason::Owner);return;}s->freshScene();s->initialAssembly=false;s->invalid=false;s->reason=Reason::None;s->iteration=++s->nextIteration;s->scene.event=s->event(s->iteration);}~IterationScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind);if(s->invocationDepth)--s->invocationDepth;}};
+struct MainScope{State*s=nullptr;bool entered=false;int unwind=0;explicit MainScope(Game&g)noexcept{if(!enabled()||uint32_t(g.eax)!=uint32_t(guest_address(off_4D3EC4)))return;auto trusted=nfs_background_scene_runtime::acquireCatalog();if(!trusted)return;uintptr_t expected=0,t=nfs_logo_publisher::threadToken();if(!ownerThread().compare_exchange_strong(expected,t)&&expected!=t)return;auto*&p=slot();if(!p)p=new(std::nothrow)State;if(!p){ownerThread().store(0);return;}s=p;s->catalogue=std::move(trusted);entered=true;unwind=nfs_logo_publisher::exceptions();if(s->mainDepth++){s->fail(Reason::Nested,true);return;}if(s->nextOwner==UINT64_MAX){s->fail(Reason::Overflow,true);return;}if(s->uploadedLife)s->uploadedLife->revoke();s->uploadedLife=nfs_main_uploaded_source::newLife();s->detail=0;s->ownerEpoch=++s->nextOwner;s->sequence=s->iteration=s->nextIteration=0;s->on=true;s->invalid=false;s->baseVerified=false;s->initialAssembly=s->baseSeen=s->archiveBound=false;s->archiveAtEntry=0;s->game=reinterpret_cast<uintptr_t>(&g);s->thread=nfs_logo_publisher::threadToken();s->freshScene();try{nfs::GuestCopyTransaction tx;s->archive=s->archiveAtEntry=tx.load<uint32_t>(dword_4D40B8);}catch(...){s->fail(Reason::Read,true);}}~MainScope(){if(!entered)return;if(!s->mainDepth){s->fail(Reason::Order,true);return;}if(--s->mainDepth)return;if(s->uploadedLife)s->uploadedLife->revoke();s->stage=18;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind,true);else{s->reason=Reason::Owner;s->invalid=true;s->published.reset();s->baseVerified=false;}s->on=false;s->game=0;s->invocationDepth=0;ownerThread().store(0);}};
+// Main410E80 initializes/replaces its archive AFTER40D3D0 entry. Bind only
+// at that asserted original return, before the first sidebar source observation.
+inline void bindInitialArchive(Game&g)noexcept{
+ auto*s=lexicalCurrent(g);auto*c=nfs_logo_publisher::store();
+ if(!s||!preSourceIdle(*s)||uint32_t(g.esi)!=uint32_t(guest_address(off_4D3EC4))||s->archiveBound||s->sequence||s->iteration||s->nextIteration||s->invocationDepth||s->baseSeen||s->baseVerified||s->initialAssembly||s->phase!=Phase::None||s->resolved||s->published||s->groupSerial||s->copySerial||s->nativeUploadEvent||!c||!c->inMenu||c->invalid||c->gameOwner!=s->game||c->thread!=s->thread||c->depth||c->invocationDepth||c->groupActive||c->copyActive||s->invalid){initialTrace("archive-return","owner-or-order",s,c);return;}
+ try{nfs::GuestCopyTransaction tx;const uint32_t archive=tx.load<uint32_t>(dword_4D40B8);if(!archive){s->fail(Reason::Source,true);initialTrace("archive-return","missing",s,c);return;}s->archive=archive;s->archiveBound=true;s->invalid=false;s->reason=Reason::None;}catch(...){s->fail(Reason::Read,true);initialTrace("archive-return","read",s,c);return;}
+ initialTrace("archive-return",s->archiveAtEntry==s->archive?"same":"initialized-or-replaced",s,c);
+}
+struct IterationScope{State*s=nullptr;bool entered=false,started=false;uint32_t form=0;int unwind=0;explicit IterationScope(Game&g)noexcept{s=current(g);if(!s)return;entered=true;unwind=nfs_logo_publisher::exceptions();form=uint32_t(g.eax);if(s->invocationDepth++)s->fail(Reason::Nested);}void start()noexcept{if(!entered||started)return;started=true;if(!s->archiveBound){s->fail(Reason::Source,true);return;}if(!s->baseVerified&&s->baseSeen){s->published.reset();s->iteration=0;return;}if(s->invocationDepth!=1||form!=uint32_t(guest_address(off_4D3EC4))||s->nextIteration==UINT64_MAX){s->fail(Reason::Owner);return;}s->freshScene();s->initialAssembly=false;s->invalid=false;s->reason=Reason::None;s->iteration=++s->nextIteration;s->scene.event=s->event(s->iteration);}~IterationScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind);if(s->invocationDepth)--s->invocationDepth;}};
 // Only the original full-background draw sites may restart background capture.
 // Retired game buffers cannot reuse the previous verified base after a race.
 inline void resetForBaseDraw(Game&g)noexcept{
@@ -46,7 +71,8 @@ inline void resetForBaseDraw(Game&g)noexcept{
  // Only the first lexical base draw may consume the sidebar generated earlier
  // in THIS MainScope. Every later reload takes the ordinary fresh-base route.
  auto*c=nfs_logo_publisher::store();
- const bool initial=!s->baseSeen&&!s->invalid&&s->iteration&&s->scene.complete&&s->tailEvent.sequence&&s->copyEvent.sequence&&c&&c->gameOwner==s->game&&c->thread==s->thread&&!c->depth&&!c->invocationDepth&&c->group.complete&&c->copy.complete&&c->prepared&&c->group.serial==s->groupSerial&&c->copy.serial==s->copySerial;
+ const bool initial=!s->baseSeen&&!s->invalid&&s->iteration&&s->scene.complete&&s->tailEvent.sequence&&s->copyEvent.sequence&&c&&c->gameOwner==s->game&&c->thread==s->thread&&!c->depth&&!c->invocationDepth&&c->group.complete&&c->copy.complete&&!c->invalid&&!c->group.error&&!c->copy.error&&c->copySourceVerified&&c->group.thread==s->thread&&c->copy.thread==s->thread&&c->group.serial==s->groupSerial&&c->copy.serial==s->copySerial&&c->group.serial==c->iterationRevision&&c->copy.serial==c->iterationRevision&&c->copy.linkedGroup==c->group.serial;
+ initialTrace("base",initial?"retained":"fresh",s,c);
  s->baseSeen=true;
  if(initial){s->initialAssembly=true;s->published.reset();s->copyEvent=s->uploadEvent={};s->copySerial=s->nativeUploadEvent=0;}else{s->freshScene();s->iteration=0;s->initialAssembly=false;}
  s->baseVerified=false;s->baseResolved=false;s->invalid=false;s->reason=Reason::None;
@@ -58,12 +84,12 @@ inline void postGroup(Game&g)noexcept{auto*s=current(g);auto*c=nfs_logo_publishe
 inline void tailBegin(Game&g)noexcept{auto*s=current(g);if(!s||s->invalid)return;if(unarmed(s))return;if(uint32_t(g.ebp)!=uint32_t(guest_address(off_4D3EC4))||!readPlane(s->scene.tailPre)){s->fail(Reason::Missing);return;}s->scene.tailKind=NFS_BACKGROUND_TAIL_MAIN_SKIP;s->scene.tailPredicate=s->scene.tailSymbol=bg::MainForm;s->tailEvent=s->event(s->iteration);}
 inline void tailEnd(Game&g)noexcept{auto*s=current(g);if(!s||s->invalid)return;if(unarmed(s))return;if(s->scene.tailKind!=NFS_BACKGROUND_TAIL_MAIN_SKIP||!readPlane(s->scene.tailPost)||!bg::samePlane(s->scene.tailPre,s->scene.tailPost,343))s->fail(Reason::Missing);}
 inline void copyEnd(Game&g)noexcept{auto*s=current(g);auto*c=nfs_logo_publisher::store();if(!s||s->invalid)return;if(unarmed(s))return;if(!c||!c->copy.complete||c->copy.linkedGroup!=s->groupSerial||!s->tailEvent.sequence){s->fail(Reason::Order);return;}s->copySerial=c->copy.serial;s->copyEvent=s->event(s->iteration);s->scene.complete=1;}
-inline void invalidateCache()noexcept{if(!enabled())return;if(auto*s=slot()){s->stage=16;if(s->on&&s->mainDepth==1&&s->thread==nfs_logo_publisher::threadToken()&&!s->invalid&&!s->iteration&&!s->baseVerified&&!s->published&&!s->groupSerial&&!s->copySerial&&!s->nativeUploadEvent){if(unarmed(s))return;}s->fail(Reason::Retire);}}
+inline void invalidateCache()noexcept{if(!enabled())return;if(auto*s=slot()){if(s->uploadedLife)s->uploadedLife->revoke();s->uploadedLife=nfs_main_uploaded_source::newLife();if(preSourceIdle(*s)){initialTrace("pre-source","cache-operation-ignored",s,nfs_logo_publisher::store());return;}s->stage=16;if(s->on&&s->mainDepth==1&&s->thread==nfs_logo_publisher::threadToken()&&!s->invalid&&!s->iteration&&!s->baseVerified&&!s->published&&!s->groupSerial&&!s->copySerial&&!s->nativeUploadEvent){if(unarmed(s))return;}s->fail(Reason::Retire);}}
 inline void retire(Game&g)noexcept{auto*s=current(g);if(!s)return;uint32_t owner=uint32_t(g.eax);if(owner&&((s->baseVerified&&owner==s->base.post.target.owner)||owner==s->scene.preSide.target.owner))s->fail(Reason::Retire,true);}
 // Resolved source/callback and upload sealing are defined below; no diagnostic Store is consulted.
 static constexpr uint32_t mapNames[2]={879455330,913009762};
 inline bool targetNow(Target&t)noexcept{try{nfs::GuestCopyTransaction tx;nfs_logo_publisher::target(tx,t);return true;}catch(...){return false;}}
-inline bool archiveCurrent(State&s)noexcept{try{nfs::GuestCopyTransaction tx;return tx.load<uint32_t>(dword_4D40B8)==s.archive;}catch(...){return false;}}
+inline bool archiveCurrent(State&s)noexcept{bool ok=false;try{nfs::GuestCopyTransaction tx;ok=s.archiveBound&&tx.load<uint32_t>(dword_4D40B8)==s.archive;}catch(...){}if(!ok&&s.uploadedLife)s.uploadedLife->revoke();return ok;}
 inline bool sameBytesHash(const std::vector<uint8_t>&a,const std::array<uint8_t,32>&sha)noexcept{return nfs_small_logo_live::hashMatches(a.data(),uint32_t(a.size()),sha);}
 inline bool bank(std::array<uint32_t,256>&out,uint32_t at,bool words)noexcept{try{nfs::GuestCopyTransaction tx;nfs_logo_publisher::checked(at,words?512:1024);for(unsigned k=0;k<256;++k)out[k]=words?tx.load<uint16_t>(at+2*k):tx.load<uint32_t>(at+4*k);return true;}catch(...){return false;}}
 struct ResolvedScope{
@@ -101,7 +127,7 @@ struct IndexedSideCallScope{State*s=nullptr;bg::Draw*d=nullptr;int unwind=0;Inde
 inline void sealUpload(Game&g)noexcept{auto*s=current(g);if(s)s->stage=13;auto*c=nfs_logo_publisher::store();if(!s||s->invalid||!s->iteration||!s->baseVerified)return;if(!c||!c->bound||c->uploaded!=300||!c->copy.complete||c->copy.serial!=s->copySerial||c->group.serial!=s->groupSerial||!c->nativeUploadEvent||!archiveCurrent(*s)){s->fail(Reason::Upload);return;}s->uploadEvent=s->event(s->iteration);s->nativeUploadEvent=c->nativeUploadEvent;if(s->nextContent==UINT64_MAX){s->fail(Reason::Overflow);return;}try{bg::JoinedInput input{s->base,s->scene,c->group,c->copy,s->groupEvent,s->tailEvent,s->copyEvent,s->uploadEvent,c->copy.post.target,1,++s->nextContent,c->rendererAddresses,s->initialAssembly};nfs_main_sidebar_origin::Binding binding{s->game,s->thread,s->archive,uint32_t(guest_address(off_4D3EC4)),s->ownerEpoch};auto origin=nfs_main_sidebar_origin_live::publishMain(g,input,binding,s->workspace,s->catalogue);if(!origin){s->fail(Reason::Verify);return;}s->published=origin->frame();}catch(...){s->fail(Reason::Allocation);}}
 // Lexical40D63E copy+upload continuation; never active for later reloads.
  struct InitialAssemblyScope{State*s=nullptr;nfs_logo_publisher::Collector*c=nullptr;bool active=false;int unwind=0;
- explicit InitialAssemblyScope(Game&g)noexcept{s=current(g);if(!s||s->invalid||!s->initialAssembly||!s->baseVerified)return;c=nfs_logo_publisher::store();if(!c||!c->beginRetainedCopy(s->game,s->thread)){s->fail(Reason::Order);return;}active=true;unwind=nfs_logo_publisher::exceptions();}
+ explicit InitialAssemblyScope(Game&g)noexcept{s=current(g);if(!s||s->invalid||!s->initialAssembly||!s->baseVerified){initialTrace("assembly","owner-or-base",s);return;}c=nfs_logo_publisher::store();if(!c||!c->beginRetainedCopy(s->game,s->thread)){initialTrace("assembly","retained-copy-declined",s,c);s->fail(Reason::Order);return;}initialTrace("assembly","retained-copy-armed",s,c);active=true;unwind=nfs_logo_publisher::exceptions();}
  ~InitialAssemblyScope(){if(!active)return;c->leaveIteration(nfs_logo_publisher::exceptions()>unwind);if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind);}
  };
  struct UploadEndScope{Game*g=nullptr;State*s=nullptr;bool active=false;int unwind=0;explicit UploadEndScope(Game&game)noexcept{if(uint32_t(game.edx)!=1)return;s=current(game);if(!s)return;g=&game;active=true;unwind=nfs_logo_publisher::exceptions();s->published.reset();}~UploadEndScope(){if(!active)return;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind);else sealUpload(*g);}};

@@ -1,0 +1,3 @@
+#include "hd/OpponentClassRoute.h"
+#include <cassert>
+int main(){using namespace nfs_opponent_class;Selection s;s.form=0x4d3204;s.formGuest=s.currentFormGuest=0x1234;s.enabled=1;s.index=12;s.game=s.currentGame=1;s.thread=s.currentThread=2;s.ownerEpoch=s.currentEpoch=3;s.observedName=s.expectedName={{'c','l','s','a'}};assert(!current(s));s.authenticatedSource=true;assert(current(s));auto b=s;b.form=0x4d3050;assert(!current(b));b=s;b.form=0x4d3100;assert(!current(b));b=s;++b.currentEpoch;assert(!current(b));b=s;++b.currentFormGuest;assert(!current(b));b=s;b.enabled=0;assert(!current(b));b=s;b.index=16;assert(!current(b));b=s;b.observedName[0]='?';assert(!current(b));b=s;++b.currentThread;assert(!current(b));b=s;++b.currentGame;assert(!current(b));}

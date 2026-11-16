@@ -1,0 +1,45 @@
+{
+  "scope": "First source-qualified static title submitted through matching successful desktop swap, no pixel readback or physical-device proof",
+  "buildVersion": 61,
+  "ELFSHA256": "57e6796f8e8034b6b2d491548af9dc142461931af5d58e43704393439f5aeb9c",
+  "request": 1,
+  "content": 1,
+  "artGeneration": 1,
+  "context": 1,
+  "framebuffer": 2,
+  "color": 2,
+  "depth": 1,
+  "nativeExtent": [
+    2186,
+    1640
+  ],
+  "outputExtent": [
+    2360,
+    1640
+  ],
+  "swap": 1753,
+  "success": true,
+  "first": true,
+  "authored": true,
+  "nativeUploads": 300,
+  "nativeSelections": 300,
+  "nativeTriangles": 600,
+  "wholeUiComplete": false,
+  "physicalIpadVerified": false,
+  "cleanup": {
+    "appGone": true,
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "launcherExitCode": 0
+  },
+  "gameLogSHA256": "8e7a36975f6ba2dddf5f9709b9792f5b8fca1e4cea7e9a148579889ac36c2bda",
+  "evidenceRows": [
+    169,
+    170,
+    171,
+    172,
+    173
+  ]
+}

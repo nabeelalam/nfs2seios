@@ -1,0 +1,18 @@
+{
+  "scope": "Local58 diagnostic attempt; return not exercised",
+  "binarySHA256": "7593f62d07379a9e7b2a0cb5aa2f3389f5b46cb53895fd75e2a7f0f3fafa4797",
+  "failure": "ReadyError: Two Setup source proofs lack advancing completed native publication; no key",
+  "completedSetupPublicationLogCount": 1024,
+  "diagnosticLogCapExhausted": true,
+  "returnExercised": false,
+  "renderingFailureEstablished": false,
+  "cleanShutdown": {
+    "appGone": true,
+    "launcherExitCode": 0,
+    "copiedProfileRestored": true,
+    "allSelectedResourcesUnchanged": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "ELFUnchanged": true
+  },
+  "next": "Reuse same58 binary with focused constant2360 mode/return observer; preserve fresh publication and root-review gates"
+}

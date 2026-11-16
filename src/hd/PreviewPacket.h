@@ -3,6 +3,7 @@
 #include "SmallLogoPrepare.h"
 #include "OriginalPreviewLayerAbi.h"
 #include "LocationCompletedFlag.h"
+#include "LocationPreviewArtwork.h"
 #include <memory>
 #include <vector>
 // Pure replay verifier, not a source of guest-read or publication authority.
@@ -12,14 +13,14 @@
 #define NFS_PREVIEW_REPLAY_NAMESPACE nfs_location_preview
 #define NFS_PREVIEW_REPLAY_MAX_DRAWS 3
 #define NFS_PREVIEW_REPLAY_FORM_CONSTANTS constexpr uint32_t LocationForm=0x404abd;
-#define NFS_PREVIEW_REPLAY_EXTRA_INPUT
+#define NFS_PREVIEW_REPLAY_EXTRA_INPUT unsigned selection=8;bool decodedAuthenticated=false,photoRequested=false;std::shared_ptr<const nfs_location_photo_source::Catalog>sourceCatalog;
 #define NFS_PREVIEW_REPLAY_BINDING_DECLARATION
 #define NFS_PREVIEW_REPLAY_BINDING(i) ((i).form==LocationForm)
-#define NFS_PREVIEW_REPLAY_PACKET_FIELDS std::vector<unsigned char>authored_;std::array<unsigned char,32>authoredSha_{};
-#define NFS_PREVIEW_REPLAY_PACKET_ACCESSORS
+#define NFS_PREVIEW_REPLAY_PACKET_FIELDS std::vector<unsigned char>authored_;std::array<unsigned char,32>authoredSha_{};std::shared_ptr<const nfs_location_preview_art::Prepared>photo_;
+#define NFS_PREVIEW_REPLAY_PACKET_ACCESSORS bool artworkCurrent()const noexcept{return !photo_||photo_->current();}
 #define NFS_PREVIEW_REPLAY_PACKET_CAPTURE
-#define NFS_PREVIEW_REPLAY_DISPLAY_VIEW if(!authored_.empty()){v.schema=NFS_AUTHORED_PREVIEW_LAYER_SCHEMA;v.authoredRGBA=authored_.data();v.authoredBytes=authored_.size();v.authoredWidth=rect_.width*4;v.authoredHeight=rect_.height*4;std::copy(authoredSha_.begin(),authoredSha_.end(),v.authoredSha256);}
-#define NFS_PREVIEW_REPLAY_DISPLAY_FINALIZE packet->authored_=nfs_location_completed_flag::prepare(i,*packet);if(!packet->authored_.empty()&&!nfs_texture_sha256(packet->authored_.data(),packet->authored_.size(),packet->authoredSha_.data()))return reject(Failure::Allocation);
+#define NFS_PREVIEW_REPLAY_DISPLAY_VIEW if(photo_){if(!photo_->current())return {};v.schema=NFS_AUTHORED_PREVIEW_LAYER_SCHEMA;v.authoredRGBA=photo_->pixels().data();v.authoredBytes=photo_->pixels().size();v.authoredWidth=rect_.width*4;v.authoredHeight=rect_.height*4;v.locationArtGeneration=photo_->generation();std::copy(photo_->sha().begin(),photo_->sha().end(),v.authoredSha256);}else if(!authored_.empty()){v.schema=NFS_AUTHORED_PREVIEW_LAYER_SCHEMA;v.authoredRGBA=authored_.data();v.authoredBytes=authored_.size();v.authoredWidth=rect_.width*4;v.authoredHeight=rect_.height*4;std::copy(authoredSha_.begin(),authoredSha_.end(),v.authoredSha256);}
+#define NFS_PREVIEW_REPLAY_DISPLAY_FINALIZE if(i.photoRequested||nfs_location_photo_art_generation()){packet->photo_=nfs_location_preview_art::Prepared::create(i,*packet);if(!packet->photo_)return reject(Failure::Source);}else packet->authored_=nfs_location_completed_flag::prepare(i,*packet);if(!packet->authored_.empty()&&!nfs_texture_sha256(packet->authored_.data(),packet->authored_.size(),packet->authoredSha_.data()))return reject(Failure::Allocation);
 #include "PreviewReplay.inc"
 #undef NFS_PREVIEW_REPLAY_DISPLAY_VIEW
 #undef NFS_PREVIEW_REPLAY_DISPLAY_FINALIZE

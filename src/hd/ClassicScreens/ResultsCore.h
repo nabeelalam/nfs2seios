@@ -7,7 +7,9 @@
 #include <atomic>
 namespace nfs_results_ui_live {
 struct Adapter;
+struct SourceLife {std::atomic<bool>alive{true};std::atomic<uint64_t>content{0};uintptr_t game=0;uint64_t epoch=0;};
 struct Payload {
+ std::shared_ptr<SourceLife>life;
  nfs_logo_capture::Target target{};
  std::vector<uint16_t>clean,original;
  std::vector<uint8_t>backdropMask;
@@ -24,10 +26,11 @@ public:
 };
 class Lease final {
  std::atomic<unsigned>refs_{1};std::shared_ptr<const Frame>frame_;Lease()=default;
+ static int current(void*p){auto*s=static_cast<Lease*>(p);if(!s||!s->frame_)return 0;const auto&d=s->frame_->data();return d.life&&d.life->alive.load(std::memory_order_acquire)&&d.life->content.load(std::memory_order_acquire)==d.serial&&d.life->game==d.sourceGame&&d.life->epoch==d.epoch;}
  static void retain(void*p){static_cast<Lease*>(p)->refs_.fetch_add(1,std::memory_order_relaxed);}
  static void release(void*p){auto*s=static_cast<Lease*>(p);if(s->refs_.fetch_sub(1,std::memory_order_acq_rel)==1)delete s;}
 public:
  static std::shared_ptr<const Lease>create(std::shared_ptr<const Frame>f)noexcept{if(!f||!f->display())return {};try{auto p=std::shared_ptr<Lease>(new Lease,[](const Lease*x){release(const_cast<Lease*>(x));});p->frame_=std::move(f);return p;}catch(...){return {};}}
- NfsResultsLiveView view(uint64_t request)const noexcept{NfsResultsLiveView v{};if(!request||!frame_)return v;const auto&d=frame_->data();v.schema=2;v.headingIndex=d.headingIndex;v.width=640;v.height=480;v.request=request;v.content=d.serial;v.sourceGame=d.sourceGame;v.sourceEpoch=d.epoch;v.clean=d.clean.data();v.backdropMask=d.backdropMask.empty()?nullptr:d.backdropMask.data();v.original=d.original.data();v.pixels=d.original.size();v.text=frame_->display()->layer();v.owner=const_cast<Lease*>(this);v.retain=retain;v.release=release;return v;}
+ NfsResultsLiveView view(uint64_t request)const noexcept{NfsResultsLiveView v{};if(!request||!frame_)return v;const auto&d=frame_->data();v.schema=3;v.headingIndex=d.headingIndex;v.width=640;v.height=480;v.request=request;v.content=d.serial;v.sourceGame=d.sourceGame;v.sourceEpoch=d.epoch;v.clean=d.clean.data();v.backdropMask=d.backdropMask.empty()?nullptr:d.backdropMask.data();v.original=d.original.data();v.pixels=d.original.size();v.text=frame_->display()->layer();v.owner=const_cast<Lease*>(this);v.retain=retain;v.release=release;v.current=current;return v;}
 };
 }

@@ -1,0 +1,38 @@
+{
+  "scope": "Local exact Options return-refusal and original-abort diagnostics plus bound first-title swap diagnostic",
+  "version": 61,
+  "stages": [
+    {
+      "name": "generate-engine",
+      "exit": 0,
+      "seconds": 22.044136564000013
+    },
+    {
+      "name": "generate-renderer",
+      "exit": 0,
+      "seconds": 5.975618242999985
+    },
+    {
+      "name": "build",
+      "exit": 0,
+      "seconds": 158.71974796199999
+    }
+  ],
+  "changedGeneratedFiles": 7,
+  "sourcePinsUnchanged": true,
+  "binarySHA256": "57e6796f8e8034b6b2d491548af9dc142461931af5d58e43704393439f5aeb9c",
+  "appBuilt": true,
+  "eligibleForRuntime": true,
+  "appRun": false,
+  "cloud": false,
+  "physicalIpadVerified": false,
+  "runtimeVerified": false,
+  "normalDiagnosticEnabled": false,
+  "titlePixelReadback": false,
+  "unchangedAcceptanceGuards": true,
+  "sourceCompileChecks": {
+    "OptionsActualHeaderContext": 0,
+    "titleActualRendererTranslationUnit": 0
+  },
+  "nextRun": "Bounded same-version Options/class run with first-title diagnostics; no cloud or physical-device acceptance"
+}

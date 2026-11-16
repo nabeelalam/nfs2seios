@@ -40,6 +40,9 @@ def add_location_scene_hooks(text,name):
                 anchor=" nfs_background_scene_live::"+call+"(*this);"
                 if part.count(anchor)!=1:raise ValueError("Location redraw anchor changed: "+call)
                 part=part.replace(anchor,anchor+block(tag," nfs_location_scene_live::"+call+"(*this);"),1)
+            abort="loc_40BCFF:\n"
+            if part.count(abort)!=1:raise ValueError("Location original redraw abort changed")
+            part=part.replace(abort,abort+block("original-abort"," nfs_location_scene_live::observeOriginalAbort(*this);"),1)
             part=wrap(part,"guest_address(aSide)","405B30","side"," { nfs_location_scene_live::RoleScope nfs_location_side(*this,nfs_location_scene_live::Phase::Side);")
             return wrap(part,"off_4D2474+ecx*4","405B30","word"," { nfs_location_scene_live::RoleScope nfs_location_word(*this,nfs_location_scene_live::Phase::Word);")
         body("40BBE0",redraw)

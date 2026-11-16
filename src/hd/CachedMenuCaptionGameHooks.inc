@@ -3,6 +3,9 @@
 // each namespace gets independent types, owner atomic, TLS and source lifetime.
 #include "CompactCaptionProof.h"
 #include <algorithm>
+#include <cstdio>
+#include <cstdlib>
+#include <cerrno>
 #ifndef NFS_CACHED_MENU_CAPTION_NAMESPACE
 #error "Include the exact Options or Setup caption wrapper"
 #endif
@@ -54,16 +57,20 @@ struct OwnerScope {State*s=nullptr;bool entered=false;int unwind=0;explicit Owne
  }~OwnerScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->reject(Failure::unwind);if(s->ownerDepth&&!--s->ownerDepth){s->reject(Failure::owner);s->game=0;s->tailDepth=0;}}};
 inline bool playerProofPolicy()noexcept{return (CaptionPolicy::selector==2&&CaptionPolicy::resource==2&&CaptionPolicy::measureWidth==68&&CaptionPolicy::textLeft==100&&CaptionPolicy::textY==198)||(CaptionPolicy::selector==3&&CaptionPolicy::resource==3&&CaptionPolicy::measureWidth==70&&CaptionPolicy::textLeft==98&&CaptionPolicy::textY==234);}
 // Ordinary proofs are fixed policies; Main-origin admission remains Player-only.
+inline bool childInitialProofPolicy()noexcept{return (CaptionPolicy::selector==0&&CaptionPolicy::resource==0&&CaptionPolicy::measureWidth==75&&CaptionPolicy::textLeft==93&&CaptionPolicy::textY==126)||(CaptionPolicy::selector==6&&CaptionPolicy::resource==7&&CaptionPolicy::measureWidth==48&&CaptionPolicy::textLeft==120&&CaptionPolicy::textY==364);}
 inline bool ordinaryProofPolicy()noexcept{return playerProofPolicy()||(CaptionPolicy::selector==0&&CaptionPolicy::resource==0&&CaptionPolicy::measureWidth==75&&CaptionPolicy::textLeft==93&&CaptionPolicy::textY==126)||(CaptionPolicy::selector==6&&CaptionPolicy::resource==7&&CaptionPolicy::measureWidth==48&&CaptionPolicy::textLeft==120&&CaptionPolicy::textY==364);}
 inline nfs_compact_caption::Policy proofPolicy()noexcept{return CaptionPolicy::selector==0?nfs_compact_caption::Policy::Setup:CaptionPolicy::selector==6?nfs_compact_caption::Policy::Options:CaptionPolicy::selector==2?nfs_compact_caption::Policy::Player1:nfs_compact_caption::Policy::Player2;}
 // Admission is a separate exact caller observation, never a substitute for the
 // ordinary incoming-EBP guard. Publisher and policy TLS tokens are distinct.
 // Original410414 returns -2 for Escape at410743;40C160 copies the
 // result into EBP before40C6F2 and writes it to4D243C at40CA58, as for -1.
-// Preserve the actual prior value: Main, -1 and -2 are separate snapshots,
+// A first Setup/Options entry also observes the original zero previous-form
+// value. Admit it only in the separate child policy, with the same retained
+// Main pixels, selected target and exact EBP/global checks. Player is unchanged.
+// Preserve the actual prior value: Main, zero, -1 and -2 are separate snapshots,
 // never interchangeable mid-scope even when EBP and the global change together.
 inline bool initialContext(State&s,Game&g,const Current&c)noexcept{
- const auto&p=s.initialOrigin;if(s.initialDepth!=1||!s.initialLife||!s.initialLife->load(std::memory_order_acquire)||!p||!p->current()||!p->frame()||!p->catalog()||p->game()!=reinterpret_cast<uintptr_t>(&g)||p->publisherThread()!=nfs_logo_publisher::threadToken()||p->formGuest()!=uint32_t(guest_address(off_4D3EC4))||(s.initialPreviousEbp!=p->formGuest()&&s.initialPreviousEbp!=UINT32_MAX&&s.initialPreviousEbp!=UINT32_MAX-1)||uint32_t(g.ebp)!=s.initialPreviousEbp||c.archive!=p->archive())return false;
+ const auto&p=s.initialOrigin;if(s.initialDepth!=1||!s.initialLife||!s.initialLife->load(std::memory_order_acquire)||!p||!p->current()||!p->frame()||!p->catalog()||p->game()!=reinterpret_cast<uintptr_t>(&g)||p->publisherThread()!=nfs_logo_publisher::threadToken()||p->formGuest()!=uint32_t(guest_address(off_4D3EC4))||(s.initialPreviousEbp!=p->formGuest()&&s.initialPreviousEbp!=UINT32_MAX&&s.initialPreviousEbp!=UINT32_MAX-1&&!((playerProofPolicy()||childInitialProofPolicy())&&s.initialPreviousEbp==0))||uint32_t(g.ebp)!=s.initialPreviousEbp||c.archive!=p->archive())return false;
  try{nfs::GuestCopyTransaction tx;if(tx.load<uint32_t>(dword_4D243C)!=s.initialPreviousEbp)return false;const uint32_t selection=tx.load<uint32_t>(dword_4D2314+2),slot=selection>>16;if(slot>1||selection!=c.target.ownerState[0])return false;const uint32_t h0=tx.load<uint32_t>(dword_4D231C),h1=tx.load<uint32_t>(dword_4D2320),chosen=slot?h1:h0,other=slot?h0:h1;if(!chosen||chosen!=c.target.owner||h0!=c.target.ownerState[1]||h1!=c.target.ownerState[2]||other==chosen)return false;if(uint64_t(chosen)+56>UINT64_C(0x100000000)||tx.load<uint32_t>(chosen+32)!=c.target.w[8])return false;if(other&&(uint64_t(other)+56>UINT64_C(0x100000000)||tx.load<uint32_t>(other+32)==c.target.w[8]))return false;return p->current();}catch(...){return false;}
 }
 inline bool initialPre(State&s,Game&g,const Current&c)noexcept{
@@ -74,7 +81,56 @@ struct InitialCallerScope {Game&g;State*s=nullptr;bool entered=false;int unwind=
  }
  ~InitialCallerScope(){if(!entered)return;if(s->initialDepth==1){Current c;const bool okay=s==current(g)&&nfs_logo_publisher::exceptions()==unwind&&uint32_t(g.esi)==CaptionPolicy::formAddress()&&!s->recording&&!s->tailDepth&&s->packet&&capture(*s,c,true,false)&&initialContext(*s,g,c)&&sameTarget(c,s->initialTarget)&&s->packet->matches(c.identity,s->serial,s->pixels.data(),Pixels);if(!okay){if(s->initialLife)s->initialLife->store(false,std::memory_order_release);s->reject(Failure::sourceChanged);}s->initialOrigin.reset();s->initialLife.reset();}if(s->initialDepth)--s->initialDepth;}
 };
-struct TailScope {Game&g;State*s=nullptr;bool entered=false;int unwind=0;explicit TailScope(Game&game)noexcept:g(game){s=current(g);if(!s)return;const bool ordinary=uint32_t(g.ebp)==CaptionPolicy::formAddress();if(ordinary&&s->initialDepth){s->reject(Failure::owner);return;}s->tailInitial=!ordinary;if(!ordinary){Current c;if(!playerProofPolicy()||!capture(*s,c,true,false)||!initialPre(*s,g,c)){s->reject(Failure::owner);return;}}unwind=nfs_logo_publisher::exceptions();entered=true;if(s->tailDepth++){s->reject(Failure::nested);return;}s->reject(Failure::none);s->clearEvidence();s->stringsInTail=0;s->measureSeen=s->measureUsed=false;s->measureString=0;s->measureWidth=s->measureAnchor=0;s->diagnosticMeasurePointerMatch=false;s->measureKind=SourceMeasureAlignment::center;s->diagnosticStage=s->diagnosticTargetDiff=s->diagnosticFontDiff=s->diagnosticBuilder=0;s->diagnosticCaptured=s->diagnosticTailAttempted=s->diagnosticTailCaptured=s->diagnosticAcquireAttempted=s->diagnosticAcquireCaptured=s->diagnosticAcquireMatch=false;s->diagnosticTailTargetDiff=s->diagnosticAcquireTargetDiff=0;s->diagnosticX=s->diagnosticY=s->diagnosticAdvance=s->diagnosticOriginX=s->diagnosticOriginY=0;s->diagnosticCenter=0;Current c;if(!capture(*s,c,true,false)){s->reject(Failure::target);return;}if(!ordinary&&(!initialPre(*s,g,c)||!sameTarget(c,s->initialTarget))){s->reject(Failure::sourceChanged);return;}s->current=c;s->ownerWindow=c.target.owner;if(!s->advance(s->serial)||!s->builder.begin(c.identity,s->serial,s->pixels.data(),Pixels)){s->reject(Failure::command);return;}s->failure=Failure::none;s->recording=true;
+struct ChildInitialCallerScope {Game&g;State*s=nullptr;bool entered=false;int unwind=0;uint32_t formGuest=0;
+ void trace(const char*stage,const char*reason,unsigned failureBefore,const Current*captured=nullptr)const noexcept{
+  const int saved=errno;static thread_local unsigned lines=0;const char*on=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");
+  if(!on||on[0]!='1'||on[1]||lines>=32){errno=saved;return;}++lines;
+  const auto*origin=s?s->initialOrigin.get():nullptr;
+  std::fprintf(stderr,"CHILD INITIAL CALLER stage=%s reason=%s formGuest=%x incomingEbp=%x esi=%x previousEbp=%x originFormGuest=%x failureBeforeReject=%u depth=%u life=%u recording=%u tail=%u packet=%u proof=%u resource=%u route=%u capture=%u targetDiff=%u capturedOwner=%x initialOwner=%x\n",stage,reason,formGuest,uint32_t(g.ebp),uint32_t(g.esi),s?s->initialPreviousEbp:0,origin?origin->formGuest():0,failureBefore,s?s->initialDepth:0,unsigned(s&&s->initialLife&&s->initialLife->load(std::memory_order_acquire)),unsigned(s&&s->recording),s?s->tailDepth:0,unsigned(s&&bool(s->packet)),unsigned(s&&bool(s->proof)),unsigned(s&&s->resourceComplete),s?unsigned(s->evidence.route):0,unsigned(captured!=nullptr),captured&&s?targetDiff(*captured,s->initialTarget):0,captured?captured->target.owner:0,s?s->initialTarget.target.owner:0);
+  errno=saved;
+ }
+ ChildInitialCallerScope(Game&game,std::shared_ptr<const nfs_main_sidebar_origin::Proof>origin)noexcept:g(game){
+  s=current(g);
+  if(!s){trace("constructor","owner",0);s=nullptr;return;}
+  if(!childInitialProofPolicy()){trace("constructor","policy",unsigned(s->failure));s=nullptr;return;}
+  formGuest=CaptionPolicy::formAddress();
+  if(uint32_t(g.esi)!=formGuest){trace("constructor","esi",unsigned(s->failure));s=nullptr;return;}
+  entered=true;unwind=nfs_logo_publisher::exceptions();
+  if(s->initialDepth++){trace("constructor","nested",unsigned(s->failure));if(s->initialLife)s->initialLife->store(false,std::memory_order_release);s->reject(Failure::nested);return;}
+  s->initialOrigin=std::move(origin);s->initialPreviousEbp=uint32_t(g.ebp);
+  try{s->initialLife=std::make_shared<std::atomic<bool>>(true);}catch(...){trace("constructor","life-capacity",unsigned(s->failure));s->initialLife.reset();s->reject(Failure::capacity);return;}
+  Current c;const char*reason=nullptr;bool captured=false;
+  if(s->recording)reason="recording";
+  else if(s->tailDepth)reason="tail";
+  else if(!capture(*s,c,true,false))reason="capture";
+  else {captured=true;if(!initialPre(*s,g,c))reason="initial-pre";}
+  if(reason){trace("constructor",reason,unsigned(s->failure),captured?&c:nullptr);s->initialLife->store(false,std::memory_order_release);s->reject(Failure::owner);return;}
+  s->initialTarget=c;trace("constructor","admitted",unsigned(s->failure),&c);
+ }
+ ~ChildInitialCallerScope(){
+  if(!entered)return;
+  if(s->initialDepth==1){
+   Current c;const char*reason=nullptr;bool captured=false;const unsigned failureBefore=unsigned(s->failure);
+   // Keep exactly the original conjunction order; skipped predicates are not
+   // evaluated for diagnostics and no ambient guest fields are read by trace.
+   if(s!=current(g))reason="owner";
+   else if(nfs_logo_publisher::exceptions()!=unwind)reason="unwind";
+   else if(uint32_t(g.esi)!=(formGuest=CaptionPolicy::formAddress()))reason="esi";
+   else if(s->recording)reason="recording";
+   else if(s->tailDepth)reason="tail";
+   else if(!s->packet)reason="packet";
+   else if(!capture(*s,c,true,false))reason="capture";
+   else {captured=true;if(!initialContext(*s,g,c))reason="context";
+    else if(!sameTarget(c,s->initialTarget))reason="target";
+    else if(!s->packet->matches(c.identity,s->serial,s->pixels.data(),Pixels))reason="matches";}
+   trace("destructor",reason?reason:"accepted",failureBefore,captured?&c:nullptr);
+   if(reason){if(s->initialLife)s->initialLife->store(false,std::memory_order_release);s->reject(Failure::sourceChanged);}
+   s->initialOrigin.reset();s->initialLife.reset();
+  }
+  if(s->initialDepth)--s->initialDepth;
+ }
+};
+struct TailScope {Game&g;State*s=nullptr;bool entered=false;int unwind=0;explicit TailScope(Game&game)noexcept:g(game){s=current(g);if(!s)return;const bool ordinary=uint32_t(g.ebp)==CaptionPolicy::formAddress();if(ordinary&&s->initialDepth){s->reject(Failure::owner);return;}s->tailInitial=!ordinary;if(!ordinary){Current c;if((!playerProofPolicy()&&!childInitialProofPolicy())||!capture(*s,c,true,false)||!initialPre(*s,g,c)){s->reject(Failure::owner);return;}}unwind=nfs_logo_publisher::exceptions();entered=true;if(s->tailDepth++){s->reject(Failure::nested);return;}s->reject(Failure::none);s->clearEvidence();s->stringsInTail=0;s->measureSeen=s->measureUsed=false;s->measureString=0;s->measureWidth=s->measureAnchor=0;s->diagnosticMeasurePointerMatch=false;s->measureKind=SourceMeasureAlignment::center;s->diagnosticStage=s->diagnosticTargetDiff=s->diagnosticFontDiff=s->diagnosticBuilder=0;s->diagnosticCaptured=s->diagnosticTailAttempted=s->diagnosticTailCaptured=s->diagnosticAcquireAttempted=s->diagnosticAcquireCaptured=s->diagnosticAcquireMatch=false;s->diagnosticTailTargetDiff=s->diagnosticAcquireTargetDiff=0;s->diagnosticX=s->diagnosticY=s->diagnosticAdvance=s->diagnosticOriginX=s->diagnosticOriginY=0;s->diagnosticCenter=0;Current c;if(!capture(*s,c,true,false)){s->reject(Failure::target);return;}if(!ordinary&&(!initialPre(*s,g,c)||!sameTarget(c,s->initialTarget))){s->reject(Failure::sourceChanged);return;}s->current=c;s->ownerWindow=c.target.owner;if(!s->advance(s->serial)||!s->builder.begin(c.identity,s->serial,s->pixels.data(),Pixels)){s->reject(Failure::command);return;}s->failure=Failure::none;s->recording=true;
  }~TailScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->reject(Failure::unwind);if(s->tailDepth==1&&s->recording){Current c;const bool pending=s->string||s->glyph||s->glyphDepth;if(!pending){s->diagnosticTailAttempted=true;s->diagnosticTailCaptured=capture(*s,c,true,false);s->diagnosticTailTargetDiff=targetDiff(c,s->current);}if(pending||!s->diagnosticTailCaptured||!sameTarget(c,s->current)){s->reject(Failure::postPlane);}else{auto packet=s->builder.finish(c.identity,s->pixels.data(),Pixels);s->recording=false;if(!packet){s->diagnosticBuilder=uint32_t(s->builder.failure());s->reject(Failure::postPlane);}else{s->packet=std::move(packet);s->failure=Failure::none;
  if(s->resourceTracked&&!s->resourceInvalid&&!s->resourceActive&&s->resourceComplete&&s->resolvedSeen&&s->sourceStringComplete&&s->measureSeen&&s->measureUsed&&s->stringsInTail==1&&s->packet->commands()==1&&s->evidence.lifetime==s->lifetime&&s->evidence.serial==s->serial&&s->evidence.game==s->game&&(s->evidence.route==nfs_compact_caption::Route::OrdinaryEbp||initialContext(*s,g,c))){try{s->proof=std::shared_ptr<const nfs_compact_caption::Proof>(new nfs_compact_caption::Proof(s->packet,s->evidence,s->evidence.route==nfs_compact_caption::Route::InitialMain?s->initialOrigin:std::shared_ptr<const nfs_main_sidebar_origin::Proof>{},s->evidence.route==nfs_compact_caption::Route::InitialMain?s->initialLife:std::shared_ptr<std::atomic<bool>>{}));}catch(...){s->proof.reset();}}
  }}}if(s->tailDepth)--s->tailDepth;}};

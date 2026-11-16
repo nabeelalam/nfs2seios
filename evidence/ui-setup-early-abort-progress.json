@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "localIntegration": 44,
+  "scope": "Desktop regression revealed another original abort phase; no device acceptance",
+  "returnedMain": true,
+  "nativeIntervalsAfterSetupEntry": [
+    {
+      "start": 695,
+      "end": 696,
+      "frames": 1,
+      "output": [
+        1280,
+        720
+      ]
+    },
+    {
+      "start": 718,
+      "end": 719,
+      "frames": 1,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 917,
+      "end": 1031,
+      "frames": 114,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 1035,
+      "end": 1036,
+      "frames": 1,
+      "output": [
+        1280,
+        720
+      ]
+    },
+    {
+      "start": 1301,
+      "end": 1302,
+      "frames": 1,
+      "output": [
+        1280,
+        720
+      ]
+    },
+    {
+      "start": 1324,
+      "end": 1325,
+      "frames": 1,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 1495,
+      "end": 1507,
+      "frames": 12,
+      "output": [
+        2360,
+        1640
+      ]
+    }
+  ],
+  "modeSwitchUniversallyFixed": false,
+  "returnAnimationFixed": false,
+  "newFinding": "Actual original40BCFF can occur before beginGroup, leaving Setupgroup0 and collector revision nonzero; previous receipt required completed group and missed this phase",
+  "sourceWorkAfterRun": [
+    "Added distinct pre-group abort receipt with exact live collector revision; completed old native upload and GPU receipt remain mandatory",
+    "Kept normal427B30 draw args unchanged",
+    "Added bounded return arm/semantic/fade-side rejection notes; unchanged acceptance conditions"
+  ],
+  "newSourceCompiled": false,
+  "cleanExit": true,
+  "all13ResourcesUnchanged": true,
+  "copiedAssetsUnchanged": true,
+  "copiedProfileRestored": true,
+  "cloudBuilds": 0,
+  "remaining": [
+    "Validate pre-group retention",
+    "Identify exact remaining return refusal; silent guard split now instrumented",
+    "Keep pre-copy sidebar rejection unless separately authenticated",
+    "Resize one-frame gaps and preview-change21frame path"
+  ]
+}

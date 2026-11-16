@@ -26,3 +26,5 @@ struct DrawScope {
  }
 };
 }
+
+#include "RecordsCursorQueueAdapter.inc"

@@ -8,7 +8,7 @@ import re
 
 MARKER = "NFS_PLAYER_INTRO_RENDERER"
 _BLOCK = re.compile(r"\n/\* NFS_PLAYER_INTRO_RENDERER_BEGIN:([a-z0-9-]+) \*/\n.*?\n/\* NFS_PLAYER_INTRO_RENDERER_END:\1 \*/\n", re.S)
-HELPERS = ("PlayerIntroRuntimeAbi.h", "PlayerIntroNativePass.h", "PlayerIntroRenderer.inc")
+HELPERS = ("PlayerIntroRuntimeAbi.h", "PlayerIntroNativePass.h", "PlayerIntroRenderer.inc", "PlayerIntroWidePreludeAbi.h", "PlayerIntroWideRenderer.h", "PlayerIntroWideRenderer.inc", "ChildPhotoAnimationAbi.h", "ChildPhotoRenderer.h", "ChildPhotoRenderer.inc", "ChildIntroWidePreludeAbi.h", "IntroWideGpuBorrow.h", "ChildIntroWideRenderer.inc", "ChildIntroWideBrandingRenderer.inc")
 
 
 def reverse_player_intro_renderer_hooks(text):
@@ -63,7 +63,9 @@ def add_player_intro_renderer_hooks(text):
             raise ValueError("Player intro renderer lexical anchor changed: " + tag)
         part = part.replace(anchor, anchor + block(tag, code))
         text = text[:start] + part + text[end:]
-    after("} TextureInfo;", """static void nfs_player_intro_renderer_created(void);
+    after("} TextureInfo;", """#include "hd/PlayerIntroWideRenderer.h"
+#include "hd/ChildPhotoRenderer.h"
+static void nfs_player_intro_renderer_created(void);
 static void nfs_player_intro_renderer_retired(int);
 static void nfs_player_intro_renderer_other(void);
 static void nfs_player_intro_renderer_state(void);
@@ -73,11 +75,11 @@ static void nfs_player_intro_renderer_triangle(const GrVertex*,const GrVertex*,c
 static void nfs_player_intro_renderer_tail_batch(unsigned);
 static uint32_t nfs_player_intro_renderer_presentation_texture(uint32_t,uint32_t);
 static void nfs_player_intro_renderer_after_present(void);""", "forward")
-    after(" nfs_logo_native_created();", " nfs_player_intro_renderer_created();", "created")
-    before(" nfs_logo_native_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);", " nfs_player_intro_renderer_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);", "retired")
-    before(" nfs_logo_native_retired(0);", " nfs_player_intro_renderer_retired(0);", "abandoned")
+    after(" nfs_logo_native_created();", " nfs_player_intro_renderer_created();nfs_cp_created();nfs_player_intro_wide_created();", "created")
+    before(" nfs_logo_native_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);", " nfs_player_intro_wide_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);nfs_cp_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);\n nfs_player_intro_renderer_retired(g_glCtx && SDL_GL_GetCurrentContext()==g_glCtx);", "retired")
+    before(" nfs_logo_native_retired(0);", " nfs_player_intro_wide_retired(0);nfs_cp_retired(0);\n nfs_player_intro_renderer_retired(0);", "abandoned")
     for name in ("destroyFrameBuffer", "createFrameBuffer", "native_grDrawLine", "native_grLfbLock", "native_grLfbUnlock", "native_grBufferClear"):
-        entry(name, " nfs_player_intro_renderer_other();")
+        entry(name, " nfs_player_intro_renderer_other();nfs_cp_cancel();"+("nfs_player_intro_wide_other();" if name!="native_grBufferClear" else ""))
     # BufferSwap intentionally preserves Ready until physical FBO/color swap
     # has happened and presentation_texture independently matches that pair.
     for name in ("native_grAlphaBlendFunction", "native_grClipWindow", "native_grDepthBufferFunction", "native_grDepthMask", "native_grFogColorValue", "native_grFogMode", "native_grRenderBuffer", "native_grTexDownloadTable"):
@@ -88,15 +90,16 @@ static void nfs_player_intro_renderer_after_present(void);""", "forward")
     if text.count(anchor) != 2:
         raise ValueError("Player intro renderer upload inventory changed")
     pieces = text.split(anchor)
-    text = pieces[0] + anchor + block("upload-0", " nfs_player_intro_renderer_upload_begin(ti);") + pieces[1] + anchor + block("upload-1", " nfs_player_intro_renderer_upload_begin(ti);") + pieces[2]
-    after(" nfs_logo_native_select(tmu,startAddress,evenOdd,info,ti);", " nfs_player_intro_renderer_select(tmu,startAddress,evenOdd,info,ti);", "select")
-    after(" nfs_logo_native_triangle(a,b,c);", " nfs_player_intro_renderer_triangle(a,b,c);", "triangle")
-    in_function("drawTriangles", "\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);", " nfs_player_intro_renderer_tail_batch(g_trianglesCount);", "tail-batch")
+    text = pieces[0] + anchor + block("upload-0", " nfs_player_intro_renderer_upload_begin(ti);nfs_cp_cancel();") + pieces[1] + anchor + block("upload-1", " nfs_player_intro_renderer_upload_begin(ti);nfs_cp_cancel();") + pieces[2]
+    after(" nfs_logo_native_select(tmu,startAddress,evenOdd,info,ti);", " nfs_player_intro_renderer_select(tmu,startAddress,evenOdd,info,ti);nfs_cp_select(tmu,startAddress,evenOdd,info,ti);nfs_player_intro_wide_select(tmu,startAddress,evenOdd,info,ti);", "select")
+    after(" nfs_logo_native_triangle(a,b,c);", " nfs_player_intro_renderer_triangle(a,b,c);nfs_cp_triangle(a,b,c);nfs_player_intro_wide_triangle(a,b,c);", "triangle")
+    in_function("drawTriangles", "\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);", " nfs_player_intro_renderer_tail_batch(g_trianglesCount);nfs_player_intro_wide_batch(g_trianglesCount);", "tail-batch")
     # Insert a second bind, preserving the original bind byte-for-byte for
     # reversal and leaving both original game surfaces untouched.
     in_function("presentFrontSurface", "\tglBindTexture(GL_TEXTURE_2D, g_frontTexture);", " glBindTexture(GL_TEXTURE_2D,nfs_player_intro_renderer_presentation_texture(g_frontFramebuffer,g_frontTexture));", "display-texture")
     in_function("presentFrontSurface", "const BOOL presented=SDL_GL_SwapWindow(sdlWin);", " nfs_player_intro_renderer_after_present();", "display-finished")
-    text += block("implementation", '#include "hd/PlayerIntroRenderer.inc"')
+    after(" nfs_logo_native_clear(depth,r,g,b);", " nfs_player_intro_wide_clear(depth,r,g,b);", "wide-clear")
+    text += block("implementation", '#include "hd/PlayerIntroRenderer.inc"\n#include "hd/ChildPhotoRenderer.inc"\n#include "hd/PlayerIntroWideRenderer.inc"')
     if reverse_player_intro_renderer_hooks(text) != original:
         raise ValueError("Player intro renderer insertion reversal failed")
     return text

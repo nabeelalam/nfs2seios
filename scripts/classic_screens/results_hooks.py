@@ -21,7 +21,7 @@ def main():
   def edit(symbol,fn):
    nonlocal text
    lo,hi,at=section(symbol);text=text[:lo]+fn(text[lo:hi])+text[hi:]
-  anchor='#include "FunctionIds.h"';assert text.count(anchor)==1;text=text.replace(anchor,anchor+block('#include "'+('hd/ClassicScreens/ResultsQueueAdapter.inc'if unit==3 else'hd/ClassicScreens/ResultsGameHooks.inc')+'"'),1)
+  anchor='#include "FunctionIds.h"';assert text.count(anchor)==1;text=text.replace(anchor,anchor+block('#include "'+('hd/ClassicScreens/ResultsQueueAdapter.inc'if unit in (2,3) else'hd/ClassicScreens/ResultsGameHooks.inc')+'"'),1)
   if unit==1:
    entry('405B60',' nfs_results_ui_live::Adapter::resolveBackdrop(*this);')
    entry('405CF0',' nfs_results_ui_live::StringScope nfs_results_string(*this);')
@@ -53,7 +53,18 @@ def main():
      part=before+heading+after
      call='\tesp -= 4; _sub_415CC0(); esp += 4; //call';assert part.count(call)==1;part=part.replace(call,block(' nfs_results_ui_live::Adapter::begin(*this);')+call)
      call='\tesp -= 4; _sub_40FA90(); esp += 4; //call';assert part.count(call)==1;part=part.replace(call,call+block(' nfs_results_ui_live::Adapter::end(*this);'))
-     call='\tesp -= 4; _sub_426B70(); esp += 4; //call';assert part.count(call)==1;return part.replace(call,block(' { nfs_results_ui_live::Presentation nfs_results_present(*this);')+call+block(' }'))
+     call='\tesp -= 4; _sub_426B70(); esp += 4; //call';assert part.count(call)==1
+     part=part.replace(call,block(' { nfs_results_ui_live::Presentation nfs_results_present(*this);')+call+block(' }'))
+     cursor='\tesp -= 4; _sub_4267C0(); esp += 4; //call'
+     assert part.count(cursor)==1
+     badge='\tesp -= 4; _sub_4274F0(); esp += 4; //call'
+     render_end=part.index(call)+len(call)
+     cursor_at=part.index(cursor)
+     tail=part[render_end:cursor_at]
+     assert tail.count(badge)==1
+     tail=tail.replace(badge,block(' { nfs_results_ui_live::TailScope nfs_results_branding(*this,true);')+badge+block(' }'))
+     part=part[:render_end]+tail+part[cursor_at:]
+     return part.replace(cursor,block(' { nfs_results_ui_live::TailScope nfs_results_cursor(*this);')+cursor+block(' }'))
     edit(symbol,results)
   elif unit==3:entry('426950',' nfs_results_ui_live::DrawScope nfs_results_native(*this);')
   elif unit==10:

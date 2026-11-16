@@ -4,6 +4,8 @@
 #include "PreviewPacket.h"
 #include "LocationCaptionGameHooks.inc"
 #include "ContinuousNativeUploadHooks.inc"
+#include "CachedMenuWidgetLifetime.h"
+#include "Main343OriginProof.h"
 #include <memory>
 #include <atomic>
 
@@ -36,22 +38,51 @@ struct State{
  Target baseTarget{};std::array<uint32_t,9>baseTable{};uint32_t baseRows=0,baseCount=0;bool baseRowsValid=true,baseVerified=false,on=false,invalid=false,baseResolved=false,resolved=false;
  uint32_t stage=0,detail=0;
  std::shared_ptr<const bg::SourceCatalog> catalogue;
+ // Last complete Location cache, reusable only on the original pre-copy abort.
+ std::shared_ptr<const bg::Prepared> retainedFrame;
+ bg::Target retainedTarget{};
+ uint64_t retainedUpload=0,retainedBase=0,abortIteration=0;
+ bool abortAfterCopy=false;
  Phase phase=Phase::None;int32_t pending=-1;unsigned copyWrapperDepth=0;bool captured483438=false;
  std::array<uint32_t,4>capturedArgs{};Reason reason=Reason::None;
  bg::Draw*draw()noexcept{return pending>=0&&unsigned(pending)<scene.draws.size()?&scene.draws[unsigned(pending)]:nullptr;}
  void clearPreview()noexcept{preview.reset();previewSerial=previewLifetime=0;previewEvent=previewBaseEvent={};}
- void fail(Reason why,bool baseToo=false)noexcept{reason=why;invalid=true;published.reset();clearPreview();if(baseToo)baseVerified=false;}
+ void fail(Reason why,bool baseToo=false)noexcept{reason=why;invalid=true;published.reset();retainedFrame.reset();clearPreview();if(baseToo)baseVerified=false;}
  bg::Event event(uint64_t redraw)noexcept{if(sequence==UINT64_MAX){fail(Reason::Overflow,true);return {};}return {ownerEpoch,++sequence,redraw};}
- void freshScene()noexcept{published.reset();captionProof.reset();caption.reset();captionSerial=captionLifetime=0;scene.draws.clear();scene.form=bg::LocationForm;scene.complete=scene.error=scene.tailKind=scene.tailPredicate=scene.tailSymbol=0;scene.preSide.valid=scene.postSide.valid=scene.postWords.valid=scene.tailPre.valid=scene.tailPost.valid=0;pending=-1;phase=Phase::None;resolved=false;groupSerial=copySerial=nativeUploadEvent=0;groupEvent=tailEvent=copyEvent=uploadEvent={};captured483438=false;copyWrapperDepth=0;}
+ void freshScene()noexcept{abortIteration=0;abortAfterCopy=false;published.reset();captionProof.reset();caption.reset();captionSerial=captionLifetime=0;scene.draws.clear();scene.form=bg::LocationForm;scene.complete=scene.error=scene.tailKind=scene.tailPredicate=scene.tailSymbol=0;scene.preSide.valid=scene.postSide.valid=scene.postWords.valid=scene.tailPre.valid=scene.tailPost.valid=0;pending=-1;phase=Phase::None;resolved=false;groupSerial=copySerial=nativeUploadEvent=0;groupEvent=tailEvent=copyEvent=uploadEvent={};captured483438=false;copyWrapperDepth=0;}
 };
 inline std::atomic<uintptr_t>&ownerThread()noexcept{static std::atomic<uintptr_t>t{0};return t;}
 inline State*&slot()noexcept{struct Storage{State*value=nullptr;~Storage(){delete value;}};static thread_local Storage storage;return storage.value;}
 inline State*current(Game&g)noexcept{if(!enabled())return nullptr;auto*s=slot();return s&&s->on&&s->mainDepth==1&&s->game==reinterpret_cast<uintptr_t>(&g)&&s->thread==nfs_logo_publisher::threadToken()?s:nullptr;}
 inline bool unarmed(State*s)noexcept{return !s->iteration;}
+inline void observeOriginalAbort(Game&g)noexcept{
+ auto*s=current(g);
+ auto*c=nfs_logo_publisher::store();
+ if(!s||s->invalid||!s->iteration||s->invocationDepth!=1||s->published
+     ||s->nativeUploadEvent||!s->retainedFrame||!c
+     ||c->gameOwner!=s->game||c->thread!=s->thread||c->depth!=1||c->invalid
+     ||c->ownerKind!=1||c->ownerArg!=uint32_t(guest_address(off_4D2A20))
+     ||c->copyActive||c->copy.error||c->group.error)return;
+ const bool copied=s->copySerial&&s->scene.complete&&s->groupSerial
+     &&c->group.complete&&c->copy.complete&&c->copy.serial==s->copySerial
+     &&c->copy.linkedGroup==s->groupSerial&&c->group.serial==s->groupSerial
+     &&nfs_main_sidebar_origin::sameRetainedTarget(c->copy.post.target,s->retainedTarget);
+ if(!copied&&(s->copySerial||c->copy.complete||c->copy.serial))return;
+ if(c->groupActive){
+  if(c->pending!=-1||c->group.stage!=1||!c->group.pre.valid
+      ||c->group.draws>2||!s->groupSerial||s->groupSerial!=c->group.serial)return;
+  for(unsigned i=0;i<c->group.draws;++i)
+   if(!c->group.draw[i].complete||c->group.draw[i].error)return;
+ }
+ if(nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire)==s->retainedUpload){
+  s->abortIteration=s->iteration;
+  s->abortAfterCopy=copied;
+ }
+}
 inline bool readPlane(Plane&p)noexcept{uint32_t error=0;p.valid=0;nfs_logo_publisher::plane(p,error);return !error&&p.valid;}
 inline bool readBytes(uint32_t at,size_t n,std::vector<uint8_t>&out)noexcept{try{out.resize(n);{nfs::GuestCopyTransaction tx;nfs_logo_publisher::checked(at,n);std::memcpy(out.data(),nfs_host_address(at,n),n);}return true;}catch(...){return false;}}
 inline bool readTable(std::array<uint32_t,9>&out,Phase phase)noexcept{try{nfs::GuestCopyTransaction tx;uint32_t at=uint32_t(guest_address(phase==Phase::Word?off_4DAD64:off_4DADB4));for(unsigned k=0;k<9;++k)out[k]=tx.load<uint32_t>(at+4*k);return true;}catch(...){return false;}}
-struct LocationScope{State*s=nullptr;bool entered=false;int unwind=0;explicit LocationScope(Game&g)noexcept{if(!enabled()||uint32_t(g.eax)!=uint32_t(guest_address(off_4D2A20)))return;auto trusted=nfs_background_scene_runtime::acquireCatalog();if(!trusted)return;uintptr_t expected=0,t=nfs_logo_publisher::threadToken();if(!ownerThread().compare_exchange_strong(expected,t)&&expected!=t)return;auto*&p=slot();if(!p)p=new(std::nothrow)State;if(!p){ownerThread().store(0);return;}s=p;s->catalogue=std::move(trusted);entered=true;unwind=nfs_logo_publisher::exceptions();if(s->mainDepth++){s->fail(Reason::Nested,true);return;}if(s->nextOwner==UINT64_MAX){s->fail(Reason::Overflow,true);return;}s->clearPreview();s->detail=0;s->ownerEpoch=++s->nextOwner;s->sequence=s->iteration=s->nextIteration=0;s->on=true;s->invalid=false;s->baseVerified=false;s->game=reinterpret_cast<uintptr_t>(&g);s->thread=nfs_logo_publisher::threadToken();s->freshScene();}~LocationScope(){if(!entered)return;if(!s->mainDepth){s->fail(Reason::Order,true);return;}if(--s->mainDepth)return;s->stage=18;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind,true);else{s->reason=Reason::Owner;s->invalid=true;s->published.reset();s->clearPreview();s->baseVerified=false;}s->on=false;s->game=0;s->invocationDepth=0;ownerThread().store(0);}};
+struct LocationScope{State*s=nullptr;bool entered=false;int unwind=0;explicit LocationScope(Game&g)noexcept{if(!enabled()||uint32_t(g.eax)!=uint32_t(guest_address(off_4D2A20)))return;auto trusted=nfs_background_scene_runtime::acquireCatalog();if(!trusted)return;uintptr_t expected=0,t=nfs_logo_publisher::threadToken();if(!ownerThread().compare_exchange_strong(expected,t)&&expected!=t)return;auto*&p=slot();if(!p)p=new(std::nothrow)State;if(!p){ownerThread().store(0);return;}s=p;s->catalogue=std::move(trusted);entered=true;unwind=nfs_logo_publisher::exceptions();if(s->mainDepth++){s->fail(Reason::Nested,true);return;}if(s->nextOwner==UINT64_MAX){s->fail(Reason::Overflow,true);return;}s->retainedFrame.reset();s->clearPreview();s->detail=0;s->ownerEpoch=++s->nextOwner;s->sequence=s->iteration=s->nextIteration=0;s->on=true;s->invalid=false;s->baseVerified=false;s->game=reinterpret_cast<uintptr_t>(&g);s->thread=nfs_logo_publisher::threadToken();s->freshScene();try{nfs_menu_cached_widget_source::ownerBoundary();nfs_menu_cached_owner_begin(NFS_MENU_CACHED_LOCATION,uint32_t(guest_address(off_4D2A20)),s->ownerEpoch,s->game);}catch(...){nfs_menu_pointer_metadata_failure();}}~LocationScope(){if(!entered)return;if(!s->mainDepth){s->fail(Reason::Order,true);return;}if(--s->mainDepth)return;s->stage=18;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind,true);else{s->reason=Reason::Owner;s->invalid=true;s->published.reset();s->retainedFrame.reset();s->clearPreview();s->baseVerified=false;}try{nfs_menu_cached_owner_end(NFS_MENU_CACHED_LOCATION,s->ownerEpoch,s->game);nfs_menu_cached_widget_source::ownerBoundary();}catch(...){nfs_menu_pointer_metadata_failure();}s->on=false;s->game=0;s->invocationDepth=0;ownerThread().store(0);}};
 struct IterationScope{State*s=nullptr;bool entered=false,started=false;uint32_t form=0;int unwind=0;explicit IterationScope(Game&g)noexcept{s=current(g);if(!s)return;entered=true;unwind=nfs_logo_publisher::exceptions();form=uint32_t(g.eax);if(s->invocationDepth++)s->fail(Reason::Nested);}void start()noexcept{if(!entered||started)return;started=true;if(!s->baseVerified){s->published.reset();s->iteration=0;return;}if(s->invocationDepth!=1||form!=uint32_t(guest_address(off_4D2A20))||s->nextIteration==UINT64_MAX){s->fail(Reason::Owner);return;}s->freshScene();s->invalid=false;s->reason=Reason::None;s->iteration=++s->nextIteration;s->scene.event=s->event(s->iteration);}~IterationScope(){if(!entered)return;if(nfs_logo_publisher::exceptions()>unwind)s->fail(Reason::Unwind);if(s->invocationDepth)--s->invocationDepth;}};
 struct RoleScope{State*s=nullptr;Phase phase=Phase::None;bool active=false;int unwind=0;RoleScope(Game&g,Phase requested,BaseArgument baseArgument=BaseArgument::Descriptor)noexcept{s=current(g);if(!s||(s->invalid&&requested!=Phase::Base)){return;}if(s->phase!=Phase::None||s->resolved){s->fail(Reason::Nested);return;}if(requested!=Phase::Base&&(!s->iteration||s->invocationDepth!=1))return;phase=requested;s->phase=requested;active=true;unwind=nfs_logo_publisher::exceptions();if(phase==Phase::Base){auto*c=nfs_location_caption::current(g);if(c&&(c->recording||c->tailDepth||c->string||c->glyph)){s->fail(Reason::Nested,true);return;}s->clearPreview();s->freshScene();s->phase=Phase::Base;s->iteration=0;s->baseVerified=false;s->invalid=false;s->reason=Reason::None;s->detail=0;s->published.reset();s->baseRows=s->baseCount=0;s->baseRowsValid=true;try{nfs::GuestCopyTransaction tx;s->archive=tx.load<uint32_t>(dword_4D40B8);s->baseName=tx.load<uint32_t>(uint32_t(guest_address(off_4D2A20))+4);s->baseNameWord=tx.load<uint32_t>(s->baseName);const bool nameMatches=baseArgument==BaseArgument::Descriptor?uint32_t(g.eax)==s->baseName:
  uint32_t(g.eax)==uint32_t(guest_address(aBlk4))&&s->baseNameWord==879455330u&&tx.load<uint32_t>(uint32_t(guest_address(aBlk4)))==s->baseNameWord;

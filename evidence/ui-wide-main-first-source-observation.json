@@ -1,0 +1,17 @@
+{
+  "scope": "Local desktop renderer; not physical iPad acceptance",
+  "localIntegration": 20,
+  "binarySHA256": "505d1080958be112d0d97b04d54ffe1b6c30b54010c16ac88af87ad2106db6f4",
+  "sourceChanges": "Observe the existing authenticated Main source immediately after its successful native copy join, before renderer enqueue; no source identity or widget guards weakened",
+  "presentationTrace": {
+    "openingWideFrame": 44,
+    "steadyWideFrame": 103,
+    "nativeFramesBetween": 0
+  },
+  "setupEntrance": {
+    "stillUnresolved": true,
+    "reason": "slot0 converted texture SHA verification mismatch; all typed source-domain and remaining binding flags pass"
+  },
+  "cloud": false,
+  "physicalIpadVerified": false
+}

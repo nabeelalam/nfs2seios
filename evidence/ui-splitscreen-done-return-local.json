@@ -1,0 +1,54 @@
+{
+  "scope": "Actual local SplitScreen selected andcommitted throughDone; P2entry notyetexecuted",
+  "integration": 62,
+  "SetupModeRightCount": 1,
+  "SetupFocusDownCount": 6,
+  "finalDoneAndSplitMenuRegionsRootReviewed": true,
+  "DoneReturnComplete": true,
+  "DoneReturnSource": {
+    "sourceArm": true,
+    "route": 1,
+    "routeName": "EscapeFade12",
+    "runs": [
+      {
+        "startFrame": 2514,
+        "frames": 12,
+        "nextChoice": "menu-wide",
+        "presented": true,
+        "output": "2360x1640"
+      }
+    ],
+    "sourceLoopFrames": 12,
+    "sourceGpuFrameIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "sourceGpuComplete": true,
+    "loopComplete": true,
+    "nativeRoutes": [],
+    "complete": true
+  },
+  "freshMainProofs": 2,
+  "P2Captured": false,
+  "subsequentHostFailure": "ReadyError: Current native Main owner/context absent; no resize handoff",
+  "nextAction": "Useproof-carriedMain identity/nullabledebugcontentepoch; doNotrequirecappeddebugowner",
+  "cleanup": {
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0
+  }
+}

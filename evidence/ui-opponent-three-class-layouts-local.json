@@ -1,0 +1,122 @@
+{
+  "scope": "Actual sampled steady ClassA/B/C layouts at640,2360 and1280; qualified-source/native-construction plus root visual review; no animation/return/device acceptance",
+  "selectors": [
+    12,
+    13,
+    14
+  ],
+  "images": [
+    {
+      "class": "A",
+      "image": "class-A-source640.png",
+      "extent": [
+        640,
+        480
+      ],
+      "RGBSHA256": "3b1999a69f43a9f84a3019226c66e690deb3d0e2edc491164645784426118767",
+      "rootViewed": true
+    },
+    {
+      "class": "A",
+      "image": "class-A-2360x1640.png",
+      "extent": [
+        2360,
+        1640
+      ],
+      "RGBSHA256": "33e1e59b2f13cff1f306b76ecdc97e0f5d35c4213e29757ea96d8f0595effded",
+      "rootViewed": true
+    },
+    {
+      "class": "A",
+      "image": "class-A-1280x720.png",
+      "extent": [
+        1280,
+        720
+      ],
+      "RGBSHA256": "4343da33e15fef8f9318c8f0b952dc4ae69f49122b1868245f75231993ae141d",
+      "rootViewed": true
+    },
+    {
+      "class": "B",
+      "image": "class-B-source640.png",
+      "extent": [
+        640,
+        480
+      ],
+      "RGBSHA256": "c97710b0ddd07a0525c4c6ce3e864c11e4521bf2474f41f29fdc25d4f54a235c",
+      "rootViewed": true
+    },
+    {
+      "class": "B",
+      "image": "class-B-2360x1640.png",
+      "extent": [
+        2360,
+        1640
+      ],
+      "RGBSHA256": "f24ad0d4f74bb55f1582b92fafc0cc161ad0de43e32d560a24dc5520d98215aa",
+      "rootViewed": true
+    },
+    {
+      "class": "B",
+      "image": "class-B-1280x720.png",
+      "extent": [
+        1280,
+        720
+      ],
+      "RGBSHA256": "d9f15c0b05f5f5fac4c0b7ad9dad022ef008e8129320a38cdd82daea499ac41d",
+      "rootViewed": true
+    },
+    {
+      "class": "C",
+      "image": "class-C-source640.png",
+      "extent": [
+        640,
+        480
+      ],
+      "RGBSHA256": "2bf711aebe116382bd51530f2c0ad8edf4a72b0d3d40cb858d0ed5b57b2aa6f8",
+      "rootViewed": true
+    },
+    {
+      "class": "C",
+      "image": "class-C-2360x1640.png",
+      "extent": [
+        2360,
+        1640
+      ],
+      "RGBSHA256": "b7cb2d046e787fb6c9b4033dc96f0e77b2e1b5b6b56fef229d9ffff2f5f649d9",
+      "rootViewed": true
+    },
+    {
+      "class": "C",
+      "image": "class-C-1280x720.png",
+      "extent": [
+        1280,
+        720
+      ],
+      "RGBSHA256": "b2dbb8cc1093a9861e8cdde3bc81d8ec958b27f6a349e26b079245e881777c68",
+      "rootViewed": true
+    }
+  ],
+  "observations": "All three remastered class pictures, matching A/B/C badges, readable rosters and labels visible. Wide layouts fill output without black sidebars. Foreground bars retain original deliberate photo overlap.",
+  "runtimeDigestLogForEveryClass": false,
+  "explicitRuntimeDigestProofClaimedForInitialClassA": false,
+  "currentCodeConstructionAudit": "CONSTRUCTION-ART-IDENTITY-AUDIT.json",
+  "rootVisualReviewComplete": true,
+  "sampledClassLayoutsAccepted": true,
+  "continuousPhotoAnimation21Verified": false,
+  "nativeReturnSent": false,
+  "nativeReturnVerified": false,
+  "resizeFirstFrameAccepted": false,
+  "wholeUiComplete": false,
+  "physicalIpadVerified": false,
+  "cleanup": {
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0
+  },
+  "nextAction": "Actualnative2360 class changes and both initial/steady return proof; no redundant ratio sweep"
+}

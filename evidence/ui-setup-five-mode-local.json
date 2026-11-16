@@ -1,0 +1,37 @@
+{
+  "scope": "Desktop Setup five-mode artwork review at two ratios; not physical iPad or whole UI acceptance",
+  "binarySHA256": "6e6eed38b83ff6dc33de051e718906708d9def6e1830773c1ee98403d19f7e65",
+  "reviewedModes": [
+    "One Player",
+    "Split Screen",
+    "Modem",
+    "Serial Link",
+    "Network"
+  ],
+  "resolutions": [
+    [
+      1280,
+      720
+    ],
+    [
+      2360,
+      1640
+    ]
+  ],
+  "modeChangeNativeFallbacks": [],
+  "returnComplete": false,
+  "returnFailure": "Fade12 armed; full base 300 selections/600 triangles completed, sidebar-begin stage4 refused; no owned return frames presented",
+  "firstVisibleTitleProven": false,
+  "wholeUiComplete": false,
+  "recovery": {
+    "recovered": true,
+    "appGone": true,
+    "originalResultPreserved": true,
+    "copiedProfileRestored": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "ELFUnchanged": true,
+    "originalLauncherCleanExit": false,
+    "reason": "Original host cleanup reused expired 230/239-second deadlines after a longer five-mode run; process gone now; do not call original shutdown clean"
+  }
+}

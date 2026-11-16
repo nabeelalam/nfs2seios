@@ -9,7 +9,7 @@ MARKER = "NFS_HD_BACKGROUND"
 
 
 def add_background_scene_hooks(text, name):
-    if name not in ("Methods_01.cpp", "Methods_03.cpp", "Methods_10.cpp", "Methods_13.cpp"):
+    if name not in ("Methods_01.cpp", "Methods_03.cpp", "Methods_10.cpp", "Methods_12.cpp", "Methods_13.cpp"):
         return text
     if MARKER in text:
         raise ValueError("Background hooks already present")
@@ -56,7 +56,7 @@ def add_background_scene_hooks(text, name):
         entry("40BBE0", " nfs_logo_publisher::OwnerScope nfs_hd_iteration(*this,1);\n nfs_background_scene_live::IterationScope nfs_hd_scene_iteration(*this);")
         entry("405B60", " nfs_logo_publisher::ResolvedScope nfs_hd_logo_resolved(*this);\n nfs_background_scene_live::ResolvedScope nfs_hd_scene_resolved(*this);")
         def redraw(part):
-            part=checked_replace(part,"loc_40BC20:\n","loc_40BC20:\n"+block("lazy-start"," nfs_hd_iteration.start();\n nfs_hd_scene_iteration.start();"))
+            part=checked_replace(part,"loc_40BC20:\n","loc_40BC20:\n"+block("lazy-start"," nfs_hd_iteration.start();\n nfs_hd_scene_iteration.start();\n nfs_main_uploaded_source::bindCurrentIteration(*this);"))
             part=wrap_next(part,"guest_address(aSide)","405B30","side"," { nfs_background_scene_live::RoleScope nfs_hd_side(*this,nfs_background_scene_live::Phase::Side);")
             part=wrap_next(part,"off_4D2474+ecx*4","405B30","word"," { nfs_background_scene_live::RoleScope nfs_hd_word(*this,nfs_background_scene_live::Phase::Word);")
             # Exact current-inset argument lookup, following all label draws.
@@ -68,9 +68,13 @@ def add_background_scene_hooks(text, name):
             part=checked_replace(part,"loc_40C047:\n","loc_40C047:\n"+block("tail-begin"," nfs_background_scene_live::tailBegin(*this);"))
             part=checked_replace(part,"loc_40C054:\n","loc_40C054:\n"+block("tail-end"," nfs_background_scene_live::tailEnd(*this);"))
             part=wrap_next(part,"loc_40C054:\n","405B60","copy"," nfs_logo_publisher::armCopy(*this);", " nfs_background_scene_live::copyEnd(*this);")
+            part=checked_replace(part,"loc_40BCFF:\n","loc_40BCFF:\n"+block("main-original-abort"," nfs_main_uploaded_source::observeOriginalAbort(*this);"))
             return part
         body("40BBE0",redraw)
         def main(part):
+            #410E80 loads/replaces Main's archive after the lexical owner entry.
+            # Bind its actual return before any first343sidebar observations.
+            part=wrap_next(part,"loc_40D4AB:\n","410E80","archive-ready","", " nfs_background_scene_live::bindInitialArchive(*this);")
             # Exact first343sidebar-to-temporary opaque copy, before word4D232C
             # presentation. This is not the previous title or a640frame copy.
             part=wrap_next(part,"loc_40D4D6:\n","405B60","initial-sidebar-temp"," { nfs_initial_sidebar_transition::CopyScope nfs_hd_initial_sidebar_copy(*this);")
@@ -92,6 +96,12 @@ def add_background_scene_hooks(text, name):
             return checked_replace(part,call,block("native-begin",begin)+call+block("native-finish",end))
         body("40D3D0",main)
     elif name == "Methods_03.cpp":
+        entry("427280"," nfs_menu_transition_live::BrandingCallerScope nfs_hd_branding_caller(*this);")
+        entry("4276F0"," nfs_menu_transition_live::BrandingScope nfs_hd_branding(*this);")
+        def branding(part):
+            call="\tesp -= 4; _sub_497D6C(); esp += 4; //call"
+            return checked_replace(part,call,block("branding-quad-open"," { nfs_menu_transition_live::BrandingQuadScope nfs_hd_branding_quad(*this);")+call+block("branding-quad-close"," }"))
+        body("4276F0",branding)
         entry("427B30"," nfs_menu_transition_live::PlainDrawScope nfs_hd_plain_transition(*this);")
         entry("427C70"," nfs_menu_transition_live::DrawScope nfs_hd_transition(*this);")
         entry("428250"," nfs_menu_transition_live::UploadScope nfs_hd_transition_upload(*this);\n nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);")
@@ -111,6 +121,13 @@ def add_background_scene_hooks(text, name):
                 code+="\n nfs_background_scene_live::row(*this,uint32_t(game_id_sub_482BD4));"
             entry(symbol,code)
         entry("483438"," nfs_background_scene_live::row(*this,uint32_t(game_id_sub_483438));\n nfs_background_scene_live::CopyWrapperScope nfs_hd_copy_wrapper(*this);")
+    elif name == "Methods_12.cpp":
+        def native_branding(part):
+            call="\teax = grDrawTriangle(to32i(esp + 0), to32i(esp + 4), to32i(esp + 8)); esp += 12;"
+            if part.count(call)!=2:
+                raise ValueError("Original branding native quad conversion changed")
+            return part.replace(call,block("branding-native-quad"," nfs_menu_transition_live::brandingNativeQuad(*this);")+call,1)
+        body("497D6C",native_branding)
     else:
         entry("4A14D4"," nfs_background_scene_live::byteCopyRow(*this);\n nfs_initial_sidebar_transition::CopyLeafScope nfs_hd_initial_sidebar_leaf(*this);")
         def dispatch(part):

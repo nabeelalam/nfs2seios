@@ -1,0 +1,41 @@
+{
+  "scope": "Local57 repaired Setup retention runtime result",
+  "binarySHA256": "1251ca45b3bc23bdb3086714c84c4794326e9262716b117d50bcfef7b8c45132",
+  "reviewedModes": [
+    "One Player",
+    "Split Screen",
+    "Modem",
+    "Serial Link",
+    "Network"
+  ],
+  "modeChangeNativeFallbacks": [],
+  "complete": false,
+  "repairAcceptedButInsufficient": true,
+  "failure": "Same sidebar cached_tiles refusal stage4 reason14 after full300/600; retained historical source does not alone resolve it",
+  "cleanShutdown": {
+    "appGone": true,
+    "copiedProfileRestored": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "ELFUnchanged": true,
+    "launcherExitCode": 0
+  },
+  "nextDiagnostic": {
+    "added": true,
+    "rendererSyntaxPassed": true,
+    "runtimeBuilt": false,
+    "categories": [
+      "context",
+      "address",
+      "texture profile",
+      "native upload witness",
+      "exact pixel mismatch",
+      "GL texture lifetime",
+      "filters",
+      "GL error",
+      "state restore"
+    ]
+  },
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false
+}

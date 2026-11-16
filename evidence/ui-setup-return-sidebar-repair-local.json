@@ -1,0 +1,41 @@
+{
+  "scope": "Local Setup return diagnosis and repair; no iPad acceptance",
+  "diagnosticBuild": 56,
+  "modesReviewed": [
+    "One Player",
+    "Split Screen",
+    "Modem",
+    "Serial Link",
+    "Network"
+  ],
+  "ratios": [
+    [
+      1280,
+      720
+    ],
+    [
+      2360,
+      1640
+    ]
+  ],
+  "modeChangeNativeFallbacks": [],
+  "failure": "Fade12 stage4 reason14: cached sidebar tile validation refused after base300/600 succeeded",
+  "cleanShutdown": {
+    "appGone": true,
+    "copiedProfileRestored": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "ELFUnchanged": true,
+    "launcherExitCode": 0
+  },
+  "repair": {
+    "applied": true,
+    "scope": "Absent-MT Setup fade only",
+    "source": "Retained independent initial child-sidebar proof, not current CPU redraw copy",
+    "guards": "Exact child lifetime/domain/catalog/source; unchanged GPU pixel equality and native300/600 requirements",
+    "headerContextSyntaxPassed": true,
+    "linkedRuntimeVerified": false,
+    "physicalIpadVerified": false
+  },
+  "wholeUiComplete": false
+}

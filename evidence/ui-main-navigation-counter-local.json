@@ -1,0 +1,20 @@
+{
+  "outcome": "not-exercised",
+  "upActions": 20,
+  "phase2Receipts": 0,
+  "actualReuseEvent5": 0,
+  "counterDomainFixExercised": false,
+  "nativePresentationFrames": [],
+  "ELFUnchanged": true,
+  "allSelectedResourcesUnchanged": true,
+  "resourceCount": 13,
+  "untouchedCopiedAssetsUnchanged": true,
+  "copiedProfileRestored": true,
+  "appGone": true,
+  "launcherExitCode": 0,
+  "integration": 55,
+  "binarySHA256": "6e6eed38b83ff6dc33de051e718906708d9def6e1830773c1ee98403d19f7e65",
+  "scope": "Local20MainnavigationactionsafterverifiedLocationentryandReverse19return",
+  "physicalIpadVerified": false,
+  "rareAbortBranchVerified": false
+}

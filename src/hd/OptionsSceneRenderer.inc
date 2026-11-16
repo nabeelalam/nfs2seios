@@ -21,6 +21,7 @@ static struct {
  uintptr_t context,thread;uint64_t generation,serial,content;
  unsigned map,words,nativeArmed,traceLines,activeOwnerKind;
  GLuint color,fbo;unsigned width,height;
+ NfsBackgroundSceneImageKey staticKey;uintptr_t staticContext,staticThread;unsigned staticReady;uint64_t staticHits,staticMisses,staticInvalidations;
 } nfs_options_renderer;
 /* Legacy internal names preserve the established Options fixture/protocol. Only
    mechanical GPU resources are shared; source producers and public tails stay
@@ -29,9 +30,10 @@ enum {NFS_CACHED_MENU_NONE=0,NFS_CACHED_MENU_OPTIONS=3,NFS_CACHED_MENU_SETUP=4};
 static int nfs_options_context(uint64_t generation,uintptr_t context){return generation&&nfs_options_renderer.generation==generation&&nfs_options_renderer.context==context&&nfs_options_renderer.thread==NFS_OPTIONS_SCENE_THREAD_TOKEN()&&g_glCtx&&(uintptr_t)g_glCtx==context&&SDL_GL_GetCurrentContext()==g_glCtx&&nfs_logo_provenance.alive&&!nfs_logo_provenance.disabled&&nfs_logo_provenance.context==generation;}
 static int nfs_options_current(void){return nfs_options_context(nfs_options_renderer.generation,nfs_options_renderer.context);}
 #define NFS_OPTIONS_RENDER_GL(call) do{if(!nfs_options_current())goto lost;call;if(!nfs_options_current())goto lost;}while(0)
-static void nfs_options_trace(const char*event,const char*reason){if(!nfs_logo_trace_enabled()||nfs_options_renderer.traceLines>=2048)return;++nfs_options_renderer.traceLines;fprintf(stderr,"%s NATIVE %s reason=%s serial=%llu content=%llu map=%u words=%u context=%llu size=%ux%u fbo=%u selections=%u triangles=%u\n",nfs_options_renderer.activeOwnerKind==NFS_CACHED_MENU_SETUP?"SETUP":"OPTIONS",event,reason,(unsigned long long)nfs_options_renderer.serial,(unsigned long long)nfs_options_renderer.content,nfs_options_renderer.map,nfs_options_renderer.words,(unsigned long long)nfs_options_renderer.generation,nfs_options_renderer.target.width,nfs_options_renderer.target.height,nfs_options_renderer.target.framebuffer,nfs_logo_provenance.selects,nfs_logo_provenance.triangles);}
-static void nfs_options_cancel(const char*reason){nfs_menu_wide_cancel_at(260);if(nfs_options_renderer.serial)nfs_options_trace("canceled",reason);if(nfs_options_renderer.nativeArmed)nfs_logo_p_cancel(&nfs_logo_provenance);nfs_options_renderer.nativeArmed=0;nfs_options_renderer.serial=0;nfs_options_renderer.activeOwnerKind=NFS_CACHED_MENU_NONE;memset(&nfs_options_renderer.target,0,sizeof nfs_options_renderer.target);}
-static void nfs_options_forget_gpu(void){nfs_compact_caption_forget(&nfs_options_renderer.captionWord);nfs_soft_gpu_context_retired(&nfs_options_renderer.caption,nfs_options_renderer.caption.generation,0);nfs_options_renderer.color=nfs_options_renderer.fbo=0;nfs_options_renderer.width=nfs_options_renderer.height=0;}
+static void nfs_options_trace(const char*event,const char*reason){if(!nfs_logo_trace_enabled()||nfs_options_renderer.traceLines>=2048)return;++nfs_options_renderer.traceLines;fprintf(stderr,"%s NATIVE %s reason=%s serial=%llu content=%llu map=%u words=%u context=%llu size=%ux%u fbo=%u selections=%u triangles=%u cacheReady=%u cacheGeneration=%llu cacheHits=%llu cacheMisses=%llu cacheInvalidations=%llu\n",nfs_options_renderer.activeOwnerKind==NFS_CACHED_MENU_SETUP?"SETUP":"OPTIONS",event,reason,(unsigned long long)nfs_options_renderer.serial,(unsigned long long)nfs_options_renderer.content,nfs_options_renderer.map,nfs_options_renderer.words,(unsigned long long)nfs_options_renderer.generation,nfs_options_renderer.target.width,nfs_options_renderer.target.height,nfs_options_renderer.target.framebuffer,nfs_logo_provenance.selects,nfs_logo_provenance.triangles,nfs_options_renderer.staticReady,(unsigned long long)nfs_options_renderer.staticKey.generation,(unsigned long long)nfs_options_renderer.staticHits,(unsigned long long)nfs_options_renderer.staticMisses,(unsigned long long)nfs_options_renderer.staticInvalidations);}
+static void nfs_options_static_invalidate(void){if(nfs_options_renderer.staticReady&&nfs_options_renderer.staticInvalidations!=UINT64_MAX)++nfs_options_renderer.staticInvalidations;nfs_options_renderer.staticReady=0;}
+static void nfs_options_cancel(const char*reason){nfs_options_static_invalidate();nfs_menu_wide_cancel_at(260);if(nfs_options_renderer.serial)nfs_options_trace("canceled",reason);if(nfs_options_renderer.nativeArmed)nfs_logo_p_cancel(&nfs_logo_provenance);nfs_options_renderer.nativeArmed=0;nfs_options_renderer.serial=0;nfs_options_renderer.activeOwnerKind=NFS_CACHED_MENU_NONE;memset(&nfs_options_renderer.target,0,sizeof nfs_options_renderer.target);}
+static void nfs_options_forget_gpu(void){nfs_options_static_invalidate();nfs_compact_caption_forget(&nfs_options_renderer.captionWord);nfs_soft_gpu_context_retired(&nfs_options_renderer.caption,nfs_options_renderer.caption.generation,0);nfs_options_renderer.color=nfs_options_renderer.fbo=0;nfs_options_renderer.width=nfs_options_renderer.height=0;}
 static void nfs_options_abandon(void){nfs_options_forget_gpu();nfs_options_cancel("owner-lost");}
 static int nfs_options_context_owner(void*user,const NfsBackgroundSceneStage*t){(void)user;return t&&nfs_options_context(t->generation,t->contextIdentity);}
 static NfsBackgroundSceneStage nfs_options_context_stage(void){NfsBackgroundSceneStage t;memset(&t,0,sizeof t);t.generation=nfs_options_renderer.generation;t.contextIdentity=nfs_options_renderer.context;t.framebuffer=g_framebuffer;t.ownerCurrent=nfs_options_context_owner;return t;}
@@ -100,7 +102,7 @@ static int nfs_options_color_target(unsigned w,unsigned h){
  done:if(!ok){if(fbo){NFS_OPTIONS_RENDER_GL(glDeleteFramebuffers(1,&fbo));}if(texture){NFS_OPTIONS_RENDER_GL(glDeleteTextures(1,&texture));}}
  if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;if(!ok)return 0;
  if(nfs_options_renderer.fbo){NFS_OPTIONS_RENDER_GL(glDeleteFramebuffers(1,&nfs_options_renderer.fbo));}if(nfs_options_renderer.color){NFS_OPTIONS_RENDER_GL(glDeleteTextures(1,&nfs_options_renderer.color));}
- nfs_options_renderer.fbo=fbo;nfs_options_renderer.color=texture;nfs_options_renderer.width=w;nfs_options_renderer.height=h;return 1;
+ nfs_options_static_invalidate();nfs_options_renderer.fbo=fbo;nfs_options_renderer.color=texture;nfs_options_renderer.width=w;nfs_options_renderer.height=h;return 1;
  lost:nfs_options_abandon();return 0;
 }
 static int nfs_options_stage_owner(void*user,const NfsBackgroundSceneStage*t){
@@ -144,7 +146,16 @@ static int nfs_cached_menu_begin_refused(unsigned ownerKind,const char*reason,ui
  if(ownerKind!=NFS_CACHED_MENU_SETUP)return nfs_options_begin_refused(reason,serial);
  if(nfs_logo_trace_enabled()&&nfs_options_renderer.traceLines<2048){++nfs_options_renderer.traceLines;fprintf(stderr,"SETUP NATIVE begin-refused reason=%s serial=%llu context=%llu\n",reason,(unsigned long long)serial,(unsigned long long)nfs_options_renderer.generation);}return 0;
 }
-typedef struct NfsCachedWideCaption {const NfsSoftwareTextLayerView*text;const NfsCompactCaptionWordView*word;} NfsCachedWideCaption;
+/* Key only immutable authored staging pixels. Serial, live widget/cursor and
+   original native witnesses remain per-entry and are never cache authority. */
+static int nfs_options_static_key(const NfsBackgroundSceneFrameView*v,const NfsNativeLogoTargetProof*t,const NfsSoftwareTextLayerView*caption,const NfsCompactCaptionWordView*word,NfsBackgroundSceneImageKey*k){
+ nfs_bg_key(&nfs_bg_compositor,0,v,t,k);k->color=nfs_options_renderer.color;k->fbo=nfs_options_renderer.fbo;
+ k->captionProgram=nfs_options_renderer.caption.program;k->captionTexture=nfs_options_renderer.caption.texture;k->captionIdentity=caption->font.identity;memcpy(k->captionFontSha256,caption->font.sha256,32);k->captionVertices=caption->vertexCount;
+ if(!caption->vertices||!caption->vertexCount||caption->vertexCount>SIZE_MAX/sizeof(NfsSoftwareTextVertex)||!nfs_texture_sha256((const unsigned char*)caption->vertices,caption->vertexCount*sizeof(NfsSoftwareTextVertex),k->captionVerticesSha256))return 0;
+ if(!nfs_compact_caption_empty(word)){k->captionWordProgram=nfs_options_renderer.captionWord.program;k->captionWordTexture=nfs_options_renderer.captionWord.texture;k->captionWordSchema=word->schema;k->captionWordId=word->word;k->captionWordWidth=word->width;k->captionWordHeight=word->height;k->captionWordBytes=word->bytes;memcpy(k->captionWordSha256,word->sha256,32);k->captionWordLeft=word->left;k->captionWordTop=word->top;k->captionWordRight=word->right;k->captionWordBottom=word->bottom;}
+ return 1;
+}
+typedef struct NfsCachedWideCaption {const NfsSoftwareTextLayerView*text;const NfsCompactCaptionWordView*word;const NfsCompactCaptionValidation*validation;} NfsCachedWideCaption;
 /* Called synchronously while the typed queue strongly retains both views.
    Only the projection/viewport changes; source positions/colors/UV remain. */
 static int nfs_cached_wide_caption(const float*matrix,void*user){
@@ -157,7 +168,7 @@ static int nfs_cached_wide_caption(const float*matrix,void*user){
  NFS_OPTIONS_RENDER_GL(glEnable(GL_SCISSOR_TEST));NFS_OPTIONS_RENDER_GL(glScissor(0,0,(GLsizei)ceilf(343.f*vp[3]/480.f),vp[3]));
  if(!nfs_compact_caption_empty(c->word)){
   const NfsCompactCaptionWordView*v=c->word;NfsCompactCaptionGpu*g=&nfs_options_renderer.captionWord;
-  if(!nfs_compact_caption_valid(v,g->word)||g->generation!=nfs_options_renderer.generation||!g->program||!g->texture)return 0;
+  if(!nfs_compact_caption_validation_current(c->validation,v,g->word)||g->generation!=nfs_options_renderer.generation||!g->program||!g->texture)return 0;
   {const GLfloat made[]={v->left,v->top,0,0,v->right,v->top,1,0,v->left,v->bottom,0,1,v->left,v->bottom,0,1,v->right,v->top,1,0,v->right,v->bottom,1,1};memcpy(q,made,sizeof q);}
   NFS_OPTIONS_RENDER_GL(glUseProgram(g->program));NFS_OPTIONS_RENDER_GL(glUniformMatrix4fv(g->matrix,1,GL_FALSE,matrix));NFS_OPTIONS_RENDER_GL(glUniform1i(g->sampler,0));NFS_OPTIONS_RENDER_GL(glBindTexture(GL_TEXTURE_2D,g->texture));NFS_OPTIONS_RENDER_GL(glEnableVertexAttribArray(0));
   for(unsigned i=1;i<4;++i){NFS_OPTIONS_RENDER_GL(glDisableVertexAttribArray(i));}
@@ -171,9 +182,9 @@ static int nfs_cached_wide_caption(const float*matrix,void*user){
  return glGetError()==GL_NO_ERROR&&nfs_options_current();
  lost:nfs_options_abandon();return 0;
 }
-static int nfs_cached_menu_begin(const NfsBackgroundSceneFrameView*scene,const NfsSoftwareTextLayerView*caption,const NfsCompactCaptionWordView*word,unsigned ownerKind,const NfsMenuCachedSnapshot*responsive){
- NfsNativeLogoTargetProof target;NfsOptionsSceneLayers layers;NfsOptionsSceneGpu gpu;NfsBackgroundSceneStage guard,stage;NfsBgSaved saved;uint32_t ids[300];GLenum filter=GL_LINEAR;int ok=0;
- if((ownerKind!=NFS_CACHED_MENU_OPTIONS&&ownerKind!=NFS_CACHED_MENU_SETUP)||!scene||!caption||!nfs_compact_caption_valid(word,ownerKind==NFS_CACHED_MENU_SETUP?1u:3u)||scene->tailKind!=ownerKind||!nfs_bg_feature()||!nfs_options_current()||!nfs_bg_view_common(scene)||caption->logicalWidth!=343||caption->logicalHeight!=480)return nfs_cached_menu_begin_refused(ownerKind,"view-owner",scene?scene->serial:0);
+static int nfs_cached_menu_begin_in_scope(const NfsBackgroundSceneFrameView*scene,const NfsSoftwareTextLayerView*caption,const NfsCompactCaptionWordView*word,unsigned ownerKind,const NfsMenuCachedSnapshot*responsive,const NfsCompactCaptionValidation*validation){
+ NfsNativeLogoTargetProof target;NfsOptionsSceneLayers layers;NfsOptionsSceneGpu gpu;NfsBackgroundSceneStage guard,stage;NfsBgSaved saved;NfsBackgroundSceneImageKey staticKey;uint32_t ids[300];GLenum filter=GL_LINEAR;int ok=0,staticHit=0;
+ if((ownerKind!=NFS_CACHED_MENU_OPTIONS&&ownerKind!=NFS_CACHED_MENU_SETUP)||!scene||!caption||!nfs_compact_caption_validation_current(validation,word,ownerKind==NFS_CACHED_MENU_SETUP?1u:3u)||scene->tailKind!=ownerKind||!nfs_bg_feature()||!nfs_options_current()||!nfs_bg_view_common(scene)||caption->logicalWidth!=343||caption->logicalHeight!=480)return nfs_cached_menu_begin_refused(ownerKind,"view-owner",scene?scene->serial:0);
  if(nfs_options_renderer.serial||nfs_options_renderer.activeOwnerKind!=NFS_CACHED_MENU_NONE){nfs_options_cancel("nested-begin");return 0;}
  /* Other cached-scene pending state cannot lend authority to this admission. */
  nfs_logo_p_cancel(&nfs_logo_provenance);nfs_bg_scene_cancel(&nfs_bg_compositor);drawTriangles();
@@ -184,24 +195,38 @@ static int nfs_cached_menu_begin(const NfsBackgroundSceneFrameView*scene,const N
  {NfsBackgroundResourceOwner owner={nfs_options_renderer.generation,nfs_options_renderer.context,nfs_options_resource_owner,NULL};if(!nfs_bg_scene_prepare_owned(&nfs_bg_compositor,&owner)){if(!nfs_options_current())goto lost;nfs_options_cancel("background-prepare");return 0;}}
  if(!nfs_options_font_prepare(&nfs_options_renderer.caption,&caption->font)||!nfs_options_color_target(target.width,target.height)){if(!nfs_options_current())goto lost;nfs_options_cancel("caption-stage-prepare");return 0;}
  guard=nfs_options_context_stage();
- if(!nfs_compact_caption_empty(word)&&!nfs_compact_caption_prepare(&nfs_options_renderer.captionWord,word,ownerKind==NFS_CACHED_MENU_SETUP?1u:3u,&guard)){if(!nfs_options_current())goto lost;nfs_options_cancel("word-prepare");return 0;}
+ if(!nfs_compact_caption_empty(word)&&!nfs_compact_caption_prepare_in_scope(&nfs_options_renderer.captionWord,word,ownerKind==NFS_CACHED_MENU_SETUP?1u:3u,&guard,validation)){if(!nfs_options_current())goto lost;nfs_options_cancel("word-prepare");return 0;}
  if(nfs_compact_caption_alias(nfs_options_renderer.captionWord.texture,nfs_options_renderer.caption.texture,0,nfs_options_renderer.color,ids)){nfs_options_cancel("word-alias");return 0;}
  if(!nfs_options_read_target(&target,scene->serial)){nfs_options_cancel("prepare-target");return 0;}target.sampling.magFilter=filter;if(memcmp(&target,&nfs_options_renderer.target,sizeof target)){nfs_options_cancel("prepare-target-changed");return 0;}
  memset(&layers,0,sizeof layers);layers.background.mapRole=scene->mapRole;layers.background.wordCount=scene->wordCount;memcpy(layers.background.panelClip,scene->panelClip,sizeof layers.background.panelClip);memcpy(layers.background.words,scene->words,sizeof layers.background.words);memcpy(layers.background.logos,scene->logos,sizeof layers.background.logos);layers.caption=*caption;
+ if(!nfs_options_static_key(scene,&target,caption,word,&staticKey)){nfs_options_cancel("static-key");return 0;}
+ staticHit=nfs_options_renderer.staticReady&&nfs_options_renderer.staticContext==nfs_options_renderer.context&&nfs_options_renderer.staticThread==nfs_options_renderer.thread&&!memcmp(&staticKey,&nfs_options_renderer.staticKey,sizeof staticKey);
+ if(!staticHit)nfs_options_static_invalidate();
  guard=nfs_options_context_stage();if(!nfs_graphics_scene_save(&saved,&guard))goto lost;
  NFS_OPTIONS_RENDER_GL(glBindFramebuffer(GL_FRAMEBUFFER,nfs_options_renderer.fbo));NFS_OPTIONS_RENDER_GL(glViewport(target.sampling.viewport[0],target.sampling.viewport[1],target.sampling.viewport[2],target.sampling.viewport[3]));
  memset(&stage,0,sizeof stage);stage.generation=nfs_options_renderer.generation;stage.contextIdentity=nfs_options_renderer.context;stage.framebuffer=nfs_options_renderer.fbo;stage.width=target.width;stage.height=target.height;stage.sampling=target.sampling;stage.ownerCurrent=nfs_options_stage_owner;gpu.background=&nfs_bg_compositor;gpu.caption=&nfs_options_renderer.caption;
- if(nfs_compact_caption_empty(word))ok=nfs_options_scene_draw_layers_into_staging(&gpu,&stage,&layers);
- else ok=nfs_bg_stage_layers(&layers.background)&&nfs_graphics_scene_font(gpu.caption,&layers.caption,343,stage.generation)&&nfs_options_scene_ready(&gpu,&stage)&&nfs_options_scene_target(&gpu,&stage)&&nfs_options_scene_draw_background(&gpu,&stage,&layers)&&nfs_compact_caption_draw(&nfs_options_renderer.captionWord,word,&stage);if(!nfs_options_current())goto lost;if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;if(!ok){nfs_options_cancel("ordered-stage");return 0;}
+ if(staticHit)ok=nfs_options_scene_ready(&gpu,&stage)&&nfs_options_scene_target(&gpu,&stage);
+ else if(nfs_compact_caption_empty(word))ok=nfs_options_scene_draw_layers_into_staging(&gpu,&stage,&layers);
+ else ok=nfs_bg_stage_layers(&layers.background)&&nfs_graphics_scene_font(gpu.caption,&layers.caption,343,stage.generation)&&nfs_options_scene_ready(&gpu,&stage)&&nfs_options_scene_target(&gpu,&stage)&&nfs_options_scene_draw_background(&gpu,&stage,&layers)&&nfs_compact_caption_draw_in_scope(&nfs_options_renderer.captionWord,word,&stage,validation);if(!nfs_options_current())goto lost;if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;if(!ok){nfs_options_cancel("ordered-stage");return 0;}
+ if(staticHit){if(nfs_options_renderer.staticHits!=UINT64_MAX)++nfs_options_renderer.staticHits;}else if(nfs_options_renderer.staticMisses!=UINT64_MAX)++nfs_options_renderer.staticMisses;
+ nfs_options_renderer.staticKey=staticKey;nfs_options_renderer.staticContext=nfs_options_renderer.context;nfs_options_renderer.staticThread=nfs_options_renderer.thread;nfs_options_renderer.staticReady=1;
  if(!nfs_options_read_target(&target,scene->serial)){nfs_options_cancel("staged-target");return 0;}target.sampling.magFilter=filter;if(memcmp(&target,&nfs_options_renderer.target,sizeof target)){nfs_options_cancel("staged-target-changed");return 0;}
  if(responsive&&responsive->schema){
-  NfsCachedWideCaption wideCaption={caption,word};nfs_menu_wide_prepare_cached(scene,&target,responsive,nfs_cached_wide_caption,&wideCaption);
+  NfsCachedWideCaption wideCaption={caption,word,validation};nfs_menu_wide_prepare_cached(scene,&target,responsive,nfs_cached_wide_caption,&wideCaption);
  }
  /* Actual observed native clear/context/key/serial proof arms only after all
     optional staging has restored the original state. No clear is invented. */
  if(!nfs_logo_p_begin(&nfs_logo_provenance,scene->serial,target.framebuffer,scene->rendererAddress,ids)){nfs_options_cancel("context-clear-key-serial");return 0;}
  nfs_options_renderer.nativeArmed=1;nfs_options_trace("begin-accepted","staging-only-cached-original-pass");return 1;
  lost:nfs_options_abandon();return 0;
+}
+/* One full content authentication per retained synchronous entry. The loan
+   is never stored in renderer state and is revoked on every inner return. */
+static int nfs_cached_menu_begin(const NfsBackgroundSceneFrameView*scene,const NfsSoftwareTextLayerView*caption,const NfsCompactCaptionWordView*word,unsigned ownerKind,const NfsMenuCachedSnapshot*responsive){
+ NfsCompactCaptionValidation validation;int result;
+ if((ownerKind!=NFS_CACHED_MENU_OPTIONS&&ownerKind!=NFS_CACHED_MENU_SETUP)||!scene||!caption||!nfs_compact_caption_validation_begin(&validation,word,ownerKind==NFS_CACHED_MENU_SETUP?1u:3u))return nfs_cached_menu_begin_refused(ownerKind,"view-owner",scene?scene->serial:0);
+ result=nfs_cached_menu_begin_in_scope(scene,caption,word,ownerKind,responsive,&validation);
+ nfs_compact_caption_validation_end(&validation);return result;
 }
 static int nfs_cached_menu_finish(uint64_t serial,unsigned expectedOwnerKind){
  NfsNativeLogoTargetProof target;NfsBgSaved saved;NfsBackgroundSceneStage guard;int ok;

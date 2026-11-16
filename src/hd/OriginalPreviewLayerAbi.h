@@ -17,5 +17,6 @@ typedef struct NfsOriginalPreviewLayerView {
  /* Semantic original-write coverage, strictly0or255; never before!=after. */
  const unsigned char*coverage;size_t coverageCount;unsigned char coverageSha256[32];
  const unsigned char*authoredRGBA;size_t authoredBytes;uint32_t authoredWidth,authoredHeight;unsigned char authoredSha256[32];
+ uint64_t locationArtGeneration; /*0 for other families; exact current Location provider generation*/
 } NfsOriginalPreviewLayerView;
 #endif

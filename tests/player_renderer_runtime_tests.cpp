@@ -107,6 +107,10 @@ static NfsBackgroundSceneCompositor nfs_bg_compositor;
 #include "hd/OptionsSceneRenderer.inc"
 #include "hd/PlayerCaptionRenderer.inc"
 #include "hd/PlayerSceneRenderer.inc"
+// This native adapter fixture does not instantiate a window/responsive renderer.
+// Optional wide staging is tested independently; native proof eligibility stays real.
+static void nfs_menu_wide_prepare_player(const NfsPlayerSceneFrameView*,const NfsNativeLogoTargetProof*){}
+static void nfs_menu_wide_native_done(uint64_t,int){}
 #undef glActiveTexture
 #undef glAttachShader
 #undef glBindAttribLocation

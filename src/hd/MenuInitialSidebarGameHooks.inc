@@ -47,41 +47,44 @@ inline bool current(const Proof&p)noexcept{
  return s&&s->on&&s->mainDepth==1&&s->game==p.game&&s->thread==p.thread&&s->ownerEpoch==p.epoch&&!s->baseSeen&&s->archive==p.archive;
 }
 inline bool initialLayers(nfs_background_scene_live::State&s,const nfs_logo_publisher::Collector&c,NfsBackgroundSceneLayers&out)noexcept{
+ auto decline=[&](const char*reason){nfs_background_scene_live::initialTrace("temp-layers",reason,&s,&c);return false;};
  try{
   const auto&scene=s.scene;const auto&g=c.group;const auto&copy=c.copy;
   // Admission below replays the exact343 sidebar and group/copy independently.
   // Collector::prepared admits a different640 native composition (including
   // its opaque-underlay/upload lifetime); it is not authority for this copy.
-  if(s.invalid||s.baseSeen||s.baseVerified||s.invocationDepth||!s.iteration||!s.catalogue||!bg::validCatalog(*s.catalogue)||!scene.complete||scene.error||scene.form!=bg::MainForm||scene.draws.empty()||scene.draws.size()>5||c.depth||c.invocationDepth||!g.complete||!copy.complete||c.invalid||c.gameOwner!=s.game||c.thread!=s.thread||g.thread!=s.thread||g.serial!=s.groupSerial||copy.serial!=s.copySerial||copy.linkedGroup!=g.serial)return false;
+  if(s.invalid||s.baseSeen||s.baseVerified||s.invocationDepth||!s.iteration||!s.catalogue||!bg::validCatalog(*s.catalogue)||!scene.complete||scene.error||scene.form!=bg::MainForm||scene.draws.empty()||scene.draws.size()>5||c.depth||c.invocationDepth||!g.complete||!copy.complete||c.invalid||c.gameOwner!=s.game||c.thread!=s.thread||g.thread!=s.thread||g.serial!=s.groupSerial||copy.serial!=s.copySerial||copy.linkedGroup!=g.serial)return decline("state-or-collector");
   const bg::Event events[]={scene.event,s.groupEvent,s.tailEvent,s.copyEvent};
-  for(unsigned k=0;k<4;++k)if(events[k].ownerEpoch!=s.ownerEpoch||events[k].iteration!=s.iteration||!events[k].sequence||(k&&events[k].sequence<=events[k-1].sequence))return false;
-  if(!bg::plane(scene.preSide,343)||!nfs_logo_capture::same(scene.preSide.target,scene.postSide.target)||!nfs_logo_capture::same(scene.preSide.target,scene.postWords.target))return false;
+  for(unsigned k=0;k<4;++k)if(events[k].ownerEpoch!=s.ownerEpoch||events[k].iteration!=s.iteration||!events[k].sequence||(k&&events[k].sequence<=events[k-1].sequence))return decline("event-order");
+  if(!bg::plane(scene.preSide,343)||!nfs_logo_capture::same(scene.preSide.target,scene.postSide.target)||!nfs_logo_capture::same(scene.preSide.target,scene.postWords.target))return decline("target-identity");
   auto failure=bg::side(scene.draws[0],scene.preSide.target,s.workspace,*s.catalogue);
-  if(failure!=bg::Failure::None||!bg::plane(scene.postSide,343)||!std::equal(s.workspace.side.begin(),s.workspace.side.end(),scene.postSide.pixels.begin()))return false;
+  if(failure!=bg::Failure::None||!bg::plane(scene.postSide,343)||!std::equal(s.workspace.side.begin(),s.workspace.side.end(),scene.postSide.pixels.begin()))return decline("side-replay");
   out={};out.panelClip[2]=343;out.panelClip[3]=480;out.wordCount=unsigned(scene.draws.size()-1);
-  for(unsigned k=1;k<scene.draws.size();++k)if(bg::word(scene.draws[k],scene.preSide.target,s.workspace,out.words[k-1],*s.catalogue)!=bg::Failure::None)return false;
-  if(!bg::plane(scene.postWords,343)||!std::equal(s.workspace.side.begin(),s.workspace.side.end(),scene.postWords.pixels.begin())||!bg::samePlane(scene.postWords,g.pre,343))return false;
+  for(unsigned k=1;k<scene.draws.size();++k)if(bg::word(scene.draws[k],scene.preSide.target,s.workspace,out.words[k-1],*s.catalogue)!=bg::Failure::None)return decline("word-replay");
+  if(!bg::plane(scene.postWords,343)||!std::equal(s.workspace.side.begin(),s.workspace.side.end(),scene.postWords.pixels.begin())||!bg::samePlane(scene.postWords,g.pre,343))return decline("post-word-plane");
   auto logos=std::unique_ptr<nfs_small_logo_live::Prepared>(new nfs_small_logo_live::Prepared);
-  if(nfs_small_logo_live::verifyAndPrepare(g,copy,s.workspace.logo,*logos,s.catalogue->logos)!=nfs_small_logo_live::Failure::None||copy.sourceOwner.header[3])return false;
-  if(scene.tailKind!=NFS_BACKGROUND_TAIL_MAIN_SKIP||scene.tailPredicate!=bg::MainForm||scene.tailSymbol!=bg::MainForm||!bg::samePlane(scene.tailPre,g.post,343)||!bg::samePlane(scene.tailPre,scene.tailPost,343))return false;
-  for(unsigned k=0;k<bg::Side;++k)if(bg::le16(copy.sourceBefore.data()+16+2*k)!=scene.tailPost.pixels[k]||bg::le16(copy.sourceAfter.data()+16+2*k)!=scene.tailPost.pixels[k])return false;
+  if(nfs_small_logo_live::verifyAndPrepare(g,copy,s.workspace.logo,*logos,s.catalogue->logos)!=nfs_small_logo_live::Failure::None||copy.sourceOwner.header[3])return decline("logo-copy-replay");
+  if(scene.tailKind!=NFS_BACKGROUND_TAIL_MAIN_SKIP||scene.tailPredicate!=bg::MainForm||scene.tailSymbol!=bg::MainForm||!bg::samePlane(scene.tailPre,g.post,343)||!bg::samePlane(scene.tailPre,scene.tailPost,343))return decline("tail-replay");
+  for(unsigned k=0;k<bg::Side;++k)if(bg::le16(copy.sourceBefore.data()+16+2*k)!=scene.tailPost.pixels[k]||bg::le16(copy.sourceAfter.data()+16+2*k)!=scene.tailPost.pixels[k])return decline("copy-source-pixels");
   std::copy(logos->layers.begin(),logos->layers.end(),out.logos);
   return true;
- }catch(...){return false;}
+ }catch(...){return decline("exception");}
 }
 struct CopyScope{
  Game&g;State*store=nullptr;std::shared_ptr<Proof>proof;bg::Target source{};
  std::vector<uint8_t>raw;uint32_t mainStack=0;size_t copied=0;unsigned rows=0;bool failed=false,active=false;int unwind=0;
  explicit CopyScope(Game&game)noexcept:g(game){ErrnoScope preserve;
-  auto*s=nfs_background_scene_live::current(g);if(!s||s->invalid||s->baseSeen||s->baseVerified||s->sequence>UINT64_MAX-2||uint32_t(g.edx)!=0x400||g.ebx||g.ecx)return;
-  store=&state();if(store->copying){store->copying->failed=true;return;}store->clear();
-  auto*c=nfs_logo_publisher::store();if(!c)return;
+  auto*s=nfs_background_scene_live::current(g);
+  const char*step="owner-or-call";struct TraceExit{const char*&step;bool&active;nfs_background_scene_live::State*s;~TraceExit(){nfs_background_scene_live::initialTrace("temp-copy",active?"armed":step,s,nfs_logo_publisher::store());}}trace{step,active,nfs_background_scene_live::lexicalCurrent(g)};
+  if(!s||s->invalid||s->baseSeen||s->baseVerified||s->sequence>UINT64_MAX-2||uint32_t(g.edx)!=0x400||g.ebx||g.ecx)return;
+  step="nested-copy";store=&state();if(store->copying){store->copying->failed=true;return;}store->clear();
+  step="collector-missing";auto*c=nfs_logo_publisher::store();if(!c)return;
   try{
-   {nfs::GuestCopyTransaction tx;if(!tx.load<uint16_t>(uint32_t(guest_address(word_4D232C))))return;}
-   auto p=std::make_shared<Proof>();if(!initialLayers(*s,*c,p->layers))return;
+   step="original-initial-flag";{nfs::GuestCopyTransaction tx;if(!tx.load<uint16_t>(uint32_t(guest_address(word_4D232C))))return;}
+   step="layers";auto p=std::make_shared<Proof>();if(!initialLayers(*s,*c,p->layers))return;
    p->game=reinterpret_cast<uintptr_t>(&g);p->thread=nfs_logo_publisher::threadToken();p->archive=s->archive;p->epoch=s->ownerEpoch;p->iteration=s->iteration;
-   p->gameLife=nfs_main_sidebar_origin::acquireGameLife(p->game);p->life=std::make_shared<CopyLife>();if(!p->gameLife)return;
-   const auto&tail=s->scene.tailPost;
+   step="game-life";p->gameLife=nfs_main_sidebar_origin::acquireGameLife(p->game);p->life=std::make_shared<CopyLife>();if(!p->gameLife)return;
+   step="source-archive-target-stack";const auto&tail=s->scene.tailPost;
    {nfs::GuestCopyTransaction tx;
     if(uint32_t(g.eax)!=tail.target.w[8]||tx.load<uint32_t>(dword_4D40B8)!=p->archive)return;
     nfs_logo_publisher::target(tx,source,tail.target.owner);
@@ -89,24 +92,25 @@ struct CopyScope{
     const uint32_t temporary=tx.load<uint32_t>(sp+0x118);if(tx.load<uint32_t>(sp+0x114)!=temporary)throw 1;
     readTarget(tx,p->target,temporary,true);
    }
-   if(!bg::fullClip(p->target,343)||!nfs_main_sidebar_origin::sameRetainedTarget(source,tail.target)||source.header[3]||p->target.header[3]||nfs_small_logo_live::overlap(source.w[8],16+bg::Side*2,p->target.w[8],16+bg::Side*2))return;
-   if(!nfs_background_scene_live::readBytes(source.w[8],16+bg::Side*2,raw))return;
-   if(std::memcmp(raw.data(),source.header.data(),16))return;
-   for(unsigned k=0;k<bg::Side;++k){const auto pixel=bg::le16(raw.data()+16+2*k);if(pixel!=tail.pixels[k])return;p->pixels[k]=pixel;}
-   p->before=s->event(s->iteration);if(!p->before.sequence)return;
+   step="target-alias-or-overlap";if(!bg::fullClip(p->target,343)||!nfs_main_sidebar_origin::sameRetainedTarget(source,tail.target)||source.header[3]||p->target.header[3]||nfs_small_logo_live::overlap(source.w[8],16+bg::Side*2,p->target.w[8],16+bg::Side*2))return;
+   step="source-read";if(!nfs_background_scene_live::readBytes(source.w[8],16+bg::Side*2,raw))return;
+   step="source-header";if(std::memcmp(raw.data(),source.header.data(),16))return;
+   step="source-pixels";for(unsigned k=0;k<bg::Side;++k){const auto pixel=bg::le16(raw.data()+16+2*k);if(pixel!=tail.pixels[k])return;p->pixels[k]=pixel;}
+   step="event";p->before=s->event(s->iteration);if(!p->before.sequence)return;
    proof=std::move(p);unwind=nfs_logo_publisher::exceptions();store->copying=this;active=true;
   }catch(...){proof.reset();}
  }
  ~CopyScope()noexcept{ErrnoScope preserve;if(!active||!store)return;store->copying=nullptr;
+  bool sealed=false;const char*step="copy-count-owner-unwind";struct TraceExit{const char*&step;bool&sealed;~TraceExit(){nfs_background_scene_live::initialTrace("temp-finish",sealed?"sealed":step,nullptr);}}trace{step,sealed};
   try{
    auto*s=nfs_background_scene_live::current(g);
    if(failed||uint32_t(g.esp)!=mainStack||nfs_logo_publisher::exceptions()>unwind||!proof||!s||s->invalid||s->baseSeen||s->ownerEpoch!=proof->epoch||s->iteration!=proof->iteration||copied!=bg::Side*2||(rows!=1&&rows!=480))return;
-   bg::Target sourceNow{},targetNow{};{nfs::GuestCopyTransaction tx;nfs_logo_publisher::target(tx,sourceNow,source.owner);readTarget(tx,targetNow,proof->target.owner,true);if(tx.load<uint32_t>(mainStack+0x114)!=proof->target.owner||tx.load<uint32_t>(mainStack+0x118)!=proof->target.owner)return;if(tx.load<uint32_t>(dword_4D40B8)!=proof->archive)return;}
-   if(!nfs_main_sidebar_origin::sameRetainedTarget(sourceNow,source)||!nfs_logo_capture::same(targetNow,proof->target))return;
+   step="copy-current-target-stack";bg::Target sourceNow{},targetNow{};{nfs::GuestCopyTransaction tx;nfs_logo_publisher::target(tx,sourceNow,source.owner);readTarget(tx,targetNow,proof->target.owner,true);if(tx.load<uint32_t>(mainStack+0x114)!=proof->target.owner||tx.load<uint32_t>(mainStack+0x118)!=proof->target.owner)return;if(tx.load<uint32_t>(dword_4D40B8)!=proof->archive)return;}
+   step="copy-target-mutated";if(!nfs_main_sidebar_origin::sameRetainedTarget(sourceNow,source)||!nfs_logo_capture::same(targetNow,proof->target))return;
    std::vector<uint8_t>after,destination;
-   if(!nfs_background_scene_live::readBytes(source.w[8],raw.size(),after)||after!=raw||!nfs_background_scene_live::readBytes(proof->target.w[8],raw.size(),destination)||std::memcmp(destination.data(),proof->target.header.data(),16)||std::memcmp(destination.data()+16,raw.data()+16,bg::Side*2))return;
-   proof->after=s->event(s->iteration);if(!proof->after.sequence||proof->after.sequence<=proof->before.sequence)return;
-   store->proof=std::move(proof);
+   step="copy-after-bytes";if(!nfs_background_scene_live::readBytes(source.w[8],raw.size(),after)||after!=raw||!nfs_background_scene_live::readBytes(proof->target.w[8],raw.size(),destination)||std::memcmp(destination.data(),proof->target.header.data(),16)||std::memcmp(destination.data()+16,raw.data()+16,bg::Side*2))return;
+   step="copy-event-order";proof->after=s->event(s->iteration);if(!proof->after.sequence||proof->after.sequence<=proof->before.sequence)return;
+   store->proof=std::move(proof);sealed=true;
   }catch(...){}
  }
 };

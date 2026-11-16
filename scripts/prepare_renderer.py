@@ -112,11 +112,15 @@ def prepare_renderer(classic_screens=False,classic_assets_dir=None,output_dir=No
     from menu_responsive_renderer_hooks import add_menu_responsive_renderer_hooks
     text = add_menu_responsive_renderer_hooks(text)
     shutil.copyfile(ROOT / 'src/hd/MenuResponsiveRenderer.inc',dest / 'hd/MenuResponsiveRenderer.inc')
+    for name in ('NativeUploadReceiptIndex.h','ChildExitPreludeAbi.h','ChildExitRenderer.h','ChildExitRenderer.inc','ChildExitPreviewRenderer.inc','ChildReturnPreludeAbi.h','ChildReturnRenderer.h','ChildReturnRenderer.inc','ChildReturnNativeGeometry.h'):
+        shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
     shutil.copyfile(ROOT / 'src/MenuResponsiveLayout.h',dest / 'hd/MenuResponsiveLayout.h')
     shutil.copyfile(ROOT / 'src/MenuResponsiveDebug.h',dest / 'hd/MenuResponsiveDebug.h')
     shutil.copyfile(ROOT / 'src/MenuResponsiveCached.h',dest / 'hd/MenuResponsiveCached.h')
     shutil.copyfile(ROOT / 'src/hd/MainOriginalBrandingSource.h',dest / 'hd/MainOriginalBrandingSource.h')
     shutil.copyfile(ROOT / 'src/hd/MenuOriginalBranding.inc',dest / 'hd/MenuOriginalBranding.inc')
+    shutil.copyfile(ROOT / 'src/hd/MenuOriginalSetupMode.inc',dest / 'hd/MenuOriginalSetupMode.inc')
+    shutil.copyfile(ROOT / 'src/hd/SetupOriginalModeIdentity.h',dest / 'hd/SetupOriginalModeIdentity.h')
     from controls_renderer_hooks import add_controls_renderer_hooks, HELPERS as CONTROLS_HELPERS
     text = add_controls_renderer_hooks(text)
     for name in CONTROLS_HELPERS:
@@ -289,12 +293,15 @@ static void nfs_logo_native_triangle(const GrVertex*,const GrVertex*,const GrVer
     restored = re.sub(r'\n/\* NFS_HD_SCENE_BEGIN:([^*]+) \*/\n.*?\n/\* NFS_HD_SCENE_END:\1 \*/\n', '', text, flags=re.S)
     if restored != original: raise ValueError('Scene source reverse audit failed')
     target=dest/'hd';target.mkdir(exist_ok=True)
-    names=['TrackBadgeAnimationAbi.h','TrackBadgeArtProvider.h','TrackBadgeRenderer.inc','PlayerPhotoAnimationAbi.h','PlayerPhotoArtProvider.h','PlayerPhotoRenderer.inc','MenuTransitionAbi.h','MenuTransitionRenderer.inc','BackgroundSceneRenderer.inc','NativeSceneProvenance.h','BackgroundSceneCompositor.h',
+    names=['TrackBadgeAnimationAbi.h','TrackBadgeArtProvider.h','TrackBadgeRenderer.inc','PlayerPhotoAnimationAbi.h','PlayerPhotoArtProvider.h','PlayerPhotoRenderer.inc','MenuTransitionAbi.h','ChildInitialTransitionAbi.h','OpponentInitialTransitionAbi.h','LocationInitialTransitionAbi.h','MenuTransitionRenderer.inc','WideTransitionRenderer.h','WideTransitionRenderer.inc','WideTransitionPreviewRenderer.inc','WideTransitionCaptionRenderer.inc','WideTransitionTailRenderer.inc','WideTransitionBrandingRenderer.inc','MenuTransitionBrandingAbi.h','PlayerInitialTransitionAbi.h','MenuSourceCommandModel.h','WideTransitionGeometry.h','MenuTransitionPreviewRenderer.inc','BackgroundSceneRenderer.inc','NativeSceneProvenance.h','BackgroundSceneCompositor.h',
            'BackgroundSceneCompositor.c.inc','NativeSceneTarget.h','SceneGpuSupport.h',
            'SceneGpuSupport.inc','SmallLogoGpu.h','SmallLogoGpu.c.inc','HdArtProvider.h',
            'BackgroundSceneArt.h','SmallLogoArtAbi.h','BackgroundSceneRuntimeAbi.h','SmallLogoLayerAbi.h',
+           'MainUploadedSourceAbi.h','MainUploadedNativeProof.h','MainUploadedSourceRenderer.inc',
+           'SetupUploadedSourceAbi.h','SetupUploadedSourceRenderer.inc',
+           'LocationPreviewArtwork.h','LocationPhotoArtProvider.h',
            'SoftwareTextVertex.h','SoftwareTextLayerAbi.h','SoftwareTextGpu.h',
-           'SoftwareTextGpu.c.inc','LocationSceneRuntimeAbi.h','OriginalPreviewLayerAbi.h',
+           'SoftwareTextGpu.c.inc','LocationSceneRuntimeAbi.h','OpponentSceneRuntimeAbi.h','OpponentSceneRenderer.inc','OriginalPreviewLayerAbi.h',
            'BackgroundSceneLayersAbi.h','AudioArtProvider.h','AudioLayerAbi.h','AudioBarGpu.h','AudioBarGpu.c.inc',
            'AudioSceneLayerAbi.h','AudioSceneLayers.h','AudioSceneLayers.c.inc',
            'AudioSceneRuntimeAbi.h','AudioNativePass.h','AudioSceneRenderer.inc',

@@ -5,6 +5,7 @@
 #include "SoftwareTextLayerAbi.h"
 #include "PlayerCaptionRuntimeAbi.h"
 #include "OriginalPreviewLayerAbi.h"
+#include "MenuResponsiveCached.h"
 #define NFS_PLAYER_SCENE_RUNTIME_SCHEMA 2u
 enum {NFS_BACKGROUND_TAIL_PLAYER1_CAPTION=5,NFS_BACKGROUND_TAIL_PLAYER2_CAPTION=6};
 /* Immutable synchronous borrows, retained by the producer. Exact form/tail pairs
@@ -15,6 +16,8 @@ typedef struct NfsPlayerSceneFrameView {
  NfsSoftwareTextLayerView caption;
  NfsOriginalPreviewLayerView preview;
  NfsPlayerCaptionWordView captionWord;
+ /* Optional exact measured widgets, paired with this immutable native packet. */
+ NfsMenuCachedSnapshot responsive;
 } NfsPlayerSceneFrameView;
 #ifdef __cplusplus
 extern "C" {

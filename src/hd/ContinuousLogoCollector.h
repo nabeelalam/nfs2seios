@@ -28,13 +28,14 @@ struct Collector {
  Plane sourceScratch{};Target uploadOwner{};
  uintptr_t gameOwner=0;uint64_t thread=0,nextRevision=0,iterationRevision=0,nativeUploadEvent=0;
  uint32_t depth=0,ownerKind=0,ownerArg=0,invocationDepth=0;int32_t pending=-1;
+ // Owned CPU replay seal only. Transparent cleanup cannot authorize native output.
  bool presentationArmed=false;
- bool inMenu=false,groupActive=false,groupFinished=false,copyActive=false,prepared=false,uploadActive=false,bound=false,invalid=false;
+ bool inMenu=false,groupActive=false,groupFinished=false,copyActive=false,copySourceVerified=false,prepared=false,uploadActive=false,bound=false,invalid=false;
  unsigned uploaded=0;
  std::array<uint32_t,300> descriptors{},rendererAddresses{};
  enum class Stop {None,Owner,Nested,Order,Unwind,Verifier,TransparentUnderlay,Overwrite,UploadSource,UploadPayload,Incomplete,Retire,Overflow};
  Stop stop=Stop::None;
- void invalidate(Stop why)noexcept {prepared=uploadActive=bound=presentationArmed=false;packet.prepared.valid=false;stop=why;}
+ void invalidate(Stop why)noexcept {copySourceVerified=prepared=uploadActive=bound=presentationArmed=false;packet.prepared.valid=false;stop=why;}
  bool beginMenu(uintptr_t owner,uint64_t ownerThread)noexcept {
   if(inMenu||!owner||!ownerThread){invalidate(Stop::Owner);invalid=true;return false;}
   invalidate(Stop::Owner);gameOwner=owner;thread=ownerThread;inMenu=true;invalid=false;depth=0;return true;
@@ -72,7 +73,10 @@ struct Collector {
  // Actual first-menu assembly copies a previously completed sidebar after the
  // map draw, outside40BBE0. This scope retains its original group revision.
  bool beginRetainedCopy(uintptr_t game,uint64_t ownerThread)noexcept {
-  if(!inMenu||invalid||gameOwner!=game||thread!=ownerThread||depth||invocationDepth||groupActive||copyActive||!groupFinished||!group.complete||!copy.complete||!prepared||group.serial!=iterationRevision||copy.linkedGroup!=group.serial)return false;
+  if(!inMenu||invalid||gameOwner!=game||thread!=ownerThread||depth||invocationDepth||groupActive||copyActive||!groupFinished||!group.complete||!copy.complete||group.error||copy.error||!copySourceVerified||group.thread!=thread||copy.thread!=thread||group.serial!=iterationRevision||copy.serial!=iterationRevision||copy.linkedGroup!=group.serial){invalidate(Stop::Order);return false;}
+  // Replaying the owned records rejects mutation after the original seal.
+  // This CPU fact never admits native pixels or an upload.
+  if(!catalog||nfs_small_logo_live::verifyAndPrepare(group,copy,workspace,packet.prepared,*catalog)!=nfs_small_logo_live::Failure::None){invalidate(Stop::Verifier);return false;}
   invalidate(Stop::Order);depth=1;std::fill_n(reinterpret_cast<unsigned char*>(&copy),sizeof(copy),0);return armCopy();
  }
  bool armCopy()noexcept {
@@ -82,11 +86,13 @@ struct Collector {
  bool finishCopy()noexcept {
   copyActive=false;
   if(!inMenu||invalid||depth!=1||!groupFinished||!copy.complete||copy.error||!catalog||nfs_small_logo_live::verifyAndPrepare(group,copy,workspace,packet.prepared,*catalog)!=nfs_small_logo_live::Failure::None){invalidate(Stop::Verifier);return false;}
+  copySourceVerified=true;
   // Native1555 must be opaque across the original cleanup support.
-  for(unsigned i=0;i<MaxPixels;++i)if(packet.prepared.groupCleanupAffected[i]&&to1555(packet.prepared.cleanCopyPost565[i])==0){invalidate(Stop::TransparentUnderlay);return false;}
+  for(unsigned i=0;i<MaxPixels;++i)if(packet.prepared.groupCleanupAffected[i]&&to1555(packet.prepared.cleanCopyPost565[i])==0){invalidate(Stop::TransparentUnderlay);copySourceVerified=true;return false;}
   packet.originalCopyPost565=copy.post.pixels;packet.contentRevision=iterationRevision;prepared=true;stop=Stop::None;return true;
  }
  // Called for EVERY slot1 overwrite, before trying to match or reading source.
+ // GPU slot contents do not revoke the separately owned CPU replay records.
  void slot1Overwrite()noexcept {bound=false;uploadActive=false;uploaded=0;stop=Stop::Overwrite;}
  bool sourceMatches(const Plane&p)const noexcept {
   return prepared&&p.valid==1&&p.width==640&&p.height==480&&same(p.target,copy.post.target)&&p.pixels==packet.originalCopyPost565;

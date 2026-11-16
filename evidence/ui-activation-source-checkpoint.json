@@ -1,0 +1,72 @@
+{
+  "schema": 2,
+  "scope": "UI activation source checkpoint after physical Build23 regression",
+  "physicalReport": "build23-device-ui-regressions.json",
+  "status": "Local grouped first-cache, native splash, classA/B/C and responsive menu checks passed within documented sampling limits; Apple package/device still unverified",
+  "changes": [
+    "Main source observer remains dormant during original archive initialization, then binds the actual loaded archive before the first sidebar capture.",
+    "Each fixed child initial policy now accepts the original cold-start zero previous-form value with unchanged exact EBP/global, owner, retained Main, source pixels and target checks; ordinary caption guards remain unchanged.",
+    "Opponents reuses the existing native presentation scope rather than nesting a second scope that revoked verified source and upload state.",
+    "Location and Opponents carry independent responsive source snapshots; Player responsive integration is being completed.",
+    "Native splash follows exact independently rounded renderer attachment and viewport geometry.",
+    "The authored panel material now covers its fractional left join before the unchanged grid is drawn; only one source panel column differs.",
+    "Three private class collages have authenticated delivery and immutable source-catalog support.",
+    "Compact caption digest validation is reused only within the same retained synchronous callback, with descriptor and live renderer checks preserved."
+  ],
+  "sourceChecks": {
+    "childZeroRealCaptionCases": 14,
+    "playerZeroAndMutationSuites": true,
+    "opponentZeroAndMutationSuite": true,
+    "locationZeroAndBindingRevocation": true,
+    "captionValidationOptimizedAndSanitizers": true,
+    "fullCurrentGeneratedBuild": {
+      "engineCxx14": true,
+      "rendererC11": true,
+      "sourcePinsUnchanged": true,
+      "copyTransactions": 9471,
+      "boundedWordLoops": 12,
+      "completeHelperScopes": 2
+    }
+  },
+  "latestCompletedRuntime": {
+    "binarySHA256": "68f9c76569fc3c9886c187ec6a2fc9b21fe1f6b53270b2a67ab2a379c005cba0",
+    "observerSeconds": 212.058821384,
+    "preflightSeconds": 47.621927536,
+    "runtimeIntegrity": {
+      "exit": 0,
+      "appGone": true,
+      "ELFUnchanged": true,
+      "all12ResourcesUnchanged": true,
+      "immutableCopiedGameAssetsUnchanged": true,
+      "copiedProfileRestored": true
+    },
+    "transitionKindCounts": {
+      "4": 59,
+      "1": 26,
+      "3": 102,
+      "7": 38,
+      "9": 103,
+      "5": 51,
+      "8": 468,
+      "6": 38,
+      "10": 103
+    },
+    "classPictures": [
+      "A",
+      "B",
+      "C"
+    ],
+    "physicalIpadAcceptance": false
+  },
+  "remaining": [
+    "Matching Apple compile/package and physical device verification remain separate.",
+    "Native intro videos remain low resolution.",
+    "Initial transition geometry retains native4:3 staging; stable menus use authored responsive layouts.",
+    "Original modem/link/network badges are source-authenticated but not remastered by this source fix."
+  ],
+  "cloudAppBuildStarted": false,
+  "artworkPubliclyPublished": false,
+  "originalGameDataModified": false,
+  "physicalIpadVerified": false,
+  "localAcceptance": "ui-activation-local-acceptance.json"
+}

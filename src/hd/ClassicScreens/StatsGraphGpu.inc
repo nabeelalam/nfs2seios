@@ -20,8 +20,11 @@ static int nfs_stats_graph_draw(NfsStatsGraphGpu*s,const NfsBackgroundSceneStage
  NfsFrameSaved saved;GLint fbo=0;size_t i;int ok=0;
  if(!s||!nfs_stats_graph_current(t)||!t->framebuffer||!t->width||!t->height||!s->program||s->generation!=t->generation||s->context!=t->contextIdentity||!v||!count||count%6||count>6144)return 0;
  for(i=0;i<count;++i){unsigned k;float all[16];memcpy(all,v+i,sizeof all);for(k=0;k<16;++k)if(!isfinite(all[k]))return 0;if(v[i].vertex[0]<0||v[i].vertex[0]>640||v[i].vertex[1]<0||v[i].vertex[1]>480||v[i].shape[2]<0||v[i].shape[2]>64||v[i].shape[3]<0||v[i].shape[3]>2)return 0;for(k=0;k<4;++k)if(v[i].color[k]<0||v[i].color[k]>1)return 0;}
+ const float xScale=t->sampling.projection[0];
+ if(!isfinite(xScale)||xScale<=0.f||t->sampling.viewport[2]<=0)return 0;
+ const float logicalWidth=2.f/xScale;
  glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);if((GLuint)fbo!=t->framebuffer)return 0;
- nfs_frame_save(&saved);nfs_frame_draw_state();glViewport(t->sampling.viewport[0],t->sampling.viewport[1],t->sampling.viewport[2],t->sampling.viewport[3]);glBindBuffer(GL_ARRAY_BUFFER,0);glUseProgram(s->program);glUniformMatrix4fv(s->matrix,1,GL_FALSE,t->sampling.projection);glUniform1f(s->feather,fmaxf(.08f,.75f*640.f/(float)t->sampling.viewport[2]));
+ nfs_frame_save(&saved);nfs_frame_draw_state();glViewport(t->sampling.viewport[0],t->sampling.viewport[1],t->sampling.viewport[2],t->sampling.viewport[3]);glBindBuffer(GL_ARRAY_BUFFER,0);glUseProgram(s->program);glUniformMatrix4fv(s->matrix,1,GL_FALSE,t->sampling.projection);glUniform1f(s->feather,fmaxf(.08f,.75f*logicalWidth/(float)t->sampling.viewport[2]));
  for(i=0;i<4;++i){glEnableVertexAttribArray((GLuint)i);glVertexAttribPointer((GLuint)i,4,GL_FLOAT,GL_FALSE,sizeof(NfsStatsGraphVertex),(const unsigned char*)v+i*4*sizeof(float));}
  glEnable(GL_BLEND);glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);glDrawArrays(GL_TRIANGLES,0,(GLsizei)count);ok=glGetError()==GL_NO_ERROR;
  if(!nfs_stats_graph_current(t)){memset(s,0,sizeof *s);return 0;}nfs_frame_restore(&saved);return ok;

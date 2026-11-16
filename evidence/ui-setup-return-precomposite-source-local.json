@@ -1,0 +1,29 @@
+{
+  "scope": "Local59b exact-approved-image regression, constant2360; no current human or new ratio review",
+  "binarySHA256": "e10e3f2f575af3960d99871d3ea53136e8101f9f22517097689ad1e11935578c",
+  "exactPriorModeMatches": 5,
+  "returnComplete": false,
+  "cacheFailure": {
+    "category": "Exact pixel mismatch at transparent/composited pixel",
+    "firstTile": 97,
+    "profileAndUploadWitnessPassed": true
+  },
+  "freshMainProofs": 2,
+  "cleanShutdown": {
+    "appGone": true,
+    "copiedProfileRestored": true,
+    "untouchedCopiedAssetsUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "ELFUnchanged": true,
+    "launcherExitCode": 0
+  },
+  "repair": {
+    "applied": true,
+    "source": "Exact pre-composite caption packet of explicitly retained typed current Setup frame",
+    "opaqueOwnerCastUsed": false,
+    "headerContextSyntaxPassed": true,
+    "runtimeVerified": false
+  },
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false
+}

@@ -41,7 +41,7 @@ struct CachedOwner {
  bool valid=false;std::array<NfsMenuCachedWidget,NFS_MENU_CACHED_MAX_WIDGETS> rows{};
 } cached;
 NfsMenuCachedSnapshot shownCached{};
-bool cachedForm(uint32_t form){return form==NFS_MENU_CACHED_SETUP||form==NFS_MENU_CACHED_OPTIONS;}
+bool cachedForm(uint32_t form){return form==NFS_MENU_CACHED_PLAYER_ONE||form==NFS_MENU_CACHED_PLAYER_TWO||form==NFS_MENU_CACHED_SETUP||form==NFS_MENU_CACHED_OPTIONS||form==NFS_MENU_CACHED_LOCATION||form==NFS_MENU_CACHED_OPPONENT;}
 bool responsiveSource(){return sourceForm==0x401910u||(cachedForm(sourceForm)&&cached.form==sourceForm&&cached.producer&&cached.game);}
 /* A prepared next packet does NOT supersede the displayed lease. Packet
    serial/content are immutable typed-view joins in renderer begin; source

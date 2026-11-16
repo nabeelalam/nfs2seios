@@ -1,0 +1,39 @@
+{
+  "scope": "Focused local class identity check stopped before Right because required renderer identity witness absent",
+  "integration": 62,
+  "gameLogSHA256": "bd246849c3a90cd8822c267321ff1163b8cf8d2a7632431c7b4986ee7a49cae7",
+  "sourceClassAAuthenticated": true,
+  "classImageSelected": true,
+  "rendererIdentityWitnessPresent": false,
+  "nativeOpponentFullWitnessPresent": false,
+  "RightKeysSent": 0,
+  "rootReviewedFailureImage": "HD ClassA widget photograph and selected car row visible at640x480; does not establish full-wide compositor",
+  "thresholdsOrReferencesChanged": false,
+  "fullClassCoverageVerified": false,
+  "cleanup": {
+    "failure": "ReadyError: Unique current authenticated ClassA/B/C source/render pair absent; no seek-A input",
+    "ELFUnchanged": true,
+    "allSelectedResourcesUnchanged": true,
+    "resourceCount": 13,
+    "untouchedCopiedAssetsUnchanged": true,
+    "copiedProfileRestored": true,
+    "appGone": true,
+    "launcherExitCode": 0,
+    "observerElapsedSeconds": 256.445902856,
+    "preflightElapsedSeconds": 49.845098754000006,
+    "hardObserverBudgetSeconds": 900,
+    "driverAppDeadlineSeconds": 600,
+    "watchdogSIGINTSeconds": 605,
+    "watchdogSIGKILLSeconds": 630,
+    "hardAppBudgetSeconds": 630,
+    "noProfiler": true,
+    "noNewObjects": true,
+    "resolution": [
+      2360,
+      1640
+    ],
+    "wideRun": "Constant native2360x1640; source RGB-normalized Main keyboard input only",
+    "scope": "Desktop sampled pixels and source text gates; renderer acceptance is not artwork identity or first-native-frame/device proof"
+  },
+  "nextAction": "Inspect actual640 widget/full-scene path before host or source change; no blindretry or newbuild"
+}

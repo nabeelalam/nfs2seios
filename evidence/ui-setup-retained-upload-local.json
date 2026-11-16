@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "localIntegration": 43,
+  "scope": "Desktop Setup source and presentation regression; physical iPad unverified",
+  "binarySHA256": "687e204abec67487dc53d4c4ed1becfd0dd1a394c83ba4177204fdee82d32dc9",
+  "modeChangesReviewed": [
+    "One Player to Split Screen",
+    "Split Screen to Modem",
+    "Modem to Serial Link",
+    "Serial Link to Network"
+  ],
+  "modeChangeMultiFrameFallbackObserved": false,
+  "previousModemSerialFallbackFrames": [
+    113,
+    114
+  ],
+  "nativeIntervalsAfterSetupEntry": [
+    {
+      "start": 484,
+      "end": 485,
+      "frames": 1,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 839,
+      "end": 840,
+      "frames": 1,
+      "output": [
+        1280,
+        720
+      ]
+    },
+    {
+      "start": 861,
+      "end": 862,
+      "frames": 1,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 1033,
+      "end": 1034,
+      "frames": 1,
+      "output": [
+        1280,
+        720
+      ]
+    },
+    {
+      "start": 1056,
+      "end": 1057,
+      "frames": 1,
+      "output": [
+        2360,
+        1640
+      ]
+    },
+    {
+      "start": 1179,
+      "end": 1191,
+      "frames": 12,
+      "output": [
+        2360,
+        1640
+      ]
+    }
+  ],
+  "remaining": "Five one-frame resize fallbacks and separate12-frame Setup-to-Main return remain",
+  "returnedMain": true,
+  "freshMainProofCount": 2,
+  "rootViewedFullFrames": [
+    "Modem restored native",
+    "Returned Main native"
+  ],
+  "cleanExit": true,
+  "all13ResourcesUnchanged": true,
+  "copiedAssetsUnchanged": true,
+  "copiedProfileRestored": true,
+  "cloudBuilds": 0,
+  "nextSourceFinding": "Return capture requires live State.published/fullSource; Escape itself can abort redraw and clear publication despite a valid completed Setup upload. Investigate typed handoff from the sealed Setup lease; do not promote partial collector."
+}

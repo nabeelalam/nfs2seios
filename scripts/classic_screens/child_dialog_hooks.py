@@ -13,7 +13,13 @@ def main():
   original=f.read_bytes();t=original.decode().replace('\r\n','\n');tags=[]
   for name,body in routes.items():
    if 'Fn(void) Game::_sub_'+name+'()'not in t:continue
-   assert name not in found;found.add(name);s,z=span(t,name);part=t[s:z];at=part.index('{\n')+2;part=part[:at]+'// NFS_LOADSAVE_CHILD_UI_BEGIN:'+name+'\n '+body+'\n// NFS_LOADSAVE_CHILD_UI_END:'+name+'\n'+part[at:];t=t[:s]+part+t[z:];tags.append(name)
+   assert name not in found;found.add(name);s,z=span(t,name);part=t[s:z];at=part.index('{\n')+2;part=part[:at]+'// NFS_LOADSAVE_CHILD_UI_BEGIN:'+name+'\n '+body+'\n// NFS_LOADSAVE_CHILD_UI_END:'+name+'\n'+part[at:]
+   if name=='401F40':
+    tail='\tesp -= 4; _sub_426B70(); esp += 4; //call\n\tesp -= 4; _sub_4824BC(); esp += 4; //call'
+    assert part.count(tail)==1,'Original record-name parent restoration changed'
+    call,retire=tail.split('\n',1)
+    part=part.replace(tail,call+'\n nfs_ls_child_live::observeNameParentRestore(*this);\n'+retire,1)
+   t=t[:s]+part+t[z:];tags.append(name)
   if not tags:continue
   needle='#include "FunctionIds.h"';assert t.count(needle)==1;t=t.replace(needle,needle+'\n#include "hd/ClassicScreens/ChildDialogGameHooks.inc"',1);out=a.output_dir/f.name;out.write_text(t);rows.append({'unit':f.name,'hooks':tags,'sourceSHA256':hashlib.sha256(original).hexdigest(),'stagedSHA256':hashlib.sha256(out.read_bytes()).hexdigest()})
  assert found==set(routes),str(set(routes)-found)
