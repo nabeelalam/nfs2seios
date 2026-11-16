@@ -92,7 +92,7 @@ int main(int argc,char **argv){
                     timing_start=now;
                 }
 #endif
-                nfs::wait_for_main_work();
+                nfs::wait_for_main_work(nfs_frame_limit()==30);
             }
             const auto result=session->result();
             nfs::app_log("Native game app stopped","exit="+std::to_string(result.exit_code)+" error="+result.error);

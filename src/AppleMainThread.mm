@@ -15,10 +15,13 @@ static void schedule(MainTask task,void *context){
     if(request.failure)std::rethrow_exception(request.failure);
 }
 MainScheduler apple_main_thread_scheduler(){return schedule;}
-void wait_for_main_work(){
+void wait_for_main_work(bool capped_frame_rate){
     // UIKit's SDL backend has no native event wait. SDL's fallback sleeps,
     // and a GCD renderer submission cannot wake that sleep. Service the run
     // loop instead: queued synchronous graphics work wakes it immediately.
-    CFRunLoopRunInMode(kCFRunLoopDefaultMode,0.001,true);
+    // The optional 30 FPS lock leaves longer idle gaps. Continue to poll
+    // queued SDL events with a small bound even if no run-loop source fires.
+    const CFTimeInterval maximum_wait = capped_frame_rate ? 0.004 : 0.001;
+    CFRunLoopRunInMode(kCFRunLoopDefaultMode,maximum_wait,true);
 }
 }

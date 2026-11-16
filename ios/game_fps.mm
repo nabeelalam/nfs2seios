@@ -191,6 +191,10 @@ extern "C" void nfs_sync_diagnostic_capture(){
     [overlay setDeviceMonitoring:needed];
     if(needed!=capturing){capturing=needed;nfs_set_engine_metrics_capture(needed?1:0);}
 }
+// Main-thread visibility check. Session recording reads its own process CPU.
+extern "C" int nfs_detailed_overlay_wants_cpu(void *window){
+    return overlay && overlay.window==window && overlay.visible && overlay.detailed;
+}
 extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int width,int height){
     auto *window=static_cast<SDL_Window *>(pointer);
     UIWindow *native=(__bridge UIWindow *)SDL_GetPointerProperty(SDL_GetWindowProperties(window),SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER,nullptr);

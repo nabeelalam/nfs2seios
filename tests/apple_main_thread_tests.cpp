@@ -23,7 +23,11 @@ int main(){
         result.set_value(passed);finished=true;
     });
     // Service the actual Apple main queue, not an SDL pump or test scheduler.
-    while(!finished)nfs::wait_for_main_work();
+    bool capped=false;
+    while(!finished){
+        nfs::wait_for_main_work(capped);
+        capped=!capped;
+    }
     worker.join();const bool passed=result.get_future().get();nfs::bind_main_thread_bridge(nullptr);
     if(!passed){std::fprintf(stderr,"FAIL: Apple main queue operation\n");return 1;}
     std::puts("PASS: actual Apple main queue, pthread main identity, 100 borrowed-buffer results, nested dispatch and callback exceptions");
