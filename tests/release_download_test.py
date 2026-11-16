@@ -62,6 +62,21 @@ class DownloadTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "privacy"):
                 inspect(*self.fixture(folder, {"install.win": path}))
 
+    def test_writable_executable_segment_refused(self):
+        device = struct.pack("<6I", 0x32, 24, 2, 0, 0, 0)
+        for protection in (5, 7):
+            segment = struct.pack("<II16sQQQQiiII", 0x19, 72, b"__TEXT",
+                                  0, 0, 0, 0, protection, protection, 0, 0)
+            binary = struct.pack("<8I", 0xfeedfacf, 0x100000c, 0, 2,
+                                 2, len(device) + len(segment), 0, 0) + device + segment
+            with tempfile.TemporaryDirectory() as folder:
+                inputs = self.fixture(folder, binary=binary)
+                if protection == 5:
+                    inspect(*inputs)
+                else:
+                    with self.assertRaisesRegex(ValueError, "writable and executable"):
+                        inspect(*inputs)
+
     def test_simulator_and_false_acceptance_rejected(self):
         with tempfile.TemporaryDirectory() as folder:
             binary = struct.pack("<8I6I", 0xfeedfacf, 0x100000c, 0, 2, 1, 24, 0, 0, 0x32, 24, 7, 0, 0, 0)

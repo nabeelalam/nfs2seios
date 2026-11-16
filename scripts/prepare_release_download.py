@@ -7,8 +7,8 @@ from pathlib import Path
 import plistlib
 import re
 import stat
-import struct
 import zipfile
+from inject_personal_artwork import macho_check
 from publication_audit import PATTERNS
 
 PREFIX = "Payload/NFSIISEGame.app/"
@@ -69,24 +69,8 @@ def inspect(ipa, manifest, source, assets_separate=False, unpublished_classic_ba
         if info.get("CFBundleIdentifier") != expected["bundle_id"] or info.get("CFBundleExecutable") != expected["executable"] or info.get("UIDeviceFamily") != [2]:
             raise ValueError("Unexpected bundle identity")
         binary = archive.read(PREFIX + "NFSIISEGame")
-        if len(binary) < 32:
-            raise ValueError("Missing Mach-O header")
-        magic, cpu, _, _, count, size, _, _ = struct.unpack_from("<8I", binary)
-        if magic != 0xfeedfacf or cpu != 0x100000c or size > len(binary) - 32:
-            raise ValueError("Expected thin ARM64 Mach-O")
-        offset = 32
-        device = False
-        for _ in range(count):
-            if offset + 8 > 32 + size:
-                raise ValueError("Truncated Mach-O commands")
-            command, length = struct.unpack_from("<2I", binary, offset)
-            if length < 8 or offset + length > 32 + size:
-                raise ValueError("Invalid Mach-O command")
-            if command == 0x32 and length >= 24:
-                device = struct.unpack_from("<I", binary, offset + 8)[0] == 2
-            offset += length
-        if not device or offset != 32 + size:
-            raise ValueError("Expected iOS device platform")
+        with io.BytesIO(binary) as stream:
+            macho_check(stream.read(32), stream, "NFSIISEGame", main=True)
     if any(pattern.search(manifest.read_bytes()) for pattern in PATTERNS.values()):
         raise ValueError("Manifest privacy check failed")
     return metadata

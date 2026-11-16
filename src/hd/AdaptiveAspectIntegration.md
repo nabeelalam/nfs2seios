@@ -240,3 +240,11 @@ header. The log writer and analyzer reject malformed identifiers while older
 logs remain readable. Compact diagnostics retain the battery reading and
 engine CPU sampling remains available when recording. These changes followed
 the delivered ARM64 preview and still need Apple/device verification.
+
+The assembled preview was also checked directly. It contains one thin ARM64
+iOS-device Mach-O executable, identical to the Apple build's executable before
+artwork assembly. The executable links OpenGLES and UIKit and contains no
+initially writable executable segment. The archive contains 25 entries,
+including 13 separate remaster resources, with no original game data folders,
+PC executable, or game archive payloads. The segment inspection is static
+package evidence and does not establish device rendering or signing results.

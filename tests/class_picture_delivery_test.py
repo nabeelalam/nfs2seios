@@ -14,7 +14,7 @@ class Delivery(unittest.TestCase):
  def test_inject_exact_bytes_and_rejections(self):
   with tempfile.TemporaryDirectory(prefix='class-picture-delivery-')as tmp:
    d=Path(tmp);template=b'OWNZ0001'+bytes(24);art=b'NFSCLPIC'+bytes(range(24));release='42'*32
-   native=struct.pack('<IiiIIIII',0xfeedfacf,0x0100000c,0,2,0,0,0,0)+bytes.fromhex(release)+b'unchanged-native'
+   native=struct.pack('<IiiIIIII6I',0xfeedfacf,0x0100000c,0,2,1,24,0,0,0x32,24,2,0,0,0)+bytes.fromhex(release)+b'unchanged-native'
    members={'Payload/Test.app/Info.plist':plistlib.dumps({'CFBundleExecutable':'Test'}),'Payload/Test.app/Test':native,'Payload/Test.app/notice.txt':b'unchanged notice'}
    base=d/'base.ipa'
    with zipfile.ZipFile(base,'w',compression=zipfile.ZIP_DEFLATED)as z:

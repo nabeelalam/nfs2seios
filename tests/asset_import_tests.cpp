@@ -33,11 +33,17 @@ int main(int argc,char **argv){
         const auto no_support=root/"executable-only-support";fs::create_directories(no_support);
         fails([&]{nfs::import_assets(source.string(),no_support.string(),(root/"missing-selected-support").string());});
         require(!fs::exists(root/"missing-selected-support"),"missing startup files published an import");no_staging(root);
-        write(source/"install.win","selected configuration");write(source/"text.eng","selected language");
-        write(source/"text.fre","selected optional language");
+        write(source/"INSTALL.WIN","selected configuration");write(source/"Text.ENG","selected language");
+        write(source/"TEXT.FRE","selected optional language");
         const auto selected_support=root/"selected-support-result";
         nfs::import_assets(source.string(),no_support.string(),selected_support.string());
         require(read(selected_support/"install.win")=="selected configuration" && read(selected_support/"text.eng")=="selected language" && read(selected_support/"text.fre")=="selected optional language","selected startup files changed");
+        if(!fs::exists(source/"install.win")){
+            write(source/"install.win","collision");
+            fails([&]{nfs::import_assets(source.string(),no_support.string(),(root/"duplicate-startup").string());});
+            require(!fs::exists(root/"duplicate-startup"),"case-colliding startup files published an import");
+            fs::remove(source/"install.win");no_staging(root);
+        }
         const auto mixed=root/"mixed-support";write(mixed/"install.win","partial bundled configuration");
         fails([&]{nfs::import_assets(source.string(),mixed.string(),(root/"mixed-support-result").string());});
         require(!fs::exists(root/"mixed-support-result"),"mixed support sets published an import");no_staging(root);

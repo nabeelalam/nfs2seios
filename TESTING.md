@@ -790,3 +790,16 @@ dense Player images have the separately documented narrow sampling limit;
 original/HUD/fallback and framebuffer alpha remain exact. Rejected crop and
 uniform-channel-limit attempts remain private. Physical iPad visual/performance/
 energy acceptance and complete frontend coverage are still required.
+
+### Executable-only game folder import
+
+The importer accepts ASCII case variants of the PC startup filenames in the
+selected folder and stages them under canonical lowercase names. It rejects
+case-colliding startup files before publishing the destination. The fixture
+suite passed under ASan and UBSan.
+
+A separate read-only test used the existing staged full game data and an empty
+bundle support directory. The importer published 1,018 files matching the
+source hashes. A repeat import refused to replace the first. The disposable
+test output was cleaned up. This verifies the shared importer on Linux; it
+does not exercise the iPad Files picker or a SideStore update.

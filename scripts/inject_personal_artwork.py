@@ -154,11 +154,22 @@ def macho_check(prefix, stream, name, main):
     table = stream.read(command_bytes)
     require(len(table) == command_bytes, "Truncated Mach-O load commands")
     at = 0
+    device_platform = False
     for unused in range(commands):
         require(at + 8 <= len(table), "Mach-O command bounds")
         cmd, size = struct.unpack_from("<II", table, at)
         require(size >= 8 and size % 8 == 0 and size <= len(table) - at,
                 "Mach-O command size")
+        if main and cmd == 0x32:  # LC_BUILD_VERSION
+            require(size >= 24 and not device_platform, "Invalid Mach-O device platform command")
+            platform, _, _, tools = struct.unpack_from("<IIII", table, at + 8)
+            require(platform == 2 and tools <= (size - 24) // 8, "Expected iOS device platform")
+            device_platform = True
+        if cmd == 0x19:  # LC_SEGMENT_64
+            require(size >= 72, "Truncated Mach-O segment command")
+            initial_protection = struct.unpack_from("<I", table, at + 60)[0]
+            require(initial_protection & 0x06 != 0x06,
+                    "Mach-O segment starts writable and executable")
         if cmd == 0x1D:  # LC_CODE_SIGNATURE
             require(size >= 16, "Mach-O signature command size")
             offset, count = struct.unpack_from("<II", table, at + 8)
@@ -169,6 +180,7 @@ def macho_check(prefix, stream, name, main):
                     "Encrypted Mach-O cannot be repackaged")
         at += size
     require(at == len(table), "Mach-O load-command length mismatch")
+    require(not main or device_platform, "Missing iOS device platform command")
     return prefix + table, True
 
 

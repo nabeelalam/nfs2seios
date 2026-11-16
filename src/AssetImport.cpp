@@ -2,6 +2,8 @@
 #include "AssetImport.h"
 #include <filesystem>
 #include <algorithm>
+#include <iterator>
+#include <map>
 #include <mutex>
 #include <random>
 #include <stdexcept>
@@ -10,6 +12,7 @@ namespace nfs {
 namespace fs=std::filesystem;
 namespace {
 std::mutex import_mutex;
+constexpr const char *startup_names[]={"install.win","text.eng","text.ger","text.fre","text.ita","text.spa","text.swe"};
 std::string lowercase(std::string name){
     for(auto &c:name)if(c>='A' && c<='Z')c=char(c-'A'+'a');
     return name;
@@ -44,9 +47,25 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
     // from two different support sets or follow a support-file symlink.
     const bool bundled_config=fs::exists(fs::symlink_status(support/"install.win"));
     const bool bundled_language=fs::exists(fs::symlink_status(support/"text.eng"));
-    const auto startup=(!bundled_config && !bundled_language)?source:support;
+    std::map<std::string,fs::path> startup;
+    if(!bundled_config && !bundled_language){
+        // Original PC media can spell these names in uppercase. Resolve them
+        // once under the selected root and reject ambiguous spellings.
+        for(const auto &entry:fs::directory_iterator(source)){
+            const auto name=lowercase(entry.path().filename().string());
+            if(std::find(std::begin(startup_names),std::end(startup_names),name)==std::end(startup_names))continue;
+            if(!startup.emplace(name,entry.path()).second)
+                throw std::runtime_error("Two startup files have the same name after conversion to lowercase");
+        }
+    }else{
+        for(const auto name:startup_names){
+            const auto file=support/name;
+            if(fs::exists(fs::symlink_status(file)))startup.emplace(name,file);
+        }
+    }
     for(const auto name:{"install.win","text.eng"}){
-        if(!fs::is_regular_file(fs::symlink_status(startup/name)))
+        const auto file=startup.find(name);
+        if(file==startup.end() || !fs::is_regular_file(fs::symlink_status(file->second)))
             throw std::runtime_error("Startup files are missing or invalid. Select a folder containing GAMEDATA, FEDATA, install.win and text.eng. Existing imported game folders can be reused.");
     }
     Staging staging;
@@ -77,11 +96,8 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
         else {copy_file(item->path(),target,result);if(top=="gamedata")game_files=true;else front_files=true;}
     }
     if(!game_files || !front_files)throw std::runtime_error("Select the folder containing both GAMEDATA and FEDATA with files inside");
-    for(const auto name:{"install.win","text.eng","text.ger","text.fre","text.ita","text.spa","text.swe"}){
-        const auto file=startup/name;
-        if(std::string(name)!="install.win" && std::string(name)!="text.eng" && !fs::exists(fs::symlink_status(file)))continue;
-        copy_file(file,staging.root/name,result);
-    }
+    for(const auto &entry:startup)
+        copy_file(entry.second,staging.root/entry.first,result);
     // Both paths are in the caller's app-owned parent. Publish only after every
     // copy and required support file succeeds; failed staging is removed above.
     fs::rename(staging.root,destination);staging.root.clear();return result;
