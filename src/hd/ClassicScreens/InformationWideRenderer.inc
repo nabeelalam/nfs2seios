@@ -45,13 +45,12 @@ static int nfs_info_wide_prepare_program(void){
   "void main(){float x=(uv.x-.5)/centerWidth+.5;"
   "if(x>=0.&&x<=1.){gl_FragColor=texture2D(image,vec2(clamp(x,edgeInset,1.-edgeInset),uv.y));return;}"
   "float edge=x<0.?0.:1.;"
-  "float blend=smoothstep(0.,.17,abs(x-edge));"
-  "float inner=mix(clamp(edge,edgeInset,1.-edgeInset),.5,.1*blend);"
-  "float spread=.10*blend;"
-  "vec3 base=(texture2D(image,vec2(inner,uv.y)).rgb*2."
-  "+texture2D(image,vec2(inner,clamp(uv.y-spread,0.,1.))).rgb"
-  "+texture2D(image,vec2(inner,clamp(uv.y+spread,0.,1.))).rgb)*.25;"
-  "gl_FragColor=vec4(mix(base,extensionTint,.88*blend),1.);}";
+  "float distanceFromEdge=abs(x-edge);"
+  "float keep=1.-clamp(distanceFromEdge/.045,0.,1.);"
+  "if(keep==0.){gl_FragColor=vec4(extensionTint,1.);return;}"
+  "float borderX=mix(edgeInset,1.-edgeInset,2.*edge-x);"
+  "vec3 border=texture2D(image,vec2(borderX,uv.y)).rgb;"
+  "gl_FragColor=vec4(mix(extensionTint,border,keep*keep),1.);}";
  if(nfs_info_wide.program)return 1;
  GLuint vs=nfs_text_gpu_shader(GL_VERTEX_SHADER,vertex);
  GLuint fs=nfs_text_gpu_shader(GL_FRAGMENT_SHADER,fragment);

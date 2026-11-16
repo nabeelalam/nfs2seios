@@ -247,6 +247,16 @@ bool InputDevices::take_reset(){
     if(!reset_held || reset_consumed)return false;
     reset_consumed=true;return true;
 }
+namespace {
+thread_local bool mask_pause_refresh_buttons=false;
+}
+NativePauseRefreshScope::NativePauseRefreshScope(bool paused)
+    :previous_(mask_pause_refresh_buttons){
+    mask_pause_refresh_buttons=paused;
+}
+NativePauseRefreshScope::~NativePauseRefreshScope(){
+    mask_pause_refresh_buttons=previous_;
+}
 int32_t InputDevices::invoke(void *context,InputMethod method,const uint32_t *a){
     auto object=find(a[0]);if(!object)return invalid;
     if(method==InputMethod::addref || method==InputMethod::release){
@@ -273,7 +283,10 @@ int32_t InputDevices::invoke(void *context,InputMethod method,const uint32_t *a)
     switch(method){
     case InputMethod::state:{
         if(object->kind!=joystick || a[1]!=80 || !a[2])return invalid;
-        GameJoystickState state;{std::lock_guard<std::mutex> lock(mutex);state=snapshots[object->slot];}guest_store(a[2],state);return 0;
+        GameJoystickState state;
+        {std::lock_guard<std::mutex> lock(mutex);state=snapshots[object->slot];}
+        if(mask_pause_refresh_buttons)std::memset(state.buttons,0,sizeof(state.buttons));
+        guest_store(a[2],state);return 0;
     }
     case InputMethod::capabilities:{
         if(!a[1])return invalid;const auto size=guest_load<uint32_t>(a[1]);if(size!=44 && size!=24)return invalid;

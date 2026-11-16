@@ -146,7 +146,16 @@ int main(){
         CHECK(SDL_SetJoystickVirtualButton(joystick,SDL_GAMEPAD_BUTTON_BACK,false));input.update();
         // Both players can hold a menu button when the original frontend
         // closes. Consume digital actions, preserving both analog profiles.
+        nfs_controller_capture_pause_buttons();
         CHECK(SDL_SetJoystickVirtualButton(other,SDL_GAMEPAD_BUTTON_WEST,true));input.update();
+        // A press published after Pause's capture is still hidden from its
+        // legacy joystick refresh and remains available to the next capture.
+        {
+            nfs::NativePauseRefreshScope refresh(true);
+            CHECK(read(1).buttons[SDL_GAMEPAD_BUTTON_WEST]==0);
+            CHECK(read(0).axes[0]==65535);
+        }
+        CHECK(read(1).buttons[SDL_GAMEPAD_BUTTON_WEST]==0x80);
         nfs_controller_capture_pause_buttons();
         CHECK(read(0).buttons[SDL_GAMEPAD_BUTTON_SOUTH]==0 && read(1).buttons[SDL_GAMEPAD_BUTTON_WEST]==0);
         CHECK(read(0).axes[0]==65535 && read(0).axes[7]==65535 && read(1).axes[0]==0);

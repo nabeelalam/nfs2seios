@@ -79,6 +79,16 @@ public:
 };
 void bind_input_devices(InputDevices *);
 InputDevices &input_devices();
+// The original paused joystick refresh may run while SDL publishes a new
+// press. Keep that press available to Pause and out of driving's snapshot.
+class NativePauseRefreshScope {
+    bool previous_;
+public:
+    explicit NativePauseRefreshScope(bool paused);
+    ~NativePauseRefreshScope();
+    NativePauseRefreshScope(const NativePauseRefreshScope &)=delete;
+    NativePauseRefreshScope &operator=(const NativePauseRefreshScope &)=delete;
+};
 // Original recording prompt owns native presses independently of menu actions.
 class NativeControlBindingScope {
     InputDevices &devices;

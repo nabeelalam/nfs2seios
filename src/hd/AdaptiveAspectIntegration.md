@@ -185,3 +185,25 @@ Track Info now shares the lossless row decoder. Its version 2 candidate is
 Native loader checks under ASan and UBSan matched all 52 image indices,
 dimensions, and decoded pixel hashes across the two versions. Build and
 packaging pins select the verified files for both information packs.
+
+## Pacific Spirit information page
+
+The local replay covered Location, Pacific Spirit Track Info, resizing from
+640x480 to 708x492 and 800x450, and returning to Location. The side shader now
+limits mirroring to 4.5% of the center image width, fades that strip into the
+existing tint, and samples no artwork beyond the strip. GLES2 readback verified
+center and side pixels. Actual desktop captures at both new sizes kept the
+route map, artwork, headings and cursor visible. Side lettering and long column
+streaks were removed; a narrow reflected forest edge is still visible on the
+right. The replay waited for the X11 window to be viewable before focusing it
+and shut the game down cleanly. These observations do not cover iPadOS.
+
+## Pause controller handoff
+
+When the pause menu refreshes the original joystick state, digital buttons are
+masked from that refresh on the engine thread. A controller press that arrives
+between the menu's capture and the refresh remains available to the next pause
+capture. Analog axes are preserved. The virtual SDL fixture exercised that
+ordering on player two, and both the virtual SDL and mapped input tests passed.
+The regenerated original engine unit compiled under ASan and UBSan. A physical
+controller mapped to downshift still needs an iPad resume check.

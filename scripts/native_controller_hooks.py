@@ -32,7 +32,11 @@ def add_native_controller_hooks(text, name):
         # Capture Pause choices before the original joystick refresh can also
         # expose that same held button to the per-player driving packet.
         before = '\tesp -= 4; _sub_4779D0(); esp += 4; //call'
-        replace_one(before, '\tif(guest_load<int32_t>(dword_5222D0))nfs_controller_capture_pause_buttons();\n' + before)
+        replace_one(before, '''\t{
+        const bool paused=guest_load<int32_t>(dword_5222D0)!=0;
+        if(paused)nfs_controller_capture_pause_buttons();
+        const nfs::NativePauseRefreshScope refresh(paused);
+''' + before + '\n\t}')
         before = '\tguest_store<int32_t>(dword_512848+eax*4, static_cast<int32_t>(edx)); //mov'
         replace_one(before, '\tif(guest_load<int32_t>(dword_5222D0))edx=int32_t(uint32_t(edx)|nfs_controller_frontend_actions());\n' + before)
         # Original F11 binding is digital index1 in the eight-bit player
