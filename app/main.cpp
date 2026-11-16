@@ -70,22 +70,28 @@ int main(int argc,char **argv){
             std::unique_ptr<nfs::DesktopDiagnosticRecorder> recorder;
             if(!recording_path.empty())recorder.reset(new nfs::DesktopDiagnosticRecorder(recording_path));
 #endif
-            session->start();std::string app_error;Uint64 timing_start=SDL_GetTicks();
+#if defined(SDL_PLATFORM_IOS)
+            nfs::set_renderer_timing_capture(false);
+#endif
+            session->start();std::string app_error;
+#if !defined(SDL_PLATFORM_IOS)
+            Uint64 timing_start=SDL_GetTicks();
+#endif
             while(!session->result().finished){
                 try{session->poll();}
                 catch(const std::exception &error){if(app_error.empty())app_error=error.what();session->request_stop();SDL_PumpEvents();}
 #if !defined(SDL_PLATFORM_IOS)
                 if(recorder)recorder->poll();
-#endif
                 const auto now=SDL_GetTicks();
                 if(now-timing_start>=5000){
                     const auto timing=nfs::take_renderer_timing();
-                    nfs::app_log("Renderer timing","interval_ms="+std::to_string(now-timing_start)+
+                    if(timing.calls)nfs::app_log("Renderer timing","interval_ms="+std::to_string(now-timing_start)+
                         " calls="+std::to_string(timing.calls)+" queue_ms="+std::to_string(timing.queue_ns/1000000)+
                         " execution_ms="+std::to_string(timing.execution_ns/1000000)+
                         " presentation_fps="+std::to_string(nfs_frame_rate_value()));
                     timing_start=now;
                 }
+#endif
                 nfs::wait_for_main_work();
             }
             const auto result=session->result();

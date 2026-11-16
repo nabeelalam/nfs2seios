@@ -3,6 +3,7 @@
 #import <mach/mach.h>
 #include "DiagnosticSession.h"
 #include "EngineThreadMetrics.h"
+#include "MainThreadBridge.h"
 #include "FramePresentation.h"
 #include "HdAtlas.h"
 #include <SDL3/SDL.h>
@@ -18,7 +19,7 @@
     std::atomic<bool> _failed;
     nfs::DiagnosticSessionLimit _limit;
     nfs::SystemCpuLoadWindow _cores;
-    uint64_t _start,_previous,_latestFrame;
+    uint64_t _start,_previous,_latestFrame,_frameEpoch,_frameDrops;
     double _latestFPS,_processCPU;
     int64_t _mainCPU;
     int _width,_height;
@@ -96,6 +97,11 @@ static NSURL *recording_folder(){
     _failed.store(false);_pending.store(0);_limit=nfs::DiagnosticSessionLimit{};_cores.reset();_powerKnown=NO;
     _start=SDL_GetTicksNS();_previous=0;_mainCPU=-1;_processCPU=-1;
     self.lastURL=url;[NSUserDefaults.standardUserDefaults setObject:name forKey:@"NFSLastDiagnosticLog"];
+    nfs::take_renderer_timing();
+    nfs::set_renderer_timing_capture(true);
+    nfs_frame_timing_capture(1);
+    const auto frame=nfs_frame_timing_snapshot();
+    _frameEpoch=frame.window_epoch;_frameDrops=frame.dropped_total;
     self.recording=YES;nfs_sync_diagnostic_capture();nfs_reset_engine_metrics();
     const unsigned build=[[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"] intValue];
     if(![self append:nfs::diagnostic_header(build)]){[self stop:@"write_error" notify:YES];return;}
@@ -116,8 +122,29 @@ static NSURL *recording_folder(){
     if(_previous && now>_previous)sample.interval=double(now-_previous)/1e9;
     if(_latestFrame && now>=_latestFrame){sample.fps_age=double(now-_latestFrame)/1e9;if(sample.fps_age<=2.5)sample.fps=_latestFPS;}
     sample.low_power=NSProcessInfo.processInfo.lowPowerModeEnabled;
-    if(_powerKnown && _power!=sample.low_power){_cores.reset();nfs_reset_engine_metrics();}
+    const bool powerChanged=_powerKnown && _power!=sample.low_power;
+    if(powerChanged){_cores.reset();nfs_reset_engine_metrics();}
+    const auto render=nfs::take_renderer_timing();
+    if(sample.interval>0 && !powerChanged){
+        sample.renderer_calls=double(render.calls);
+        sample.renderer_queue_ms=double(render.queue_ns)/1e6;
+        sample.renderer_execution_ms=double(render.execution_ns)/1e6;
+    }
     _powerKnown=YES;_power=sample.low_power;
+    const auto frame=nfs_frame_timing_snapshot();
+    nfs::DiagnosticSwapIntervals intervals;
+    NfsFrameTiming chunk[128];
+    for(unsigned batch=0;batch<8;++batch){
+        const unsigned count=nfs_frame_timing_drain(chunk,128);
+        for(unsigned i=0;i<count;++i)intervals.observe(chunk[i],_previous,now,frame.window_epoch);
+        if(count<128)break;
+    }
+    if(sample.interval>0 && !powerChanged && frame.window_epoch==_frameEpoch && frame.dropped_total==_frameDrops){
+        sample.swap_intervals=intervals.count;
+        sample.swap_over_20ms=intervals.over_20ms;
+        if(intervals.count)sample.swap_max_ms=double(intervals.longest_ns)/1e6;
+    }
+    _frameEpoch=frame.window_epoch;_frameDrops=frame.dropped_total;
     sample.game_cpu_ms=nfs_engine_cpu_sample(&sample.game_cpu_id);
     sample.logical_cores=unsigned(SDL_max(1,SDL_GetNumLogicalCPUCores()));
     struct rusage usage{};double process=-1;
@@ -147,6 +174,8 @@ static NSURL *recording_folder(){
 }
 - (void)stop:(NSString *)reason notify:(BOOL)notify {
     if(!self.recording)return;
+    nfs_frame_timing_capture(0);
+    nfs::set_renderer_timing_capture(false);
     self.recording=NO;self.finishing=YES;[self.timer invalidate];self.timer=nil;nfs_sync_diagnostic_capture();
     NSArray *reasons=@[@"manual",@"background",@"window_changed",@"time_limit",@"write_error",@"writer_backlog"];
     if(![reasons containsObject:reason])reason=@"stopped";

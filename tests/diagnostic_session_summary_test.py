@@ -27,6 +27,24 @@ class SummaryTests(unittest.TestCase):
         self.assertEqual(result["low_power_mode"]["on"]["fps_observations"]["median"], 45)
         self.assertEqual(result["timing_art_comparison"]["low_power_off"]["unavailable"]["stable_samples"], 2)
 
+    def test_optional_renderer_intervals_by_power_mode(self):
+        rows = [sample(0),
+                dict(sample(1), renderer_calls_interval=160,
+                     renderer_queue_ms_interval=7.25, renderer_execution_ms_interval=11.5,
+                     swap_intervals_count=60, swap_intervals_over_20ms=2, swap_interval_max_ms=24),
+                dict(sample(2, True, 2), renderer_calls_interval=None,
+                     renderer_queue_ms_interval=None, renderer_execution_ms_interval=None),
+                dict(sample(3, True, 3), renderer_calls_interval=120,
+                     renderer_queue_ms_interval=6, renderer_execution_ms_interval=13)]
+        modes = summary.summarize(fixture(rows))["low_power_mode"]
+        self.assertEqual(modes["off"]["renderer_calls_interval"]["count"], 1)
+        self.assertEqual(modes["off"]["swap_intervals_count"], 60)
+        self.assertEqual(modes["off"]["swap_intervals_over_20ms"], 2)
+        self.assertEqual(modes["off"]["swap_interval_max_ms"], 24)
+        self.assertIsNone(modes["on"]["swap_intervals_count"])
+        self.assertEqual(modes["off"]["renderer_queue_ms_interval"]["median"], 7.25)
+        self.assertEqual(modes["on"]["renderer_execution_ms_interval"]["median"], 13)
+
     def test_interruption_and_gap(self):
         result = summary.summarize(fixture([sample(0), sample(8)]) + b'{"type":')
         self.assertTrue(result["ignored_incomplete_tail"])

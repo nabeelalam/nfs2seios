@@ -8,6 +8,12 @@
 int main(){
     MainThreadHarness owner;
     int value=0;
+    nfs::set_renderer_timing_capture(false);
+    CHECK(nfs::renderer_operation([&]{return ++value;})==1);
+    const auto disabled=nfs::take_renderer_timing();
+    CHECK(disabled.calls==0 && disabled.queue_ns==0 && disabled.execution_ns==0);
+    nfs::set_renderer_timing_capture(true);
+    value=0;
     for(int i=0;i<100;++i)CHECK(nfs::renderer_operation([&]{if(std::this_thread::get_id()!=owner.owner_id())throw std::runtime_error("Wrong render owner");return ++value;})==i+1);
     CHECK(nfs::renderer_operation([]{return nfs::renderer_operation([]{return 42;});})==42);
     std::vector<int> commands;

@@ -8,10 +8,14 @@
 namespace nfs {
 namespace {
 using Clock=std::chrono::steady_clock;
+std::atomic<bool> render_timing_enabled{true};
 std::atomic<uint64_t> render_calls{0},render_queue_ns{0},render_execution_ns{0};
 uint64_t elapsed_ns(Clock::time_point start,Clock::time_point end){
     return uint64_t(std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
 }
+}
+void set_renderer_timing_capture(bool enabled){
+    render_timing_enabled.store(enabled,std::memory_order_relaxed);
 }
 RendererTiming take_renderer_timing(){
     RendererTiming result;
@@ -176,12 +180,22 @@ void MainThreadBridge::execute_renderer(MainTask task,void *context){
         }
         check_worker_stop();
         if(renderer_retired.load())return;
-        struct Pending {MainThreadBridge *bridge;MainTask task;void *context;bool ran=false;Clock::time_point submitted=Clock::now();} pending{this,task,context};
+        const bool measure=render_timing_enabled.load(std::memory_order_relaxed);
+        struct Pending {
+            MainThreadBridge *bridge;
+            MainTask task;
+            void *context;
+            bool measure;
+            Clock::time_point submitted;
+            bool ran=false;
+        } pending{this,task,context,measure,measure?Clock::now():Clock::time_point{}};
         execute([](void *value){
             auto &p=*static_cast<Pending *>(value);
             {std::lock_guard<std::mutex> lock(p.bridge->renderer_mutex);if(p.bridge->renderer_suspended)return;}
+            p.ran=true;
+            if(!p.measure){p.task(p.context);return;}
             const auto started=Clock::now();
-            p.ran=true;p.task(p.context);
+            p.task(p.context);
             const auto finished=Clock::now();
             render_queue_ns.fetch_add(elapsed_ns(p.submitted,started),std::memory_order_relaxed);
             render_execution_ns.fetch_add(elapsed_ns(started,finished),std::memory_order_relaxed);
