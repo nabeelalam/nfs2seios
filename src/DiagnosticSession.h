@@ -37,10 +37,12 @@ inline void diagnostic_number(std::ostream &out,double value,double maximum=1e15
     if(std::isfinite(value) && value>=0 && value<=maximum)out<<value;
     else out<<"null";
 }
-inline std::string diagnostic_header(unsigned build){
+inline std::string diagnostic_header(unsigned build,const std::string &source={}){
+    const bool valid=source.size()==40 && source.find_first_not_of("0123456789abcdef")==std::string::npos;
     std::ostringstream out;out.imbue(std::locale::classic());
-    out<<"{\"type\":\"session\",\"schema\":\"nfsiise-session-v1\",\"build\":"<<build
-       <<",\"sample_target_s\":1,\"game_cpu_window_submissions\":60,"
+    out<<"{\"type\":\"session\",\"schema\":\"nfsiise-session-v1\",\"build\":"<<build;
+    if(valid)out<<",\"source_commit\":\""<<source<<"\"";
+    out<<",\"sample_target_s\":1,\"game_cpu_window_submissions\":60,"
        "\"fps_scope\":\"latest presentation-rate window;null if stale\","
        "\"game_cpu_scope\":\"latest engine-thread 60-submission window;sample_id identifies repeats\","
        "\"swap_interval_scope\":\"complete swap-submission intervals inside sample, no display or GPU timestamps\","

@@ -74,6 +74,18 @@ class SummaryTests(unittest.TestCase):
         self.assertFalse(result["clean_end_record"])
         self.assertEqual(result["sampling_gaps_over_2_5s"], 1)
 
+    def test_source_commit_tracks_build_without_paths(self):
+        data = fixture([sample(0)])
+        header, samples = data.split(b"\n", 1)
+        for value in ("c" * 40, "not-a-commit", None):
+            tagged = dict(json.loads(header), source_commit=value)
+            log = json.dumps(tagged).encode() + b"\n" + samples
+            if value == "c" * 40:
+                self.assertEqual(summary.summarize(log)["source_commit"], value)
+            else:
+                with self.assertRaises(ValueError):
+                    summary.summarize(log)
+
     def test_unknown_readings(self):
         row = sample(0, identity=0, fps=None)
         row["game_cpu_ms_per_frame"] = None

@@ -143,16 +143,17 @@ NSString *system_core_text(){
     while(presenter.presentedViewController)presenter=presenter.presentedViewController;
     if(!presenter || [presenter isKindOfClass:UIAlertController.class])return;
     UIAlertController *sheet=[UIAlertController alertControllerWithTitle:@"Rendering & diagnostics"
-        message:@"Pause before changing resolution. Native keeps the original 4:3 view. App CPU is averaged across all cores. Game CPU time measures the engine thread per frame. System-core readings cover the whole iPad when available. Four-finger tap shows or hides diagnostics. Session recording samples about once a second and continues with diagnostics hidden."
+        message:@"Pause before changing resolution. Native sizes the render target from the window. Screen layout is handled separately. App CPU is averaged across all cores. Game CPU time measures the engine thread per frame. System-core readings cover the whole iPad when available. Four-finger tap shows or hides diagnostics. Session recording samples about once a second and continues with diagnostics hidden."
         preferredStyle:UIAlertControllerStyleActionSheet];
     NSArray<NSNumber *> *heights=@[@480,@720,@960,@0];
-    NSArray<NSString *> *titles=@[@"640 × 480 (original)",@"960 × 720",@"1280 × 960",@"Native screen pixels (4:3)"];
+    NSArray<NSString *> *titles=@[@"480p (original height)",@"720p",@"960p",@"Native screen pixels"];
     for(NSUInteger i=0;i<heights.count;++i){
         const NSInteger height=heights[i].integerValue;
         [sheet addAction:[UIAlertAction actionWithTitle:titles[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction *){[self selectHeight:height];}]];
     }
     [sheet addAction:[UIAlertAction actionWithTitle:self.detailed?@"Compact FPS overlay":@"Detailed diagnostics" style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
         self.detailed=!self.detailed;
+        nfs_sync_diagnostic_capture();
         reset_core_load();
         [NSUserDefaults.standardUserDefaults setBool:self.detailed forKey:@"NFSDetailedOverlay"];
     }]];
@@ -187,9 +188,13 @@ NSString *system_core_text(){
 static NFSPerformanceOverlay *overlay=nil;
 extern "C" void nfs_sync_diagnostic_capture(){
     static bool capturing=false;
-    const bool needed=overlay.visible || nfs_recording_active();
-    [overlay setDeviceMonitoring:needed];
-    if(needed!=capturing){capturing=needed;nfs_set_engine_metrics_capture(needed?1:0);}
+    const bool recording=nfs_recording_active();
+    [overlay setDeviceMonitoring:overlay.visible || recording];
+    const bool needsEngineMetrics=(overlay.visible && overlay.detailed) || recording;
+    if(needsEngineMetrics!=capturing){
+        capturing=needsEngineMetrics;
+        nfs_set_engine_metrics_capture(capturing?1:0);
+    }
 }
 // Main-thread visibility check. Session recording reads its own process CPU.
 extern "C" int nfs_detailed_overlay_wants_cpu(void *window){

@@ -1694,3 +1694,19 @@ The 48 outgoing frames have a specific missing texture. The fade has a graded ma
 Build 93 exercised the outgoing handoff, which committed zero draws in this run. Before Track Info took ownership, the preceding Location reverse transition lacked a current semantic snapshot (capture stage 1); the original renderer still drew the intended frames. The next source change reuses Location’s matching archived copy and current texture-upload record for this boundary, then runs the same new upload and texture checks. Incoming authored fade and settled Track Info remained functional.
 
 Build 96 completes the North Country Track Info opening in the observed desktop route. All 48 outgoing draws committed the authenticated HD Location sidebar, then the incoming slide and fade continued without a native presentation fallback in the route trace. The remastered return passed, and settled 16:9 and iPad-ratio samples were captured. The desktop app exited cleanly and restored the copied profile. See evidence/ui-track-info-complete-swipe-local.json. Other tracks, wider menu coverage, and physical iPad verification remain open.
+
+### Resolver candidate decision
+
+The bounded split-screen profile attributed 2.722 sampled CPU seconds to
+address resolution. Its three largest direct callers accounted for 1.17 of
+those seconds. Mutex samples were concentrated in guest copies and transaction
+setup. Unresolved stacks were 62.5% of sampled CPU, so this result cannot rank
+all engine and renderer costs.
+
+Moving resolver exception formatting into a cold helper reduced median time
+17.37% in the isolated DATA kernel and 18.95% in the mixed kernel. It slowed
+both full North Country desktop comparisons. Median swap spacing changed from
+29.85 to 30.55 ms in A/B order and from 29.33 to 30.56 ms in B/A order. The
+engine thread CPU median also increased in both orders. Keep the original
+resolver in the build and use the paired app metric as the promotion gate.
+These comparisons used software GLES on WSL and cannot establish iPad results.

@@ -104,7 +104,12 @@ static NSURL *recording_folder(){
     _frameEpoch=frame.window_epoch;_frameDrops=frame.dropped_total;
     self.recording=YES;nfs_sync_diagnostic_capture();nfs_reset_engine_metrics();
     const unsigned build=[[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"] intValue];
-    if(![self append:nfs::diagnostic_header(build)]){[self stop:@"write_error" notify:YES];return;}
+#ifdef NFS_DIAGNOSTIC_SOURCE
+    const auto header=nfs::diagnostic_header(build,NFS_DIAGNOSTIC_SOURCE);
+#else
+    const auto header=nfs::diagnostic_header(build);
+#endif
+    if(![self append:header]){[self stop:@"write_error" notify:YES];return;}
     self.timer=[NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer *){[self tick];}];
     self.timer.tolerance=0.1;[NSRunLoop.mainRunLoop addTimer:self.timer forMode:NSRunLoopCommonModes];
     [self tick];

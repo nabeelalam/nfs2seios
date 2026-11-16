@@ -123,7 +123,10 @@ extern "C" size_t nfs_audio_render(uintptr_t token,void *output,size_t bytes) no
         // Owner retains State until running reaches zero. Drop our lease first
         // so stop returns only after owned contexts/buffers can be destroyed.
         auto *finished=current.get();current.reset();
-        std::lock_guard<std::mutex> lock(finished->mutex);--finished->running;finished->changed.notify_all();
+        std::lock_guard<std::mutex> lock(finished->mutex);
+        --finished->running;
+        // Retirement is the only waiter and always marks the state inactive.
+        if(!finished->active && !finished->running)finished->changed.notify_one();
     }
     return produced;
 }

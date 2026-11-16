@@ -24,15 +24,19 @@ void SDLGamepadInput::update(bool active){
     for(unsigned slot=0;slot<2;++slot)if(input.pads[slot] && !SDL_GamepadConnected(input.pads[slot])){
         SDL_CloseGamepad(input.pads[slot]);input.pads[slot]=nullptr;input.ids[slot]=0;input.devices.publish(slot,nullptr);
     }
-    int count=0;auto ids=SDL_GetGamepads(&count);
-    if(!ids)throw std::runtime_error(SDL_GetError());
-    for(int i=0;i<count;++i){
-        if(ids[i]==input.ids[0] || ids[i]==input.ids[1])continue;
-        for(unsigned slot=0;slot<2;++slot)if(!input.pads[slot]){
-            auto pad=SDL_OpenGamepad(ids[i]);if(pad){input.pads[slot]=pad;input.ids[slot]=ids[i];}break;
+    // There is no free slot to assign while both attached pads are live.
+    // The connectivity checks still retire unplugged devices first.
+    if(!input.pads[0] || !input.pads[1]){
+        int count=0;auto ids=SDL_GetGamepads(&count);
+        if(!ids)throw std::runtime_error(SDL_GetError());
+        for(int i=0;i<count;++i){
+            if(ids[i]==input.ids[0] || ids[i]==input.ids[1])continue;
+            for(unsigned slot=0;slot<2;++slot)if(!input.pads[slot]){
+                auto pad=SDL_OpenGamepad(ids[i]);if(pad){input.pads[slot]=pad;input.ids[slot]=ids[i];}break;
+            }
         }
+        SDL_free(ids);
     }
-    SDL_free(ids);
     // SDL_OpenGamepad establishes trigger zero points. Open new devices before
     // consuming their first input update, or a pressed pedal can be reset to
     // zero until a later hardware change (also reproducible with SDL virtual IO).

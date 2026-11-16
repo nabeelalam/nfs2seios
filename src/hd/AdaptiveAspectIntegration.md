@@ -207,3 +207,36 @@ capture. Analog axes are preserved. The virtual SDL fixture exercised that
 ordering on player two, and both the virtual SDL and mapped input tests passed.
 The regenerated original engine unit compiled under ASan and UBSan. A physical
 controller mapped to downshift still needs an iPad resume check.
+
+## Combined ARM64 preview
+
+Workflow run 43946994663 built commit 3471a48aeb6f52ce44869f45172ea6fa58f565d9.
+The Linux gates and Apple device Release job passed. The base manifest reports
+an ARM64 iOS device executable requiring personal signing. Local assembly
+verified all 13 pinned artwork resources, including the two version 2
+information packs. The resulting private ZIP was 489,499,800 bytes, down from
+527,290,802 bytes for the preceding widescreen preview. Its uploaded digest
+matched the local verification. The temporary unpublished transfer was
+removed after private delivery.
+
+The acceptance checks for this revision are SideStore update and launch with
+the existing imported data, independent split-screen controls and audio,
+Pause resume with the confirm button bound to downshift, widescreen HUD and
+menu transitions, and a matched split-screen capture in normal and Low Power
+Mode. The build/package evidence does not establish those device results.
+
+## Local audio and input follow-up
+
+The gamepad adapter skips controller enumeration while both slots are occupied.
+The two-slot SDL and mapped input tests passed. The audio bridge wakes the
+retirement waiter when the inactive stream's final callback completes. Its SDL
+worker wakes only when the requested pause state changes. Both callback suites
+passed, and a local North Country split-screen replay produced 73.4 seconds of
+44.1 kHz stereo PCM using SDL's disk backend. The final 12 seconds had no fully
+silent 100 ms blocks and the game shut down cleanly.
+
+Future CI-built iPad diagnostics include the exact source commit in the session
+header. The log writer and analyzer reject malformed identifiers while older
+logs remain readable. Compact diagnostics retain the battery reading and
+engine CPU sampling remains available when recording. These changes followed
+the delivered ARM64 preview and still need Apple/device verification.

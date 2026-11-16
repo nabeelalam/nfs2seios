@@ -12,6 +12,9 @@ int main(){
     for(unsigned i=1;i<3600;++i)CHECK(limit.accept(i));
     CHECK(limit.count()==3600 && limit.expired(3599.5) && !limit.accept(3600));
     nfs::DiagnosticSessionLimit duration;CHECK(duration.accept(0));CHECK(duration.expired(3600));
+    const std::string commit(40,'a');
+    CHECK(nfs::diagnostic_header(19,commit).find("\"source_commit\":\""+commit+"\"")!=std::string::npos);
+    CHECK(nfs::diagnostic_header(19,"not a commit").find("source_commit")==std::string::npos);
     std::fputs(nfs::diagnostic_header(19).c_str(),stdout);
     nfs::DiagnosticSwapIntervals intervals;
     intervals.observe({1,140000000,20000000,3},100000000,200000000,3);

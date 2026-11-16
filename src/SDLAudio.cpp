@@ -20,7 +20,11 @@ struct NativeAudio {
     }
     bool request(bool value){
         std::lock_guard<std::mutex> lock(mutex);if(stopping || failed)return false;
-        requested_paused=value;changed.notify_all();return true;
+        if(requested_paused!=value){
+            requested_paused=value;
+            changed.notify_one();
+        }
+        return true;
     }
     void run(){
         nfs::SDLThreadCleanup thread_cleanup;

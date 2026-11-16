@@ -2,6 +2,7 @@
 import argparse
 import json
 import math
+import re
 import statistics
 from pathlib import Path
 
@@ -72,6 +73,9 @@ def summarize(data):
     build = rows[0].get("build")
     if type(build) is not int or not 0 < build < 1000000:
         raise ValueError("Invalid build")
+    source = rows[0].get("source_commit")
+    if "source_commit" in rows[0] and (not isinstance(source, str) or re.fullmatch("[0-9a-f]{40}", source) is None):
+        raise ValueError("Invalid source commit")
     groups = {False: [], True: []}
     windows = {False: [], True: []}
     seen_ids = set()
@@ -156,6 +160,8 @@ def summarize(data):
             "battery_first_observed_percent": batteries[0] if batteries else None,
             "battery_last_observed_percent": batteries[-1] if batteries else None,
             "battery_caution": "Coarse percentage; pooled mode samples may be noncontiguous. No energy or drain-rate inference."}
+    if source is not None:
+        result["source_commit"] = source
     result["stable_interval_comparison"] = {
         label: stable_interval_metrics(stable_intervals[power])
         for label, power in (("off", False), ("on", True))
