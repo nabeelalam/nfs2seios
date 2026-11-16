@@ -79,7 +79,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
     target_compile_definitions(glide_gles2 PRIVATE GLES2 NFS_CPP)
     target_link_libraries(glide_gles2 PRIVATE SDL3::SDL3)
     add_library(platform_bridges OBJECT src/MemoryWrappers.cpp src/FileBridge.cpp src/SandboxPaths.cpp src/SystemWrappers.cpp
-      src/FormatWrappers.cpp src/EventBridge.cpp src/CriticalSectionBridge.cpp src/ThreadBridge.cpp src/ThreadWrappers.cpp src/GameContexts.cpp src/ClockWrappers.cpp src/SDLClock.cpp src/TimerBridge.cpp src/GameTimer.cpp src/WindowBridge.cpp src/SDLWindow.cpp src/MainThreadBridge.cpp src/SDLMainThread.cpp src/RendererSurface.c src/ExitCallbacks.cpp src/AudioBridge.cpp src/SDLAudio.cpp
+      src/FormatWrappers.cpp src/EventBridge.cpp src/CriticalSectionBridge.cpp src/ThreadBridge.cpp src/ThreadWrappers.cpp src/GameContexts.cpp src/MenuTransitionSourceLife.cpp src/ClockWrappers.cpp src/SDLClock.cpp src/TimerBridge.cpp src/GameTimer.cpp src/WindowBridge.cpp src/SDLWindow.cpp src/MainThreadBridge.cpp src/SDLMainThread.cpp src/RendererSurface.c src/ExitCallbacks.cpp src/AudioBridge.cpp src/SDLAudio.cpp
       "${NFS_RENDERER_SOURCE_DIR}/GlideBridge.cpp" src/FrontendWordMode.cpp src/MenuResponsiveLayout.cpp src/FrontendTextContext.cpp)
     target_include_directories(platform_bridges PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src "${FULL_MAPPED_ENGINE}")
     target_link_libraries(platform_bridges PRIVATE SDL3::SDL3)
@@ -310,6 +310,7 @@ else()
     target_sources(renderer_pixel_tests PRIVATE src/SDLFrameRate.cpp src/EngineThreadMetrics.cpp)
     if(NFS_CLASSIC_UI)
       target_sources(renderer_pixel_tests PRIVATE
+        src/MenuTransitionSourceLife.cpp
         src/hd/ClassicScreens/IntroArtProvider.cpp
         src/hd/ClassicScreens/TrackInfoArtProvider.cpp
         src/hd/ClassicScreens/CarInfoArtProvider.cpp

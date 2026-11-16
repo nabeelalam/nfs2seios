@@ -8,9 +8,6 @@
 #endif
 #include <new>
 #include <stdexcept>
-extern "C" int nfs_menu_transition_source_life_current(uintptr_t game,uint64_t serial) {
-    return nfs_main_sidebar_origin::currentGameLife(game,serial)?1:0;
-}
 extern "C" Game *nfs_create_game_context() {
     void *storage=malloc32(sizeof(Game));
     if(!storage) return nullptr;
