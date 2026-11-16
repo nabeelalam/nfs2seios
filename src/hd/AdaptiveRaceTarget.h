@@ -46,8 +46,8 @@ class AdaptiveRaceTarget {
     static uint64_t pack(AdaptiveRaceExtent size) {
         return size?(uint64_t(size.width)<<32)|uint32_t(size.height):0;
     }
-    static AdaptiveRaceExtent unpack(uint64_t packed) {
-        return {int32_t(packed>>32),int32_t(uint32_t(packed))};
+    static AdaptiveRaceExtent unpack(uint64_t encoded) {
+        return {int32_t(encoded>>32),int32_t(uint32_t(encoded))};
     }
 public:
     void offer(AdaptiveRaceExtent size){offered_.store(pack(size),std::memory_order_release);}
