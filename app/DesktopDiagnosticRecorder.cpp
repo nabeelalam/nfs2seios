@@ -77,7 +77,7 @@ struct DesktopDiagnosticRecorder::Impl {
    const auto baseline=nfs_frame_timing_snapshot();start_drop=baseline.dropped_total;start_id=baseline.latest_frame_id;
    origin=SDL_GetTicksNS();last=origin;next=origin+1000000000ull;process=cpu_ns(false);main=cpu_ns(true);
    writer=std::thread([this]{write_loop();});
-   put(false,diagnostic_header(0),0);put(true,"frame_id,timestamp_ns,interval_ns,window_epoch\n",0);
+   put(false,diagnostic_header(0),0);put(true,"frame_id,timestamp_ns,interval_ns,window_epoch,swap_call_ns\n",0);
    nfs_set_engine_metrics_capture(1);nfs_frame_timing_capture(1);start_epoch=nfs_frame_timing_snapshot().window_epoch;
   }catch(...){if(writer.joinable()){{std::lock_guard<std::mutex>lock(mutex);closing=true;}changed.notify_one();writer.join();}for(unsigned i=0;i<opened;++i){if(*handles[i])std::fclose(*handles[i]);std::remove(paths[i].c_str());}throw;}
  }
@@ -95,14 +95,14 @@ struct DesktopDiagnosticRecorder::Impl {
   }
   if(std::fflush(samples)||std::fflush(frames))write_error.store(true);
   const auto dropped=end_drop>=start_drop?end_drop-start_drop:0;
-  const std::string summary="{\"schema\":\"nfsiise-desktop-recording-v1\",\"clock\":\"SDL_GetTicksNS\",\"clock_origin_ns\":"+std::to_string(origin)+",\"frame_scope\":\"swap submissions;not display photons or GPU duration\",\"fps_scope\":\"latest stamped rate window;null after2.5s\",\"game_cpu_scope\":\"original engine-thread 60-submission windows;sample_id identifies repeats;not presented-frame CPU\",\"unsupported_fields\":[\"ram_mb\",\"battery_percent\",\"battery_state\",\"brightness\",\"thermal_state\",\"low_power_mode\",\"app_state\",\"system_core_percent\"],\"end_reason\":\""+(write_error.load()?std::string("write_error"):reason)+"\",\"elapsed_ns\":"+std::to_string(elapsed_end)+",\"samples_enqueued\":"+std::to_string(sample_rows)+",\"samples_written\":"+std::to_string(written_samples.load())+",\"discarded_frames\":"+std::to_string(discarded_frames)+",\"frames_enqueued\":"+std::to_string(frame_rows)+",\"frames_written\":"+std::to_string(written_frames.load())+",\"start_window_epoch\":"+std::to_string(start_epoch)+",\"end_window_epoch\":"+std::to_string(end_epoch)+",\"start_frame_id\":"+std::to_string(start_id)+",\"end_frame_id\":"+std::to_string(end_id)+",\"capture_dropped\":"+std::to_string(dropped)+",\"writer_failed\":"+(write_error.load()?"true":"false")+"}\n";
+  const std::string summary="{\"schema\":\"nfsiise-desktop-recording-v1\",\"clock\":\"SDL_GetTicksNS\",\"clock_origin_ns\":"+std::to_string(origin)+",\"frame_scope\":\"swap submissions, no display or GPU timestamps\",\"swap_call_scope\":\"host elapsed nanoseconds inside SDL_GL_SwapWindow, zero if unavailable\",\"fps_scope\":\"latest stamped rate window;null after2.5s\",\"game_cpu_scope\":\"original engine-thread 60-submission windows;sample_id identifies repeats;not presented-frame CPU\",\"unsupported_fields\":[\"ram_mb\",\"battery_percent\",\"battery_state\",\"brightness\",\"thermal_state\",\"low_power_mode\",\"app_state\",\"system_core_percent\"],\"end_reason\":\""+(write_error.load()?std::string("write_error"):reason)+"\",\"elapsed_ns\":"+std::to_string(elapsed_end)+",\"samples_enqueued\":"+std::to_string(sample_rows)+",\"samples_written\":"+std::to_string(written_samples.load())+",\"discarded_frames\":"+std::to_string(discarded_frames)+",\"frames_enqueued\":"+std::to_string(frame_rows)+",\"frames_written\":"+std::to_string(written_frames.load())+",\"start_window_epoch\":"+std::to_string(start_epoch)+",\"end_window_epoch\":"+std::to_string(end_epoch)+",\"start_frame_id\":"+std::to_string(start_id)+",\"end_frame_id\":"+std::to_string(end_id)+",\"capture_dropped\":"+std::to_string(dropped)+",\"writer_failed\":"+(write_error.load()?"true":"false")+"}\n";
   if(std::fwrite(summary.data(),1,summary.size(),meta)!=summary.size()||std::fflush(meta))write_error.store(true);
   }catch(...){write_error.store(true);}
  }
  bool drain(bool final=false){NfsFrameTiming rows[128];for(unsigned batch=0;batch<8;++batch){const auto count=nfs_frame_timing_drain(rows,128);if(!count)break;
    if(frames_closed){discarded_frames+=count;if(!final)return false;continue;}
    std::string text;unsigned accepted=0;
-   for(unsigned i=0;i<count;++i){if(frame_rows+accepted>=limits.frames){discarded_frames+=count-i;reason="frame_limit";frames_closed=true;break;}const auto&r=rows[i];text+=std::to_string(r.frame_id)+","+std::to_string(r.timestamp_ns)+","+std::to_string(r.interval_ns)+","+std::to_string(r.window_epoch)+"\n";++accepted;}
+   for(unsigned i=0;i<count;++i){if(frame_rows+accepted>=limits.frames){discarded_frames+=count-i;reason="frame_limit";frames_closed=true;break;}const auto&r=rows[i];text+=std::to_string(r.frame_id)+","+std::to_string(r.timestamp_ns)+","+std::to_string(r.interval_ns)+","+std::to_string(r.window_epoch)+","+std::to_string(r.swap_call_ns)+"\n";++accepted;}
    if(accepted&&!put(true,std::move(text),accepted)){discarded_frames+=accepted;frames_closed=true;}else frame_rows+=accepted;
    if(frames_closed&&!final)return false;
   }return !frames_closed;}

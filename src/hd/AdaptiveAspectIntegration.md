@@ -501,3 +501,14 @@ and with a replacement device whose add event was discarded. It also
 covered both players' state, neutral disconnect and reconnect into the
 vacated slot. The game-loop translation unit compiled. Physical
 hotplug and the battery impact remain unmeasured.
+
+The desktop recorder now includes host swap duration in its per-frame
+CSV. An integrated original-data North Country split-screen replay
+recorded 1,024 consecutive race submissions at 800x450 without reported
+capture loss. Median submission spacing was 26.649 ms and median host
+swap duration was 1.910 ms in this software-rendered replay. Audio
+captured during the same race interval contained non-silent samples.
+The game resized through 708x492 and 800x600, returned to 800x450 and
+exited cleanly. This replay used keyboard input. The separate virtual
+controller suite passed multi-controller discovery, disconnect and
+reconnect. iPad timing and physical pad checks remain open.
