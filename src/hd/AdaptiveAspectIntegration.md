@@ -1070,3 +1070,9 @@ scheduling and cannot establish GPU execution time or which submitted
 frames reached the display. The recorder does not change frame cadence.
 Local JSON and analyzer fixtures passed. The native measurements await
 the next iPad build and a matched recording.
+
+A separate 800x450 North Country split-screen replay verified both
+controllers driving in first gear before its 30-second timing window.
+The recorder separated 33 pre-race samples from 44 race-world-only
+samples. The run ended cleanly and the disposable inputs were restored.
+This covers desktop split-screen classification only.
