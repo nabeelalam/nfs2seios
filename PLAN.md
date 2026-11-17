@@ -22,23 +22,21 @@ Two requirements are part of the goal:
 
 ### Current private iPad candidate
 
-Workflow 44072219911 passed the Linux and Apple checks at source
-f92683906c99b97134462276fff1ca8e2cf3e0d5. The unsigned ARM64 IPA was
-assembled with 13 verified private artwork resources. The
-489,729,278-byte ZIP matched the private release asset SHA-256
-73e007e600d872389b5063815e78105398d8eb06b1d968ff9c32cbe1853e2258.
-The artwork-free base draft was removed after verified delivery.
-This supersedes workflow 44046323957.
+Workflow 44084402478 passed Linux and Apple validation at source
+1aa5eb1816c8750a8457667a073e856ba5a4939d. The unsigned ARM64 IPA includes
+13 separately verified private artwork resources. The
+489,730,225-byte ZIP matched the private release asset SHA-256
+54ab89c563cbdb0adc743ce1b4030ce6dc796a87af93431db05542a1121352a3.
+The temporary artwork-free base draft was removed after delivery.
+This supersedes workflow 44072219911.
 
-This candidate includes one-time four-car Opponents renderer checkpoints,
-recovery from partial transition texture allocation, corrected Race Summary
-timing shadows and startup validation for an existing game import. The
-packaged executable contains the exact source revision, adaptive race
-camera and raster symbols, and the new log and recovery messages.
-Local original-data Opponents and Race Summary replays and importer checks
-passed. Physical iPad acceptance remains open. Verify Opponents entry and
-native-aspect transitions, then compare matched split-screen North Country
-recordings with Low Power Mode off and on.
+The packaged executable contains the race-world interval and display-link
+lateness fields, widescreen race symbols, the Opponents diagnostics and
+the existing-import checks. The local single-player and two-controller
+recordings verified race-world classification. SideStore upgrade and
+physical gameplay are pending for this exact package. Verify Opponents
+entry first, then record matched North Country split-screen sections with
+Low Power Mode off and on.
 
 The desktop Player One check at 2360x1640 covered entry, two observed
 car swipes and the return to Main. Three Right inputs were sent. The trace
