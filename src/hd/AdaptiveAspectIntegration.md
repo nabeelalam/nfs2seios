@@ -958,3 +958,10 @@ The trace was uncapped. Its two native runs occurred before the menu became
 wide and after both visits ended. This verifies presentation routing inside
 the local replay. The trace cannot identify the iPad crash or certify each
 artwork layer on every animation frame.
+
+The four-car entry uses the menu transition renderer. In an original-data
+desktop replay at 2360x1640, two visits each logged one transition begin and
+one acceptance, even with two class changes per visit. Both returned to Main
+and the app exited cleanly. The diagnostic desktop flag enables the same
+app log sink used on iPad. The separate scene renderer checkpoints did not
+fire on these visits. The physical crash remains unverified.

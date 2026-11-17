@@ -13,6 +13,7 @@
 #include "HdAtlas.h"
 #include "hd/ArtworkActivation.h"
 #include <cstdio>
+#include <cstdlib>
 #include <memory>
 #include <stdexcept>
 #include <exception>
@@ -50,7 +51,10 @@ int main(int argc,char **argv){
     catch(const std::exception &error){std::fprintf(stderr,"Diagnostic option: %s\n",error.what());return 1;}
 #endif
     nfs::open_app_log(nfs::app_log_path(argc,argv));
-#if defined(SDL_PLATFORM_IOS)
+#if !defined(SDL_PLATFORM_IOS)
+    const char *opponents_trace = std::getenv("NFS_PRIVATE_OPPONENT_DIAG");
+    if (opponents_trace && opponents_trace[0] == '1' && !opponents_trace[1])
+#endif
     nfs::set_opponents_visit_sink([](nfs::OpponentsVisit stage){
         switch(stage){
         case nfs::OpponentsVisit::Entered:nfs::app_log("Opponents","entered menu");break;
@@ -64,7 +68,6 @@ int main(int argc,char **argv){
         case nfs::OpponentsVisit::Left:nfs::app_log("Opponents","left menu");break;
         }
     });
-#endif
     nfs::app_log("Native app","Need for Speed II SE; platform="+std::string(SDL_GetPlatform()));
 #if defined(NFS_DIAGNOSTIC_SOURCE)
     nfs::app_log("Source revision",NFS_DIAGNOSTIC_SOURCE);
