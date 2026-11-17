@@ -29,11 +29,17 @@ int main(int argc,char **argv){
         fs::remove(support/"text.eng");
         fails([&]{nfs::import_assets(source.string(),support.string(),(root/"missing-support").string());});
         require(!fs::exists(root/"missing-support"),"partial import published");no_staging(root);
+        write(support/"text.eng","");
+        fails([&]{nfs::import_assets(source.string(),support.string(),(root/"empty-bundled-language").string());});
+        require(!fs::exists(root/"empty-bundled-language"),"empty bundled startup file published an import");no_staging(root);
         write(support/"text.eng","language fixture");
         const auto no_support=root/"executable-only-support";fs::create_directories(no_support);
         fails([&]{nfs::import_assets(source.string(),no_support.string(),(root/"missing-selected-support").string());});
         require(!fs::exists(root/"missing-selected-support"),"missing startup files published an import");no_staging(root);
-        write(source/"INSTALL.WIN","selected configuration");write(source/"Text.ENG","selected language");
+        write(source/"INSTALL.WIN","");write(source/"Text.ENG","selected language");
+        fails([&]{nfs::import_assets(source.string(),no_support.string(),(root/"empty-selected-config").string());});
+        require(!fs::exists(root/"empty-selected-config"),"empty selected startup file published an import");no_staging(root);
+        write(source/"INSTALL.WIN","selected configuration");
         write(source/"TEXT.FRE","selected optional language");
         const auto selected_support=root/"selected-support-result";
         nfs::import_assets(source.string(),no_support.string(),selected_support.string());

@@ -65,8 +65,10 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
     }
     for(const auto name:{"install.win","text.eng"}){
         const auto file=startup.find(name);
-        if(file==startup.end() || !fs::is_regular_file(fs::symlink_status(file->second)))
-            throw std::runtime_error("Startup files are missing or invalid. Select a folder containing GAMEDATA, FEDATA, install.win and text.eng. Existing imported game folders can be reused.");
+        if(file==startup.end() || !fs::is_regular_file(fs::symlink_status(file->second)) ||
+           fs::file_size(file->second)==0)
+            throw std::runtime_error(std::string("Required startup file is missing, empty or invalid: ")+name+
+                ". Select the folder containing GAMEDATA, FEDATA, install.win and text.eng.");
     }
     Staging staging;
     std::random_device random;
