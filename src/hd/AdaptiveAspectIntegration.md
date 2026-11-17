@@ -909,3 +909,14 @@ original-data game entered Opponents twice at 2360x1640, selected verified
 class A, B and C artwork, returned to Main twice and shut down cleanly.
 This avoids rebuilding the 2.86 MB class composite on a cache hit.
 The reported device crash cause and iPad memory and FPS remain unverified.
+
+## Original-data import with the private package layout
+
+The delivered IPA was inspected and contains no original startup files.
+With an empty bundle support folder, the updated importer copied 1,018
+required and optional files from an isolated original install. The
+destination inventory and each file digest matched the selected source.
+Top-level unrelated files were excluded. The source inventory stayed
+identical after a desktop game session launched from the imported copy,
+entered North Country, produced non-silent audio and exited cleanly.
+The iPad document picker and signing path were outside this local test.
