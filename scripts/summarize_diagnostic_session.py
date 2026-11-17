@@ -72,9 +72,9 @@ def stable_interval_metrics(rows):
             pacing_samples += 1
             if late_unlocked * 2 >= swaps:
                 slow_samples += 1
-                # The recorder serializes elapsed seconds at six significant digits.
+                # Each of the three time values is rounded to four decimal places.
                 contiguous = (previous_slow_end is not None
-                              and abs(elapsed - interval - previous_slow_end) <= 0.01)
+                              and abs(elapsed - interval - previous_slow_end) <= 0.0002)
                 slow_run = slow_run + interval if contiguous else interval
                 longest_slow_run = max(longest_slow_run, slow_run)
                 previous_slow_end = elapsed

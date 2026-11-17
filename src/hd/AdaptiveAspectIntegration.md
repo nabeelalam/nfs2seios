@@ -1197,3 +1197,24 @@ commands, median wall time was 140.613 ms in the baseline and 140.298 ms
 in the candidate. The roughly 0.2 percent difference does not justify
 changing cancellation synchronization or building a new IPA. The
 production queue stays unchanged.
+
+### Sustained pacing summary
+
+The offline analyzer now reports the fraction of stable unlocked samples
+where at least half the measured swap intervals exceed 18 ms, plus the
+longest contiguous run of those samples. Filtered intervals break the
+run. The desktop JSON sample fields for swap counts are null by design;
+the companion frame CSV retains individual timestamp and interval values.
+Reconstructing complete intervals within steady race-only samples of an
+existing two-controller North Country drive produced 1,475 swaps across
+44 samples, with 94.64 percent above 18 ms and a 30.037-second longest
+majority-slow run. No frame records were dropped. This exercises the
+summary on software GLES data, not iPad Low Power Mode.
+
+The updated desktop recorder emitted pacing counts directly in a fresh
+two-controller North Country replay. Of 41 race samples, all 39 with
+unambiguous serialized boundaries matched the raw CSV counts exactly
+at both 18 and 20 ms. The other two fell within the JSON timestamp
+rounding margin and were excluded from the independent comparison.
+The recorder lost no rows and shut down cleanly. The analyzer's longest
+run calculation now uses a 0.2 ms rounding tolerance.
