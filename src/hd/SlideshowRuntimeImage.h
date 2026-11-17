@@ -18,8 +18,8 @@ inline bool loadImage(const char* path,const RuntimeImagePin& pin,
                       std::vector<unsigned char>& rgba,bool preview=false) noexcept {
     try {
         if(!path || !*path || (!pin.accepted&&!preview) ||
-           (pin.version!=2&&pin.version!=3) ||
-           pin.pixels.predictor!=(pin.version==3?1u:0u) ||
+           (pin.version<2||pin.version>4) ||
+           pin.pixels.predictor!=(pin.version-2) ||
            source!=pin.sourceSha || entry!=pin.entrySha ||
            pin.fileBytes<16 || pin.fileBytes>512ull*1024ull*1024ull ||
            pin.offset<16 || pin.offset>pin.fileBytes || !pin.bytes ||

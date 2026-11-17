@@ -116,7 +116,7 @@ def _slideshow_structure(catalog,footer):
             raise ValueError('Invalid original source layout metadata')
         sourceKeys.append((_metadata_digest(row[6]),_metadata_digest(row[7])))
     if len(set(sourceKeys))!=98:raise ValueError('Duplicate slideshow source fingerprints')
-    previous=16;fileSize=None;runtimeKeys=[]
+    previous=16;fileSize=None;runtimeVersion=None;runtimeKeys=[]
     for row in images:
         if not isinstance(row,list)or len(row)!=9:raise ValueError('Invalid RuntimeImagePin metadata')
         size=_metadata_uint(row[0],512*1024*1024);offset=_metadata_uint(row[1],512*1024*1024);span=_metadata_uint(row[2],32*1024*1024)
@@ -126,8 +126,10 @@ def _slideshow_structure(catalog,footer):
         pixel=row[6]
         if not isinstance(pixel,list)or len(pixel)!=4:raise ValueError('Invalid pixel layout metadata')
         w,h=(_metadata_uint(x,4096)for x in pixel[:2]);_metadata_digest(pixel[2])
-        if not w or not h or w*3!=h*4 or type(pixel[3])is not int or pixel[3]!=1 or row[7]is not True or type(row[8])is not int or row[8]!=3:
+        version=row[8]
+        if not w or not h or w*3!=h*4 or type(version)is not int or version not in (3,4) or type(pixel[3])is not int or pixel[3]!=version-2 or row[7]is not True or (runtimeVersion is not None and version!=runtimeVersion):
             raise ValueError('Unaccepted slideshow version/layout metadata')
+        runtimeVersion=version
     if previous!=fileSize or runtimeKeys!=sourceKeys:raise ValueError('Slideshow source/resource fingerprint mismatch')
     footerSize=int(fm[1]);previous=16
     if not 16<=footerSize<=256*1024*1024:raise ValueError('Invalid footer resource size')
