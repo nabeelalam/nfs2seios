@@ -36,7 +36,8 @@ jobs:
   build:
     if: inputs.linux_gate_passed && github.event.repository.visibility == 'public' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codex/hd-ui')
     runs-on: macos-15-intel
-    timeout-minutes: 30
+    # SDK configuration can take about 20 minutes on the standard runner.
+    timeout-minutes: 40
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
