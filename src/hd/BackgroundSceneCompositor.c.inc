@@ -53,16 +53,32 @@ static int nfs_bg_preview_generation_current(const NfsOriginalPreviewLayerView*v
 static int nfs_bg_preview_view(const NfsOriginalPreviewLayerView*v){
  return nfs_bg_preview_generation_current(v)&&(v->schema==NFS_ORIGINAL_PREVIEW_LAYER_SCHEMA||v->schema==NFS_AUTHORED_PREVIEW_LAYER_SCHEMA)&&v->left>=0&&v->top>=0&&v->width&&v->height&&(uint64_t)(uint32_t)v->left+v->width<=640&&(uint64_t)(uint32_t)v->top+v->height<=480&&v->pixels565&&v->pixelCount==(size_t)v->width*v->height&&v->coverage&&v->coverageCount==v->pixelCount;
 }
+/* Preconditions: the caller validated the preview and retains its source
+   through the synchronous GLES client-memory upload. */
+static const unsigned char*nfs_bg_preview_upload_pixels(const NfsOriginalPreviewLayerView*v,unsigned char**converted){
+ *converted=NULL;
+ if(v->schema==NFS_AUTHORED_PREVIEW_LAYER_SCHEMA)return v->authoredRGBA;
+ *converted=(unsigned char*)malloc(v->pixelCount*4);
+ if(!*converted)return NULL;
+ for(size_t k=0;k<v->pixelCount;++k){
+  unsigned value=v->pixels565[k],red=(value>>11)&31,green=(value>>5)&63,blue=value&31;
+  unsigned char*at=*converted+4*k;
+  at[3]=v->coverage[k];
+  at[0]=at[3]?(unsigned char)((red<<3)|(red>>2)):0;
+  at[1]=at[3]?(unsigned char)((green<<2)|(green>>4)):0;
+  at[2]=at[3]?(unsigned char)((blue<<3)|(blue>>2)):0;
+ }
+ return *converted;
+}
 static int nfs_bg_preview_prepare(NfsBackgroundSceneCompositor*s,const NfsOriginalPreviewLayerView*v){
- unsigned char digest[32],coverageDigest[32],*rgba;const uint16_t little=1;NfsBgSaved saved;int ok;size_t k;unsigned tw,th;size_t count;
+ unsigned char digest[32],coverageDigest[32];unsigned char*converted=NULL;const unsigned char*rgba;const uint16_t little=1;NfsBgSaved saved;int ok;size_t k;unsigned tw,th;
  if(!nfs_bg_preview_view(v)||*(const unsigned char*)&little!=1||!nfs_texture_sha256((const unsigned char*)v->pixels565,v->pixelCount*2,digest)||memcmp(digest,v->sha256,32)||!nfs_texture_sha256(v->coverage,v->coverageCount,coverageDigest)||memcmp(coverageDigest,v->coverageSha256,32))return 0;
  for(k=0;k<v->coverageCount;++k)if(v->coverage[k]&&v->coverage[k]!=255)return 0;
- tw=v->width;th=v->height;count=v->pixelCount;
- if(v->schema==NFS_AUTHORED_PREVIEW_LAYER_SCHEMA){if(!v->authoredRGBA||v->authoredWidth!=v->width*4||v->authoredHeight!=v->height*4||v->authoredBytes!=(size_t)v->authoredWidth*v->authoredHeight*4||!nfs_texture_sha256(v->authoredRGBA,v->authoredBytes,digest)||memcmp(digest,v->authoredSha256,32))return 0;for(k=0;k<v->authoredBytes;k+=4)if(v->authoredRGBA[k]>v->authoredRGBA[k+3]||v->authoredRGBA[k+1]>v->authoredRGBA[k+3]||v->authoredRGBA[k+2]>v->authoredRGBA[k+3])return 0;tw=v->authoredWidth;th=v->authoredHeight;count=(size_t)tw*th;}
+ tw=v->width;th=v->height;
+ if(v->schema==NFS_AUTHORED_PREVIEW_LAYER_SCHEMA){if(!v->authoredRGBA||v->authoredWidth!=v->width*4||v->authoredHeight!=v->height*4||v->authoredBytes!=(size_t)v->authoredWidth*v->authoredHeight*4||!nfs_texture_sha256(v->authoredRGBA,v->authoredBytes,digest)||memcmp(digest,v->authoredSha256,32))return 0;for(k=0;k<v->authoredBytes;k+=4)if(v->authoredRGBA[k]>v->authoredRGBA[k+3]||v->authoredRGBA[k+1]>v->authoredRGBA[k+3]||v->authoredRGBA[k+2]>v->authoredRGBA[k+3])return 0;tw=v->authoredWidth;th=v->authoredHeight;}
  if(s->previewReady&&s->previewTexture&&glIsTexture(s->previewTexture)&&s->previewLocationArtGeneration==v->locationArtGeneration&&s->previewWidth==tw&&s->previewHeight==th&&!memcmp(s->previewSha256,digest,32)&&!memcmp(s->previewCoverageSha256,coverageDigest,32))return nfs_bg_preview_generation_current(v);
- rgba=(unsigned char*)malloc(count*4);if(!rgba)return 0;
- if(v->schema==NFS_AUTHORED_PREVIEW_LAYER_SCHEMA)memcpy(rgba,v->authoredRGBA,v->authoredBytes);else for(k=0;k<v->pixelCount;++k){unsigned value=v->pixels565[k],red=(value>>11)&31,green=(value>>5)&63,blue=value&31;unsigned char*at=rgba+4*k;at[3]=v->coverage[k];at[0]=at[3]?(unsigned char)((red<<3)|(red>>2)):0;at[1]=at[3]?(unsigned char)((green<<2)|(green>>4)):0;at[2]=at[3]?(unsigned char)((blue<<3)|(blue>>2)):0;}
- nfs_bg_save(&saved);s->previewReady=0;if(!s->previewTexture)glGenTextures(1,&s->previewTexture);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,s->previewTexture);nfs_frame_texture_params();glPixelStorei(GL_UNPACK_ALIGNMENT,1);glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,tw,th,0,GL_RGBA,GL_UNSIGNED_BYTE,rgba);ok=s->previewTexture&&glGetError()==GL_NO_ERROR;nfs_bg_restore(&saved);free(rgba);
+ rgba=nfs_bg_preview_upload_pixels(v,&converted);if(!rgba)return 0;
+ nfs_bg_save(&saved);s->previewReady=0;if(!s->previewTexture)glGenTextures(1,&s->previewTexture);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,s->previewTexture);nfs_frame_texture_params();glPixelStorei(GL_UNPACK_ALIGNMENT,1);glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,tw,th,0,GL_RGBA,GL_UNSIGNED_BYTE,rgba);ok=s->previewTexture&&glGetError()==GL_NO_ERROR;nfs_bg_restore(&saved);free(converted);
  if(!ok||!nfs_bg_preview_generation_current(v))return 0;s->previewLocationArtGeneration=v->locationArtGeneration;s->previewWidth=tw;s->previewHeight=th;memcpy(s->previewSha256,digest,32);memcpy(s->previewCoverageSha256,coverageDigest,32);s->previewReady=1;return 1;
 }
 static int nfs_bg_location_view(const NfsLocationSceneFrameView*v){

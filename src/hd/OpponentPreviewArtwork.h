@@ -42,8 +42,8 @@ public:
   const auto generation=class_?klass_.generation:photo_.generation;const auto current=class_?nfs_class_picture_art_generation():nfs_player_photo_art_generation();
   const auto index=class_?klass_.images[0].sourceIndex:photo_.images[0].sourceIndex;const auto schema=class_?klass_.schema:photo_.schema,n=class_?klass_.count:photo_.count;
   if(schema!=1||n!=1||!generation||generation!=current||index!=(class_?selection_-12:selection_)||!bytes||width!=logicalWidth_*4||height!=logicalHeight_*4||count!=size_t(width)*height*4)return false;
-  unsigned char actual[32];if(!nfs_texture_sha256(bytes,count,actual)||std::memcmp(actual,sha,32))return false;
-  for(size_t at=0;at<count;at+=4)if((!class_&&bytes[at+3]!=255)||bytes[at]>bytes[at+3]||bytes[at+1]>bytes[at+3]||bytes[at+2]>bytes[at+3])return false;
+  // Both providers validate the digest and alpha before publishing their
+  // immutable copies. The retained lease keeps those exact bytes alive.
   if(class_&&(classComposite_.size()!=count))return false;
   out.left=int32_t(left_);out.top=int32_t(top_);out.width=logicalWidth_;out.height=logicalHeight_;out.pixels565=canvas_.data();out.pixelCount=canvas_.size();out.coverage=coverage_.data();out.coverageCount=coverage_.size();std::copy(canvasSha_.begin(),canvasSha_.end(),out.sha256);std::copy(coverageSha_.begin(),coverageSha_.end(),out.coverageSha256);
   out.schema=NFS_AUTHORED_PREVIEW_LAYER_SCHEMA;out.authoredRGBA=class_?classComposite_.data():bytes;out.authoredBytes=count;out.authoredWidth=width;out.authoredHeight=height;std::memcpy(out.authoredSha256,class_?classCompositeSha_.data():sha,32);return true;

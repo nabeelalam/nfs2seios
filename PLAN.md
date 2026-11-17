@@ -38,24 +38,41 @@ untextured shader change follow this package and remain local.
 
 ### Latest physical widescreen preview feedback
 
-The iPad test confirms the HD splash and settled fullscreen Main. Startup,
-Location list/track changes, Player car changes, and Opponents entry still
-show original 4:3 frames during animation. Opponents entry crashed after
-the four car cards slid into view. Prioritize the crash and trace each
-native presentation through the affected transitions before another build.
+The reported iPad preview confirms the HD splash and settled fullscreen Main.
+Startup, Location list and track changes, Player car changes, and Opponents
+entry showed original 4:3 frames during animation. Opponents crashed just
+after the four car cards slid into view. The report does not identify the
+package digest, so keep this observation separate from the current candidate.
 
-Use a common foreground mask and soft shadow for every Location card.
-Keep photo framing independent of the shadow, and compare all cards
-together. Keep the consistent rectangular Player photos while checking
-their shadow treatment independently. Slideshow photos are HD but contained
-in 4:3, and spinning manufacturer marks remain low-resolution and contained.
-Single-player racing also remains 4:3 in the tested package. The current
-camera and renderer admission code covers stacked split-screen views only;
-single-player needs its own validated camera, culling and HUD path.
+The current candidate includes the shared Location photo mask and separate
+soft shadow, wider single-player racing and slideshow, and higher-resolution
+spinning manufacturer marks. Those have local coverage and still need device
+verification. Check native iPad proportions on device and 16:9 separately.
 
-The physical test covers the device's native ratio. Use local 16:9 validation
-for that target. The user observed 40-60 FPS in single-player Low Power Mode;
-the target of sustained 60 FPS remains open.
+The existing 2360x1640 desktop replay covers two Opponents entries, four
+class changes, and both returns to Main without a crash. Its memory reading
+includes software GLES and cannot identify an iPad termination cause. If
+the crash recurs on the current candidate, obtain the matching app or
+JetsamEvent report at the crash time before changing the card handoff.
+An app exception or native fault and an OS memory termination require
+different fixes. Keep the report private and retain only the package
+revision, route, and sanitized failure classification in project evidence.
+
+The renderer now uploads validated remastered previews directly from retained
+artwork in the settled menu and the entry/return transitions. A synthetic
+GLES test checks authored pixel readback and texture reuse, and the full
+desktop Glide renderer compiles with all three upload paths. The existing
+frame ownership and upload validation still apply. The renderer change was replayed in a linked desktop game at 2360x1640:
+two Opponents entries, four class changes, both returns to Main, and clean
+shutdown. The renderer's uncapped route-change counters cover 221 and 214
+consecutive wide presentations through the respective entry, class changes,
+and return sequences, with zero native route selections in either window.
+The next native selection occurred after the second return to wide Main.
+These are presentation-route and settled-capture checks in WSL software
+GLES. Physical iPad behavior and the cause of the crash remain open.
+
+The reported 40-60 FPS was single-player Low Power Mode. Sustained
+60 FPS in split-screen Low Power Mode remains the performance target.
 
 
 ### Build 22 physical feedback and active correction batch
