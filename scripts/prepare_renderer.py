@@ -111,6 +111,11 @@ def prepare_renderer(classic_screens=False,classic_assets_dir=None,output_dir=No
         shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
     from menu_responsive_renderer_hooks import add_menu_responsive_renderer_hooks
     text = add_menu_responsive_renderer_hooks(text)
+    # The intro selector binds its source explicitly when it needs to inspect
+    # it, and the presentation hook binds the resulting texture on all paths.
+    front_bind='\tglBindTexture(GL_TEXTURE_2D, g_frontTexture);\n/* NFS_PLAYER_INTRO_RENDERER_BEGIN:display-texture */'
+    if text.count(front_bind)!=1:raise ValueError('Unexpected front presentation texture bind')
+    text=text.replace(front_bind,'/* NFS_PLAYER_INTRO_RENDERER_BEGIN:display-texture */',1)
     shutil.copyfile(ROOT / 'src/hd/MenuResponsiveRenderer.inc',dest / 'hd/MenuResponsiveRenderer.inc')
     for name in ('NativeUploadReceiptIndex.h','ChildExitPreludeAbi.h','ChildExitRenderer.h','ChildExitRenderer.inc','ChildExitPreviewRenderer.inc','ChildReturnPreludeAbi.h','ChildReturnRenderer.h','ChildReturnRenderer.inc','ChildReturnNativeGeometry.h'):
         shutil.copyfile(ROOT / 'src/hd' / name, dest / 'hd' / name)
