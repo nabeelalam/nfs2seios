@@ -811,3 +811,13 @@ replacement context can decline a previously accepted wide target and
 that a transient missing limit can recover at the same dimensions.
 The paired sources regenerated and the actual renderer passed its
 desktop syntax check. The iPad fallback report remains unconfirmed.
+
+The current paired renderer checks the depth renderbuffer limit alongside
+the color texture limit before offering a wide target. The generated
+sanitizer fixture verified both limits independently and recovery from a
+temporarily unavailable depth limit. The rebuilt renderer passed the
+standalone software GLES pixel suite with an iPad-sized 2360x1640 drawable.
+The suite covered resolution reallocation, real context recreation, texture
+restoration and RGB565 readback. Its 2186x1640 native test uses a contained
+framebuffer. The generated fixture covers the wide-target acceptance rule.
+Neither check is a physical iPad race.
