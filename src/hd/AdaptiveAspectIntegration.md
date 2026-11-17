@@ -790,3 +790,15 @@ desktop sample of final raster coverage. No further glyph shift was
 applied on the strength of that sample. Split-screen captures from
 the selected profile did not display a minimap. The game shut down
 cleanly and the copied profile was restored.
+
+## Delivered iPad executable inspection
+
+The local copy of the private ZIP for workflow 44007923686 matched its
+recorded size and SHA-256. Its nested IPA matched the separately staged
+IPA byte for byte by SHA-256. The packaged ARM64 game executable
+defines the adaptive camera routine, race-frame handoff, raster scope
+switch and wide target replacement. This confirms that the package
+contains the paired race path. A device session still has to admit a
+wide target from its drawable and render settings. The executable
+inspection cannot establish which package produced the reported 4:3
+race or how that session selected its viewport.
