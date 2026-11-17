@@ -22,20 +22,23 @@ Two requirements are part of the goal:
 
 ### Current private iPad candidate
 
-Workflow 44046323957 passed the Linux and Apple checks at source
-f7854b93918970e59767f08d617699545ab491dd. The unsigned ARM64 IPA was
-assembled with the 13 verified private artwork resources. The 489,727,403-byte
-ZIP matched the private release asset digest. The artwork-free base draft
-was removed after delivery. This supersedes workflow 44007923686.
+Workflow 44072219911 passed the Linux and Apple checks at source
+f92683906c99b97134462276fff1ca8e2cf3e0d5. The unsigned ARM64 IPA was
+assembled with 13 verified private artwork resources. The
+489,729,278-byte ZIP matched the private release asset SHA-256
+73e007e600d872389b5063815e78105398d8eb06b1d968ff9c32cbe1853e2258.
+The artwork-free base draft was removed after verified delivery.
+This supersedes workflow 44046323957.
 
-This candidate includes wide framebuffer recovery after graphics context
-recreation, Load/Save and View Replay widescreen drawer handling, the source
-revision in the startup log, and first-scene renderer checkpoints in
-Opponents. Two native-size Opponents visits and class changes completed on
-the grouped desktop build. Physical iPad acceptance remains open. Verify
-Opponents entry and native-aspect transitions, then compare matched
-split-screen North Country recordings with Low Power Mode off and on.
-
+This candidate includes one-time four-car Opponents renderer checkpoints,
+recovery from partial transition texture allocation, corrected Race Summary
+timing shadows and startup validation for an existing game import. The
+packaged executable contains the exact source revision, adaptive race
+camera and raster symbols, and the new log and recovery messages.
+Local original-data Opponents and Race Summary replays and importer checks
+passed. Physical iPad acceptance remains open. Verify Opponents entry and
+native-aspect transitions, then compare matched split-screen North Country
+recordings with Low Power Mode off and on.
 
 The desktop Player One check at 2360x1640 covered entry, two observed
 car swipes and the return to Main. Three Right inputs were sent. The trace
