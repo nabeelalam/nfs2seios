@@ -978,6 +978,21 @@ observer. Moving the window to the virtual origin resolved the capture
 failure. No iPad behavior, natural record entry or return to Main was
 established by the corrected replay.
 
+### Deferred Results backdrop trial
+
+The trial leaves 20,808,068 decoded bytes on disk until the Results handler
+authenticates the original backdrop. The production loader published all
+three aspect variants in a standalone check. Three fresh desktop processes
+took 221.4, 247.7 and 249.8 ms for synchronous first load, including pack
+validation and decompression. Two ordinary-input Proving Grounds replays
+reached the first authored Results frame at 800x450. Both also rendered
+Results at 1280x720 and 1180x820 and exited cleanly. The swap interval into
+the first wide Results frame was 478.3 ms with eager loading and 701.8 ms
+with deferred loading. The 223.5 ms difference is from a single replay per
+build and is consistent with the isolated loader timings. The synchronous
+defer was reverted because it moves that cost to the visible transition.
+This is desktop timing evidence, and iPad transition timing is unmeasured.
+
 ### Race Summary timing shadow
 
 The original race timing paths can emit the one-pixel shadow in RGB 0x000008,
@@ -1006,6 +1021,28 @@ one acceptance, even with two class changes per visit. Both returned to Main
 and the app exited cleanly. The diagnostic desktop flag enables the same
 app log sink used on iPad. The separate scene renderer checkpoints did not
 fire on these visits. The physical crash remains unverified.
+
+### Opponents 16:9 presentation replay
+
+At 1920x1080, two visits each completed the four-car slide-in, two class
+changes and the return to Main. The uncapped presentation trace covered
+frames 215 through 518 and 633 through 934, including the first returning
+Main frame in each visit. All 606 presentations succeeded on a wide route.
+Both visits logged one four-car transition begin and one acceptance, and
+the game exited cleanly. This checks desktop presentation routing. The
+cause of the reported iPad termination remains open.
+
+### Opponents crash log verification
+
+The desktop build with first-frame commit logging recorded one commit begin
+and one successful commit on each of two visits, followed by both menu exits
+and clean shutdown. A separate abrupt-process-exit test confirmed the shared
+log writer flushes the last renderer checkpoint to the file before returning
+to the caller. The iPad launch path renames the current log to
+`native-port-previous.log` and then opens a new log. Retrieve the previous
+log after one relaunch, since subsequent launches replace it. The test does
+not exercise iPadOS termination or prove that a memory warning will precede
+an OS kill.
 
 ### Transition target allocation recovery
 
@@ -1044,6 +1081,17 @@ caller at 0.610 sampled seconds. The remaining identified direct costs were
 spread across several original routines. Software rendering accounted for
 most attributed samples. This run does not establish a performance change
 or describe the iPad GPU, Low Power Mode, or energy use.
+
+### Direct fixed-memory resolver experiment
+
+The private candidate resolved DATA and BSS spans with explicit bounds
+before the general lookup and kept the original heap path. The optimized
+address oracle and semantics checks produced identical output. Across six
+alternating-order pairs per workload, median thread CPU fell 9.0 percent
+for DATA and 17.1 percent for BSS. It rose 1.2 percent for mixed heap/DATA
+and 1.9 percent for heap-only. The candidate stays outside production
+because its mixed workload showed no repeatable gain. These isolated
+desktop kernels do not establish game frame times or iPad performance.
 
 ### Checked FPU store experiment
 
