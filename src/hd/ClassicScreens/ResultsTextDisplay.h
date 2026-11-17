@@ -12,6 +12,30 @@
 #include <utility>
 namespace nfs_results_text {
 struct TextBox {float width=0;unsigned role=0;float scale=1;};
+
+inline void assignTimingRoles(std::vector<nfs_soft::TextCommand>& commands) noexcept {
+    for (size_t n = 0; n < commands.size(); ++n) {
+        auto &value = commands[n];
+        const unsigned red = (value.color >> 11) & 31;
+        const unsigned green = (value.color >> 5) & 63;
+        const unsigned blue = value.color & 31;
+        if (red <= 12 || green <= 20 || blue >= 12 || value.length >= value.text.size()) continue;
+        const bool numeric = std::all_of(value.text.begin(), value.text.begin() + value.length,
+            [](uint8_t ch) {
+                return (ch >= '0' && ch <= '9') || ch == 9 || ch == ' ' || ch == ':' ||
+                       ch == '.' || ch == ',' || ch == '-' || ch == '+' || ch == '/';
+            });
+        if (!numeric) continue;
+        value.role = 1;
+        if (n == 0) continue;
+        auto &shadow = commands[n - 1];
+        // The original RGB 0x000008 shadow becomes RGB565 1. Some paths
+        // use pure black. The immediately paired offset keeps other text out.
+        if (shadow.color <= 1 && shadow.text == value.text && shadow.length == value.length &&
+            int64_t(shadow.x) == int64_t(value.x) + 1 && int64_t(shadow.y) == int64_t(value.y) + 1)
+            shadow.role = 1;
+    }
+}
 class PreparedText final {
  std::shared_ptr<const void>owner_;
  std::shared_ptr<const nfs_soft::FramePacket>packet_;

@@ -936,3 +936,15 @@ at the larger size extended beyond the virtual display and interrupted the
 observer. Moving the window to the virtual origin resolved the capture
 failure. No iPad behavior, natural record entry or return to Main was
 established by the corrected replay.
+
+### Race Summary timing shadow
+
+The original race timing paths can emit the one-pixel shadow in RGB 0x000008,
+which becomes 1 in RGB565. The authored timing font now applies to this shadow
+and the black variant when the immediately adjacent numeric commands match.
+An ASan/UBSan classifier check covered both colors, unrelated dark colors,
+offset mismatches, and non-timing text. A local Proving Grounds two-lap race
+with the McLaren F1 reached Race Summary naturally. Captures at 800x450,
+1280x720 and 1180x820 were recorded, and the 800x450 capture showed clean
+timing digits. The replay exited cleanly and restored the disposable profile
+and replay. No iPad validation was performed for this change.

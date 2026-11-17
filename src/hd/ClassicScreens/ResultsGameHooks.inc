@@ -130,10 +130,7 @@ struct Adapter {
   }
   s->backdrop.clear();
   // Reverse only actual observed text stores. Retain late original nontext sprites; reject any conflicting overlap.
-  for(size_t n=0;n<p->commands.size();++n){auto&c=p->commands[n];bool numeric=true;for(unsigned k=0;k<c.length;++k){unsigned v=c.text[k];if(v==9)continue;if(!((v>=48&&v<=57)||v==32||v==58||v==46||v==44||v==45||v==43||v==47))numeric=false;}
-   unsigned red=(c.color>>11)&31,green=(c.color>>5)&63,blue=c.color&31;if(numeric&&red>12&&green>20&&blue<12)c.role=1;
-   if(n&&c.role==1){auto&shadow=p->commands[n-1];if(shadow.color==0&&shadow.text==c.text&&shadow.x==c.x+1&&shadow.y==c.y+1)shadow.role=1;}
-  }
+  nfs_results_text::assignTimingRoles(p->commands);
   auto display=nfs_results_text::PreparedText::createCommands(p->commands,nfs_results_text::resultsFont(),p);if(!display)throw 1;
   auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->life->content.store(p->serial,std::memory_order_release);s->building.reset();s->replay.clear();s->capturing=false;
   trace("frame-published",static_cast<uint32_t>(p->commands.size()),!p->backdropMask.empty());
