@@ -224,12 +224,21 @@ struct DrawScope{
    return;
   }
   v.sourceLife=p->life->serial();v.sourceGame=p->game;v.sourceCatalog=reinterpret_cast<uintptr_t>(p->catalog.get());v.sourceArchive=p->archive;v.serial=serial;v.content=p->content;v.slot=p->slot;v.kind=p->kind;v.mapRole=p->mapRole;v.original565=p->original.data();std::copy(p->addresses.begin(),p->addresses.end(),v.addresses);v.layers=p->layers;if(p->kind==11){if(!p->playerPrepared||!p->playerPrepared->current()||!p->playerInitial)return;const auto pv=p->playerPrepared->view();v.playerInitial.schema=1;v.playerInitial.form=p->playerInitial->binding().form;v.playerInitial.ownerEpoch=p->playerInitial->binding().epoch;v.playerInitial.captionSerial=p->playerInitial->captionSerial();v.playerInitial.captionLifetime=p->playerInitial->captionLifetime();v.playerInitial.caption=pv.captionWord;if(!v.playerInitial.caption.schema)return;}if(p->childInitial){v.childInitial.schema=1;v.childInitial.form=p->childInitial->binding().form;v.childInitial.ownerEpoch=p->childInitial->binding().epoch;v.childInitial.captionSerial=p->childInitial->captionSerial();v.childInitial.captionLifetime=p->childInitial->captionLifetime();v.childInitial.caption=p->childInitial->wordView();if(!v.childInitial.caption.schema)return;}if(p->opponentInitial){v.opponentInitial=p->opponentInitial->view();if(!v.opponentInitial.schema)return;}if(p->locationInitial){v.locationInfoReturn=p->kind==7&&p->locationInitial->locationInfoReturn();v.locationInitial=p->locationInitial->view();if(!v.locationInitial.schema)return;}if(p->locationInitialFull)v.initialFullPreview=p->locationInitialFull->previewView();if(p->opponentInitialFull)v.initialFullPreview=p->opponentInitialFull->previewView();responsiveOwner(g,v);packet=p;
-  try{const auto receipt=nfs::enqueue_owned_renderer([p,v](){if(p->playerPrepared&&!p->playerPrepared->current())return int32_t(0);if(p->locationInitial&&!p->locationInitial->current())return int32_t(0);if(p->opponentInitial&&!p->opponentInitial->current())return int32_t(0);if(p->childInitial&&!p->childInitial->current())return int32_t(0);if(p->kind!=12)return int32_t(nfs_private_menu_transition_begin(&v));
+  auto* opponent = p->kind == 10 ? nfs_opponent_scene_live::current(g) : nullptr;
+  const bool firstPreview = opponent && !opponent->loggedPreviewRenderer;
+  try{const auto receipt=nfs::enqueue_owned_renderer([p,v,firstPreview](){if(p->playerPrepared&&!p->playerPrepared->current())return int32_t(0);if(p->locationInitial&&!p->locationInitial->current())return int32_t(0);if(p->opponentInitial&&!p->opponentInitial->current())return int32_t(0);if(p->childInitial&&!p->childInitial->current())return int32_t(0);if(p->kind!=12){
+     if(firstPreview)nfs::log_opponents_visit(nfs::OpponentsVisit::PreviewBegin);
+     const auto result=int32_t(nfs_private_menu_transition_begin(&v));
+     if(firstPreview)nfs::log_opponents_visit(result?nfs::OpponentsVisit::PreviewReady:nfs::OpponentsVisit::PreviewDeclined);
+     return result;
+    }
     auto view=v;
     if(!nfs_track_info_art_acquire_entry(p->trackInfoArt.index,&view.trackInfoArt))return int32_t(0);
     const int result=nfs_private_menu_transition_begin(&view);
     view.trackInfoArt.release(view.trackInfoArt.owner);
-    return int32_t(result);});accepted=receipt==nfs::OwnedRendererAcceptance::Consumed;if(p->kind>=8)fullTrace("draw-renderer",accepted?"consumed":"refused",p->kind,p->slot,unsigned(v.originX),unsigned(v.stepX),v.drawKind);}
+    return int32_t(result);});
+   if(firstPreview&&receipt!=nfs::OwnedRendererAcceptance::UseExistingOwnerPath)opponent->loggedPreviewRenderer=true;
+   accepted=receipt==nfs::OwnedRendererAcceptance::Consumed;if(p->kind>=8)fullTrace("draw-renderer",accepted?"consumed":"refused",p->kind,p->slot,unsigned(v.originX),unsigned(v.stepX),v.drawKind);}
   catch(...){packet.reset();serial=0;}
  }
  ~DrawScope(){WorkerErrno preserve;if(!accepted||(!packet&&!outgoing)||!serial)return;auto p=packet;auto side=outgoing;const uint64_t id=serial;try{const auto receipt=nfs::enqueue_owned_renderer([p,side,id](){return int32_t(nfs_private_menu_transition_finish(id));});if(p&&receipt==nfs::OwnedRendererAcceptance::Consumed&&((p->kind>=5&&p->kind<=7)||p->kind==11)&&unchanged(*p)){state().lastDraw=p;state().lastDrawSerial=id;}}catch(...){}}

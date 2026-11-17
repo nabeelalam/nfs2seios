@@ -58,6 +58,9 @@ int main(int argc,char **argv){
         case nfs::OpponentsVisit::RendererBegin:nfs::app_log("Opponents","renderer began first scene");break;
         case nfs::OpponentsVisit::RendererReady:nfs::app_log("Opponents","renderer accepted first scene");break;
         case nfs::OpponentsVisit::RendererDeclined:nfs::app_log("Opponents","renderer declined first scene");break;
+        case nfs::OpponentsVisit::PreviewBegin:nfs::app_log("Opponents","renderer began first four-car transition");break;
+        case nfs::OpponentsVisit::PreviewReady:nfs::app_log("Opponents","renderer accepted first four-car transition");break;
+        case nfs::OpponentsVisit::PreviewDeclined:nfs::app_log("Opponents","renderer declined first four-car transition");break;
         case nfs::OpponentsVisit::Left:nfs::app_log("Opponents","left menu");break;
         }
     });
