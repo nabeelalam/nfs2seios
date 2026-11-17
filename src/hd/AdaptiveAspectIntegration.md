@@ -1015,3 +1015,22 @@ invalid spans, and cancellation before processing and before writeback.
 Two alternating-order isolated thread-CPU runs showed median increases of
 3.02 and 2.46 percent. The candidate stays outside production and does
 not warrant a race replay or Apple build.
+
+### Triangle vertex read transaction experiment
+
+The candidate combined each draw triangle's three checked guest vertex
+reads under one mutex and released it before queue submission. It retained
+the same vertex order, span checks and captured values. The baseline
+and candidate used the same current renderer, original data, 13 verified
+packs and two virtual controllers. The same North Country split-screen
+route used an exact 30-second measurement after both cars were moving in
+first gear. All four sessions shut down cleanly.
+
+| Order | Baseline engine CPU median | Candidate engine CPU median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 14.201 ms | 14.254 ms | 29.173 ms | 29.096 ms |
+| Candidate, baseline | 13.823 ms | 14.126 ms | 29.137 ms | 29.170 ms |
+
+The candidate did not improve engine CPU or produce a repeatable
+presentation improvement under desktop software GLES. It remains
+outside production. Physical iPad frame time and energy were not measured.
