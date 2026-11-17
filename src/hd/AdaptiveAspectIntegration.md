@@ -704,3 +704,52 @@ saves were unchanged. No slot was loaded, saved or deleted.
 
 This covers the desktop Load Tournament entry and cancellation path.
 Other Load/Save actions and physical iPad behavior remain open.
+
+A separate run of the same checkpoint verified View Replay at
+708x492. The pointer highlighted View Replay, opened its drawer and
+moved from Current Replay to Cancel after the drawer settled. The
+trace showed 86 consecutive full-width frames through opening and
+cancellation, followed by a wide resize to 800x450 and return to
+Options at 640x480. Both copied saves remained unchanged. No replay
+was started. An earlier attempt clicked before Cancel was ready and
+only verified drawer entry.
+
+## Split-screen memory transaction candidate
+
+The existing North Country software GLES profile attributes some guest
+memory resolution time to the original rendering helper 497B24.
+A local candidate groups eight consecutive checked transactions in
+that routine into one. The gaps are empty or contain an FPU register
+multiply. All 140 typed accesses retain their original order and
+full bounds resolution. Seven explicit worker-stop checks retain the
+join checkpoints. The generated translation passed a WSL syntax
+check. The candidate stays private pending checked-output and
+matched gameplay timing. No device or energy gain is established.
+
+The actual helper comparison reused the production resolver and FPU
+implementation. Optimized and ASan/UBSan builds each matched 166
+completed executions, including both triangle payloads, 154 worker
+cancellations and 320 out-of-bounds rejections. CPU state, stack
+bytes, draw counts and resolution counts agreed in all 640 cases.
+Two alternating-order isolated thread-CPU runs measured median
+changes of -7.89 percent and -3.21 percent over eight paired samples
+each. Those results justify a bounded whole-race comparison. They
+do not establish split-screen frame time or battery improvements.
+
+Two matched 30-second North Country split-screen replays began with both
+players moving in first gear. The desktop builds used software GLES, dummy
+audio and the same 13 verified artwork packs. The single changed game
+object contained the candidate helper. Both orders exited cleanly and
+recorded complete frame streams. A preliminary harness run used a binary
+without the private two-controller fixture. Its players stayed in neutral
+and its timing was excluded.
+
+| Run order | Baseline engine median | Candidate engine median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 14.536 ms | 15.074 ms | 29.929 ms | 30.780 ms |
+| Candidate, baseline | 14.126 ms | 14.627 ms | 29.827 ms | 30.940 ms |
+
+Median engine CPU time per submission rose about 3.6 percent in each order.
+The timing excludes GPU presentation and does not measure iPad energy.
+The isolated helper savings did not carry over to the race, so the
+candidate remains outside production.
