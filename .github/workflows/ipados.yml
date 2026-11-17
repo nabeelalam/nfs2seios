@@ -22,7 +22,7 @@ on:
           - Release
         default: Debug
       artwork_sha256:
-        description: Optional owner artwork SHA-256 fingerprint (no artwork uploaded)
+        description: Reviewed owner artwork SHA-256 (required for Classic UI, no artwork uploaded)
         type: string
         default: ''
       include_probe:
@@ -73,9 +73,10 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Validate artwork fingerprint
+        run: python3 scripts/validate_artwork_sha256.py
       - name: Publication and independent secret gates
         run: |
-          python3 scripts/validate_artwork_sha256.py
           python3 scripts/prepare_ci_sources.py --check-only
           python3 tests/publication_audit_test.py
           python3 tests/diagnostic_session_summary_test.py

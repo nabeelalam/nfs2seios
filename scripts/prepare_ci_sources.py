@@ -1,6 +1,7 @@
 """Prepare opt-in classic CI from explicitly reviewed, already tracked art only."""
 from pathlib import Path
 import hashlib,json,os,re,subprocess,sys
+from validate_artwork_sha256 import validate
 ROOT=Path(__file__).resolve().parents[1]
 ASSETS=Path('assets/hud/classic-screens')
 MANIFEST=ASSETS/'APPROVED_ASSETS.json'
@@ -177,7 +178,7 @@ def main():
         raise ValueError('Classic public base requires personal artwork and cannot publish a finished public release')
     if classic:
         if os.environ.get('NFS_BUILD_CONFIGURATION')!='Release':raise ValueError('Classic UI requires an explicit Release configuration')
-        if not re.fullmatch('[0-9a-fA-F]{64}',os.environ.get('NFS_HD_ARTWORK_SHA256','')):raise ValueError('Classic UI requires the reviewed artwork fingerprint')
+        validate(os.environ.get('NFS_HD_ARTWORK_SHA256',''),required=True)
         fingerprint=approval()
         metadata_fingerprint=metadata_approval()
     if sys.argv[1:]==['--check-only']:return

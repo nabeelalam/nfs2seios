@@ -50,9 +50,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+      - name: Validate artwork fingerprint
+        run: python3 scripts/validate_artwork_sha256.py
       - name: Toolchain information
         run: |
-          python3 scripts/validate_artwork_sha256.py
           python3 scripts/check_runner_space.py
           case "$NFS_BUILD_CONFIGURATION" in Debug|Release) ;; *) echo "Invalid build configuration"; exit 1 ;; esac
           if [ "$NFS_THIN_LTO" = ON ] && [ "$NFS_BUILD_CONFIGURATION" != Release ]; then echo "ThinLTO validation requires Release"; exit 1; fi
