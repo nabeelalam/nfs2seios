@@ -83,7 +83,10 @@ struct DesktopDiagnosticRecorder::Impl {
        throw std::runtime_error("Could not write diagnostic recording headers");
    accepted_bytes=header.size()+frame_header.size();
    writer=std::thread([this]{write_loop();});
-   nfs_set_engine_metrics_capture(1);nfs_frame_timing_capture(1);start_epoch=nfs_frame_timing_snapshot().window_epoch;
+   nfs_set_engine_metrics_capture(1);nfs_frame_timing_capture(1);
+   const auto captured=nfs_frame_timing_snapshot();
+   start_epoch=swap_epoch=captured.window_epoch;
+   swap_drops=captured.dropped_total;
   }catch(...){if(writer.joinable()){{std::lock_guard<std::mutex>lock(mutex);closing=true;}changed.notify_one();writer.join();}for(unsigned i=0;i<opened;++i){if(*handles[i])std::fclose(*handles[i]);std::remove(paths[i].c_str());}throw;}
  }
  bool put(bool is_frames,std::string text,unsigned count){
@@ -113,16 +116,32 @@ struct DesktopDiagnosticRecorder::Impl {
   }catch(...){write_error.store(true);}
  }
  NfsFrameContentTotals frame_content{};
- bool drain(bool final=false){NfsFrameTiming rows[128];for(unsigned batch=0;batch<8;++batch){const auto count=nfs_frame_timing_drain_v2(rows,128);if(!count)break;
+ DiagnosticSwapIntervals swap_intervals;
+ uint64_t swap_epoch=0,swap_drops=0;
+ bool drain(uint64_t through,bool final=false){NfsFrameTiming rows[128];for(unsigned batch=0;batch<8;++batch){const auto count=nfs_frame_timing_drain_v2(rows,128);if(!count)break;
    if(frames_closed){discarded_frames+=count;if(!final)return false;continue;}
    std::string text;unsigned accepted=0;
-   for(unsigned i=0;i<count;++i){if(frame_rows+accepted>=limits.frames){discarded_frames+=count-i;reason="frame_limit";frames_closed=true;break;}const auto&r=rows[i];text+=std::to_string(r.frame_id)+","+std::to_string(r.timestamp_ns)+","+std::to_string(r.interval_ns)+","+std::to_string(r.window_epoch)+","+std::to_string(r.swap_call_ns)+"\n";++accepted;}
+   for(unsigned i=0;i<count;++i){if(frame_rows+accepted>=limits.frames){discarded_frames+=count-i;reason="frame_limit";frames_closed=true;break;}const auto&r=rows[i];if(!final)swap_intervals.observe(r,last,through,swap_epoch);text+=std::to_string(r.frame_id)+","+std::to_string(r.timestamp_ns)+","+std::to_string(r.interval_ns)+","+std::to_string(r.window_epoch)+","+std::to_string(r.swap_call_ns)+"\n";++accepted;}
    if(accepted&&!put(true,std::move(text),accepted)){discarded_frames+=accepted;frames_closed=true;}else frame_rows+=accepted;
    if(frames_closed&&!final)return false;
   }return !frames_closed;}
- void poll(){if(stopped)return;const auto now=SDL_GetTicksNS();if(write_error.load()){stop("write_error");return;}if(!drain()){stop(reason.c_str());return;}if(now<origin||now-origin>=3600000000000ull){stop("time_limit");return;}if(now<next)return;if(sample_rows>=limits.samples){stop("sample_limit");return;}
+ void poll(){if(stopped)return;const auto now=SDL_GetTicksNS();if(write_error.load()){stop("write_error");return;}if(!drain(now)){stop(reason.c_str());return;}if(now<origin||now-origin>=3600000000000ull){stop("time_limit");return;}if(now<next)return;if(sample_rows>=limits.samples){stop("sample_limit");return;}
   DiagnosticSample s;s.elapsed=double(now-origin)/1e9;s.interval=double(now-last)/1e9;const auto snapshot=nfs_frame_timing_snapshot();
   record_fps_snapshot(s,snapshot,now);
+  if(sample_rows && snapshot.window_epoch==swap_epoch && snapshot.dropped_total==swap_drops){
+   s.swap_intervals=swap_intervals.count;
+   s.swap_over_18ms=swap_intervals.over_18ms;
+   s.swap_over_20ms=swap_intervals.over_20ms;
+   if(swap_intervals.count)s.swap_max_ms=double(swap_intervals.longest_ns)/1e6;
+   if(swap_intervals.swap_calls){
+    s.swap_calls=swap_intervals.swap_calls;
+    s.swap_call_total_ms=double(swap_intervals.swap_total_ns)/1e6;
+    s.swap_call_max_ms=double(swap_intervals.swap_longest_ns)/1e6;
+   }
+  }
+  swap_intervals={};
+  swap_epoch=snapshot.window_epoch;
+  swap_drops=snapshot.dropped_total;
   s.game_cpu_ms=nfs_engine_cpu_sample(&s.game_cpu_id);const int cores=SDL_GetNumLogicalCPUCores();s.logical_cores=cores>0?unsigned(cores):0;s.width=nfs_render_width();s.height=nfs_render_height();s.frame_limit=nfs_frame_limit();const double pc=cpu_ns(false),mc=cpu_ns(true);
   if(pc>=process&&process>=0)s.process_ms=(pc-process)/1e6;if(mc>=main&&main>=0)s.main_ms=(mc-main)/1e6;
   if(s.process_ms>=0&&s.interval>0&&s.logical_cores)s.app_cpu_percent=s.process_ms/(s.interval*10*s.logical_cores);
@@ -134,7 +153,7 @@ struct DesktopDiagnosticRecorder::Impl {
  }
  void stop(const char *why) noexcept {
   if(stopped)return;stopped=true;reason=safe_reason(why);if(reason=="writer_backlog"||reason=="byte_limit"||reason=="write_error")frames_closed=true;nfs_frame_timing_capture(0);nfs_set_engine_metrics_capture(0);
-  try{drain(true);const auto final=nfs_frame_timing_snapshot();end_drop=final.dropped_total;end_id=final.latest_frame_id;end_epoch=final.window_epoch;const auto now=SDL_GetTicksNS();elapsed_end=now>=origin?now-origin:0;}catch(...){write_error.store(true);}
+  try{drain(0,true);const auto final=nfs_frame_timing_snapshot();end_drop=final.dropped_total;end_id=final.latest_frame_id;end_epoch=final.window_epoch;const auto now=SDL_GetTicksNS();elapsed_end=now>=origin?now-origin:0;}catch(...){write_error.store(true);}
   {std::lock_guard<std::mutex>lock(mutex);closing=true;}changed.notify_one();if(writer.joinable())writer.join();
  }
  ~Impl(){stop("session_end");for(FILE*f:{samples,frames,meta})if(f)std::fclose(f);}

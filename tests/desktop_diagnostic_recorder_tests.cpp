@@ -34,6 +34,29 @@ int main(){
  {nfs::DesktopDiagnosticRecorder::Limits limits;limits.samples=2;pending.push_back({900,10,0,2});nfs::DesktopDiagnosticRecorder r(dir+"/samples.jsonl",limits);assert(pending.empty()&&engine&&enabled);pending.push_back({901,2000000000,0,3,4321});latest=901;now_ns+=1000000000;r.poll();now_ns+=1000000000;r.poll();now_ns+=1000000000;r.poll();assert(!engine&&!enabled);r.stop();}
  auto sample=read(dir+"/samples.jsonl"),meta=read(dir+"/samples.metadata.json"),csv=read(dir+"/samples.frames.csv");assert(sample.find("\"low_power_mode\":null")!=std::string::npos);assert(sample.find("\"presentation_fps\":null")!=std::string::npos);assert(sample.find("\"game_cpu_sample_id\":42")!=std::string::npos);assert(sample.find("\"game_cpu_ms_per_frame\":12.5000")!=std::string::npos);assert(meta.find("\"samples_written\":2")!=std::string::npos);assert(meta.find("\"start_frame_id\":900")!=std::string::npos);assert(meta.find("sample_limit")!=std::string::npos);assert(csv.find("900,")==std::string::npos&&csv.find("901,2000000000,0,3")!=std::string::npos);
  assert(read(dir+"/samples.frames.csv")=="frame_id,timestamp_ns,interval_ns,window_epoch,swap_call_ns\n901,2000000000,0,3,4321\n");
+ {
+  nfs::DesktopDiagnosticRecorder r(dir+"/pacing.jsonl");
+  now_ns+=1000000000;r.poll();
+  const auto sample_start=now_ns;
+  pending.push_back({902,sample_start+5000000,16000000,3}); // Crosses sample start.
+  pending.push_back({903,sample_start+25000000,20000000,3,3000000});
+  now_ns+=30000000;r.poll();
+  pending.push_back({904,sample_start+46000000,21000000,3,4000000});
+  now_ns=sample_start+1000000000;r.poll();
+  pending.push_back({905,now_ns+22000000,22000000,3});
+  ++drops;now_ns+=1000000000;r.poll();
+  r.stop();
+  std::ifstream log(dir+"/pacing.jsonl");
+  std::string row;
+  std::getline(log,row); // Header.
+  std::getline(log,row);assert(row.find("\"swap_intervals_count\":null")!=std::string::npos);
+  std::getline(log,row);
+  assert(row.find("\"swap_intervals_count\":2.0000")!=std::string::npos);
+  assert(row.find("\"swap_intervals_over_18ms\":2.0000")!=std::string::npos);
+  assert(row.find("\"swap_intervals_over_20ms\":1.0000")!=std::string::npos);
+  assert(row.find("\"swap_call_total_ms\":7.0000")!=std::string::npos);
+  std::getline(log,row);assert(row.find("\"swap_intervals_count\":null")!=std::string::npos);
+ }
  {nfs::DesktopDiagnosticRecorder::Limits limits;limits.frames=2;nfs::DesktopDiagnosticRecorder r(dir+"/frames.jsonl",limits);for(unsigned i=0;i<1024;++i)pending.push_back({902+i,now_ns+i,1,3});latest=1925;r.poll();r.stop();assert(pending.empty());}meta=read(dir+"/frames.metadata.json");assert(meta.find("\"frames_written\":2")!=std::string::npos);assert(meta.find("\"discarded_frames\":1022")!=std::string::npos);assert(meta.find("frame_limit")!=std::string::npos);
  {nfs::DesktopDiagnosticRecorder::Limits limits;limits.queue_bytes=1024;nfs::DesktopDiagnosticRecorder r(dir+"/backlog.jsonl",limits);for(unsigned i=0;i<1024;++i)pending.push_back({2000+i,now_ns+i,1,3});r.poll();r.stop();assert(pending.empty());}meta=read(dir+"/backlog.metadata.json");assert(meta.find("writer_backlog")!=std::string::npos);assert(meta.find("\"discarded_frames\":1024")!=std::string::npos);assert(!enabled&&!engine);
  assert(read(dir+"/backlog.jsonl").find("writer_backlog")!=std::string::npos);
