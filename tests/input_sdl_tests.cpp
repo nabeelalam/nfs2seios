@@ -177,6 +177,12 @@ int main(){
         CHECK(read(0).axes[0]==65535 && read(0).axes[7]==65535 && read(1).axes[0]==0);
         CHECK(nfs_controller_frontend_actions()==32); // Original Pause confirm action, never a driving button.
         input.update();nfs_controller_capture_pause_buttons();CHECK(nfs_controller_frontend_actions()==0);
+        // Use the real engine hook when the first driving packet is built
+        // after Pause. WEST can be bound to downshift in that packet.
+        nfs_controller_begin_driving();
+        input.update();
+        CHECK(read(0).buttons[SDL_GAMEPAD_BUTTON_SOUTH]==0 && read(1).buttons[SDL_GAMEPAD_BUTTON_WEST]==0);
+        CHECK(nfs_controller_frontend_actions()==0);
         devices.consume_held_buttons();
         CHECK(read(0).buttons[SDL_GAMEPAD_BUTTON_SOUTH]==0 && read(1).buttons[SDL_GAMEPAD_BUTTON_WEST]==0);
         devices.consume_held_buttons(); // Re-entry does not release a held mask.

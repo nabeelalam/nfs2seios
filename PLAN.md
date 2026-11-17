@@ -22,19 +22,29 @@ Two requirements are part of the goal:
 
 ### Current private iPad candidate
 
-Workflow 43988238242 passed the Linux and Apple checks. Its unsigned
-ARM64 IPA was assembled with 13 verified artwork resources and uploaded
-to the original private repository. The uploaded digest matched the local
-ZIP. SideStore signing and gameplay on this exact candidate are pending.
+Workflow 44007923686 passed the Linux and Apple checks at source
+522a155a7cb5f3df8415c710d9124ceb4fb862cd. Its unsigned ARM64 IPA was
+assembled with all 13 verified artwork resources and uploaded to the
+original private repository. The 489,714,675-byte ZIP digest matched the
+local package. The artwork-free draft transfer was removed after
+verification. This supersedes workflow 43988238242 for device testing.
 
 The package includes the locally verified opening Main swipe, track and
-Player transitions, wider single-player gameplay, and the spinning
-manufacturer artwork. It also includes the opt-in host swap timing and
-the controller polling changes. Local replay coverage cannot resolve the
-reported physical Opponents crash or establish sustained 60 FPS in Low
-Power Mode. Matched North Country recordings and an Opponents retest
-are the next device checks. The sharper Summary footer and the
-untextured shader change follow this package and remain local.
+Player transitions, wider single-player gameplay and spinning manufacturer
+artwork. It adds the Race Summary record alignment, direct preview uploads,
+and diagnostics for Opponents entry, first prepared scene and exit. The
+previous app log survives one relaunch. Diagnostic recordings now capture
+display-link cadence and near-60 FPS swap spacing alongside CPU and swap
+timing. Physical testing on this exact package is pending. Prioritize
+Opponents entry and native-aspect transition behavior, then matched split-
+screen North Country recordings with Low Power Mode off and on.
+
+
+The desktop Player One check at 2360x1640 covered entry, two observed
+car swipes and the return to Main. Three Right inputs were sent. The trace
+shows 148 consecutive wide route selections between entry and the return
+to Main and zero native fallbacks in that window. This is local renderer
+evidence for native proportions. Actual iPad rendering remains unverified.
 
 ### Latest physical widescreen preview feedback
 
