@@ -1098,3 +1098,21 @@ The replay exited cleanly and restored the disposable inputs. These are
 upper bounds on the updates a deferred renderer could eliminate. Direct
 draws and GL state observers can consume a setting without accumulating
 a triangle batch. No change to the production renderer was made.
+
+### Deferred race blend experiment
+
+The private candidate deferred the game blend update until a draw, GL
+state read, other blend setter, presentation or graphics lifecycle
+boundary. Both orders used the same source-backed North Country
+split-screen route and the same two virtual controllers. Each measured
+30-second interval used the verified 800x450 target. All four runs
+exited cleanly and the disposable profile and replay were restored.
+
+| Order | Baseline engine CPU median | Candidate engine CPU median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 14.895 ms | 15.052 ms | 31.340 ms | 30.776 ms |
+| Candidate, baseline | 15.087 ms | 14.993 ms | 30.734 ms | 31.173 ms |
+
+The direction of the difference reversed with run order. The pilot showed
+no repeatable CPU or presentation advantage and stays outside production.
+No pixel equivalence or physical iPad improvement was established.
