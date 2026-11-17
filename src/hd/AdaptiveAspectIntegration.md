@@ -1125,6 +1125,28 @@ and 1.9 percent for heap-only. The candidate stays outside production
 because its mixed workload showed no repeatable gain. These isolated
 desktop kernels do not establish game frame times or iPad performance.
 
+### Register-only multiply inside checked guest-copy batches
+
+Allow the register-only FPU multiply inside the existing bounded
+arithmetic scopes. Matched generation reduced 9,471 scopes to 9,410.
+All eight affected method units retained the same normalized operation
+sequence. The exact-state ThinLTO fixture passed 40,000 mixed cases, and
+the batching suite passed all 12 cases.
+
+The matched North Country replays used two moving cars, the same renderer
+and 13 pinned resources, and an exact 30-second window per run. Each
+session shut down cleanly and the observer restored the disposable profile
+and replay. The first observer attempt missed the Setup input and yielded
+no race measurement.
+
+| Order | Baseline engine CPU median | Candidate engine CPU median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 17.032 ms | 15.516 ms | 31.882 ms | 30.920 ms |
+| Candidate, baseline | 16.411 ms | 15.336 ms | 31.887 ms | 31.187 ms |
+
+Keep the change based on the improvement in both orders. Desktop software
+GLES does not measure iPad frame time, energy use or Low Power Mode.
+
 ### Crash breadcrumb storage experiment
 
 A private candidate grouped the per-thread ring, indices and monitor slot

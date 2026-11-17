@@ -5,7 +5,7 @@ unbatched. Calls, control flow and native declarations end the current scope.
 """
 import re
 TYPES={'8i':'int8_t','16i':'int16_t','32i':'int32_t','64i':'int64_t','32f':'float','64f':'double'}
-HELPERS=set('add sub adc sbb inc dec and_ or_ xor_ neg cmp test shl shr sar rol ror shrd imul32 imul16 mul32 idiv32 div32 bsr fld fild fmul fadd fsub fdiv fdivr fsubr fld_st fld1 fldz fxch_st fstp fst fistp fstcw fnstsw fcom fcomp fcompp fcom_st fcomp_st faddp_st fmulp_st fsubp_st fsubrp_st fdivp_st fdivrp_st fstp_st fst_st setnbe sahf lahf'.split())
+HELPERS=set('add sub adc sbb inc dec and_ or_ xor_ neg cmp test shl shr sar rol ror shrd imul32 imul16 mul32 idiv32 div32 bsr fld fild fmul fadd fsub fdiv fdivr fsubr fld_st fld1 fldz fxch_st fstp fst fistp fstcw fnstsw fcom fcomp fcompp fcom_st fcomp_st faddp_st fmul_st fmulp_st fsubp_st fsubrp_st fdivp_st fdivrp_st fstp_st fst_st setnbe sahf lahf'.split())
 CALLS=HELPERS|{'guest_load','guest_store','guest_address','static_cast'}|{'to'+suffix for suffix in TYPES}
 REGISTERS=r'(?:eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|al|ah|bl|bh|cl|ch|dl|dh)'
 PREFIX=re.compile(r'^\s*(?:'+REGISTERS+r'\s*(?:=|\+=|-=|\^=|&=|\|=|<<=|>>=)|(?:'+ '|'.join(sorted(HELPERS))+r')\s*\(|guest_store<|\{ const auto mapped_address = )')

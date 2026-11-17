@@ -7,6 +7,13 @@ MEM='eax = to32i(esi);\nebx = to32i(esi+4);\nedx = to32i(esi+8);\nguest_store<in
 class PreparationTests(unittest.TestCase):
     def test_two_checked_copies_share_one_scope(self):
         result,blocks=batch_copies('eax = to32i(esi);\nguest_store<int32_t>(edi,eax);\n');self.assertEqual(len(blocks),1);self.assertEqual(blocks[0]['checkedCopies'],2);self.assertIn('guest_transaction.load<int32_t>',result);self.assertIn('guest_transaction.store<int32_t>',result)
+    def test_fpu_register_multiply_keeps_checked_copies_in_one_scope(self):
+        source = 'fld(to32f(esi));\nfmul_st(0, 1);\nguest_store<float>(edi, result);\n'
+        result, blocks = batch_copies(source)
+        self.assertEqual(len(blocks), 1)
+        self.assertEqual(blocks[0]["checkedCopies"], 2)
+        self.assertIn('guest_transaction.load<float>(esi));\nfmul_st(0, 1);\n'
+                      'guest_transaction.store<float>(edi, result);', result)
     def test_single_copy_stays_unbatched(self):
         result,blocks=batch_copies('eax = to32i(esi);\n');self.assertFalse(blocks);self.assertNotIn('GuestCopyTransaction',result)
     def test_four_checked_copies_share_one_scope(self):

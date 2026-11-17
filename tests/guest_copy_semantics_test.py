@@ -29,6 +29,9 @@ body=r'''Fn(void) Game::_sub_FFFF()
     fld(to32f(esi+16));
     fmul(to32f(esi+20));
     fadd(to64f(esi+24));
+    fld_st(0);
+    fmul_st(1,0);
+    fstp_st(0);
     { const auto mapped_address = edi+8; auto mapped_value = guest_load<double>(mapped_address); fstp(mapped_value); guest_store<double>(mapped_address, mapped_value); };
     fld1();
     { const auto mapped_address = edi+4; auto mapped_value = guest_load<int32_t>(mapped_address); fistp(mapped_value); guest_store<int32_t>(mapped_address, mapped_value); };
