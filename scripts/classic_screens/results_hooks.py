@@ -68,6 +68,11 @@ def main():
     edit(symbol,results)
   elif unit==3:entry('426950',' nfs_results_ui_live::DrawScope nfs_results_native(*this);')
   elif unit==10:
+   def tab_positions(part):
+    anchor='loc_486862:'
+    assert part.count(anchor)==1
+    return part.replace(anchor,anchor+block(' nfs_results_ui_live::observeTab(*this);'))
+   edit('4867D8',tab_positions)
    for symbol in ['482DA0','4848FC']:entry(symbol,' nfs_results_ui_live::retire(*this,uint32_t(eax));')
   elif unit==13:
    def stores(part):

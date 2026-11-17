@@ -528,3 +528,28 @@ are available on its first snapshot. Virtual controller callbacks
 verified that the duplicate update was skipped and that an explicit
 update still ran with SDL automatic updating disabled. The complete
 SDL input regression and game-loop compilation passed locally.
+
+## Race Summary record strip
+
+The unseeded Proving Grounds Summary capture preserves the original
+record values in its bottom strip. Those values are softer than the
+authored label at both 16:9 and the iPad-like ratio. The delivered
+Results capture leaves tabbed strings in the original pixel layer.
+The original software text loop sends a tab to the first configured
+stop strictly to the right of its current pen. It leaves the pen
+at its current position if the table has no later stop. With no
+table it uses its ordinary spacing path. Any remaster of the strip
+needs to retain the layout and formatting from that original draw,
+including empty columns and missing stops.
+
+The updated engine observes the original pen after each tab in the
+validated byte-oriented text loop. It uses those positions to draw the
+same record values in the remastered font. The current original byte
+pointer, glyph metrics and reversed pixel stores remain checked.
+
+An unseeded two-lap Proving Grounds replay captured this path without
+tab-position refusals. Actual Summary images at 800x450, 1280x720
+and 1180x820 show the existing name, car, time and difficulty in
+their original columns with sharper glyphs. Clean shutdown, the copied
+game inventory and all 13 artwork hashes were verified. The change
+has not been packaged for iPadOS.

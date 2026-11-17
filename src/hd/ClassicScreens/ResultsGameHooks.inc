@@ -41,7 +41,10 @@ struct State {
  bool resolvedBackdrop=false;
  std::vector<uint16_t>backdrop;
  std::vector<uint16_t>replay;nfs_soft::TextCommand command{};
- std::array<uint8_t,96>textBefore{};Measurement measurement{};unsigned resourceDepth=0,nameEntryDepth=0,recordQualificationDepth=0;
+ std::array<uint8_t,96>textBefore{};
+ std::array<int32_t,96>tabStarts{};
+ bool tabbed=false;
+ Measurement measurement{};unsigned resourceDepth=0,nameEntryDepth=0,recordQualificationDepth=0;
  void invalidate()noexcept{if(life)life->content.store(0,std::memory_order_release);failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();}
 };
 inline State&state()noexcept{static thread_local State s;return s;}
@@ -178,33 +181,88 @@ inline void measured(Game&g,uint32_t text,int width,unsigned alignment)noexcept{
  auto*s=current(g);if(!s||!s->capturing||!s->resourceDepth||s->string)return;
  safe(g,[&]{if(width<=0||width>4096||(alignment!=1&&alignment!=2)){trace("measurement-invalid",uint32_t(width),alignment);throw 1;}s->measurement={true,text,width,int(g.esi),alignment};});
 }
+// At the original byte loop, EBP still names the byte just consumed and ESI
+// contains the pen after that byte. The string pointer independently checks
+// that this is the approved byte interpreter for the current source string.
+inline void observeTab(Game&g)noexcept{
+ auto*s=current(g);if(!s||!s->string||!s->tabbed)return;
+ const unsigned index=uint32_t(g.ebp);
+ if(index>=s->command.length||s->textBefore[index]!=9)return;
+ safe(g,[&]{
+  nfs::GuestCopyTransaction tx;
+  const auto&c=s->command;
+  if(tx.load<uint32_t>(uint32_t(g.esp))!=s->textAddress+index+1||
+     s->tabStarts[index]!=INT32_MIN)throw 1;
+  const int64_t x=int64_t(int32_t(g.esi))-c.originX;
+  if(x<-4096||x>4096)throw 1;
+  s->tabStarts[index]=int32_t(x);
+ },"tab-position-refused");
+}
 struct StringScope {
  Game&g;State*s=nullptr;bool entered=false;
  explicit StringScope(Game&x)noexcept:g(x){s=current(g);if(!s||!s->capturing)return;safe(g,[&]{
   if(s->string||s->word||s->building->commands.size()>=256)throw 1;
   auto&c=s->command;c={};s->textBefore.fill(0);s->textAddress=uint32_t(g.eax);
-  uint32_t font=0,table=0,count=0,size=0,callback=0;
+  uint32_t font=0,table=0,count=0,size=0,callback=0,reader=0;
   {nfs::GuestCopyTransaction tx;for(unsigned k=0;k<96;++k){uint8_t value=tx.load<uint8_t>(s->textAddress+k);s->textBefore[k]=value;if(!value){c.length=k;break;}}
    // Original 405CF0 draws no glyphs for an empty string (e.g. a blank name).
    // Skip that command; any unexpected original stores still fail final replay.
    if(!c.length){if(!s->textBefore[0])return;throw 1;}
    if(c.length>95||s->textBefore[c.length])throw 1;
-   font=tx.load<uint32_t>(dword_4DD770);table=tx.load<uint32_t>(dword_4DD76C);count=tx.load<uint32_t>(dword_4DD75C);size=tx.load<uint32_t>(dword_4E54AC);callback=tx.load<uint32_t>(dword_4DD77C);
+   font=tx.load<uint32_t>(dword_4DD770);table=tx.load<uint32_t>(dword_4DD76C);count=tx.load<uint32_t>(dword_4DD75C);size=tx.load<uint32_t>(dword_4E54AC);callback=tx.load<uint32_t>(dword_4DD77C);reader=tx.load<uint32_t>(dword_4DD788);
    c.color=uint16_t(tx.load<uint32_t>(dword_4DD714));c.originX=tx.load<int32_t>(dword_4DD6F4);c.originY=tx.load<int32_t>(dword_4DD6F8);
   }
   size&=255;if(callback!=uint32_t(game_id_sub_4A5830)||(size!=13&&size!=14&&size!=16&&size!=18&&size!=24&&size!=36)){trace("string-font-or-callback",size,callback);throw 1;}metricTable(*s,font,table,count);
-  // The software font interpreter uses TAB to advance to a configured column.
-  // Preserve the entire original draw until the native layout models those stops.
-  if(std::find(s->textBefore.begin(),s->textBefore.begin()+c.length,9)!=s->textBefore.begin()+c.length)return;
-  int width=0;for(unsigned k=0;k<c.length;++k){unsigned code=s->textBefore[k];c.text[k]=uint8_t(code);if(!s->known[code]||nfs_soft::index(uint8_t(code))<0){trace("string-glyph-refused",0,!s->known[code]);throw 1;}width+=s->advances[code];}
+  s->tabbed=std::find(s->textBefore.begin(),s->textBefore.begin()+c.length,9)!=s->textBefore.begin()+c.length;
+  if(s->tabbed){
+   // The byte reader consumes one source byte per iteration.
+   if(reader!=uint32_t(game_id_sub_4A6860)||
+      uint64_t(s->textAddress)+c.length+1>UINT32_MAX)return;
+   s->tabStarts.fill(INT32_MIN);
+  }
+  int width=0;
+  for(unsigned k=0;k<c.length;++k){
+   const unsigned code=s->textBefore[k];
+   c.text[k]=uint8_t(code);
+   if(code==9)continue;
+   if(!s->known[code]||nfs_soft::index(uint8_t(code))<0){trace("string-glyph-refused",0,!s->known[code]);throw 1;}
+   width+=s->advances[code];
+  }
   if(width<0||width>4096)throw 1;c.sourceSize=size;c.x=g.edx;c.y=g.ebx;c.advance=width;c.clip={0,0,640,480};c.alignment=0;c.role=0;
-  const auto&m=s->measurement;if(m.ready&&m.text==s->textAddress){int expected=m.anchor-(m.alignment==2?m.width:m.width/2);if(c.x==expected||c.x==expected+1){c.alignment=m.alignment;c.advance=m.width;}}
+  const auto&m=s->measurement;if(!s->tabbed&&m.ready&&m.text==s->textAddress){int expected=m.anchor-(m.alignment==2?m.width:m.width/2);if(c.x==expected||c.x==expected+1){c.alignment=m.alignment;c.advance=m.width;}}
   s->string=true;entered=true;
  },"string-begin-refused");}
  ~StringScope()noexcept{if(!entered||!s||s!=current(g))return;safe(g,[&]{
   if(!s->string||s->word||!s->building)throw 1;
   {nfs::GuestCopyTransaction tx;for(unsigned k=0;k<=s->command.length;++k)if(tx.load<uint8_t>(s->textAddress+k)!=s->textBefore[k])throw 1;}
-  s->building->commands.push_back(s->command);s->string=false;
+  if(!s->tabbed)s->building->commands.push_back(s->command);
+  else{
+   const auto&original=s->command;
+   int32_t start=original.x;
+   unsigned first=0;
+   for(unsigned end=0;end<=original.length;++end){
+    if(end!=original.length&&original.text[end]!=9)continue;
+    if(end>first){
+     if(s->building->commands.size()>=256)throw 1;
+     auto segment=original;
+     segment.x=start;segment.alignment=0;segment.length=end-first;segment.advance=0;
+     segment.text.fill(0);
+     for(unsigned i=first;i<end;++i){
+      segment.text[i-first]=original.text[i];
+      segment.advance+=s->advances[original.text[i]];
+     }
+     if(segment.advance<0||segment.advance>4096)throw 1;
+     s->building->commands.push_back(segment);
+    }
+    if(end<original.length){
+     start=s->tabStarts[end];
+     if(start==INT32_MIN)throw 1;
+     first=end+1;
+    }
+   }
+   trace("tab-segments-captured",original.length);
+  }
+  s->string=false;
  },"string-end-refused");}
 };
 struct Word {
