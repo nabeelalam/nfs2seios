@@ -1003,3 +1003,15 @@ caller at 0.610 sampled seconds. The remaining identified direct costs were
 spread across several original routines. Software rendering accounted for
 most attributed samples. This run does not establish a performance change
 or describe the iPad GPU, Low Power Mode, or energy use.
+
+### Checked FPU store experiment
+
+The private candidate resolved the destination once before popping the FPU
+value, then checked cancellation again before writing. The current path
+resolves both the overwritten-value read and the subsequent write.
+Using the actual FPU and allocator, optimized and ASan/UBSan fixtures each
+matched 112 cases across integer and floating point writes, unaligned and
+invalid spans, and cancellation before processing and before writeback.
+Two alternating-order isolated thread-CPU runs showed median increases of
+3.02 and 2.46 percent. The candidate stays outside production and does
+not warrant a race replay or Apple build.
