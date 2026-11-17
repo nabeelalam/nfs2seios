@@ -5,6 +5,8 @@
 #include "AssetSelection.h"
 #include "AssetImport.h"
 #include "RunLog.h"
+#include <cerrno>
+#include <cstdio>
 #include <stdexcept>
 @interface GameFolderPicker : NSObject <UIDocumentPickerDelegate>
 @property(nonatomic) BOOL done;
@@ -34,7 +36,18 @@
 namespace nfs {
 std::string app_log_path(int,char **){
     NSURL *documents=[NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject;
-    return [documents URLByAppendingPathComponent:@"native-port.log"].path.UTF8String;
+    NSURL *current=[documents URLByAppendingPathComponent:@"native-port.log"];
+    NSURL *previous=[documents URLByAppendingPathComponent:@"native-port-previous.log"];
+    const char *currentPath=current.fileSystemRepresentation;
+    const char *previousPath=previous.fileSystemRepresentation;
+    if(!currentPath || !previousPath)return {};
+    // Keep the interrupted session available after one relaunch. A failed
+    // rotation must never cause open_app_log to truncate the current file.
+    if(std::rename(currentPath,previousPath)!=0 && errno!=ENOENT){
+        std::fprintf(stderr,"Could not preserve the previous native app log\n");
+        return {};
+    }
+    return currentPath;
 }
 std::string select_app_assets(int,char **){
     NSURL *documents=[NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject;

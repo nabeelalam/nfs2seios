@@ -7,6 +7,7 @@
 #include "AssetSelection.h"
 #include "GameSession.h"
 #include "RunLog.h"
+#include "GameTrace.h"
 #include "MainThreadBridge.h"
 #include "FramePresentation.h"
 #include "HdAtlas.h"
@@ -49,6 +50,15 @@ int main(int argc,char **argv){
     catch(const std::exception &error){std::fprintf(stderr,"Diagnostic option: %s\n",error.what());return 1;}
 #endif
     nfs::open_app_log(nfs::app_log_path(argc,argv));
+#if defined(SDL_PLATFORM_IOS)
+    nfs::set_opponents_visit_sink([](nfs::OpponentsVisit stage){
+        switch(stage){
+        case nfs::OpponentsVisit::Entered:nfs::app_log("Opponents","entered menu");break;
+        case nfs::OpponentsVisit::ScenePrepared:nfs::app_log("Opponents","prepared first scene");break;
+        case nfs::OpponentsVisit::Left:nfs::app_log("Opponents","left menu");break;
+        }
+    });
+#endif
     nfs::app_log("Native app","Need for Speed II SE; platform="+std::string(SDL_GetPlatform()));
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMEPAD)){nfs::app_log("SDL initialization failed",SDL_GetError());SDL_Quit();nfs::close_app_log();return 1;}
     int status=1;

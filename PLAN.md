@@ -71,6 +71,12 @@ The next native selection occurred after the second return to wide Main.
 These are presentation-route and settled-capture checks in WSL software
 GLES. Physical iPad behavior and the cause of the crash remain open.
 
+The next iPad app retains one previous startup log in Documents on relaunch.
+For an interrupted session, the previous log remains reachable from Files
+after restarting once. Crash reports and logs stay private. A startup log
+records Opponents entry, first verified scene preparation, and exit. It cannot identify all
+native faults or memory terminations.
+
 The reported 40-60 FPS was single-player Low Power Mode. Sustained
 60 FPS in split-screen Low Power Mode remains the performance target.
 
