@@ -42,12 +42,14 @@ class SummaryTests(unittest.TestCase):
         self.assertEqual(cadence["display_link_mean_target_ms"]["median"], 16.667)
 
     def test_matched_power_comparison_validates_conditions(self):
-        def log(power, width=2360, lock=0, finished=True, commit="a" * 40):
+        def log(power, width=2360, lock=0, finished=True, commit="a" * 40,
+                timing=(None, None, None)):
             rows = [{"type": "session", "schema": "nfsiise-session-v1",
                      "build": 19, "source_commit": commit}]
             for second in (0, 1, 2):
                 rows.append(dict(sample(second, power=power, fps=45 if power else 60),
                                  frame_limit=lock, render_width=width, render_height=1640,
+                                 hd_timing_requested=timing[second],
                                  interval_s=1, swap_intervals_count=40,
                                  swap_intervals_over_18ms=20 if power else 0))
             if finished:
@@ -56,13 +58,27 @@ class SummaryTests(unittest.TestCase):
 
         report = summary.compare_power_sessions(log(False), log(True))
         self.assertEqual(report["render_size"], (2360, 1640))
+        self.assertEqual(report["timing_art_mode"], "unavailable")
+        hd = (True, True, True)
+        hd_report = summary.compare_power_sessions(log(False, timing=hd), log(True, timing=hd))
+        self.assertEqual(hd_report["timing_art_mode"], "hd_requested")
         self.assertEqual(report["low_power_on_minus_off"]["median_sample_fps"], -15)
         self.assertEqual(report["low_power_on_minus_off"]["fraction_swaps_over_18ms"], 0.5)
         self.assertIsNone(report["low_power_on_minus_off"]["mean_swap_host_ms"])
         for invalid in (log(False), log(True, width=1280), log(True, lock=30),
-                        log(True, finished=False), log(True, commit="b" * 40)):
+                        log(True, finished=False), log(True, commit="b" * 40),
+                        log(True, timing=hd), log(True, timing=(None, True, None))):
             with self.assertRaises(ValueError):
                 summary.compare_power_sessions(log(False), invalid)
+
+    def test_resize_boundary_excluded_from_stable_intervals(self):
+        rows = [dict(sample(second), render_width=width, render_height=height,
+                     frame_limit=0, swap_intervals_count=50, swap_intervals_over_18ms=late)
+                for second, width, height, late in ((0, 800, 450, 0), (1, 800, 450, 5),
+                    (2, 708, 492, 40), (3, 708, 492, 10))]
+        cadence = summary.summarize(fixture(rows))["stable_interval_comparison"]["off"]
+        self.assertEqual(cadence["unlocked_observed_swap_intervals"], 100)
+        self.assertAlmostEqual(cadence["unlocked_swap_fraction_over_18ms"], 0.15)
 
     def test_modes_and_repeated_windows(self):
         result = summary.summarize(fixture([sample(0), sample(1), sample(2, True, 2, 45), {"type": "end", "reason": "manual", "elapsed_s": 3, "attempted_rows": 3}]))

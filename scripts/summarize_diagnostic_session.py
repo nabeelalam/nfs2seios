@@ -120,6 +120,7 @@ def summarize(data):
     previous_timing = None
     previous_power = None
     previous_limit = None
+    previous_render_size = None
     stable_intervals = {False: [], True: []}
     for index, row in enumerate(rows[1:], start=1):
         if row.get("type") == "end":
@@ -150,12 +151,15 @@ def summarize(data):
         # omit the additive field and remain valid with unavailable mode.
         timing_rows.append((power, timing, row, count == 0 or timing == previous_timing))
         limit = row.get("frame_limit")
+        render_size = (row.get("render_width"), row.get("render_height"))
         if (previous >= 0 and elapsed - previous <= 2.5
-                and power == previous_power and timing == previous_timing and limit == previous_limit):
+                and power == previous_power and timing == previous_timing and limit == previous_limit
+                and render_size == previous_render_size):
             stable_intervals[power].append(row)
         previous_timing = timing
         previous_power = power
         previous_limit = limit
+        previous_render_size = render_size
         if previous >= 0 and elapsed - previous > 2.5:
             gaps += 1
         previous = elapsed
@@ -187,6 +191,9 @@ def summarize(data):
                                          for k in ("render_width", "render_height"))}),
             "frame_limits": sorted({r["frame_limit"] for r in samples
                                     if type(r.get("frame_limit")) is int}),
+            "timing_art_modes": [label for mode, label in
+                                 ((False, "original"), (True, "hd_requested"), (None, "unavailable"))
+                                 if any(r.get("hd_timing_requested") is mode for r in samples)],
             "complete_render_conditions": all(
                 type(r.get("frame_limit")) is int
                 and all(type(r.get(k)) is int and 0 < r[k] <= 16384
@@ -214,7 +221,7 @@ def summarize(data):
         for label, power in (("off", False), ("on", True))
     }
     result["stable_interval_caution"] = (
-        "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power, timing-art or frame-lock change. "
+        "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power, timing-art, render-size or frame-lock change. "
         "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "
         "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. Display-link rates describe main run-loop delivery, not displayed game frames. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
     )
@@ -257,6 +264,10 @@ def compare_power_sessions(normal, low_power):
     if conditions[0]["render_sizes"] != conditions[1]["render_sizes"]:
         raise ValueError("Comparison requires matching render sizes")
 
+    timing_art = conditions[0]["timing_art_modes"]
+    if len(timing_art) != 1 or timing_art != conditions[1]["timing_art_modes"]:
+        raise ValueError("Comparison requires matching, steady timing artwork settings")
+
     def metrics(report, label):
         mode = report["low_power_mode"][label]
         pacing = report["stable_interval_comparison"][label]
@@ -272,7 +283,7 @@ def compare_power_sessions(normal, low_power):
     left, right = metrics(off, "off"), metrics(on, "on")
     return {
         "schema": "nfsiise-power-comparison-v1", "build": off["build"], "source_commit": source,
-        "render_size": conditions[0]["render_sizes"][0],
+        "render_size": conditions[0]["render_sizes"][0], "timing_art_mode": timing_art[0],
         "low_power_off": off, "low_power_on": on,
         "low_power_on_minus_off": {
             key: right[key] - value if value is not None and right[key] is not None else None
