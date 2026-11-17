@@ -830,3 +830,20 @@ The game then resized from 640x480 to 800x450 mid-race. It reported an
 camera still responded to the original camera key. The process shut down
 cleanly and restored the copied profile. This run used software GLES and
 did not force context recreation during gameplay or finish the race.
+
+## Grouped local Release validation
+
+At source 65c5108 the classic mapped engine and adaptive renderer were
+prepared together and built in a fresh desktop Release configuration with
+two ThinLTO jobs. The build omitted personal artwork, matching the deferred
+packaging configuration. The game, bounded call-sample test and GLES pixel
+suite linked, and both test suites passed. The diagnostic analyzer and
+Load/Save source contract checks also passed.
+
+With the 13 private artwork packs attached locally after linking, the new
+binary launched the original single-player North Country route from a
+copied install. The race used 800x450, moved to 708x492 and 800x600, then
+returned to 800x450. The recorder confirmed each render size, the game shut
+down cleanly and the copied profile was restored. This validates the local
+integration of the generated source pair. It does not validate Apple SDK
+compilation, an updated signed package or the physical Opponents crash.
