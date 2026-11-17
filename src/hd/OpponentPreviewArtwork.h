@@ -49,4 +49,26 @@ public:
   out.schema=NFS_AUTHORED_PREVIEW_LAYER_SCHEMA;out.authoredRGBA=class_?classComposite_.data():bytes;out.authoredBytes=count;out.authoredWidth=width;out.authoredHeight=height;std::memcpy(out.authoredSha256,class_?classCompositeSha_.data():sha,32);return true;
  }
 };
+
+// The live menu owns one entry. A retained packet identity prevents address
+// reuse and cannot authorize artwork for a new original preview.
+class VisitArt {
+    std::shared_ptr<const nfs_opponent_preview::Packet> packet_;
+    std::shared_ptr<const Image> image_;
+public:
+    void clear() noexcept {
+        image_.reset();
+        packet_.reset();
+    }
+    std::shared_ptr<const Image> acquire(
+        const std::shared_ptr<const nfs_opponent_preview::Packet>& packet) noexcept {
+        if(image_ && image_->current() && packet.get()==packet_.get() &&
+           !packet.owner_before(packet_) && !packet_.owner_before(packet)) return image_;
+        clear();
+        if(!packet) return {};
+        image_=Image::acquire(*packet);
+        if(image_) packet_=packet;
+        return image_;
+    }
+};
 }

@@ -894,3 +894,18 @@ All four runs shut down cleanly.
 The isolated improvement did not produce a repeatable race-level gain.
 The candidate stays outside production. The results measure desktop
 software GLES and do not establish iPad timing or energy use.
+
+## Opponents preview reuse
+
+Repeated verified redraws can reuse the authored preview prepared from the
+same retained original packet. The visit holds one cache entry and checks
+the provider generation before reuse. A new packet, provider generation,
+failed preview or menu exit retires that entry. The first-frame source and
+all existing scene verification still run normally.
+
+The sanitizer test covered stable reuse, identical pixels from a different
+packet, provider clear and reinstall, and visit reset. The rebuilt
+original-data game entered Opponents twice at 2360x1640, selected verified
+class A, B and C artwork, returned to Main twice and shut down cleanly.
+This avoids rebuilding the 2.86 MB class composite on a cache hit.
+The reported device crash cause and iPad memory and FPS remain unverified.
