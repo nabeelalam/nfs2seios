@@ -412,11 +412,14 @@ REALIGN STDCALL void native_grBufferClear(GrColor_t color, GrAlpha_t alpha, uint
 
     const int height=fixedFramebufferSize ? SDL_min(initialWinWidth, initialWinHeight) : SDL_min(winWidth,winHeight);
     if(winWidth!=publishedWidth || winHeight!=publishedHeight || height!=publishedRenderHeight){
-        GLint maxTexture=0;
+        GLint maxTexture=0,maxDepth=0;
         glGetIntegerv(GL_MAX_TEXTURE_SIZE,&maxTexture);
-        const int width=nfs_adaptive_aspect_target_width(winWidth,winHeight,height,maxTexture);
+        glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,&maxDepth);
+        // The wide target uses both a color texture and a depth renderbuffer.
+        const int maxExtent=SDL_min(maxTexture,maxDepth);
+        const int width=nfs_adaptive_aspect_target_width(winWidth,winHeight,height,maxExtent);
         nfs_adaptive_race_publish_target(width,height);
-        if(maxTexture>0){
+        if(maxExtent>0){
             publishedWidth=winWidth;publishedHeight=winHeight;publishedRenderHeight=height;
         }
     }
