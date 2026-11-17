@@ -190,23 +190,6 @@ static int nfs_menu_wide_artwork(unsigned ratio,const NfsWideMenuLayers* layers)
  failed:NFS_MENU_WIDE_GL(glDeleteTextures(2,next));return 0;
  lost:nfs_menu_wide_abandon();return 0;
 }
-static void nfs_menu_wide_draw_layer(unsigned role,float width){
- const GLfloat quad[]={0,0,0,0,width,0,1,0,0,480,0,1,
-                      0,480,0,1,width,0,1,0,width,480,1,1};
- glUniform1i(nfs_bg_compositor.sampler,0);
- glUniform1f(nfs_bg_compositor.opacity,1.f);
- glActiveTexture(GL_TEXTURE0);
- glBindTexture(GL_TEXTURE_2D,nfs_menu_wide.artwork[role]);
- glEnableVertexAttribArray(0);
- glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);
- glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,quad);
- if(role){
-  glEnable(GL_BLEND);
-  glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);
-  glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
- }else glDisable(GL_BLEND);
- glDrawArrays(GL_TRIANGLES,0,6);
-}
 /* Location retains its own source/caption route; this guard authorizes only
    this responsive staging attachment, never the native source or another FBO. */
 static int nfs_menu_wide_location_owner(void*user,const NfsBackgroundSceneStage*t){
@@ -332,14 +315,14 @@ static void nfs_menu_wide_prepare_owner(const NfsBackgroundSceneFrameView*v,cons
     uninitialized attachment pixels through their transparent teeth/edges. */
  NFS_MENU_WIDE_GL(glClearColor(0,0,0,1));NFS_MENU_WIDE_GL(glClear(GL_COLOR_BUFFER_BIT));
  {
-  const unsigned ratio=width>=772.f;
+  const unsigned ratio=nfs_wide_menu_ratio(width);
   NfsWideMenuLayers authored={0};
   const int hasAuthored=nfs_wide_menu_layers(ratio,&authored)&&nfs_menu_wide_artwork(ratio,&authored);
   if(!nfs_menu_wide_current())goto lost;
   NFS_MENU_WIDE_GL(glUseProgram(nfs_bg_compositor.program));
   if(hasAuthored){
    NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,nfs_menu_wide.matrix));
-   NFS_MENU_WIDE_GL(nfs_menu_wide_draw_layer(0,width));
+   NFS_MENU_WIDE_GL(nfs_bg_draw_wide_art(&nfs_bg_compositor,nfs_menu_wide.artwork[0],width,0));
 
   }else{
    NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,mapMatrix));
@@ -354,7 +337,7 @@ static void nfs_menu_wide_prepare_owner(const NfsBackgroundSceneFrameView*v,cons
    if(location?!nfs_bg_preview_draw(&nfs_bg_compositor,&location->preview,target):!nfs_bg_opponent_preview_draw(&nfs_bg_compositor,opponent,target))goto done;
   }
   NFS_MENU_WIDE_GL(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,nfs_menu_wide.matrix));
-  if(hasAuthored){NFS_MENU_WIDE_GL(nfs_menu_wide_draw_layer(1,width));}
+  if(hasAuthored){NFS_MENU_WIDE_GL(nfs_bg_draw_wide_art(&nfs_bg_compositor,nfs_menu_wide.artwork[1],width,1));}
   else if(!nfs_bg_quad(&nfs_bg_compositor,2,0,0,343,480,0,0,1372,1920,v->panelClip,256,1))goto done;
  }
  for(unsigned i=0;i<v->wordCount;++i){const NfsBackgroundSceneWordLayer*w=v->words+i;const NfsBackgroundSceneWord*r=nfs_bg_compositor.regions+w->sourceRole-1;
@@ -547,4 +530,46 @@ static void nfs_menu_idle_seal(void){
  s->context=nfs_menu_wide.context;s->generation=nfs_menu_wide.generation;s->epoch=nfs_menu_wide.ownerEpoch;s->locationArtGeneration=nfs_menu_wide.locationArtGeneration;s->cached=nfs_menu_wide.cached;s->layout=nfs_menu_wide.selected;s->x=s->layout.sourceCursorX;s->y=s->layout.sourceCursorY;s->sealedPaint=s->paint;s->upload=nfs_menu_idle_upload_epoch;
  s->mainOwner=(uintptr_t)nfs_main_upload.view.owner;s->mainGame=nfs_main_upload.view.domain.game;s->mainLife=nfs_main_upload.view.domain.life;s->mainEpoch=nfs_main_upload.view.domain.ownerEpoch;s->mainUpload=nfs_main_upload.view.domain.uploadEvent;nfs_menu_idle_resources(&s->resources);s->valid=1;
  if(!nfs_menu_idle_current(s)){nfs_menu_idle_note(303,nfs_menu_idle_slot);s->valid=0;return;}nfs_menu_idle_mask|=1u<<nfs_menu_idle_slot;nfs_menu_idle_note(1,nfs_menu_idle_slot);
+}
+
+static void nfs_ls_wide_cursor_batch(unsigned count){
+ NfsBgSaved saved;
+ GLint fbo=0,program=0;
+ int success=0;
+ const int selected=nfs_native_marks.selected;
+ if(g_renderBuffer==GR_BUFFER_FRONTBUFFER)nfs_ls_wide.displayedDrawer=0;
+ if(!nfs_ls_wide.ready)return;
+ if(!nfs_ls_wide_current()||nfs_ls_wide.cursor||count!=2||count!=g_trianglesCount||
+    selected<0||selected>=NFS_NATIVE_MARK_MAX_BINDINGS||!nfs_mark_owner()||
+    !nfs_native_marks.sent||nfs_native_marks.program!=g_shaderProgram||
+    g_textureEnabled!=1||g_fogEnabled||
+    !nfs_native_marks.bindings[selected].valid||
+    nfs_native_marks.bindings[selected].generation!=nfs_native_marks.generation||
+    nfs_native_marks.bindings[selected].edge!=32||
+    nfs_native_marks.bindings[selected].encoding!=NFS_NATIVE_MARK_SOURCE_RGBA4444_LE||
+    g_framebuffer!=nfs_ls_wide.nativeFbo||g_framebufferTexture!=nfs_ls_wide.nativeColor||
+    g_framebufferDepth!=nfs_ls_wide.nativeDepth)goto reject;
+ glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);
+ glGetIntegerv(GL_CURRENT_PROGRAM,&program);
+ if((GLuint)fbo!=nfs_ls_wide.nativeFbo||(GLuint)program!=g_shaderProgram||
+    glIsEnabled(GL_STENCIL_TEST)||glIsEnabled(GL_CULL_FACE)||
+    glIsEnabled(GL_POLYGON_OFFSET_FILL))goto reject;
+ for(unsigned i=0;i<count;++i)for(unsigned j=0;j<3;++j){
+  const float x=g_vertices[i].vertex[j].x,y=g_vertices[i].vertex[j].y;
+  if(!isfinite(x)||!isfinite(y)||x<-32||x>672||y<-32||y>512||
+     g_vertices[i].vertex[j].z!=1||g_textureCoord[i].vertex[j].q!=1)goto reject;
+ }
+ nfs_bg_save(&saved);
+ glBindFramebuffer(GL_FRAMEBUFFER,nfs_ls_wide.modal==NFS_LS_WIDE_DRAWER?nfs_ls_wide.modalFbo:nfs_ls_wide.fbo);
+ glViewport(0,0,nfs_ls_wide.width,nfs_ls_wide.height);
+ glDepthMask(GL_FALSE);glDisable(GL_DEPTH_TEST);glDisable(GL_SCISSOR_TEST);
+ glUniformMatrix4fv(g_uMatrixLoc,1,GL_FALSE,nfs_ls_wide.matrix);
+ glDrawArrays(GL_TRIANGLES,0,(GLsizei)count*3);
+ if(nfs_ls_context(nfs_ls_renderer.generation,nfs_ls_renderer.context)){
+  success=glGetError()==GL_NO_ERROR;
+  glUniformMatrix4fv(g_uMatrixLoc,1,GL_FALSE,g_matrix);
+  nfs_bg_restore(&saved);
+ }
+ if(success&&nfs_ls_wide_current()){nfs_ls_wide.cursor=1;return;}
+ reject:nfs_ls_wide_decline("unmatched-cursor-batch",count);
 }

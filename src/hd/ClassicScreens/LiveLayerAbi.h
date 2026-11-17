@@ -14,6 +14,7 @@ typedef struct NfsLoadSaveLiveView {
  const NfsBackgroundSceneLayers*scene;
  NfsCompactCaptionWordView caption;
  uintptr_t sourceGame;uint64_t sourceEpoch;
+ int(*current)(void*);
 } NfsLoadSaveLiveView;
 #ifdef __cplusplus
 extern "C" {

@@ -26,6 +26,11 @@ typedef struct NfsWideMenuLayers {
 /* Startup publishes two immutable pairs before the game worker is started. */
 int nfs_wide_menu_install_layers(const NfsWideMenuLayers layers[2]);
 int nfs_wide_menu_layers(unsigned ratio, NfsWideMenuLayers *out);
+/* The two authored compositions share a 480-unit vertical coordinate space.
+   Keep artwork selection consistent in settled scenes and in their swipes. */
+static inline unsigned nfs_wide_menu_ratio(float logicalWidth) {
+    return logicalWidth >= 772.f;
+}
 typedef struct NfsResultsBackdropImage {
     unsigned width, height;
     const unsigned char *pixels;

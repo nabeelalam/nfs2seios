@@ -27,8 +27,9 @@ struct Owner {
 };
 struct Row {uint32_t symbol=0,descriptor=0,textGuest=0,descriptorWord=0;unsigned inputCategory=0,flags=0;};
 struct Authority {Owner owner{};uint32_t table=0;uint16_t selected=0;std::array<Row,Words>rows{};};
+constexpr uint16_t NoSelectedRow=100;
 inline bool authority(const Authority&a)noexcept{
- if(!a.owner.valid()||!a.table||a.selected>=7)return false; // Only the seven action rows are selectable.
+ if(!a.owner.valid()||!a.table||(a.selected>=7&&a.selected!=NoSelectedRow))return false;
  for(size_t i=0;i<Words;++i){const auto&r=a.rows[i];if(r.symbol!=descriptorSymbol(i)||!r.descriptor||!r.textGuest||r.descriptorWord!=(resource(i)<<16|(i==7?0u:2u))||r.inputCategory!=(i==7?0u:2u)||r.flags>1||(r.flags&&i!=0&&i!=3))return false;for(size_t j=0;j<i;++j)if(r.descriptor==a.rows[j].descriptor||r.textGuest==a.rows[j].textGuest)return false;}
  return true;
 }

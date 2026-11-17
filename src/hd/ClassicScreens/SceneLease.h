@@ -17,6 +17,11 @@ class Lease final {
  Lease()=default;
  static void retain(void*p)noexcept{static_cast<Lease*>(p)->refs_.fetch_add(1,std::memory_order_relaxed);}
  static void release(void*p)noexcept{auto*s=static_cast<Lease*>(p);if(s->refs_.fetch_sub(1,std::memory_order_acq_rel)==1)delete s;}
+ static int current(void*p)noexcept{
+  const auto&lease=*static_cast<const Lease*>(p);
+  return lease.scene_->cache()->owner().epoch==
+         nfs_ls_scene_live::activeEpoch().load(std::memory_order_acquire);
+ }
  template<class T>static bool sameOwner(const std::shared_ptr<const T>&a,const std::shared_ptr<const T>&b)noexcept{return a&&b&&a.get()==b.get()&&!a.owner_before(b)&&!b.owner_before(a);}
  static bool binding(const std::shared_ptr<const nfs_ls_live::OwnedFrame>&f,const std::shared_ptr<const nfs_ls_scene::OwnedScene>&s)noexcept{
   if(!f||!s||!f->packet()||!s->cache()||!s->cache()->trusted()||s->mapRole()>1||s->cache()->wordCount()>4||s->clean().size()!=307200||f->packet()->clean()!=s->clean())return false;
@@ -36,7 +41,7 @@ public:
  }
  bool currentFor(const std::shared_ptr<const nfs_ls_live::OwnedFrame>&f,const std::shared_ptr<const nfs_ls_scene::OwnedScene>&s)const noexcept{return sameOwner(frame_,f)&&sameOwner(scene_,s)&&binding(f,s)&&words_&&caption_;}
  NfsLoadSaveLiveView view(uint64_t request)const noexcept{
-  NfsLoadSaveLiveView v{};if(!request||!currentFor(frame_,scene_))return v;v=words_->view(request);if(v.schema!=1||v.text.vertexCount!=96)return {};v.schema=2;v.sourceGame=scene_->cache()->owner().game;v.sourceEpoch=scene_->cache()->owner().epoch;v.scene=&layers_;v.caption.schema=NFS_COMPACT_CAPTION_WORD_SCHEMA;v.caption.word=3;v.caption.width=caption_->width;v.caption.height=caption_->height;v.caption.rgba=caption_->rgba.data();v.caption.bytes=caption_->rgba.size();std::copy(caption_->sha.begin(),caption_->sha.end(),v.caption.sha256);v.caption.left=120;v.caption.top=364;v.caption.right=168;v.caption.bottom=396;v.owner=const_cast<Lease*>(this);v.retain=retain;v.release=release;return v;
+  NfsLoadSaveLiveView v{};if(!request||!currentFor(frame_,scene_))return v;v=words_->view(request);if(v.schema!=1||v.text.vertexCount!=96)return {};v.schema=2;v.sourceGame=scene_->cache()->owner().game;v.sourceEpoch=scene_->cache()->owner().epoch;v.scene=&layers_;v.caption.schema=NFS_COMPACT_CAPTION_WORD_SCHEMA;v.caption.word=3;v.caption.width=caption_->width;v.caption.height=caption_->height;v.caption.rgba=caption_->rgba.data();v.caption.bytes=caption_->rgba.size();std::copy(caption_->sha.begin(),caption_->sha.end(),v.caption.sha256);v.caption.left=120;v.caption.top=364;v.caption.right=168;v.caption.bottom=396;v.owner=const_cast<Lease*>(this);v.retain=retain;v.release=release;v.current=current;return v;
  }
 };
 } // namespace nfs_ls_scene_display

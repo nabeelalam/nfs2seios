@@ -22,6 +22,11 @@ inline bool readTable(uint32_t p,std::array<uint32_t,9>&v)noexcept{try{nfs::Gues
 }
 enum class Phase {idle,side,word,logos,tail,complete};
 enum class Failure {none,owner,nested,order,read,source,target,row,palette,caption,packet,retired,overflow,unwind};
+// The renderer may query the authenticated epoch without touching guest state.
+inline std::atomic<uint64_t>&activeEpoch()noexcept{
+ static std::atomic<uint64_t> value{0};
+ return value;
+}
 struct State {
 // NFS_LS_INIT_DIAGNOSTIC_BEGIN:1
 unsigned initStage=0,initIndex=UINT32_MAX,initRole=UINT32_MAX;
@@ -40,11 +45,19 @@ std::array<uint32_t,4>initHeader{};
  Caption caption;CaptionProfile captionProfile;std::unique_ptr<nfs_soft::FramePacketBuilder>captionBuilder;
  std::vector<uint8_t>rawBefore,rawAfter;std::array<uint64_t,5>events{};Collector collector;
  std::shared_ptr<const Cache>published;std::shared_ptr<const OwnedScene>issuedScene;
- bool retiring=false,refOpen=false;unsigned released=0;uint32_t refInput=0,refBefore=0;nfs_ls_retire::Plan retirePlan;Slots retiredSlots;Target retiredFull;
+ bool retiring=false,refOpen=false;unsigned released=0,retireCheck=0;uint32_t refInput=0,refBefore=0;nfs_ls_retire::Plan retirePlan;Slots retiredSlots;Target retiredFull;
  bool frameOpen=false,frameSide=false,frameResolved=false,fullRowOpen=false;uint32_t mapName=0;unsigned mapRole=2;Target fullTarget;FullDraw resetDraw,copyDraw;std::vector<uint16_t>fullPre,postReset,clean;
  uint32_t fontAddress=0,glyphAddress=0;bool measured=false;uint32_t measuredText=0;size_t writes=0;bool stringOpen=false,glyphOpen=false;size_t glyphIndex=0;
  nfs_loadsave_source::GlyphUse glyph;std::vector<uint16_t>captionPlane;
- void fail(Failure why)noexcept{int saved=errno;if(!invalid&&why!=Failure::owner&&traceLines<24){const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");if(p&&!std::strcmp(p,"1")){++traceLines;
+ void fail(Failure why)noexcept{
+  uint64_t active=epoch;
+  if(active&&activeEpoch().compare_exchange_strong(active,0,std::memory_order_release,std::memory_order_relaxed)){
+   const char*traceEnabled=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");
+   if(traceEnabled&&!std::strcmp(traceEnabled,"1"))
+    std::fprintf(stderr,"LOADSAVE SCENE epoch-retired reason=%u epoch=%llu revision=%llu phase=%u\n",
+                 unsigned(why),(unsigned long long)epoch,(unsigned long long)revision,unsigned(phase));
+  }
+  int saved=errno;if(!invalid&&why!=Failure::owner&&traceLines<24){const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");if(p&&!std::strcmp(p,"1")){++traceLines;
 // NFS_LS_INIT_DIAGNOSTIC_BEGIN:19
 
 // NFS_LS_INIT_DIAGNOSTIC_BEGIN:22
@@ -74,7 +87,26 @@ inline std::shared_ptr<State>newState(){
 inline State*current(Game&g)noexcept{auto*s=lexical(g);return s&&s->ready?s:nullptr;}
 inline bool enabled()noexcept{const char*p=std::getenv("NFS_PRIVATE_LOADSAVE_FULLSCENE");return p&&!std::strcmp(p,"1");}
 struct Preserve {Game&g;int saved=errno;std::array<unsigned char,sizeof(CPU)>cpu{};explicit Preserve(Game&v)noexcept:g(v){std::memcpy(cpu.data(),static_cast<CPU*>(&g),sizeof(CPU));}~Preserve()noexcept{if(std::memcmp(cpu.data(),static_cast<CPU*>(&g),sizeof(CPU))){std::memcpy(static_cast<CPU*>(&g),cpu.data(),sizeof(CPU));if(auto*s=lexical(g))s->fail(Failure::read);}errno=saved;}};
-template<class F>inline void safe(Game&g,F f)noexcept{Preserve p(g);try{f();}catch(...){if(auto*s=lexical(g))s->fail(Failure::read);}}
+#if defined(__clang__) || defined(__GNUC__)
+#define NFS_LS_SCENE_CALL_LINE __builtin_LINE()
+#else
+#define NFS_LS_SCENE_CALL_LINE 0
+#endif
+template<class F>inline void safe(Game&g,F f,unsigned line=NFS_LS_SCENE_CALL_LINE)noexcept{
+ Preserve p(g);
+ try{f();}catch(...){
+  if(auto*s=lexical(g)){
+   if(!s->invalid){
+    const char*traceEnabled=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");
+    if(traceEnabled&&!std::strcmp(traceEnabled,"1"))
+     std::fprintf(stderr,"LOADSAVE SCENE fault line=%u epoch=%llu revision=%llu phase=%u retireCheck=%u\n",
+                  line,(unsigned long long)s->epoch,(unsigned long long)s->revision,unsigned(s->phase),s->retireCheck);
+   }
+   s->fail(Failure::read);
+  }
+ }
+}
+#undef NFS_LS_SCENE_CALL_LINE
 inline void trace(State&s,const char*kind,uint64_t request=0,unsigned phase=0)noexcept{int saved=errno;const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");if(p&&!std::strcmp(p,"1")&&s.traceLines<24){++s.traceLines;std::fprintf(stderr,"LOADSAVE SCENE %s epoch=%llu revision=%llu slot=%u request=%llu phase=%u captionCommands=%zu captionStores=%zu\n",kind,(unsigned long long)s.epoch,(unsigned long long)s.revision,s.slotsAfter.selected,(unsigned long long)request,phase,s.caption.packet?s.caption.packet->commands():0,s.caption.packet?s.caption.packet->writes():0);}errno=saved;}
 inline Directory directory(){
 // NFS_LS_INIT_DIAGNOSTIC_BEGIN:2
@@ -163,11 +195,13 @@ s->initStage=2;
 // free/reload4D40B8. Its preceding archive is not this source generation.
 inline void afterArchiveReady(Game&g)noexcept{
  auto*s=lexical(g);if(!s||s->invalid)return;safe(g,[&]{
+  activeEpoch().store(0,std::memory_order_release);
   s->ready=false;
   if(uint32_t(g.ebp)!=uint32_t(guest_address(off_4D39A8))||s->permitDepth||s->invocations||s->iteration||s->frameOpen||s->retiring||s->refOpen)throw 1;
   s->ready=false;s->collector.cancel();s->published.reset();s->issuedScene.reset();s->captionBuilder.reset();s->caption={};s->captionProfile={};s->fontAddress=s->glyphAddress=0;s->revision=s->sequence=0;s->phase=Phase::idle;s->events={};s->stringOpen=s->glyphOpen=s->frameOpen=s->frameResolved=s->resolved=s->groupDone=false;s->pending=-1;s->fullPre.clear();s->postReset.clear();s->clean.clear();s->rawBefore.clear();s->rawAfter.clear();s->scene.draws.clear();s->scene.complete=s->scene.error=0;
   auto value=epochs().load();if(value>=UINT64_MAX/2-1)throw 1;s->epoch=value+1;epochs().store(s->epoch);s->owner={Form,Handler,9,0,s->game,s->thread,s->epoch};
   authenticate(*s);s->slotsBefore=slots(*s);if(!s->collector.enter(s->owner))throw 1;s->ready=true;
+  activeEpoch().store(s->epoch,std::memory_order_release);
  });
 }
 // Only inserted lexically around the40938C->40BBE0 call. It is NOT a generic
@@ -253,17 +287,49 @@ struct CaptionWord {
 inline Target fullTarget(){Target t;nfs::GuestCopyTransaction tx;const uint32_t at=tx.load<uint32_t>(dword_4D4D24);nfs_logo_publisher::target(tx,t,at);if(!bg::fullClip(t,640))throw 1;return t;}
 inline std::vector<uint16_t>fullPlane(const Target&t){std::vector<uint8_t>b;if(!read::readBytes(t.w[8]+16,bg::Full*2,b))throw 1;std::vector<uint16_t>v(bg::Full);std::memcpy(v.data(),b.data(),b.size());return v;}
 inline nfs_ls_retire::Resources resources(State&s){nfs_ls_retire::Resources r;auto side=slots(s);auto full=fullTarget();r.owners={{full.owner,side.target[0].owner,side.target[1].owner}};r.bitmaps={{full.w[8],side.target[0].w[8],side.target[1].w[8]}};r.luts={{full.w[11],full.w[12],side.target[0].w[11],side.target[0].w[12],side.target[1].w[11],side.target[1].w[12]}};r.font=s.fontAddress;if(!r.font){nfs::GuestCopyTransaction tx;r.font=tx.load<uint32_t>(dword_4DD770);}return r;}
-inline bool protectedAddress(const nfs_ls_retire::Resources&r,uint32_t at)noexcept{if(at==r.font)return true;for(auto x:r.owners)if(x==at)return true;for(auto x:r.bitmaps)if(x==at)return true;for(auto x:r.luts)if(x==at)return true;return false;}
+using nfs_ls_retire::protectedAddress;
 struct RetireScope {
  Game&g;std::shared_ptr<State>pin;State*s=nullptr;uint64_t sourceEpoch=0;bool active=false;int unwind=0;
- RetireScope(Game&v,uint32_t site)noexcept:g(v){s=current(g);if(s){pin=storage();sourceEpoch=s->epoch;}if(!s||s->invalid)return;safe(g,[&]{if(s->retiring||s->refOpen)throw 1;nfs_ls_retire::Input input;input.site=site;input.handle=uint32_t(g.eax);input.newPitch=uint32_t(g.edx);if(!read::span(input.handle,56))throw 1;{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<14;++k)input.descriptor[k]=tx.load<uint32_t>(input.handle+4*k);for(unsigned k=0;k<2;++k){auto ptr=input.descriptor[11+k];if(ptr<4)throw 1;input.refs[k]=tx.load<uint32_t>(ptr-4);}}
- auto r=resources(*s);bool related=protectedAddress(r,input.handle)||protectedAddress(r,input.descriptor[8]);for(auto ptr:r.luts)for(unsigned k=11;k<13;++k)related|=ptr&&ptr==input.descriptor[k];if(!related)return;
- s->retirePlan=nfs_ls_retire::plan(input,r);if(!s->retirePlan.valid)throw 1;s->retiredSlots=slots(*s);s->retiredFull=fullTarget();s->released=0;s->retiring=true;active=true;unwind=nfs_logo_publisher::exceptions();});}
+ RetireScope(Game&v,uint32_t site)noexcept:g(v){s=current(g);if(s){pin=storage();sourceEpoch=s->epoch;}if(!s||s->invalid)return;safe(g,[&]{if(s->retiring||s->refOpen)throw 1;nfs_ls_retire::Input input;input.site=site;input.handle=uint32_t(g.eax);input.newPitch=uint32_t(g.edx);
+ // The owner-retire routine resolves a null input to its default bitmap.
+ if(!input.handle&&site==0x4AC934u)input.handle=uint32_t(guest_address(dword_4DB240));
+ if(!read::span(input.handle,56))throw 1;
+ s->retireCheck=1;
+ auto r=resources(*s);
+ s->retireCheck=2;
+ {
+  nfs::GuestCopyTransaction tx;
+  for(unsigned k=0;k<14;++k)input.descriptor[k]=tx.load<uint32_t>(input.handle+4*k);
+  s->retireCheck=3;
+  bool related=protectedAddress(r,input.handle)||protectedAddress(r,input.descriptor[8]);
+  for(auto ptr:r.luts)for(unsigned k=11;k<13;++k)related|=ptr&&ptr==input.descriptor[k];
+  // Unrelated child surfaces can have no lookup table backing to retire.
+  if(!related){s->retireCheck=0;return;}
+  s->retireCheck=4;
+  for(unsigned k=0;k<2;++k){
+   const auto ptr=input.descriptor[11+k];
+   if(ptr<4)throw 1;
+   input.refs[k]=tx.load<uint32_t>(ptr-4);
+  }
+ }
+ s->retireCheck=5;s->retirePlan=nfs_ls_retire::plan(input,r,true);
+ if(!s->retirePlan.valid){
+  const char*traceEnabled=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");
+  if(traceEnabled&&!std::strcmp(traceEnabled,"1"))
+   std::fprintf(stderr,"LOADSAVE RETIRE refused site=%x default=%u ownerAlias=%u bitmapAlias=%u handleProtected=%u bitmapProtected=%u pitchChange=%u validHeader=%u tailSet=%u refs=%u,%u\n",
+      site,unsigned(!g.eax),unsigned(std::find(r.owners.begin(),r.owners.end(),input.handle)!=r.owners.end()),
+      unsigned(std::find(r.bitmaps.begin(),r.bitmaps.end(),input.descriptor[8])!=r.bitmaps.end()),
+      unsigned(protectedAddress(r,input.handle)),unsigned(protectedAddress(r,input.descriptor[8])),
+      unsigned(input.newPitch!=input.descriptor[10]),unsigned(input.descriptor[0]==0x57494e44u),
+      unsigned(input.descriptor[13]!=0),input.refs[0],input.refs[1]);
+  throw 1;
+ }
+ s->retireCheck=6;s->retiredSlots=slots(*s);s->retiredFull=fullTarget();s->released=0;s->retiring=true;s->retireCheck=0;active=true;unwind=nfs_logo_publisher::exceptions();});}
  ~RetireScope(){if(!s||s->epoch!=sourceEpoch)return;if(!s||!pin||storage().get()!=s)return;if(s!=current(g))return;if(!active)return;safe(g,[&]{if(s->invalid)return;if(nfs_logo_publisher::exceptions()>unwind||s->refOpen||s->released!=s->retirePlan.count||!s->retiredSlots.sameCatalog(slots(*s))||!retained(s->retiredFull,fullTarget()))throw 1;s->retiring=false;});}
 };
 struct RefReleaseScope {
  Game&g;std::shared_ptr<State>pin;State*s=nullptr;uint64_t sourceEpoch=0;bool active=false;uint32_t ptr=0,before=0;
- explicit RefReleaseScope(Game&v)noexcept:g(v){s=current(g);if(s){pin=storage();sourceEpoch=s->epoch;}if(!s||s->invalid)return;safe(g,[&]{ptr=uint32_t(g.eax);auto r=resources(*s);if(!s->retiring){if(protectedAddress(r,ptr))throw 1;return;}if(s->refOpen||s->released>=s->retirePlan.count||ptr<4)throw 1;{nfs::GuestCopyTransaction tx;before=tx.load<uint32_t>(ptr-4);}if(ptr!=s->retirePlan.ordered[s->released]||before!=s->retirePlan.before[s->released])throw 1;s->refOpen=true;active=true;});}
+ explicit RefReleaseScope(Game&v)noexcept:g(v){s=current(g);if(s){pin=storage();sourceEpoch=s->epoch;}if(!s||s->invalid)return;safe(g,[&]{ptr=uint32_t(g.eax);auto r=resources(*s);if(!protectedAddress(r,ptr))return;if(!s->retiring)throw 1;if(s->refOpen||s->released>=s->retirePlan.count||ptr<4)throw 1;{nfs::GuestCopyTransaction tx;before=tx.load<uint32_t>(ptr-4);}if(ptr!=s->retirePlan.ordered[s->released]||before!=s->retirePlan.before[s->released])throw 1;s->refOpen=true;active=true;});}
  ~RefReleaseScope(){if(!s||s->epoch!=sourceEpoch)return;if(!s||!pin||storage().get()!=s)return;if(s!=current(g))return;if(!active)return;safe(g,[&]{if(s->invalid)return;uint32_t after;{nfs::GuestCopyTransaction tx;after=tx.load<uint32_t>(ptr-4);}if(!nfs_ls_retire::released(s->retirePlan,s->released,ptr,before,after))throw 1;++s->released;s->refOpen=false;});}
 };
 // Exact40938C reset/copy source calls only. The named reset and selected
@@ -295,7 +361,11 @@ inline void row(Game&g,uint32_t callback,uint32_t unit=1)noexcept{cacheRow(g,cal
 // unchanged issuer outside this adapter. Matching it is a necessary additional
 // join, not a substitute for that issuer's exact presentation permit.
 inline std::shared_ptr<const OwnedScene>currentScene(Game&g,const std::shared_ptr<const nfs_ls_live::OwnedFrame>&child)noexcept{
- auto*s=current(g);if(!s||s->invalid||!child||!s->issuedScene)return {};std::shared_ptr<const OwnedScene>out;safe(g,[&]{if(s->iteration||s->frameOpen||s->retiring||s->refOpen||!bound(*s,g)||!retained(s->fullTarget,fullTarget())||!s->slotsAfter.sameCatalog(slots(*s))||slots(*s).selected!=s->slotsAfter.selected||child->packet()->clean()!=s->issuedScene->clean())throw 1;const auto&o=child->evidence().exit.owner;if(!nfs_ls_live::LiveIssuer::currentFrameForScene(g,child)||o.game!=s->game||o.runtimeForm!=uint32_t(guest_address(off_4D39A8))||o.archive!=s->owner.archive)throw 1;out=s->issuedScene;});return out;
+ auto*s=current(g);if(!s||s->invalid||!child||!s->issuedScene)return {};std::shared_ptr<const OwnedScene>out;safe(g,[&]{if(s->iteration||s->frameOpen||s->retiring||s->refOpen||!bound(*s,g)||!retained(s->fullTarget,fullTarget())||!s->slotsAfter.sameCatalog(slots(*s))||slots(*s).selected!=s->slotsAfter.selected)throw 1;
+ // A child can change this frame's clean pixels while the source archive and
+ // sidebar slots are intact. Decline this frame and allow the next proof.
+ if(child->packet()->clean()!=s->issuedScene->clean())return;
+ const auto&o=child->evidence().exit.owner;if(!nfs_ls_live::LiveIssuer::currentFrameForScene(g,child)||o.game!=s->game||o.runtimeForm!=uint32_t(guest_address(off_4D39A8))||o.archive!=s->owner.archive)throw 1;out=s->issuedScene;});return out;
 }
 struct SelectionScope {Game&g;std::shared_ptr<State>pin;State*s=nullptr;uint64_t sourceEpoch=0;Slots before;Target full;bool entered=false;explicit SelectionScope(Game&v)noexcept:g(v){s=current(g);if(!s||s->invalid)return;pin=storage();sourceEpoch=s->epoch;safe(g,[&]{before=slots(*s);full=fullTarget();entered=true;});}~SelectionScope(){if(!s||s->epoch!=sourceEpoch)return;if(!entered||!pin||storage().get()!=s||s!=current(g))return;safe(g,[&]{if(!before.sameCatalog(slots(*s))||!retained(full,fullTarget()))throw 1;});}};
 inline bool observeScene(Game&g,const std::shared_ptr<const nfs_ls_live::OwnedFrame>&child,uint64_t request,unsigned phase)noexcept{auto*s=current(g);if(!s||s->invalid||!request||!child)return false;auto scene=currentScene(g,child);if(!scene)return false;safe(g,[&]{trace(*s,"typed-child-accepted",request,phase);});return true;}

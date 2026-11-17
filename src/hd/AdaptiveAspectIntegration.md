@@ -666,3 +666,41 @@ session recorder reported zero capture loss. Non-silent race audio,
 the live aspect changes, and clean shutdown also passed. This is one
 software GLES run, without a matched performance baseline or an iPad
 energy measurement.
+
+## Load/Save widescreen and pointer walkthrough
+
+The original-data single-player Zipper capture verified the narrow
+uppercase I bearing correction at 640x480. Split-screen minimap labels
+and physical iPad rendering remain unverified.
+
+Load/Save now composes the authored map and panel at the current
+drawable aspect, draws the authenticated sidebar and HD list at
+layout scale, and mirrors the original cursor with the same centered
+coordinates as the list. Both wide layouts fill the former black
+margins. The native 4:3 pass remains available for exact 4:3 output.
+
+The Load Tournament drawer uses a retained, cursor-free widescreen
+parent and the verified child materials, text and original pixel
+delta. It skips an unchanged original front-buffer upload only when
+the same fullscreen drawer, render target, clear event and lock
+origin are still current. Changed pixels follow the original upload.
+
+The original no-highlight value after Cancel is 100. The source
+policy accepts that exact value and continues to check row descriptors,
+fonts and pixels. Cancel destroys a drawer bitmap with separate private
+and shared lookup tables. The observer tracks the shared decrement and
+checks that the protected reference survives. It leaves the private
+release to the original routine. The mixed-table and selection tests
+passed under ASan and UBSan.
+
+The original mouse-only refresh receives the exact same source permit
+as the full menu draw at the verified call site. A mismatch declines
+the refresh and allows the next full draw to establish its own proof.
+The linked game showed 83 continuous fullscreen frames at 800x450
+through pointer input, Load Tournament, Cancel and return to Load/Save.
+The next 16 frames used the wide route at 708x492. The game then
+restored 640x480, returned to Options and exited cleanly. Both copied
+saves were unchanged. No slot was loaded, saved or deleted.
+
+This covers the desktop Load Tournament entry and cancellation path.
+Other Load/Save actions and physical iPad behavior remain open.

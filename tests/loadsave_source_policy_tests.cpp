@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Synthetic owned bytes only; not an original-source or live-owner acceptance.
 #include "hd/SoftwareFontBuiltin.h"
+#include "hd/ClassicScreens/RetirePolicy.h"
 #include <functional>
 #include <iostream>
 #include <stdexcept>
@@ -46,13 +47,38 @@ struct Fixture {
  }
  bool valid()const{return ls::consistent(packet,evidence,profile,current,post.data(),post.size());}
 };
+static void mixed_table_retirement(){
+ namespace retire=nfs_ls_retire;
+ const retire::Resources resources{{1,2,3},{4,5,6},7,{8,9,10,11,12,13}};
+ retire::Input input;
+ input.site=retire::DescriptorDestroy;
+ input.handle=20;
+ input.descriptor[0]=0x57494e44;
+ input.descriptor[8]=21;
+ input.descriptor[11]=22; // Private to the drawer.
+ input.descriptor[12]=8;  // Shared with the background.
+ input.refs={1,11};
+ CHECK(!retire::plan(input,resources).valid);
+ auto plan=retire::plan(input,resources,true);
+ CHECK(plan.valid&&plan.count==1&&retire::released(plan,0,8,11,10));
+ input.refs[1]=1;
+ CHECK(!retire::plan(input,resources,true).valid);
+ input.refs[1]=11;
+ input.descriptor[11]=7;
+ CHECK(!retire::plan(input,resources,true).valid);
+ input.descriptor[11]=8;
+ input.refs={11,11};
+ plan=retire::plan(input,resources,true);
+ CHECK(plan.valid&&plan.count==2&&retire::released(plan,0,8,11,10)&&retire::released(plan,1,8,10,9));
+}
 int main(){try{
+ mixed_table_retirement();
  CHECK(ls::resource(0)==0x179&&ls::resource(7)==0x178&&ls::resource(8)==0);
  CHECK(ls::top(0)==144&&ls::top(6)==317&&ls::top(7)==105);
  CHECK(ls::blend(0,0xffffffffu)==65535&&ls::blend(0xffff,0xff000008u)==1);
- for(unsigned selected:{0u,1u,2u,3u,4u,5u,6u})for(unsigned disabled=0;disabled<4;++disabled){Fixture f(selected,disabled);CHECK(f.valid());CHECK(!ls::supportedOriginalProfile(f.profile));}
+ for(unsigned selected:{0u,1u,2u,3u,4u,5u,6u,unsigned(ls::NoSelectedRow)})for(unsigned disabled=0;disabled<4;++disabled){Fixture f(selected,disabled);CHECK(f.valid());CHECK(!ls::supportedOriginalProfile(f.profile));}
  Fixture f;CHECK(f.valid());
- for(unsigned invalid:{7u,8u,65535u}){Fixture invalidFixture(invalid);CHECK(!invalidFixture.valid());CHECK(!ls::authority(invalidFixture.current));CHECK(ls::sameAuthority(invalidFixture.current,invalidFixture.evidence.entry)&&ls::sameAuthority(invalidFixture.evidence.entry,invalidFixture.evidence.exit));}
+ for(unsigned invalid:{7u,8u,99u,101u,65535u}){Fixture invalidFixture(invalid);CHECK(!invalidFixture.valid());CHECK(!ls::authority(invalidFixture.current));CHECK(ls::sameAuthority(invalidFixture.current,invalidFixture.evidence.entry)&&ls::sameAuthority(invalidFixture.evidence.entry,invalidFixture.evidence.exit));}
 
  auto fault=[&](const std::function<void()>&change){auto e=f.evidence;auto c=f.current;auto p=f.profile;auto pixels=f.post;change();CHECK(!f.valid());f.evidence=std::move(e);f.current=c;f.profile=std::move(p);f.post=std::move(pixels);CHECK(f.valid());};
  fault([&]{++f.current.owner.runtimeForm;});fault([&]{f.current.owner.formSymbol=0x4d3a88;});fault([&]{f.current.owner.handlerSymbol=0x40c160;});fault([&]{f.current.owner.type=2;});

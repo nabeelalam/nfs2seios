@@ -59,11 +59,88 @@ static void nfs_ls_child_renderer_created(void){uint64_t generation=nfs_logo_pro
 static void nfs_ls_child_renderer_retired(int owner){nfs_results_name_wide_retire(owner);nfs_ls_child_renderer.endedRequest=nfs_ls_child_renderer.sourceEpoch=0;nfs_ls_child_renderer.sourceGame=0;nfs_ls_child_renderer.parentKind=0;int actual=owner&&nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context);nfs_ls_child_material_retire(actual);nfs_soft_gpu_context_retired(&nfs_ls_child_renderer.text,nfs_ls_child_renderer.text.generation,actual);if(actual){if(nfs_ls_child_renderer.fbo)glDeleteFramebuffers(1,&nfs_ls_child_renderer.fbo);if(nfs_ls_child_renderer.color)glDeleteTextures(1,&nfs_ls_child_renderer.color);if(nfs_ls_child_renderer.clean)glDeleteTextures(1,&nfs_ls_child_renderer.clean);if(nfs_ls_child_renderer.patch)glDeleteTextures(1,&nfs_ls_child_renderer.patch);if(nfs_ls_child_renderer.copyProgram)glDeleteProgram(nfs_ls_child_renderer.copyProgram);}nfs_ls_child_renderer.color=nfs_ls_child_renderer.fbo=nfs_ls_child_renderer.clean=nfs_ls_child_renderer.patch=nfs_ls_child_renderer.copyProgram=0;nfs_ls_child_renderer.width=nfs_ls_child_renderer.height=nfs_ls_child_renderer.cleanWidth=nfs_ls_child_renderer.cleanHeight=0;nfs_ls_child_cancel("context-retired");nfs_ls_child_renderer.generation=0;nfs_ls_child_renderer.context=nfs_ls_child_renderer.thread=0;}
 int nfs_private_loadsave_child_begin_seeded(uint64_t request,uintptr_t sourceGame,uint64_t sourceEpoch){NfsNativeLogoTargetProof target;NfsBgSaved saved;int ok=0;if(!request||!nfs_bg_feature()||!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context))return 0;if(nfs_ls_child_renderer.request)nfs_ls_child_cancel("replaced-frame");drawTriangles();if(!nfs_ls_child_read_target(&target))return 0;if(!nfs_ls_parent_seed_matches(sourceGame,sourceEpoch,&target)){nfs_ls_child_trace("begin-refused","same-owner-epoch-authored-parent-unavailable");return 0;}nfs_ls_child_renderer.target=target;if(!nfs_ls_child_copy_prepare()||!nfs_ls_child_color_target(target.width,target.height)||nfs_ls_child_aliases()||!nfs_ls_child_target_equal())return 0;
  nfs_bg_save(&saved);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_ls_child_renderer.clean);glPixelStorei(GL_UNPACK_ALIGNMENT,4);if(nfs_ls_child_renderer.cleanWidth!=target.width||nfs_ls_child_renderer.cleanHeight!=target.height){glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,target.width,target.height,0,GL_RGBA,GL_UNSIGNED_BYTE,NULL);nfs_ls_child_renderer.cleanWidth=target.width;nfs_ls_child_renderer.cleanHeight=target.height;}glBindFramebuffer(GL_FRAMEBUFFER,nfs_ls_renderer.fbo);if(!nfs_ls_stage_owned()){nfs_bg_restore(&saved);return 0;}glCopyTexSubImage2D(GL_TEXTURE_2D,0,0,0,0,0,target.width,target.height);ok=glGetError()==GL_NO_ERROR;
- if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);if(!ok||!nfs_ls_child_target_equal()){nfs_ls_child_renderer.cleanWidth=nfs_ls_child_renderer.cleanHeight=0;return 0;}nfs_ls_child_renderer.endedRequest=0;nfs_ls_child_renderer.sourceGame=sourceGame;nfs_ls_child_renderer.sourceEpoch=sourceEpoch;nfs_ls_child_renderer.request=request;nfs_ls_child_renderer.parentKind=1;nfs_ls_child_trace("begin-accepted","same-owner-epoch-authored-parent");return 1;
+ if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);if(!ok||!nfs_ls_child_target_equal()){nfs_ls_child_renderer.cleanWidth=nfs_ls_child_renderer.cleanHeight=0;return 0;}nfs_ls_child_renderer.endedRequest=0;nfs_ls_child_renderer.sourceGame=sourceGame;nfs_ls_child_renderer.sourceEpoch=sourceEpoch;nfs_ls_child_renderer.request=request;nfs_ls_child_renderer.parentKind=1;
+ nfs_ls_wide.ready=0;
+ nfs_ls_wide_clear_child();
+ // Rebuild the verified parent without the previous frame's cursor.
+ if(nfs_ls_wide_compose(&nfs_ls_parent_seed,&target)&&nfs_ls_child_target_equal()){
+  nfs_ls_parent_seed.retain(nfs_ls_parent_seed.owner);
+  nfs_ls_wide_child_seed=nfs_ls_parent_seed;
+  nfs_ls_wide.childRequest=request;
+  nfs_ls_child_trace("wide-parent-ready","same-owner-epoch-authored-parent");
+ }
+ nfs_ls_child_trace("begin-accepted","same-owner-epoch-authored-parent");return 1;
 }
 int nfs_private_loadsave_child_begin_results(uint64_t request,uintptr_t sourceGame,uint64_t sourceEpoch,uint64_t sourceContent){NfsNativeLogoTargetProof target;NfsBgSaved saved;int ok=0;if(!request||!nfs_bg_feature()||!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context))return 0;if(nfs_ls_child_renderer.request)nfs_ls_child_cancel("replaced-frame");drawTriangles();if(!nfs_ls_child_read_target(&target))return 0;if(!nfs_results_parent_seed_matches(sourceGame,sourceEpoch,sourceContent,&target)){nfs_ls_child_trace("begin-refused","same-owner-epoch-authored-parent-unavailable");return 0;}nfs_ls_child_renderer.target=target;if(nfs_ls_child_renderer.clean==nfs_results_renderer.color||nfs_ls_child_renderer.color==nfs_results_renderer.color||nfs_ls_child_renderer.patch==nfs_results_renderer.color||nfs_ls_child_renderer.text.texture==nfs_results_renderer.color||nfs_ls_child_renderer.fbo==nfs_results_renderer.fbo)return 0;if(!nfs_ls_child_copy_prepare()||!nfs_ls_child_color_target(target.width,target.height)||nfs_ls_child_aliases()||!nfs_ls_child_target_equal())return 0;if(nfs_ls_child_renderer.clean==nfs_results_renderer.color||nfs_ls_child_renderer.color==nfs_results_renderer.color||nfs_ls_child_renderer.fbo==nfs_results_renderer.fbo)return 0;
  nfs_bg_save(&saved);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_ls_child_renderer.clean);glPixelStorei(GL_UNPACK_ALIGNMENT,4);if(nfs_ls_child_renderer.cleanWidth!=target.width||nfs_ls_child_renderer.cleanHeight!=target.height){glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,target.width,target.height,0,GL_RGBA,GL_UNSIGNED_BYTE,NULL);nfs_ls_child_renderer.cleanWidth=target.width;nfs_ls_child_renderer.cleanHeight=target.height;}glBindFramebuffer(GL_FRAMEBUFFER,nfs_results_renderer.fbo);if(!nfs_results_stage_owned()){nfs_bg_restore(&saved);return 0;}glCopyTexSubImage2D(GL_TEXTURE_2D,0,0,0,0,0,target.width,target.height);ok=glGetError()==GL_NO_ERROR;
  if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);if(!ok||!nfs_ls_child_target_equal()){nfs_ls_child_renderer.cleanWidth=nfs_ls_child_renderer.cleanHeight=0;return 0;}nfs_ls_child_renderer.endedRequest=0;nfs_ls_child_renderer.sourceGame=sourceGame;nfs_ls_child_renderer.sourceEpoch=sourceEpoch;nfs_ls_child_renderer.request=request;nfs_ls_child_renderer.parentKind=2;nfs_ls_child_trace("begin-accepted","same-owner-epoch-authored-parent");return 1;
+}
+static int nfs_ls_modal_text_owner(void*owner,const NfsSoftwareTextStage*t){
+ GLint fbo=0,type=0,name=0;
+ if(owner!=&nfs_ls_wide||!nfs_ls_wide_child_seed.current||
+    !nfs_ls_wide_child_seed.current(nfs_ls_wide_child_seed.owner)||
+    !nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)||
+    nfs_ls_wide.childRequest!=nfs_ls_child_renderer.request||
+    t->framebuffer!=nfs_ls_wide.modalFbo||t->width!=nfs_ls_wide.width||t->height!=nfs_ls_wide.height)return 0;
+ glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);
+ if((GLuint)fbo!=nfs_ls_wide.modalFbo)return 0;
+ glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type);
+ glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name);
+ return type==GL_TEXTURE&&(GLuint)name==nfs_ls_wide.modalColor;
+}
+static int nfs_ls_modal_draw(const NfsLoadSaveChildView*v){
+ static const GLfloat full[]={-1,1,0,1,-1,-1,0,0,1,1,1,1,1,1,1,1,-1,-1,0,0,1,-1,1,0};
+ GLfloat patch[]={-1,1,0,0,-1,-1,0,1,1,1,1,0,1,1,1,0,-1,-1,0,1,1,-1,1,1};
+ NfsSoftwareTextStage text={0};
+ NfsBgSaved saved;
+ int w=0,h=0,ok=0;
+ if(v->request!=nfs_ls_wide.childRequest||!nfs_ls_wide_child_seed.current||
+    !nfs_ls_wide_child_seed.current(nfs_ls_wide_child_seed.owner)||!sdlWin||
+    !SDL_GetWindowSizeInPixels(sdlWin,&w,&h)||w!=(int)nfs_ls_wide.width||
+    h!=(int)nfs_ls_wide.height||!nfs_ls_wide.color||!nfs_ls_child_renderer.patch){
+  nfs_ls_child_trace("wide-modal-refused","parent-request-or-drawable");
+  return 0;
+ }
+ nfs_bg_save(&saved);
+ if(!nfs_ls_wide.modalFbo)glGenFramebuffers(1,&nfs_ls_wide.modalFbo);
+ if(!nfs_ls_wide.modalColor)glGenTextures(1,&nfs_ls_wide.modalColor);
+ if(!nfs_ls_wide.modalFbo||!nfs_ls_wide.modalColor||nfs_ls_wide.modalFbo==g_framebuffer||
+    nfs_ls_wide.modalColor==g_framebufferTexture||nfs_ls_wide.modalColor==nfs_ls_wide.color)goto done;
+ glActiveTexture(GL_TEXTURE0);
+ if(nfs_ls_wide.modalWidth!=(unsigned)w||nfs_ls_wide.modalHeight!=(unsigned)h){
+  glBindTexture(GL_TEXTURE_2D,nfs_ls_wide.modalColor);
+  nfs_frame_texture_params();
+  glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,NULL);
+  if(glGetError()!=GL_NO_ERROR)goto done;
+  nfs_ls_wide.modalWidth=w;nfs_ls_wide.modalHeight=h;
+ }
+ glBindFramebuffer(GL_FRAMEBUFFER,nfs_ls_wide.modalFbo);
+ glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,nfs_ls_wide.modalColor,0);
+ if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)goto done;
+ nfs_frame_draw_state();glViewport(0,0,w,h);
+ glUseProgram(nfs_ls_child_renderer.copyProgram);glUniform1i(nfs_ls_child_renderer.copySampler,0);
+ glBindTexture(GL_TEXTURE_2D,nfs_ls_wide.color);
+ glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);
+ glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,full);glDrawArrays(GL_TRIANGLES,0,6);
+ text.framebuffer=nfs_ls_wide.modalFbo;text.width=w;text.height=h;
+ text.logicalWidth=640;text.logicalHeight=480;text.sampling.magFilter=nfs_ls_child_renderer.target.sampling.magFilter;
+ text.sampling.viewport[2]=w;text.sampling.viewport[3]=h;
+ memcpy(text.sampling.projection,nfs_ls_wide.matrix,sizeof nfs_ls_wide.matrix);
+ if(!nfs_ls_child_material_draw_at(v,&text.sampling,w)||!nfs_ls_modal_text_owner(&nfs_ls_wide,&text))goto done;
+ for(unsigned i=0;i<6;++i)patch[i*4]*=-nfs_ls_wide.matrix[12];
+ glUseProgram(nfs_ls_child_renderer.copyProgram);glUniform1i(nfs_ls_child_renderer.copySampler,0);
+ glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_ls_child_renderer.patch);
+ glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+ glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,patch);glDrawArrays(GL_TRIANGLES,0,6);
+ ok=glGetError()==GL_NO_ERROR&&(!v->text.vertexCount||
+    nfs_soft_gpu_draw_into_owned_responsive_staging(&nfs_ls_child_renderer.text,&text,
+    v->text.vertices,v->text.vertexCount,&nfs_ls_wide,nfs_ls_modal_text_owner));
+ done:
+ if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context))return 0;
+ nfs_bg_restore(&saved);
+ if(ok)nfs_ls_wide_arm_child(NFS_LS_WIDE_DRAWER);
+ else nfs_ls_child_trace("wide-modal-refused","child-stage-draw");
+ return ok;
 }
 int nfs_private_loadsave_child_finish(const NfsLoadSaveChildView*v){NfsBgSaved saved;NfsSoftwareTextStage stage;int ok=0;
  static const GLfloat gpuQuad[]={-1,1,0,1,-1,-1,0,0,1,1,1,1,1,1,1,1,-1,-1,0,0,1,-1,1,0};
@@ -80,13 +157,18 @@ int nfs_private_loadsave_child_finish(const NfsLoadSaveChildView*v){NfsBgSaved s
  {static const GLfloat cpuQuad[]={-1,1,0,0,-1,-1,0,1,1,1,1,0,1,1,1,0,-1,-1,0,1,1,-1,1,1};glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,cpuQuad);glDrawArrays(GL_TRIANGLES,0,6);glDisable(GL_BLEND);}
  memset(&stage,0,sizeof stage);stage.framebuffer=nfs_ls_child_renderer.fbo;stage.width=nfs_ls_child_renderer.target.width;stage.height=nfs_ls_child_renderer.target.height;stage.sampling=nfs_ls_child_renderer.target.sampling;stage.logicalWidth=640;stage.logicalHeight=480;glViewport(stage.sampling.viewport[0],stage.sampling.viewport[1],stage.sampling.viewport[2],stage.sampling.viewport[3]);ok=nfs_ls_child_stage_owned()&&glGetError()==GL_NO_ERROR&&(!v->text.vertexCount||nfs_soft_gpu_draw_into_staging(&nfs_ls_child_renderer.text,&stage,v->text.vertices,v->text.vertexCount));
  if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);if(!ok||!nfs_ls_child_target_equal()){nfs_ls_child_cancel("private-stage-failed");return 0;}
- nfs_bg_save(&saved);nfs_frame_draw_state();glViewport(0,0,nfs_ls_child_renderer.target.width,nfs_ls_child_renderer.target.height);glUseProgram(nfs_ls_child_renderer.copyProgram);glUniform1i(nfs_ls_child_renderer.copySampler,0);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_ls_child_renderer.color);glBindBuffer(GL_ARRAY_BUFFER,0);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,gpuQuad);glDrawArrays(GL_TRIANGLES,0,6);ok=glGetError()==GL_NO_ERROR;if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);nfs_ls_child_trace(ok?"finish-published":"finish-refused",ok?"retained-parent-plus-source-child-and-HD-text":"commit-error");if(ok&&v->schema==2)(void)nfs_results_name_wide_finish(v);nfs_ls_child_clear_view();return ok;
+ nfs_bg_save(&saved);nfs_frame_draw_state();glViewport(0,0,nfs_ls_child_renderer.target.width,nfs_ls_child_renderer.target.height);glUseProgram(nfs_ls_child_renderer.copyProgram);glUniform1i(nfs_ls_child_renderer.copySampler,0);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_ls_child_renderer.color);glBindBuffer(GL_ARRAY_BUFFER,0);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,gpuQuad);glDrawArrays(GL_TRIANGLES,0,6);ok=glGetError()==GL_NO_ERROR;if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);nfs_ls_child_trace(ok?"finish-published":"finish-refused",ok?"retained-parent-plus-source-child-and-HD-text":"commit-error");if(ok&&v->schema==2)(void)nfs_results_name_wide_finish(v);else if(ok&&nfs_ls_child_renderer.parentKind==1)(void)nfs_ls_modal_draw(v);nfs_ls_child_clear_view();return ok;
 }
 int nfs_private_loadsave_child_cancel(uint64_t request){if(!request||request!=nfs_ls_child_renderer.request||nfs_ls_child_renderer.thread!=NFS_LS_CHILD_THREAD_TOKEN())return 0;nfs_ls_child_cancel("source-frame-invalid");return 1;}
 
 // A successful original child return restores the retained authored parent;
 // save/delete/load actions themselves remain entirely inside the original game.
-int nfs_private_loadsave_child_end(uint64_t request){NfsBgSaved saved;int ok=0;static const GLfloat q[]={-1,1,0,1,-1,-1,0,0,1,1,1,1,1,1,1,1,-1,-1,0,0,1,-1,1,0};if(!request||request!=nfs_ls_child_renderer.request||!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context))return 0;nfs_ls_child_renderer.endedRequest=request;drawTriangles();if(!nfs_ls_child_refresh_frame_target()){nfs_ls_child_cancel("return-target-family-changed");return 0;}nfs_bg_save(&saved);nfs_frame_draw_state();glViewport(0,0,nfs_ls_child_renderer.target.width,nfs_ls_child_renderer.target.height);glUseProgram(nfs_ls_child_renderer.copyProgram);glUniform1i(nfs_ls_child_renderer.copySampler,0);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_ls_child_renderer.clean);glBindBuffer(GL_ARRAY_BUFFER,0);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,q);glDrawArrays(GL_TRIANGLES,0,6);ok=glGetError()==GL_NO_ERROR;if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);if(ok&&nfs_ls_child_renderer.parentKind==2)nfs_results_name_wide_return(request);nfs_ls_child_cancel(ok?"returned-HD-parent":"return-copy-failed");return ok;}
+int nfs_private_loadsave_child_end(uint64_t request){NfsBgSaved saved;int ok=0;static const GLfloat q[]={-1,1,0,1,-1,-1,0,0,1,1,1,1,1,1,1,1,-1,-1,0,0,1,-1,1,0};if(!request||request!=nfs_ls_child_renderer.request||!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context))return 0;nfs_ls_child_renderer.endedRequest=request;drawTriangles();if(!nfs_ls_child_refresh_frame_target()){nfs_ls_child_cancel("return-target-family-changed");return 0;}nfs_bg_save(&saved);nfs_frame_draw_state();glViewport(0,0,nfs_ls_child_renderer.target.width,nfs_ls_child_renderer.target.height);glUseProgram(nfs_ls_child_renderer.copyProgram);glUniform1i(nfs_ls_child_renderer.copySampler,0);glActiveTexture(GL_TEXTURE0);glBindTexture(GL_TEXTURE_2D,nfs_ls_child_renderer.clean);glBindBuffer(GL_ARRAY_BUFFER,0);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,q);glDrawArrays(GL_TRIANGLES,0,6);ok=glGetError()==GL_NO_ERROR;if(!nfs_ls_child_context(nfs_ls_child_renderer.generation,nfs_ls_child_renderer.context)){nfs_ls_child_abandon();return 0;}nfs_bg_restore(&saved);if(ok&&nfs_ls_child_renderer.parentKind==2)nfs_results_name_wide_return(request);
+ if(ok&&nfs_ls_child_renderer.parentKind==1&&request==nfs_ls_wide.childRequest&&
+    nfs_ls_wide_child_seed.current&&nfs_ls_wide_child_seed.current(nfs_ls_wide_child_seed.owner)){
+  nfs_ls_wide_arm_child(NFS_LS_WIDE_RETURN);
+ }
+ nfs_ls_child_cancel(ok?"returned-HD-parent":"return-copy-failed");return ok;}
 
 int nfs_private_loadsave_child_begin(uint64_t request){(void)request;return 0;} // Unqualified native snapshots intentionally unsupported.
 

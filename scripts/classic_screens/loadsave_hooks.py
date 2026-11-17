@@ -21,4 +21,30 @@ def add_loadsave_hooks(text, unit):
         if end > previous: raise ValueError('Overlapping Load/Save scopes: ' + unit)
         text = text[:start] + replacement + text[end:]
         previous = start
+    return add_pointer_presentation(text) if unit == 'Methods_03.cpp' else text
+
+
+def add_pointer_presentation(text):
+    # The mouse-only refresh uploads the existing menu plane before drawing
+    # a fresh cursor. Use the same validated source permit as a full redraw.
+    begin = 'loc_423BE4:\n'
+    end = '\tgoto loc_423BCC;\n'
+    if text.count(begin) != 1:
+        raise ValueError('Load/Save pointer refresh anchor changed')
+    start = text.index(begin)
+    stop = text.index(end, start)
+    frame = text[start:stop]
+    draw = '\tesp -= 4; _sub_426B70(); esp += 4; //call\n'
+    if frame.count(draw) != 1:
+        raise ValueError('Load/Save pointer refresh draw changed')
+    wrapped = (
+        '// NFS_PRIVATE_LOADSAVE_LIVE_BEGIN:pointer-presentation\n'
+        ' { nfs_ls_live::LiveIssuer::Presentation nfs_ls_pointer(*this,true);\n'
+        '// NFS_PRIVATE_LOADSAVE_LIVE_END:pointer-presentation\n'
+        + draw
+        + '// NFS_PRIVATE_LOADSAVE_LIVE_BEGIN:pointer-presentation-close\n'
+        ' }\n'
+        '// NFS_PRIVATE_LOADSAVE_LIVE_END:pointer-presentation-close\n'
+    )
+    text = text[:start] + frame.replace(draw, wrapped) + text[stop:]
     return text

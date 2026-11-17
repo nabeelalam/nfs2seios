@@ -83,9 +83,9 @@ static int nfs_mtw_draw_layers(const NfsBackgroundSceneLayers*layers,const NfsBa
  NfsLogoVertex logos[18];float bounds[4];size_t count=0;
  if(!layers||!stage||!nfs_mtw_image_owner(&nfs_mtw,stage)||!nfs_bg_stage_layers(layers)||!nfs_logo_layers(layers->logos,3,logos,&count,bounds))return 0;
  NFS_MTW_QUERY(glUseProgram(nfs_bg_compositor.program));NFS_MTW_QUERY(glUniformMatrix4fv(nfs_bg_compositor.matrix,1,GL_FALSE,nfs_mtw.matrix));
- if(!nfs_mtw_layer(1))return 0;for(unsigned i=0;i<layers->wordCount;++i){const NfsBackgroundSceneWordLayer*a=layers->words+i;const NfsBackgroundSceneWord*r=nfs_bg_compositor.regions+a->sourceRole-1;if(!nfs_graphics_scene_quad(&nfs_bg_compositor,stage,r->textureRole,a->left,a->top,r->logicalWidth,r->logicalHeight,r->x,r->y,r->width,r->height,a->clip,a->scalar256,1))return 0;}
-  if(count){NFS_MTW_QUERY(glUseProgram(nfs_bg_compositor.logo.program));NFS_MTW_QUERY(glUniformMatrix4fv(nfs_bg_compositor.logo.matrix,1,GL_FALSE,nfs_mtw.matrix));NFS_MTW_QUERY(glUniform1i(nfs_bg_compositor.logo.sampler,0));NFS_MTW_QUERY(glBindTexture(GL_TEXTURE_2D,nfs_bg_compositor.logo.texture));NFS_MTW_QUERY(glEnableVertexAttribArray(0));NFS_MTW_QUERY(glEnableVertexAttribArray(1));NFS_MTW_QUERY(glDisableVertexAttribArray(2));NFS_MTW_QUERY(glDisableVertexAttribArray(3));NFS_MTW_QUERY(glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),logos));NFS_MTW_QUERY(glVertexAttribPointer(1,1,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),&logos[0].coefficient));NFS_MTW_QUERY(glEnable(GL_BLEND));NFS_MTW_QUERY(glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD));NFS_MTW_QUERY(glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA));NFS_MTW_QUERY(glDrawArrays(GL_TRIANGLES,0,(GLsizei)count));}
- return nfs_mtw_image_owner(&nfs_mtw,stage);
+ if(!nfs_mtw_layer(1))return 0;
+ return nfs_bg_stage_decoration(&nfs_bg_compositor,stage,layers,logos,count)
+     &&nfs_mtw_image_owner(&nfs_mtw,stage);
 }
 #include "WideTransitionPreviewRenderer.inc"
 #include "WideTransitionCaptionRenderer.inc"
@@ -128,7 +128,7 @@ static void nfs_mt_wide_begin(const NfsMenuTransitionView*v,const NfsNativeLogoT
  else if(!initialFull&&(!nfs_logo_black_clear.valid||nfs_logo_black_clear.context!=nfs_mtw.generation||nfs_logo_black_clear.epoch!=nfs_logo_provenance.clearEvent||nfs_logo_black_clear.fbo!=t->framebuffer))return;
  const float logical=480.f*w/h;if(logical<=640.01f||logical>854.f){nfs_mtw_begin_trace(v,4);return;}
  if(v->kind!=1&&!nfs_bg_stage_layers(&v->layers)){nfs_mtw_begin_trace(v,9);return;}
- const unsigned ratio=logical>=772.f;if(!nfs_wide_menu_layers(ratio,&l)||!l.map||!l.panel){nfs_mtw_begin_trace(v,5);return;}
+ const unsigned ratio=nfs_wide_menu_ratio(logical);if(!nfs_wide_menu_layers(ratio,&l)||!l.map||!l.panel){nfs_mtw_begin_trace(v,5);return;}
  if(!nfs_graphics_scene_save(&saved,&guard)){nfs_mtw_begin_trace(v,10);return;}glGetFloatv(GL_COLOR_CLEAR_VALUE,clear);if(!nfs_mtw_resources((unsigned)w,(unsigned)h,ratio,&l))goto done;
  nfs_mtw.logical=logical;memset(nfs_mtw.matrix,0,sizeof nfs_mtw.matrix);nfs_mtw.matrix[0]=2/logical;nfs_mtw.matrix[5]=-2.f/480;nfs_mtw.matrix[10]=-2;nfs_mtw.matrix[12]=-1;nfs_mtw.matrix[13]=nfs_mtw.matrix[14]=nfs_mtw.matrix[15]=1;
  drawStage=guard;drawStage.framebuffer=nfs_mtw.fbo;drawStage.width=nfs_mtw.width;drawStage.height=nfs_mtw.height;drawStage.sampling=t->sampling;memcpy(drawStage.sampling.projection,nfs_mtw.matrix,sizeof nfs_mtw.matrix);drawStage.sampling.viewport[0]=drawStage.sampling.viewport[1]=0;drawStage.sampling.viewport[2]=w;drawStage.sampling.viewport[3]=h;drawStage.ownerCurrent=nfs_mtw_image_owner;

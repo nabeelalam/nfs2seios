@@ -64,7 +64,7 @@ static int nfs_piw_texture(GLuint*id,unsigned w,unsigned h,const void*data){NFS_
 static void nfs_piw_delete_surface(NfsPlayerWideSurface*s){nfs_piw_release(&s->owner);if(nfs_piw_context()){if(s->fbo)NFS_PIW_CLEAN_GL(glDeleteFramebuffers(1,&s->fbo));if(s->color)NFS_PIW_CLEAN_GL(glDeleteTextures(1,&s->color));if(s->depth)NFS_PIW_CLEAN_GL(glDeleteRenderbuffers(1,&s->depth));}memset(s,0,sizeof *s);
  lost:memset(s,0,sizeof *s);}
 static int nfs_piw_resources(NfsPlayerWideSurface*s,int reset){
- NfsWideMenuLayers l={0};GLint max=0;unsigned ratio=nfs_piw.logical>=772;int ok=0;NfsBgSaved saved;NfsBackgroundSceneStage guard=nfs_piw_guard();
+ NfsWideMenuLayers l={0};GLint max=0;unsigned ratio=nfs_wide_menu_ratio(nfs_piw.logical);int ok=0;NfsBgSaved saved;NfsBackgroundSceneStage guard=nfs_piw_guard();
  if(!nfs_piw_current()||!nfs_wide_menu_layers(ratio,&l)||!l.map||!l.panel)return 0;
  if(!nfs_graphics_scene_save(&saved,&guard))return 0;
  NFS_PIW_GL(glGetIntegerv(GL_MAX_TEXTURE_SIZE,&max));if(nfs_piw.width>(unsigned)max||nfs_piw.height>(unsigned)max)goto done;

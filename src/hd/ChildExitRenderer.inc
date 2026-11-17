@@ -34,7 +34,7 @@ static int nfs_ce_texture(GLuint*id,unsigned w,unsigned h,const void*data){NFS_C
 static void nfs_ce_delete_surface(NfsChildExitSurface*s){nfs_ce_release(&s->owner);if(nfs_ce_context()){if(s->fbo)NFS_CE_CLEAN_GL(glDeleteFramebuffers(1,&s->fbo));if(s->color)NFS_CE_CLEAN_GL(glDeleteTextures(1,&s->color));if(s->depth)NFS_CE_CLEAN_GL(glDeleteRenderbuffers(1,&s->depth));}memset(s,0,sizeof *s);
  lost:memset(s,0,sizeof *s);}
 static int nfs_ce_resources(NfsChildExitSurface*s,int reset){(void)reset;
- NfsWideMenuLayers l={0};GLint max=0;unsigned ratio=nfs_ce.logical>=772;int ok=0;NfsBgSaved saved;NfsBackgroundSceneStage guard=nfs_ce_guard();
+ NfsWideMenuLayers l={0};GLint max=0;unsigned ratio=nfs_wide_menu_ratio(nfs_ce.logical);int ok=0;NfsBgSaved saved;NfsBackgroundSceneStage guard=nfs_ce_guard();
  if(!nfs_ce_current()||!nfs_wide_menu_layers(ratio,&l)||!l.map||!l.panel)return 0;
  if(!nfs_graphics_scene_save(&saved,&guard))return 0;
  NFS_CE_GL(glGetIntegerv(GL_MAX_TEXTURE_SIZE,&max));if(nfs_ce.width>(unsigned)max||nfs_ce.height>(unsigned)max)goto done;

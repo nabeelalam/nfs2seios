@@ -50,11 +50,19 @@ static BOOL lfbRead(GrBuffer_t buffer,GrOriginLocation_t origin,void *pixels){
         const int row=origin==GR_ORIGIN_UPPER_LEFT?NFS_SURFACE_HEIGHT-1-y:y;
         memcpy((uint8_t *)pixels+(size_t)row*NFS_SURFACE_STRIDE+x*2,&color,2);
     }
+#ifdef NFS_LOADSAVE_FRONT_LOCK
+    if(ok && buffer==GR_BUFFER_FRONTBUFFER)
+        NFS_LOADSAVE_FRONT_LOCK(pixels,origin==GR_ORIGIN_UPPER_LEFT);
+#endif
     lfbRestore(&state);glDeleteFramebuffers(1,&target);glDeleteTextures(1,&texture);free(rgba);return ok;
 }
 static BOOL lfbWrite(GrBuffer_t buffer,GrOriginLocation_t origin,const void *pixels){
     if(!g_glCtx || !g_framebufferHeight)return false;
-    drawTriangles();LfbGLState state;lfbSave(&state);
+    drawTriangles();
+#ifdef NFS_LOADSAVE_FRONT_WRITE
+    if(buffer==GR_BUFFER_FRONTBUFFER&&NFS_LOADSAVE_FRONT_WRITE(pixels,origin==GR_ORIGIN_UPPER_LEFT))return true;
+#endif
+    LfbGLState state;lfbSave(&state);
     GLuint texture=0;glGenTextures(1,&texture);glBindTexture(GL_TEXTURE_2D,texture);lfbTextureParameters();
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,NFS_SURFACE_WIDTH,NFS_SURFACE_HEIGHT,0,GL_RGB,GL_UNSIGNED_SHORT_5_6_5,pixels);
