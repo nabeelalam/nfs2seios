@@ -14,6 +14,11 @@ def number(value, maximum=1e15):
     return type(value) in (int, float) and math.isfinite(value) and 0 <= value <= maximum
 
 
+def frame_count(value):
+    # The native recorder writes whole frame counts with a decimal suffix.
+    return number(value, 16384) and value == int(value)
+
+
 def distribution(values):
     if not values:
         return {"count": 0, "minimum": None, "median": None, "maximum": None}
@@ -130,7 +135,7 @@ def stable_interval_metrics(rows):
     }
 
 
-def summarize(data):
+def summarize(data, *, desktop=False):
     if len(data) > MAX_BYTES:
         raise ValueError("Log exceeds the recorder size bound")
     lines = data.splitlines(keepends=True)
@@ -154,13 +159,14 @@ def summarize(data):
     if not rows or rows[0].get("type") != "session" or rows[0].get("schema") != "nfsiise-session-v1":
         raise ValueError("Unsupported session schema")
     build = rows[0].get("build")
-    if type(build) is not int or not 0 < build < 1000000:
+    if type(build) is not int or (build != 0 if desktop else not 0 < build < 1000000):
         raise ValueError("Invalid build")
     source = rows[0].get("source_commit")
     if "source_commit" in rows[0] and (not isinstance(source, str) or re.fullmatch("[0-9a-f]{40}", source) is None):
         raise ValueError("Invalid source commit")
-    groups = {False: [], True: []}
-    windows = {False: [], True: []}
+    modes = ((None, "all"),) if desktop else ((False, "off"), (True, "on"))
+    groups = {power: [] for power, _ in modes}
+    windows = {power: [] for power, _ in modes}
     seen_ids = set()
     previous = -1
     end = None
@@ -171,7 +177,7 @@ def summarize(data):
     previous_power = None
     previous_limit = None
     previous_render_size = None
-    stable_intervals = {False: [], True: []}
+    stable_intervals = {power: [] for power, _ in modes}
     for index, row in enumerate(rows[1:], start=1):
         if row.get("type") == "end":
             if index != len(rows) - 1 or partial_tail:
@@ -190,7 +196,8 @@ def summarize(data):
         elapsed = row.get("elapsed_s")
         power = row.get("low_power_mode")
         identity = row.get("game_cpu_sample_id")
-        if not number(elapsed, 3600) or elapsed >= 3600 or elapsed <= previous or type(power) is not bool:
+        valid_power = ("low_power_mode" in row and power is None) if desktop else type(power) is bool
+        if not number(elapsed, 3600) or elapsed >= 3600 or elapsed <= previous or not valid_power:
             raise ValueError("Invalid sample time or power mode")
         if type(identity) is not int or not 0 <= identity < 2**64:
             raise ValueError("Invalid CPU window identity")
@@ -221,7 +228,9 @@ def summarize(data):
             seen_ids.add(identity)
     if count > 3600:
         raise ValueError("Too many sample rows")
-    result = {"schema": "nfsiise-session-summary-v1", "build": build,
+    group_key = "desktop" if desktop else "low_power_mode"
+    schema = "nfsiise-desktop-session-summary-v1" if desktop else "nfsiise-session-summary-v1"
+    result = {"schema": schema, "build": build,
               "samples": count, "last_sample_elapsed_s": previous if count else None,
               "has_end_record": end is not None,
               "clean_end_record": end is not None and end["reason"] not in {"write_error", "writer_backlog"} and end["attempted_rows"] == count,
@@ -229,12 +238,13 @@ def summarize(data):
               "end_reason": end.get("reason") if end else None,
               "sampling_gaps_over_2_5s": gaps,
               "scope": "Sampled FPS and CPU windows; not exact race frame counts or measured energy",
-              "low_power_mode": {}}
-    for power, samples in groups.items():
+              group_key: {}}
+    for power, label in modes:
+        samples = groups[power]
         def values(key, maximum=1e15):
             return [r[key] for r in samples if number(r.get(key), maximum)]
         batteries = values("battery_percent", 100)
-        result["low_power_mode"]["on" if power else "off"] = {
+        result[group_key][label] = {
             "samples": len(samples),
             **render_conditions(samples),
             "brightness": distribution(values("brightness", 1)),
@@ -257,15 +267,15 @@ def summarize(data):
         result["source_commit"] = source
     result["stable_interval_comparison"] = {
         label: stable_interval_metrics(stable_intervals[power])
-        for label, power in (("off", False), ("on", True))
+        for power, label in modes
     }
     race_intervals = {
         label: [row for row in stable_intervals[power]
-                if type(row.get("classified_presentations")) is int
+                if frame_count(row.get("classified_presentations"))
                 and 0 < row["classified_presentations"] <= 16384
-                and type(row.get("race_world_presentations")) is int
+                and frame_count(row.get("race_world_presentations"))
                 and row["race_world_presentations"] == row["classified_presentations"]]
-        for label, power in (("off", False), ("on", True))
+        for power, label in modes
     }
     result["race_world_interval_comparison"] = {
         label: {
@@ -280,7 +290,7 @@ def summarize(data):
         for label, rows in race_intervals.items()
     }
     result["has_frame_content_counts"] = any(
-        type(row.get("classified_presentations")) is int and row["classified_presentations"] > 0
+        frame_count(row.get("classified_presentations")) and row["classified_presentations"] > 0
         for samples in groups.values() for row in samples
     )
     result["race_world_interval_scope"] = (
@@ -293,8 +303,8 @@ def summarize(data):
         "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. A majority-slow sample has at least half its measured swaps above 18 ms. The longest run counts contiguous samples, not individual frames. Display-link rates describe main run-loop delivery, not displayed game frames. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
     )
     result["timing_art_comparison"] = {}
-    for power in (False, True):
-        modes = {}
+    for power, power_label in modes:
+        timing_modes = {}
         for mode, label in ((False, "original"), (True, "hd_requested"), (None, "unavailable")):
             selected = [r for p, m, r, stable in timing_rows if p == power and m is mode and stable]
             ids = set()
@@ -305,11 +315,11 @@ def summarize(data):
                 if identity > 0 and identity not in ids and number(value):
                     ids.add(identity)
                     cpu.append(value)
-            modes[label] = {
+            timing_modes[label] = {
                 "stable_samples": len(selected),
                 "fps_observations": distribution([r["presentation_fps"] for r in selected if number(r.get("presentation_fps"), 10000)]),
                 "game_cpu_ms_per_frame_unique_windows": distribution(cpu)}
-        result["timing_art_comparison"]["low_power_on" if power else "low_power_off"] = modes
+        result["timing_art_comparison"][power_label if desktop else "low_power_" + power_label] = timing_modes
     result["timing_art_caution"] = "Requested timing art only; unknown atlases fall back. First sample after mode changes excluded. Partial FPS/CPU windows are not energy measurements."
     return result
 
@@ -377,12 +387,14 @@ def read_bounded(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("log", type=Path, help="session log, or the Low Power Mode off log for comparison")
-    parser.add_argument("--compare-low-power", type=Path, help="matching Low Power Mode on log")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--compare-low-power", type=Path, help="matching Low Power Mode on log")
+    mode.add_argument("--desktop", action="store_true", help="summarize a local desktop recording")
     args = parser.parse_args()
     try:
         data = read_bounded(args.log)
         report = (compare_power_sessions(data, read_bounded(args.compare_low_power))
-                  if args.compare_low_power else summarize(data))
+                  if args.compare_low_power else summarize(data, desktop=args.desktop))
         print(json.dumps(report, indent=2, allow_nan=False))
     except (OSError, ValueError):
         parser.exit(1, "Unable to summarize: missing, unsupported, malformed or unmatched recorder log.\n")

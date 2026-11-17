@@ -35,14 +35,28 @@ class SummaryTests(unittest.TestCase):
         self.assertIsNone(old_log["stable_interval_comparison"]["off"]["unlocked_swap_fraction_over_18ms"])
 
     def test_race_world_comparison_excludes_menu_and_mixed_samples(self):
-        rows = [dict(sample(i), interval_s=1, classified_presentations=classified,
-                     race_world_presentations=world)
-                for i, (classified, world) in enumerate(((60, 0), (60, 30), (60, 60), (45, 45)))]
+        rows = [dict(sample(i), interval_s=1, classified_presentations=float(classified),
+                     race_world_presentations=float(world))
+                for i, (classified, world) in enumerate(((60, 0), (60, 30), (60, 60), (45, 45), (40.5, 40.5)))]
         race = summary.summarize(fixture(rows))["race_world_interval_comparison"]["off"]
         self.assertEqual(race["samples"], 2)
         self.assertEqual(race["presentation_fps"]["median"], 52.5)
         legacy = summary.summarize(fixture([sample(0), sample(1)]))
         self.assertEqual(legacy["race_world_interval_comparison"]["off"]["samples"], 0)
+
+    def test_desktop_summary_is_separate_from_device_comparison(self):
+        session = {"type": "session", "schema": "nfsiise-session-v1", "build": 0}
+        rows = [dict(sample(i, power=None), interval_s=1, frame_limit=0,
+                     classified_presentations=45.0, race_world_presentations=45.0,
+                     swap_intervals_count=44.0, swap_intervals_over_18ms=40.0)
+                for i in range(3)]
+        log = b"".join((json.dumps(row) + "\n").encode() for row in [session, *rows])
+        report = summary.summarize(log, desktop=True)
+        self.assertNotIn("low_power_mode", report)
+        self.assertEqual(report["race_world_interval_comparison"]["all"]["samples"], 2)
+        self.assertEqual(report["race_world_interval_comparison"]["all"]["unlocked_longest_majority_slow_run_s"], 2)
+        with self.assertRaisesRegex(ValueError, "Invalid build"):
+            summary.compare_power_sessions(log, log)
 
     def test_majority_slow_runs_are_broken_by_filtering_and_single_dips(self):
         def row(second, slow, world=60):
