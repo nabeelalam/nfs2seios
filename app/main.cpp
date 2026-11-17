@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 #include <SDL3/SDL.h>
-#if !defined(SDL_PLATFORM_IOS)
+#if defined(SDL_PLATFORM_IOS)
+#include "../ios/ResidentMemory.h"
+#else
 #include "DesktopDiagnosticRecorder.h"
 #endif
 #include <SDL3/SDL_main.h>
@@ -37,10 +39,23 @@ int32_t present(const std::string &text,const std::string &caption,uint32_t flag
     return nfs::sdl_game_message(text,caption,flags);
 #endif
 }
+void log_memory_context(const char *kind, const char *message) {
+    // Persist the checkpoint before querying memory so an interruption
+    // during diagnostics cannot erase the last known renderer stage.
+    nfs::app_log(kind, message);
+#if defined(SDL_PLATFORM_IOS)
+    const double resident = nfs::resident_memory_mib();
+    if (resident >= 0) {
+        char sample[96];
+        std::snprintf(sample, sizeof(sample), "%s; resident MiB=%.1f", message, resident);
+        nfs::app_log("Memory sample", sample);
+    }
+#endif
+}
 bool SDLCALL log_memory_warning(void *,SDL_Event *event) noexcept {
     if(event->type==SDL_EVENT_LOW_MEMORY){
         try {
-            nfs::app_log("Memory warning","Operating system reported memory pressure");
+            log_memory_context("Memory warning","Operating system reported memory pressure");
         } catch (...) {
             // Diagnostics must never let exceptions escape the SDL callback.
         }
@@ -67,7 +82,7 @@ int main(int argc,char **argv){
 #endif
     nfs::set_opponents_visit_sink([](nfs::OpponentsVisit stage){
         switch(stage){
-        case nfs::OpponentsVisit::Entered:nfs::app_log("Opponents","entered menu");break;
+        case nfs::OpponentsVisit::Entered:log_memory_context("Opponents","entered menu");break;
         case nfs::OpponentsVisit::ScenePrepared:nfs::app_log("Opponents","prepared first scene");break;
         case nfs::OpponentsVisit::RendererBegin:nfs::app_log("Opponents","renderer began first scene");break;
         case nfs::OpponentsVisit::RendererReady:nfs::app_log("Opponents","renderer accepted first scene");break;
@@ -75,10 +90,10 @@ int main(int argc,char **argv){
         case nfs::OpponentsVisit::PreviewBegin:nfs::app_log("Opponents","renderer began first four-car transition");break;
         case nfs::OpponentsVisit::PreviewReady:nfs::app_log("Opponents","renderer accepted first four-car transition");break;
         case nfs::OpponentsVisit::PreviewDeclined:nfs::app_log("Opponents","renderer declined first four-car transition");break;
-        case nfs::OpponentsVisit::PreviewCommitBegin:nfs::app_log("Opponents","renderer began committing first four-car frame");break;
-        case nfs::OpponentsVisit::PreviewCommitted:nfs::app_log("Opponents","renderer committed first four-car frame");break;
-        case nfs::OpponentsVisit::PreviewCommitDeclined:nfs::app_log("Opponents","renderer declined first four-car frame commit");break;
-        case nfs::OpponentsVisit::Left:nfs::app_log("Opponents","left menu");break;
+        case nfs::OpponentsVisit::PreviewCommitBegin:log_memory_context("Opponents","renderer began committing first four-car frame");break;
+        case nfs::OpponentsVisit::PreviewCommitted:log_memory_context("Opponents","renderer committed first four-car frame");break;
+        case nfs::OpponentsVisit::PreviewCommitDeclined:log_memory_context("Opponents","renderer declined first four-car frame commit");break;
+        case nfs::OpponentsVisit::Left:log_memory_context("Opponents","left menu");break;
         }
     });
     nfs::app_log("Native app","Need for Speed II SE; platform="+std::string(SDL_GetPlatform()));

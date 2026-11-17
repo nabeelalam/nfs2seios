@@ -1044,6 +1044,29 @@ log after one relaunch, since subsequent launches replace it. The test does
 not exercise iPadOS termination or prove that a memory warning will precede
 an OS kill.
 
+The next Apple build can also log resident memory at Opponents entry,
+first-frame commit start and outcome, exit, and OS memory warnings. It
+writes each stage before querying memory and uses the same measurement as
+the session recorder. Resident MiB is context and does not identify an
+OS termination. The desktop checkpoint paths compiled and the abrupt-exit
+log test passed. The new Apple-only log lines still require device verification.
+
+### Same-aspect transition texture reuse
+
+Within a drawable aspect, resize replaces the two output-sized textures
+and framebuffer while retaining the immutable map and panel textures.
+A sanitizer-backed allocation fixture verified same-size reuse,
+same-aspect resize, cross-aspect replacement and retry after an injected
+allocation error. At 16:9 this avoids uploading two 1280x720 RGBA artwork
+textures again, or approximately 7 MiB per same-aspect resize.
+
+The linked desktop replay resized from 1920x1080 to 1280x720 during
+Opponents. Across 687 presentation choices covering both visits, one
+frame used the original route, immediately after the resize at frame
+418. Frame 419 resumed wide. The two first four-car frames committed,
+four class changes and both returns completed, and the app exited cleanly
+with the test profile restored. No physical iPad result was measured.
+
 ### Transition target allocation recovery
 
 A partial transition texture resize invalidates the cached extent before any
@@ -1092,6 +1115,16 @@ for DATA and 17.1 percent for BSS. It rose 1.2 percent for mixed heap/DATA
 and 1.9 percent for heap-only. The candidate stays outside production
 because its mixed workload showed no repeatable gain. These isolated
 desktop kernels do not establish game frame times or iPad performance.
+
+### Crash breadcrumb storage experiment
+
+A private candidate grouped the per-thread ring, indices and monitor slot
+lease into one thread-local object. Both versions passed the existing
+cross-thread sampling, overflow and slot reuse test and produced identical
+history and monitor messages after 50 million calls. In six alternating
+desktop pairs the candidate took 4.8 percent longer at the median. The
+existing layout stays in production. This isolated Linux result does not
+measure the cost of thread-local access on iPadOS.
 
 ### Checked FPU store experiment
 

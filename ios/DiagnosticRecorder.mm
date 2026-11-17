@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 #import "DiagnosticRecorder.h"
-#import <mach/mach.h>
+#include "ResidentMemory.h"
 #import <QuartzCore/QuartzCore.h>
 #include "DiagnosticSession.h"
 #include "EngineThreadMetrics.h"
@@ -183,8 +183,8 @@ static NSURL *recording_folder(){
         if(main>=0 && _mainCPU>=0 && main>=_mainCPU)sample.main_ms=double(main-_mainCPU)/1e6;
     }
     _processCPU=process;_mainCPU=main;_previous=now;
-    mach_task_basic_info_data_t info{};mach_msg_type_number_t count=MACH_TASK_BASIC_INFO_COUNT;
-    if(task_info(mach_task_self(),MACH_TASK_BASIC_INFO,reinterpret_cast<task_info_t>(&info),&count)==KERN_SUCCESS && count==MACH_TASK_BASIC_INFO_COUNT)sample.ram_mb=double(info.resident_size)/1048576;
+    const double resident = nfs::resident_memory_mib();
+    if (resident >= 0) sample.ram_mb = resident;
     UIDevice *device=UIDevice.currentDevice;const float battery=device.batteryLevel;
     sample.battery_percent=battery>=0 && battery<=1?battery*100:-1;
     sample.battery_state=int(device.batteryState);sample.brightness=self.host?self.host.screen.brightness:-1;

@@ -61,17 +61,59 @@ static int nfs_mtw_dimensions(unsigned w,unsigned h){GLint texture=0,viewport[2]
 static int nfs_mtw_attachment(GLuint color){GLint fbo=0,type=0,name=0;GLenum status=0;if(!nfs_mtw_current()||!color)return 0;NFS_MTW_QUERY(glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo));if((GLuint)fbo!=nfs_mtw.fbo)return 0;NFS_MTW_QUERY(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type));NFS_MTW_QUERY(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name));NFS_MTW_QUERY(status=glCheckFramebufferStatus(GL_FRAMEBUFFER));return type==GL_TEXTURE&&(GLuint)name==color&&status==GL_FRAMEBUFFER_COMPLETE;}
 static int nfs_mtw_image_owner(void*user,const NfsBackgroundSceneStage*t){return nfs_mtw_context_owner(user,t)&&t->framebuffer==nfs_mtw.fbo&&t->width==nfs_mtw.width&&t->height==nfs_mtw.height&&nfs_mtw_attachment(nfs_mtw.image);}
 static int nfs_mtw_resources(unsigned w,unsigned h,unsigned ratio,const NfsWideMenuLayers*l){
- int ok=0;GLuint next[4]={0};GLuint fbo=0;GLboolean live=0;GLenum status=0,error=0;
- if(nfs_mtw.width==w&&nfs_mtw.height==h&&nfs_mtw.ratio==ratio&&nfs_mtw.image&&nfs_mtw.result&&nfs_mtw.art[0]&&nfs_mtw.art[1]&&nfs_mtw.fbo){
-  const GLuint ids[4]={nfs_mtw.image,nfs_mtw.result,nfs_mtw.art[0],nfs_mtw.art[1]};for(unsigned i=0;i<4;++i){NFS_MTW_GL(live=glIsTexture(ids[i]));if(!live)goto done;}NFS_MTW_GL(live=glIsFramebuffer(nfs_mtw.fbo));if(live)return 1;goto done;
+ int ok=0,keepArt=0;
+ GLuint next[4]={0},fbo=0;
+ GLboolean live=0,mapLive=0,panelLive=0;
+ GLenum status=0,error=0;
+ if(nfs_mtw.ratio==ratio&&nfs_mtw.art[0]&&nfs_mtw.art[1]){
+  NFS_MTW_GL(mapLive=glIsTexture(nfs_mtw.art[0]));
+  NFS_MTW_GL(panelLive=glIsTexture(nfs_mtw.art[1]));
+  keepArt=mapLive&&panelLive;
  }
- NFS_MTW_GL(glActiveTexture(GL_TEXTURE0));NFS_MTW_GL(glPixelStorei(GL_UNPACK_ALIGNMENT,1));NFS_MTW_GL(glGenTextures(4,next));NFS_MTW_GL(glGenFramebuffers(1,&fbo));if(!fbo)goto done;
- for(unsigned i=0;i<4;++i){if(!next[i])goto done;NFS_MTW_GL(glBindTexture(GL_TEXTURE_2D,next[i]));if(!nfs_mtw_texture_params())goto done;NFS_MTW_GL(glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,i<2?w:l->width,i<2?h:l->height,0,GL_RGBA,GL_UNSIGNED_BYTE,i<2?NULL:i==2?l->map:l->panel));if(glGetError()!=GL_NO_ERROR)goto done;}
- NFS_MTW_GL(glBindFramebuffer(GL_FRAMEBUFFER,fbo));NFS_MTW_GL(glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,next[0],0));NFS_MTW_GL(status=glCheckFramebufferStatus(GL_FRAMEBUFFER));NFS_MTW_GL(error=glGetError());if(status!=GL_FRAMEBUFFER_COMPLETE||error!=GL_NO_ERROR)goto done;
- if(nfs_mtw.image){NFS_MTW_GL(glDeleteTextures(1,&nfs_mtw.image));}if(nfs_mtw.result){NFS_MTW_GL(glDeleteTextures(1,&nfs_mtw.result));}NFS_MTW_GL(glDeleteTextures(2,nfs_mtw.art));if(nfs_mtw.fbo){NFS_MTW_GL(glDeleteFramebuffers(1,&nfs_mtw.fbo));}
- nfs_mtw_static_invalidate();if(nfs_mtw.resourceEpoch!=UINT64_MAX)++nfs_mtw.resourceEpoch;
- nfs_mtw.image=next[0];nfs_mtw.result=next[1];nfs_mtw.art[0]=next[2];nfs_mtw.art[1]=next[3];nfs_mtw.fbo=fbo;nfs_mtw.width=w;nfs_mtw.height=h;nfs_mtw.ratio=ratio;ok=1;
- done:if(!ok&&nfs_mtw_current()){glDeleteTextures(4,next);if(nfs_mtw_current()&&fbo)glDeleteFramebuffers(1,&fbo);}return ok&&nfs_mtw_current();
+ if(keepArt&&nfs_mtw.width==w&&nfs_mtw.height==h&&nfs_mtw.image&&nfs_mtw.result&&nfs_mtw.fbo){
+  const GLuint ids[2]={nfs_mtw.image,nfs_mtw.result};
+  for(unsigned i=0;i<2;++i){NFS_MTW_GL(live=glIsTexture(ids[i]));if(!live)goto done;}
+  NFS_MTW_GL(live=glIsFramebuffer(nfs_mtw.fbo));
+  if(live)return 1;
+  goto done;
+ }
+ // A drawable resize within one artwork aspect only needs new targets.
+ // Keep the old targets and artwork published until the replacement works.
+ const unsigned textureCount=keepArt?2:4;
+ NFS_MTW_GL(glActiveTexture(GL_TEXTURE0));
+ NFS_MTW_GL(glPixelStorei(GL_UNPACK_ALIGNMENT,1));
+ NFS_MTW_GL(glGenTextures(textureCount,next));
+ NFS_MTW_GL(glGenFramebuffers(1,&fbo));
+ if(!fbo)goto done;
+ for(unsigned i=0;i<textureCount;++i){
+  if(!next[i])goto done;
+  NFS_MTW_GL(glBindTexture(GL_TEXTURE_2D,next[i]));
+  if(!nfs_mtw_texture_params())goto done;
+  NFS_MTW_GL(glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,i<2?w:l->width,i<2?h:l->height,0,
+                         GL_RGBA,GL_UNSIGNED_BYTE,i<2?NULL:i==2?l->map:l->panel));
+  if(glGetError()!=GL_NO_ERROR)goto done;
+ }
+ NFS_MTW_GL(glBindFramebuffer(GL_FRAMEBUFFER,fbo));
+ NFS_MTW_GL(glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,next[0],0));
+ NFS_MTW_GL(status=glCheckFramebufferStatus(GL_FRAMEBUFFER));
+ NFS_MTW_GL(error=glGetError());
+ if(status!=GL_FRAMEBUFFER_COMPLETE||error!=GL_NO_ERROR)goto done;
+ if(nfs_mtw.image){NFS_MTW_GL(glDeleteTextures(1,&nfs_mtw.image));}
+ if(nfs_mtw.result){NFS_MTW_GL(glDeleteTextures(1,&nfs_mtw.result));}
+ if(!keepArt){NFS_MTW_GL(glDeleteTextures(2,nfs_mtw.art));}
+ if(nfs_mtw.fbo){NFS_MTW_GL(glDeleteFramebuffers(1,&nfs_mtw.fbo));}
+
+ nfs_mtw_static_invalidate();
+ if(nfs_mtw.resourceEpoch!=UINT64_MAX)++nfs_mtw.resourceEpoch;
+ nfs_mtw.image=next[0];nfs_mtw.result=next[1];
+ if(!keepArt){nfs_mtw.art[0]=next[2];nfs_mtw.art[1]=next[3];}
+ nfs_mtw.fbo=fbo;nfs_mtw.width=w;nfs_mtw.height=h;nfs_mtw.ratio=ratio;ok=1;
+ done:
+ if(!ok&&nfs_mtw_current()){
+  glDeleteTextures(4,next);
+  if(nfs_mtw_current()&&fbo)glDeleteFramebuffers(1,&fbo);
+ }
+ return ok&&nfs_mtw_current();
 }
 static int nfs_mtw_layer(unsigned role){const GLfloat q[]={0,0,0,0,nfs_mtw.logical,0,1,0,0,480,0,1,0,480,0,1,nfs_mtw.logical,0,1,0,nfs_mtw.logical,480,1,1};NFS_MTW_QUERY(glUniform1i(nfs_bg_compositor.sampler,0));NFS_MTW_QUERY(glUniform1f(nfs_bg_compositor.opacity,1));NFS_MTW_QUERY(glActiveTexture(GL_TEXTURE0));NFS_MTW_QUERY(glBindTexture(GL_TEXTURE_2D,nfs_mtw.art[role]));NFS_MTW_QUERY(glEnableVertexAttribArray(0));for(unsigned i=1;i<4;++i)NFS_MTW_QUERY(glDisableVertexAttribArray(i));NFS_MTW_QUERY(glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,q));if(role){NFS_MTW_QUERY(glEnable(GL_BLEND));NFS_MTW_QUERY(glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD));NFS_MTW_QUERY(glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA));}else NFS_MTW_QUERY(glDisable(GL_BLEND));NFS_MTW_QUERY(glDrawArrays(GL_TRIANGLES,0,6));return 1;}
 static int nfs_mtw_bands(GLuint image,const NfsTransitionMotion*motion,GLint dstRgb,GLint dstAlpha){
