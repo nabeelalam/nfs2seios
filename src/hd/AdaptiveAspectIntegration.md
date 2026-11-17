@@ -1178,4 +1178,22 @@ log shows repeated SDK feature probes, with individual math symbol
 checks taking up to nine seconds. Commit 7131fbc allows 40 minutes
 on the same runner and retains the explicit Linux gates and private
 artwork assembly. No configure checks were removed. Replacement
-run 44146584443 was dispatched once with the same Release options.
+run 44146584443 used the same Release options and finished in 18m35s.
+Configuration took 9m48s, engine compilation 2m40s, renderer and bridge
+compilation 2m23s, and the final app target 2m12s. The package and
+temporary draft steps took 26 seconds combined. Configuration was 563
+seconds longer in the earlier attempt. The 40-minute cap allows for
+runner variance and did not extend the successful run.
+
+## Renderer completion wakeup trial
+
+The retained split-screen profile attributed 0.290 of 54.088 sampled
+CPU seconds to condition-variable broadcasts across all threads. A
+private renderer candidate skipped queue-completion broadcasts unless
+a borrowed caller had registered as waiting under the command mutex.
+All existing renderer owner and lifetime checks passed in optimized
+and ASan/UBSan builds. Across eight alternating pairs of 400,000 queued
+commands, median wall time was 140.613 ms in the baseline and 140.298 ms
+in the candidate. The roughly 0.2 percent difference does not justify
+changing cancellation synchronization or building a new IPA. The
+production queue stays unchanged.
