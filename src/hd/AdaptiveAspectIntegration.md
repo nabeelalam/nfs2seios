@@ -920,3 +920,19 @@ Top-level unrelated files were excluded. The source inventory stayed
 identical after a desktop game session launched from the imported copy,
 entered North Country, produced non-silent audio and exited cleanly.
 The iPad document picker and signing path were outside this local test.
+
+## Natural race finish on the current desktop integration
+
+The isolated desktop controller fixture completed two laps of Proving
+Grounds in the McLaren F1 using the original race and inputs. The first
+logged Race Summary presentation was wide at 800x450. Captures confirmed
+the authored Summary, original results and rotating Omega branding through
+resizes to 1280x720 and 1180x820. Continue opened the widescreen Lap Times
+page at 1180x820. The game then shut down cleanly. The original profile
+and replay were restored in the disposable imported game copy.
+
+The first attempt also captured wide Summary. Its X11 screenshot request
+at the larger size extended beyond the virtual display and interrupted the
+observer. Moving the window to the virtual origin resolved the capture
+failure. No iPad behavior, natural record entry or return to Main was
+established by the corrected replay.
