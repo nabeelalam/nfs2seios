@@ -95,7 +95,8 @@ static uint8_t held_frontend_direction(const std::array<GameJoystickState,2> &sn
 void InputDevices::publish(uint32_t slot,const GameJoystickState *state){
     if(slot>=2)throw std::out_of_range("Controller slot");
     std::lock_guard<std::mutex> lock(mutex);
-    const auto previous_direction=held_frontend_direction(snapshots);
+    const bool hat_changed=state && state->pov[0]!=snapshots[slot].pov[0];
+    const auto previous_direction=hat_changed?held_frontend_direction(snapshots):0;
     const auto previous=snapshots[slot];
     if(!state)frontend_button_edges[slot]=0;
     snapshots[slot]=state?*state:GameJoystickState{};
@@ -107,7 +108,7 @@ void InputDevices::publish(uint32_t slot,const GameJoystickState *state){
         for(unsigned i=0;i<frontend_press_count;++i)
             if(frontend_presses[i].slot!=slot)frontend_presses[retained++]=frontend_presses[i];
         frontend_press_count=retained;
-    }else{
+    }else if(hat_changed){
         const auto direction=held_frontend_direction(snapshots);
         if(direction && direction!=previous_direction){
             // Bounded retention: keep the latest eight transitions if a busy
