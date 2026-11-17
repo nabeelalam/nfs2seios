@@ -76,8 +76,13 @@ struct DesktopDiagnosticRecorder::Impl {
    nfs_frame_timing_capture(0);NfsFrameTiming old[128];for(unsigned i=0;i<8&&nfs_frame_timing_drain(old,128);++i){}
    const auto baseline=nfs_frame_timing_snapshot();start_drop=baseline.dropped_total;start_id=baseline.latest_frame_id;
    origin=SDL_GetTicksNS();last=origin;next=origin+1000000000ull;process=cpu_ns(false);main=cpu_ns(true);
+   const auto header=diagnostic_header(0);
+   const std::string frame_header="frame_id,timestamp_ns,interval_ns,window_epoch,swap_call_ns\n";
+   if(std::fwrite(header.data(),1,header.size(),samples)!=header.size() ||
+      std::fwrite(frame_header.data(),1,frame_header.size(),frames)!=frame_header.size())
+       throw std::runtime_error("Could not write diagnostic recording headers");
+   accepted_bytes=header.size()+frame_header.size();
    writer=std::thread([this]{write_loop();});
-   put(false,diagnostic_header(0),0);put(true,"frame_id,timestamp_ns,interval_ns,window_epoch,swap_call_ns\n",0);
    nfs_set_engine_metrics_capture(1);nfs_frame_timing_capture(1);start_epoch=nfs_frame_timing_snapshot().window_epoch;
   }catch(...){if(writer.joinable()){{std::lock_guard<std::mutex>lock(mutex);closing=true;}changed.notify_one();writer.join();}for(unsigned i=0;i<opened;++i){if(*handles[i])std::fclose(*handles[i]);std::remove(paths[i].c_str());}throw;}
  }
@@ -93,7 +98,15 @@ struct DesktopDiagnosticRecorder::Impl {
   for(;;){Work work;{std::unique_lock<std::mutex>lock(mutex);changed.wait(lock,[this]{return closing||!queue.empty();});if(queue.empty()&&closing)break;work=std::move(queue.front());queue.pop_front();queued_bytes-=work.text.size();}
    if(!write_error.load()){FILE*f=work.frames?frames:samples;if(std::fwrite(work.text.data(),1,work.text.size(),f)!=work.text.size())write_error.store(true);else if(work.frames)written_frames.fetch_add(work.count);else written_samples.fetch_add(work.count);}
   }
-  if(std::fflush(samples)||std::fflush(frames))write_error.store(true);
+  // The footer uses the reserved file budget after the bounded queue
+  // drains. It cannot be rejected by the backlog it reports.
+  if(!write_error.load()){
+   const auto footer=diagnostic_footer(reason,double(elapsed_end)/1e9,sample_rows);
+   if(std::fwrite(footer.data(),1,footer.size(),samples)!=footer.size())write_error.store(true);
+  }
+  const int sample_flush=std::fflush(samples);
+  const int frame_flush=std::fflush(frames);
+  if(sample_flush||frame_flush)write_error.store(true);
   const auto dropped=end_drop>=start_drop?end_drop-start_drop:0;
   const std::string summary="{\"schema\":\"nfsiise-desktop-recording-v1\",\"clock\":\"SDL_GetTicksNS\",\"clock_origin_ns\":"+std::to_string(origin)+",\"frame_scope\":\"swap submissions, no display or GPU timestamps\",\"swap_call_scope\":\"host elapsed nanoseconds inside SDL_GL_SwapWindow, zero if unavailable\",\"fps_scope\":\"latest stamped rate window;null after2.5s\",\"game_cpu_scope\":\"original engine-thread 60-submission windows;sample_id identifies repeats;not presented-frame CPU\",\"unsupported_fields\":[\"ram_mb\",\"battery_percent\",\"battery_state\",\"brightness\",\"thermal_state\",\"low_power_mode\",\"app_state\",\"system_core_percent\"],\"end_reason\":\""+(write_error.load()?std::string("write_error"):reason)+"\",\"elapsed_ns\":"+std::to_string(elapsed_end)+",\"samples_enqueued\":"+std::to_string(sample_rows)+",\"samples_written\":"+std::to_string(written_samples.load())+",\"discarded_frames\":"+std::to_string(discarded_frames)+",\"frames_enqueued\":"+std::to_string(frame_rows)+",\"frames_written\":"+std::to_string(written_frames.load())+",\"start_window_epoch\":"+std::to_string(start_epoch)+",\"end_window_epoch\":"+std::to_string(end_epoch)+",\"start_frame_id\":"+std::to_string(start_id)+",\"end_frame_id\":"+std::to_string(end_id)+",\"capture_dropped\":"+std::to_string(dropped)+",\"writer_failed\":"+(write_error.load()?"true":"false")+"}\n";
   if(std::fwrite(summary.data(),1,summary.size(),meta)!=summary.size()||std::fflush(meta))write_error.store(true);
@@ -119,7 +132,7 @@ struct DesktopDiagnosticRecorder::Impl {
  }
  void stop(const char *why) noexcept {
   if(stopped)return;stopped=true;reason=safe_reason(why);if(reason=="writer_backlog"||reason=="byte_limit"||reason=="write_error")frames_closed=true;nfs_frame_timing_capture(0);nfs_set_engine_metrics_capture(0);
-  try{drain(true);const auto final=nfs_frame_timing_snapshot();end_drop=final.dropped_total;end_id=final.latest_frame_id;end_epoch=final.window_epoch;const auto now=SDL_GetTicksNS();elapsed_end=now>=origin?now-origin:0;put(false,diagnostic_footer(reason,double(elapsed_end)/1e9,sample_rows),0);}catch(...){write_error.store(true);}
+  try{drain(true);const auto final=nfs_frame_timing_snapshot();end_drop=final.dropped_total;end_id=final.latest_frame_id;end_epoch=final.window_epoch;const auto now=SDL_GetTicksNS();elapsed_end=now>=origin?now-origin:0;}catch(...){write_error.store(true);}
   {std::lock_guard<std::mutex>lock(mutex);closing=true;}changed.notify_one();if(writer.joinable())writer.join();
  }
  ~Impl(){stop("session_end");for(FILE*f:{samples,frames,meta})if(f)std::fclose(f);}
