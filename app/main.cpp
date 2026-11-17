@@ -37,6 +37,16 @@ int32_t present(const std::string &text,const std::string &caption,uint32_t flag
     return nfs::sdl_game_message(text,caption,flags);
 #endif
 }
+bool SDLCALL log_memory_warning(void *,SDL_Event *event) noexcept {
+    if(event->type==SDL_EVENT_LOW_MEMORY){
+        try {
+            nfs::app_log("Memory warning","Operating system reported memory pressure");
+        } catch (...) {
+            // Diagnostics must never let exceptions escape the SDL callback.
+        }
+    }
+    return true;
+}
 void report(const std::string &error){
     nfs::app_log("Native game app failure",error);
 #ifndef NFS_APP_HEADLESS_MESSAGES
@@ -73,6 +83,8 @@ int main(int argc,char **argv){
     nfs::app_log("Source revision",NFS_DIAGNOSTIC_SOURCE);
 #endif
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMEPAD)){nfs::app_log("SDL initialization failed",SDL_GetError());SDL_Quit();nfs::close_app_log();return 1;}
+    const bool watching_memory=SDL_AddEventWatch(log_memory_warning,nullptr);
+    if(!watching_memory)nfs::app_log("Memory warning diagnostics unavailable",SDL_GetError());
     int status=1;
     try{
         const auto root=nfs::select_app_assets(argc,argv);
@@ -127,5 +139,6 @@ int main(int argc,char **argv){
             else status=int(result.exit_code);
         }
     }catch(const std::exception &error){report(error.what());}
+    if(watching_memory)SDL_RemoveEventWatch(log_memory_warning,nullptr);
     SDL_Quit();nfs::app_log("Native app","SDL shutdown completed; status="+std::to_string(status));nfs::close_app_log();return status;
 }
