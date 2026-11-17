@@ -20,12 +20,11 @@
     std::atomic<bool> _failed;
     nfs::DiagnosticSessionLimit _limit;
     nfs::SystemCpuLoadWindow _cores;
-    uint64_t _start,_previous,_latestFrame,_frameEpoch,_frameDrops;
+    uint64_t _start,_previous,_frameEpoch,_frameDrops;
     NfsFrameContentTotals _frameContent;
-    double _latestFPS,_processCPU;
+    double _processCPU;
     nfs::DiagnosticDisplayWindow _display;
     int64_t _mainCPU;
-    int _width,_height;
     BOOL _powerKnown,_power;
 }
 @property(nonatomic) BOOL recording;
@@ -42,7 +41,6 @@
 - (void)observeDisplay:(CADisplayLink *)link;
 - (BOOL)append:(const std::string &)line;
 - (void)share:(UIWindow *)host;
-- (void)latest:(double)fps width:(int)width height:(int)height;
 @end
 
 static UIViewController *recording_presenter(UIWindow *host){
@@ -123,9 +121,6 @@ static NSURL *recording_folder(){
     self.timer.tolerance=0.1;[NSRunLoop.mainRunLoop addTimer:self.timer forMode:NSRunLoopCommonModes];
     [self tick];
 }
-- (void)latest:(double)fps width:(int)width height:(int)height {
-    _latestFPS=fps;_latestFrame=SDL_GetTicksNS();_width=width;_height=height;
-}
 - (void)observeDisplay:(CADisplayLink *)link {
     _display.observe(link.timestamp,link.targetTimestamp,CACurrentMediaTime());
 }
@@ -137,7 +132,6 @@ static NSURL *recording_folder(){
     if(!_limit.accept(elapsed))return;
     nfs::DiagnosticSample sample;sample.elapsed=elapsed;
     if(_previous && now>_previous)sample.interval=double(now-_previous)/1e9;
-    if(_latestFrame && now>=_latestFrame){sample.fps_age=double(now-_latestFrame)/1e9;if(sample.fps_age<=2.5)sample.fps=_latestFPS;}
     sample.low_power=NSProcessInfo.processInfo.lowPowerModeEnabled;
     const bool powerChanged=_powerKnown && _power!=sample.low_power;
     if(powerChanged){_cores.reset();nfs_reset_engine_metrics();}
@@ -158,6 +152,7 @@ static NSURL *recording_folder(){
     }
     _powerKnown=YES;_power=sample.low_power;
     const auto frame=nfs_frame_timing_snapshot();
+    nfs::record_fps_snapshot(sample,frame,now);
     nfs::record_frame_content(sample,nfs_frame_content_totals(),_frameContent,sample.interval>0 && !powerChanged);
     nfs::DiagnosticSwapIntervals intervals;
     NfsFrameTiming chunk[128];
@@ -194,7 +189,7 @@ static NSURL *recording_folder(){
     sample.battery_percent=battery>=0 && battery<=1?battery*100:-1;
     sample.battery_state=int(device.batteryState);sample.brightness=self.host?self.host.screen.brightness:-1;
     sample.thermal=int(NSProcessInfo.processInfo.thermalState);sample.app_state=int(UIApplication.sharedApplication.applicationState);
-    sample.width=_width;sample.height=_height;sample.frame_limit=nfs_frame_limit();
+    sample.width=nfs_render_width();sample.height=nfs_render_height();sample.frame_limit=nfs_frame_limit();
     sample.hd_timing=nfs_glide_hd_timing_mode();
     nfs::CpuLoadSnapshot ticks;if(nfs::read_system_cpu_ticks(ticks))sample.cores=_cores.observe(ticks);else _cores.reset();
     if(![self append:nfs::diagnostic_sample_json(sample)])[self stop:_failed.load()?@"write_error":@"writer_backlog" notify:YES];
@@ -246,4 +241,3 @@ extern "C" bool nfs_recording_finishing(){return recorder().finishing;}
 extern "C" void nfs_recording_start(UIWindow *host){[recorder() start:host];}
 extern "C" void nfs_recording_stop(NSString *reason,bool notify){[recorder() stop:reason notify:notify];}
 extern "C" void nfs_recording_share(UIWindow *host){[recorder() share:host];}
-extern "C" void nfs_recording_latest_frame(double fps,int width,int height){[recorder() latest:fps width:width height:height];}

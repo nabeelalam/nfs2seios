@@ -60,6 +60,11 @@ struct DiagnosticSample {
     int hd_timing=-1;
     CpuLoadReading cores{};
 };
+inline void record_fps_snapshot(DiagnosticSample &sample,const NfsFrameTimingSnapshot &snapshot,uint64_t now){
+    if(!snapshot.fps_timestamp_ns || now<snapshot.fps_timestamp_ns)return;
+    sample.fps_age=double(now-snapshot.fps_timestamp_ns)/1e9;
+    if(sample.fps_age<=2.5)sample.fps=snapshot.fps;
+}
 inline void record_frame_content(DiagnosticSample &sample,NfsFrameContentTotals current,
                                  NfsFrameContentTotals &previous,bool valid){
     if(valid && current.window_epoch==previous.window_epoch &&

@@ -37,6 +37,15 @@ int main(){
     CHECK(mixed.classified_presentations<0 && earlier.window_epoch==2);
     nfs::record_frame_content(mixed,{29,16,2},earlier,false);
     CHECK(mixed.classified_presentations<0 && earlier.classified==29);
+    NfsFrameTimingSnapshot frame{};
+    frame.fps=59.5;frame.fps_timestamp_ns=1000000000;
+    nfs::DiagnosticSample fresh, stale, future;
+    nfs::record_fps_snapshot(fresh,frame,2000000000);
+    nfs::record_fps_snapshot(stale,frame,4000000000);
+    nfs::record_fps_snapshot(future,frame,1);
+    CHECK(fresh.fps==59.5 && fresh.fps_age==1);
+    CHECK(stale.fps<0 && stale.fps_age==3);
+    CHECK(future.fps<0 && future.fps_age<0);
     nfs::DiagnosticDisplayWindow display;
     display.observe(1.0,1.125,1.10);
     display.observe(1.125,1.25,1.375);

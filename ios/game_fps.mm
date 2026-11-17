@@ -161,7 +161,6 @@ NSString *system_core_text(){
     UIAlertAction *timing=[UIAlertAction actionWithTitle:hdMode<0?@"HD HUD unavailable":(hdMode?@"HUD text: HD — switch to Original":@"HUD text: Original — switch to HD") style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
         if(nfs_glide_hd_timing_set_visible(hdMode==0)){
             nfs_reset_engine_metrics();nfs_reset_frame_rate();
-            nfs_recording_latest_frame(-1,nfs_render_width(),nfs_render_height());
         }
     }];
     timing.enabled=hdMode>=0;[sheet addAction:timing];
@@ -262,7 +261,6 @@ extern "C" void nfs_show_frame_rate(void *pointer,double fps,double cpu,int widt
         if([preferences objectForKey:@"NFSRenderHeight"])
             [overlay selectHeight:[preferences integerForKey:@"NFSRenderHeight"]];
     }
-    nfs_recording_latest_frame(fps,width,height);
     if(!overlay.visible)return;
     const BOOL lowPower=NSProcessInfo.processInfo.lowPowerModeEnabled;
     static BOOL powerKnown=NO,previousPower=NO;

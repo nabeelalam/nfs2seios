@@ -122,7 +122,7 @@ struct DesktopDiagnosticRecorder::Impl {
   }return !frames_closed;}
  void poll(){if(stopped)return;const auto now=SDL_GetTicksNS();if(write_error.load()){stop("write_error");return;}if(!drain()){stop(reason.c_str());return;}if(now<origin||now-origin>=3600000000000ull){stop("time_limit");return;}if(now<next)return;if(sample_rows>=limits.samples){stop("sample_limit");return;}
   DiagnosticSample s;s.elapsed=double(now-origin)/1e9;s.interval=double(now-last)/1e9;const auto snapshot=nfs_frame_timing_snapshot();
-  if(snapshot.fps_timestamp_ns&&now>=snapshot.fps_timestamp_ns){s.fps_age=double(now-snapshot.fps_timestamp_ns)/1e9;if(s.fps_age<=2.5)s.fps=snapshot.fps;}
+  record_fps_snapshot(s,snapshot,now);
   s.game_cpu_ms=nfs_engine_cpu_sample(&s.game_cpu_id);const int cores=SDL_GetNumLogicalCPUCores();s.logical_cores=cores>0?unsigned(cores):0;s.width=nfs_render_width();s.height=nfs_render_height();s.frame_limit=nfs_frame_limit();const double pc=cpu_ns(false),mc=cpu_ns(true);
   if(pc>=process&&process>=0)s.process_ms=(pc-process)/1e6;if(mc>=main&&main>=0)s.main_ms=(mc-main)/1e6;
   if(s.process_ms>=0&&s.interval>0&&s.logical_cores)s.app_cpu_percent=s.process_ms/(s.interval*10*s.logical_cores);
