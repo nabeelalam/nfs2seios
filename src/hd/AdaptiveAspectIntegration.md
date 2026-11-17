@@ -753,3 +753,13 @@ Median engine CPU time per submission rose about 3.6 percent in each order.
 The timing excludes GPU presentation and does not measure iPad energy.
 The isolated helper savings did not carry over to the race, so the
 candidate remains outside production.
+
+## Opponents render diagnostics
+
+The iPad app log now records when the renderer starts processing the first
+prepared Opponents scene and whether the renderer accepts it. The menu
+visit queues this checkpoint once. The original fallback and render queue
+results are unchanged. A WSL test killed an isolated process after logging
+through the production writer and found the flushed line intact.
+The generated menu code passed a desktop syntax check. Renderer behavior
+and previous-log rotation after a physical iPad crash remain unverified.

@@ -55,6 +55,9 @@ int main(int argc,char **argv){
         switch(stage){
         case nfs::OpponentsVisit::Entered:nfs::app_log("Opponents","entered menu");break;
         case nfs::OpponentsVisit::ScenePrepared:nfs::app_log("Opponents","prepared first scene");break;
+        case nfs::OpponentsVisit::RendererBegin:nfs::app_log("Opponents","renderer began first scene");break;
+        case nfs::OpponentsVisit::RendererReady:nfs::app_log("Opponents","renderer accepted first scene");break;
+        case nfs::OpponentsVisit::RendererDeclined:nfs::app_log("Opponents","renderer declined first scene");break;
         case nfs::OpponentsVisit::Left:nfs::app_log("Opponents","left menu");break;
         }
     });
