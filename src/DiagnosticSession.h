@@ -10,13 +10,14 @@
 #include <string>
 namespace nfs {
 struct DiagnosticSwapIntervals {
-    unsigned count=0,over_20ms=0;
+    unsigned count=0,over_18ms=0,over_20ms=0;
     unsigned swap_calls=0;
     uint64_t longest_ns=0,swap_total_ns=0,swap_longest_ns=0;
     void observe(const NfsFrameTiming &frame,uint64_t start,uint64_t end,uint64_t epoch){
         if(frame.window_epoch!=epoch || !frame.interval_ns || frame.timestamp_ns<start ||
            frame.timestamp_ns>end || frame.interval_ns>frame.timestamp_ns-start)return;
         ++count;
+        if(frame.interval_ns>18000000)++over_18ms;
         if(frame.interval_ns>20000000)++over_20ms;
         if(frame.interval_ns>longest_ns)longest_ns=frame.interval_ns;
         if(frame.swap_call_ns && frame.swap_call_ns<=frame.timestamp_ns-start){
@@ -29,7 +30,7 @@ struct DiagnosticSwapIntervals {
 struct DiagnosticSample {
     double elapsed=0,interval=-1,fps=-1,fps_age=-1,game_cpu_ms=-1;
     uint64_t game_cpu_id=0;
-    double swap_intervals=-1,swap_over_20ms=-1,swap_max_ms=-1;
+    double swap_intervals=-1,swap_over_18ms=-1,swap_over_20ms=-1,swap_max_ms=-1;
     double swap_calls=-1,swap_call_total_ms=-1,swap_call_max_ms=-1;
     double renderer_calls=-1,renderer_queue_ms=-1,renderer_execution_ms=-1;
     double process_ms=-1,main_ms=-1,app_cpu_percent=-1,ram_mb=-1;
@@ -78,6 +79,7 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"game_cpu_ms_per_frame\":";diagnostic_number(out,s.game_cpu_ms);
     out<<",\"game_cpu_sample_id\":"<<s.game_cpu_id;
     out<<",\"swap_intervals_count\":";diagnostic_number(out,s.swap_intervals);
+    out<<",\"swap_intervals_over_18ms\":";diagnostic_number(out,s.swap_over_18ms);
     out<<",\"swap_intervals_over_20ms\":";diagnostic_number(out,s.swap_over_20ms);
     out<<",\"swap_interval_max_ms\":";diagnostic_number(out,s.swap_max_ms);
     out<<",\"swap_calls_count\":";diagnostic_number(out,s.swap_calls);

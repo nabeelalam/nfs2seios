@@ -19,6 +19,21 @@ def sample(time, power=False, identity=1, fps=60):
 
 
 class SummaryTests(unittest.TestCase):
+    def test_unlocked_cadence_excludes_frame_lock_transitions_and_old_rows(self):
+        def row(second, limit, late=None):
+            result = dict(sample(second), frame_limit=limit, swap_intervals_count=50)
+            if late is not None:
+                result["swap_intervals_over_18ms"] = late
+            return result
+
+        rows = [row(0, 0, 50), row(1, 0, 5), row(2, 30, 50), row(3, 30, 50),
+                row(4, 0, 50), row(5, 0, 10), row(6, 0)]
+        cadence = summary.summarize(fixture(rows))["stable_interval_comparison"]["off"]
+        self.assertEqual(cadence["unlocked_observed_swap_intervals"], 100)
+        self.assertAlmostEqual(cadence["unlocked_swap_fraction_over_18ms"], 0.15)
+        old_log = summary.summarize(fixture([row(0, 0), row(1, 0)]))
+        self.assertIsNone(old_log["stable_interval_comparison"]["off"]["unlocked_swap_fraction_over_18ms"])
+
     def test_modes_and_repeated_windows(self):
         result = summary.summarize(fixture([sample(0), sample(1), sample(2, True, 2, 45), {"type": "end", "reason": "manual", "elapsed_s": 3, "attempted_rows": 3}]))
         self.assertEqual(result["samples"], 3)

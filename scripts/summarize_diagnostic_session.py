@@ -23,6 +23,7 @@ def distribution(values):
 
 def stable_interval_metrics(rows):
     slow = total = 0
+    unlocked_swaps = unlocked_slow = 0
     swap_calls = 0
     swap_host_ms = 0
     swap_host_maxima = []
@@ -34,6 +35,11 @@ def stable_interval_metrics(rows):
         if number(swaps) and number(late, swaps):
             total += swaps
             slow += late
+        late_unlocked = row.get("swap_intervals_over_18ms")
+        if (type(row.get("frame_limit")) is int and row["frame_limit"] == 0
+                and number(swaps) and number(late_unlocked, swaps)):
+            unlocked_swaps += swaps
+            unlocked_slow += late_unlocked
         measured_calls = row.get("swap_calls_count")
         host_total = row.get("swap_call_total_ms")
         host_max = row.get("swap_call_max_ms")
@@ -53,6 +59,8 @@ def stable_interval_metrics(rows):
         "sample_intervals": len(rows),
         "observed_swap_intervals": total,
         "swap_fraction_over_20ms": slow / total if total else None,
+        "unlocked_observed_swap_intervals": unlocked_swaps,
+        "unlocked_swap_fraction_over_18ms": unlocked_slow / unlocked_swaps if unlocked_swaps else None,
         "measured_swap_calls": swap_calls,
         "swap_host_ms_per_call": swap_host_ms / swap_calls if swap_calls else None,
         "swap_host_max_ms": max(swap_host_maxima, default=None),
@@ -100,6 +108,7 @@ def summarize(data):
     timing_rows = []
     previous_timing = None
     previous_power = None
+    previous_limit = None
     stable_intervals = {False: [], True: []}
     for index, row in enumerate(rows[1:], start=1):
         if row.get("type") == "end":
@@ -129,11 +138,13 @@ def summarize(data):
         # Do not assign a transition interval to either visual mode. Old logs
         # omit the additive field and remain valid with unavailable mode.
         timing_rows.append((power, timing, row, count == 0 or timing == previous_timing))
+        limit = row.get("frame_limit")
         if (previous >= 0 and elapsed - previous <= 2.5
-                and power == previous_power and timing == previous_timing):
+                and power == previous_power and timing == previous_timing and limit == previous_limit):
             stable_intervals[power].append(row)
         previous_timing = timing
         previous_power = power
+        previous_limit = limit
         if previous >= 0 and elapsed - previous > 2.5:
             gaps += 1
         previous = elapsed
@@ -181,9 +192,9 @@ def summarize(data):
         for label, power in (("off", False), ("on", True))
     }
     result["stable_interval_caution"] = (
-        "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power or timing-art change. "
+        "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power, timing-art or frame-lock change. "
         "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "
-        "Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
+        "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
     )
     result["timing_art_comparison"] = {}
     for power in (False, True):

@@ -146,6 +146,7 @@ static NSURL *recording_folder(){
     }
     if(sample.interval>0 && !powerChanged && frame.window_epoch==_frameEpoch && frame.dropped_total==_frameDrops){
         sample.swap_intervals=intervals.count;
+        sample.swap_over_18ms=intervals.over_18ms;
         sample.swap_over_20ms=intervals.over_20ms;
         if(intervals.count)sample.swap_max_ms=double(intervals.longest_ns)/1e6;
         if(intervals.swap_calls){

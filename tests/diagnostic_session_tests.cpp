@@ -22,7 +22,7 @@ int main(){
     intervals.observe({3,110000000,20000000,3,5000000},100000000,200000000,3);
     intervals.observe({4,200000001,20000000,3,5000000},100000000,200000000,3);
     intervals.observe({5,180000000,30000000,4,5000000},100000000,200000000,3);
-    CHECK(intervals.count==2 && intervals.over_20ms==1 && intervals.longest_ns==30000000);
+    CHECK(intervals.count==2 && intervals.over_18ms==2 && intervals.over_20ms==1 && intervals.longest_ns==30000000);
     CHECK(intervals.swap_calls==2 && intervals.swap_total_ns==13000000 && intervals.swap_longest_ns==9000000);
     nfs::DiagnosticSample sample;sample.cores.count=64;
     for(unsigned i=0;i<64;++i){sample.cores.valid[i]=true;sample.cores.percent[i]=double(i)*100/63;}
@@ -34,10 +34,11 @@ int main(){
     CHECK(line.find("\"hd_timing_requested\":null")!=std::string::npos);
     CHECK(line.find("\"renderer_calls_interval\":null")!=std::string::npos);
     CHECK(line.find("\"swap_intervals_count\":null")!=std::string::npos);
-    sample.swap_intervals=2;sample.swap_over_20ms=1;sample.swap_max_ms=30;
+    sample.swap_intervals=2;sample.swap_over_18ms=2;sample.swap_over_20ms=1;sample.swap_max_ms=30;
     sample.swap_calls=2;sample.swap_call_total_ms=13;sample.swap_call_max_ms=9;
     sample.renderer_calls=160;sample.renderer_queue_ms=7.25;sample.renderer_execution_ms=11.5;
     const auto render=nfs::diagnostic_sample_json(sample);
+    CHECK(render.find("\"swap_intervals_over_18ms\":2.0000")!=std::string::npos);
     CHECK(render.find("\"swap_interval_max_ms\":30.0000")!=std::string::npos);
     CHECK(render.find("\"swap_call_total_ms\":13.0000")!=std::string::npos);
     CHECK(render.find("\"renderer_calls_interval\":160.0000")!=std::string::npos);

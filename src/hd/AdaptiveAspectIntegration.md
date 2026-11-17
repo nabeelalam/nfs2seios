@@ -585,3 +585,17 @@ Median spacing moved by less than 2 percent. The mean, tail and host
 swap durations did not consistently improve with both orderings.
 There is no demonstrated whole-race gain. The small shader change
 remains local alongside its pixel checks and isolated draw evidence.
+
+## Native mark program query experiment
+
+Skipping the GL program query for draws that cannot use a remastered mark
+passed 2,807 SDL/GLES pixel and state checks. Two matched 30-second North
+Country split-screen comparisons with both virtual controllers showed median
+frame spacing of 30.495 to 30.900 ms in baseline-first order and 30.468 to
+30.687 ms in candidate-first order. The candidate's p95 decreased from
+38.880 to 38.282 ms and from 38.954 to 37.994 ms. Mean frame spacing and
+median engine-thread CPU per submission increased slightly in both orders.
+
+This software GLES result is mixed and does not demonstrate a gameplay gain.
+The experiment was removed from the production source. Device performance and
+energy were not measured.
