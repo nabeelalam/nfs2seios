@@ -35,7 +35,8 @@ public:
         fps_stamp_.store(now,std::memory_order_seq_cst);
         fps_sequence_.fetch_add(1,std::memory_order_seq_cst);
     }
-    void presented(uint64_t now) {
+    bool capturing() const {return enabled_.load(std::memory_order_acquire);}
+    void presented(uint64_t now,uint64_t swap_call_ns=0) {
         if(!enabled_.load(std::memory_order_acquire)) return;
         std::lock_guard<std::mutex> lock(mutex_);
         if(!enabled_.load(std::memory_order_relaxed)) return;
@@ -43,7 +44,7 @@ public:
         const uint64_t interval=previous_ && previous_epoch_==epoch && now>=previous_ ? now-previous_:0;
         previous_=now;previous_epoch_=epoch;latest_=now;++serial_;
         if(count_==1024){head_=(head_+1)%1024;--count_;++dropped_;}
-        records_[(head_+count_)%1024]={serial_,now,interval,epoch};++count_;
+        records_[(head_+count_)%1024]={serial_,now,interval,epoch,swap_call_ns};++count_;
     }
     unsigned drain(NfsFrameTiming *out,unsigned capacity) {
         if(!out || !capacity)return 0;

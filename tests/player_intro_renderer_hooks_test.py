@@ -20,10 +20,12 @@ def fixture(prefix="native_"):
         if name == "drawTriangles":
             body = "\tglDrawArrays(GL_TRIANGLES, 0, g_trianglesCount * 3);\n nfs_native_mark_gpu_after_draw();"
         if name == "presentFrontSurface":
-            body = "\tglBindTexture(GL_TEXTURE_2D, g_frontTexture);\nconst BOOL presented=SDL_GL_SwapWindow(sdlWin);"
+            body = "\tglBindTexture(GL_TEXTURE_2D, g_frontTexture);\nconst BOOL presented=nfs_swap_window(sdlWin,&swapCallNs);"
         s += fn(name, body)
     for name in ("grDrawLine", "grLfbLock", "grLfbUnlock", "grBufferClear", "grAlphaBlendFunction", "grClipWindow", "grDepthBufferFunction", "grDepthMask", "grFogColorValue", "grFogMode", "grRenderBuffer", "grTexDownloadTable", "grAlphaCombine", "grBufferSwap", "grTexSource", "grDrawTriangle"):
         body = ""
+        if name == "grBufferClear":
+            body = " nfs_logo_native_clear(depth,r,g,b);"
         if name == "grTexSource":
             body = " nfs_logo_native_select(tmu,startAddress,evenOdd,info,ti);\n nfs_logo_native_upload_begin(ti);"
         if name == "grDrawTriangle":
@@ -54,11 +56,11 @@ class IntroRendererHooksTests(unittest.TestCase):
         self.assertEqual(after.count("nfs_player_intro_renderer_upload_begin(ti);"), 2)
         self.assertLess(after.index("nfs_player_intro_renderer_retired(g_glCtx"), after.index("nfs_logo_native_retired(g_glCtx"))
         self.assertLess(after.index("nfs_player_intro_renderer_retired(0);"), after.index("nfs_logo_native_retired(0);"))
-        self.assertLess(after.index("SDL_GL_SwapWindow(sdlWin)"), after.index("nfs_player_intro_renderer_after_present();"))
+        self.assertLess(after.index("nfs_swap_window(sdlWin,&swapCallNs)"), after.index("nfs_player_intro_renderer_after_present();"))
 
     def test_missing_repeated_or_changed_anchors_rejected(self):
         before = fixture()
-        for old, new in (("} TextureInfo;", "} Changed;"), (" nfs_logo_native_created();", ""), (" nfs_logo_native_upload_begin(ti);", ""), ("void native_grBufferClear()", "void other()"), ("glBindTexture(GL_TEXTURE_2D, g_frontTexture)", "glBindTexture(GL_TEXTURE_2D, g_framebufferTexture)"), ("const BOOL presented=SDL_GL_SwapWindow(sdlWin);", "SDL_GL_SwapWindow(sdlWin);"), (" nfs_logo_native_triangle(a,b,c);", " nfs_logo_native_triangle(a,b,c);" * 2)):
+        for old, new in (("} TextureInfo;", "} Changed;"), (" nfs_logo_native_created();", ""), (" nfs_logo_native_upload_begin(ti);", ""), ("void native_grBufferClear()", "void other()"), ("glBindTexture(GL_TEXTURE_2D, g_frontTexture)", "glBindTexture(GL_TEXTURE_2D, g_framebufferTexture)"), ("const BOOL presented=nfs_swap_window(sdlWin,&swapCallNs);", "nfs_swap_window(sdlWin,&swapCallNs);"), (" nfs_logo_native_triangle(a,b,c);", " nfs_logo_native_triangle(a,b,c);" * 2)):
             with self.subTest(anchor=old):
                 with self.assertRaises(ValueError):
                     hooks.add_player_intro_renderer_hooks(before.replace(old,new,1))

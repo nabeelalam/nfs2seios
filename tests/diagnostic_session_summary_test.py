@@ -50,7 +50,8 @@ class SummaryTests(unittest.TestCase):
             return dict(sample(time, power), hd_timing_requested=timing,
                         renderer_calls_interval=calls, renderer_queue_ms_interval=12,
                         renderer_execution_ms_interval=20, swap_intervals_count=50,
-                        swap_intervals_over_20ms=late)
+                        swap_intervals_over_20ms=late, swap_calls_count=calls // 5,
+                        swap_call_total_ms=calls, swap_call_max_ms=6)
         rows = [timed(0, False, True, 10, 50),
                 timed(1, False, True, 100, 5),
                 timed(2, True, True, 10, 50),
@@ -65,6 +66,9 @@ class SummaryTests(unittest.TestCase):
         self.assertEqual(modes["on"]["sample_intervals"], 3)
         self.assertEqual(modes["on"]["observed_swap_intervals"], 100)
         self.assertEqual(modes["on"]["swap_fraction_over_20ms"], 0.3)
+        self.assertEqual(modes["on"]["measured_swap_calls"], 60)
+        self.assertEqual(modes["on"]["swap_host_ms_per_call"], 5)
+        self.assertEqual(modes["on"]["swap_host_max_ms"], 6)
         self.assertEqual(modes["on"]["renderer_execution_ms_per_call"]["count"], 2)
         self.assertAlmostEqual(modes["on"]["renderer_queue_ms_per_call"]["median"], 0.09)
 

@@ -11,19 +11,26 @@
 namespace nfs {
 struct DiagnosticSwapIntervals {
     unsigned count=0,over_20ms=0;
-    uint64_t longest_ns=0;
+    unsigned swap_calls=0;
+    uint64_t longest_ns=0,swap_total_ns=0,swap_longest_ns=0;
     void observe(const NfsFrameTiming &frame,uint64_t start,uint64_t end,uint64_t epoch){
         if(frame.window_epoch!=epoch || !frame.interval_ns || frame.timestamp_ns<start ||
            frame.timestamp_ns>end || frame.interval_ns>frame.timestamp_ns-start)return;
         ++count;
         if(frame.interval_ns>20000000)++over_20ms;
         if(frame.interval_ns>longest_ns)longest_ns=frame.interval_ns;
+        if(frame.swap_call_ns && frame.swap_call_ns<=frame.timestamp_ns-start){
+            ++swap_calls;
+            swap_total_ns+=frame.swap_call_ns;
+            if(frame.swap_call_ns>swap_longest_ns)swap_longest_ns=frame.swap_call_ns;
+        }
     }
 };
 struct DiagnosticSample {
     double elapsed=0,interval=-1,fps=-1,fps_age=-1,game_cpu_ms=-1;
     uint64_t game_cpu_id=0;
     double swap_intervals=-1,swap_over_20ms=-1,swap_max_ms=-1;
+    double swap_calls=-1,swap_call_total_ms=-1,swap_call_max_ms=-1;
     double renderer_calls=-1,renderer_queue_ms=-1,renderer_execution_ms=-1;
     double process_ms=-1,main_ms=-1,app_cpu_percent=-1,ram_mb=-1;
     double battery_percent=-1,brightness=-1;
@@ -46,6 +53,7 @@ inline std::string diagnostic_header(unsigned build,const std::string &source={}
        "\"fps_scope\":\"latest presentation-rate window;null if stale\","
        "\"game_cpu_scope\":\"latest engine-thread 60-submission window;sample_id identifies repeats\","
        "\"swap_interval_scope\":\"complete swap-submission intervals inside sample, no display or GPU timestamps\","
+       "\"swap_call_scope\":\"host elapsed time inside SDL_GL_SwapWindow for successful swaps, including any display or driver wait\","
        "\"renderer_scope\":\"timed main-thread renderer operations since prior sample, host elapsed time, no GPU timestamps\","
        "\"core_scope\":\"whole system,not per-core app usage\","
        "\"battery_scope\":\"OS percentage,not watts or measured energy\","
@@ -72,6 +80,9 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"swap_intervals_count\":";diagnostic_number(out,s.swap_intervals);
     out<<",\"swap_intervals_over_20ms\":";diagnostic_number(out,s.swap_over_20ms);
     out<<",\"swap_interval_max_ms\":";diagnostic_number(out,s.swap_max_ms);
+    out<<",\"swap_calls_count\":";diagnostic_number(out,s.swap_calls);
+    out<<",\"swap_call_total_ms\":";diagnostic_number(out,s.swap_call_total_ms);
+    out<<",\"swap_call_max_ms\":";diagnostic_number(out,s.swap_call_max_ms);
     out<<",\"renderer_calls_interval\":";diagnostic_number(out,s.renderer_calls);
     out<<",\"renderer_queue_ms_interval\":";diagnostic_number(out,s.renderer_queue_ms);
     out<<",\"renderer_execution_ms_interval\":";diagnostic_number(out,s.renderer_execution_ms);

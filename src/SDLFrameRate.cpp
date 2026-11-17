@@ -67,11 +67,22 @@ extern "C" unsigned nfs_frame_timing_drain(NfsFrameTiming *out,unsigned capacity
 extern "C" NfsFrameTimingSnapshot nfs_frame_timing_snapshot(){return timing.snapshot();}
 extern "C" void nfs_reset_frame_rate(){timing.reset();rate.reset();last_window=nullptr;last_fps=0;cpu_wall=0;cpu_time=0;nfs_reset_engine_metrics();}
 extern "C" double nfs_frame_rate_value(){return last_fps.load(std::memory_order_relaxed);}
-extern "C" void nfs_frame_presented(void *window){
+extern "C" int nfs_swap_window(void *window,uint64_t *elapsed_ns){
+    auto *target=static_cast<SDL_Window *>(window);
+    *elapsed_ns=0;
+    if(!timing.capturing())return SDL_GL_SwapWindow(target);
+    const uint64_t start=SDL_GetTicksNS();
+    const bool presented=SDL_GL_SwapWindow(target);
+    const uint64_t end=SDL_GetTicksNS();
+    if(presented && end>start)*elapsed_ns=end-start;
+    return presented;
+}
+extern "C" void nfs_frame_presented(void *window){nfs_frame_presented_with_swap(window,0);}
+extern "C" void nfs_frame_presented_with_swap(void *window,uint64_t swap_call_ns){
     nfs_diagnostics_activity(2);
     if(window!=last_window){rate.reset();last_window=window;timing.reset();cpu_wall=0;cpu_time=0;}
     const auto presented_now=SDL_GetTicksNS();
-    timing.presented(presented_now);
+    timing.presented(presented_now,swap_call_ns);
     double fps=0;if(!rate.presented(presented_now,fps))return;
     timing.published(presented_now,fps);
     last_fps.store(fps,std::memory_order_relaxed);

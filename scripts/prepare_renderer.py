@@ -539,7 +539,7 @@ REALIGN STDCALL BOOL grLfbUnlock(GrLock_t type, GrBuffer_t buffer)
     body=body.replace('glBindTexture(GL_TEXTURE_2D, g_framebufferTexture);','glBindTexture(GL_TEXTURE_2D, g_frontTexture);')
     begin_presentation=body.index('\tint32_t xOffset = 0')
     end_presentation=body.index('\tSDL_GL_SwapWindow(sdlWin);')+len('\tSDL_GL_SwapWindow(sdlWin);')
-    presentation=body[begin_presentation:end_presentation].replace('\tSDL_GL_SwapWindow(sdlWin);','\tconst BOOL presented=SDL_GL_SwapWindow(sdlWin);\n\tif(presented)nfs_frame_presented(sdlWin);\n\treturn presented;')
+    presentation=body[begin_presentation:end_presentation].replace('\tSDL_GL_SwapWindow(sdlWin);','\tuint64_t swapCallNs=0;\n\tconst BOOL presented=nfs_swap_window(sdlWin,&swapCallNs);\n\tif(presented)nfs_frame_presented_with_swap(sdlWin,swapCallNs);\n\treturn presented;')
     helper='#include "FramePresentation.h"\nstatic BOOL presentFrontSurface(void)\n{\n\tuseGameProgram(false);\n\tglUniform1f(g_uGammaLocDisp,g_gammaValue);\n'+presentation+'\n}\n'
     body=body[:begin_presentation]+'\tpresentFrontSurface();'+body[end_presentation:]
     text=text[:swap]+helper+body+text[end:]

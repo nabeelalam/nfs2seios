@@ -470,3 +470,20 @@ The direction changed with run order and the median changes were under
 locally. The build sources keep the original vertex copies. The trial
 measured desktop submissions, with physical iPad FPS and battery impact
 still unknown.
+
+## Display swap duration capture
+
+The diagnostic recorder now measures host time inside successful SDL
+display swaps while capture is enabled. The summary reports measured
+call count, weighted mean duration and maximum duration by power mode
+using stable sample intervals. The existing spacing between submissions
+is a separate measurement. Swap-call duration can include waiting on
+the display or driver. No GPU timestamps are collected.
+
+The capture ring and JSON serializer passed ASan and UBSan, the Python
+summary and intro hook tests passed, and a freshly generated desktop
+GLES renderer passed the pixel suite through the new swap wrapper. An
+actual swap produced a positive duration with capture enabled. The
+following swaps left the capture ring empty after capture was disabled.
+The change follows iPad package 43978740494 and still needs Apple
+compilation and device data.

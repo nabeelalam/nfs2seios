@@ -148,6 +148,11 @@ static NSURL *recording_folder(){
         sample.swap_intervals=intervals.count;
         sample.swap_over_20ms=intervals.over_20ms;
         if(intervals.count)sample.swap_max_ms=double(intervals.longest_ns)/1e6;
+        if(intervals.swap_calls){
+            sample.swap_calls=intervals.swap_calls;
+            sample.swap_call_total_ms=double(intervals.swap_total_ns)/1e6;
+            sample.swap_call_max_ms=double(intervals.swap_longest_ns)/1e6;
+        }
     }
     _frameEpoch=frame.window_epoch;_frameDrops=frame.dropped_total;
     sample.game_cpu_ms=nfs_engine_cpu_sample(&sample.game_cpu_id);

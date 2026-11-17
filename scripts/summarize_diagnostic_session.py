@@ -23,6 +23,9 @@ def distribution(values):
 
 def stable_interval_metrics(rows):
     slow = total = 0
+    swap_calls = 0
+    swap_host_ms = 0
+    swap_host_maxima = []
     queue = []
     execution = []
     for row in rows:
@@ -31,6 +34,14 @@ def stable_interval_metrics(rows):
         if number(swaps) and number(late, swaps):
             total += swaps
             slow += late
+        measured_calls = row.get("swap_calls_count")
+        host_total = row.get("swap_call_total_ms")
+        host_max = row.get("swap_call_max_ms")
+        if (number(swaps) and number(measured_calls, swaps) and measured_calls >= 1
+                and number(host_total) and number(host_max, host_total)):
+            swap_calls += measured_calls
+            swap_host_ms += host_total
+            swap_host_maxima.append(host_max)
         calls = row.get("renderer_calls_interval")
         if number(calls) and calls >= 1:
             for key, values in (("renderer_queue_ms_interval", queue),
@@ -42,6 +53,9 @@ def stable_interval_metrics(rows):
         "sample_intervals": len(rows),
         "observed_swap_intervals": total,
         "swap_fraction_over_20ms": slow / total if total else None,
+        "measured_swap_calls": swap_calls,
+        "swap_host_ms_per_call": swap_host_ms / swap_calls if swap_calls else None,
+        "swap_host_max_ms": max(swap_host_maxima, default=None),
         "renderer_queue_ms_per_call": distribution(queue),
         "renderer_execution_ms_per_call": distribution(execution),
     }
@@ -169,7 +183,7 @@ def summarize(data):
     result["stable_interval_caution"] = (
         "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power or timing-art change. "
         "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "
-        "Swap spacing measures presentations, not GPU time."
+        "Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
     )
     result["timing_art_comparison"] = {}
     for power in (False, True):

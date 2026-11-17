@@ -97,7 +97,7 @@ static void nfs_player_intro_renderer_after_present(void);""", "forward")
     # Insert a second bind, preserving the original bind byte-for-byte for
     # reversal and leaving both original game surfaces untouched.
     in_function("presentFrontSurface", "\tglBindTexture(GL_TEXTURE_2D, g_frontTexture);", " glBindTexture(GL_TEXTURE_2D,nfs_player_intro_renderer_presentation_texture(g_frontFramebuffer,g_frontTexture));", "display-texture")
-    in_function("presentFrontSurface", "const BOOL presented=SDL_GL_SwapWindow(sdlWin);", " nfs_player_intro_renderer_after_present();", "display-finished")
+    in_function("presentFrontSurface", "const BOOL presented=nfs_swap_window(sdlWin,&swapCallNs);", " nfs_player_intro_renderer_after_present();", "display-finished")
     after(" nfs_logo_native_clear(depth,r,g,b);", " nfs_player_intro_wide_clear(depth,r,g,b);", "wide-clear")
     text += block("implementation", '#include "hd/PlayerIntroRenderer.inc"\n#include "hd/ChildPhotoRenderer.inc"\n#include "hd/PlayerIntroWideRenderer.inc"')
     if reverse_player_intro_renderer_hooks(text) != original:
