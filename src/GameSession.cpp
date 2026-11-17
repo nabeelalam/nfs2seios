@@ -65,7 +65,8 @@ struct GameSession::Impl {
     GraphicsLifecycle graphics;
     std::unique_ptr<void,void(*)(void *)> game{nullptr,nfs_destroy_game_context};
     std::vector<void *> bootstrap;std::thread thread;WorkerControl control,exit_control;
-    std::mutex result_mutex;GameSessionResult state;bool started=false;
+    std::mutex result_mutex;uint32_t exit_code=0;std::string error;
+    std::atomic<bool> complete{false};bool started=false;
     int32_t(*present)(const std::string &,const std::string &,uint32_t);
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
     void desktop_relative_log(const char *phase,SDL_Window *owned,bool wanted,bool okay)noexcept{
@@ -153,7 +154,7 @@ struct GameSession::Impl {
         SDL_RemoveEventWatch(lifecycle_watch,this);
         // Destruction before completion would deadlock the app main queue or
         // free bindings still borrowed by workers. App iterate must finish first.
-        if(thread.joinable()){if(!state.finished)std::terminate();thread.join();}
+        if(thread.joinable()){if(!complete.load(std::memory_order_acquire))std::terminate();thread.join();}
         nfs_menu_responsive_source_form(0,0,0);
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
         desktop_relative_restore(true);
@@ -186,14 +187,14 @@ struct GameSession::Impl {
         // exit keeps this separate control live so normal saves can complete.
         {std::lock_guard<std::mutex> lock(exit_control.mutex);exit_control.stop=true;exit_control.changed.notify_all();}
         wake_worker_waits();
-        try{std::rethrow_exception(error);}catch(const std::exception &e){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error=std::string(e.what())+"; "+recent_game_calls()+"; "+sampled_game_calls();}catch(...){std::lock_guard<std::mutex> lock(result_mutex);if(state.error.empty())state.error="Unknown native game failure; "+sampled_game_calls();}}
+        try{std::rethrow_exception(error);}catch(const std::exception &e){std::lock_guard<std::mutex> lock(result_mutex);if(this->error.empty())this->error=std::string(e.what())+"; "+recent_game_calls()+"; "+sampled_game_calls();}catch(...){std::lock_guard<std::mutex> lock(result_mutex);if(this->error.empty())this->error="Unknown native game failure; "+sampled_game_calls();}}
     template<class F> void cleanup(F action){try{action();}catch(...){failure(std::current_exception());}}
     void run(uint32_t function){
         SDLThreadCleanup thread_cleanup;
         EngineMetricsOwner metrics_owner;
         current_worker_control()=&control;
         bool original_completed=true;
-        try{nfs_dispatch_game_procedure(game.get(),function);}catch(const GameExited &exit){std::lock_guard<std::mutex> lock(result_mutex);state.exit_code=exit.code;}catch(const WorkerStopped &){original_completed=false;}catch(...){original_completed=false;failure(std::current_exception());}
+        try{nfs_dispatch_game_procedure(game.get(),function);}catch(const GameExited &exit){std::lock_guard<std::mutex> lock(result_mutex);exit_code=exit.code;}catch(const WorkerStopped &){original_completed=false;}catch(...){original_completed=false;failure(std::current_exception());}
         critical.retire_current_thread();request_stop();
         if(auto error=workers.take_failure()){original_completed=false;failure(error);}
         if(exit_control.stop.load())original_completed=false;
@@ -222,7 +223,7 @@ struct GameSession::Impl {
         });
         cleanup([&]{if(!mappings.flush_and_unmap_all())throw std::runtime_error("Game mapped save writeback failed");});
         events.shutdown();cleanup([&]{window.shutdown();});current_worker_control()=nullptr;
-        {std::lock_guard<std::mutex> lock(result_mutex);state.finished=true;}
+        complete.store(true,std::memory_order_release);
     }
 };
 GameSession::Impl *GameSession::Impl::active=nullptr;
@@ -230,7 +231,8 @@ GameSession::GameSession(const std::string &root,decltype(Impl::present) show):i
 GameSession::~GameSession()=default;
 void GameSession::start(uint32_t function){if(impl->started)throw std::logic_error("Original game session already started");impl->started=true;impl->thread=std::thread([self=impl.get(),function]{self->run(function?function:game_id_start);});}
 void GameSession::request_stop(){impl->request_stop();}
-GameSessionResult GameSession::result(){std::lock_guard<std::mutex> lock(impl->result_mutex);return impl->state;}
+bool GameSession::finished() const noexcept{return impl->complete.load(std::memory_order_acquire);}
+GameSessionResult GameSession::result(){std::lock_guard<std::mutex> lock(impl->result_mutex);return {finished(),impl->exit_code,impl->error};}
 void GameSession::poll(){
     if(!SDL_IsMainThread())throw std::logic_error("Game event polling needs app main thread");
     if(auto error=impl->workers.take_failure()){
