@@ -976,3 +976,11 @@ allocation errors, incomplete framebuffers, same-size retry and returning
 to the previously allocated extent. The integrated desktop renderer was
 rebuilt successfully. These failures were injected locally and have not
 been identified as the cause of the iPad Opponents crash.
+
+With that fix linked, the original-data desktop replay entered Opponents
+twice, changed class twice per visit, and returned to Main both times.
+Each visit logged exactly one four-car renderer begin and acceptance. The
+presentation runs between the visit markers reported successful wide
+output at 2360x1640. The app exited cleanly and the disposable profile
+was restored. The full candidate history passed the publication policy
+and independent secret scan before this documentation update.
