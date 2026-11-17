@@ -10,7 +10,7 @@
       "kind": "source-and-runtime-image-pins",
       "license": "MIT",
       "notice": "assets/hud/classic-screens/SLIDESHOW_METADATA_NOTICE.md",
-      "sha256": "330eba4ab2811858e14dd1b070a57a4951d5ea214db018f82969f31e49ded0d8"
+      "sha256": "a106597bfa4f1d472fa7d09d11e7cdf29ed177f6086fab3a67872b2738069769"
     },
     "SlideshowFooterData.h": {
       "kind": "footer-resource-pins-and-bindings",
