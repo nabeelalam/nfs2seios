@@ -537,6 +537,12 @@ REALIGN STDCALL BOOL grLfbUnlock(GrLock_t type, GrBuffer_t buffer)
     g_framebufferTexture=g_frontTexture;g_framebuffer=g_frontFramebuffer;
     g_frontTexture=oldTexture;g_frontFramebuffer=oldFramebuffer;''')
     body=body.replace('glBindTexture(GL_TEXTURE_2D, g_framebufferTexture);','glBindTexture(GL_TEXTURE_2D, g_frontTexture);')
+    # Presentation owns the display-state switch for both swaps and front LFB writes.
+    # The viewport and scissor queries between these calls do not depend on the program.
+    display_switch='\tuseGameProgram(false);'
+    if body.count(display_switch)!=1:raise ValueError('Unexpected pre-presentation program switch')
+    body=body.replace(display_switch+'\n\n','',1)
+
     begin_presentation=body.index('\tint32_t xOffset = 0')
     end_presentation=body.index('\tSDL_GL_SwapWindow(sdlWin);')+len('\tSDL_GL_SwapWindow(sdlWin);')
     presentation=body[begin_presentation:end_presentation].replace('\tSDL_GL_SwapWindow(sdlWin);','\tuint64_t swapCallNs=0;\n\tconst BOOL presented=nfs_swap_window(sdlWin,&swapCallNs);\n\tif(presented)nfs_frame_presented_with_swap(sdlWin,swapCallNs);\n\treturn presented;')
