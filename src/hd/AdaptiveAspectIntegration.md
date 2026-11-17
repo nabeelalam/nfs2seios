@@ -776,3 +776,17 @@ car view to a close rear view. The race clock advanced from 37.12 to
 copied profile was restored. The captures do not identify every camera
 mode or prove that the lower player's camera switched. This is desktop
 software GLES evidence only.
+
+## Minimap label raster check
+
+A local single-player North Country session kept the minimap visible
+while resizing from 800x450 to 708x492, 800x600 and back to 800x450.
+The captured JAMMIN label provided six separately measurable glyphs.
+Their bright pixels occupy rows 477 through 482 at 708x492 and rows
+582 through 588 at 800x600, including the narrow uppercase I. At
+800x450 the six letters start at row 436. Two end one pixel earlier
+than the other four under the same color threshold. This is one
+desktop sample of final raster coverage. No further glyph shift was
+applied on the strength of that sample. Split-screen captures from
+the selected profile did not display a minimap. The game shut down
+cleanly and the copied profile was restored.
