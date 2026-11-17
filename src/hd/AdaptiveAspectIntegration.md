@@ -1089,3 +1089,12 @@ Consecutive changes with no intervening geometry were not measured.
 The earlier control run used a 640x480 target and was excluded from
 the widescreen counts. Both runs exited cleanly. No production renderer
 or iPad performance changed.
+
+A second 800x450 two-controller replay counted whether each setter
+encountered queued triangles. Of 438,758 blend updates, 297,566 (67.8
+percent) found no queued triangles. Alpha-combine and depth-write updates
+found no queued triangles in 15,430 of 18,991 and 2,640 of 4,747 calls.
+The replay exited cleanly and restored the disposable inputs. These are
+upper bounds on the updates a deferred renderer could eliminate. Direct
+draws and GL state observers can consume a setting without accumulating
+a triangle batch. No change to the production renderer was made.
