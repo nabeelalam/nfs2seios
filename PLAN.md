@@ -22,22 +22,19 @@ Two requirements are part of the goal:
 
 ### Current private iPad candidate
 
-Workflow 44007923686 passed the Linux and Apple checks at source
-522a155a7cb5f3df8415c710d9124ceb4fb862cd. Its unsigned ARM64 IPA was
-assembled with all 13 verified artwork resources and uploaded to the
-original private repository. The 489,714,675-byte ZIP digest matched the
-local package. The artwork-free draft transfer was removed after
-verification. This supersedes workflow 43988238242 for device testing.
+Workflow 44046323957 passed the Linux and Apple checks at source
+f7854b93918970e59767f08d617699545ab491dd. The unsigned ARM64 IPA was
+assembled with the 13 verified private artwork resources. The 489,727,403-byte
+ZIP matched the private release asset digest. The artwork-free base draft
+was removed after delivery. This supersedes workflow 44007923686.
 
-The package includes the locally verified opening Main swipe, track and
-Player transitions, wider single-player gameplay and spinning manufacturer
-artwork. It adds the Race Summary record alignment, direct preview uploads,
-and diagnostics for Opponents entry, first prepared scene and exit. The
-previous app log survives one relaunch. Diagnostic recordings now capture
-display-link cadence and near-60 FPS swap spacing alongside CPU and swap
-timing. Physical testing on this exact package is pending. Prioritize
-Opponents entry and native-aspect transition behavior, then matched split-
-screen North Country recordings with Low Power Mode off and on.
+This candidate includes wide framebuffer recovery after graphics context
+recreation, Load/Save and View Replay widescreen drawer handling, the source
+revision in the startup log, and first-scene renderer checkpoints in
+Opponents. Two native-size Opponents visits and class changes completed on
+the grouped desktop build. Physical iPad acceptance remains open. Verify
+Opponents entry and native-aspect transitions, then compare matched
+split-screen North Country recordings with Low Power Mode off and on.
 
 
 The desktop Player One check at 2360x1640 covered entry, two observed
