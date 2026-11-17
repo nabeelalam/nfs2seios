@@ -569,3 +569,19 @@ before and 58.96 ms after for the untextured case. The matching
 textured control measured 79.24 ms before and 74.07 ms after. These
 are synthetic local measurements. Whole-race FPS, Apple GPU behavior
 and energy are still unmeasured for this change.
+
+The whole-game follow-up compared matched North Country split-screen
+captures with both virtual drivers moving. Each capture used the first
+30 complete seconds after the verified start marker. The binaries
+shared all linked inputs except the generated shader change. They
+used 13 matching artwork resources and software GLES.
+
+| Order | Baseline median spacing | Candidate median spacing | Baseline p95 | Candidate p95 |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 29.660 ms | 29.560 ms | 36.900 ms | 37.824 ms |
+| Candidate, baseline | 29.732 ms | 29.177 ms | 36.032 ms | 35.885 ms |
+
+Median spacing moved by less than 2 percent. The mean, tail and host
+swap durations did not consistently improve with both orderings.
+There is no demonstrated whole-race gain. The small shader change
+remains local alongside its pixel checks and isolated draw evidence.
