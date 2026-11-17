@@ -965,3 +965,14 @@ one acceptance, even with two class changes per visit. Both returned to Main
 and the app exited cleanly. The diagnostic desktop flag enables the same
 app log sink used on iPad. The separate scene renderer checkpoints did not
 fire on these visits. The physical crash remains unverified.
+
+### Transition target allocation recovery
+
+A partial transition texture resize invalidates the cached extent before any
+storage change. The renderer only publishes a new cached extent after all
+three textures allocate without a GL error and the framebuffer is complete.
+A sanitizer-backed fault injection exercised backup and result texture
+allocation errors, incomplete framebuffers, same-size retry and returning
+to the previously allocated extent. The integrated desktop renderer was
+rebuilt successfully. These failures were injected locally and have not
+been identified as the cause of the iPad Opponents crash.
