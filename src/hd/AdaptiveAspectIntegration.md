@@ -821,3 +821,12 @@ The suite covered resolution reallocation, real context recreation, texture
 restoration and RGB565 readback. Its 2186x1640 native test uses a contained
 framebuffer. The generated fixture covers the wide-target acceptance rule.
 Neither check is a physical iPad race.
+
+A second original-data North Country run used the integrated desktop
+game with the context and depth-limit renderer changes. Both virtual
+drivers reached first gear before the 30-second observation window.
+The game then resized from 640x480 to 800x450 mid-race. It reported an
+800x450 render size, both views filled the captured image, and the upper
+camera still responded to the original camera key. The process shut down
+cleanly and restored the copied profile. This run used software GLES and
+did not force context recreation during gameplay or finish the race.
