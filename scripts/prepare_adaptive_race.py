@@ -230,6 +230,7 @@ static int32_t  g_framebufferHeight;
 #include "hd/AdaptiveAspect.h"
 static int wideRace=0,raceFramebufferWidth=0,raceWorldClip=-1;
 static int wideRaceWidth=0,wideRaceHeight=0;
+static int publishedWidth=0,publishedHeight=0,publishedRenderHeight=0;
 extern void nfs_adaptive_race_publish_target(int width,int height);
 extern int nfs_adaptive_race_admitted_target(int *width,int *height);
 extern void nfs_adaptive_race_release_target(void);
@@ -393,6 +394,16 @@ REALIGN STDCALL void native_grBufferClear(GrColor_t color, GrAlpha_t alpha, uint
 
 /* NFS_HD_SCENE_BEGIN:native_grBufferClear-tail */
 """),
+            (r"""static void destroyContext()
+{
+/* NFS_HD_MARK_BEGIN:destroyContext-head */
+""", r"""static void destroyContext()
+{
+    // A new context can have a different framebuffer limit even at the
+    // same drawable size. Recheck at presentation before the next frame.
+    publishedWidth=publishedHeight=publishedRenderHeight=0;
+/* NFS_HD_MARK_BEGIN:destroyContext-head */
+"""),
             (r"""/* NFS_MENU_RESPONSIVE_RENDERER_END:presentation-viewport */
 
     clearUnusedArea(viewport.left,viewport.top,viewport.width,viewport.height);
@@ -400,13 +411,14 @@ REALIGN STDCALL void native_grBufferClear(GrColor_t color, GrAlpha_t alpha, uint
 """, r"""/* NFS_MENU_RESPONSIVE_RENDERER_END:presentation-viewport */
 
     const int height=fixedFramebufferSize ? SDL_min(initialWinWidth, initialWinHeight) : SDL_min(winWidth,winHeight);
-    static int publishedWidth=0,publishedHeight=0,publishedRenderHeight=0;
     if(winWidth!=publishedWidth || winHeight!=publishedHeight || height!=publishedRenderHeight){
         GLint maxTexture=0;
         glGetIntegerv(GL_MAX_TEXTURE_SIZE,&maxTexture);
         const int width=nfs_adaptive_aspect_target_width(winWidth,winHeight,height,maxTexture);
         nfs_adaptive_race_publish_target(width,height);
-        publishedWidth=winWidth;publishedHeight=winHeight;publishedRenderHeight=height;
+        if(maxTexture>0){
+            publishedWidth=winWidth;publishedHeight=winHeight;publishedRenderHeight=height;
+        }
     }
     if(wideRace && !nfs_aspect_viewport(raceFramebufferWidth,g_framebufferHeight,winWidth,winHeight,true,&viewport))return false;
     clearUnusedArea(viewport.left,viewport.top,viewport.width,viewport.height);

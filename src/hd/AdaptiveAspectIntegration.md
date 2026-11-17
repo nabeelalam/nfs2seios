@@ -802,3 +802,12 @@ contains the paired race path. A device session still has to admit a
 wide target from its drawable and render settings. The executable
 inspection cannot establish which package produced the reported 4:3
 race or how that session selected its viewport.
+
+The generated race renderer refreshes the drawable offer after a
+graphics context is recreated, even if the drawable and render height
+stay the same. A missing texture-size limit is retried at the next
+presentation. A generated-code ASan/UBSan fixture verified that a
+replacement context can decline a previously accepted wide target and
+that a transient missing limit can recover at the same dimensions.
+The paired sources regenerated and the actual renderer passed its
+desktop syntax check. The iPad fallback report remains unconfirmed.
