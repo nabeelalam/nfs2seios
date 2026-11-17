@@ -948,3 +948,13 @@ with the McLaren F1 reached Race Summary naturally. Captures at 800x450,
 1280x720 and 1180x820 were recorded, and the 800x450 capture showed clean
 timing digits. The replay exited cleanly and restored the disposable profile
 and replay. No iPad validation was performed for this change.
+
+The replay's run-length presentation trace was also audited for single-frame
+fallback. The two visits covered frames 230 through 475 and 559 through 823
+from entry transition to the first Main frame. All 511 presentations in
+those ranges reported success and a widescreen renderer at 2360x1640.
+This includes both class changes and the return animation in each visit.
+The trace was uncapped. Its two native runs occurred before the menu became
+wide and after both visits ended. This verifies presentation routing inside
+the local replay. The trace cannot identify the iPad crash or certify each
+artwork layer on every animation frame.
