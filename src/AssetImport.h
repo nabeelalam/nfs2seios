@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <string>
 namespace nfs {
+// Throws if an existing owned import lacks its required startup files or trees.
+void validate_imported_assets(const std::string &root);
 struct AssetImportResult {uint64_t files=0,bytes=0;};
 // Caller holds the selected folder's access grant for this entire operation.
 // Copies only GAMEDATA/FEDATA and startup files into a new owned root.

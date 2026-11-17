@@ -26,6 +26,17 @@ int main(int argc,char **argv){
         require(!fs::exists(destination/"nfs2se.exe") && !fs::exists(destination/"unrelated"),"import included unrelated files");
         fails([&]{nfs::import_assets(source.string(),support.string(),destination.string());});
         require(read(destination/"fedata"/"pc"/"art.dat")=="front","existing game was replaced");
+        nfs::validate_imported_assets(destination.string());
+        write(destination/"text.eng","");
+        fails([&]{nfs::validate_imported_assets(destination.string());});
+        write(destination/"text.eng","language fixture");
+        fs::rename(destination/"gamedata",destination/"gamedata-backup");
+        fails([&]{nfs::validate_imported_assets(destination.string());});
+        fs::rename(destination/"gamedata-backup",destination/"gamedata");
+        fs::remove(destination/"install.win");
+        fails([&]{nfs::validate_imported_assets(destination.string());});
+        write(destination/"install.win","4nnenglish\r\n");
+        nfs::validate_imported_assets(destination.string());
         fs::remove(support/"text.eng");
         fails([&]{nfs::import_assets(source.string(),support.string(),(root/"missing-support").string());});
         require(!fs::exists(root/"missing-support"),"partial import published");no_staging(root);

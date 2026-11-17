@@ -13,6 +13,10 @@ namespace fs=std::filesystem;
 namespace {
 std::mutex import_mutex;
 constexpr const char *startup_names[]={"install.win","text.eng","text.ger","text.fre","text.ita","text.spa","text.swe"};
+constexpr const char *required_startup_names[]={"install.win","text.eng"};
+bool valid_startup_file(const fs::path &file){
+    return fs::is_regular_file(fs::symlink_status(file)) && fs::file_size(file)>0;
+}
 std::string lowercase(std::string name){
     for(auto &c:name)if(c>='A' && c<='Z')c=char(c-'A'+'a');
     return name;
@@ -30,6 +34,18 @@ void copy_file(const fs::path &source,const fs::path &target,AssetImportResult &
     if(result.files>=100000 || size>UINT64_C(8589934592)-result.bytes)throw std::runtime_error("Game import exceeds its file or storage limit");
     fs::copy_file(source,target,fs::copy_options::none);++result.files;result.bytes+=size;
 }
+}
+void validate_imported_assets(const std::string &root){
+    if(!fs::is_directory(fs::symlink_status(root)))
+        throw std::runtime_error("The imported game folder is invalid.");
+    for(const auto name:{"gamedata","fedata"}){
+        if(!fs::is_directory(fs::symlink_status(fs::path(root)/name)))
+            throw std::runtime_error(std::string("The imported game is missing a valid ")+name+" folder.");
+    }
+    for(const auto name:required_startup_names){
+        if(!valid_startup_file(fs::path(root)/name))
+            throw std::runtime_error(std::string("The imported game is missing a valid ")+name+" file.");
+    }
 }
 AssetImportResult import_assets(const std::string &source_name,const std::string &support_name,const std::string &destination_name){
     std::lock_guard<std::mutex> lock(import_mutex);
@@ -63,10 +79,9 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
             if(fs::exists(fs::symlink_status(file)))startup.emplace(name,file);
         }
     }
-    for(const auto name:{"install.win","text.eng"}){
+    for(const auto name:required_startup_names){
         const auto file=startup.find(name);
-        if(file==startup.end() || !fs::is_regular_file(fs::symlink_status(file->second)) ||
-           fs::file_size(file->second)==0)
+        if(file==startup.end() || !valid_startup_file(file->second))
             throw std::runtime_error(std::string("Required startup file is missing, empty or invalid: ")+name+
                 ". Select the folder containing GAMEDATA, FEDATA, install.win and text.eng.");
     }

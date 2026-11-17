@@ -52,10 +52,15 @@ std::string app_log_path(int,char **){
 std::string select_app_assets(int,char **){
     NSURL *documents=[NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject;
     NSURL *destination=[documents URLByAppendingPathComponent:@"game" isDirectory:YES];
-    BOOL directory=NO;
-    if([NSFileManager.defaultManager fileExistsAtPath:destination.path isDirectory:&directory]){
-        if(!directory)throw std::runtime_error("Documents/game must be a folder");
-        return destination.path.UTF8String;
+    NSString *existingError=nil;
+    if([NSFileManager.defaultManager fileExistsAtPath:destination.path]){
+        try{
+            validate_imported_assets(destination.path.UTF8String);
+            return destination.path.UTF8String;
+        }catch(const std::exception &error){
+            NSString *reason=[NSString stringWithUTF8String:error.what()] ?: @"Could not read the imported game.";
+            existingError=[reason stringByAppendingString:@" In Files, rename the game folder inside this app to keep it as a backup, then reopen the app and select your original game folder."];
+        }
     }
     SDL_Window *window=SDL_CreateWindow("Select original game folder",640,480,0);
     if(!window)throw std::runtime_error(SDL_GetError());
@@ -65,7 +70,12 @@ std::string select_app_assets(int,char **){
         GameFolderPicker *selection=[[GameFolderPicker alloc] init];selection.destination=destination;
         UIDocumentPickerViewController *picker=[[UIDocumentPickerViewController alloc] initForOpeningContentTypes:@[UTTypeFolder] asCopy:NO];
         picker.delegate=selection;picker.allowsMultipleSelection=NO;
-        [native.rootViewController presentViewController:picker animated:YES completion:nil];
+        if(existingError){
+            selection.error=existingError;
+            selection.done=YES;
+        }else{
+            [native.rootViewController presentViewController:picker animated:YES completion:nil];
+        }
         // SDL's iOS event pump runs UIKit and main-queue callbacks. Never block
         // this thread on the import worker; retain selection until it completes.
         bool quitting=false;
@@ -78,7 +88,7 @@ std::string select_app_assets(int,char **){
             // Keep the picker window alive until the user sees the error.
             // Reporting after destroying the last UIKit window can hide it.
             __block BOOL acknowledged=NO;
-            UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"Could not import game"
+            UIAlertController *alert=[UIAlertController alertControllerWithTitle:(existingError ? @"Could not open imported game" : @"Could not import game")
                 message:selection.error preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                 handler:^(UIAlertAction *){acknowledged=YES;}]];
