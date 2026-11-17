@@ -44,6 +44,21 @@ class SummaryTests(unittest.TestCase):
         legacy = summary.summarize(fixture([sample(0), sample(1)]))
         self.assertEqual(legacy["race_world_interval_comparison"]["off"]["samples"], 0)
 
+    def test_majority_slow_runs_are_broken_by_filtering_and_single_dips(self):
+        def row(second, slow, world=60):
+            return dict(sample(second), interval_s=1, frame_limit=0,
+                        classified_presentations=60, race_world_presentations=world,
+                        swap_intervals_count=50, swap_intervals_over_18ms=slow)
+
+        rows = [row(0, 50), row(1, 25), row(2, 27), row(3, 50, world=10),
+                row(4, 45), row(5, 1), row(6, 50), row(7, 0), row(8, 50)]
+        result = summary.summarize(fixture(rows))["race_world_interval_comparison"]["off"]
+        self.assertEqual(result["unlocked_pacing_samples"], 7)
+        self.assertAlmostEqual(result["unlocked_majority_slow_sample_fraction"], 5 / 7)
+        self.assertEqual(result["unlocked_longest_majority_slow_run_s"], 2)
+        legacy = summary.summarize(fixture([sample(0), sample(1)]))
+        self.assertIsNone(legacy["stable_interval_comparison"]["off"]["unlocked_longest_majority_slow_run_s"])
+
     def test_display_link_rate_is_independent_of_game_fps(self):
         rows = [sample(0), dict(sample(1, fps=40), interval_s=1.2,
                               display_link_callbacks=72, display_link_mean_target_ms=16.667)]

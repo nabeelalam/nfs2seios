@@ -41,6 +41,9 @@ def render_conditions(samples):
 def stable_interval_metrics(rows):
     slow = total = 0
     unlocked_swaps = unlocked_slow = 0
+    pacing_samples = slow_samples = 0
+    previous_slow_end = None
+    slow_run = longest_slow_run = 0.0
     swap_calls = 0
     swap_host_ms = 0
     swap_host_maxima = []
@@ -61,6 +64,24 @@ def stable_interval_metrics(rows):
                 and number(swaps) and number(late_unlocked, swaps)):
             unlocked_swaps += swaps
             unlocked_slow += late_unlocked
+        interval = row.get("interval_s")
+        elapsed = row.get("elapsed_s")
+        if (type(row.get("frame_limit")) is int and row["frame_limit"] == 0
+                and number(swaps) and swaps > 0 and number(late_unlocked, swaps)
+                and number(interval, 2.5) and interval > 0 and number(elapsed, 3600)):
+            pacing_samples += 1
+            if late_unlocked * 2 >= swaps:
+                slow_samples += 1
+                # The recorder serializes elapsed seconds at six significant digits.
+                contiguous = (previous_slow_end is not None
+                              and abs(elapsed - interval - previous_slow_end) <= 0.01)
+                slow_run = slow_run + interval if contiguous else interval
+                longest_slow_run = max(longest_slow_run, slow_run)
+                previous_slow_end = elapsed
+            else:
+                previous_slow_end = None
+        else:
+            previous_slow_end = None
         measured_calls = row.get("swap_calls_count")
         host_total = row.get("swap_call_total_ms")
         host_max = row.get("swap_call_max_ms")
@@ -70,7 +91,6 @@ def stable_interval_metrics(rows):
             swap_host_ms += host_total
             swap_host_maxima.append(host_max)
         callbacks = row.get("display_link_callbacks")
-        interval = row.get("interval_s")
         target = row.get("display_link_mean_target_ms")
         if number(callbacks, 10000) and number(interval, 2.5) and interval > 0:
             display_rates.append(callbacks / interval)
@@ -95,6 +115,9 @@ def stable_interval_metrics(rows):
         "swap_fraction_over_20ms": slow / total if total else None,
         "unlocked_observed_swap_intervals": unlocked_swaps,
         "unlocked_swap_fraction_over_18ms": unlocked_slow / unlocked_swaps if unlocked_swaps else None,
+        "unlocked_pacing_samples": pacing_samples,
+        "unlocked_majority_slow_sample_fraction": slow_samples / pacing_samples if pacing_samples else None,
+        "unlocked_longest_majority_slow_run_s": round(longest_slow_run, 3) if pacing_samples else None,
         "measured_swap_calls": swap_calls,
         "swap_host_ms_per_call": swap_host_ms / swap_calls if swap_calls else None,
         "swap_host_max_ms": max(swap_host_maxima, default=None),
@@ -267,7 +290,7 @@ def summarize(data):
     result["stable_interval_caution"] = (
         "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power, timing-art, render-size or frame-lock change. "
         "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "
-        "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. Display-link rates describe main run-loop delivery, not displayed game frames. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
+        "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. A majority-slow sample has at least half its measured swaps above 18 ms. The longest run counts contiguous samples, not individual frames. Display-link rates describe main run-loop delivery, not displayed game frames. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
     )
     result["timing_art_comparison"] = {}
     for power in (False, True):
@@ -327,6 +350,8 @@ def compare_power_sessions(normal, low_power):
             "display_link_max_late_ms": pacing["display_link_max_late_ms"],
             "mean_swap_host_ms": pacing["swap_host_ms_per_call"],
             "fraction_swaps_over_18ms": pacing["unlocked_swap_fraction_over_18ms"],
+            "majority_slow_sample_fraction": pacing["unlocked_majority_slow_sample_fraction"],
+            "longest_majority_slow_run_s": pacing["unlocked_longest_majority_slow_run_s"],
         }
 
     left, right = metrics(off, "off"), metrics(on, "on")
