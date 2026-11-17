@@ -22,21 +22,21 @@ Two requirements are part of the goal:
 
 ### Current private iPad candidate
 
-Workflow 44084402478 passed Linux and Apple validation at source
-1aa5eb1816c8750a8457667a073e856ba5a4939d. The unsigned ARM64 IPA includes
+Workflow 44146584443 passed Linux and Apple validation at source
+7131fbc4db35c9f97d3c3513361ae410d3f3d910. The unsigned ARM64 IPA includes
 13 separately verified private artwork resources. The
-489,730,225-byte ZIP matched the private release asset SHA-256
-54ab89c563cbdb0adc743ce1b4030ce6dc796a87af93431db05542a1121352a3.
+468,343,477-byte ZIP matched the private release asset SHA-256
+6805bc1c57536ca3b00d5d94617789e08060ac05aff28a4ac01bb6da01ee64ab.
 The temporary artwork-free base draft was removed after delivery.
-This supersedes workflow 44072219911.
+This supersedes workflow 44084402478 and saves 21,386,748 ZIP bytes.
 
-The packaged executable contains the race-world interval and display-link
-lateness fields, widescreen race symbols, the Opponents diagnostics and
-the existing-import checks. The local single-player and two-controller
-recordings verified race-world classification. SideStore upgrade and
-physical gameplay are pending for this exact package. Verify Opponents
-entry first, then record matched North Country split-screen sections with
-Low Power Mode off and on.
+The update selects the compact lossless slideshow, logs first Opponents
+frame commit and OS memory warnings, and retains the race-world and
+display-link diagnostics. Desktop playback with the compact pack and
+two Opponents visits passed. SideStore upgrade and physical gameplay
+are pending for this exact package. Verify Opponents entry first, then
+record matched North Country split-screen sections with Low Power Mode
+off and on.
 
 The desktop Player One check at 2360x1640 covered entry, two observed
 car swipes and the return to Main. Three Right inputs were sent. The trace

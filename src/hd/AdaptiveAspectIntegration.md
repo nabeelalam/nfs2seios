@@ -211,6 +211,12 @@ and the copied inputs were restored. The compact resource remains private
 and has not been bundled for iPad.
 
 
+A warmed local decoder comparison alternated version order for eight
+photos and collected 32 loads per version. Median file read, digest and
+decode time was 79.36 ms for version 3 and 74.13 ms for version 4.
+The 90th-percentile samples were 88.99 and 89.08 ms respectively. These
+are desktop WSL loads and do not include renderer upload or device timing.
+
 ## Pacific Spirit information page
 
 The local replay covered Location, Pacific Spirit Track Info, resizing from
@@ -1161,3 +1167,15 @@ authored logo and panel beginning to slide in from the left, then the
 settled full-width menu. The static title was rendered before the sweep
 using its existing title composition. Both runs exited cleanly. This does
 not establish iPad launch behavior or an updated intro movie.
+
+## Apple Release configuration timing
+
+Run 44139268240 used the standard Apple runner. Configuration took
+19m11s, and the engine and renderer targets built before the 30-minute
+job limit stopped the final game target. The previous successful run
+44084402478 took 13m09s for the same configure stage. Its public job
+log shows repeated SDK feature probes, with individual math symbol
+checks taking up to nine seconds. Commit 7131fbc allows 40 minutes
+on the same runner and retains the explicit Linux gates and private
+artwork assembly. No configure checks were removed. Replacement
+run 44146584443 was dispatched once with the same Release options.
