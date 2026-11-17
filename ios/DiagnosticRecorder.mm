@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 #import "DiagnosticRecorder.h"
 #import <mach/mach.h>
+#import <QuartzCore/CADisplayLink.h>
 #include "DiagnosticSession.h"
 #include "EngineThreadMetrics.h"
 #include "MainThreadBridge.h"
@@ -20,7 +21,8 @@
     nfs::DiagnosticSessionLimit _limit;
     nfs::SystemCpuLoadWindow _cores;
     uint64_t _start,_previous,_latestFrame,_frameEpoch,_frameDrops;
-    double _latestFPS,_processCPU;
+    double _latestFPS,_processCPU,_displayTargetSeconds;
+    unsigned _displayCallbacks;
     int64_t _mainCPU;
     int _width,_height;
     BOOL _powerKnown,_power;
@@ -30,11 +32,13 @@
 @property(nonatomic,weak) UIWindow *host;
 @property(nonatomic,strong) NSURL *lastURL;
 @property(nonatomic,strong) NSTimer *timer;
+@property(nonatomic,strong) CADisplayLink *displayLink;
 @property(nonatomic,strong) dispatch_queue_t writer;
 @property(nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 - (void)start:(UIWindow *)host;
 - (void)stop:(NSString *)reason notify:(BOOL)notify;
 - (void)tick;
+- (void)observeDisplay:(CADisplayLink *)link;
 - (BOOL)append:(const std::string &)line;
 - (void)share:(UIWindow *)host;
 - (void)latest:(double)fps width:(int)width height:(int)height;
@@ -110,12 +114,22 @@ static NSURL *recording_folder(){
     const auto header=nfs::diagnostic_header(build);
 #endif
     if(![self append:header]){[self stop:@"write_error" notify:YES];return;}
+    _displayCallbacks=0;_displayTargetSeconds=0;
+    self.displayLink=[CADisplayLink displayLinkWithTarget:self selector:@selector(observeDisplay:)];
+    [self.displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
     self.timer=[NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer *){[self tick];}];
     self.timer.tolerance=0.1;[NSRunLoop.mainRunLoop addTimer:self.timer forMode:NSRunLoopCommonModes];
     [self tick];
 }
 - (void)latest:(double)fps width:(int)width height:(int)height {
     _latestFPS=fps;_latestFrame=SDL_GetTicksNS();_width=width;_height=height;
+}
+- (void)observeDisplay:(CADisplayLink *)link {
+    const double target=link.targetTimestamp-link.timestamp;
+    if(target>0 && target<=1){
+        ++_displayCallbacks;
+        _displayTargetSeconds+=target;
+    }
 }
 - (void)tick {
     if(!self.recording)return;
@@ -129,6 +143,11 @@ static NSURL *recording_folder(){
     sample.low_power=NSProcessInfo.processInfo.lowPowerModeEnabled;
     const bool powerChanged=_powerKnown && _power!=sample.low_power;
     if(powerChanged){_cores.reset();nfs_reset_engine_metrics();}
+    if(self.displayLink && sample.interval>0 && !powerChanged){
+        sample.display_link_callbacks=_displayCallbacks;
+        if(_displayCallbacks)sample.display_link_target_ms=1000*_displayTargetSeconds/_displayCallbacks;
+    }
+    _displayCallbacks=0;_displayTargetSeconds=0;
     const auto render=nfs::take_renderer_timing();
     if(sample.interval>0 && !powerChanged){
         sample.renderer_calls=double(render.calls);
@@ -187,7 +206,8 @@ static NSURL *recording_folder(){
     if(!self.recording)return;
     nfs_frame_timing_capture(0);
     nfs::set_renderer_timing_capture(false);
-    self.recording=NO;self.finishing=YES;[self.timer invalidate];self.timer=nil;nfs_sync_diagnostic_capture();
+    self.recording=NO;self.finishing=YES;[self.timer invalidate];self.timer=nil;
+    [self.displayLink invalidate];self.displayLink=nil;nfs_sync_diagnostic_capture();
     NSArray *reasons=@[@"manual",@"background",@"window_changed",@"time_limit",@"write_error",@"writer_backlog"];
     if(![reasons containsObject:reason])reason=@"stopped";
     const auto now=SDL_GetTicksNS();const double elapsed=now>=_start?double(now-_start)/1e9:0;

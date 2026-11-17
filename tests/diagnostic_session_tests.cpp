@@ -31,13 +31,17 @@ int main(){
     sample.app_cpu_percent=7.7778;sample.low_power=true;sample.width=2186;sample.height=1640;
     auto line=nfs::diagnostic_sample_json(sample);CHECK(line.size()<8192 && line.back()=='\n');
     CHECK(line.find("\"game_cpu_sample_id\":42")!=std::string::npos);
+    CHECK(line.find("\"display_link_callbacks\":null")!=std::string::npos);
     CHECK(line.find("\"hd_timing_requested\":null")!=std::string::npos);
     CHECK(line.find("\"renderer_calls_interval\":null")!=std::string::npos);
     CHECK(line.find("\"swap_intervals_count\":null")!=std::string::npos);
     sample.swap_intervals=2;sample.swap_over_18ms=2;sample.swap_over_20ms=1;sample.swap_max_ms=30;
     sample.swap_calls=2;sample.swap_call_total_ms=13;sample.swap_call_max_ms=9;
     sample.renderer_calls=160;sample.renderer_queue_ms=7.25;sample.renderer_execution_ms=11.5;
+    sample.display_link_callbacks=60;sample.display_link_target_ms=1000.0/60;
     const auto render=nfs::diagnostic_sample_json(sample);
+    CHECK(render.find("\"display_link_callbacks\":60.0000")!=std::string::npos);
+    CHECK(render.find("\"display_link_mean_target_ms\":16.6667")!=std::string::npos);
     CHECK(render.find("\"swap_intervals_over_18ms\":2.0000")!=std::string::npos);
     CHECK(render.find("\"swap_interval_max_ms\":30.0000")!=std::string::npos);
     CHECK(render.find("\"swap_call_total_ms\":13.0000")!=std::string::npos);

@@ -29,6 +29,7 @@ struct DiagnosticSwapIntervals {
 };
 struct DiagnosticSample {
     double elapsed=0,interval=-1,fps=-1,fps_age=-1,game_cpu_ms=-1;
+    double display_link_callbacks=-1,display_link_target_ms=-1;
     uint64_t game_cpu_id=0;
     double swap_intervals=-1,swap_over_18ms=-1,swap_over_20ms=-1,swap_max_ms=-1;
     double swap_calls=-1,swap_call_total_ms=-1,swap_call_max_ms=-1;
@@ -76,6 +77,8 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"interval_s\":";diagnostic_number(out,s.interval);
     out<<",\"presentation_fps\":";diagnostic_number(out,s.fps,10000);
     out<<",\"fps_age_s\":";diagnostic_number(out,s.fps_age);
+    out<<",\"display_link_callbacks\":";diagnostic_number(out,s.display_link_callbacks);
+    out<<",\"display_link_mean_target_ms\":";diagnostic_number(out,s.display_link_target_ms);
     out<<",\"game_cpu_ms_per_frame\":";diagnostic_number(out,s.game_cpu_ms);
     out<<",\"game_cpu_sample_id\":"<<s.game_cpu_id;
     out<<",\"swap_intervals_count\":";diagnostic_number(out,s.swap_intervals);

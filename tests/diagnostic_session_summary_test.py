@@ -34,6 +34,13 @@ class SummaryTests(unittest.TestCase):
         old_log = summary.summarize(fixture([row(0, 0), row(1, 0)]))
         self.assertIsNone(old_log["stable_interval_comparison"]["off"]["unlocked_swap_fraction_over_18ms"])
 
+    def test_display_link_rate_is_independent_of_game_fps(self):
+        rows = [sample(0), dict(sample(1, fps=40), interval_s=1.2,
+                              display_link_callbacks=72, display_link_mean_target_ms=16.667)]
+        cadence = summary.summarize(fixture(rows))["stable_interval_comparison"]["off"]
+        self.assertAlmostEqual(cadence["display_link_callbacks_per_second"]["median"], 60)
+        self.assertEqual(cadence["display_link_mean_target_ms"]["median"], 16.667)
+
     def test_modes_and_repeated_windows(self):
         result = summary.summarize(fixture([sample(0), sample(1), sample(2, True, 2, 45), {"type": "end", "reason": "manual", "elapsed_s": 3, "attempted_rows": 3}]))
         self.assertEqual(result["samples"], 3)

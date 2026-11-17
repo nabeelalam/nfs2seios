@@ -599,3 +599,29 @@ median engine-thread CPU per submission increased slightly in both orders.
 This software GLES result is mixed and does not demonstrate a gameplay gain.
 The experiment was removed from the production source. Device performance and
 energy were not measured.
+
+## Translated floating-point stack stores
+
+A private prototype covered 64 generated floating-point overwrites across
+three leading resolver callers. It checked the destination before the FPU
+operation, reused the resolved pointer only for the owner's live stack, and
+kept the original second resolution outside that stack. Optimized and
+sanitizer fixtures passed unaligned access, stack boundary, external
+revalidation and worker cancellation checks.
+
+Two matched 30-second North Country split-screen runs yielded median frame
+spacing of 30.815 to 30.867 ms and 30.495 to 30.830 ms. Median engine-thread
+CPU per submission changed from 14.339 to 14.570 ms and from 14.684 to
+14.788 ms. Each run used both virtual controllers and exited cleanly.
+The prototype stays private because neither comparison reduced the measured
+engine-thread CPU time. iPad performance and energy were not measured.
+
+## iPad display cadence during a diagnostic recording
+
+The recorder adds one CADisplayLink only while a recording is active. The
+summary reports callback delivery rate and the mean system target interval
+separately from swap spacing and game-thread CPU time. Main run-loop
+scheduling can affect callback delivery, including while the renderer is
+busy. These fields do not count game frames actually shown by the display
+or establish GPU execution time. An iPad recording is needed to compare
+those readings between matched normal and Low Power Mode races.

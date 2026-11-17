@@ -29,6 +29,8 @@ def stable_interval_metrics(rows):
     swap_host_maxima = []
     queue = []
     execution = []
+    display_rates = []
+    display_targets = []
     for row in rows:
         swaps = row.get("swap_intervals_count")
         late = row.get("swap_intervals_over_20ms")
@@ -48,6 +50,13 @@ def stable_interval_metrics(rows):
             swap_calls += measured_calls
             swap_host_ms += host_total
             swap_host_maxima.append(host_max)
+        callbacks = row.get("display_link_callbacks")
+        interval = row.get("interval_s")
+        target = row.get("display_link_mean_target_ms")
+        if number(callbacks, 10000) and number(interval, 2.5) and interval > 0:
+            display_rates.append(callbacks / interval)
+            if callbacks and number(target, 1000) and target > 0:
+                display_targets.append(target)
         calls = row.get("renderer_calls_interval")
         if number(calls) and calls >= 1:
             for key, values in (("renderer_queue_ms_interval", queue),
@@ -64,6 +73,8 @@ def stable_interval_metrics(rows):
         "measured_swap_calls": swap_calls,
         "swap_host_ms_per_call": swap_host_ms / swap_calls if swap_calls else None,
         "swap_host_max_ms": max(swap_host_maxima, default=None),
+        "display_link_callbacks_per_second": distribution(display_rates),
+        "display_link_mean_target_ms": distribution(display_targets),
         "renderer_queue_ms_per_call": distribution(queue),
         "renderer_execution_ms_per_call": distribution(execution),
     }
@@ -194,7 +205,7 @@ def summarize(data):
     result["stable_interval_caution"] = (
         "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power, timing-art or frame-lock change. "
         "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "
-        "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
+        "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. Display-link rates describe main run-loop delivery, not displayed game frames. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
     )
     result["timing_art_comparison"] = {}
     for power in (False, True):

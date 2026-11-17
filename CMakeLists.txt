@@ -132,7 +132,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
       $<TARGET_OBJECTS:full_mapped_translation> $<TARGET_OBJECTS:platform_bridges> $<TARGET_OBJECTS:glide_gles2>)
     target_include_directories(NFSIISEGame PRIVATE "${NFS_RENDERER_SOURCE_DIR}" src app "${FULL_MAPPED_ENGINE}")
     target_compile_options(NFSIISEGame PRIVATE "$<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>")
-    target_link_libraries(NFSIISEGame PRIVATE SDL3::SDL3 "-framework OpenGLES" "-framework UIKit" "-framework Foundation" "-framework UniformTypeIdentifiers")
+    target_link_libraries(NFSIISEGame PRIVATE SDL3::SDL3 "-framework OpenGLES" "-framework UIKit" "-framework Foundation" "-framework QuartzCore" "-framework UniformTypeIdentifiers")
     set_target_properties(NFSIISEGame PROPERTIES
       MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/ios/GameInfo.plist"
       XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "io.github.nabeelalam.nfsiise.game"
