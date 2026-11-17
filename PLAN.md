@@ -20,6 +20,22 @@ Two requirements are part of the goal:
 
 ## Current UI checkpoint and next work
 
+### Current private iPad candidate
+
+Workflow 43988238242 passed the Linux and Apple checks. Its unsigned
+ARM64 IPA was assembled with 13 verified artwork resources and uploaded
+to the original private repository. The uploaded digest matched the local
+ZIP. SideStore signing and gameplay on this exact candidate are pending.
+
+The package includes the locally verified opening Main swipe, track and
+Player transitions, wider single-player gameplay, and the spinning
+manufacturer artwork. It also includes the opt-in host swap timing and
+the controller polling changes. Local replay coverage cannot resolve the
+reported physical Opponents crash or establish sustained 60 FPS in Low
+Power Mode. Matched North Country recordings and an Opponents retest
+are the next device checks. The sharper Summary footer and the
+untextured shader change follow this package and remain local.
+
 ### Latest physical widescreen preview feedback
 
 The iPad test confirms the HD splash and settled fullscreen Main. Startup,
