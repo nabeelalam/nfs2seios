@@ -164,7 +164,7 @@ inline void responsiveOwner(Game&g,NfsMenuTransitionView&v)noexcept{
 struct DrawScope{
  std::shared_ptr<const Packet>packet;
  std::shared_ptr<const OutgoingLocationSidebar> outgoing;
- uint64_t serial=0;bool accepted=false;
+ uint64_t serial=0;bool accepted=false,tracePreviewCommit=false;
  explicit DrawScope(Game&g,bool plain=false)noexcept{WorkerErrno preserve;state().lastDraw.reset();state().lastDrawSerial=0;
   if(!nfs_background_scene_live::enabled()||nfs_background_scene_live::activeRequest()||uint32_t(g.eax)>1)return;
   auto p=state().slots[uint32_t(g.eax)];
@@ -238,10 +238,29 @@ struct DrawScope{
     view.trackInfoArt.release(view.trackInfoArt.owner);
     return int32_t(result);});
    if(firstPreview&&receipt!=nfs::OwnedRendererAcceptance::UseExistingOwnerPath)opponent->loggedPreviewRenderer=true;
-   accepted=receipt==nfs::OwnedRendererAcceptance::Consumed;if(p->kind>=8)fullTrace("draw-renderer",accepted?"consumed":"refused",p->kind,p->slot,unsigned(v.originX),unsigned(v.stepX),v.drawKind);}
+   accepted=receipt==nfs::OwnedRendererAcceptance::Consumed;tracePreviewCommit=accepted&&firstPreview;if(p->kind>=8)fullTrace("draw-renderer",accepted?"consumed":"refused",p->kind,p->slot,unsigned(v.originX),unsigned(v.stepX),v.drawKind);}
   catch(...){packet.reset();serial=0;}
  }
- ~DrawScope(){WorkerErrno preserve;if(!accepted||(!packet&&!outgoing)||!serial)return;auto p=packet;auto side=outgoing;const uint64_t id=serial;try{const auto receipt=nfs::enqueue_owned_renderer([p,side,id](){return int32_t(nfs_private_menu_transition_finish(id));});if(p&&receipt==nfs::OwnedRendererAcceptance::Consumed&&((p->kind>=5&&p->kind<=7)||p->kind==11)&&unchanged(*p)){state().lastDraw=p;state().lastDrawSerial=id;}}catch(...){}}
+ ~DrawScope(){
+  WorkerErrno preserve;
+  if(!accepted||(!packet&&!outgoing)||!serial)return;
+  auto p=packet;
+  auto side=outgoing;
+  const uint64_t id=serial;
+  const bool trace=tracePreviewCommit;
+  try{
+   const auto receipt=nfs::enqueue_owned_renderer([p,side,id,trace](){
+    if(trace)nfs::log_opponents_visit(nfs::OpponentsVisit::PreviewCommitBegin);
+    const auto result=int32_t(nfs_private_menu_transition_finish(id));
+    if(trace)nfs::log_opponents_visit(result?nfs::OpponentsVisit::PreviewCommitted:nfs::OpponentsVisit::PreviewCommitDeclined);
+    return result;
+   });
+   if(p&&receipt==nfs::OwnedRendererAcceptance::Consumed&&((p->kind>=5&&p->kind<=7)||p->kind==11)&&unchanged(*p)){
+    state().lastDraw=p;
+    state().lastDrawSerial=id;
+   }
+  }catch(...){}
+ }
 };
 struct PlainDrawScope:DrawScope{explicit PlainDrawScope(Game&g)noexcept:DrawScope(g,true){}};
 }

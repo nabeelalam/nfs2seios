@@ -75,6 +75,9 @@ int main(int argc,char **argv){
         case nfs::OpponentsVisit::PreviewBegin:nfs::app_log("Opponents","renderer began first four-car transition");break;
         case nfs::OpponentsVisit::PreviewReady:nfs::app_log("Opponents","renderer accepted first four-car transition");break;
         case nfs::OpponentsVisit::PreviewDeclined:nfs::app_log("Opponents","renderer declined first four-car transition");break;
+        case nfs::OpponentsVisit::PreviewCommitBegin:nfs::app_log("Opponents","renderer began committing first four-car frame");break;
+        case nfs::OpponentsVisit::PreviewCommitted:nfs::app_log("Opponents","renderer committed first four-car frame");break;
+        case nfs::OpponentsVisit::PreviewCommitDeclined:nfs::app_log("Opponents","renderer declined first four-car frame commit");break;
         case nfs::OpponentsVisit::Left:nfs::app_log("Opponents","left menu");break;
         }
     });
