@@ -335,7 +335,7 @@ def prepare_hd_atlas(text, dest):
     checked('"uniform float uTextureEnabled;"',
             '"uniform sampler2D uHdTextureSampler;"\n\t"uniform float uHdActive;"\n\t"uniform float uHdCellLayout;"\n\t"uniform float uTextureEnabled;"')
     checked('"vec4 texture = uTextureEnabled * texture2D(uTextureSampler, vTexCoord.st / vTexCoord.q);"',
-            '"vec4 sampled = texture2D(uTextureSampler, vTexCoord.st / vTexCoord.q);"\n'
+            '"vec4 sampled = vec4(0.0);if (uTextureEnabled > 0.5 || uHdActive > 0.5) sampled = texture2D(uTextureSampler, vTexCoord.st / vTexCoord.q);"\n'
             '\t\t"if (uHdActive > 0.5) {"\n'
             '#include "SpeedShader.inc"\n'
             '\t\t"vec4 texture = uTextureEnabled * sampled;"')

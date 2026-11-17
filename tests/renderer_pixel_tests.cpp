@@ -265,6 +265,25 @@ int main(int argc,char **argv){
     fixedFramebufferSize=1;initialWinWidth=640;initialWinHeight=480;windowResized=1;grBufferSwap(0);
     CHECK(nfs_render_width()==640 && nfs_render_height()==480 && glGetError()==GL_NO_ERROR);
     std::puts("PASS: 480/720/960/native-height render targets, both-buffer reallocation, original RGB565 readback and return to original resolution");
+    grRenderBuffer(GR_BUFFER_BACKBUFFER);
+    grClipWindow(0,0,640,480);
+    grBufferClear(0,255,65535);
+    grAlphaCombine(0,0,0,0,0);
+    auto *flatVertices=malloc32(3*sizeof(GrVertex));CHECK(flatVertices);
+    const auto flatAddress=nfs_guest_address(flatVertices);
+    for(unsigned i=0;i<3;++i){
+        GrVertex vertex{};
+        vertex.x=786432+(i==1?64:0);vertex.y=786432+(i==2?64:0);
+        vertex.r=73;vertex.g=149;vertex.b=211;vertex.a=255;vertex.oow=1;
+        guest_store(flatAddress+i*sizeof(vertex),vertex);
+    }
+    grDrawTriangle(flatAddress,flatAddress+sizeof(GrVertex),flatAddress+2*sizeof(GrVertex));
+    grAlphaCombine(0,0,0,GR_COMBINE_OTHER_TEXTURE,0);
+    nfs::flush_renderer_commands();
+    unsigned char flatPixel[4]{};
+    glReadPixels(12,467,1,1,GL_RGBA,GL_UNSIGNED_BYTE,flatPixel);
+    CHECK(flatPixel[0]==73 && flatPixel[1]==149 && flatPixel[2]==211 && flatPixel[3]==255);
+    free32(flatVertices);
     // A synthetic two-pixel atlas becomes four pixels without changing CPU data.
     // No original game artwork is embedded in this fixture.
     std::vector<unsigned char> hd_pack(32+8+64,0);

@@ -553,3 +553,19 @@ and 1180x820 show the existing name, car, time and difficulty in
 their original columns with sharper glyphs. Clean shutdown, the copied
 game inventory and all 13 artwork hashes were verified. The change
 has not been packaged for iPadOS.
+
+## Untextured draw shader
+
+The main shader no longer reads the base texture when both ordinary
+texturing and the HD atlas are inactive. HD fallback and mark selection
+retain their existing shader operations. The baseline and candidate
+passed the actual GLES pixel suite, including the same exact
+vertex-color triangle and the existing textured and palette cases.
+
+A private software GLES microbenchmark timed 120 immediate draws per
+sample, followed by a GPU wait, with four software renderer workers.
+Six process runs per variant gave median run medians of 69.38 ms
+before and 58.96 ms after for the untextured case. The matching
+textured control measured 79.24 ms before and 74.07 ms after. These
+are synthetic local measurements. Whole-race FPS, Apple GPU behavior
+and energy are still unmeasured for this change.
