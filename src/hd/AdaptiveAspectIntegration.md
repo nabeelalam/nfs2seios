@@ -447,3 +447,26 @@ photo animation draw. Captures included the moving photo layers and
 steady selection. Both sessions exited cleanly. These tests cover the
 desktop renderer. Physical iPad startup, car changes and the reported
 Opponents crash remain open for this revision.
+
+## Vertex snapshot copy experiment
+
+The candidate copied all vertices of a Glide line or triangle under one
+checked memory transaction and released it before renderer dispatch.
+Actual generated standard, adaptive and pointer bridges passed Clang
+syntax checks. The GLES pixel suite passed with the adaptive candidate.
+
+Two matched 30-second North Country split-screen comparisons started
+with both virtual controllers driving. The binaries shared 96 other
+build inputs and used the same 13 verified artwork resources. The
+desktop replay used software GLES. All four sessions shut down cleanly.
+
+| Run order | Baseline engine median | Candidate engine median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 14.563 ms | 14.576 ms | 29.594 ms | 29.779 ms |
+| Candidate, baseline | 14.419 ms | 14.293 ms | 29.780 ms | 29.648 ms |
+
+The direction changed with run order and the median changes were under
+1 percent. The candidate source patch and raw captures were retained
+locally. The build sources keep the original vertex copies. The trial
+measured desktop submissions, with physical iPad FPS and battery impact
+still unknown.
