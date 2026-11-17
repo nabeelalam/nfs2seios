@@ -1,24 +1,18 @@
 # Personal installation without a Mac
 
-The current classic UI preview is **app version 22**, an inspected thin ARM64
-iOS-device Release package delivered privately for personal testing. It includes
-the current UI remaster and loading-screen lettering. The main performance
-branch retains its separate build 19 baseline. Personal SideStore signing is
-required; original game files stay separate.
-
-The public classic CI artifact is a base requiring personal artwork. Use the
-finished personal ZIP provided with your preview, rather than installing that
-base directly. Package provenance is recorded in
-[evidence/hd-classic-ui-preview3-delivery.json](evidence/hd-classic-ui-preview3-delivery.json).
+Get the latest privately supplied personal ZIP for the classic UI preview.
+[The project plan](PLAN.md#current-private-ipad-candidate) records the build
+revision and package verification. The package requires personal SideStore
+signing and your own separately supplied original game folder.
 
 ## Update the existing game
 
-1. Download the privately supplied version 22 ZIP and extract it in Files.
-2. Import `NFSIISEGame-classic-ui-personal-unsigned.ipa` into SideStore to update
-   the existing app using the same Apple Account. SideStore performs personal
-   signing; the ZIP itself is unsigned.
-3. Keep using the same separately stored original game folder. Build 12's
-   automatic saved-folder startup is retained.
+1. Download the private personal ZIP and extract it in Files.
+2. Import the extracted personal unsigned IPA into SideStore with the same
+   Apple Account to update the existing installation and keep its app data.
+3. Keep your separately stored original game folder. If the game opens
+   directly, it has found its existing app-owned import. If the Files picker
+   opens, select the folder with GAMEDATA, FEDATA, install.win and text.eng.
 4. Diagnostics start hidden. Tap with four fingers to show or hide them. Tap
    the FPS label for rendering settings. The small keyboard button is independent.
 5. Keep **Lock FPS to 30 off** while testing normal 60 FPS and Low Power Mode.
@@ -38,6 +32,13 @@ The app requests fullscreen and opts into Game Mode. To filter notifications,
 configure [Gaming Focus](https://support.apple.com/en-us/105118) on the iPad.
 The app cannot force all system notifications off.
 
+## Recover the previous session log
+
+After a crash, open the game once. In Files, open On My iPad, then the game
+app's folder, and copy native-port-previous.log before launching the game
+again. Each launch can replace the previous log. Share it privately along
+with where the crash happened.
+
 ## Record a session
 
 Four-finger tap to show diagnostics, tap the FPS label and choose Start session
@@ -56,8 +57,8 @@ button shows/hides typing input. Native controller remapping remains in the
 original controls settings; a held resume press should not also shift down.
 
 Pause before changing render size. Settings offer 640x480, 960x720, 1280x960
-and native screen pixels in the original 4:3 view; the overlay shows actual
-render size. CPU/app is the share of total CPU capacity, so one busy core can
+and native screen pixels. The classic preview also has an adaptive race
+viewport. The overlay shows the actual render size. CPU/app is the share of total CPU capacity, so one busy core can
 limit performance despite a low percentage. GPU utilization is not estimated.
 Current recorder operation, controlled battery savings and UI appearance still need physical validation.
 
@@ -171,10 +172,9 @@ Build 21 is the next experimental HD test, superseding build 20 for this compari
 
 ## Optional owner-assembled artwork candidate
 
-The current HD branch's expanded menu artwork has not yet been delivered as a
-new validated iPad release. The older build links above do not establish support
-for this candidate. Use only a future device build compiled for the exact
-verified artwork fingerprint, together with its reviewed owner template.
+The personal ZIP already includes its matched artwork resources. These
+instructions apply when assembling a separate compatible artwork pack
+for a matching build.
 
 Assemble `remaster.nfshd` on your computer using the instructions in
 [BUILDING.md](BUILDING.md#optional-owner-assembled-menu-artwork). Original game
