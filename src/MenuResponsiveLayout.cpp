@@ -13,10 +13,9 @@ namespace {
 std::mutex mutex;
 std::atomic<bool> pointerMetadataFailed{false};
 NfsMenuResponsiveLayout shown{};
-// The main event loop only reads this invalidation hint. Layout and receipts stay locked.
-std::atomic<uint64_t> inputGeneration{1};
+uint64_t inputGeneration=1;
 uint32_t sourceForm=0,sourceX=0,sourceY=0,originalOpponentAddress=0,originalOpponentValid=0;uint64_t sourceEpoch=0;bool sourceCursorValid=false;
-void advanceGeneration(){inputGeneration.fetch_add(1,std::memory_order_release);}
+void advanceGeneration(){++inputGeneration;}
 double cursorX=0,cursorY=0; int32_t guestX=0,guestY=0;
 bool valid(const NfsMenuResponsiveLayout& s){
  return s.schema==1&&s.active==1&&s.revision&&s.ownerEpoch&&s.cursorValid==1&&
@@ -102,7 +101,7 @@ extern "C" void nfs_menu_responsive_publish(const NfsMenuResponsiveLayout* value
 }
 extern "C" void nfs_menu_responsive_revoke(){std::lock_guard<std::mutex> lock(mutex);clear();}
 extern "C" int nfs_menu_responsive_snapshot(NfsMenuResponsiveLayout* out){std::lock_guard<std::mutex> lock(mutex);if(!out)return 0;if(pointerMetadataFailed.load(std::memory_order_acquire))clear();*out=shown;return shown.active!=0;}
-extern "C" uint64_t nfs_menu_responsive_input_generation(){return inputGeneration.load(std::memory_order_acquire);}
+extern "C" uint64_t nfs_menu_responsive_input_generation(){std::lock_guard<std::mutex> lock(mutex);return inputGeneration;}
 extern "C" float nfs_menu_responsive_logical_width(){std::lock_guard<std::mutex> lock(mutex);if(pointerMetadataFailed.load(std::memory_order_acquire))clear();return shown.active?shown.logicalWidth:640.0f;}
 extern "C" void nfs_menu_responsive_pointer_route(int32_t dx,int32_t dy,int click,int32_t* ox,int32_t* oy,int* accepted){
  std::lock_guard<std::mutex> lock(mutex);
@@ -149,7 +148,7 @@ extern "C" uint64_t nfs_menu_pointer_read_begin(const int32_t state[8],uint32_t 
  if(!state||state[2]>state[4]||state[3]>state[5]||state[0]!=lastAppliedX||state[1]!=lastAppliedY||state[6]!=lastMenuX||state[7]!=lastMenuY||
     !menuX||!menuY||menuX==menuY||outButtons==menuX||outButtons==menuY){rejectPointer();return 0;}
  if(nextReadToken==UINT64_MAX){rejectPointer();return 0;}
- pointerRead={};pointerRead.token=++nextReadToken;pointerRead.epoch=sourceEpoch;pointerRead.generation=inputGeneration.load(std::memory_order_relaxed);
+ pointerRead={};pointerRead.token=++nextReadToken;pointerRead.epoch=sourceEpoch;pointerRead.generation=inputGeneration;
  pointerRead.outX=outX;pointerRead.outY=outY;pointerRead.menuX=menuX;pointerRead.menuY=menuY;
  std::memcpy(pointerRead.before,state,sizeof pointerRead.before);++readsInFlight;return pointerRead.token;
 }
@@ -162,7 +161,7 @@ extern "C" void nfs_menu_pointer_read_finish(uint64_t token,const int32_t state[
  std::lock_guard<std::mutex> lock(mutex);if(!token||pointerRead.token!=token){if(token)rejectPointer();return;}
  const auto r=pointerRead;pointerRead={};if(readsInFlight)--readsInFlight;
  if(!shown.active||r.epoch!=sourceEpoch)return;
- if(!complete||!state||r.generation!=inputGeneration.load(std::memory_order_relaxed)||r.invalid||!r.delivered||
+ if(!complete||!state||r.generation!=inputGeneration||r.invalid||!r.delivered||
     (pointerDevice&&r.device!=pointerDevice)||std::memcmp(r.before+2,state+2,4*sizeof(int32_t))){rejectPointer();return;}
  int32_t x=r.before[0],y=r.before[1];uint32_t priorSequence=lastSequence;
  for(uint32_t i=0;i<r.count;++i){const auto& e=r.events[i];

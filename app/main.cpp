@@ -93,7 +93,7 @@ int main(int argc,char **argv){
 #if !defined(SDL_PLATFORM_IOS)
             Uint64 timing_start=SDL_GetTicks();
 #endif
-            while(!session->finished()){
+            while(!session->result().finished){
                 try{session->poll();}
                 catch(const std::exception &error){if(app_error.empty())app_error=error.what();session->request_stop();SDL_PumpEvents();}
 #if !defined(SDL_PLATFORM_IOS)

@@ -847,3 +847,24 @@ returned to 800x450. The recorder confirmed each render size, the game shut
 down cleanly and the copied profile was restored. This validates the local
 integration of the generated source pair. It does not validate Apple SDK
 compilation, an updated signed package or the physical Opponents crash.
+
+## Event-poll lock experiment
+
+Two candidate changes removed the menu-generation mutex and the result
+snapshot from routine event polling. Three baseline units were rebuilt
+from the delivered source with the same compiler options and grouped
+game objects. Both variants used the same 13 locally verified packs.
+Two paired runs used the same copied North Country single-player
+profile at 800x450. The human-controlled car stayed in neutral and the
+opponents and race clock advanced. Each 25-second sample used Linux
+kernel CPU counters, and all four sessions shut down cleanly.
+
+| Run order | Baseline main CPU ms/s | Candidate main CPU ms/s | Baseline process CPU ms/s | Candidate process CPU ms/s |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 298.56 | 301.40 | 3650.67 | 3700.60 |
+| Candidate, baseline | 300.66 | 307.24 | 3665.07 | 3718.05 |
+
+The earlier recorder-timestamp attempt did not reliably locate the
+observation boundaries and was excluded. The kernel-counter comparison
+showed no local CPU saving. The two candidate changes were reverted
+before publication. These software GLES runs do not measure iPad energy.

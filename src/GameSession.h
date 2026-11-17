@@ -15,7 +15,6 @@ public:
     void start(uint32_t function=0); // Zero selects the original _start.
     void poll();
     void request_stop();
-    bool finished() const noexcept;
     GameSessionResult result();
 };
 }
