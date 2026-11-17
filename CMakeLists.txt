@@ -90,7 +90,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
       if(NOT nfs_device_source_length EQUAL 40 OR NOT nfs_device_source MATCHES "^[0-9a-f]+$")
         message(FATAL_ERROR "Expected a full source commit for device diagnostics")
       endif()
-      set_property(SOURCE ios/DiagnosticRecorder.mm APPEND PROPERTY
+      set_property(SOURCE app/main.cpp ios/DiagnosticRecorder.mm APPEND PROPERTY
         COMPILE_DEFINITIONS "NFS_DIAGNOSTIC_SOURCE=\"${nfs_device_source}\"")
     endif()
     target_compile_options(platform_bridges PRIVATE -fwrapv -fno-strict-aliasing)

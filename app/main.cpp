@@ -63,6 +63,9 @@ int main(int argc,char **argv){
     });
 #endif
     nfs::app_log("Native app","Need for Speed II SE; platform="+std::string(SDL_GetPlatform()));
+#if defined(NFS_DIAGNOSTIC_SOURCE)
+    nfs::app_log("Source revision",NFS_DIAGNOSTIC_SOURCE);
+#endif
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMEPAD)){nfs::app_log("SDL initialization failed",SDL_GetError());SDL_Quit();nfs::close_app_log();return 1;}
     int status=1;
     try{
