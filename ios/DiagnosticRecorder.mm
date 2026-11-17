@@ -21,6 +21,7 @@
     nfs::DiagnosticSessionLimit _limit;
     nfs::SystemCpuLoadWindow _cores;
     uint64_t _start,_previous,_latestFrame,_frameEpoch,_frameDrops;
+    NfsFrameContentTotals _frameContent;
     double _latestFPS,_processCPU,_displayTargetSeconds;
     unsigned _displayCallbacks;
     int64_t _mainCPU;
@@ -106,6 +107,7 @@ static NSURL *recording_folder(){
     nfs_frame_timing_capture(1);
     const auto frame=nfs_frame_timing_snapshot();
     _frameEpoch=frame.window_epoch;_frameDrops=frame.dropped_total;
+    _frameContent=nfs_frame_content_totals();
     self.recording=YES;nfs_sync_diagnostic_capture();nfs_reset_engine_metrics();
     const unsigned build=[[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"] intValue];
 #ifdef NFS_DIAGNOSTIC_SOURCE
@@ -156,6 +158,7 @@ static NSURL *recording_folder(){
     }
     _powerKnown=YES;_power=sample.low_power;
     const auto frame=nfs_frame_timing_snapshot();
+    nfs::record_frame_content(sample,nfs_frame_content_totals(),_frameContent,sample.interval>0 && !powerChanged);
     nfs::DiagnosticSwapIntervals intervals;
     NfsFrameTiming chunk[128];
     for(unsigned batch=0;batch<8;++batch){

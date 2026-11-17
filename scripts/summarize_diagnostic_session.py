@@ -220,6 +220,29 @@ def summarize(data):
         label: stable_interval_metrics(stable_intervals[power])
         for label, power in (("off", False), ("on", True))
     }
+    race_intervals = {
+        label: [row for row in stable_intervals[power]
+                if type(row.get("classified_presentations")) is int
+                and 0 < row["classified_presentations"] <= 16384
+                and type(row.get("race_world_presentations")) is int
+                and row["race_world_presentations"] == row["classified_presentations"]]
+        for label, power in (("off", False), ("on", True))
+    }
+    result["race_world_interval_comparison"] = {
+        label: {
+            "samples": len(rows),
+            "presentation_fps": distribution([
+                row["classified_presentations"] / row["interval_s"] for row in rows
+                if number(row.get("interval_s"), 2.5)
+                and row["interval_s"] * 10000 >= row["classified_presentations"]]),
+            **stable_interval_metrics(rows),
+        }
+        for label, rows in race_intervals.items()
+    }
+    result["race_world_interval_scope"] = (
+        "Only steady samples with a race-world draw in every classified presentation. "
+        "A race-world draw can occur during replays or beneath an overlay. Older logs lack this count."
+    )
     result["stable_interval_caution"] = (
         "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power, timing-art, render-size or frame-lock change. "
         "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "

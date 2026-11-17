@@ -7,6 +7,9 @@ extern "C" {
 /* Swap-submission timestamps; not display photons or GPU execution time. */
 typedef struct NfsFrameTiming { uint64_t frame_id,timestamp_ns,interval_ns,window_epoch,swap_call_ns; } NfsFrameTiming;
 typedef struct NfsFrameTimingSnapshot { uint64_t latest_frame_id,latest_timestamp_ns,dropped_total,window_epoch,fps_timestamp_ns; double fps; int enabled; } NfsFrameTimingSnapshot;
+typedef enum NfsFrameContent { NFS_FRAME_UNCLASSIFIED, NFS_FRAME_NO_RACE_WORLD, NFS_FRAME_RACE_WORLD } NfsFrameContent;
+typedef struct NfsFrameContentTotals { uint64_t classified,race_world,window_epoch; } NfsFrameContentTotals;
+NfsFrameContentTotals nfs_frame_content_totals(void);
 void nfs_frame_timing_capture(int enabled);
 /* The v2 symbol requires records with the host swap duration field. */
 unsigned nfs_frame_timing_drain_v2(NfsFrameTiming *out,unsigned capacity);
@@ -14,6 +17,7 @@ NfsFrameTimingSnapshot nfs_frame_timing_snapshot(void);
 int nfs_swap_window(void *window,uint64_t *elapsed_ns);
 void nfs_frame_presented(void *window);
 void nfs_frame_presented_with_swap(void *window,uint64_t swap_call_ns);
+void nfs_frame_presented_with_content(void *window,uint64_t swap_call_ns,NfsFrameContent content);
 void nfs_reset_frame_rate(void);
 double nfs_frame_rate_value(void);
 void nfs_render_target_changed(int width,int height);

@@ -229,6 +229,7 @@ static int32_t  g_framebufferHeight;
 static int32_t  g_framebufferHeight;
 #include "hd/AdaptiveAspect.h"
 static int wideRace=0,raceFramebufferWidth=0,raceWorldClip=-1;
+static int raceWorldDrawSeen=0;
 static int wideRaceWidth=0,wideRaceHeight=0;
 static int publishedWidth=0,publishedHeight=0,publishedRenderHeight=0;
 extern void nfs_adaptive_race_publish_target(int width,int height);
@@ -286,6 +287,7 @@ static int applyRaceClip(int world)
 void nfs_adaptive_race_apply_race_raster(unsigned scope)
 {
     const int world=scope==1 || scope==2;
+    if(world)raceWorldDrawSeen=1;
     if(!wideRace){
         const int splitView=raceLogicalClip.height==240;
         const int singleView=scope==1 && raceLogicalClip.top==0 && raceLogicalClip.height==480;
@@ -355,6 +357,7 @@ void nfs_adaptive_race_replace_wide_target(int width,int height)
 }
 void nfs_adaptive_race_end_wide_race(void)
 {
+    raceWorldDrawSeen=0;
     nfs_adaptive_race_release_target();
     if(!wideRace)return;
     drawTriangles();
@@ -426,6 +429,11 @@ REALIGN STDCALL void native_grBufferClear(GrColor_t color, GrAlpha_t alpha, uint
     if(wideRace && !nfs_aspect_viewport(raceFramebufferWidth,g_framebufferHeight,winWidth,winHeight,true,&viewport))return false;
     clearUnusedArea(viewport.left,viewport.top,viewport.width,viewport.height);
     glViewport(viewport.left,winHeight-viewport.height-viewport.top,viewport.width,viewport.height);
+"""),
+            (r"""	if(presented)nfs_frame_presented_with_swap(sdlWin,swapCallNs);
+""", r"""    const NfsFrameContent content=raceWorldDrawSeen?NFS_FRAME_RACE_WORLD:NFS_FRAME_NO_RACE_WORLD;
+    raceWorldDrawSeen=0;
+    if(presented)nfs_frame_presented_with_content(sdlWin,swapCallNs,content);
 """),
         ],
     },

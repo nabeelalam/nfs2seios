@@ -13,6 +13,7 @@ static uint64_t now_ns=1000000000,latest=900,drops=17;static bool enabled=false,
 extern "C" Uint64 SDL_GetTicksNS(){++clocks;return now_ns;}
 extern "C" int SDL_GetNumLogicalCPUCores(){return 4;}
 extern "C" void nfs_frame_timing_capture(int value){enabled=value;}
+extern "C" NfsFrameContentTotals nfs_frame_content_totals(){return {};}
 extern "C" unsigned nfs_frame_timing_drain_v2(NfsFrameTiming*out,unsigned cap){unsigned n=0;while(n<cap&&!pending.empty()){out[n++]=pending.front();pending.pop_front();}return n;}
 extern "C" NfsFrameTimingSnapshot nfs_frame_timing_snapshot(){return {latest,now_ns,drops,3,0,0,enabled?1:0};}
 extern "C" void nfs_set_engine_metrics_capture(int value){engine=value;}

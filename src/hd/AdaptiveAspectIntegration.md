@@ -1034,3 +1034,20 @@ first gear. All four sessions shut down cleanly.
 The candidate did not improve engine CPU or produce a repeatable
 presentation improvement under desktop software GLES. It remains
 outside production. Physical iPad frame time and energy were not measured.
+
+## Race-world diagnostic intervals
+
+The adaptive renderer labels successful presentations by whether they
+submitted a race-world draw. Capture counts are cumulative within the
+process and sampled only while timing capture is enabled. The recorded
+interval omits a changed render epoch or power setting. A replay or world
+draw under an overlay can also carry the race-world label. The analyzer
+reports a separate pacing summary for steady samples whose classified
+presentations all contained a world draw. Older logs remain readable.
+
+A local full-data replay logged 14 menu-only samples before entering
+North Country and 45 race-world-only samples across 800x450, 708x492
+and 800x600. The app exited cleanly and the disposable profile and
+replay were restored. The frame capture, JSON, desktop recorder and
+analyzer tests passed. The iPad recorder change is awaiting an Apple
+build and device validation.

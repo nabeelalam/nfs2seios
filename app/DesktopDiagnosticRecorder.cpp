@@ -112,6 +112,7 @@ struct DesktopDiagnosticRecorder::Impl {
   if(std::fwrite(summary.data(),1,summary.size(),meta)!=summary.size()||std::fflush(meta))write_error.store(true);
   }catch(...){write_error.store(true);}
  }
+ NfsFrameContentTotals frame_content{};
  bool drain(bool final=false){NfsFrameTiming rows[128];for(unsigned batch=0;batch<8;++batch){const auto count=nfs_frame_timing_drain_v2(rows,128);if(!count)break;
    if(frames_closed){discarded_frames+=count;if(!final)return false;continue;}
    std::string text;unsigned accepted=0;
@@ -126,6 +127,7 @@ struct DesktopDiagnosticRecorder::Impl {
   if(pc>=process&&process>=0)s.process_ms=(pc-process)/1e6;if(mc>=main&&main>=0)s.main_ms=(mc-main)/1e6;
   if(s.process_ms>=0&&s.interval>0&&s.logical_cores)s.app_cpu_percent=s.process_ms/(s.interval*10*s.logical_cores);
   process=pc;main=mc;last=now;next=now+1000000000ull;
+  record_frame_content(s,nfs_frame_content_totals(),frame_content,s.interval>0 && sample_rows>0);
   std::string row=diagnostic_sample_json(s);
   for(const auto &field: {std::make_pair(std::string("\"low_power_mode\":false"),std::string("\"low_power_mode\":null")),{"\"thermal_state\":-1","\"thermal_state\":null"},{"\"battery_state\":0","\"battery_state\":null"},{"\"app_state\":0","\"app_state\":null"},{"\"system_core_percent\":[]","\"system_core_percent\":null"}}){const auto at=row.find(field.first);if(at!=std::string::npos)row.replace(at,field.first.size(),field.second);}
   if(!put(false,std::move(row),1)){stop(reason.c_str());return;}++sample_rows;

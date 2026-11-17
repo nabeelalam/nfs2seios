@@ -13,6 +13,7 @@ class FrameTimingCapture {
     std::mutex mutex_;
     NfsFrameTiming records_[1024]{};
     unsigned head_=0,count_=0;
+    uint64_t classified_=0,race_world_=0;
     uint64_t serial_=0,latest_=0,dropped_=0,previous_=0,previous_epoch_=0;
 public:
     void capture(bool enabled) {
@@ -36,15 +37,21 @@ public:
         fps_sequence_.fetch_add(1,std::memory_order_seq_cst);
     }
     bool capturing() const {return enabled_.load(std::memory_order_acquire);}
-    void presented(uint64_t now,uint64_t swap_call_ns=0) {
+    void presented(uint64_t now,uint64_t swap_call_ns=0,NfsFrameContent content=NFS_FRAME_UNCLASSIFIED) {
         if(!enabled_.load(std::memory_order_acquire)) return;
         std::lock_guard<std::mutex> lock(mutex_);
         if(!enabled_.load(std::memory_order_relaxed)) return;
         const uint64_t epoch=epoch_.load(std::memory_order_relaxed);
         const uint64_t interval=previous_ && previous_epoch_==epoch && now>=previous_ ? now-previous_:0;
         previous_=now;previous_epoch_=epoch;latest_=now;++serial_;
+        if(content==NFS_FRAME_NO_RACE_WORLD || content==NFS_FRAME_RACE_WORLD)++classified_;
+        if(content==NFS_FRAME_RACE_WORLD)++race_world_;
         if(count_==1024){head_=(head_+1)%1024;--count_;++dropped_;}
         records_[(head_+count_)%1024]={serial_,now,interval,epoch,swap_call_ns};++count_;
+    }
+    NfsFrameContentTotals content_totals() {
+        std::lock_guard<std::mutex> lock(mutex_);
+        return {classified_,race_world_,epoch_.load(std::memory_order_relaxed)};
     }
     unsigned drain(NfsFrameTiming *out,unsigned capacity) {
         if(!out || !capacity)return 0;

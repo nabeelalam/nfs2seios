@@ -5,11 +5,14 @@ int main(){
  nfs::FrameTimingCapture c;NfsFrameTiming rows[1024]{};
  assert(!c.snapshot().enabled);c.presented(10);assert(c.drain(rows,1024)==0);
  c.published(100,59.5);auto s=c.snapshot();assert(s.fps_timestamp_ns==100&&s.fps==59.5);
- c.capture(true);c.presented(200);c.presented(220,4);
+ c.capture(true);c.presented(200,0,NFS_FRAME_RACE_WORLD);c.presented(220,4,NFS_FRAME_NO_RACE_WORLD);
+ auto content=c.content_totals();assert(content.classified==2&&content.race_world==1);
+ assert(content.window_epoch==c.snapshot().window_epoch);
  assert(c.drain(nullptr,100)==0&&c.drain(rows,0)==0);
  assert(c.drain(rows,1)==1&&rows[0].frame_id==1&&rows[0].interval_ns==0);
  c.reset();s=c.snapshot();assert(s.fps_timestamp_ns==0&&s.fps==0);
  c.presented(250);assert(c.drain(rows,1024)==2);
+ assert(c.content_totals().classified==2 && c.content_totals().window_epoch>content.window_epoch);
  assert(rows[0].frame_id==2&&rows[0].interval_ns==20&&rows[0].swap_call_ns==4);
  assert(rows[1].frame_id==3&&rows[1].interval_ns==0&&rows[1].window_epoch>rows[0].window_epoch);
  c.presented(260);c.capture(false);c.presented(270);s=c.snapshot();assert(!s.enabled&&s.latest_frame_id==4&&s.latest_timestamp_ns==260);

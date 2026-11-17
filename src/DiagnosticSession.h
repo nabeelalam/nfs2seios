@@ -33,6 +33,7 @@ struct DiagnosticSample {
     uint64_t game_cpu_id=0;
     double swap_intervals=-1,swap_over_18ms=-1,swap_over_20ms=-1,swap_max_ms=-1;
     double swap_calls=-1,swap_call_total_ms=-1,swap_call_max_ms=-1;
+    double classified_presentations=-1,race_world_presentations=-1;
     double renderer_calls=-1,renderer_queue_ms=-1,renderer_execution_ms=-1;
     double process_ms=-1,main_ms=-1,app_cpu_percent=-1,ram_mb=-1;
     double battery_percent=-1,brightness=-1;
@@ -42,6 +43,19 @@ struct DiagnosticSample {
     int hd_timing=-1;
     CpuLoadReading cores{};
 };
+inline void record_frame_content(DiagnosticSample &sample,NfsFrameContentTotals current,
+                                 NfsFrameContentTotals &previous,bool valid){
+    if(valid && current.window_epoch==previous.window_epoch &&
+       current.classified>previous.classified && current.race_world>=previous.race_world){
+        const auto classified=current.classified-previous.classified;
+        const auto race=current.race_world-previous.race_world;
+        if(race<=classified){
+            sample.classified_presentations=double(classified);
+            sample.race_world_presentations=double(race);
+        }
+    }
+    previous=current;
+}
 inline void diagnostic_number(std::ostream &out,double value,double maximum=1e15){
     if(std::isfinite(value) && value>=0 && value<=maximum)out<<value;
     else out<<"null";
@@ -81,6 +95,8 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"display_link_mean_target_ms\":";diagnostic_number(out,s.display_link_target_ms);
     out<<",\"game_cpu_ms_per_frame\":";diagnostic_number(out,s.game_cpu_ms);
     out<<",\"game_cpu_sample_id\":"<<s.game_cpu_id;
+    out<<",\"classified_presentations\":";diagnostic_number(out,s.classified_presentations);
+    out<<",\"race_world_presentations\":";diagnostic_number(out,s.race_world_presentations);
     out<<",\"swap_intervals_count\":";diagnostic_number(out,s.swap_intervals);
     out<<",\"swap_intervals_over_18ms\":";diagnostic_number(out,s.swap_over_18ms);
     out<<",\"swap_intervals_over_20ms\":";diagnostic_number(out,s.swap_over_20ms);

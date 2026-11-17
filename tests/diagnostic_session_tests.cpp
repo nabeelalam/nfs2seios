@@ -29,6 +29,14 @@ int main(){
     sample.fps=60;sample.game_cpu_ms=12.25;sample.game_cpu_id=42;sample.battery_percent=53;
     sample.interval=1.125;sample.process_ms=700;sample.main_ms=50;sample.logical_cores=8;
     sample.app_cpu_percent=7.7778;sample.low_power=true;sample.width=2186;sample.height=1640;
+    NfsFrameContentTotals earlier{10,3,1};
+    nfs::record_frame_content(sample,{20,11,1},earlier,true);
+    CHECK(sample.classified_presentations==10 && sample.race_world_presentations==8);
+    nfs::DiagnosticSample mixed;
+    nfs::record_frame_content(mixed,{27,15,2},earlier,true);
+    CHECK(mixed.classified_presentations<0 && earlier.window_epoch==2);
+    nfs::record_frame_content(mixed,{29,16,2},earlier,false);
+    CHECK(mixed.classified_presentations<0 && earlier.classified==29);
     auto line=nfs::diagnostic_sample_json(sample);CHECK(line.size()<8192 && line.back()=='\n');
     CHECK(line.find("\"game_cpu_sample_id\":42")!=std::string::npos);
     CHECK(line.find("\"display_link_callbacks\":null")!=std::string::npos);

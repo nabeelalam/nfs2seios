@@ -78,11 +78,15 @@ extern "C" int nfs_swap_window(void *window,uint64_t *elapsed_ns){
     return presented;
 }
 extern "C" void nfs_frame_presented(void *window){nfs_frame_presented_with_swap(window,0);}
+extern "C" NfsFrameContentTotals nfs_frame_content_totals(){return timing.content_totals();}
 extern "C" void nfs_frame_presented_with_swap(void *window,uint64_t swap_call_ns){
+    nfs_frame_presented_with_content(window,swap_call_ns,NFS_FRAME_UNCLASSIFIED);
+}
+extern "C" void nfs_frame_presented_with_content(void *window,uint64_t swap_call_ns,NfsFrameContent content){
     nfs_diagnostics_activity(2);
     if(window!=last_window){rate.reset();last_window=window;timing.reset();cpu_wall=0;cpu_time=0;}
     const auto presented_now=SDL_GetTicksNS();
-    timing.presented(presented_now,swap_call_ns);
+    timing.presented(presented_now,swap_call_ns,content);
     double fps=0;if(!rate.presented(presented_now,fps))return;
     timing.published(presented_now,fps);
     last_fps.store(fps,std::memory_order_relaxed);

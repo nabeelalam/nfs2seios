@@ -34,6 +34,16 @@ class SummaryTests(unittest.TestCase):
         old_log = summary.summarize(fixture([row(0, 0), row(1, 0)]))
         self.assertIsNone(old_log["stable_interval_comparison"]["off"]["unlocked_swap_fraction_over_18ms"])
 
+    def test_race_world_comparison_excludes_menu_and_mixed_samples(self):
+        rows = [dict(sample(i), interval_s=1, classified_presentations=classified,
+                     race_world_presentations=world)
+                for i, (classified, world) in enumerate(((60, 0), (60, 30), (60, 60), (45, 45)))]
+        race = summary.summarize(fixture(rows))["race_world_interval_comparison"]["off"]
+        self.assertEqual(race["samples"], 2)
+        self.assertEqual(race["presentation_fps"]["median"], 52.5)
+        legacy = summary.summarize(fixture([sample(0), sample(1)]))
+        self.assertEqual(legacy["race_world_interval_comparison"]["off"]["samples"], 0)
+
     def test_display_link_rate_is_independent_of_game_fps(self):
         rows = [sample(0), dict(sample(1, fps=40), interval_s=1.2,
                               display_link_callbacks=72, display_link_mean_target_ms=16.667)]
