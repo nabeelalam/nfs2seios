@@ -5,7 +5,8 @@
 namespace nfs {
 struct SDLGamepadInput::Impl {
     InputDevices &devices;SDL_Gamepad *pads[2]{};SDL_JoystickID ids[2]{};
-    Uint64 next_discovery=0;
+    Uint64 next_discovery=0,next_idle_snapshot=0;
+    bool previous_active=false;
     explicit Impl(InputDevices &input):devices(input){}
     ~Impl(){for(unsigned slot=0;slot<2;++slot){if(pads[slot])SDL_CloseGamepad(pads[slot]);devices.publish(slot,nullptr);}}
 };
@@ -22,6 +23,13 @@ uint8_t SDLGamepadInput::menu_buttons()const{
 void SDLGamepadInput::update(bool active,bool refresh_topology,PollSource source){
     if(!SDL_IsMainThread())throw std::logic_error("Gamepad polling must use app main thread");
     auto &input=*impl;
+    const Uint64 tick=SDL_GetTicks();
+    if(source==PollSource::after_idle_event_pump && !refresh_topology &&
+       active==input.previous_active && tick<input.next_idle_snapshot)return;
+    // A mapped event invalidates the cached snapshot immediately. SDL
+    // backends without reliable events still refresh within four ms.
+    input.previous_active=active;
+    input.next_idle_snapshot=tick+4;
     for(unsigned slot=0;slot<2;++slot)if(input.pads[slot] && !SDL_GamepadConnected(input.pads[slot])){
         SDL_CloseGamepad(input.pads[slot]);input.pads[slot]=nullptr;input.ids[slot]=0;input.devices.publish(slot,nullptr);
         refresh_topology=true;
@@ -30,7 +38,7 @@ void SDLGamepadInput::update(bool active,bool refresh_topology,PollSource source
     // The connectivity checks still retire unplugged devices first.
     bool opened=false;
     const bool free_slot=!input.pads[0] || !input.pads[1];
-    const Uint64 now=free_slot?SDL_GetTicks():0;
+    const Uint64 now=tick;
     if(free_slot && (refresh_topology || now>=input.next_discovery)){
         // Handle add events immediately. Retry periodically if an event was
         // dropped or a just-connected device was not ready to open yet.

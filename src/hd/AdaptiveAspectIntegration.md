@@ -625,3 +625,22 @@ scheduling can affect callback delivery, including while the renderer is
 busy. These fields do not count game frames actually shown by the display
 or establish GPU execution time. An iPad recording is needed to compare
 those readings between matched normal and Low Power Mode races.
+
+## Idle controller snapshots and matched sessions
+
+The production event pump bypasses idle suppression on mapped button and
+axis events, topology changes and foreground transitions. With no events,
+the gamepad snapshot still refreshes on the first poll after four
+milliseconds. Direct callers keep their existing explicit refresh
+behavior. The virtual SDL fixture validates both controller slots,
+foreground/background, and event and fallback state changes.
+
+With two idle virtual controllers and 120 polls separated by nominal
+one-millisecond sleeps, SDL axis reads fell from 1,440 to 372 and button
+reads from 6,240 to 1,612. The synthetic test measures avoided reads.
+iPad response time, FPS and energy have yet to be measured.
+
+The private session analyzer can compare one recording with Low Power
+Mode off and one with it on. It checks source/build, steady matching
+render extent, an unlocked frame limiter and complete sample records.
+Track, cars, graphics and race selection must be matched separately.

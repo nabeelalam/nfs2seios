@@ -182,6 +182,17 @@ def summarize(data):
         batteries = values("battery_percent", 100)
         result["low_power_mode"]["on" if power else "off"] = {
             "samples": len(samples),
+            "render_sizes": sorted({(r["render_width"], r["render_height"]) for r in samples
+                                  if all(type(r.get(k)) is int and 0 < r[k] <= 16384
+                                         for k in ("render_width", "render_height"))}),
+            "frame_limits": sorted({r["frame_limit"] for r in samples
+                                    if type(r.get("frame_limit")) is int}),
+            "complete_render_conditions": all(
+                type(r.get("frame_limit")) is int
+                and all(type(r.get(k)) is int and 0 < r[k] <= 16384
+                        for k in ("render_width", "render_height")) for r in samples),
+            "brightness": distribution(values("brightness", 1)),
+            "thermal_state": distribution(values("thermal_state", 3)),
             "fps_observations": distribution(values("presentation_fps", 10000)),
             "game_cpu_ms_per_frame_unique_windows": distribution(windows[power]),
             "process_cpu_ms_interval": distribution(values("process_cpu_ms_interval")),
@@ -229,16 +240,66 @@ def summarize(data):
     return result
 
 
+def compare_power_sessions(normal, low_power):
+    off, on = summarize(normal), summarize(low_power)
+    source = off.get("source_commit")
+    if (not source or source != on.get("source_commit") or off["build"] != on["build"]
+            or not off["clean_end_record"] or not on["clean_end_record"]):
+        raise ValueError("Comparison needs complete sessions from the same source and build")
+    conditions = []
+    for report, label, other in ((off, "off", "on"), (on, "on", "off")):
+        mode = report["low_power_mode"][label]
+        if (not mode["samples"] or report["low_power_mode"][other]["samples"]
+                or mode["frame_limits"] != [0] or len(mode["render_sizes"]) != 1
+                or not mode["complete_render_conditions"]):
+            raise ValueError("Comparison needs steady power mode, a fixed render size and the 30 FPS lock off")
+        conditions.append(mode)
+    if conditions[0]["render_sizes"] != conditions[1]["render_sizes"]:
+        raise ValueError("Comparison requires matching render sizes")
+
+    def metrics(report, label):
+        mode = report["low_power_mode"][label]
+        pacing = report["stable_interval_comparison"][label]
+        return {
+            "median_sample_fps": mode["fps_observations"]["median"],
+            "median_game_cpu_ms": mode["game_cpu_ms_per_frame_unique_windows"]["median"],
+            "median_display_callbacks_per_second": pacing["display_link_callbacks_per_second"]["median"],
+            "median_display_target_ms": pacing["display_link_mean_target_ms"]["median"],
+            "mean_swap_host_ms": pacing["swap_host_ms_per_call"],
+            "fraction_swaps_over_18ms": pacing["unlocked_swap_fraction_over_18ms"],
+        }
+
+    left, right = metrics(off, "off"), metrics(on, "on")
+    return {
+        "schema": "nfsiise-power-comparison-v1", "build": off["build"], "source_commit": source,
+        "render_size": conditions[0]["render_sizes"][0],
+        "low_power_off": off, "low_power_on": on,
+        "low_power_on_minus_off": {
+            key: right[key] - value if value is not None and right[key] is not None else None
+            for key, value in left.items()
+        },
+        "scope": ("Confirm matched track, cars, graphics and driving separately. "
+                  "Battery percentage and thermal conditions are context, not an energy measurement."),
+    }
+
+
+def read_bounded(path):
+    with path.open("rb") as stream:
+        return stream.read(MAX_BYTES + 1)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("log", type=Path)
+    parser.add_argument("log", type=Path, help="session log, or the Low Power Mode off log for comparison")
+    parser.add_argument("--compare-low-power", type=Path, help="matching Low Power Mode on log")
     args = parser.parse_args()
     try:
-        with args.log.open("rb") as stream:
-            data = stream.read(MAX_BYTES + 1)
-        print(json.dumps(summarize(data), indent=2, allow_nan=False))
+        data = read_bounded(args.log)
+        report = (compare_power_sessions(data, read_bounded(args.compare_low_power))
+                  if args.compare_low_power else summarize(data))
+        print(json.dumps(report, indent=2, allow_nan=False))
     except (OSError, ValueError):
-        parser.exit(1, "Unable to summarize: missing, unsupported or malformed recorder log.\n")
+        parser.exit(1, "Unable to summarize: missing, unsupported, malformed or unmatched recorder log.\n")
 
 
 if __name__ == "__main__":

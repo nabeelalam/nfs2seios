@@ -249,10 +249,13 @@ void GameSession::poll(){
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
     impl->desktop_relative_sync();
 #endif
-    bool refresh_gamepads=false;
+    bool refresh_gamepads=false,gamepad_activity=false;
     SDL_Event event;while(SDL_PollEvent(&event)){
         if(event.type==SDL_EVENT_GAMEPAD_ADDED || event.type==SDL_EVENT_GAMEPAD_REMAPPED ||
            event.type==SDL_EVENT_DID_ENTER_FOREGROUND)refresh_gamepads=true;
+        if(event.type==SDL_EVENT_GAMEPAD_AXIS_MOTION || event.type==SDL_EVENT_GAMEPAD_BUTTON_DOWN ||
+           event.type==SDL_EVENT_GAMEPAD_BUTTON_UP || event.type==SDL_EVENT_GAMEPAD_REMOVED)
+            gamepad_activity=true;
         if(event.type==SDL_EVENT_QUIT || event.type==SDL_EVENT_TERMINATING)impl->request_stop();
         sdl_window_event(event);
         if(event.type==SDL_EVENT_WINDOW_RESIZED || event.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)nfs_menu_responsive_revoke();
@@ -296,6 +299,8 @@ void GameSession::poll(){
         impl->graphics.abandon_suspended();
         impl->background_shutdown=true;
     }
-    impl->gamepads->update(impl->foreground,refresh_gamepads,SDLGamepadInput::PollSource::after_event_pump);
+    using PollSource=SDLGamepadInput::PollSource;
+    impl->gamepads->update(impl->foreground,refresh_gamepads,
+        gamepad_activity?PollSource::after_event_pump:PollSource::after_idle_event_pump);
 }
 }

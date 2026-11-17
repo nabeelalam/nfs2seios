@@ -48,6 +48,20 @@ int main(){
         input.update(true,false,source);
         CHECK(joystick_updates>after_pump);
         CHECK(SDL_ResetHint(SDL_HINT_AUTO_UPDATE_JOYSTICKS));
+        const auto idle=nfs::SDLGamepadInput::PollSource::after_idle_event_pump;
+        CHECK(SDL_SetJoystickVirtualAxis(joystick,SDL_GAMEPAD_AXIS_LEFTX,1234));
+        SDL_PumpEvents();
+        input.update(true,false,source);
+        CHECK(read(0).axes[0]==34002); // Mapped input event bypasses the idle interval.
+        input.update(false,false,idle);
+        CHECK(read(0).axes[0]==32768); // Background neutralizes immediately.
+        input.update(true,false,idle);
+        CHECK(read(0).axes[0]==34002); // Foreground refreshes immediately.
+        CHECK(SDL_SetJoystickVirtualAxis(joystick,SDL_GAMEPAD_AXIS_LEFTX,32767));
+        SDL_PumpEvents();
+        SDL_Delay(5); // Simulate missing the mapped event but longer than the fallback.
+        input.update(true,false,idle);
+        CHECK(read(0).axes[0]==65535);
         CHECK(input.menu_buttons()==0); // Native POV/buttons never become keyboard aliases.
         CHECK(state.buttons[SDL_GAMEPAD_BUTTON_DPAD_UP]==0 && state.buttons[SDL_GAMEPAD_BUTTON_DPAD_RIGHT]==0);
         CHECK(devices.frontend_hat_command(0)==0x4800); // One command for a diagonal, no action button.

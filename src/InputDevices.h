@@ -105,7 +105,7 @@ class SDLGamepadInput {
 public:
     explicit SDLGamepadInput(InputDevices &);
     ~SDLGamepadInput();
-    enum class PollSource { needs_update, after_event_pump };
+    enum class PollSource { needs_update, after_event_pump, after_idle_event_pump };
     void update(bool active=true,bool refresh_topology=true,PollSource source=PollSource::needs_update);
     uint8_t menu_buttons()const;
 };
