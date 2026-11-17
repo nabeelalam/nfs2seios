@@ -19,7 +19,7 @@ uint8_t SDLGamepadInput::menu_buttons()const{
     // legacy keyboard-message adapter neutral, including on held buttons.
     return 0;
 }
-void SDLGamepadInput::update(bool active,bool refresh_topology){
+void SDLGamepadInput::update(bool active,bool refresh_topology,PollSource source){
     if(!SDL_IsMainThread())throw std::logic_error("Gamepad polling must use app main thread");
     auto &input=*impl;
     for(unsigned slot=0;slot<2;++slot)if(input.pads[slot] && !SDL_GamepadConnected(input.pads[slot])){
@@ -28,6 +28,7 @@ void SDLGamepadInput::update(bool active,bool refresh_topology){
     }
     // There is no free slot to assign while both attached pads are live.
     // The connectivity checks still retire unplugged devices first.
+    bool opened=false;
     const bool free_slot=!input.pads[0] || !input.pads[1];
     const Uint64 now=free_slot?SDL_GetTicks():0;
     if(free_slot && (refresh_topology || now>=input.next_discovery)){
@@ -39,7 +40,7 @@ void SDLGamepadInput::update(bool active,bool refresh_topology){
         for(int i=0;i<count;++i){
             if(ids[i]==input.ids[0] || ids[i]==input.ids[1])continue;
             for(unsigned slot=0;slot<2;++slot)if(!input.pads[slot]){
-                auto pad=SDL_OpenGamepad(ids[i]);if(pad){input.pads[slot]=pad;input.ids[slot]=ids[i];}break;
+                auto pad=SDL_OpenGamepad(ids[i]);if(pad){input.pads[slot]=pad;input.ids[slot]=ids[i];opened=true;}break;
             }
         }
         SDL_free(ids);
@@ -47,7 +48,10 @@ void SDLGamepadInput::update(bool active,bool refresh_topology){
     // SDL_OpenGamepad establishes trigger zero points. Open new devices before
     // consuming their first input update, or a pressed pedal can be reset to
     // zero until a later hardware change (also reproducible with SDL virtual IO).
-    SDL_UpdateGamepads();
+    // SDL's event pump already refreshes joysticks with its default hint.
+    // Newly opened pads and callers without that pump need an explicit update.
+    if(opened || source==PollSource::needs_update ||
+       !SDL_GetHintBoolean(SDL_HINT_AUTO_UPDATE_JOYSTICKS,true))SDL_UpdateGamepads();
     for(unsigned slot=0;slot<2;++slot){
         auto pad=input.pads[slot];
         if(pad && !SDL_GamepadConnected(pad)){SDL_CloseGamepad(pad);input.pads[slot]=nullptr;input.ids[slot]=0;pad=nullptr;input.next_discovery=0;}

@@ -296,6 +296,6 @@ void GameSession::poll(){
         impl->graphics.abandon_suspended();
         impl->background_shutdown=true;
     }
-    impl->gamepads->update(impl->foreground,refresh_gamepads);
+    impl->gamepads->update(impl->foreground,refresh_gamepads,SDLGamepadInput::PollSource::after_event_pump);
 }
 }

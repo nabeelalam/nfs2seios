@@ -512,3 +512,19 @@ The game resized through 708x492 and 800x600, returned to 800x450 and
 exited cleanly. This replay used keyboard input. The separate virtual
 controller suite passed multi-controller discovery, disconnect and
 reconnect. iPad timing and physical pad checks remain open.
+
+In the steady first 800x450 interval, the slowest tenth of 903
+submissions had a median spacing of 33.116 ms and a median host swap
+call of 2.180 ms. The other submissions had medians of 26.398 ms and
+1.894 ms respectively. The measured host swap occupied a median 6.2
+percent of the slowest tenth. For this desktop software-rendered run,
+most of the increase was outside the swap call. This does not
+attribute the remainder to a specific thread or establish iPad behavior.
+
+The pinned SDL event pump already updates connected joysticks. The
+game loop now reuses the pumped state while automatic updating is on.
+A newly opened pad still receives an explicit update so held triggers
+are available on its first snapshot. Virtual controller callbacks
+verified that the duplicate update was skipped and that an explicit
+update still ran with SDL automatic updating disabled. The complete
+SDL input regression and game-loop compilation passed locally.
