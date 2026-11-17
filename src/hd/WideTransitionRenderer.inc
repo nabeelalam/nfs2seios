@@ -17,7 +17,7 @@ typedef struct NfsMtwStaticKey {
 static struct {
  uintptr_t context,thread,sourceGame,sourceCatalog;uint32_t sourceArchive,initialForm;uint64_t initialEpoch;uint64_t sourceLife;uint64_t generation,serial,uploads,clearEvent,locationArtGeneration;
  GLuint image,result,fbo,art[2],nativeFbo,nativeColor,nativeDepth;
- unsigned width,height,ratio,phase,kind,nativeHeight,tailTriangles,cursorSeen,pendingTriangles;
+ unsigned width,height,presentWidth,presentHeight,ratio,phase,kind,nativeHeight,tailTriangles,cursorSeen,pendingTriangles;
  uint32_t ownerForm,descriptor;uint64_t producerEpoch,ownerEpoch,content;NfsMenuCachedSnapshot cached;NfsMenuResponsiveLayout selected;float logical,matrix[16];
  NfsTransitionMotion motion;NfsMenuMapSource underlay;unsigned underlayValid,locationInfoReturn;
  NfsMtwStaticKey staticKey;unsigned staticReady;uint64_t resourceEpoch,cacheHits,cacheMisses,cacheInvalidations;
@@ -220,15 +220,22 @@ static GLuint nfs_mt_wide_present(GLuint frontFbo,GLuint frontTexture,int w,int 
  if(!nfs_mtw_art_current()){nfs_mt_wide_cancel();return 0;}
  if(((nfs_mtw.kind>=5&&nfs_mtw.kind<=7)||nfs_mtw.kind==11)&&!nfs_mtw_branding_ready()){nfs_mt_wide_cancel();return 0;}
  if(nfs_mtw.kind>=8&&nfs_mtw.kind<=10&&(!nfs_mtw_tail_source(&epoch,&x,&y)||nfs_mtw.pendingTriangles||!nfs_mtw.tailTriangles||!nfs_mtw.cursorSeen)){nfs_mt_wide_cancel();return 0;}
- if(!nfs_menu_transition_source_life_current(nfs_mtw.sourceGame,nfs_mtw.sourceLife)||nfs_mtw.phase!=2||!nfs_mtw_current()||w!=(int)nfs_mtw.width||h!=(int)nfs_mtw.height||frontFbo!=nfs_mtw.nativeFbo||frontTexture!=nfs_mtw.nativeColor||nfs_logo_provenance.clearEvent!=nfs_mtw.clearEvent){nfs_mt_wide_cancel();return 0;}
+ // Opponents may finish its current frame just before a drawable resize.
+ // The fullscreen blit can scale that authenticated frame at the same aspect.
+ const int sameSize=w==(int)nfs_mtw.width&&h==(int)nfs_mtw.height;
+ const int sameAspectResize=nfs_mtw.kind==10&&w>0&&h>0&&
+    (uint64_t)(unsigned)w*nfs_mtw.height==(uint64_t)(unsigned)h*nfs_mtw.width;
+ if(!nfs_menu_transition_source_life_current(nfs_mtw.sourceGame,nfs_mtw.sourceLife)||nfs_mtw.phase!=2||!nfs_mtw_current()||(!sameSize&&!sameAspectResize)||frontFbo!=nfs_mtw.nativeFbo||frontTexture!=nfs_mtw.nativeColor||nfs_logo_provenance.clearEvent!=nfs_mtw.clearEvent){nfs_mt_wide_cancel();return 0;}
  NFS_MTW_GL(glGetIntegerv(GL_FRAMEBUFFER_BINDING,&prior));NFS_MTW_GL(glBindFramebuffer(GL_FRAMEBUFFER,frontFbo));NFS_MTW_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type));NFS_MTW_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name));NFS_MTW_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&depthType));NFS_MTW_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&depth));ok=type==GL_TEXTURE&&(GLuint)name==frontTexture&&depthType==GL_RENDERBUFFER&&(GLuint)depth==nfs_mtw.nativeDepth&&glCheckFramebufferStatus(GL_FRAMEBUFFER)==GL_FRAMEBUFFER_COMPLETE;NFS_MTW_GL(glBindFramebuffer(GL_FRAMEBUFFER,nfs_mtw.fbo));ok=ok&&nfs_mtw_attachment(nfs_mtw.result);if(!nfs_mtw_current())goto done;ok=ok&&glIsTexture(nfs_mtw.result);if(!nfs_mtw_current())goto done;NFS_MTW_GL(glBindFramebuffer(GL_FRAMEBUFFER,(GLuint)prior));
- done:if(!ok||!nfs_mtw_current()||!nfs_mtw_art_current()||glGetError()!=GL_NO_ERROR){nfs_mt_wide_cancel();return 0;}nfs_mtw.phase=3;return nfs_mtw.result;
+ done:if(!ok||!nfs_mtw_current()||!nfs_mtw_art_current()||glGetError()!=GL_NO_ERROR){nfs_mt_wide_cancel();return 0;}nfs_mtw.presentWidth=(unsigned)w;nfs_mtw.presentHeight=(unsigned)h;
+ if(!sameSize&&nfs_logo_trace_enabled())fprintf(stderr,"OPPONENT WIDE same-aspect resize prepared=%ux%u output=%dx%d\n",nfs_mtw.width,nfs_mtw.height,w,h);
+ nfs_mtw.phase=3;return nfs_mtw.result;
 }
 static void nfs_mt_wide_after_present(int success){
  if(success&&nfs_mtw_art_current()&&nfs_mtw.phase==3&&nfs_mtw.kind>=8&&nfs_mtw.kind<=10&&nfs_mtw_current()){
-  uint64_t epoch=0;float x=0,y=0;if(nfs_mtw_tail_source(&epoch,&x,&y)&&nfs_menu_wide.revision<UINT64_MAX){NfsMenuResponsiveLayout v;memset(&v,0,sizeof v);v.schema=v.active=1;v.revision=++nfs_menu_wide.revision;v.ownerEpoch=epoch;v.drawableWidth=nfs_mtw.width;v.drawableHeight=nfs_mtw.height;v.logicalWidth=nfs_mtw.logical;v.delta=nfs_mtw.logical-640;v.sourceCursorX=x;v.sourceCursorY=y;v.cursorValid=1;nfs_menu_cached_publish(&v,&nfs_mtw.cached);}
+  uint64_t epoch=0;float x=0,y=0;if(nfs_mtw_tail_source(&epoch,&x,&y)&&nfs_menu_wide.revision<UINT64_MAX){NfsMenuResponsiveLayout v;memset(&v,0,sizeof v);v.schema=v.active=1;v.revision=++nfs_menu_wide.revision;v.ownerEpoch=epoch;v.drawableWidth=nfs_mtw.presentWidth;v.drawableHeight=nfs_mtw.presentHeight;v.logicalWidth=nfs_mtw.logical;v.delta=nfs_mtw.logical-640;v.sourceCursorX=x;v.sourceCursorY=y;v.cursorValid=1;nfs_menu_cached_publish(&v,&nfs_mtw.cached);}
  }
- static unsigned lines[12]={0};if(success&&nfs_mtw_art_current()&&nfs_mtw.phase==3&&nfs_mtw_current()&&nfs_mtw.kind<12&&nfs_logo_trace_enabled()&&lines[nfs_mtw.kind]<256){++lines[nfs_mtw.kind];fprintf(stderr,"MENU TRANSITION WIDE presented kind=%u serial=%llu output=%ux%u phase=%d step=%d fresh=1\n",nfs_mtw.kind,(unsigned long long)nfs_mtw.serial,nfs_mtw.width,nfs_mtw.height,nfs_mtw.motion.phase,nfs_mtw.motion.stepX);}nfs_mt_wide_cancel();
+ static unsigned lines[12]={0};if(success&&nfs_mtw_art_current()&&nfs_mtw.phase==3&&nfs_mtw_current()&&nfs_mtw.kind<12&&nfs_logo_trace_enabled()&&lines[nfs_mtw.kind]<256){++lines[nfs_mtw.kind];fprintf(stderr,"MENU TRANSITION WIDE presented kind=%u serial=%llu output=%ux%u phase=%d step=%d fresh=1\n",nfs_mtw.kind,(unsigned long long)nfs_mtw.serial,nfs_mtw.presentWidth,nfs_mtw.presentHeight,nfs_mtw.motion.phase,nfs_mtw.motion.stepX);}nfs_mt_wide_cancel();
 }
 #undef NFS_MTW_QUERY
 #undef NFS_MTW_GL

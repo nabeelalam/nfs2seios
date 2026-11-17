@@ -1067,6 +1067,15 @@ frame used the original route, immediately after the resize at frame
 four class changes and both returns completed, and the app exited cleanly
 with the test profile restored. No physical iPad result was measured.
 
+A follow-up allows the current authenticated Opponents transition frame
+to be blitted at the new drawable size only when its aspect is unchanged.
+It publishes the actual drawable dimensions for pointer mapping. A second
+linked replay exercised that path on frame 446 at 1280x720, immediately
+after rendering its source at 1920x1080. All 711 presentation choices
+across both Opponents visits were wide. Both first four-car frames
+committed and the desktop app exited cleanly with the profile restored.
+Cross-aspect resizes are outside this change.
+
 ### Transition target allocation recovery
 
 A partial transition texture resize invalidates the cached extent before any
