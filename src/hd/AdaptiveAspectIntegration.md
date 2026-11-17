@@ -186,6 +186,31 @@ Native loader checks under ASan and UBSan matched all 52 image indices,
 dimensions, and decoded pixel hashes across the two versions. Build and
 packaging pins select the verified files for both information packs.
 
+A read-only trial sampled thirteen photos from the pinned 98-image
+slideshow pack, including its smallest and largest chunks. PNG row
+predictors operate independently on each channel. All sampled alpha
+channels were exactly opaque, so the trial removed the filtered alpha
+bytes and restored them from the predictor on decode. All thirteen
+restored streams matched the original filtered bytes exactly. At zlib
+level 9 the sample dropped from 32,919,672 to 29,944,456 bytes (9.04%).
+The 240,423,232-byte input pack was verified against its build pin and
+left intact. The full conversion then reduced the same 98-photo pack to
+219,036,319 bytes, saving 21,386,913 bytes (8.90%). The production native
+loader decoded both formats with exact RGBA equality for all 98 photos
+in optimized and ASan/UBSan runs. The pack generator rejects nonopaque
+input in its optional compact mode. Mixed versions and mismatched predictors
+were rejected by the catalog validator.
+
+
+The compact catalog and resource were then linked into an isolated desktop
+app. Ordinary Showcase navigation opened the Ford Indigo slideshow,
+advanced through multiple authenticated photos, resized from 708x492 to
+800x450, and returned to Showcase. The 16:9 capture shows the full-width
+background with the HD photo, footer and cursor. The process exited cleanly
+and the copied inputs were restored. The compact resource remains private
+and has not been bundled for iPad.
+
+
 ## Pacific Spirit information page
 
 The local replay covered Location, Pacific Spirit Track Info, resizing from
@@ -361,6 +386,16 @@ fresh source path does. It retains the existing source, lifetime, tile,
 geometry and target checks. The same Location -> change track -> Escape
 route now publishes all 19 frames through the wide return path and goes
 directly to wide Main. The tracing patch was excluded from the source.
+
+
+A fixed 800x450 desktop replay entered Location, switched from North
+Country through Pacific Spirit, Mediteraneo and Mystic Peaks, then
+returned to Main. Every logged route from Location entry through steady
+Main was wide, including the 17-frame entry fade, all three photo
+changes and the 19-frame return. The four captured previews shared the
+same card outline and soft shadow. The process exited cleanly. This
+covers the desktop renderer at 16:9.
+
 
 
 ### Opponents native-size desktop replay

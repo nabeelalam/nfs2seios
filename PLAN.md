@@ -604,6 +604,82 @@ textures, track/weather variants, panorama wrap, fog/blending and horizon joins.
 Retain original geography, lighting, palette and landmark silhouettes, and avoid
 seams or invented scenery. This is queued research, not implemented gameplay art.
 
+The first local horizon asset audit separated geometry and color settings from
+image data. The copied install contains 18 text-format HRZ files across the
+software and Special Edition tracks directories. The Special Edition loader
+selects a per-track HRZ file by track index. Those settings describe the dome
+offset, distant horizon radius and rotation, pixmap vertical bounds, and the
+Gouraud-shaded earth and sky colors. The separate sky FSH archive contains 17
+entries. Nine are indexed cloud textures, eight at 64x64 and one at 32x32.
+The original loader selects a cloud entry using the active track index.
+The other eight archive entries use the SPL and DRP names.
+
+The distant textured horizon uses the first eight directory entries of the
+track QFS in the inspected native source. The race loader selects the normal
+or mirrored archive, materializes the eight leading texture records, and
+builds a 16-sector horizon using those records. The horizon draw path reads
+the sector texture table, including reversal when required by the HRZ.
+Directory inspection verifies seven tracks have eight 128x128 tiles with
+identical entry bytes in their normal and mirrored archives. Monolithic
+Studios instead has 2x2 entries and separate archive identities that must
+be handled independently. Treat the ordinary set as a panorama with
+shared seams, preserving the sector mapping, alpha and independent
+cloud and color layers. Runtime attribution and image review are still
+needed before replacement. This audit exported no image data.
+
+
+A private directory-order contact sheet now covers the seven standard
+horizon strips and a separate Monolithic Studios sample. The native format
+0x78 conversion masks the green component to five bits and uses 0x07c0
+as transparent. The seven 1024x128 reference strips preserve that key:
+one includes a full opaque twilight sky, while six leave part of the sky
+transparent. Visual review shows continuous terrain features across the
+internal tile boundaries, including waterlines, cliffs and ridges. Preview
+order is archive order. The original sector builder and draw code confirm
+an indexed sequence of 0 through 7 followed by 7 through 0 with horizontal
+UV reversal when the HRZ mirror flag is set. All eight supplied Special
+Edition profiles set that flag. A private source-ordered preview matched
+every row at both mirrored joins. Monolithic Studios also sets the black
+horizon flag and remains a separate case. A retained natural Proving Grounds
+race-start capture agrees with the source panorama at two opposing headings.
+The main camera shows the blue twilight band and dark paired landforms. The
+rear-view mirror shows the narrow warm sunset band at the opposite join.
+This confirms the visible artwork identity and opposite color regions in an
+actual rendered race. The screenshot does not resolve individual sector
+indices or their flip direction, which are established by the source.
+Original pixels and previews stay in ignored local build storage.
+
+
+A private Proving Grounds desktop build replaced all eight authenticated
+128x128 uploads with the fitted 256x256 artwork. The renderer's original
+texture coordinates, projection, and sector duplication were used. Its
+race-start capture shows the blue night in the main camera and the orange
+sunset in the rear-view mirror. The session exited cleanly and the copied
+profile and replay were restored. This test covers the starting camera
+and mirror. Roadside rotation, a complete race, and Apple behavior remain
+unverified. The experimental renderer and artwork are ignored locally.
+
+
+A second start using the same private build drove the McLaren F1 through
+the first banked turn. Six samples span 4.60 to 27.56 seconds of race time
+and include straight, turning and off-line headings. No vertical tile
+seam was apparent in the sampled main and mirror views. A horizontal
+sky boundary is visible at some headings. Compare it against a matched
+original drive before deciding whether artwork or composition needs a
+fix. This test did not cover the full wrap continuously. The eight uploads
+again matched, shutdown was clean and the copied inputs were restored.
+
+
+The same desktop executable repeated the driving inputs with the replacement
+disabled. Nearby captures on the straight and the banked turn show a
+horizontal dark-to-blue transition in both versions at the top of the
+horizon layer. The draft did not introduce it. The input timings matched
+the fixture schedule; the original and replacement runs reached slightly
+different camera positions. This supports preserving the current horizon
+composition for the pilot and does not establish pixel equivalence.
+The control run exited cleanly and restored its copied profile and replay.
+
+
 Last Resort clarification: retain the original subtle crescent inside the sun;
 remove only facial features. A smooth featureless disk alone loses that motif.
 
