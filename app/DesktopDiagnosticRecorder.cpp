@@ -73,7 +73,7 @@ struct DesktopDiagnosticRecorder::Impl {
   const auto stem=path.substr(0,path.size()-6);const std::string paths[]={path,stem+".frames.csv",stem+".metadata.json"};FILE **handles[]={&samples,&frames,&meta};unsigned opened=0;
   try{for(;opened<3;++opened){*handles[opened]=exclusive(paths[opened]);if(!*handles[opened])throw std::runtime_error("Diagnostic output already exists or cannot be created");}
    // Old rows and cumulative counters belong to a previous capture, not this session.
-   nfs_frame_timing_capture(0);NfsFrameTiming old[128];for(unsigned i=0;i<8&&nfs_frame_timing_drain(old,128);++i){}
+   nfs_frame_timing_capture(0);NfsFrameTiming old[128];for(unsigned i=0;i<8&&nfs_frame_timing_drain_v2(old,128);++i){}
    const auto baseline=nfs_frame_timing_snapshot();start_drop=baseline.dropped_total;start_id=baseline.latest_frame_id;
    origin=SDL_GetTicksNS();last=origin;next=origin+1000000000ull;process=cpu_ns(false);main=cpu_ns(true);
    const auto header=diagnostic_header(0);
@@ -112,7 +112,7 @@ struct DesktopDiagnosticRecorder::Impl {
   if(std::fwrite(summary.data(),1,summary.size(),meta)!=summary.size()||std::fflush(meta))write_error.store(true);
   }catch(...){write_error.store(true);}
  }
- bool drain(bool final=false){NfsFrameTiming rows[128];for(unsigned batch=0;batch<8;++batch){const auto count=nfs_frame_timing_drain(rows,128);if(!count)break;
+ bool drain(bool final=false){NfsFrameTiming rows[128];for(unsigned batch=0;batch<8;++batch){const auto count=nfs_frame_timing_drain_v2(rows,128);if(!count)break;
    if(frames_closed){discarded_frames+=count;if(!final)return false;continue;}
    std::string text;unsigned accepted=0;
    for(unsigned i=0;i<count;++i){if(frame_rows+accepted>=limits.frames){discarded_frames+=count-i;reason="frame_limit";frames_closed=true;break;}const auto&r=rows[i];text+=std::to_string(r.frame_id)+","+std::to_string(r.timestamp_ns)+","+std::to_string(r.interval_ns)+","+std::to_string(r.window_epoch)+","+std::to_string(r.swap_call_ns)+"\n";++accepted;}

@@ -63,7 +63,7 @@ extern "C" void nfs_diagnostics_activity(int state){
 }
 extern "C" int nfs_render_height(){return render_height.load();}
 extern "C" void nfs_frame_timing_capture(int enabled){timing.capture(enabled!=0);}
-extern "C" unsigned nfs_frame_timing_drain(NfsFrameTiming *out,unsigned capacity){return timing.drain(out,capacity);}
+extern "C" unsigned nfs_frame_timing_drain_v2(NfsFrameTiming *out,unsigned capacity){return timing.drain(out,capacity);}
 extern "C" NfsFrameTimingSnapshot nfs_frame_timing_snapshot(){return timing.snapshot();}
 extern "C" void nfs_reset_frame_rate(){timing.reset();rate.reset();last_window=nullptr;last_fps=0;cpu_wall=0;cpu_time=0;nfs_reset_engine_metrics();}
 extern "C" double nfs_frame_rate_value(){return last_fps.load(std::memory_order_relaxed);}

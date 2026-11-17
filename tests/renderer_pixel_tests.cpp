@@ -123,9 +123,17 @@ int main(int argc,char **argv){
     CHECK(pixels[0]==0x001f && pixels[479*640]==0xffff && pixels[640*50]==0xf800 && pixels[640*50+639]==0x07e0 && pixels[640*200+200]==untouched);
     CHECK(grLfbUnlock(0,1)==1);
     nfs_frame_timing_capture(1);
-    grBufferSwap(0);
+    for(unsigned i=0;i<3;++i)grBufferSwap(0);
+    NfsFrameTiming timedSwaps[3]{};
+    CHECK(nfs_frame_timing_drain_v2(timedSwaps,3)==3);
+    for(unsigned i=0;i<3;++i){
+        CHECK(timedSwaps[i].swap_call_ns>0 && timedSwaps[i].swap_call_ns<=timedSwaps[i].timestamp_ns);
+        if(i){
+            CHECK(timedSwaps[i].frame_id==timedSwaps[i-1].frame_id+1);
+            CHECK(timedSwaps[i].timestamp_ns>timedSwaps[i-1].timestamp_ns);
+        }
+    }
     NfsFrameTiming timedSwap{};
-    CHECK(nfs_frame_timing_drain(&timedSwap,1)==1 && timedSwap.swap_call_ns>0);
     nfs_frame_timing_capture(0);
     for(int buffer=0;buffer<2;++buffer){
         grRenderBuffer(buffer);GLint texture=0,filter=0,previous=0;
@@ -237,7 +245,7 @@ int main(int argc,char **argv){
     // GPU palette conversion even when submitted palette bytes are unchanged.
     const auto uploads_before_recreate=nfs_glide_palette_upload_count();
     needRecreateGl=1;grBufferSwap(0);CHECK(needRecreateGl==0 && glGetError()==GL_NO_ERROR);
-    CHECK(nfs_frame_timing_drain(&timedSwap,1)==0);
+    CHECK(nfs_frame_timing_drain_v2(&timedSwap,1)==0);
     grTexDownloadTable(0,GR_TEXTABLE_PALETTE,int32_t(palette_a));grTexSource(0,0,3,int32_t(metadata));pixel(255,0,0);
     CHECK(nfs_glide_palette_upload_count()==uploads_before_recreate+1 && glGetError()==GL_NO_ERROR);
     std::puts("PASS: native GLES context destroy/recreate restores texture and invalidates palette conversion");

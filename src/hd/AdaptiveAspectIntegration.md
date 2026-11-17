@@ -644,3 +644,25 @@ The private session analyzer can compare one recording with Low Power
 Mode off and one with it on. It checks source/build, steady matching
 render extent, an unlocked frame limiter and complete sample records.
 Track, cars, graphics and race selection must be matched separately.
+
+A bounded desktop race using the idle-controller snapshot path confirmed
+movement by both virtual controller slots in North Country. Live resized
+frames covered 800x450, 708x492, 800x600 and a return to 800x450. The final
+capture shows both viewport halves filling the 16:9 image and distinct
+HUD values for each player. The process shut down cleanly and produced
+non-silent session audio. The re-linked desktop fixture had invalid host
+swap values, so its timing measurements were discarded. Inspecting its
+retained timing object confirmed the older 32-byte row layout, while the
+recorder was built for 40-byte rows. The drain function now uses a
+versioned link symbol so that mixed objects fail at link time. The
+current recorder fixture and compiled 40-byte timing object passed local
+checks. The race replay proves local input and presentation behavior only.
+
+The corrected replay linked the matching 40-byte timing producer and
+recorder. In a bounded desktop 800x450 run with two moving virtual
+controllers, 683 active-race frames had valid swap durations. Median
+spacing was 33.464 ms and median host swap duration was 3.504 ms. The
+session recorder reported zero capture loss. Non-silent race audio,
+the live aspect changes, and clean shutdown also passed. This is one
+software GLES run, without a matched performance baseline or an iPad
+energy measurement.

@@ -8,7 +8,8 @@ extern "C" {
 typedef struct NfsFrameTiming { uint64_t frame_id,timestamp_ns,interval_ns,window_epoch,swap_call_ns; } NfsFrameTiming;
 typedef struct NfsFrameTimingSnapshot { uint64_t latest_frame_id,latest_timestamp_ns,dropped_total,window_epoch,fps_timestamp_ns; double fps; int enabled; } NfsFrameTimingSnapshot;
 void nfs_frame_timing_capture(int enabled);
-unsigned nfs_frame_timing_drain(NfsFrameTiming *out,unsigned capacity);
+/* The v2 symbol requires records with the host swap duration field. */
+unsigned nfs_frame_timing_drain_v2(NfsFrameTiming *out,unsigned capacity);
 NfsFrameTimingSnapshot nfs_frame_timing_snapshot(void);
 int nfs_swap_window(void *window,uint64_t *elapsed_ns);
 void nfs_frame_presented(void *window);

@@ -159,7 +159,7 @@ static NSURL *recording_folder(){
     nfs::DiagnosticSwapIntervals intervals;
     NfsFrameTiming chunk[128];
     for(unsigned batch=0;batch<8;++batch){
-        const unsigned count=nfs_frame_timing_drain(chunk,128);
+        const unsigned count=nfs_frame_timing_drain_v2(chunk,128);
         for(unsigned i=0;i<count;++i)intervals.observe(chunk[i],_previous,now,frame.window_epoch);
         if(count<128)break;
     }
