@@ -984,3 +984,22 @@ presentation runs between the visit markers reported successful wide
 output at 2360x1640. The app exited cleanly and the disposable profile
 was restored. The full candidate history passed the publication policy
 and independent secret scan before this documentation update.
+
+## Current split-screen CPU attribution
+
+The current grouped desktop objects ran North Country with the original
+data, a full grid and two virtual controllers. Both cars were verified
+moving in first gear before collection. The race remained active after
+collection and the app exited cleanly. The disposable profile and replay
+were restored. The initial attempts were excluded because of a stale menu
+classifier, missing fixture input updates and late collector acknowledgement.
+
+The finalized collector log bounds the usable profile to 33.009 seconds.
+This exceeds the intended 30-second interval, so use it for hotspot
+selection only. Of 54.088 sampled CPU seconds across all threads, the guest
+resolver accounted for 2.812 seconds, mutex lock for 2.622, and mutex unlock
+for 1.951. Integer guest reads were the largest directly identified resolver
+caller at 0.610 sampled seconds. The remaining identified direct costs were
+spread across several original routines. Software rendering accounted for
+most attributed samples. This run does not establish a performance change
+or describe the iPad GPU, Low Power Mode, or energy use.
