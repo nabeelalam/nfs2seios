@@ -763,3 +763,16 @@ results are unchanged. A WSL test killed an isolated process after logging
 through the production writer and found the flushed line intact.
 The generated menu code passed a desktop syntax check. Renderer behavior
 and previous-log rotation after a physical iPad crash remain unverified.
+
+## Split-screen widescreen camera input
+
+The original-data North Country replay started with both virtual players
+moving in first gear, then resized from 640x480 to 800x450 during the race.
+Five captures across four original camera-key inputs show both views
+drawing scenery to the left and right edges, with the HUD centered
+independently in each half. The upper view visibly changed from a distant
+car view to a close rear view. The race clock advanced from 37.12 to
+43.48 seconds across the captures. The process exited cleanly and the
+copied profile was restored. The captures do not identify every camera
+mode or prove that the lower player's camera switched. This is desktop
+software GLES evidence only.
