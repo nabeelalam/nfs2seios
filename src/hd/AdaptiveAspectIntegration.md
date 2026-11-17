@@ -1071,8 +1071,21 @@ frames reached the display. The recorder does not change frame cadence.
 Local JSON and analyzer fixtures passed. The native measurements await
 the next iPad build and a matched recording.
 
-A separate 800x450 North Country split-screen replay verified both
+A separate 640x480 North Country split-screen replay verified both
 controllers driving in first gear before its 30-second timing window.
 The recorder separated 33 pre-race samples from 44 race-world-only
 samples. The run ended cleanly and the disposable inputs were restored.
 This covers desktop split-screen classification only.
+
+## Widescreen race render-state counts
+
+The 30-second North Country split-screen gate verified motion by both
+controllers and confirmed the 800x450 render target through the recorder.
+The private renderer counted calls across the active wide portion of the
+run. It observed 393,456 blend updates, 16,927 alpha-combine updates and
+4,231 depth-write updates. None repeated the previous tracked value.
+Skipping identical setters would therefore not address this workload.
+Consecutive changes with no intervening geometry were not measured.
+The earlier control run used a 640x480 target and was excluded from
+the widescreen counts. Both runs exited cleanly. No production renderer
+or iPad performance changed.
