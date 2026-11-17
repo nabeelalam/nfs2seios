@@ -48,6 +48,8 @@ def stable_interval_metrics(rows):
     execution = []
     display_rates = []
     display_targets = []
+    callback_total = late_callback_total = 0
+    callback_max_late_ms = []
     for row in rows:
         swaps = row.get("swap_intervals_count")
         late = row.get("swap_intervals_over_20ms")
@@ -74,6 +76,12 @@ def stable_interval_metrics(rows):
             display_rates.append(callbacks / interval)
             if callbacks and number(target, 1000) and target > 0:
                 display_targets.append(target)
+            late_callbacks = row.get("display_link_late_callbacks")
+            max_late = row.get("display_link_max_late_ms")
+            if callbacks and number(late_callbacks, callbacks) and number(max_late):
+                callback_total += callbacks
+                late_callback_total += late_callbacks
+                callback_max_late_ms.append(max_late)
         calls = row.get("renderer_calls_interval")
         if number(calls) and calls >= 1:
             for key, values in (("renderer_queue_ms_interval", queue),
@@ -92,6 +100,8 @@ def stable_interval_metrics(rows):
         "swap_host_max_ms": max(swap_host_maxima, default=None),
         "display_link_callbacks_per_second": distribution(display_rates),
         "display_link_mean_target_ms": distribution(display_targets),
+        "display_link_late_callback_fraction": late_callback_total / callback_total if callback_total else None,
+        "display_link_max_late_ms": max(callback_max_late_ms, default=None),
         "renderer_queue_ms_per_call": distribution(queue),
         "renderer_execution_ms_per_call": distribution(execution),
     }
@@ -313,6 +323,8 @@ def compare_power_sessions(normal, low_power):
             "median_game_cpu_ms": None if compare_race else mode["game_cpu_ms_per_frame_unique_windows"]["median"],
             "median_display_callbacks_per_second": pacing["display_link_callbacks_per_second"]["median"],
             "median_display_target_ms": pacing["display_link_mean_target_ms"]["median"],
+            "display_link_late_callback_fraction": pacing["display_link_late_callback_fraction"],
+            "display_link_max_late_ms": pacing["display_link_max_late_ms"],
             "mean_swap_host_ms": pacing["swap_host_ms_per_call"],
             "fraction_swaps_over_18ms": pacing["unlocked_swap_fraction_over_18ms"],
         }

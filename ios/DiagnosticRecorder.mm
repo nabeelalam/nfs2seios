@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 #import "DiagnosticRecorder.h"
 #import <mach/mach.h>
-#import <QuartzCore/CADisplayLink.h>
+#import <QuartzCore/QuartzCore.h>
 #include "DiagnosticSession.h"
 #include "EngineThreadMetrics.h"
 #include "MainThreadBridge.h"
@@ -22,8 +22,8 @@
     nfs::SystemCpuLoadWindow _cores;
     uint64_t _start,_previous,_latestFrame,_frameEpoch,_frameDrops;
     NfsFrameContentTotals _frameContent;
-    double _latestFPS,_processCPU,_displayTargetSeconds;
-    unsigned _displayCallbacks;
+    double _latestFPS,_processCPU;
+    nfs::DiagnosticDisplayWindow _display;
     int64_t _mainCPU;
     int _width,_height;
     BOOL _powerKnown,_power;
@@ -116,7 +116,7 @@ static NSURL *recording_folder(){
     const auto header=nfs::diagnostic_header(build);
 #endif
     if(![self append:header]){[self stop:@"write_error" notify:YES];return;}
-    _displayCallbacks=0;_displayTargetSeconds=0;
+    _display={};
     self.displayLink=[CADisplayLink displayLinkWithTarget:self selector:@selector(observeDisplay:)];
     [self.displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
     self.timer=[NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer *){[self tick];}];
@@ -127,11 +127,7 @@ static NSURL *recording_folder(){
     _latestFPS=fps;_latestFrame=SDL_GetTicksNS();_width=width;_height=height;
 }
 - (void)observeDisplay:(CADisplayLink *)link {
-    const double target=link.targetTimestamp-link.timestamp;
-    if(target>0 && target<=1){
-        ++_displayCallbacks;
-        _displayTargetSeconds+=target;
-    }
+    _display.observe(link.timestamp,link.targetTimestamp,CACurrentMediaTime());
 }
 - (void)tick {
     if(!self.recording)return;
@@ -146,10 +142,14 @@ static NSURL *recording_folder(){
     const bool powerChanged=_powerKnown && _power!=sample.low_power;
     if(powerChanged){_cores.reset();nfs_reset_engine_metrics();}
     if(self.displayLink && sample.interval>0 && !powerChanged){
-        sample.display_link_callbacks=_displayCallbacks;
-        if(_displayCallbacks)sample.display_link_target_ms=1000*_displayTargetSeconds/_displayCallbacks;
+        sample.display_link_callbacks=_display.callbacks;
+        if(_display.callbacks){
+            sample.display_link_target_ms=1000*_display.target_seconds/_display.callbacks;
+            sample.display_link_late_callbacks=_display.late_callbacks;
+            sample.display_link_max_late_ms=_display.max_late_ms;
+        }
     }
-    _displayCallbacks=0;_displayTargetSeconds=0;
+    _display={};
     const auto render=nfs::take_renderer_timing();
     if(sample.interval>0 && !powerChanged){
         sample.renderer_calls=double(render.calls);

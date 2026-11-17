@@ -51,6 +51,19 @@ class SummaryTests(unittest.TestCase):
         self.assertAlmostEqual(cadence["display_link_callbacks_per_second"]["median"], 60)
         self.assertEqual(cadence["display_link_mean_target_ms"]["median"], 16.667)
 
+    def test_display_callback_lateness_uses_measured_callbacks(self):
+        rows = [sample(0),
+                dict(sample(1), interval_s=1, display_link_callbacks=60,
+                     display_link_late_callbacks=3, display_link_max_late_ms=6),
+                dict(sample(2), interval_s=1, display_link_callbacks=30,
+                     display_link_late_callbacks=6, display_link_max_late_ms=15),
+                dict(sample(3), interval_s=1, display_link_callbacks=60)]
+        pacing = summary.summarize(fixture(rows))["stable_interval_comparison"]["off"]
+        self.assertAlmostEqual(pacing["display_link_late_callback_fraction"], 0.1)
+        self.assertEqual(pacing["display_link_max_late_ms"], 15)
+        legacy = summary.summarize(fixture(rows[-1:]))["stable_interval_comparison"]["off"]
+        self.assertIsNone(legacy["display_link_late_callback_fraction"])
+
     def test_power_comparison_uses_race_extent_and_pacing(self):
         def log(power, race_width=800, race_lock=0, tag_world=True):
             rows = [{"type": "session", "schema": "nfsiise-session-v1",

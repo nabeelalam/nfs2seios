@@ -1060,3 +1060,13 @@ frames. Whole-session values remain available. Older recordings retain
 the whole-session comparison. The analyzer fixture covers switching from
 a 4:3 menu to a 16:9 race and rejects unequal race resolutions, a locked
 frame rate and recordings missing steady race-world samples.
+
+The iPad recorder also counts callbacks that arrive after their reported
+display-link target and records the maximum lateness in each interval.
+The analyzer weights the late fraction by callbacks that have this
+measurement and leaves it unavailable for older logs. Use the target
+interval, callback delivery and lateness together. These observe UIKit
+scheduling and cannot establish GPU execution time or which submitted
+frames reached the display. The recorder does not change frame cadence.
+Local JSON and analyzer fixtures passed. The native measurements await
+the next iPad build and a matched recording.

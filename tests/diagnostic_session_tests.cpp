@@ -37,6 +37,14 @@ int main(){
     CHECK(mixed.classified_presentations<0 && earlier.window_epoch==2);
     nfs::record_frame_content(mixed,{29,16,2},earlier,false);
     CHECK(mixed.classified_presentations<0 && earlier.classified==29);
+    nfs::DiagnosticDisplayWindow display;
+    display.observe(1.0,1.125,1.10);
+    display.observe(1.125,1.25,1.375);
+    display.observe(1.25,1.25,1.375);
+    CHECK(display.callbacks==2 && display.late_callbacks==1);
+    CHECK(display.target_seconds==0.25 && display.max_late_ms==125.0);
+    sample.display_link_late_callbacks=display.late_callbacks;
+    sample.display_link_max_late_ms=display.max_late_ms;
     auto line=nfs::diagnostic_sample_json(sample);CHECK(line.size()<8192 && line.back()=='\n');
     CHECK(line.find("\"game_cpu_sample_id\":42")!=std::string::npos);
     CHECK(line.find("\"display_link_callbacks\":null")!=std::string::npos);
