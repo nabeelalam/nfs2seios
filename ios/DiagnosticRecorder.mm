@@ -178,7 +178,7 @@ static NSURL *recording_folder(){
     struct rusage usage{};double process=-1;
     if(getrusage(RUSAGE_SELF,&usage)==0)process=usage.ru_utime.tv_sec+usage.ru_stime.tv_sec+(usage.ru_utime.tv_usec+usage.ru_stime.tv_usec)/1e6;
     const int64_t main=nfs::current_thread_cpu_ns();
-    if(sample.interval>0){
+    if(sample.interval>0 && !powerChanged){
         if(process>=0 && _processCPU>=0 && process>=_processCPU){sample.process_ms=(process-_processCPU)*1000;sample.app_cpu_percent=sample.process_ms/(sample.interval*10*sample.logical_cores);}
         if(main>=0 && _mainCPU>=0 && main>=_mainCPU)sample.main_ms=double(main-_mainCPU)/1e6;
     }

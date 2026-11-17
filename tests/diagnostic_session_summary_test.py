@@ -44,6 +44,21 @@ class SummaryTests(unittest.TestCase):
         legacy = summary.summarize(fixture([sample(0), sample(1)]))
         self.assertEqual(legacy["race_world_interval_comparison"]["off"]["samples"], 0)
 
+    def test_race_cpu_per_presentation_uses_matching_cpu_and_frame_counts(self):
+        def row(second, frames, world, process, main, power=False):
+            return dict(sample(second, power=power), interval_s=1,
+                        classified_presentations=float(frames),
+                        race_world_presentations=float(world),
+                        process_cpu_ms_interval=process, main_cpu_ms_interval=main)
+
+        rows = [row(0, 60, 60, 900, 200), row(1, 60, 60, 600, 120),
+                row(2, 30, 30, 450, None), row(3, 60, 30, 1200, 500),
+                row(4, 60, 60, 1800, 500, power=True), row(5, 40, 40, None, None, power=True)]
+        race = summary.summarize(fixture(rows))["race_world_interval_comparison"]
+        self.assertAlmostEqual(race["off"]["process_cpu_ms_per_presentation"], 1050 / 90)
+        self.assertEqual(race["off"]["main_cpu_ms_per_presentation"], 2)
+        self.assertIsNone(race["on"]["process_cpu_ms_per_presentation"])
+
     def test_desktop_summary_is_separate_from_device_comparison(self):
         session = {"type": "session", "schema": "nfsiise-session-v1", "build": 0}
         rows = [dict(sample(i, power=None), interval_s=1, frame_limit=0,

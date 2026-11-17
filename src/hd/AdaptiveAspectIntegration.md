@@ -1258,6 +1258,15 @@ settled full-width menu. The static title was rendered before the sweep
 using its existing title composition. Both runs exited cleanly. This does
 not establish iPad launch behavior or an updated intro movie.
 
+For the race-only comparison, process and main-thread CPU time per
+presentation use only eligible intervals with that CPU measurement and
+weight them by measured presentation count. The iPad recorder omits those
+CPU deltas on the interval where it observes a Low Power Mode change.
+The analyzer passed its unit tests and calculated both new values from
+the existing 1,325-swap desktop race recording. The process aggregate can
+exceed wall time because several threads contribute; neither metric
+quantifies energy or iPad GPU cost.
+
 ## Apple Release configuration timing
 
 Run 44139268240 used the standard Apple runner. Configuration took
