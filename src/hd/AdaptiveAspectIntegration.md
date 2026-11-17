@@ -1116,3 +1116,13 @@ exited cleanly and the disposable profile and replay were restored.
 The direction of the difference reversed with run order. The pilot showed
 no repeatable CPU or presentation advantage and stays outside production.
 No pixel equivalence or physical iPad improvement was established.
+
+Two current desktop cold starts also verified the 16:9 Main entrance at
+800x450. A source marker identified active original movie playback before
+ordinary keyboard dismissal. The recorded opening transition began at
+step 0 on presentation 17 and reached steady Main at presentation 76,
+with 59 consecutive wide entrance frames. The second run captured the
+authored logo and panel beginning to slide in from the left, then the
+settled full-width menu. The static title was rendered before the sweep
+using its existing title composition. Both runs exited cleanly. This does
+not establish iPad launch behavior or an updated intro movie.
