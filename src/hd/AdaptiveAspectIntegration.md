@@ -868,3 +868,29 @@ The earlier recorder-timestamp attempt did not reliably locate the
 observation boundaries and was excluded. The kernel-counter comparison
 showed no local CPU saving. The two candidate changes were reverted
 before publication. These software GLES runs do not measure iPad energy.
+
+## Repeated projection loads experiment
+
+The private projection pilot changed only original routine 480330. It
+reused two stack values inside their original checked transactions,
+replacing five identical loads per vertex with cancellation checks. The
+exact helper and matrix comparator matched registers, FPU state, scratch
+memory, outputs and status in 679 completed cases, 281 cancellations and
+960 rejected inputs in each of the optimized and sanitizer runs. The
+isolated CPU comparisons reported median reductions of 2.21 and 3.16
+percent.
+
+The full game comparison changed only the matching generated method
+object. It used the same renderer, copied profile, two virtual pads and
+13 verified artwork packs in both versions. Both players were moving in
+first gear at the start of each 30-second North Country measurement.
+All four runs shut down cleanly.
+
+| Run order | Baseline engine median | Candidate engine median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 14.515 ms | 14.979 ms | 29.476 ms | 30.446 ms |
+| Candidate, baseline | 15.211 ms | 15.229 ms | 30.549 ms | 30.689 ms |
+
+The isolated improvement did not produce a repeatable race-level gain.
+The candidate stays outside production. The results measure desktop
+software GLES and do not establish iPad timing or energy use.
