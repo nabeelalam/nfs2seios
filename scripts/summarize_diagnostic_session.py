@@ -21,6 +21,23 @@ def distribution(values):
             "median": statistics.median(values), "maximum": max(values)}
 
 
+def render_conditions(samples):
+    return {
+        "render_sizes": sorted({(r["render_width"], r["render_height"]) for r in samples
+                              if all(type(r.get(k)) is int and 0 < r[k] <= 16384
+                                     for k in ("render_width", "render_height"))}),
+        "frame_limits": sorted({r["frame_limit"] for r in samples
+                                if type(r.get("frame_limit")) is int}),
+        "timing_art_modes": [label for mode, label in
+                             ((False, "original"), (True, "hd_requested"), (None, "unavailable"))
+                             if any(r.get("hd_timing_requested") is mode for r in samples)],
+        "complete_render_conditions": all(
+            type(r.get("frame_limit")) is int
+            and all(type(r.get(k)) is int and 0 < r[k] <= 16384
+                    for k in ("render_width", "render_height")) for r in samples),
+    }
+
+
 def stable_interval_metrics(rows):
     slow = total = 0
     unlocked_swaps = unlocked_slow = 0
@@ -186,18 +203,7 @@ def summarize(data):
         batteries = values("battery_percent", 100)
         result["low_power_mode"]["on" if power else "off"] = {
             "samples": len(samples),
-            "render_sizes": sorted({(r["render_width"], r["render_height"]) for r in samples
-                                  if all(type(r.get(k)) is int and 0 < r[k] <= 16384
-                                         for k in ("render_width", "render_height"))}),
-            "frame_limits": sorted({r["frame_limit"] for r in samples
-                                    if type(r.get("frame_limit")) is int}),
-            "timing_art_modes": [label for mode, label in
-                                 ((False, "original"), (True, "hd_requested"), (None, "unavailable"))
-                                 if any(r.get("hd_timing_requested") is mode for r in samples)],
-            "complete_render_conditions": all(
-                type(r.get("frame_limit")) is int
-                and all(type(r.get(k)) is int and 0 < r[k] <= 16384
-                        for k in ("render_width", "render_height")) for r in samples),
+            **render_conditions(samples),
             "brightness": distribution(values("brightness", 1)),
             "thermal_state": distribution(values("thermal_state", 3)),
             "fps_observations": distribution(values("presentation_fps", 10000)),
@@ -231,6 +237,7 @@ def summarize(data):
     result["race_world_interval_comparison"] = {
         label: {
             "samples": len(rows),
+            **render_conditions(rows),
             "presentation_fps": distribution([
                 row["classified_presentations"] / row["interval_s"] for row in rows
                 if number(row.get("interval_s"), 2.5)
@@ -239,6 +246,10 @@ def summarize(data):
         }
         for label, rows in race_intervals.items()
     }
+    result["has_frame_content_counts"] = any(
+        type(row.get("classified_presentations")) is int and row["classified_presentations"] > 0
+        for samples in groups.values() for row in samples
+    )
     result["race_world_interval_scope"] = (
         "Only steady samples with a race-world draw in every classified presentation. "
         "A race-world draw can occur during replays or beneath an overlay. Older logs lack this count."
@@ -276,9 +287,12 @@ def compare_power_sessions(normal, low_power):
     if (not source or source != on.get("source_commit") or off["build"] != on["build"]
             or not off["clean_end_record"] or not on["clean_end_record"]):
         raise ValueError("Comparison needs complete sessions from the same source and build")
+    compare_race = off["has_frame_content_counts"] or on["has_frame_content_counts"]
     conditions = []
     for report, label, other in ((off, "off", "on"), (on, "on", "off")):
-        mode = report["low_power_mode"][label]
+        mode = (report["race_world_interval_comparison"] if compare_race else report["low_power_mode"])[label]
+        if compare_race and not mode["samples"]:
+            raise ValueError("Comparison needs steady race-world samples in both recordings")
         if (not mode["samples"] or report["low_power_mode"][other]["samples"]
                 or mode["frame_limits"] != [0] or len(mode["render_sizes"]) != 1
                 or not mode["complete_render_conditions"]):
@@ -293,10 +307,10 @@ def compare_power_sessions(normal, low_power):
 
     def metrics(report, label):
         mode = report["low_power_mode"][label]
-        pacing = report["stable_interval_comparison"][label]
+        pacing = report["race_world_interval_comparison" if compare_race else "stable_interval_comparison"][label]
         return {
-            "median_sample_fps": mode["fps_observations"]["median"],
-            "median_game_cpu_ms": mode["game_cpu_ms_per_frame_unique_windows"]["median"],
+            "median_sample_fps": (pacing["presentation_fps"] if compare_race else mode["fps_observations"])["median"],
+            "median_game_cpu_ms": None if compare_race else mode["game_cpu_ms_per_frame_unique_windows"]["median"],
             "median_display_callbacks_per_second": pacing["display_link_callbacks_per_second"]["median"],
             "median_display_target_ms": pacing["display_link_mean_target_ms"]["median"],
             "mean_swap_host_ms": pacing["swap_host_ms_per_call"],
@@ -307,6 +321,7 @@ def compare_power_sessions(normal, low_power):
     return {
         "schema": "nfsiise-power-comparison-v1", "build": off["build"], "source_commit": source,
         "render_size": conditions[0]["render_sizes"][0], "timing_art_mode": timing_art[0],
+        "comparison_scope": "race_world" if compare_race else "whole_session",
         "low_power_off": off, "low_power_on": on,
         "low_power_on_minus_off": {
             key: right[key] - value if value is not None and right[key] is not None else None

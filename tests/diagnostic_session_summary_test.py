@@ -51,6 +51,36 @@ class SummaryTests(unittest.TestCase):
         self.assertAlmostEqual(cadence["display_link_callbacks_per_second"]["median"], 60)
         self.assertEqual(cadence["display_link_mean_target_ms"]["median"], 16.667)
 
+    def test_power_comparison_uses_race_extent_and_pacing(self):
+        def log(power, race_width=800, race_lock=0, tag_world=True):
+            rows = [{"type": "session", "schema": "nfsiise-session-v1",
+                     "build": 23, "source_commit": "a" * 40}]
+            for i in range(5):
+                race = i >= 2
+                count = (45 if power else 60) if race else 10
+                rows.append(dict(sample(i, power=power, fps=10), interval_s=1,
+                                 render_width=race_width if race else 640,
+                                 render_height=450 if race else 480,
+                                 frame_limit=race_lock if race else 0,
+                                 classified_presentations=count,
+                                 race_world_presentations=count if race and tag_world else 0,
+                                 swap_intervals_count=count,
+                                 swap_intervals_over_18ms=count if race and power else 0))
+            rows.append(dict(type="end", reason="manual", elapsed_s=5, attempted_rows=5))
+            return b"".join((json.dumps(row) + "\n").encode() for row in rows)
+
+        normal = log(False)
+        result = summary.compare_power_sessions(normal, log(True))
+        self.assertEqual(result["comparison_scope"], "race_world")
+        self.assertEqual(result["render_size"], (800, 450))
+        self.assertEqual(result["low_power_on_minus_off"]["median_sample_fps"], -15)
+        self.assertEqual(result["low_power_on_minus_off"]["fraction_swaps_over_18ms"], 1)
+        self.assertIsNone(result["low_power_on_minus_off"]["median_game_cpu_ms"])
+        for invalid in (log(True, race_width=900), log(True, race_lock=30),
+                        log(True, tag_world=False)):
+            with self.assertRaises(ValueError):
+                summary.compare_power_sessions(normal, invalid)
+
     def test_matched_power_comparison_validates_conditions(self):
         def log(power, width=2360, lock=0, finished=True, commit="a" * 40,
                 timing=(None, None, None)):
@@ -67,6 +97,7 @@ class SummaryTests(unittest.TestCase):
             return b"".join((json.dumps(row) + "\n").encode() for row in rows)
 
         report = summary.compare_power_sessions(log(False), log(True))
+        self.assertEqual(report["comparison_scope"], "whole_session")
         self.assertEqual(report["render_size"], (2360, 1640))
         self.assertEqual(report["timing_art_mode"], "unavailable")
         hd = (True, True, True)

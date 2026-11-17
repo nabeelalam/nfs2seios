@@ -1051,3 +1051,12 @@ and 800x600. The app exited cleanly and the disposable profile and
 replay were restored. The frame capture, JSON, desktop recorder and
 analyzer tests passed. The iPad recorder change is awaiting an Apple
 build and device validation.
+
+When counts are available, the matched Low Power Mode comparison uses
+steady race-world samples from both recordings. It validates the race
+extent and frame lock independently of menu presentation. The race-world
+comparison omits rolling Game CPU values, which may include earlier menu
+frames. Whole-session values remain available. Older recordings retain
+the whole-session comparison. The analyzer fixture covers switching from
+a 4:3 menu to a 16:9 race and rejects unequal race resolutions, a locked
+frame rate and recordings missing steady race-world samples.
