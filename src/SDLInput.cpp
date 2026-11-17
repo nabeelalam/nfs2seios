@@ -5,6 +5,7 @@
 namespace nfs {
 struct SDLGamepadInput::Impl {
     InputDevices &devices;SDL_Gamepad *pads[2]{};SDL_JoystickID ids[2]{};
+    Uint64 next_discovery=0;
     explicit Impl(InputDevices &input):devices(input){}
     ~Impl(){for(unsigned slot=0;slot<2;++slot){if(pads[slot])SDL_CloseGamepad(pads[slot]);devices.publish(slot,nullptr);}}
 };
@@ -18,15 +19,21 @@ uint8_t SDLGamepadInput::menu_buttons()const{
     // legacy keyboard-message adapter neutral, including on held buttons.
     return 0;
 }
-void SDLGamepadInput::update(bool active){
+void SDLGamepadInput::update(bool active,bool refresh_topology){
     if(!SDL_IsMainThread())throw std::logic_error("Gamepad polling must use app main thread");
     auto &input=*impl;
     for(unsigned slot=0;slot<2;++slot)if(input.pads[slot] && !SDL_GamepadConnected(input.pads[slot])){
         SDL_CloseGamepad(input.pads[slot]);input.pads[slot]=nullptr;input.ids[slot]=0;input.devices.publish(slot,nullptr);
+        refresh_topology=true;
     }
     // There is no free slot to assign while both attached pads are live.
     // The connectivity checks still retire unplugged devices first.
-    if(!input.pads[0] || !input.pads[1]){
+    const bool free_slot=!input.pads[0] || !input.pads[1];
+    const Uint64 now=free_slot?SDL_GetTicks():0;
+    if(free_slot && (refresh_topology || now>=input.next_discovery)){
+        // Handle add events immediately. Retry periodically if an event was
+        // dropped or a just-connected device was not ready to open yet.
+        input.next_discovery=now+250;
         int count=0;auto ids=SDL_GetGamepads(&count);
         if(!ids)throw std::runtime_error(SDL_GetError());
         for(int i=0;i<count;++i){
@@ -43,7 +50,7 @@ void SDLGamepadInput::update(bool active){
     SDL_UpdateGamepads();
     for(unsigned slot=0;slot<2;++slot){
         auto pad=input.pads[slot];
-        if(pad && !SDL_GamepadConnected(pad)){SDL_CloseGamepad(pad);input.pads[slot]=nullptr;input.ids[slot]=0;pad=nullptr;}
+        if(pad && !SDL_GamepadConnected(pad)){SDL_CloseGamepad(pad);input.pads[slot]=nullptr;input.ids[slot]=0;pad=nullptr;input.next_discovery=0;}
         if(!pad || !active){input.devices.publish(slot,nullptr);continue;}
         if(slot==0)input.devices.publish_reset(SDL_GetGamepadButton(pad,SDL_GAMEPAD_BUTTON_BACK));
         GameJoystickState state;

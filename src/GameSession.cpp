@@ -249,7 +249,10 @@ void GameSession::poll(){
 #if !defined(SDL_PLATFORM_IOS) && !defined(SDL_PLATFORM_TVOS)
     impl->desktop_relative_sync();
 #endif
+    bool refresh_gamepads=false;
     SDL_Event event;while(SDL_PollEvent(&event)){
+        if(event.type==SDL_EVENT_GAMEPAD_ADDED || event.type==SDL_EVENT_GAMEPAD_REMAPPED ||
+           event.type==SDL_EVENT_DID_ENTER_FOREGROUND)refresh_gamepads=true;
         if(event.type==SDL_EVENT_QUIT || event.type==SDL_EVENT_TERMINATING)impl->request_stop();
         sdl_window_event(event);
         if(event.type==SDL_EVENT_WINDOW_RESIZED || event.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)nfs_menu_responsive_revoke();
@@ -293,6 +296,6 @@ void GameSession::poll(){
         impl->graphics.abandon_suspended();
         impl->background_shutdown=true;
     }
-    impl->gamepads->update(impl->foreground);
+    impl->gamepads->update(impl->foreground,refresh_gamepads);
 }
 }

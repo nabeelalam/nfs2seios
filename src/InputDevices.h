@@ -105,7 +105,7 @@ class SDLGamepadInput {
 public:
     explicit SDLGamepadInput(InputDevices &);
     ~SDLGamepadInput();
-    void update(bool active=true);
+    void update(bool active=true,bool refresh_topology=true);
     uint8_t menu_buttons()const;
 };
 }

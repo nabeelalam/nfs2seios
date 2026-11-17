@@ -487,3 +487,17 @@ actual swap produced a positive duration with capture enabled. The
 following swaps left the capture ring empty after capture was disabled.
 The change follows iPad package 43978740494 and still needs Apple
 compilation and device data.
+
+## Controller discovery during gameplay
+
+The game loop asks SDL to enumerate controllers immediately on add,
+remap or foreground events. It also refreshes when a connected slot
+is lost. With a free slot and no event, recovery is retried every
+250 ms. Existing controller axes and buttons are still sampled on
+each poll, and the two live slots still skip discovery.
+
+The SDL input suite passed with actual virtual joystick add events
+and with a replacement device whose add event was discarded. It also
+covered both players' state, neutral disconnect and reconnect into the
+vacated slot. The game-loop translation unit compiled. Physical
+hotplug and the battery impact remain unmeasured.

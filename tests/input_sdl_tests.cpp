@@ -19,7 +19,7 @@ int main(){
         CHECK(devices.create(0x500,0x80000000,0)==0);const auto root=guest_load<uint32_t>(0x80000000);uint32_t handles[2]{};
         for(uint32_t slot=0;slot<2;++slot){guest_store(0x80000010,std::array<uint32_t,4>{0x6f1d2b70,slot,0,0});uint32_t args[]={root,0x80000010,0x80000020,0};CHECK(devices.invoke(nullptr,nfs::InputMethod::create_device,args)==0);handles[slot]=guest_load<uint32_t>(0x80000020);}
         const auto read=[&](uint32_t slot){uint32_t args[]={handles[slot],80,0x80000040};if(devices.invoke(nullptr,nfs::InputMethod::state,args))throw std::runtime_error("SDL state read");return guest_load<nfs::GameJoystickState>(0x80000040);};
-        input.update();CHECK(read(0).axes[0]==32768 && read(0).axes[6]==0);
+        input.update(true,false);CHECK(read(0).axes[0]==32768 && read(0).axes[6]==0);
         const auto first=attach(),second=attach();CHECK(first && second && SDL_IsGamepad(first) && SDL_IsGamepad(second));
         auto joystick=SDL_OpenJoystick(first),other=SDL_OpenJoystick(second);CHECK(joystick && other);
         CHECK(SDL_SetJoystickVirtualAxis(joystick,SDL_GAMEPAD_AXIS_LEFTX,32767));
@@ -29,7 +29,10 @@ int main(){
         CHECK(SDL_SetJoystickVirtualButton(joystick,SDL_GAMEPAD_BUTTON_DPAD_UP,true));
         CHECK(SDL_SetJoystickVirtualButton(joystick,SDL_GAMEPAD_BUTTON_DPAD_RIGHT,true));
         CHECK(SDL_SetJoystickVirtualAxis(other,SDL_GAMEPAD_AXIS_LEFTX,-32768));
-        input.update();auto state=read(0);
+        SDL_Event added[2]{};
+        CHECK(SDL_PeepEvents(added,2,SDL_GETEVENT,SDL_EVENT_GAMEPAD_ADDED,SDL_EVENT_GAMEPAD_ADDED)==2);
+        CHECK(added[0].gdevice.which==first && added[1].gdevice.which==second);
+        input.update(true,true);auto state=read(0);
         std::printf("Initial SDK snapshot: steering=%d left pedal=%d right pedal=%d A=%u POV=%u\n",state.axes[0],state.axes[6],state.axes[7],state.buttons[SDL_GAMEPAD_BUTTON_SOUTH],state.pov[0]);
         CHECK(state.axes[0]==65535 && state.axes[7]==65535 && state.axes[6]==0 && state.buttons[SDL_GAMEPAD_BUTTON_SOUTH]==0x80 && state.pov[0]==4500);
         CHECK(input.menu_buttons()==0); // Native POV/buttons never become keyboard aliases.
@@ -190,7 +193,14 @@ int main(){
         CHECK(SDL_SetJoystickVirtualButton(other,SDL_GAMEPAD_BUTTON_START,false));input.update();CHECK(input.menu_buttons()==0);
         const auto replacement=attach();CHECK(replacement);auto reconnected=SDL_OpenJoystick(replacement);CHECK(reconnected);
         CHECK(SDL_SetJoystickVirtualAxis(reconnected,SDL_GAMEPAD_AXIS_LEFTX,1234));CHECK(SDL_SetJoystickVirtualButton(reconnected,SDL_GAMEPAD_BUTTON_SOUTH,true));
-        input.update();CHECK(read(0).axes[0]==34002 && read(0).buttons[0]==0x80 && read(1).axes[0]==0);
+        SDL_FlushEvent(SDL_EVENT_GAMEPAD_ADDED);
+        const Uint64 retry_deadline=SDL_GetTicks()+1000;
+        do{
+            input.update(true,false);
+            if(read(0).axes[0]==34002)break;
+            SDL_Delay(5);
+        }while(SDL_GetTicks()<retry_deadline);
+        CHECK(read(0).axes[0]==34002 && read(0).buttons[0]==0x80 && read(1).axes[0]==0);
         CHECK(SDL_DetachVirtualJoystick(replacement));SDL_CloseJoystick(reconnected);CHECK(SDL_DetachVirtualJoystick(second));SDL_CloseJoystick(other);input.update();
         CHECK(input.menu_buttons()==0);
         const auto menu_pad_id=attach();CHECK(menu_pad_id);auto menu_pad=SDL_OpenJoystick(menu_pad_id);CHECK(menu_pad);
