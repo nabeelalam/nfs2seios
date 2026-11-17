@@ -390,8 +390,9 @@ REALIGN STDCALL void native_grBufferClear(GrColor_t color, GrAlpha_t alpha, uint
         glScissor(r.left,g_framebufferHeight-r.top-r.height,r.width,r.height);
     }
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    if(adjustClear){
-        const NfsAdaptiveAspectPixelRect r=raceWorldClip==1?wideClear.world:wideClear.hud;
+    // The clear already installed the world scissor. Only restore a HUD clip.
+    if(adjustClear && raceWorldClip!=1){
+        const NfsAdaptiveAspectPixelRect r=wideClear.hud;
         glScissor(r.left,g_framebufferHeight-r.top-r.height,r.width,r.height);
     }
 
