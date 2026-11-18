@@ -2,6 +2,7 @@
 // Focused recorder tests use mocked SDL clocks/frame/engine metrics, not a game baseline.
 #include "DesktopDiagnosticRecorder.h"
 #include "FramePresentation.h"
+#include "MainThreadBridge.h"
 #include <SDL3/SDL.h>
 #include <cassert>
 #include <cstdio>
@@ -10,6 +11,10 @@
 #include <string>
 #include <unistd.h>
 static uint64_t now_ns=1000000000,latest=900,drops=17;static bool enabled=false,engine=false;static unsigned clocks=0;static std::deque<NfsFrameTiming> pending;
+static bool renderer_enabled=false;
+static nfs::RendererTiming renderer{};
+void nfs::set_renderer_timing_capture(bool value){renderer_enabled=value;}
+nfs::RendererTiming nfs::take_renderer_timing(){const auto sample=renderer;renderer={};return sample;}
 extern "C" Uint64 SDL_GetTicksNS(){++clocks;return now_ns;}
 extern "C" int SDL_GetNumLogicalCPUCores(){return 4;}
 extern "C" void nfs_frame_timing_capture(int value){enabled=value;}
@@ -35,13 +40,16 @@ int main(){
  auto sample=read(dir+"/samples.jsonl"),meta=read(dir+"/samples.metadata.json"),csv=read(dir+"/samples.frames.csv");assert(sample.find("\"low_power_mode\":null")!=std::string::npos);assert(sample.find("\"presentation_fps\":null")!=std::string::npos);assert(sample.find("\"game_cpu_sample_id\":42")!=std::string::npos);assert(sample.find("\"game_cpu_ms_per_frame\":12.5000")!=std::string::npos);assert(meta.find("\"samples_written\":2")!=std::string::npos);assert(meta.find("\"start_frame_id\":900")!=std::string::npos);assert(meta.find("sample_limit")!=std::string::npos);assert(csv.find("900,")==std::string::npos&&csv.find("901,2000000000,0,3")!=std::string::npos);
  assert(read(dir+"/samples.frames.csv")=="frame_id,timestamp_ns,interval_ns,window_epoch,swap_call_ns\n901,2000000000,0,3,4321\n");
  {
+  renderer={99,99000000,99000000};
   nfs::DesktopDiagnosticRecorder r(dir+"/pacing.jsonl");
+  assert(renderer_enabled && renderer.calls==0);
   now_ns+=1000000000;r.poll();
   const auto sample_start=now_ns;
   pending.push_back({902,sample_start+5000000,16000000,3}); // Crosses sample start.
   pending.push_back({903,sample_start+25000000,20000000,3,3000000});
   now_ns+=30000000;r.poll();
   pending.push_back({904,sample_start+46000000,21000000,3,4000000});
+  renderer={240,6000000,12000000};
   now_ns=sample_start+1000000000;r.poll();
   pending.push_back({905,now_ns+22000000,22000000,3});
   ++drops;now_ns+=1000000000;r.poll();
@@ -55,6 +63,10 @@ int main(){
   assert(row.find("\"swap_intervals_over_18ms\":2.0000")!=std::string::npos);
   assert(row.find("\"swap_intervals_over_20ms\":1.0000")!=std::string::npos);
   assert(row.find("\"swap_call_total_ms\":7.0000")!=std::string::npos);
+  assert(row.find("\"renderer_calls_interval\":240.0000")!=std::string::npos);
+  assert(row.find("\"renderer_queue_ms_interval\":6.0000")!=std::string::npos);
+  assert(row.find("\"renderer_execution_ms_interval\":12.0000")!=std::string::npos);
+  assert(!renderer_enabled && renderer.calls==0);
   std::getline(log,row);assert(row.find("\"swap_intervals_count\":null")!=std::string::npos);
  }
  {nfs::DesktopDiagnosticRecorder::Limits limits;limits.frames=2;nfs::DesktopDiagnosticRecorder r(dir+"/frames.jsonl",limits);for(unsigned i=0;i<1024;++i)pending.push_back({902+i,now_ns+i,1,3});latest=1925;r.poll();r.stop();assert(pending.empty());}meta=read(dir+"/frames.metadata.json");assert(meta.find("\"frames_written\":2")!=std::string::npos);assert(meta.find("\"discarded_frames\":1022")!=std::string::npos);assert(meta.find("frame_limit")!=std::string::npos);

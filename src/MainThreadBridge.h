@@ -15,6 +15,7 @@ using MainScheduler=void(*)(MainTask,void *);
 // Consumed includes queued ownership and intentional retirement discard.
 // UseExistingOwnerPath never queues or executes the supplied operation.
 enum class OwnedRendererAcceptance {Consumed,UseExistingOwnerPath};
+constexpr unsigned renderer_queue_capacity = 256;
 class MainThreadBridge {
     struct Command;
     const std::thread::id owner;

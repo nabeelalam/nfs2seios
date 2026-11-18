@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 #include "GameMemory.h"
+#include <algorithm>
 #include <mutex>
 #include <cstring>
 #include <atomic>
@@ -57,9 +58,15 @@ class HeapArena {
         const uintptr_t value = reinterpret_cast<uintptr_t>(p);
         const uintptr_t begin = reinterpret_cast<uintptr_t>(storage);
         if (!storage || value < begin || value - begin >= capacity) return count;
-        for (size_t i = 0; i < count; ++i)
-            if (blocks[i].used && blocks[i].offset == value - begin) return i;
-        return count;
+        const size_t offset = value - begin;
+        // The first live block often follows the coalesced free prefix.
+        if (count > 0 && blocks[0].used && blocks[0].offset == offset) return 0;
+        if (count > 1 && blocks[1].used && blocks[1].offset == offset) return 1;
+        const auto *end = blocks + count;
+        const auto *block = std::lower_bound(blocks + std::min(count, size_t{2}), end, offset,
+            [](const Block &candidate, size_t wanted) { return candidate.offset < wanted; });
+        if (block == end || !block->used || block->offset != offset) return count;
+        return static_cast<size_t>(block - blocks);
     }
     bool release_locked(void *p) {
         if (!p) return true;
@@ -67,12 +74,15 @@ class HeapArena {
         if (i == count) return false;
         mark_owned_chunks(blocks[i].offset,blocks[i].size,0);
         blocks[i].used = false;
-        for (size_t j = 0; j+1 < count;) {
-            if (!blocks[j].used && !blocks[j+1].used) {
-                blocks[j].size += blocks[j+1].size;
-                for (size_t k = j+2; k < count; ++k) blocks[k-1] = blocks[k];
-                --count;
-            } else ++j;
+        // Existing free blocks were already coalesced. Only the neighbors
+        // of the newly freed block can become adjacent free blocks.
+        const size_t first = i && !blocks[i - 1].used ? i - 1 : i;
+        const size_t last = i + 1 < count && !blocks[i + 1].used ? i + 1 : i;
+        if (first != last) {
+            blocks[first].size = blocks[last].offset + blocks[last].size - blocks[first].offset;
+            std::memmove(blocks + first + 1, blocks + last + 1,
+                         (count - last - 1) * sizeof(Block));
+            count -= last - first;
         }
         revision.fetch_add(1,std::memory_order_release);
         return true;

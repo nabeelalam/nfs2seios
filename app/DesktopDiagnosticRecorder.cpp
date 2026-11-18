@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "DesktopDiagnosticRecorder.h"
+#include "MainThreadBridge.h"
 #include "DiagnosticSession.h"
 #include "EngineThreadMetrics.h"
 #include "FramePresentation.h"
@@ -84,6 +85,8 @@ struct DesktopDiagnosticRecorder::Impl {
    accepted_bytes=header.size()+frame_header.size();
    writer=std::thread([this]{write_loop();});
    nfs_set_engine_metrics_capture(1);nfs_frame_timing_capture(1);
+   take_renderer_timing();
+   set_renderer_timing_capture(true);
    const auto captured=nfs_frame_timing_snapshot();
    start_epoch=swap_epoch=captured.window_epoch;
    swap_drops=captured.dropped_total;
@@ -146,6 +149,12 @@ struct DesktopDiagnosticRecorder::Impl {
   if(pc>=process&&process>=0)s.process_ms=(pc-process)/1e6;if(mc>=main&&main>=0)s.main_ms=(mc-main)/1e6;
   if(s.process_ms>=0&&s.interval>0&&s.logical_cores)s.app_cpu_percent=s.process_ms/(s.interval*10*s.logical_cores);
   process=pc;main=mc;last=now;next=now+1000000000ull;
+  const auto renderer=take_renderer_timing();
+  if(renderer.calls){
+   s.renderer_calls=double(renderer.calls);
+   s.renderer_queue_ms=double(renderer.queue_ns)/1e6;
+   s.renderer_execution_ms=double(renderer.execution_ns)/1e6;
+  }
   record_frame_content(s,nfs_frame_content_totals(),frame_content,s.interval>0 && sample_rows>0);
   std::string row=diagnostic_sample_json(s);
   for(const auto &field: {std::make_pair(std::string("\"low_power_mode\":false"),std::string("\"low_power_mode\":null")),{"\"thermal_state\":-1","\"thermal_state\":null"},{"\"battery_state\":0","\"battery_state\":null"},{"\"app_state\":0","\"app_state\":null"},{"\"system_core_percent\":[]","\"system_core_percent\":null"}}){const auto at=row.find(field.first);if(at!=std::string::npos)row.replace(at,field.first.size(),field.second);}
@@ -153,6 +162,7 @@ struct DesktopDiagnosticRecorder::Impl {
  }
  void stop(const char *why) noexcept {
   if(stopped)return;stopped=true;reason=safe_reason(why);if(reason=="writer_backlog"||reason=="byte_limit"||reason=="write_error")frames_closed=true;nfs_frame_timing_capture(0);nfs_set_engine_metrics_capture(0);
+  set_renderer_timing_capture(false);take_renderer_timing();
   try{drain(0,true);const auto final=nfs_frame_timing_snapshot();end_drop=final.dropped_total;end_id=final.latest_frame_id;end_epoch=final.window_epoch;const auto now=SDL_GetTicksNS();elapsed_end=now>=origin?now-origin:0;}catch(...){write_error.store(true);}
   {std::lock_guard<std::mutex>lock(mutex);closing=true;}changed.notify_one();if(writer.joinable())writer.join();
  }

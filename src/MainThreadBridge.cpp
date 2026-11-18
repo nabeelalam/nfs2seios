@@ -42,7 +42,7 @@ std::shared_ptr<MainThreadBridge::Command> MainThreadBridge::append_command(std:
             std::unique_lock<std::mutex> lock(command_mutex);
             // Bound pending storage even when several producers submit at once.
             if(renderer_retiring.load()){lock.unlock();command->operation={};command->completed=true;return command;}
-            if(commands.size()<128){commands.push_back(command);return command;}
+            if(commands.size()<renderer_queue_capacity){commands.push_back(command);return command;}
             target=commands.back();
         }
         finish_command(target,false);

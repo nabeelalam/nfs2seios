@@ -44,6 +44,18 @@ class SummaryTests(unittest.TestCase):
         legacy = summary.summarize(fixture([sample(0), sample(1)]))
         self.assertEqual(legacy["race_world_interval_comparison"]["off"]["samples"], 0)
 
+    def test_observed_race_fps_uses_duration_and_excludes_invalid_intervals(self):
+        def row(second, duration, frames):
+            return dict(sample(second), interval_s=duration,
+                        classified_presentations=frames, race_world_presentations=frames)
+        rows = [row(0, 1, 60), row(1, 1, 60), row(3, 2, 60), row(4, 0, 60), row(5, None, 60)]
+        race = summary.summarize(fixture(rows))["race_world_interval_comparison"]["off"]
+        self.assertEqual(race["samples"], 2)
+        self.assertEqual(race["observed_race_seconds"], 3)
+        self.assertEqual(race["observed_race_presentations"], 120)
+        self.assertEqual(race["overall_presentation_fps"], 40)
+        self.assertEqual(race["presentation_fps"]["median"], 45)
+
     def test_race_cpu_per_presentation_uses_matching_cpu_and_frame_counts(self):
         def row(second, frames, world, process, main, power=False):
             return dict(sample(second, power=power), interval_s=1,
@@ -137,7 +149,10 @@ class SummaryTests(unittest.TestCase):
                                  classified_presentations=count,
                                  race_world_presentations=count if race and tag_world else 0,
                                  swap_intervals_count=count,
-                                 swap_intervals_over_18ms=count if race and power else 0))
+                                 swap_intervals_over_18ms=count if race and power else 0,
+                                 renderer_calls_interval=count * (3 if race else 99),
+                                 renderer_queue_ms_interval=count / 2 if i != 3 else None,
+                                 renderer_execution_ms_interval=count * (2 if power else 1)))
             rows.append(dict(type="end", reason="manual", elapsed_s=5, attempted_rows=5))
             return b"".join((json.dumps(row) + "\n").encode() for row in rows)
 
@@ -148,6 +163,10 @@ class SummaryTests(unittest.TestCase):
         self.assertEqual(result["low_power_on_minus_off"]["median_sample_fps"], -15)
         self.assertEqual(result["low_power_on_minus_off"]["fraction_swaps_over_18ms"], 1)
         self.assertIsNone(result["low_power_on_minus_off"]["median_game_cpu_ms"])
+        race_on = result["low_power_on"]["race_world_interval_comparison"]["on"]
+        self.assertEqual(race_on["renderer_calls_per_presentation"], 3)
+        self.assertEqual(race_on["renderer_queue_ms_per_presentation"], 0.5)
+        self.assertEqual(result["low_power_on_minus_off"]["renderer_execution_ms_per_presentation"], 1)
         for invalid in (log(True, race_width=900), log(True, race_lock=30),
                         log(True, tag_world=False)):
             with self.assertRaises(ValueError):

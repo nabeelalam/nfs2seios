@@ -144,11 +144,11 @@ def stable_interval_metrics(rows):
     }
 
 
-def cpu_per_presentation(rows, key):
+def metric_per_presentation(rows, key):
     measured = [(row[key], row["classified_presentations"]) for row in rows
                 if number(row.get(key))]
     presentations = sum(count for _, count in measured)
-    return sum(cpu for cpu, _ in measured) / presentations if presentations else None
+    return sum(value for value, _ in measured) / presentations if presentations else None
 
 
 def summarize(data, *, desktop=False):
@@ -290,23 +290,33 @@ def summarize(data, *, desktop=False):
                 if frame_count(row.get("classified_presentations"))
                 and 0 < row["classified_presentations"] <= 16384
                 and frame_count(row.get("race_world_presentations"))
-                and row["race_world_presentations"] == row["classified_presentations"]]
+                and row["race_world_presentations"] == row["classified_presentations"]
+                and number(row.get("interval_s"), 2.5)
+                and row["interval_s"] * 10000 >= row["classified_presentations"]]
         for power, label in modes
     }
-    result["race_world_interval_comparison"] = {
-        label: {
+    result["race_world_interval_comparison"] = {}
+    for label, rows in race_intervals.items():
+        seconds = sum(row["interval_s"] for row in rows)
+        presentations = sum(int(row["classified_presentations"]) for row in rows)
+        renderer_rows = [row for row in rows
+                         if number(row.get("renderer_calls_interval"))
+                         and row["renderer_calls_interval"] > 0]
+        result["race_world_interval_comparison"][label] = {
             "samples": len(rows),
             **render_conditions(rows),
+            "observed_race_seconds": round(seconds, 4),
+            "observed_race_presentations": presentations,
+            "overall_presentation_fps": presentations / seconds if seconds else None,
             "presentation_fps": distribution([
-                row["classified_presentations"] / row["interval_s"] for row in rows
-                if number(row.get("interval_s"), 2.5)
-                and row["interval_s"] * 10000 >= row["classified_presentations"]]),
-            "process_cpu_ms_per_presentation": cpu_per_presentation(rows, "process_cpu_ms_interval"),
-            "main_cpu_ms_per_presentation": cpu_per_presentation(rows, "main_cpu_ms_interval"),
+                row["classified_presentations"] / row["interval_s"] for row in rows]),
+            "process_cpu_ms_per_presentation": metric_per_presentation(rows, "process_cpu_ms_interval"),
+            "main_cpu_ms_per_presentation": metric_per_presentation(rows, "main_cpu_ms_interval"),
+            "renderer_calls_per_presentation": metric_per_presentation(renderer_rows, "renderer_calls_interval"),
+            "renderer_queue_ms_per_presentation": metric_per_presentation(renderer_rows, "renderer_queue_ms_interval"),
+            "renderer_execution_ms_per_presentation": metric_per_presentation(renderer_rows, "renderer_execution_ms_interval"),
             **stable_interval_metrics(rows),
         }
-        for label, rows in race_intervals.items()
-    }
     result["has_frame_content_counts"] = any(
         frame_count(row.get("classified_presentations")) and row["classified_presentations"] > 0
         for samples in groups.values() for row in samples
@@ -371,9 +381,13 @@ def compare_power_sessions(normal, low_power):
         pacing = report["race_world_interval_comparison" if compare_race else "stable_interval_comparison"][label]
         return {
             "median_sample_fps": (pacing["presentation_fps"] if compare_race else mode["fps_observations"])["median"],
+            "overall_presentation_fps": pacing.get("overall_presentation_fps"),
             "median_game_cpu_ms": None if compare_race else mode["game_cpu_ms_per_frame_unique_windows"]["median"],
             "process_cpu_ms_per_presentation": pacing.get("process_cpu_ms_per_presentation"),
             "main_cpu_ms_per_presentation": pacing.get("main_cpu_ms_per_presentation"),
+            "renderer_calls_per_presentation": pacing.get("renderer_calls_per_presentation"),
+            "renderer_queue_ms_per_presentation": pacing.get("renderer_queue_ms_per_presentation"),
+            "renderer_execution_ms_per_presentation": pacing.get("renderer_execution_ms_per_presentation"),
             "median_display_callbacks_per_second": pacing["display_link_callbacks_per_second"]["median"],
             "median_display_target_ms": pacing["display_link_mean_target_ms"]["median"],
             "display_link_late_callback_fraction": pacing["display_link_late_callback_fraction"],
@@ -398,6 +412,7 @@ def compare_power_sessions(normal, low_power):
         },
         "scope": ("Confirm matched track, cars, graphics and driving separately. "
                   "Process and main-thread CPU time per presentation includes work outside the game thread. "
+                  "Renderer times sum host queue wait and host execution separately, and do not measure GPU time. "
                   "Battery percentage and thermal conditions are context, not an energy measurement."),
     }
 

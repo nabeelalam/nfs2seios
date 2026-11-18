@@ -87,7 +87,7 @@ int main(){
         if(nfs::renderer_operation([&]{++forbidden_calls;return 1;})!=0)std::terminate();
         delete p;++destroyed;
     });std::weak_ptr<int> borrowed_owner=ownership;
-    for(int i=0;i<128;++i)nfs::renderer_command([ownership,&forbidden_calls]{++forbidden_calls;return 0;});
+    for(unsigned i=0;i<nfs::renderer_queue_capacity;++i)nfs::renderer_command([ownership,&forbidden_calls]{++forbidden_calls;return 0;});
     ownership.reset();CHECK(!borrowed_owner.expired());
     std::promise<int> retired_result;
     std::thread retiring_worker([&]{retired_result.set_value(nfs::renderer_operation([&]{++forbidden_calls;return 99;}));});

@@ -135,7 +135,7 @@ int main(int argc,char **argv){
 #if !defined(SDL_PLATFORM_IOS)
                 if(recorder)recorder->poll();
                 const auto now=SDL_GetTicks();
-                if(now-timing_start>=5000){
+                if(!recorder && now-timing_start>=5000){
                     const auto timing=nfs::take_renderer_timing();
                     if(timing.calls)nfs::app_log("Renderer timing","interval_ms="+std::to_string(now-timing_start)+
                         " calls="+std::to_string(timing.calls)+" queue_ms="+std::to_string(timing.queue_ns/1000000)+
