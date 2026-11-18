@@ -28,26 +28,36 @@ struct Staging {
     fs::path root;
     ~Staging(){if(!root.empty()){std::error_code ignored;fs::remove_all(root,ignored);}}
 };
-void copy_file(const fs::path &source,const fs::path &target,AssetImportResult &result){
+bool has_nonempty_asset(const fs::path &tree){
+    for(const auto &entry:fs::recursive_directory_iterator(tree))
+        if(fs::is_regular_file(entry.symlink_status()) && entry.file_size()>0)return true;
+    return false;
+}
+uintmax_t copy_file(const fs::path &source,const fs::path &target,AssetImportResult &result){
     if(!fs::is_regular_file(fs::symlink_status(source)))throw std::runtime_error("Game assets must contain regular files and folders only");
     const auto size=fs::file_size(source);
     if(result.files>=100000 || size>UINT64_C(8589934592)-result.bytes)throw std::runtime_error("Game import exceeds its file or storage limit");
-    fs::copy_file(source,target,fs::copy_options::none);++result.files;result.bytes+=size;
+    fs::copy_file(source,target,fs::copy_options::none);++result.files;result.bytes+=size;return size;
 }
 }
-void validate_imported_assets(const std::string &root){
+void validate_imported_assets(const std::string &root) try {
     if(!fs::is_directory(fs::symlink_status(root)))
         throw std::runtime_error("The imported game folder is invalid.");
     for(const auto name:{"gamedata","fedata"}){
-        if(!fs::is_directory(fs::symlink_status(fs::path(root)/name)))
+        const auto tree=fs::path(root)/name;
+        if(!fs::is_directory(fs::symlink_status(tree)))
             throw std::runtime_error(std::string("The imported game is missing a valid ")+name+" folder.");
+        if(!has_nonempty_asset(tree))
+            throw std::runtime_error(std::string("The imported game is missing files in ")+name+".");
     }
     for(const auto name:required_startup_names){
         if(!valid_startup_file(fs::path(root)/name))
             throw std::runtime_error(std::string("The imported game is missing a valid ")+name+" file.");
     }
+}catch(const fs::filesystem_error &error){
+    throw std::runtime_error("Could not read the imported game. "+error.code().message());
 }
-AssetImportResult import_assets(const std::string &source_name,const std::string &support_name,const std::string &destination_name){
+AssetImportResult import_assets(const std::string &source_name,const std::string &support_name,const std::string &destination_name) try {
     std::lock_guard<std::mutex> lock(import_mutex);
     if(fs::is_symlink(fs::symlink_status(source_name)) || fs::is_symlink(fs::symlink_status(support_name)))throw std::runtime_error("Select a real game folder, not a symbolic link");
     const auto source=fs::canonical(source_name),support=fs::canonical(support_name);
@@ -110,7 +120,10 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
         if(names.size()>100000)throw std::runtime_error("Game import exceeds its entry limit");
         const auto target=staging.root/normalized;
         if(fs::is_directory(status))fs::create_directory(target);
-        else {copy_file(item->path(),target,result);if(top=="gamedata")game_files=true;else front_files=true;}
+        else if(copy_file(item->path(),target,result)>0){
+            if(top=="gamedata")game_files=true;
+            else front_files=true;
+        }
     }
     if(!game_files || !front_files)throw std::runtime_error("Select the folder containing both GAMEDATA and FEDATA with files inside");
     for(const auto &entry:startup)
@@ -118,5 +131,7 @@ AssetImportResult import_assets(const std::string &source_name,const std::string
     // Both paths are in the caller's app-owned parent. Publish only after every
     // copy and required support file succeeds; failed staging is removed above.
     fs::rename(staging.root,destination);staging.root.clear();return result;
+}catch(const fs::filesystem_error &error){
+    throw std::runtime_error("Could not copy the selected game folder. "+error.code().message());
 }
 }

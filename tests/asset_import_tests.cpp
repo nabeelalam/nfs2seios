@@ -15,6 +15,14 @@ int main(int argc,char **argv){
         const auto root=fs::absolute(fs::path(argv[1])/"asset-import-tests");
         fs::remove_all(root);fs::create_directories(root);
         const auto source=root/"selected",support=root/"support",destination=root/"game";
+        try{
+            nfs::import_assets((root/"private-folder-fixture").string(),root.string(),destination.string());
+            throw std::logic_error("missing source unexpectedly imported");
+        }catch(const std::runtime_error &error){
+            const std::string message=error.what();
+            require(message.find("Could not copy the selected game folder.")==0,"missing source error lost its context");
+            require(message.find("private-folder-fixture")==std::string::npos,"import error disclosed the source folder");
+        }
         write(source/"GAMEDATA"/"AUDIO"/"Fixture.BIN",std::string("a\0b",3));
         write(source/"FEDATA"/"PC"/"Art.DAT","front");
         write(source/"NFS2SE.EXE","never copied");write(source/"unrelated"/"secret.txt","never copied");
@@ -32,6 +40,11 @@ int main(int argc,char **argv){
         write(destination/"text.eng","language fixture");
         fs::rename(destination/"gamedata",destination/"gamedata-backup");
         fails([&]{nfs::validate_imported_assets(destination.string());});
+        write(destination/"gamedata"/"audio"/"empty.bin","");
+        fails([&]{nfs::validate_imported_assets(destination.string());});
+        fs::remove(destination/"gamedata"/"audio"/"empty.bin");
+        fs::remove(destination/"gamedata"/"audio");
+        fs::remove(destination/"gamedata");
         fs::rename(destination/"gamedata-backup",destination/"gamedata");
         fs::remove(destination/"install.win");
         fails([&]{nfs::validate_imported_assets(destination.string());});
@@ -67,6 +80,9 @@ int main(int argc,char **argv){
         fails([&]{nfs::import_assets(source.string(),support.string(),(source/"nested-game").string());});
         const auto empty=root/"empty";fs::create_directories(empty/"GAMEDATA");write(empty/"FEDATA"/"item","front");
         fails([&]{nfs::import_assets(empty.string(),support.string(),(root/"empty-result").string());});no_staging(root);
+        write(empty/"GAMEDATA"/"AUDIO"/"empty.bin","");
+        fails([&]{nfs::import_assets(empty.string(),support.string(),(root/"zero-byte-result").string());});
+        require(!fs::exists(root/"zero-byte-result"),"zero-byte data tree published an import");no_staging(root);
         // Case collisions and symlinks are tested on case-sensitive Linux/macOS.
         const auto collision=root/"collision";write(collision/"GAMEDATA"/"ONE","one");write(collision/"gamedata"/"TWO","two");write(collision/"FEDATA"/"item","front");
         if(!fs::equivalent(collision/"GAMEDATA",collision/"gamedata")){

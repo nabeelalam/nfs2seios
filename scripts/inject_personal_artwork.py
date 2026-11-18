@@ -216,16 +216,20 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
         app_roots = set()
         total = 0
         members = {}
+        artwork_pins = resource_pins()
+        artwork_digests = {}
         for info in infos:
-            if allow_resource and info.filename.rsplit("/", 1)[-1] in resource_pins():
+            pin = artwork_pins.get(info.filename.rsplit("/", 1)[-1]) if allow_resource else None
+            if pin is not None:
                 # Each new entry must be a pinned resource at the app root.
                 require(info.filename.count("/") == 2 and info.filename.startswith("Payload/"),
                         "Unexpected artwork entry location")
                 name, parts = safe_name(info, allow_artwork=True)
                 require(parts[1].endswith(".app") and not info.is_dir()
-                        and info.file_size == resource_pins()[parts[-1]][0]
+                        and info.file_size == pin[0]
                         and info.compress_type == zipfile.ZIP_STORED
                         and not info.flag_bits & 1, "Invalid injected artwork entry")
+                artwork_digests[name] = pin[1]
             else:
                 name, parts = safe_name(info)
             key = name.rstrip("/").casefold()
@@ -281,7 +285,10 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
                             tail = window[-31:]
                     require(count == info.file_size, "ZIP member length mismatch")
                     require(matched, "Base executable lacks the required artwork release pin")
-                    result[name] = h.hexdigest()
+                    digest = h.hexdigest()
+                    require(name not in artwork_digests or digest == artwork_digests[name],
+                            "Injected artwork digest does not match its pin")
+                    result[name] = digest
                     if macho:
                         machos[name] = h.hexdigest()
             storage[name] = raw_storage(path, info)

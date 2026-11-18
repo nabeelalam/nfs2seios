@@ -11,7 +11,7 @@ MAX_LINE = 8192
 
 
 def number(value, maximum=1e15):
-    return type(value) in (int, float) and math.isfinite(value) and 0 <= value <= maximum
+    return type(value) in (int, float) and 0 <= value <= maximum and math.isfinite(value)
 
 
 def frame_count(value):
@@ -413,6 +413,7 @@ def compare_power_sessions(normal, low_power):
         "render_size": conditions[0]["render_sizes"][0], "timing_art_mode": timing_art[0],
         "comparison_scope": "race_world" if compare_race else "whole_session",
         "low_power_off": off, "low_power_on": on,
+        "paired_metrics": {"low_power_off": left, "low_power_on": right},
         "low_power_on_minus_off": {
             key: right[key] - value if value is not None and right[key] is not None else None
             for key, value in left.items()

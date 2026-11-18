@@ -104,7 +104,14 @@ static int nfs_mt_track_info_entry(const NfsBackgroundSceneStage* stage,
  return nfs_mt_stage_owner(&nfs_mt,stage)&&glGetError()==GL_NO_ERROR;
 }
 
-int nfs_private_menu_transition_begin(const NfsMenuTransitionView*v){NfsNativeLogoTargetProof target;NfsBgSaved saved;NfsBackgroundSceneStage stage;GLfloat previousClear[4];GLint dstRgb=0,dstAlpha=0;int ok=0;static const int32_t full[4]={0,0,640,480};nfs_mt_wide_cancel();nfs_mt.active=0;if(!v||!nfs_bg_feature()||!nfs_mt_current()||!v->serial||!v->content||v->slot>1||(v->kind<1||v->kind>13)||(v->drawKind!=1&&v->drawKind!=2)||v->originX< -32768||v->originX>32767||v->originY< -32768||v->originY>32767||v->stepX<0||v->stepX>32||v->mapRole>1||!v->original565||v->minimum<0||v->maximum>255||v->minimum>v->maximum||v->direction<0||v->direction>1||v->phase< -1||v->phase>255)return 0;if(v->kind==12?(!v->trackInfoArt.generation||v->drawKind!=(v->slot?1u:2u)):v->trackInfoArt.generation)return 0;if(v->kind==13){
+int nfs_private_menu_transition_begin(const NfsMenuTransitionView*v){NfsNativeLogoTargetProof target;NfsBgSaved saved;NfsBackgroundSceneStage stage;GLfloat previousClear[4];GLint dstRgb=0,dstAlpha=0;int ok=0;static const int32_t full[4]={0,0,640,480};nfs_mt_wide_cancel();nfs_mt.active=0;if(!v||!nfs_bg_feature()||!nfs_mt_current()||!v->serial||!v->content||v->slot>1||(v->kind<1||v->kind>13)||(v->drawKind!=1&&v->drawKind!=2)||v->originX< -32768||v->originX>32767||v->originY< -32768||v->originY>32767||v->stepX<0||v->stepX>32||v->mapRole>1||!v->original565||v->minimum<0||v->maximum>255||v->minimum>v->maximum||v->direction<0||v->direction>1||v->phase< -1||v->phase>255)return 0;if(v->kind==12){
+ if(!v->trackInfoArt.generation)return 0;
+ if(v->trackInfoPhase==5){
+  if(v->drawKind!=1||v->originX||v->originY||v->stepX!=32||
+     v->minimum!=0||v->maximum!=255||v->direction!=1||
+     v->phase<20||v->phase>250||v->phase%10)return 0;
+ }else if(v->drawKind!=(v->slot?1u:2u))return 0;
+}else if(v->trackInfoArt.generation)return 0;if(v->kind==13){
  if(v->slot||v->drawKind!=2||v->trackInfoPhase<1||v->trackInfoPhase>2||
     !nfs_menu_transition_source_life_current(v->sourceGame,v->sourceLife)||
     !nfs_location_caption_valid(&v->outgoingLocationCaption,2))return 0;
@@ -188,10 +195,11 @@ int nfs_private_menu_transition_finish(uint64_t serial){
  glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,copy);glDrawArrays(GL_TRIANGLES,0,6);
  ok=glGetError()==GL_NO_ERROR;if(nfs_mt_current())nfs_bg_restore(&saved);else{nfs_mt_wide_other();return 0;}
  if(ok&&nfs_mt.sourceKind==12){
-  if(nfs_mt.trackInfoPhase==4&&nfs_mt.slot==1)
+  const int pairedFade=nfs_mt.trackInfoPhase==4||nfs_mt.trackInfoPhase==5;
+  if(pairedFade&&nfs_mt.slot==1)
    nfs_mt.trackInfoBaseClear=nfs_mt.clearEvent;
   if(nfs_mt.slot==0&&(nfs_mt.trackInfoPhase==3||
-      (nfs_mt.trackInfoPhase==4&&nfs_mt.clearEvent&&
+      (pairedFade&&nfs_mt.clearEvent&&
        nfs_mt.trackInfoBaseClear==nfs_mt.clearEvent)))
    nfs_info_wide_mark(1,&nfs_mt.target);
  }

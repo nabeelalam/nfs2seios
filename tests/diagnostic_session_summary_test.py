@@ -19,6 +19,22 @@ def sample(time, power=False, identity=1, fps=60):
 
 
 class SummaryTests(unittest.TestCase):
+    def test_power_comparison_reports_absolute_metrics_alongside_deltas(self):
+        def recording(power, fps):
+            rows = [dict(sample(i, power=power, fps=fps), frame_limit=0,
+                         render_width=2360, render_height=1640) for i in range(2)]
+            rows.append(dict(type="end", reason="manual", elapsed_s=2, attempted_rows=2))
+            return fixture(rows).replace(b'"build": 19', b'"build": 19, "source_commit": "' + b'a' * 40 + b'"')
+
+        report = summary.compare_power_sessions(recording(False, 60), recording(True, 45))
+        self.assertEqual(report["paired_metrics"]["low_power_off"]["median_sample_fps"], 60)
+        self.assertEqual(report["paired_metrics"]["low_power_on"]["median_sample_fps"], 45)
+        self.assertEqual(report["low_power_on_minus_off"]["median_sample_fps"], -15)
+
+    def test_oversized_optional_metric_is_ignored(self):
+        report = summary.summarize(fixture([sample(0, fps=10**400)]))
+        self.assertEqual(report["low_power_mode"]["off"]["fps_observations"]["count"], 0)
+
     def test_unlocked_cadence_excludes_frame_lock_transitions_and_old_rows(self):
         def row(second, limit, late=None):
             result = dict(sample(second), frame_limit=limit, swap_intervals_count=50)

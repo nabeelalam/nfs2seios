@@ -214,7 +214,9 @@ static NSURL *recording_folder(){
     NSData *data=[NSData dataWithBytes:end.data() length:end.size()];FILE *file=_file;_file=nullptr;
     dispatch_async(self.writer,^{
         bool failed=self->_failed.load();
-        if(std::fwrite(data.bytes,1,data.length,file)!=data.length || std::fflush(file)!=0)failed=true;
+        // A failed sample write can leave an unterminated JSON row. Keep it
+        // at EOF so the reader can recover all earlier complete samples.
+        if(!failed && (std::fwrite(data.bytes,1,data.length,file)!=data.length || std::fflush(file)!=0))failed=true;
         if(std::fclose(file)!=0)failed=true;
         dispatch_async(dispatch_get_main_queue(),^{
             self.finishing=NO;

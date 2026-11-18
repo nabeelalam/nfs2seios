@@ -22,14 +22,29 @@
     self.importing=YES;
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{
         BOOL scoped=[source startAccessingSecurityScopedResource];
-        __block NSError *failure=nil;
+        NSError *coordinationError=nil;
+        __block NSString *importError=nil;
+        __block BOOL imported=NO;
         NSFileCoordinator *coordinator=[[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        [coordinator coordinateReadingItemAtURL:source options:NSFileCoordinatorReadingWithoutChanges error:&failure byAccessor:^(NSURL *root){
-            try{nfs::import_assets(root.path.UTF8String,NSBundle.mainBundle.resourcePath.UTF8String,self.destination.path.UTF8String);}
-            catch(const std::exception &error){failure=[NSError errorWithDomain:@"NFSImport" code:1 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithUTF8String:error.what()] ?: @"Game import failed."}];}
+        [coordinator coordinateReadingItemAtURL:source options:NSFileCoordinatorReadingWithoutChanges error:&coordinationError byAccessor:^(NSURL *root){
+            const char *selected=root.fileSystemRepresentation;
+            const char *support=NSBundle.mainBundle.resourceURL.fileSystemRepresentation;
+            const char *destination=self.destination.fileSystemRepresentation;
+            if(!selected || !support || !destination){
+                importError=@"Could not access the selected game folder.";
+                return;
+            }
+            try{nfs::import_assets(selected,support,destination);imported=YES;}
+            catch(const std::exception &error){importError=[NSString stringWithUTF8String:error.what()] ?: @"Game import failed.";}
         }];
+        if(!imported && !importError){
+            // Foundation descriptions can contain paths or provider details.
+            importError=coordinationError ?
+                [NSString stringWithFormat:@"Files could not read the selected folder (error %ld).",(long)coordinationError.code] :
+                @"Files did not provide access to the selected folder.";
+        }
         if(scoped)[source stopAccessingSecurityScopedResource];
-        dispatch_async(dispatch_get_main_queue(),^{self.error=failure.localizedDescription;self.root=failure?nil:self.destination.path;self.importing=NO;self.done=YES;});
+        dispatch_async(dispatch_get_main_queue(),^{self.error=importError;self.root=imported?self.destination.path:nil;self.importing=NO;self.done=YES;});
     });
 }
 @end

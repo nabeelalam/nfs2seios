@@ -26,6 +26,12 @@ class Delivery(unittest.TestCase):
     with zipfile.ZipFile(d/'out.ipa')as z:
      for name,value in members.items():self.assertEqual(z.read(name),value)
      self.assertEqual(z.read('Payload/Test.app/class-picture-ui.ownedz'),art)
+    with zipfile.ZipFile(d/'edited.ipa', 'w') as edited:
+     for name, value in members.items():
+      edited.writestr(name, value)
+     edited.writestr('Payload/Test.app/class-picture-ui.ownedz', art[:-1] + b'x')
+    with self.assertRaisesRegex(ValueError, 'artwork digest'):
+     m.inspect(d/'edited.ipa', allow_resource=True)
     (d/'badsize').write_bytes(art[:-1]);(d/'badhash').write_bytes(art[:-1]+b'x')
     for name in ['badsize','badhash']:
      with self.assertRaises(ValueError):m.inject(base,H(base.read_bytes()),d/'template',d/(name+'.ipa'),class_picture=d/name)

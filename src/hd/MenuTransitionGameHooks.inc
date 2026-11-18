@@ -169,14 +169,16 @@ struct DrawScope{
   if(!nfs_background_scene_live::enabled()||nfs_background_scene_live::activeRequest()||uint32_t(g.eax)>1)return;
   auto p=state().slots[uint32_t(g.eax)];
   const auto* trackInfoOwner=nfs_track_info_ui_live::ownerCurrent(g);
+  const bool trackChange=trackInfoOwner&&trackInfoOwner->entryPhase==5;
   if(trackInfoOwner&&trackInfoOwner->entryPhase){
    const unsigned phase=trackInfoOwner->entryPhase;
-   const char* phaseName=phase==1?"track-info-outgoing-fade":phase==2?"track-info-outgoing-slide":phase==3?"track-info-incoming-slide":"track-info-incoming-fade";
+   const char* phaseName=phase==1?"track-info-outgoing-fade":phase==2?"track-info-outgoing-slide":phase==3?"track-info-incoming-slide":phase==4?"track-info-incoming-fade":"track-info-change-fade";
    fullTrace(phaseName,"draw-slot",p?p->kind:0,uint32_t(g.eax),unsigned(plain));
   }
   if(p&&p->kind==12){
    const auto* owner=trackInfoOwner;
-   if(plain!=(p->slot==0)||!owner||owner->entryPhase<3||owner->epoch!=p->trackInfoArt.ownerEpoch||p->archive!=p->trackInfoArt.archive)return;
+   if(!owner||owner->entryPhase<3||owner->epoch!=p->trackInfoArt.ownerEpoch||p->archive!=p->trackInfoArt.archive)return;
+   if(trackChange ? plain : plain!=(p->slot==0))return;
   }
   if(!p&&plain&&uint32_t(g.eax)==0&&trackInfoOwner&&
      trackInfoOwner->entryPhase>=1&&trackInfoOwner->entryPhase<=2){
@@ -190,8 +192,14 @@ struct DrawScope{
               trackInfoOwner->entryPhase,side&&side->life&&side->life->current(),
               side&&side->game==reinterpret_cast<uintptr_t>(&g));
   }
+  // Next Track changes the active archive before fading the old, still
+  // uploaded tiles. Use only sealed packets from this same Track Info owner.
+  // Renderer admission rechecks all 300 live tile payloads against the packet.
+  const bool retainedTrackChange=trackChange&&p&&p->kind==12&&p->life&&p->life->current()&&
+    p->catalog&&p->catalog==nfs_background_scene_runtime::acquireCatalog();
+  if(trackChange&&!retainedTrackChange)return;
   // Ordinary whole-Main427B30 has its maintained full-scene owner; don't nest.
-  if(!outgoing&&(!p||(plain&&p->kind==3)||p->game!=reinterpret_cast<uintptr_t>(&g)||p->thread!=nfs_logo_publisher::threadToken()||!unchanged(*p))){if(p&&p->kind>=8)fullTrace("draw-source","source-current",p->kind,p->slot,unsigned(plain));return;}if(p&&p->kind>=8)fullTrace("draw-source","accepted",p->kind,p->slot,unsigned(plain));
+  if(!outgoing&&(!p||(plain&&p->kind==3)||p->game!=reinterpret_cast<uintptr_t>(&g)||p->thread!=nfs_logo_publisher::threadToken()||(!retainedTrackChange&&!unchanged(*p)))){if(p&&p->kind>=8)fullTrace("draw-source","source-current",p->kind,p->slot,unsigned(plain));return;}if(p&&p->kind>=8)fullTrace("draw-source","accepted",p->kind,p->slot,unsigned(plain));
   NfsMenuTransitionView v{};
   if(outgoing||(p&&p->kind==12))v.trackInfoPhase=trackInfoOwner->entryPhase;
   try{nfs::GuestCopyTransaction tx;const uint32_t sp=uint32_t(g.esp);v.originX=int32_t(g.edx);
