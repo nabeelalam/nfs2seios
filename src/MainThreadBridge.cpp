@@ -10,7 +10,7 @@ namespace {
 using Clock=std::chrono::steady_clock;
 // The session recorder and timing probes opt in before collecting samples.
 std::atomic<bool> render_timing_enabled{false};
-std::atomic<uint64_t> render_calls{0},render_queue_ns{0},render_execution_ns{0};
+std::atomic<uint64_t> render_calls{0},render_queue_ns{0},render_execution_ns{0},render_execution_max_ns{0};
 uint64_t elapsed_ns(Clock::time_point start,Clock::time_point end){
     return uint64_t(std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
 }
@@ -23,6 +23,7 @@ RendererTiming take_renderer_timing(){
     result.calls=render_calls.exchange(0,std::memory_order_relaxed);
     result.queue_ns=render_queue_ns.exchange(0,std::memory_order_relaxed);
     result.execution_ns=render_execution_ns.exchange(0,std::memory_order_relaxed);
+    result.execution_max_ns=render_execution_max_ns.exchange(0,std::memory_order_relaxed);
     return result;
 }
 struct MainThreadBridge::Command {
@@ -199,7 +200,11 @@ void MainThreadBridge::execute_renderer(MainTask task,void *context){
             p.task(p.context);
             const auto finished=Clock::now();
             render_queue_ns.fetch_add(elapsed_ns(p.submitted,started),std::memory_order_relaxed);
-            render_execution_ns.fetch_add(elapsed_ns(started,finished),std::memory_order_relaxed);
+            const auto duration=elapsed_ns(started,finished);
+            render_execution_ns.fetch_add(duration,std::memory_order_relaxed);
+            auto longest=render_execution_max_ns.load(std::memory_order_relaxed);
+            while(duration>longest && !render_execution_max_ns.compare_exchange_weak(
+                      longest,duration,std::memory_order_relaxed)){}
             render_calls.fetch_add(1,std::memory_order_relaxed);
         },&pending);
         if(pending.ran)return;

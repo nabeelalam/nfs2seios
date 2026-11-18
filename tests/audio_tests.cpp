@@ -12,7 +12,7 @@
 class Game {};
 static Game main_game;static int stream_tag;
 alignas(16) static uint8_t sample_buffer[1024];
-static std::atomic<unsigned> created{0},destroyed{0},frames{0},fade_calls{0},resumes{0};
+static std::atomic<unsigned> created{0},destroyed{0},frames{0},fade_calls{0},resumes{0},pauses{0};
 static bool occupied=false,open_fails=false,immediate=false,callback_fails=false,self_stop=false;
 static uintptr_t current_token;
 static nfs::AudioBridge *bridge;
@@ -36,7 +36,7 @@ extern "C" void nfs_dispatch_game_regparm2(void *p,uint32_t id,uint32_t output,u
 }
 extern "C" void *nfs_native_audio_open(uintptr_t token){current_token=token;if(immediate){uint8_t first[4];if(nfs_audio_render(token,first,4)!=4)throw std::runtime_error("Immediate audio callback rejected");}return open_fails?nullptr:&stream_tag;}
 extern "C" bool nfs_native_audio_resume(void *p){if(p!=&stream_tag)throw std::runtime_error("Bad native audio stream");++resumes;return true;}
-extern "C" bool nfs_native_audio_pause(void *p){return p==&stream_tag;}
+extern "C" bool nfs_native_audio_pause(void *p){if(p!=&stream_tag)return false;++pauses;return true;}
 extern "C" void nfs_native_audio_close(void *p){if(p!=&stream_tag)throw std::runtime_error("Bad native audio close");}
 #define CHECK(x) do{if(!(x)){std::fprintf(stderr,"FAIL %d: %s\n",__LINE__,#x);return 1;}}while(0)
 int main(){
@@ -47,6 +47,30 @@ int main(){
     std::vector<uint8_t> output(4111);size_t offset=0;for(size_t count:{size_t(3),size_t(1021),size_t(17),size_t(3070)}){CHECK(nfs_audio_render(old,output.data()+offset,count)==count);offset+=count;}
     for(size_t i=0;i<output.size();++i){const unsigned frame=unsigned(i/4);const uint16_t value=uint16_t((i/2)%2?-int(frame):int(frame));CHECK(output[i]==uint8_t(value>>((i%2)*8)));}
     CHECK(!iSNDdirectstop_() && created==destroyed && !occupied);uint8_t stale[4]{0xcc,0xcc,0xcc,0xcc};CHECK(!nfs_audio_render(old,stale,4) && stale[0]==0xcc);
+    CHECK(audio.start());
+    const auto resumed_token=current_token;
+    const auto resume_count=resumes.load();
+    audio.serve(&main_game);
+    const auto first_frame=frames.load();
+    uint8_t continuous[1027]{};
+    CHECK(nfs_audio_render(resumed_token,continuous,3)==3);
+    const auto mixed_before_suspend=frames.load();
+    CHECK(mixed_before_suspend==first_frame+256);
+    audio.set_suspended(true);
+    audio.serve(&main_game);
+    CHECK(!nfs_audio_render(resumed_token,continuous+3,sizeof continuous-3));
+    CHECK(frames==mixed_before_suspend && pauses==1 && resumes==resume_count+1);
+    audio.set_suspended(false);
+    audio.serve(&main_game);
+    CHECK(nfs_audio_render(resumed_token,continuous+3,sizeof continuous-3)==sizeof continuous-3);
+    CHECK(frames==first_frame+512 && resumes==resume_count+2);
+    for(size_t i=0;i<sizeof continuous;++i){
+        const auto sample=int(first_frame+i/4);
+        const auto value=uint16_t((i/2)%2 ? -sample : sample);
+        CHECK(continuous[i]==uint8_t(value>>((i%2)*8)));
+    }
+    audio.stop();
+    CHECK(created==destroyed && !occupied);
     immediate=true;CHECK(audio.start() && current_token!=old);audio.stop();immediate=false;CHECK(created==destroyed && !occupied);
     open_fails=true;CHECK(!audio.start() && created==destroyed && !occupied);open_fails=false;
     CHECK(audio.start());callback_fails=true;CHECK(!nfs_audio_render(current_token,stale,4));bool failed=false;try{audio.stop();}catch(const std::runtime_error &){failed=true;}CHECK(failed && created==destroyed && !occupied);callback_fails=false;

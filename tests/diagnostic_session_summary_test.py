@@ -152,7 +152,8 @@ class SummaryTests(unittest.TestCase):
                                  swap_intervals_over_18ms=count if race and power else 0,
                                  renderer_calls_interval=count * (3 if race else 99),
                                  renderer_queue_ms_interval=count / 2 if i != 3 else None,
-                                 renderer_execution_ms_interval=count * (2 if power else 1)))
+                                 renderer_execution_ms_interval=count * (2 if power else 1),
+                                 renderer_execution_max_ms=(7 if power else 4) if i != 4 else 200))
             rows.append(dict(type="end", reason="manual", elapsed_s=5, attempted_rows=5))
             return b"".join((json.dumps(row) + "\n").encode() for row in rows)
 
@@ -165,6 +166,8 @@ class SummaryTests(unittest.TestCase):
         self.assertIsNone(result["low_power_on_minus_off"]["median_game_cpu_ms"])
         race_on = result["low_power_on"]["race_world_interval_comparison"]["on"]
         self.assertEqual(race_on["renderer_calls_per_presentation"], 3)
+        self.assertEqual(race_on["renderer_execution_max_ms"], 7)
+        self.assertEqual(result["low_power_on_minus_off"]["renderer_execution_max_ms"], 3)
         self.assertEqual(race_on["renderer_queue_ms_per_presentation"], 0.5)
         self.assertEqual(result["low_power_on_minus_off"]["renderer_execution_ms_per_presentation"], 1)
         for invalid in (log(True, race_width=900), log(True, race_lock=30),

@@ -15,7 +15,7 @@ using MainScheduler=void(*)(MainTask,void *);
 // Consumed includes queued ownership and intentional retirement discard.
 // UseExistingOwnerPath never queues or executes the supplied operation.
 enum class OwnedRendererAcceptance {Consumed,UseExistingOwnerPath};
-constexpr unsigned renderer_queue_capacity = 256;
+constexpr unsigned renderer_queue_capacity = 512;
 class MainThreadBridge {
     struct Command;
     const std::thread::id owner;
@@ -57,7 +57,7 @@ MainScheduler sdl_main_thread_scheduler();
 MainScheduler apple_main_thread_scheduler();
 // Yield without putting the iOS main dispatch queue behind an SDL sleep.
 void wait_for_main_work(bool capped_frame_rate = false);
-struct RendererTiming {uint64_t calls=0,queue_ns=0,execution_ns=0;};
+struct RendererTiming {uint64_t calls=0,queue_ns=0,execution_ns=0,execution_max_ns=0;};
 void set_renderer_timing_capture(bool enabled);
 RendererTiming take_renderer_timing();
 template<class F> int32_t renderer_operation(F operation){

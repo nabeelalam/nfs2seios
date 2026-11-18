@@ -149,6 +149,7 @@ static NSURL *recording_folder(){
         sample.renderer_calls=double(render.calls);
         sample.renderer_queue_ms=double(render.queue_ns)/1e6;
         sample.renderer_execution_ms=double(render.execution_ns)/1e6;
+        sample.renderer_execution_max_ms=double(render.execution_max_ns)/1e6;
     }
     _powerKnown=YES;_power=sample.low_power;
     const auto frame=nfs_frame_timing_snapshot();

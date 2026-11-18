@@ -100,7 +100,7 @@ jobs:
       - name: Install GLES and headless window dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y gdb ninja-build libgl-dev libegl-dev libgles-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxfixes-dev libxrender-dev libxss-dev libxtst-dev xvfb xauth
+          sudo apt-get install -y ninja-build libgl-dev libegl-dev libgles-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxfixes-dev libxrender-dev libxss-dev libxtst-dev xvfb xauth
       - name: Prepare checked engine and selected isolated renderer
         run: python3 scripts/prepare_ci_sources.py
       - name: Generic host regression suite (Linux, once)

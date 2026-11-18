@@ -10,7 +10,7 @@ int main(){
     int value=0;
     CHECK(nfs::renderer_operation([&]{return ++value;})==1);
     const auto disabled=nfs::take_renderer_timing();
-    CHECK(disabled.calls==0 && disabled.queue_ns==0 && disabled.execution_ns==0);
+    CHECK(disabled.calls==0 && disabled.queue_ns==0 && disabled.execution_ns==0 && disabled.execution_max_ns==0);
     nfs::set_renderer_timing_capture(true);
     value=0;
     for(int i=0;i<100;++i)CHECK(nfs::renderer_operation([&]{if(std::this_thread::get_id()!=owner.owner_id())throw std::runtime_error("Wrong render owner");return ++value;})==i+1);
@@ -23,9 +23,12 @@ int main(){
     std::thread first([&]{nfs::renderer_command([&]{commands.push_back(1);return 0;});first_admitted.set_value();});
     std::thread second([&]{first_admitted.get_future().wait();nfs::renderer_command([&]{commands.push_back(2);return 0;});nfs::flush_renderer_commands();});
     first.join();second.join();CHECK(commands.size()==3 && commands[1]==1 && commands[2]==2);
-    std::atomic<int> bounded{0};
-    for(int i=0;i<400;++i)nfs::renderer_command([&]{++bounded;return 0;});
-    CHECK(bounded>0 && bounded<400);nfs::flush_renderer_commands();CHECK(bounded==400);
+    std::atomic<unsigned> bounded{0};
+    constexpr unsigned submitted=nfs::renderer_queue_capacity+1;
+    for(unsigned i=0;i<submitted;++i)nfs::renderer_command([&]{++bounded;return 0;});
+    CHECK(bounded==nfs::renderer_queue_capacity);
+    nfs::flush_renderer_commands();
+    CHECK(bounded==submitted);
     // Concurrent producers exceed the queue bound; each producer's order and
     // exactly-once execution must survive drains initiated by other producers.
     std::vector<int> producer_next(4,0);
@@ -102,7 +105,8 @@ int main(){
     CHECK(rejected.get_future().get());wrong.join();CHECK(!ran);
     const auto timing=nfs::take_renderer_timing();
     CHECK(timing.calls>=100 && timing.queue_ns>0 && timing.execution_ns>0);
+    CHECK(timing.execution_max_ns>0 && timing.execution_max_ns<=timing.execution_ns);
     const auto cleared=nfs::take_renderer_timing();
-    CHECK(cleared.calls==0 && cleared.queue_ns==0 && cleared.execution_ns==0);
+    CHECK(cleared.calls==0 && cleared.queue_ns==0 && cleared.execution_ns==0 && cleared.execution_max_ns==0);
     std::puts("PASS: render owner, synchronous results, nested calls, exception transport, borrowed storage cancellation, suspended/queued render deferral, live lifecycle dispatch, cancellation wake and wrong-thread rejection");
 }

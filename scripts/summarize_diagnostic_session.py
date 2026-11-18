@@ -55,6 +55,7 @@ def stable_interval_metrics(rows):
     swap_host_maxima = []
     queue = []
     execution = []
+    execution_maxima = []
     display_rates = []
     display_targets = []
     callback_total = late_callback_total = 0
@@ -120,6 +121,10 @@ def stable_interval_metrics(rows):
                 elapsed = row.get(key)
                 if number(elapsed):
                     values.append(elapsed / calls)
+            total_execution = row.get("renderer_execution_ms_interval")
+            max_execution = row.get("renderer_execution_max_ms")
+            if number(total_execution) and number(max_execution, total_execution):
+                execution_maxima.append(max_execution)
     return {
         "sample_intervals": len(rows),
         "observed_swap_intervals": total,
@@ -141,6 +146,7 @@ def stable_interval_metrics(rows):
         "display_link_max_late_ms": max(callback_max_late_ms, default=None),
         "renderer_queue_ms_per_call": distribution(queue),
         "renderer_execution_ms_per_call": distribution(execution),
+        "renderer_execution_max_ms": max(execution_maxima, default=None),
     }
 
 
@@ -388,6 +394,7 @@ def compare_power_sessions(normal, low_power):
             "renderer_calls_per_presentation": pacing.get("renderer_calls_per_presentation"),
             "renderer_queue_ms_per_presentation": pacing.get("renderer_queue_ms_per_presentation"),
             "renderer_execution_ms_per_presentation": pacing.get("renderer_execution_ms_per_presentation"),
+            "renderer_execution_max_ms": pacing["renderer_execution_max_ms"],
             "median_display_callbacks_per_second": pacing["display_link_callbacks_per_second"]["median"],
             "median_display_target_ms": pacing["display_link_mean_target_ms"]["median"],
             "display_link_late_callback_fraction": pacing["display_link_late_callback_fraction"],

@@ -49,7 +49,7 @@ int main(){
   pending.push_back({903,sample_start+25000000,20000000,3,3000000});
   now_ns+=30000000;r.poll();
   pending.push_back({904,sample_start+46000000,21000000,3,4000000});
-  renderer={240,6000000,12000000};
+  renderer={240,6000000,12000000,4000000};
   now_ns=sample_start+1000000000;r.poll();
   pending.push_back({905,now_ns+22000000,22000000,3});
   ++drops;now_ns+=1000000000;r.poll();
@@ -66,6 +66,7 @@ int main(){
   assert(row.find("\"renderer_calls_interval\":240.0000")!=std::string::npos);
   assert(row.find("\"renderer_queue_ms_interval\":6.0000")!=std::string::npos);
   assert(row.find("\"renderer_execution_ms_interval\":12.0000")!=std::string::npos);
+  assert(row.find("\"renderer_execution_max_ms\":4.0000")!=std::string::npos);
   assert(!renderer_enabled && renderer.calls==0);
   std::getline(log,row);assert(row.find("\"swap_intervals_count\":null")!=std::string::npos);
  }

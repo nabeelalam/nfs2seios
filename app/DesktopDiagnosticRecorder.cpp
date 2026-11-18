@@ -154,6 +154,7 @@ struct DesktopDiagnosticRecorder::Impl {
    s.renderer_calls=double(renderer.calls);
    s.renderer_queue_ms=double(renderer.queue_ns)/1e6;
    s.renderer_execution_ms=double(renderer.execution_ns)/1e6;
+   s.renderer_execution_max_ms=double(renderer.execution_max_ns)/1e6;
   }
   record_frame_content(s,nfs_frame_content_totals(),frame_content,s.interval>0 && sample_rows>0);
   std::string row=diagnostic_sample_json(s);

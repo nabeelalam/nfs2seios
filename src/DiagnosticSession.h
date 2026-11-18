@@ -51,7 +51,7 @@ struct DiagnosticSample {
     double swap_intervals=-1,swap_over_18ms=-1,swap_over_20ms=-1,swap_max_ms=-1;
     double swap_calls=-1,swap_call_total_ms=-1,swap_call_max_ms=-1;
     double classified_presentations=-1,race_world_presentations=-1;
-    double renderer_calls=-1,renderer_queue_ms=-1,renderer_execution_ms=-1;
+    double renderer_calls=-1,renderer_queue_ms=-1,renderer_execution_ms=-1,renderer_execution_max_ms=-1;
     double process_ms=-1,main_ms=-1,app_cpu_percent=-1,ram_mb=-1;
     double battery_percent=-1,brightness=-1;
     unsigned logical_cores=0;
@@ -131,6 +131,7 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"renderer_calls_interval\":";diagnostic_number(out,s.renderer_calls);
     out<<",\"renderer_queue_ms_interval\":";diagnostic_number(out,s.renderer_queue_ms);
     out<<",\"renderer_execution_ms_interval\":";diagnostic_number(out,s.renderer_execution_ms);
+    out<<",\"renderer_execution_max_ms\":";diagnostic_number(out,s.renderer_execution_max_ms);
     out<<",\"process_cpu_ms_interval\":";diagnostic_number(out,s.process_ms);
     out<<",\"main_cpu_ms_interval\":";diagnostic_number(out,s.main_ms);
     out<<",\"app_cpu_percent_all_cores\":";diagnostic_number(out,s.app_cpu_percent,100);
