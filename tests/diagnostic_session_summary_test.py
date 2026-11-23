@@ -19,6 +19,36 @@ def sample(time, power=False, identity=1, fps=60):
 
 
 class SummaryTests(unittest.TestCase):
+
+    def test_main_wait_metrics_use_matched_durations_and_reason_counts(self):
+        def row(time, duration, count, total, maximum):
+            return dict(sample(time), interval_s=duration, main_wait_calls=count,
+                        main_wait_elapsed_ms=total, main_wait_max_ms=maximum,
+                        main_wait_finished=0, main_wait_stopped=0,
+                        main_wait_timed_out=count / 2, main_wait_handled_source=count / 2,
+                        main_wait_other=0)
+        rows = [row(0, 1, 100, 100, 2), row(1, 1, 100, 100, 2),
+                row(3, 2, 200, 400, 3)]
+        result = summary.summarize(fixture(rows))["stable_interval_comparison"]["off"]
+        self.assertEqual(result["main_wait_measured_seconds"], 3)
+        self.assertEqual(result["main_wait_calls_per_second"], 100)
+        self.assertAlmostEqual(result["main_wait_elapsed_ms_per_call"], 500 / 300)
+        self.assertEqual(result["main_wait_timed_out_fraction"], 0.5)
+        self.assertEqual(result["main_wait_max_ms"], 3)
+        bad = [dict(rows[1], **changes) for changes in (
+            {"main_wait_calls": True}, {"main_wait_calls": 0.5},
+            {"main_wait_other": 1}, {"main_wait_timed_out": None},
+            {"main_wait_elapsed_ms": 1001}, {"main_wait_max_ms": 101},
+            {"interval_s": 0}, {"main_wait_finished": float("nan")})]
+        result = summary.main_wait_metrics(bad + [sample(1)])
+        self.assertEqual(result["main_wait_measured_seconds"], 0)
+        self.assertIsNone(result["main_wait_calls_per_second"])
+        zero = row(1, 1, 0, 0, 0)
+        result = summary.main_wait_metrics([zero])
+        self.assertEqual(result["main_wait_calls_per_second"], 0)
+        self.assertIsNone(result["main_wait_timed_out_fraction"])
+
+
     def test_event_pump_rate_uses_matched_durations_and_preserves_missing_data(self):
         rows = [dict(sample(0), interval_s=1, foreground_event_pumps_interval=999),
                 dict(sample(1), interval_s=1, foreground_event_pumps_interval=1000),

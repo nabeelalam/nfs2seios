@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 #include "SystemCpuLoad.h"
+#include "MainWaitTiming.h"
 #include "FramePresentation.h"
 #include <cmath>
 #include <cstdint>
@@ -54,6 +55,7 @@ struct DiagnosticSample {
     double renderer_calls=-1,renderer_queue_ms=-1,renderer_execution_ms=-1,renderer_execution_max_ms=-1;
     double process_ms=-1,main_ms=-1,app_cpu_percent=-1,ram_mb=-1;
     double foreground_event_pumps=-1;
+    bool main_wait_valid=false;MainWaitTiming main_wait{};
     double battery_percent=-1,brightness=-1;
     unsigned logical_cores=0;
     int width=0,height=0,frame_limit=0,thermal=-1,battery_state=0,app_state=0;
@@ -95,6 +97,7 @@ inline std::string diagnostic_header(unsigned build,const std::string &source={}
        "\"swap_call_scope\":\"host elapsed time inside SDL_GL_SwapWindow for successful swaps, including any display or driver wait\","
        "\"renderer_scope\":\"timed main-thread renderer operations since prior sample, host elapsed time, no GPU timestamps\","
        "\"event_pump_scope\":\"foreground GameSession polls,not kernel wakeups or idle timeout counts\","
+       "\"main_wait_scope\":\"iOS owner run-loop calls wholly within sample;elapsed includes nested callbacks/rendering,not idle CPU or kernel wakeups\","
        "\"core_scope\":\"whole system,not per-core app usage\","
        "\"battery_scope\":\"OS percentage,not watts or measured energy\","
        "\"battery_states\":\"0 unknown,1 unplugged,2 charging,3 full\","
@@ -137,6 +140,15 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"process_cpu_ms_interval\":";diagnostic_number(out,s.process_ms);
     out<<",\"main_cpu_ms_interval\":";diagnostic_number(out,s.main_ms);
     out<<",\"foreground_event_pumps_interval\":";diagnostic_number(out,s.foreground_event_pumps);
+    const auto wait_number=[&](uint64_t value){diagnostic_number(out,s.main_wait_valid?double(value):-1);};
+    out<<",\"main_wait_calls\":";wait_number(s.main_wait.calls);
+    out<<",\"main_wait_elapsed_ms\":";diagnostic_number(out,s.main_wait_valid?double(s.main_wait.elapsed_ns)/1e6:-1);
+    out<<",\"main_wait_max_ms\":";diagnostic_number(out,s.main_wait_valid?double(s.main_wait.max_ns)/1e6:-1);
+    out<<",\"main_wait_finished\":";wait_number(s.main_wait.finished);
+    out<<",\"main_wait_stopped\":";wait_number(s.main_wait.stopped);
+    out<<",\"main_wait_timed_out\":";wait_number(s.main_wait.timed_out);
+    out<<",\"main_wait_handled_source\":";wait_number(s.main_wait.handled_source);
+    out<<",\"main_wait_other\":";wait_number(s.main_wait.other);
     out<<",\"app_cpu_percent_all_cores\":";diagnostic_number(out,s.app_cpu_percent,100);
     out<<",\"logical_cores\":"<<s.logical_cores;
     out<<",\"ram_mb\":";diagnostic_number(out,s.ram_mb);

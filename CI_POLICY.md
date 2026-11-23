@@ -413,3 +413,19 @@ OLD/cold rounds use the existing normal-path gate: at least10%accessor CPU gain
 and at most5%transform/REP regression. Measure critical/deferred true-stop cost
 separately and retain shutdown/recursive-critical acceptance; a normal-path
 component pass alone never promotes source or establishes device FPS/battery.
+
+## Source-only owner-wait validation
+
+The manual owner-wait choice in the registered helper workflow answers actual
+Apple main-loop recording correctness and iOS owner-source syntax questions.
+Linux privacy, summary and sanitizer gates precede one standard macos-15-intel
+job (6minute bound, Xcode16.4). The driver bounds all work to240seconds, each
+compile to120seconds and each executable to30seconds. Only the existing
+diagnostic serializer and three-unit Apple main-queue test are built; the
+owner source additionally receives an ARM64 iOS syntax-only check.
+
+Intel host correctness is not ARM timing, iOS execution or game/device energy
+acceptance. This is distinct from, and never retries, the canceled cold-stop
+ARM performance experiment. No game, assets, signing, app/IPA, upload or cache
+is used. Shared workflow concurrency remains sequential. Cancel an unacquired
+runner after300seconds; no unchanged retry or paid/larger fallback.

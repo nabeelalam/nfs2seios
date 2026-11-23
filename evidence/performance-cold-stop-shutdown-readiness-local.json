@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "scope": "Local existing worker/event/recursive-critical shutdown readiness under OLD/cold headers; not native component performance or game acceptance",
+  "targets": [
+    "thread_tests",
+    "critical_section_tests",
+    "event_tests"
+  ],
+  "variants": [
+    "old",
+    "cold"
+  ],
+  "tests": [
+    {
+      "variant": "old",
+      "target": "thread_tests",
+      "exitCode": 0
+    },
+    {
+      "variant": "old",
+      "target": "critical_section_tests",
+      "exitCode": 0
+    },
+    {
+      "variant": "old",
+      "target": "event_tests",
+      "exitCode": 0
+    },
+    {
+      "variant": "cold",
+      "target": "thread_tests",
+      "exitCode": 0
+    },
+    {
+      "variant": "cold",
+      "target": "critical_section_tests",
+      "exitCode": 0
+    },
+    {
+      "variant": "cold",
+      "target": "event_tests",
+      "exitCode": 0
+    }
+  ],
+  "asanUbsan": true,
+  "optimization": "O2; assertions retained",
+  "coherentTuCompiles": 20,
+  "testLinks": 6,
+  "configuredBaselineCacheObjectsAndBinariesUnchanged": true,
+  "protectedInputCount": 34,
+  "canonicalWorkerControlUnchanged": true,
+  "canonicalGuestCopyUnchanged": true,
+  "coldFixtureSha256": "087cf104b49896b6e4f7f66d990bd067b8c60d763e668cb69005549bc81c9e7f",
+  "existingCoverage": [
+    "Actual ThreadBridge termination and worker failures",
+    "Event and delay interruption",
+    "Guest-load cancellation",
+    "Recursive critical-section self-stop and release",
+    "Failure mailbox and owned-context retirement"
+  ],
+  "nativeTimingGatePending": true,
+  "nativeGateReceiptAbsent": true,
+  "gameOrGuiLaunched": false,
+  "gameDataUsed": false,
+  "cloudStarted": false,
+  "productionIntegrated": false,
+  "fpsOrEnergyGainEstablished": false
+}

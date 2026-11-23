@@ -3,6 +3,7 @@
 #include "ResidentMemory.h"
 #import <QuartzCore/QuartzCore.h>
 #include "DiagnosticSession.h"
+#include "MainWaitTiming.h"
 #include "EngineThreadMetrics.h"
 #include "MainThreadBridge.h"
 #include "FramePresentation.h"
@@ -103,6 +104,7 @@ static NSURL *recording_folder(){
     self.lastURL=url;[NSUserDefaults.standardUserDefaults setObject:name forKey:@"NFSLastDiagnosticLog"];
     nfs::take_renderer_timing();
     nfs::set_renderer_timing_capture(true);
+    nfs::set_main_wait_capture(true);
     nfs_frame_timing_capture(1);
     const auto frame=nfs_frame_timing_snapshot();
     _frameEpoch=frame.window_epoch;_frameDrops=frame.dropped_total;
@@ -149,6 +151,8 @@ static NSURL *recording_folder(){
     if(sample.interval>0 && !powerChanged && pumps>=_foregroundPumps)
         sample.foreground_event_pumps=double(pumps-_foregroundPumps);
     _foregroundPumps=pumps;
+    const auto waits=nfs::take_main_wait_timing();
+    if(sample.interval>0 && !powerChanged){sample.main_wait_valid=true;sample.main_wait=waits;}
     const auto render=nfs::take_renderer_timing();
     if(sample.interval>0 && !powerChanged){
         sample.renderer_calls=double(render.calls);
@@ -210,6 +214,7 @@ static NSURL *recording_folder(){
     if(!self.recording)return;
     nfs_frame_timing_capture(0);
     nfs::set_renderer_timing_capture(false);
+    nfs::set_main_wait_capture(false);
     self.recording=NO;self.finishing=YES;[self.timer invalidate];self.timer=nil;
     [self.displayLink invalidate];self.displayLink=nil;nfs_sync_diagnostic_capture();
     NSArray *reasons=@[@"manual",@"background",@"window_changed",@"time_limit",@"write_error",@"writer_backlog"];

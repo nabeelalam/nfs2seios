@@ -43,6 +43,40 @@ def render_conditions(samples):
     }
 
 
+def main_wait_metrics(rows):
+    # Whole calls only; elapsed includes nested dispatch/render work, not idle.
+    calls = elapsed = seconds = 0
+    reasons = {key: 0 for key in ("finished", "stopped", "timed_out", "handled_source", "other")}
+    maxima = []
+    for row in rows:
+        duration = row.get("interval_s")
+        count = row.get("main_wait_calls")
+        total = row.get("main_wait_elapsed_ms")
+        longest = row.get("main_wait_max_ms")
+        values = {key: row.get("main_wait_" + key) for key in reasons}
+        if not (number(duration, 2.5) and duration > 0
+                and number(count, 10000000) and count == int(count)
+                and all(number(value, count) and value == int(value) for value in values.values())
+                and sum(values.values()) == count
+                and number(total, duration * 1000 + 0.1) and number(longest, total)
+                and (count > 0 or total == longest == 0)):
+            continue
+        calls += count
+        elapsed += total
+        seconds += duration
+        maxima.append(longest)
+        for key, value in values.items():
+            reasons[key] += value
+    return {
+        "main_wait_measured_seconds": seconds,
+        "main_wait_calls_per_second": calls / seconds if seconds else None,
+        "main_wait_elapsed_ms_per_call": elapsed / calls if calls else None,
+        "main_wait_max_ms": max(maxima, default=None),
+        **{"main_wait_" + key + "_fraction": value / calls if calls else None
+           for key, value in reasons.items()},
+    }
+
+
 def stable_interval_metrics(rows):
     slow = total = 0
     unlocked_swaps = unlocked_slow = 0
@@ -133,6 +167,7 @@ def stable_interval_metrics(rows):
                 execution_maxima.append(max_execution)
     return {
         "sample_intervals": len(rows),
+        **main_wait_metrics(rows),
         "foreground_event_pump_samples_seconds": pump_seconds,
         "foreground_event_pumps_per_second": pump_count / pump_seconds if pump_seconds else None,
         "observed_swap_intervals": total,
@@ -410,6 +445,9 @@ def compare_power_sessions(normal, low_power):
             "display_link_max_late_ms": pacing["display_link_max_late_ms"],
             "mean_swap_host_ms": pacing["swap_host_ms_per_call"],
             "foreground_event_pumps_per_second": pacing["foreground_event_pumps_per_second"],
+            **{key: pacing[key] for key in (
+                "main_wait_calls_per_second", "main_wait_elapsed_ms_per_call", "main_wait_max_ms",
+                "main_wait_timed_out_fraction", "main_wait_handled_source_fraction")},
             "fraction_swaps_over_18ms": pacing["unlocked_swap_fraction_over_18ms"],
             "majority_slow_sample_fraction": pacing["unlocked_majority_slow_sample_fraction"],
             "longest_majority_slow_run_s": pacing["unlocked_longest_majority_slow_run_s"],

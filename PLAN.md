@@ -18,6 +18,26 @@ Two requirements are part of the goal:
    material, original assets, captures, private evidence and personal filesystem
    information outside the public repository.
 
+## Current delivery and next work (23 November)
+
+Build23 is the latest delivered personal iPad package, from successful Apple
+run45146351757. The completed artwork batch is packaged with23 private resources;
+older numbered UI checkpoints below are historical, not the current task list.
+[Download build23](https://github.com/nabeelalam/nfs-ii-se-ios/releases/download/classic-ui-widescreen-45146351757-1/NFSIISE-remastered-personal-unsigned.zip).
+Physical launch, full menu-transition continuity and split-screen acceptance
+are still unverified. Evidence: evidence/ui-private-build23-delivery-local.json.
+
+Continue measured Low Power Mode and battery work while awaiting feedback.
+Production renderer and worker headers remain unchanged: prior candidates failed
+whole-game gates, and the cold-helper native timing attempt never acquired a
+runner. Recording-only owner-wait telemetry and its log summary pass local
+sanitizer/27-Python checks but are not in build23. The existing Apple main-queue
+test now includes real run-loop recording, reentrant sample invalidation and
+capture-off checks; Apple execution remains pending. Do not redispatch the
+unchanged canceled helper run or build an app merely to repeat artwork checks.
+
+## Historical UI checkpoints
+
 ## Current UI checkpoint and next work
 
 ### 23 November: current car-menu checkpoint
@@ -2666,3 +2686,25 @@ All24focused tests pass. Candidate WorkerControl and both C++ oracle/probe sourc
 Changed-source run45195432206 again passes Linux and uses standardARM for24seconds after3seconds acquisition, with0artifacts. Its richer report reproduces the exact linked-check failure locally: the standard C++ exception continuation __Unwind_Resume was not modeled. The checker now recognizes only this exact no-return exception exit (plus existing exact throw exits); returning/rethrow variants, aliases, unknown calls and unmatched metadata remain rejected. LLVM libunwind source confirms this continuation leaves the frame and cannot return.
 
 All25focused tests pass, and root independently replays the actual recorded Apple machine code successfully:1current-control TLS lookup,1live atomic load, propernonnull/falsepath guard and2live helper depth lookups. Preserve the original job failure; this is later offline codegen validation, not a retroactive CI success, native runtime verification or performance gain. Candidate/header/C++ source bytes are unchanged, no timing rows exist, and production remains old. Only a changed-source, privacy-gated follow-up can now collect the unexecuted native correctness/timing data. Evidence: evidence/performance-cold-stop-linked-replay-local.json.
+
+### 23 November: native timing acquisition canceled within single-attempt policy
+
+The exact-exception correction and25focused tests were published as reviewed sourcec0d361c235946f6193fe83d253b0528953259577 after full-history privacy/secret gates. Run45198881780 passes Linux, but standardARM never acquires a runner. The last server-clock observation is316seconds queued against the300second budget; cancellation is then accepted and terminal status is independently verified. Native runner_id is0 with0steps,0runtime/timing execution and0artifacts. Keep the actual observation value; do not label this a candidate failure or claim native timing evidence. Original repository remains private.
+
+Do not redispatch the unchanged queue attempt or use paid/larger fallback. Actual linked tiny-helper code remains validated offline, but the component performance gate is PENDING. The coherent cold app scripts remain blocked by a missing real native-pass receipt; no receipt may be fabricated from offline CFG checks. Continue local existing worker/recursive-critical/shutdown readiness work and measurement design while preserving production/build23. Evidence: evidence/performance-cold-stop-runner-acquisition-local.json.
+
+### 23 November: existing real-worker shutdown suites pass under cold fixture
+
+With native timing still pending, all three existing thread/event/critical suites were rebuilt coherently for OLD/cold as20TUs/6links under O2 plus ASan/UBSan, retaining assertions. All6executables pass, exercising real ThreadBridge termination/failure paths, event/delay/guest-load cancellation, recursive-critical self-stop/release and mailbox/context retirement. Baseline configured objects/binaries and all protected inputs remain exact. No GUI, game data or game app was used.
+
+This is local cancellation/shutdown readiness only. Canonical worker/transaction headers remain unchanged, the native timing gate remains pending, and the full-app trial still has no pass receipt. Do not infer FPS, battery, physical iPad or nativeARM runtime acceptance. Evidence: evidence/performance-cold-stop-shutdown-readiness-local.json.
+
+### 23 November: opt-in owner run-loop wait recording
+
+Added iOS recording-only call counts, return reasons, elapsed total and maximum without changing wait/input policy. Owner-only capture invalidates calls crossing reentrant sample/reset/restart boundaries. First and power-transition samples stay unavailable; desktop fields remain null. Elapsed includes nested callbacks/rendering, not idle CPU, wakeups or energy. Existing session checks plus boundary/serialization cases pass under Clang C++14 ASan/UBSan. Apple compilation and physical validation remain pending; no app/cloud build or battery gain claimed. Evidence: evidence/performance-main-wait-recording-local.json.
+
+Session-summary integration now reports matched-duration wait rates, mean/max inclusive elapsed time and reason fractions for stable/race-only power comparisons. All27 summary tests pass, including legacy nulls and inconsistent count/duration rejection. CoreFoundation reason mappings are compile-time checked against Apple constants. Apple/device validation remains pending.
+
+### 23 November: small owner-wait Apple validation route ready
+
+The registered helper workflow has a distinct manual owner-wait route: Linux privacy/summary/sanitizer gates precede one standard Intel Apple job. Actual main-queue recording and reentrant sampling run under sanitizers; ARM64 iOS owner-source compilation is syntax-only. This answers correctness, not ARM timing or energy, and does not retry the canceled cold experiment. Local route and44policy/summary tests pass. Driver240seconds, compile120, executable30, Apple job6minutes and unacquired queue300seconds are bounded. No app/game/assets/cache/upload. Native execution remains pending. Evidence: evidence/performance-owner-wait-native-preflight-local.json.

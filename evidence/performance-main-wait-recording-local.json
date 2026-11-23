@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "scope": "Opt-in iOS owner run-loop recording; unchanged wait and input policy",
+  "semantics": "Complete calls within sample only; reentrant sample/reset/restart excludes crossing calls. Elapsed includes callbacks and renderer execution, not idle CPU, kernel wakeups or energy. Capture disabled outside recording. Desktop values null.",
+  "validation": {
+    "diagnostic_session_suite": "PASS Clang C++14 ASan/UBSan",
+    "cases": [
+      "five reason categories",
+      "duration sum/maximum",
+      "sample-boundary exclusion",
+      "disabled capture",
+      "restart exclusion",
+      "null availability",
+      "valid units/counts"
+    ],
+    "apple_compile": "pending",
+    "physical_device": "pending",
+    "battery_gain": "not established",
+    "summary_suite": "27 tests PASS; matched-duration counts, unavailable legacy fields and inconsistent-row rejection"
+  },
+  "source_sha256": {
+    "ios/DiagnosticRecorder.mm": "05eab9d75a8b687725c347edf57772f4fba7ef2b82a25d45985165ee0f2a38d8",
+    "src/AppleMainThread.mm": "dbd5b616cbbfc628d3c3d7d139e14de073c68e66eeb4d94dbd1100ac6db26c3a",
+    "src/DiagnosticSession.h": "76599509bcf01e552cf92efff35f96660a9e3832c149edf4a6512e82c40f3a61",
+    "tests/diagnostic_session_tests.cpp": "00145514dca9ed0aeb5efb098e838860710b78d857604728b7d012daa86fa62c",
+    "src/MainWaitTiming.h": "e06018cdf3e2aeed021cff86eff7b207acd442be90b726ba65bb96995a1b6629",
+    "scripts/summarize_diagnostic_session.py": "067859a64d0efccddea26baede802e26f405cd25607a8bd752999ce875f44736",
+    "tests/diagnostic_session_summary_test.py": "7d30393469a21f0ac3fa585485b7edb754ff8f55ad0bfb8c669d39a473ca0728"
+  },
+  "research": "https://developer.apple.com/documentation/corefoundation/cfrunlooprunresult",
+  "appleIntegrationTest": {
+    "source": "tests/apple_main_thread_tests.cpp",
+    "sha256": "87efa947d45b2e6e1b242bc3c1ebe78c008288f5d86155da51a6176a7ea2a4bd",
+    "status": "prepared, not Apple compiled or executed",
+    "coverage": [
+      "one real CFRunLoop call and consistent reason totals",
+      "main-queue callback takes sample inside measured wait; crossing call excluded",
+      "capture disabled yields zero calls",
+      "existing 100 borrowed-buffer nested-dispatch and exception cases retained"
+    ],
+    "deadlineSeconds": 10,
+    "guiRequired": false,
+    "newWorkflowOrCloudDispatch": false
+  }
+}

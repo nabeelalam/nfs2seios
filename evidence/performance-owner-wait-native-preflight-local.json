@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "scope": "Source-only actual Apple owner-wait correctness and iOS syntax validation preflight",
+  "nativeExecuted": false,
+  "localSanitizerRoutePassed": true,
+  "policyAndSummaryTestsPassed": 44,
+  "runner": "standard macos-15-intel",
+  "xcode": "16.4",
+  "limits": {
+    "linuxJobMinutes": 5,
+    "appleJobMinutes": 6,
+    "driverSeconds": 240,
+    "compileSeconds": 120,
+    "executableSeconds": 30,
+    "unacquiredQueueSeconds": 300
+  },
+  "gameOrGuiRequired": false,
+  "appOrArtifactOrCache": false,
+  "coldPerformanceExperimentRetried": false,
+  "deviceOrBatteryClaim": false,
+  "sourceSha256": {
+    "scripts/apple_owner_wait_probe.py": "67a22a2ac8120961a4bb7c9669340fd4ac23edfa51e034903ec9f4fba14f94d6",
+    "tests/apple_owner_wait_probe_test.py": "03a50670ebe66a17fbb3781e2d9f5ea6a41d98dbb92c9eeb897ff80b758a828d",
+    "tests/apple_main_thread_tests.cpp": "87efa947d45b2e6e1b242bc3c1ebe78c008288f5d86155da51a6176a7ea2a4bd",
+    ".github/workflows/lock-benchmark.yml": "c286fc155de8de20a48d1ec1c413689b0ac459b8056e6220c5395f9f77771d64",
+    "src/AppleMainThread.mm": "dbd5b616cbbfc628d3c3d7d139e14de073c68e66eeb4d94dbd1100ac6db26c3a",
+    "src/MainWaitTiming.h": "e06018cdf3e2aeed021cff86eff7b207acd442be90b726ba65bb96995a1b6629"
+  }
+}

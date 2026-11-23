@@ -5,6 +5,23 @@
 #define CHECK(x) do{if(!(x)){std::fprintf(stderr,"FAIL session line%d\n",__LINE__);return 1;}}while(0)
 struct CommaDecimal : std::numpunct<char>{char do_decimal_point()const override{return ',';}};
 int main(){
+    nfs::MainWaitCapture waits;
+    CHECK(waits.begin()==0);
+    waits.enable(true);const auto token=waits.begin();CHECK(token!=0);
+    for(int reason=1;reason<=5;++reason)waits.observe(token,100*reason,reason);
+    const auto measured=waits.take();
+    CHECK(measured.calls==5 && measured.elapsed_ns==1500 && measured.max_ns==500);
+    CHECK(measured.finished==1 && measured.stopped==1 && measured.timed_out==1 && measured.handled_source==1 && measured.other==1);
+    waits.observe(token,999,3);CHECK(waits.take().calls==0);
+    const auto stopped=waits.begin();waits.enable(false);waits.observe(stopped,999,3);
+    CHECK(waits.begin()==0 && waits.take().calls==0);
+    waits.enable(true);const auto before_restart=waits.begin();waits.enable(true);
+    waits.observe(before_restart,999,4);CHECK(waits.take().calls==0);
+    nfs::DiagnosticSample wait_sample;
+    CHECK(nfs::diagnostic_sample_json(wait_sample).find("\"main_wait_calls\":null")!=std::string::npos);
+    wait_sample.main_wait_valid=true;wait_sample.main_wait=measured;
+    CHECK(nfs::diagnostic_sample_json(wait_sample).find("\"main_wait_calls\":5.0000")!=std::string::npos);
+    CHECK(nfs::diagnostic_sample_json(wait_sample).find("\"main_wait_elapsed_ms\":0.0015")!=std::string::npos);
     std::locale::global(std::locale(std::locale::classic(),new CommaDecimal));
     nfs::DiagnosticSessionLimit limit;
     CHECK(limit.accept(0) && !limit.accept(0) && !limit.accept(-1));
