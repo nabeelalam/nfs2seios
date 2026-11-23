@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "scope": "Exact build23 ARM64 executable inspection and isolated TLS correctness checks; not a speed or device acceptance result.",
+  "build": 23,
+  "compiledSource": "a4ca290f4f5d65821aae25bd252fd9b06445137c",
+  "executableSha256": "00d4da7f405752de40307e94682c00cff54ddeb7344e195958f5ccce54a959df",
+  "executableBytes": 62147816,
+  "function": "nfs::check_worker_stop",
+  "symbolAddress": "0x10022e5e0",
+  "boundWorkerNormalPath": {
+    "threadLocalIndirectLookups": 3,
+    "lookupsAfterAtomicFlagLoadBeforeFlagBranch": 2,
+    "atomicStopLoad": "ldarb",
+    "stopFalseBranch": "tbz",
+    "finding": "With a bound control, both depth/deferral lookups execute before checking the false stop bit; they are not confined to requested-stop handling."
+  },
+  "canonicalHeadersChanged": false,
+  "unifiedFixtureSha256": "e2f75fce16fb9c737ccc14331be72f19fb99aa0446b9071c725d0b177bde0d77",
+  "semanticChecks": {
+    "variants": [
+      "old",
+      "unified"
+    ],
+    "optimizedAndAddressUndefinedSanitizersPassed": true,
+    "multipleCompilationUnits": true,
+    "fourSimultaneousIndependentWorkers": true,
+    "liveControlRebindingWithinTransaction": true,
+    "stopBeforeResolutionPreserved": true,
+    "nestedStopDeferralsPreserved": true
+  },
+  "limitations": [
+    "Current binary inspected, not run locally",
+    "No updated Apple unified code generation yet",
+    "No ARM native component timing yet",
+    "No full-game or physical-device gain established"
+  ],
+  "next": "Compare unified POD TLS code generation and bounded native ARM component timing before any production-header promotion or app build.",
+  "standardArmRunnerResearch": {
+    "source": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "verified": "Official public-standard table lists macos-15 as3coreM1/7GB ARM64, free for publicrepos. No job dispatched and no billing/settings changed."
+  },
+  "cloudJobDispatched": false
+}

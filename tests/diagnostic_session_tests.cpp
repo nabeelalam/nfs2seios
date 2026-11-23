@@ -59,10 +59,13 @@ int main(){
     CHECK(line.find("\"display_link_callbacks\":null")!=std::string::npos);
     CHECK(line.find("\"hd_timing_requested\":null")!=std::string::npos);
     CHECK(line.find("\"renderer_calls_interval\":null")!=std::string::npos);
+    CHECK(line.find("\"foreground_event_pumps_interval\":null")!=std::string::npos);
     CHECK(line.find("\"swap_intervals_count\":null")!=std::string::npos);
     sample.swap_intervals=2;sample.swap_over_18ms=2;sample.swap_over_20ms=1;sample.swap_max_ms=30;
     sample.swap_calls=2;sample.swap_call_total_ms=13;sample.swap_call_max_ms=9;
     sample.renderer_calls=160;sample.renderer_queue_ms=7.25;sample.renderer_execution_ms=11.5;
+    sample.foreground_event_pumps=800;
+    CHECK(nfs::diagnostic_sample_json(sample).find("\"foreground_event_pumps_interval\":800.0000")!=std::string::npos);
     sample.display_link_callbacks=60;sample.display_link_target_ms=1000.0/60;
     const auto render=nfs::diagnostic_sample_json(sample);
     CHECK(render.find("\"display_link_callbacks\":60.0000")!=std::string::npos);

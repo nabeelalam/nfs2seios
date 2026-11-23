@@ -2554,3 +2554,45 @@ Build23 now contains23 exact private resources and preserves all12 Apple-base me
 The complete lossless ZIP571,357,169bytes is transferred only through the original private repository. Private visibility is verified before and after, and the server SHA256 matches e44dce9d471e669d8e421b82f04e6ade4e8f4db06c4e748f5dbb7705bea688a4. No finished private artwork is published to the public repository or Actions artifacts. All23 resources and12 unchanged Apple-base members retain their checked identities; native code and compressed base storage are preserved. The exact temporary public base-only draft is deleted after verified private delivery; local base/package receipts and bytes are retained. No unrelated release or visibility setting changes.
 
 Build23 remains unsigned for personal SideStore signing. Its physical launch, complete menu continuity, split-screen race and Low Power Mode/battery results remain unverified. Resume measured performance/battery work while device feedback is pending; no need to rebuild merely for artwork iteration or this local packaging-tool correction. Evidence: evidence/ui-private-build23-delivery-local.json.
+
+### 23 November: measured battery-investigation groundwork
+
+Source-only packaging corrections were published as d417883a387a32d3cf3f02a044e43e418355559d after both privacy scanners passed; no new cloud build was started. Build23 private delivery remains unchanged.
+
+The iPad owner loop uses a1ms unlocked/4ms capped run-loop timeout. Apple energy guidance identifies unnecessary polling as a possible energy cost, but neither configured timeout nor app poll count proves actual kernel wakeups or battery attribution. Reuse the existing watchdog foreground-poll counter in one-second diagnostic samples; add a duration-weighted report for steady/race-only intervals. First samples and power changes remain excluded, old logs report unavailable. No gameplay timing, extra per-poll operations, GPU measurement or battery/FPS gain is claimed. The26Python summary tests and sanitizer-enabled C++ serializer pass locally; Apple compilation/device readings remain pending and build23 predates this field. Evidence: evidence/performance-event-pump-diagnostics-local.json.
+
+### 23 November: bounded renderer-command allocation candidate
+
+A private trial combines each owned callable with its shared completion record. The actual192byte triangle capture drops from two allocations to one; existing borrowed and legacy operations retain their std::function move-out path. Eight alternating-order complete-threaded-bridge rounds reduce triangle CPU time14.03% and wall time13.18%; small scalar CPU is1.32%slower, borrowed0.54%slower and syntheticmixed CPU effectivelyunchanged. The predeclared component gate passes, without implying whole-game/device FPS or energy savings.
+
+Independent review caught a cancelled-target pressure-drain race and nullable-callable differences before integration. The corrected hybrid passes the existing main-thread suite, all12legacy ownership scenarios,11concrete large-closure/null/move cases and the deterministic cancellation-pressure oracle under ASan/UBSan. The oracle also passes the unchanged baseline. No guest checks, draw order, graphics quality or game timing changed. A coherent private desktop trial rebuilds all18direct bridge consumers and reuses81unchanged objects; matched full-game comparisons remain required before promoting source. No cloud build or public/private app delivery changes. Evidence: evidence/performance-typed-renderer-component-local.json.
+
+### 23 November: whole-game renderer trial rejected
+
+The coherent optimized candidate and baseline each ran twice, AB then BA, in North Country split screen with Ford Indigo/Nazca C2, full opponents and two native virtual controllers. Both players were visibly moving in first gear before each exact30second recorded interval. All4runs shut down cleanly, recording had no drops/writer errors, all23resources/binaries stayed exact and the1020file copied fixture was restored after every case; the source fixture was unchanged. The owned display remained hidden/TCPdisabled.
+
+The predeclared2%ownerCPU improvement gate fails: AB changes13.12025ms to13.0879ms (0.25%better); BA changes12.93815ms to13.539ms (4.64%worse). Reverse-order median swap spacing is2.82%worse. Keep the existing production renderer; do not turn the14%component improvement into a device/FPS/battery claim or dispatch an Apple build for this candidate. Raw private artifacts and negative evidence are retained; no unchanged timing rerun is planned. An initial pre-timing bootstrap miss and an asynchronous end-marker duration guard were observer issues, retained separately; exact same30SDLsecond windows use existing recordings and unchanged performance thresholds. HUD insets are not world pillarboxing: inspected race pixels reach both drawable edges, although exact projection telemetry remains separate. Evidence: evidence/performance-typed-renderer-game-decision-local.json.
+
+A separate read-only497B24 alias-hint proposal was rejected before implementation: Game/CPU/FPU itself is a valid malloc32 guest allocation, so checked guest operands are not globally disjoint from native register state. No restrict-this hint, raw pointer shortcut or reduced span/stop checking is authorized by this audit. Next inspect normal-path cost from existing compiler/profile evidence and pursue only ownership-aware arithmetic candidates. Evidence: evidence/performance-game-context-alias-rejection-local.json. Build23 private delivery and production source remain unchanged; iPad acceptance/LPM60/battery remain open.
+
+### 23 November: exact current Apple cancellation path inspected
+
+Extracted only the native executable from the authenticated build23 base, preserving both IPA archives. The current ARM64 check_worker_stop at0x10022e5e0 performs3threadlocal lookups for a boundworker before its false-stop branch; two address lookups follow the atomicflag load but precede its branch. This confirms a normal-path Apple cost, beyond old source-only symbol counts. It does not quantify FPS/energy cost or prove a replacement faster.
+
+The existing unifiedPODTLS fixture passes new separate-compilation-unit identity checks, live transactioncontrol rebinding, stop-before-resolution, four simultaneouslylive isolatedworkers and nesteddeferrals in optimized and ASan/UBSan Linux builds. Canonical headers stay unchanged. Next compare updated Applecode generation/nativeARM component timing, preserving every cancellationcheckpoint and requiring a consistent whole-consumer rebuild if later promoted. Official GitHub standardrunner documentation currently lists macos-15 M1/3core7GB as free for publicrepositories; no job, paidrunner, settings or billing change was started. Evidence: evidence/performance-build23-stop-path-local.json.
+
+### 23 November: bounded Apple-native helper measurement prepared
+
+The exactbuild23 normal-path TLS finding motivates a source-only comparison,
+not an app rebuild. A registered manual benchmarkroute now offers the reviewed
+thread-local experiment: publiccodex/hd-ui only, readonlypermissions, local and
+Linux privacy/secret/safety gates before a bounded standardmacos-15ARM job.
+The same pinnedXcode16.4 will compile iOSassembly and nativeMaccomponent
+variants; no app, game data, cache, artifact or release is produced. A5minute
+unacquiredqueue budget prevents repeating the earlier ARMcapacity wait.
+
+New separate-TU runtimechecks compare old/address-cache/unified fixtures on
+unaligned, boundary, alias, partialfault, stop-precedence and realthread cases.
+The native timing plan fixes12balanced rounds,10% accessorCPU improvement and
+at most5% transform/REP regression before inspection. Canonicalheaders remain
+unchanged. NativeMac results remain separate from iPadacceptance/LPM60/energy.

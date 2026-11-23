@@ -54,6 +54,7 @@ class StallMonitor {
 public:
     StallMonitor():thread([this]{try{run();}catch(...){/* Reporting must not terminate the game. */}}){}
     ~StallMonitor(){{std::lock_guard<std::mutex> lock(mutex);stop=true;}changed.notify_all();thread.join();}
+    uint64_t foreground_pumps()const{return pumps.load(std::memory_order_relaxed);}
     void activity(int state){
         if(state==2){frames.fetch_add(1,std::memory_order_relaxed);return;}
         if(state==1)pumps.fetch_add(1,std::memory_order_relaxed);
@@ -64,6 +65,8 @@ public:
 StallMonitor &stall_monitor(){static StallMonitor monitor;return monitor;}
 }
 extern "C" void nfs_monitor_activity(int state){stall_monitor().activity(state);}
+// Reuse the watchdog counter; no new per-poll timing or atomic operations.
+extern "C" uint64_t nfs_monitor_foreground_pumps(){return stall_monitor().foreground_pumps();}
 extern "C" {extern int32_t fixedFramebufferSize,initialWinWidth,initialWinHeight,windowResized,winWidth,winHeight;}
 namespace {
 nfs::SystemCpuLoadWindow core_window;

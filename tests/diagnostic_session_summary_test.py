@@ -19,6 +19,19 @@ def sample(time, power=False, identity=1, fps=60):
 
 
 class SummaryTests(unittest.TestCase):
+    def test_event_pump_rate_uses_matched_durations_and_preserves_missing_data(self):
+        rows = [dict(sample(0), interval_s=1, foreground_event_pumps_interval=999),
+                dict(sample(1), interval_s=1, foreground_event_pumps_interval=1000),
+                dict(sample(3), interval_s=2, foreground_event_pumps_interval=1000),
+                dict(sample(4), interval_s=1, foreground_event_pumps_interval=True),
+                dict(sample(5), interval_s=0, foreground_event_pumps_interval=500),
+                dict(sample(6), interval_s=1, foreground_event_pumps_interval=1.5)]
+        rate = summary.summarize(fixture(rows))["stable_interval_comparison"]["off"]
+        self.assertEqual(rate["foreground_event_pump_samples_seconds"], 3)
+        self.assertAlmostEqual(rate["foreground_event_pumps_per_second"], 2000 / 3)
+        old = summary.summarize(fixture([sample(0), sample(1)]))
+        self.assertIsNone(old["stable_interval_comparison"]["off"]["foreground_event_pumps_per_second"])
+
     def test_power_comparison_reports_absolute_metrics_alongside_deltas(self):
         def recording(power, fps):
             rows = [dict(sample(i, power=power, fps=fps), frame_limit=0,

@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "scope": "Pre-dispatch review of source-only Apple native helper comparison; no job dispatched yet.",
+  "question": "Can unified POD thread-local storage remove the exact build23 normal-path lookups without changing cancellation semantics?",
+  "workflow": "lock-benchmark.yml",
+  "registeredWorkflowId": 385901675,
+  "repository": "nabeelalam/nfs2seios",
+  "ref": "codex/hd-ui",
+  "inputs": {
+    "experiment": "thread-local"
+  },
+  "localChecks": {
+    "workflowAndRuntimePolicyTests": 8,
+    "existingAssemblyPolicyTests": 6,
+    "publicationAuditTests": 7,
+    "linuxSafetyVariants": [
+      "old",
+      "unified"
+    ],
+    "addressUndefinedSanitizers": true,
+    "oracleChecksEach": 126,
+    "resolverCallsEach": 583,
+    "matchingChecksum": 5252414852042320239,
+    "independentReadOnlyReviewPassed": true
+  },
+  "nativeConditions": {
+    "standardRunner": "macos-15",
+    "architecture": "arm64",
+    "xcode": "16.4",
+    "queueAcquisitionBudgetSeconds": 300,
+    "jobTimeoutMinutes": 8,
+    "nativeExecutionBudgetSeconds": 90,
+    "perInvocationTimeoutSeconds": 10,
+    "rounds": 12
+  },
+  "componentGate": {
+    "minimumAccessorCpuImprovementPercent": 10,
+    "maximumTransformRepCpuRegressionPercent": 5
+  },
+  "noAppOrArtifacts": true,
+  "noPrivateGameData": true,
+  "noBillingOrSettingsChange": true,
+  "normalAppBuildRouteUnchanged": true,
+  "sourceHashes": {
+    ".github/workflows/lock-benchmark.yml": "a293cc6d889be67186bdfda013a6c99b143af31a925975919e37f5d8af4bda14",
+    "scripts/apple_stop_slot_probe.py": "885c687bf6b3164e3b28e944365d8bf0a66eb5aa1c7d0a09b2968d2249b6cafb",
+    "scripts/apple_stop_slot_runtime_probe.py": "42d3ba8e39b40e452acb08c52e44450b1f8bf99801e81a95674ecc320c18865d",
+    "tests/apple_stop_slot_runtime_probe.cpp": "946e1d918c1525aa7cfe6b7f735d851ceada69cccce0330ba1d072c258dc8975",
+    "tests/apple_cpu_workflow_test.py": "35efd52c6a1f65c38b474ef055f9d26a950b6a60b1a449492fbfbb7d640062da"
+  },
+  "officialReferences": [
+    "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md"
+  ]
+}

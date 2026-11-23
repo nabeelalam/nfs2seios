@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "scope": "Read-only ownership audit of a proposed compiler alias hint; no annotation or trial build.",
+  "function": "497B24",
+  "decision": "Reject restrict-this annotation: required disjointness is unproven.",
+  "finding": "GameContexts allocates the entire Game/CPU/FPU object through malloc32 in HeapArena and resolves context addresses through checked guest mapping. Valid guest operands may therefore overlap native register/FPU fields.",
+  "whyNormalRaceNotProof": "The leaf accepts generic guest addresses and9staticcallers includecomputedaddresses; normal race captures do not establish no-overlap for all valid inputs. Queued renderer pressure may invoke prior callbacks.",
+  "sourceHashes": {
+    "src/GameContexts.cpp": "8d9c45341dde8bdc0d5530c3824a2b2a5ef90c10abe58db2cde8c272f68c077f",
+    "src/EngineMemory.cpp": "f5fb4d20071484eb7c6f467196cc17819899ff37d4f4ef47f183ab817138275a",
+    "src/HeapArena.h": "6a9de84b902ac227bd5db8bb97f45a3bf0b566e775f9030f6ef81cc26cf38902"
+  },
+  "noGuestSpanOrStopChecksRemoved": true,
+  "sourceEdited": false,
+  "compilerInvoked": false,
+  "reference": "https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html",
+  "next": "Inspect actual normal-path costs and retain valid Game/context aliasing plus fault/cancellation FPU state in any future candidate."
+}

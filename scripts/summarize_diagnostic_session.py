@@ -50,6 +50,7 @@ def stable_interval_metrics(rows):
     hitch_samples = hitch_observations = 0
     previous_slow_end = None
     slow_run = longest_slow_run = 0.0
+    pump_count = pump_seconds = 0
     swap_calls = 0
     swap_host_ms = 0
     swap_host_maxima = []
@@ -73,6 +74,11 @@ def stable_interval_metrics(rows):
             unlocked_slow += late_unlocked
         interval = row.get("interval_s")
         elapsed = row.get("elapsed_s")
+        pumps = row.get("foreground_event_pumps_interval")
+        if (number(pumps) and pumps == int(pumps)
+                and number(interval, 2.5) and interval > 0):
+            pump_count += pumps
+            pump_seconds += interval
         if (type(row.get("frame_limit")) is int and row["frame_limit"] == 0
                 and number(swaps) and swaps > 0 and number(late_unlocked, swaps)
                 and number(interval, 2.5) and interval > 0 and number(elapsed, 3600)):
@@ -127,6 +133,8 @@ def stable_interval_metrics(rows):
                 execution_maxima.append(max_execution)
     return {
         "sample_intervals": len(rows),
+        "foreground_event_pump_samples_seconds": pump_seconds,
+        "foreground_event_pumps_per_second": pump_count / pump_seconds if pump_seconds else None,
         "observed_swap_intervals": total,
         "swap_fraction_over_20ms": slow / total if total else None,
         "unlocked_observed_swap_intervals": unlocked_swaps,
@@ -334,6 +342,7 @@ def summarize(data, *, desktop=False):
     result["stable_interval_caution"] = (
         "Excludes the first sample, sampling gaps over 2.5 s and intervals ending at an observed power, timing-art, render-size or frame-lock change. "
         "Renderer values are per-call means within each interval. Compare matched race and graphics settings. "
+        "Event-pump counts are foreground app polls, not measured kernel wakeups or idle timeout expirations. "
         "The 18 ms threshold is a near-60 FPS pacing indicator for the unlocked mode. A majority-slow sample has at least half its measured swaps above 18 ms. The longest run counts contiguous samples, not individual frames. The 50 ms hitch fraction counts unlocked samples outside majority-slow periods with a recorded swap maximum of at least 50 ms. Display-link rates describe main run-loop delivery, not displayed game frames. Swap spacing measures presentations. Swap-call duration is host elapsed time and can include display or driver waiting."
     )
     result["timing_art_comparison"] = {}
@@ -400,6 +409,7 @@ def compare_power_sessions(normal, low_power):
             "display_link_late_callback_fraction": pacing["display_link_late_callback_fraction"],
             "display_link_max_late_ms": pacing["display_link_max_late_ms"],
             "mean_swap_host_ms": pacing["swap_host_ms_per_call"],
+            "foreground_event_pumps_per_second": pacing["foreground_event_pumps_per_second"],
             "fraction_swaps_over_18ms": pacing["unlocked_swap_fraction_over_18ms"],
             "majority_slow_sample_fraction": pacing["unlocked_majority_slow_sample_fraction"],
             "longest_majority_slow_run_s": pacing["unlocked_longest_majority_slow_run_s"],

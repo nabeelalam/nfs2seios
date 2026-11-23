@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "scope": "Additive event-pump diagnostics for battery investigation; no polling policy or performance optimization applied.",
+  "existingPollTimeoutSeconds": {
+    "unlocked": 0.001,
+    "lock30": 0.004
+  },
+  "measurement": "Reuse existing watchdog foreground poll counter, sampled once per recorder tick. No new per-poll counters, clocks, locks or timers.",
+  "newField": "foreground_event_pumps_interval",
+  "summary": "Duration-weighted pump rate for valid steady intervals and all-race-world subsets; old logs remain unavailable, not zero.",
+  "exclusions": [
+    "First sample",
+    "Observed power-mode transition",
+    "Decreasing/wrapped counter",
+    "Invalid duration or count"
+  ],
+  "nonClaims": [
+    "Not kernel wakeups",
+    "Not actual timeout expirations",
+    "Not GPU work",
+    "Not watts or measured energy",
+    "No FPS or battery gain established",
+    "Not compiled or tested on Apple/iPad yet",
+    "Build23 predates this additive reading"
+  ],
+  "validation": {
+    "pythonSummaryTestsPassed": 26,
+    "cxxSerializerAddressUndefinedSanitizersPassed": true,
+    "gameLaunched": false,
+    "cloudBuildStarted": false
+  },
+  "sourceHashes": {
+    "src/AppleMainThread.mm": "d5b5e3013a412ad5e1dd4c77112341adaa944f2478e97ff2ac6de1bc16e75698",
+    "src/GameSession.cpp": "dac2974fa247ee6219e638bd4d57e7833e3b7d3282860a6bb6707b7b5c2ced90",
+    "ios/game_fps.mm": "128e736a4d43b830388949610232dbaba1b130d288f01cba0675db89d65b0b78",
+    "ios/DiagnosticRecorder.mm": "ee68b35f813a21f4beedd2a454ddd4331b02aa5001bdddf39f7c5039afba713b",
+    "src/DiagnosticSession.h": "66fedda28a5899ec4af3e2213146b3bf84bbc64cd9b993f47236a7a10a58afbf",
+    "scripts/summarize_diagnostic_session.py": "6b0206460481de2e848e53d1333a6bc18cff1b8b7a40837517542851b39a0b1f"
+  },
+  "research": [
+    {
+      "url": "https://developer.apple.com/library/archive/documentation/Performance/Conceptual/EnergyGuide-iOS/MinimizeTimerUse.html",
+      "finding": "Apple recommends event notifications and minimizing unnecessary periodic wakeups; this does not establish this app battery attribution."
+    }
+  ],
+  "next": "Use matched device logs to separate foreground polling, main CPU work, renderer queue/execution and presentation cadence before choosing a wait-policy change."
+}

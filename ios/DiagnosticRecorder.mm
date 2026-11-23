@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/resource.h>
+extern "C" uint64_t nfs_monitor_foreground_pumps();
 
 @interface NFSDiagnosticRecorder : NSObject {
     FILE *_file;
@@ -20,7 +21,7 @@
     std::atomic<bool> _failed;
     nfs::DiagnosticSessionLimit _limit;
     nfs::SystemCpuLoadWindow _cores;
-    uint64_t _start,_previous,_frameEpoch,_frameDrops;
+    uint64_t _start,_previous,_frameEpoch,_frameDrops,_foregroundPumps;
     NfsFrameContentTotals _frameContent;
     double _processCPU;
     nfs::DiagnosticDisplayWindow _display;
@@ -144,6 +145,10 @@ static NSURL *recording_folder(){
         }
     }
     _display={};
+    const auto pumps=nfs_monitor_foreground_pumps();
+    if(sample.interval>0 && !powerChanged && pumps>=_foregroundPumps)
+        sample.foreground_event_pumps=double(pumps-_foregroundPumps);
+    _foregroundPumps=pumps;
     const auto render=nfs::take_renderer_timing();
     if(sample.interval>0 && !powerChanged){
         sample.renderer_calls=double(render.calls);

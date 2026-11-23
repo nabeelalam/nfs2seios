@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "scope": "Private exact-size renderer-command allocation trial; component validation, not whole-game or iPad performance.",
+  "productionSourceIntegrated": false,
+  "privateImplementationHashes": {
+    "Candidate.h": "24c1f768bdce6d7680403c9729c52ab09a85a2be6224f623e08581dc3252da1d",
+    "MainThreadBridge.h": "534f93c6cae60fd6097889672f30fc6f87403025f118a3b7cd19e7a9193d142e",
+    "MainThreadBridge.cpp": "0d82c7262fab462804ef7c1145648178012af8c21739a33af13288f23cbeca28"
+  },
+  "factoryTriangleAllocationsBefore": 2,
+  "factoryTriangleAllocationsAfter": 1,
+  "actualVertexBytes": 60,
+  "actualTriangleClosureBytes": 192,
+  "threadedBridgePairedRounds": 8,
+  "threadedBridgeMetrics": {
+    "borrowed": {
+      "cpu_ns_per_command": {
+        "baselineMedian": 23066.796875,
+        "candidateMedian": 23190.74707,
+        "improvementPercent": -0.537353303415697
+      },
+      "wall_ns_per_command": {
+        "baselineMedian": 27590.5253905,
+        "candidateMedian": 27334.668457,
+        "improvementPercent": 0.9273362137137708
+      }
+    },
+    "state20": {
+      "cpu_ns_per_command": {
+        "baselineMedian": 235.04715,
+        "candidateMedian": 209.210205,
+        "improvementPercent": 10.992239216684817
+      },
+      "wall_ns_per_command": {
+        "baselineMedian": 238.669754,
+        "candidateMedian": 222.49826050000001,
+        "improvementPercent": 6.775677784458602
+      }
+    },
+    "mixed": {
+      "cpu_ns_per_command": {
+        "baselineMedian": 219.8616025,
+        "candidateMedian": 219.8509215,
+        "improvementPercent": 0.004858056103727921
+      },
+      "wall_ns_per_command": {
+        "baselineMedian": 228.450638,
+        "candidateMedian": 223.9658585,
+        "improvementPercent": 1.963128463663998
+      }
+    },
+    "state4": {
+      "cpu_ns_per_command": {
+        "baselineMedian": 203.9619445,
+        "candidateMedian": 206.64978050000002,
+        "improvementPercent": -1.3178125000666645
+      },
+      "wall_ns_per_command": {
+        "baselineMedian": 211.06884,
+        "candidateMedian": 213.815674,
+        "improvementPercent": -1.3013924746068661
+      }
+    },
+    "triangle": {
+      "cpu_ns_per_command": {
+        "baselineMedian": 264.5126345,
+        "candidateMedian": 227.397919,
+        "improvementPercent": 14.031358301714691
+      },
+      "wall_ns_per_command": {
+        "baselineMedian": 268.475731,
+        "candidateMedian": 233.086685,
+        "improvementPercent": 13.181469277757552
+      }
+    }
+  },
+  "componentGatePassed": true,
+  "correctness": {
+    "mainThreadQueueSuite": true,
+    "legacyOwnedCases": 12,
+    "concreteClosureCompatibilityCases": 11,
+    "allAddressUndefinedSanitizersPassed": true,
+    "deterministicPressureCancellationBaselineAndCandidatePassed": true
+  },
+  "design": "Own exact callable inline in its shared command allocation; retain legacy std::function move-out and borrowed-operation path. No triangle batching, guest resolver shortcut, changed draw order, resolution reduction or graphics quality change.",
+  "issuesCaughtAndCorrected": [
+    "Detached incomplete cancellation target could confuse pressure drain; restored existing early metadata completion while clearing captures before cancelling caller returns.",
+    "Nullable function pointers, nullptr and other std::function result types retain legacy behavior.",
+    "Forwarding storage helper avoids adding callable moves."
+  ],
+  "negativeEvidence": "Original storage-only design slowed borrowed kernel12.63%; hybrid retains legacy invoke/move-out. Complete bridge borrowed CPU median is0.54%slower, scalar1.32%slower, syntheticmixed approximatelyunchanged. None is a device comparison.",
+  "wholeGameGate": "One isolated coherent desktop candidate prepared; require matched race comparisons before production promotion.",
+  "cloudBuildStarted": false,
+  "gameplayGainVerified": false,
+  "ipadGainVerified": false,
+  "batteryGainVerified": false
+}

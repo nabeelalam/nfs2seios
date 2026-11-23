@@ -39,7 +39,7 @@ def materialize(root,folder):
 def command(clang,sdk,root,variant,output,closure):
     if variant not in VARIANTS:raise ValueError("Unknown variant")
     include=closure/variant
-    return [clang,"-target","arm64-apple-ios16.0","-std=c++14","-O3","-fwrapv","-fno-strict-aliasing","-isysroot",sdk,"-ffile-prefix-map="+str(root)+"=/source","-fdebug-prefix-map="+str(root)+"=/source","-I"+str(include),"-ffile-prefix-map="+str(closure)+"=/probe","-S",str(root/"tests/apple_stop_slot_assembly_probe.cpp"),"-o",str(output)]
+    return [clang,"-target","arm64-apple-ios16.0","-std=c++14","-O3","-DNDEBUG","-fwrapv","-fno-strict-aliasing","-isysroot",sdk,"-ffile-prefix-map="+str(root)+"=/source","-fdebug-prefix-map="+str(root)+"=/source","-I"+str(include),"-ffile-prefix-map="+str(closure)+"=/probe","-S",str(root/"tests/apple_stop_slot_assembly_probe.cpp"),"-o",str(output)]
 def inspect(text):
     selected={}
     for match in re.finditer(r"^(_nfs_probe_\w+):[^\n]*\n(.*?)(?=^\s*\.cfi_endproc)",text,re.M|re.S):

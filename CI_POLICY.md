@@ -17,7 +17,7 @@ identify the revision and specific unresolved Apple SDK or packaging question.
 | Concurrent standard jobs on Free | 20 total, including at most 5 macOS | One active workflow; Linux completes before macOS starts |
 | Standard hosted job duration | At most 6 hours | Linux timeout 15 minutes; macOS timeout 30 minutes |
 | Standard macOS Intel runner (current Apple build route) | 4 cores, 14 GB RAM, 14 GB SSD | macos-15-intel; ARM64 iOS cross-compilation, at most two compiler tasks and two ThinLTO backend jobs |
-| Standard macOS ARM runner | 3 M1 cores, 7 GB RAM, 14 GB SSD | macos-15 remains a documented free alternative; not selected while its observed pool is capacity constrained |
+| Standard macOS ARM runner | 3 M1 cores, 7 GB RAM, 14 GB SSD | macos-15 remains the standard ARM alternative; app builds stay on Intel after the earlier capacity failure. A bounded native-helper exception is documented below |
 | Public Ubuntu standard runner | 4 cores, 16 GB RAM, 14 GB SSD | ubuntu-24.04, at most two compiler tasks |
 | Free artifact allowance | 500 MB, shared with Packages | No automatic uploads; optional IPA payload capped at 64 MiB per run |
 | Public artifact retention | Configurable between 1 and 90 days | Optional IPA artifacts expire after one day |
@@ -351,3 +351,35 @@ repository-visibility or signing setting. Verify private visibility before and
 after upload and compare the server digest with the measured local ZIP digest.
 
 Source: [GitHub release storage and bandwidth quotas](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases#storage-and-bandwidth-quotas).
+
+## 23 November: source-only native ARM helper comparison
+
+The existing registered lock-benchmark.yml manual workflow now has an explicit
+thread-local experiment for the reviewed codex/hd-ui branch in the public
+nabeelalam/nfs2seios repository. This exception is for an architecture-dependent
+helper question, not another app build. Normal iPad builds remain on the proven
+macos-15-intel route; no larger runner, private compute, artifact, release,
+cache, game data or signing material is used by this experiment.
+
+Standard macos-15 is documented as3M1cores/7GB and free for publicrepositories.
+The current official ARM image lists Xcode16.4 and its macOS15.5/iOS18.5SDKs.
+Sources rechecked23November2026: [standardrunners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+and [ARMimageinventory](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md).
+The job must verify nativearm64 and pinnedXcode before execution. It does not
+claim that an M1macOS component measurement is an M3iPad/iOS/FPS/energy result.
+
+One standardUbuntu privacy/safety job runs first, bounded at5minutes, including
+the existing digest-pinned independent secret scanner and fullhistory audit.
+Only then may the standardARM job run, bounded at8minutes. It compiles only
+three small iOSassembly variants and three nativecomponent binaries, checks
+same-input correctness, and runs12balanced rounds. Nativeexecution is capped
+at90seconds, each invocation at10seconds, with no automatic unchanged retry.
+The component gate is declared before measurement: at least10% accessorCPU
+improvement and no morethan5% transform/REP regression. Passing only permits
+further integration research; it does not promote the header or justify an IPA.
+
+The shared concurrency group prevents overlapping ordinarynative builds. Before
+dispatch, verify sourcecommit, publicvisibility and no active workflow. Observe
+the ARM acquisition queue in this chat; cancel the single attempt if it remains
+unacquired for5minutes. Do not fall back to paid machines or repeat the same
+queue attempt. No new reminder/automation is used to monitor this job.

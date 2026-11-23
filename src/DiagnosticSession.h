@@ -53,6 +53,7 @@ struct DiagnosticSample {
     double classified_presentations=-1,race_world_presentations=-1;
     double renderer_calls=-1,renderer_queue_ms=-1,renderer_execution_ms=-1,renderer_execution_max_ms=-1;
     double process_ms=-1,main_ms=-1,app_cpu_percent=-1,ram_mb=-1;
+    double foreground_event_pumps=-1;
     double battery_percent=-1,brightness=-1;
     unsigned logical_cores=0;
     int width=0,height=0,frame_limit=0,thermal=-1,battery_state=0,app_state=0;
@@ -93,6 +94,7 @@ inline std::string diagnostic_header(unsigned build,const std::string &source={}
        "\"swap_interval_scope\":\"complete swap-submission intervals inside sample, no display or GPU timestamps\","
        "\"swap_call_scope\":\"host elapsed time inside SDL_GL_SwapWindow for successful swaps, including any display or driver wait\","
        "\"renderer_scope\":\"timed main-thread renderer operations since prior sample, host elapsed time, no GPU timestamps\","
+       "\"event_pump_scope\":\"foreground GameSession polls,not kernel wakeups or idle timeout counts\","
        "\"core_scope\":\"whole system,not per-core app usage\","
        "\"battery_scope\":\"OS percentage,not watts or measured energy\","
        "\"battery_states\":\"0 unknown,1 unplugged,2 charging,3 full\","
@@ -134,6 +136,7 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"renderer_execution_max_ms\":";diagnostic_number(out,s.renderer_execution_max_ms);
     out<<",\"process_cpu_ms_interval\":";diagnostic_number(out,s.process_ms);
     out<<",\"main_cpu_ms_interval\":";diagnostic_number(out,s.main_ms);
+    out<<",\"foreground_event_pumps_interval\":";diagnostic_number(out,s.foreground_event_pumps);
     out<<",\"app_cpu_percent_all_cores\":";diagnostic_number(out,s.app_cpu_percent,100);
     out<<",\"logical_cores\":"<<s.logical_cores;
     out<<",\"ram_mb\":";diagnostic_number(out,s.ram_mb);

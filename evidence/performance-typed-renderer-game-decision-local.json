@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "scope": "Matched optimized desktop North Country split-screen game trial; no physical iPad, Low Power Mode or energy evidence.",
+  "decision": "Reject production promotion; keep existing renderer implementation. Do not rerun unchanged timings or build an IPA for this candidate.",
+  "order": [
+    "baseline",
+    "candidate",
+    "candidate",
+    "baseline"
+  ],
+  "conditions": {
+    "window": [
+      708,
+      492
+    ],
+    "track": "North Country",
+    "cars": [
+      "Ford Indigo",
+      "Nazca C2"
+    ],
+    "gameType": "Split Screen",
+    "opponents": "Full",
+    "transmission": "Manual",
+    "audio": "SDL dummy",
+    "graphics": "Same known profile and actual native race; unchanged quality/resolution between variants",
+    "twoNativeVirtualControllers": true,
+    "bothPlayersMovingBeforeEveryMeasurement": true,
+    "renderer": "WSL software GLES",
+    "worldPixelsReachBothDrawableEdges": true,
+    "exactProjectionTelemetryVerified": false
+  },
+  "binaries": {
+    "baseline": {
+      "sha256": "c211780e5c6d379a1c8d2b114c63c2d6ba06f04814e450b22b4d86de97e176b7",
+      "bytes": 63974352
+    },
+    "candidate": {
+      "sha256": "c0568b6048a3e0cd7c053acf7abeac37a164b2d392562291ca3ed8ef13633bd8",
+      "bytes": 64049720
+    }
+  },
+  "cases": [
+    {
+      "case": 1,
+      "variant": "baseline",
+      "exactWindowSeconds": 30,
+      "swapIntervalMs": {
+        "count": 1147,
+        "median": 27.162109,
+        "mean": 26.12195058238884,
+        "p95": 32.133073
+      },
+      "ownerCpuMsPerSubmission": {
+        "count": 18,
+        "median": 13.12025,
+        "mean": 12.540594444444444,
+        "p95": 14.8032
+      },
+      "allRaceSamples": 30,
+      "acknowledgedEndDelaySeconds": 0.618861998,
+      "cleanShutdown": true,
+      "recordingDroppedFrames": 0,
+      "writerFailed": false
+    },
+    {
+      "case": 2,
+      "variant": "candidate",
+      "exactWindowSeconds": 30,
+      "swapIntervalMs": {
+        "count": 1145,
+        "median": 26.986162,
+        "mean": 26.18108549606987,
+        "p95": 32.403512
+      },
+      "ownerCpuMsPerSubmission": {
+        "count": 18,
+        "median": 13.087900000000001,
+        "mean": 12.619466666666666,
+        "p95": 15.0824
+      },
+      "allRaceSamples": 30,
+      "acknowledgedEndDelaySeconds": 2.801490501,
+      "cleanShutdown": true,
+      "recordingDroppedFrames": 0,
+      "writerFailed": false
+    },
+    {
+      "case": 3,
+      "variant": "candidate",
+      "exactWindowSeconds": 30,
+      "swapIntervalMs": {
+        "count": 1130,
+        "median": 27.390187500000003,
+        "mean": 26.530002536283185,
+        "p95": 33.061441
+      },
+      "ownerCpuMsPerSubmission": {
+        "count": 17,
+        "median": 13.539,
+        "mean": 12.907964705882353,
+        "p95": 15.1111
+      },
+      "allRaceSamples": 30,
+      "acknowledgedEndDelaySeconds": 0.564263678,
+      "cleanShutdown": true,
+      "recordingDroppedFrames": 0,
+      "writerFailed": false
+    },
+    {
+      "case": 4,
+      "variant": "baseline",
+      "exactWindowSeconds": 30,
+      "swapIntervalMs": {
+        "count": 1172,
+        "median": 26.6379385,
+        "mean": 25.583272808020478,
+        "p95": 31.773128
+      },
+      "ownerCpuMsPerSubmission": {
+        "count": 18,
+        "median": 12.93815,
+        "mean": 12.204783333333333,
+        "p95": 14.5232
+      },
+      "allRaceSamples": 30,
+      "acknowledgedEndDelaySeconds": 2.826384313,
+      "cleanShutdown": true,
+      "recordingDroppedFrames": 0,
+      "writerFailed": false
+    }
+  ],
+  "pairings": [
+    {
+      "ownerCpuImprovementPercent": 0.2465654236771343,
+      "swapSpacingRegressionPercent": -0.6477663424441774,
+      "passed": false
+    },
+    {
+      "ownerCpuImprovementPercent": -4.644017885091759,
+      "swapSpacingRegressionPercent": 2.8239760370345572,
+      "passed": false
+    }
+  ],
+  "promotionGate": {
+    "requiredOwnerCpuImprovementPercentBothOrders": 2,
+    "maximumSwapSpacingRegressionPercent": 2,
+    "passed": false
+  },
+  "fixtureFiles": 1020,
+  "sourceFixtureUnchanged": true,
+  "copiedFixtureExactlyRestoredAfterEveryCase": true,
+  "all23ArtworkResourcesAndBinariesUnchanged": true,
+  "hiddenOwnedDisplay": true,
+  "tcpDisabled": true,
+  "prototypeIntegrated": false,
+  "cloudBuild": false,
+  "newIpaProduced": false,
+  "deviceGainEstablished": false,
+  "batteryGainEstablished": false,
+  "observerNotes": [
+    "One initial pre-timing Main bootstrap was not acknowledged; stopped cleanly, no comparison result. Sparse current-HD bootstrap observation then succeeded in all4measured cases; no trace-dependent Main authority rule was found.",
+    "Original31s end-marker guard rejected an otherwise complete32.8s recording. Preserved raw recordings/originalresults and prospectively specified the same exact first30SDLseconds from each acknowledgedstart, requiring acknowledgedend coverage within5s; reanalyzed existing cases1/2 and ran onlyremaining3/4. Performance thresholds stayed unchanged.",
+    "A preliminary visual interpretation of HUD margins as pillarboxing was corrected by direct edge-pixel inspection; race-world content fills the708drawable."
+  ],
+  "rawComparisonSha256": "69e1b6775d21241e774a82280a7b8492b15ca3a7f7f7d9e0ef0d6b433586e79f"
+}
