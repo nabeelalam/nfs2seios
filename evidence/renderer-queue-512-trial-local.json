@@ -1,0 +1,105 @@
+{
+  "scope": "One A/B order on WSL software GLES2, Proving Grounds split screen with both cars driven.",
+  "method": "30-second swap windows and 29 complete race-only recorder intervals in each run. Process memory from Linux /proc at the start and end of the window.",
+  "metrics": {
+    "baseline": {
+      "capacity": 256,
+      "intervals": 29,
+      "frames": 1036,
+      "medianSwapMs": 27.6495385,
+      "memoryKiB": {
+        "startKiB": {
+          "VmRSS": 1240120,
+          "VmHWM": 1240120
+        },
+        "endKiB": {
+          "VmRSS": 1240120,
+          "VmHWM": 1240120
+        }
+      },
+      "p95SwapMs": 33.217688,
+      "medianEngineMsPerSubmission": 13.10205,
+      "rendererCallsPerFrame": 22.18146718146718,
+      "queueMsPerFrame": 1.3222734555984554,
+      "executionMsPerFrame": 11.056097683397685
+    },
+    "candidate": {
+      "capacity": 512,
+      "intervals": 29,
+      "frames": 1110,
+      "medianSwapMs": 25.989168,
+      "memoryKiB": {
+        "startKiB": {
+          "VmRSS": 1241768,
+          "VmHWM": 1241768
+        },
+        "endKiB": {
+          "VmRSS": 1247964,
+          "VmHWM": 1247964
+        }
+      },
+      "p95SwapMs": 31.112781,
+      "medianEngineMsPerSubmission": 12.7217,
+      "rendererCallsPerFrame": 11.215315315315316,
+      "queueMsPerFrame": 0.7962372072072073,
+      "executionMsPerFrame": 10.469252702702702
+    }
+  },
+  "limitations": "The 256-slot binary was retained from the prior trial. The 512-slot binary used the current build cache. All link inputs have not yet been independently matched byte for byte. Linux process RSS includes software graphics and is not comparable to iPad memory.",
+  "decision": "Adopt 512 on the local branch. The matched reverse run confirmed fewer renderer handoffs and shorter swap spacing. The process high-water mark at the end of the desktop window was about 12.8 MiB higher. Physical iPad frame times, memory, power and input response remain open.",
+  "reverseMatched": {
+    "order": [
+      512,
+      256
+    ],
+    "link": {
+      "commonInputDigest": "831e29fa204dfc2ca24c946cac642c55c7b39a62546d0cf9fca9d74b5217f139",
+      "commonInputCount": 98
+    },
+    "metrics": {
+      "baseline": {
+        "capacity": 256,
+        "intervals": 29,
+        "frames": 1053,
+        "medianSwapMs": 27.321038,
+        "memoryKiB": {
+          "startKiB": {
+            "VmRSS": 1242116,
+            "VmHWM": 1242116
+          },
+          "endKiB": {
+            "VmRSS": 1242376,
+            "VmHWM": 1242376
+          }
+        },
+        "p95SwapMs": 31.970454,
+        "medianEngineMsPerSubmission": 12.81145,
+        "rendererCallsPerFrame": 22.163342830009498,
+        "queueMsPerFrame": 1.277013770180437,
+        "executionMsPerFrame": 10.741932858499526
+      },
+      "candidate": {
+        "capacity": 512,
+        "intervals": 29,
+        "frames": 1111,
+        "medianSwapMs": 25.990212,
+        "memoryKiB": {
+          "startKiB": {
+            "VmRSS": 1253884,
+            "VmHWM": 1253884
+          },
+          "endKiB": {
+            "VmRSS": 1255468,
+            "VmHWM": 1255468
+          }
+        },
+        "p95SwapMs": 31.1629,
+        "medianEngineMsPerSubmission": 12.893049999999999,
+        "rendererCallsPerFrame": 11.175517551755176,
+        "queueMsPerFrame": 0.7807696669666967,
+        "executionMsPerFrame": 10.45888199819982
+      }
+    }
+  },
+  "verification": "The addressed queue-full fixture and all ownership and cancellation checks passed under ASan and UBSan at capacity 512."
+}

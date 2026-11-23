@@ -10,6 +10,9 @@
 #include "ClassicScreens/IntroArtworkLoader.h"
 #include "ClassicScreens/IntroArtworkPin.h"
 #include "ClassicScreens/IntroArtProvider.h"
+#include "ClassicScreens/CreditsArtworkLoader.h"
+#include "ClassicScreens/CreditsArtworkPin.h"
+#include "ClassicScreens/CreditsArtProvider.h"
 #include "ClassicScreens/TrackInfoArtworkLoader.h"
 #include "ClassicScreens/TrackInfoArtworkPin.h"
 #include "ClassicScreens/TrackInfoArtProvider.h"
@@ -17,9 +20,19 @@
 #include "ClassicScreens/CarInfoArtworkPin.h"
 #include "ClassicScreens/CarInfoArtProvider.h"
 #include "ClassicScreens/HistoryArtworkLoader.h"
+#ifdef NFS_HISTORY_PANORAMA_CONFIG
+#include "hd/HistoryPanoramaConfiguration.h"
+#endif
 #include "ClassicScreens/HistoryArtworkPin.h"
 #include "ClassicScreens/HistoryArtProvider.h"
+#include "ClassicScreens/VictoryArtworkLoader.h"
+#include "ClassicScreens/VictoryArtworkPin.h"
+#include "ClassicScreens/VictoryArtProvider.h"
 #include "SlideshowStartup.h"
+#ifdef NFS_SLIDESHOW_PANORAMA_CONFIG
+#include "SlideshowPanoramaPack.h"
+#include "hd/SlideshowPanoramaConfiguration.h"
+#endif
 #if defined(__has_include)
 #if __has_include("hd/ClassicScreens/private/SlideshowFooterData.h")
 #include "SlideshowFooterResource.h"
@@ -129,6 +142,15 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
   try{
    const auto slash=bundledTemplate.find_last_of("/\\");
    const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+   // Clear optional startup routing before installing this activation's exact pin.
+   nfs_slideshow::setStartupPanoramas({});
+#ifdef NFS_SLIDESHOW_PANORAMA_CONFIG
+   auto panoramas=std::make_shared<nfs_slideshow_panorama::Registry>();
+   nfs_slideshow_panorama::Digest panoramaSha{};
+   std::copy(nfsSlideshowPanoramaSha,nfsSlideshowPanoramaSha+32,panoramaSha.begin());
+   if(nfsSlideshowPanoramaDelivery[0]=='N'&&nfs_slideshow_panorama::loadPack(directory+"slideshow-panorama.ownedz",panoramaSha,nfsSlideshowPanoramaBytes,*panoramas))
+    nfs_slideshow::setStartupPanoramas(std::move(panoramas));
+#endif
    const char*overridePath=std::getenv("NFS_PRIVATE_SLIDESHOW_PACK");
    const char*preview=std::getenv("NFS_PRIVATE_SLIDESHOW_PREVIEW");
    nfs_slideshow::setStartup(overridePath&&*overridePath?overridePath:directory+"slideshow-ui.ownedz",preview&&preview[0]=='1'&&!preview[1]);
@@ -174,6 +196,30 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
   }catch(...){}
  }
 
+ // Load before the game worker starts; never enable an incomplete resource set.
+ if(activated){
+  try{
+   if(!nfs_credits_art_generation()){
+    const auto slash=bundledTemplate.find_last_of("/\\");
+    const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
+    char error[128]{};
+    if(!nfs_credits_art_load_file((directory+NFS_CREDITS_ARTWORK_FILENAME).c_str(),error,sizeof error))
+     std::fprintf(stderr,"Optional Credits artwork: %s\n",error);
+   }
+   const char*overrideMode=std::getenv("NFS_PRIVATE_CREDITS_WHOLE");
+   if(nfs_credits_art_generation()&&!overrideMode)(void)enableVariable("NFS_PRIVATE_CREDITS_WHOLE");
+  }catch(...){}
+ }
+
+ // Register metadata before worker creation; decode only the selected victory image.
+ if(activated&&!nfs_victory_art_generation()){
+  try{const auto slash=bundledTemplate.find_last_of("/\\");const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);char error[128]{};
+   if(nfs_victory_art_load_bundled_file((directory+NFS_VICTORY_ARTWORK_FILENAME).c_str(),error,sizeof error)){
+    if(!std::getenv("NFS_PRIVATE_VICTORY_ART_PROOF"))(void)enableVariable("NFS_PRIVATE_VICTORY_ART_PROOF");
+   }else std::fprintf(stderr,"Optional Victory artwork: %s\n",error);
+  }catch(...){}
+ }
+
  // Source authority is independent of authored image records. Hash the actual
  // original compressed archive; the live collector separately verifies decoded
  // archive/source bytes and precise native consumption before presentation.
@@ -208,6 +254,12 @@ bool activateConfiguredArtwork(const std::string&root,const std::string&bundledT
    const auto slash=bundledTemplate.find_last_of("/\\");
    const std::string directory=slash==std::string::npos?root+"/gamedata/":bundledTemplate.substr(0,slash+1);
    nfs_history_art_scope::configure(directory+NFS_HISTORY_ARTWORK_FILENAME);
+#ifdef NFS_HISTORY_PANORAMA_CONFIG
+   for(const auto&entry:nfsConfiguredHistoryPanoramas){
+    std::array<unsigned char,32>trusted{};for(unsigned k=0;k<32;++k)trusted[k]=entry.sha[k];
+    (void)nfs_history_art_scope::configurePanorama(entry.source,directory+entry.filename,trusted);
+   }
+#endif
   }catch(...){}
  }
  if(activated&&NFS_PLAYER_PHOTO_ARTWORK_SHA256[0]&&!nfs_player_photo_art_generation()){

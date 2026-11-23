@@ -1,0 +1,31 @@
+{
+  "scope": "Original-data local software-GLES replay; no physical iPad acceptance",
+  "run": "grouped-512-showcase-statistics-v20",
+  "output": [
+    708,
+    492
+  ],
+  "pagesObserved": [
+    2,
+    3,
+    1
+  ],
+  "informationWideDeclines": 0,
+  "cleanRouteExit": true,
+  "screenshotsReviewed": [
+    "Performance page",
+    "Mechanical page"
+  ],
+  "binarySHA256": "7614f6d18f12dd8a12ad26ffac00a5b250d3b49245356d89ca376bf742da20c1",
+  "logSHA256": "7d698473868224662929b255a25287aa5cfbc10bc1a8e54b37f111083319242b",
+  "captureSHA256": {
+    "003-statistics-page-2.bmp": "4e20d6bf4456e6568a8af582bbb282f1f004a3030d8fa01d37f9259baa6d946e",
+    "004-statistics-page-3.bmp": "5080c48da851db92d55577a488a3f8935892c09bb9536b75f803422e3ac7f0ad",
+    "005-statistics-page-1.bmp": "1975e954fc95226cf64eb5a3fe34e3e39e96ba33adba57d6be0fb14dea7b0007"
+  },
+  "limits": [
+    "History and slideshow routes were not exercised in this replay",
+    "Physical iPad validation remains pending"
+  ],
+  "excludedAttempt": "v19 stopped because the harness predicate referenced a missing Python import; original game exited zero. It is not a game failure or acceptance run."
+}

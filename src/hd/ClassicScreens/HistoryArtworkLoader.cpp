@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "HistoryArtworkLoader.h"
+#include "HistoryWideFiles.h"
 #include "ScopedArtworkResidency.h"
 #include "HistoryArtworkPin.h"
 #include "HistoryArtProvider.h"
@@ -39,7 +40,10 @@ extern "C" int nfs_history_art_load_file(const char*path,char*error,size_t capac
 namespace nfs_history_art_scope {
 namespace {
 nfs_hd::ScopedArtworkResidency residency("history",nfs_history_art_load_file,nfs_history_art_clear);
+nfs_history_wide::Files panoramas(nfs_history_art_generation,nfs_history_wide::registry());
 }
 void configure(std::string path){residency.configure(std::move(path));}
+bool configurePanorama(uint32_t source,std::string path,const std::array<unsigned char,32>&pin) noexcept{return panoramas.configure(source,std::move(path),pin);}
+std::shared_ptr<const nfs_history_wide::Artwork> panorama(uint32_t source,uint64_t base) noexcept{return panoramas.acquire(source,base);}
 std::shared_ptr<void> acquire() noexcept{return residency.acquire();}
 }

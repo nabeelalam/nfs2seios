@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "scope": "Grouped current-candidate menu sweep; reproduced Location redraw fallback, not complete UI acceptance",
+  "binarySha256": "f97a0bcdeb8c64e46581aba57e4e218233890ef31f44b47dc1b55456cf150879",
+  "cloudBuild": false,
+  "ordinaryOriginalMenuInputs": true,
+  "setup": {
+    "visited": true,
+    "raceTypeRightInputs": 3,
+    "returnToMainObserved": true,
+    "allActualModeValuesIndependentlyVerified": false
+  },
+  "location": {
+    "entryObserved": true,
+    "settledWideBeforeTrackInput": true,
+    "trackChangedVisuallyFrom": "Proving Grounds",
+    "trackChangedVisuallyTo": "Outback",
+    "rightInputsBeforeStop": 1,
+    "oldUiFallback": {
+      "output": [
+        800,
+        450
+      ],
+      "firstNativeFrame": 386,
+      "nextWideFrame": 510,
+      "frames": 124
+    },
+    "finalCaptureAuthoredHd": true,
+    "expectedNewPhotoSourceMessageAbsent": true,
+    "failureType": "Driver assertion plus independently reproduced old-UI fallback; no app crash"
+  },
+  "preservation": {
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "binaryUnchanged": true
+  },
+  "playerQueueRegression": {
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "passed": true,
+    "scope": "Existing genuine sealed300tile proof and worker/owner FIFO fixture; GPU/source callbacks are typed stubs",
+    "unusedMainLinkAdapterAbortsIfCalled": true,
+    "productionCodeChangedForTest": false
+  },
+  "next": "Trace current Location clear/cached draw and source collection; preserve exact native pixel checks. No more breadth reruns until this actual gap is understood.",
+  "physicalIpadVerified": false,
+  "wholeUiAccepted": false,
+  "published": false
+}

@@ -50,3 +50,24 @@ bytes before releasing its temporary decoded payload.
 
 The current photo master is 1448x1086. No 4K, Apple compile, actual intro-render
 or physical-device acceptance is established by the source implementation.
+
+
+Optional widescreen photograph (pack version2)
+-------------------------------------------
+The original version1 pack and original photo remain supported. Version2 keeps
+the first 72 metadata bytes, appends little-endian wide width/height, retains
+all original photo/copyright bytes, then appends opaque wide RGBA. Both images
+are independently copied and authenticated by the provider. Use
+`scripts/extend_intro_artwork.py` with an explicit original-pack digest and
+a separately supplied PNG; no artwork is embedded in public source.
+
+Schema2 input/view adds `widePhotograph`; schema1 input ignores that appended
+field. Existing native rendering still uses the original `photograph`. The
+wide photograph is drawn by IntroWideRenderer.inc into its own full-drawable
+color surface after the exact original title pass. Selection binds the actual
+front attachments and context/artwork generations. A separate swap scope
+preserves that completed content until native mutation, resize or retirement.
+Logo and copyright retain uniform scale and horizontal centering. The internal C structs changed size, so rebuild
+renderer/provider consumers together rather than linking old renderer objects
+against the new provider. Keep the old active pin until a new package and its
+presentation path have been validated.

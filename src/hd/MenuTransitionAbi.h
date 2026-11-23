@@ -20,6 +20,7 @@ typedef struct NfsMenuTransitionView {
  uint32_t trackInfoPhase;
  NfsCompactCaptionWordView outgoingLocationCaption;
  uint32_t locationInfoReturn; /* Location sidebar returning from an information page */
+ uint32_t playerShowcaseReturn; /* typed Player sidebar returning from Showcase, with a bare-map destination receipt */
  uint32_t drawKind; /* 1 original427C70 gradient,2 original427B30 white pass */
  int32_t minimum,maximum,direction,phase,originX,originY,stepX;
  const uint16_t*original565;uint32_t addresses[300];NfsBackgroundSceneLayers layers;NfsChildInitialTransitionLayer childInitial;NfsOpponentInitialTransitionView opponentInitial;NfsLocationInitialTransitionView locationInitial;NfsOriginalPreviewLayerView initialFullPreview;NfsPlayerInitialTransitionView playerInitial;

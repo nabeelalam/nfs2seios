@@ -3,6 +3,8 @@
 #include "hd/BackgroundScenePrepare.h"
 #include "hd/SoftwareFramePacket.h"
 #include "hd/LoadSaveSourcePolicy.h"
+#include "hd/Main343OriginProof.h"
+#include "hd/BackgroundSceneLayersAbi.h"
 #include <memory>
 #include <cstring>
 namespace nfs_ls_scene {
@@ -116,8 +118,10 @@ class Cache final {
 public:
  const std::vector<uint8_t>&raw()const noexcept{return raw_;}const Owner&owner()const noexcept{return owner_;}
  unsigned slot()const noexcept{return slot_;}unsigned wordCount()const noexcept{return wordCount_;}
+ uint64_t revision()const noexcept{return revision_;}
  const auto&words()const noexcept{return words_;}const auto&logos()const noexcept{return logos_;}
  const std::shared_ptr<const Trusted>&trusted()const noexcept{return trusted_;}
+ const std::shared_ptr<const nfs_soft::FramePacket>&captionPacket()const noexcept{return caption_;}
  const Slots&slots()const noexcept{return slots_;}const Directory&directory()const noexcept{return archive_;}
  static std::shared_ptr<const Cache>create(const CacheInput&i,std::shared_ptr<const Trusted>trusted,const CaptionProfile&profile)noexcept{
   if(!trusted||!i.owner.valid()||!i.revision||i.callsite!=CacheSite||i.start!=CacheStart||!i.before.sameCatalog(i.after)||i.after.selected!=1-i.before.selected||i.archiveBefore.address!=i.owner.archive||!i.archiveBefore.valid()||!(i.archiveBefore==i.archiveAfter)||i.caption.lifetime!=i.after.lifetime[i.after.selected]||i.rawBefore!=i.rawAfter||i.rawBefore.size()!=RawSide)return {};
@@ -156,6 +160,7 @@ struct SceneInput {
 };
 class OwnedScene final {
  std::shared_ptr<const Cache>cache_;std::shared_ptr<const Trusted>trusted_;
+ std::shared_ptr<const void>inheritedOrigin_;NfsBackgroundSceneLayers inheritedLayers_{};std::vector<uint8_t>inheritedRaw_;
  std::vector<uint16_t>clean_;Owner owner_;Target full_;uint64_t serial_=0;unsigned mapRole_=2;
  OwnedScene()=default;
  static bool replay(const FullDraw&d,const Target&t,bool side,std::vector<uint16_t>&pixels)noexcept{
@@ -171,6 +176,21 @@ class OwnedScene final {
  }
 public:
  const auto&clean()const noexcept{return clean_;}const auto&cache()const noexcept{return cache_;}unsigned mapRole()const noexcept{return mapRole_;}
+ const Owner&owner()const noexcept{return owner_;}
+ const auto&trusted()const noexcept{return trusted_;}
+ const NfsBackgroundSceneLayers*inheritedLayers()const noexcept{return inheritedOrigin_?&inheritedLayers_:nullptr;}
+ const std::vector<uint8_t>&sidebarRaw()const noexcept{return cache_?cache_->raw():inheritedRaw_;}
+ // The first body frame can inherit the completed Options sidebar without a
+ // Load/Save cache producer. Keep its distinct immutable provenance and replay
+ // the actual reset/copy; never insert this source into the cache collector.
+ template<class Origin>static std::shared_ptr<const OwnedScene>createInherited(const SceneInput&i,std::shared_ptr<const Origin>origin,uintptr_t publisherThread,std::shared_ptr<const Trusted>trusted)noexcept{
+  if(!origin||!trusted||!i.owner.valid()||!i.serial||i.cacheRevision||!i.slots.valid()||!i.directory.valid()||i.directory.address!=i.owner.archive||i.mapRole>1||!i.mapName||!bg::fullClip(i.full,640)||i.pre.size()!=bg::Full||i.postReset.size()!=bg::Full||i.clean.size()!=bg::Full||!origin->matches(i.owner.game,publisherThread,i.owner.archive,i.copy.sourceBefore.data(),i.copy.sourceBefore.size())||!origin->catalog||!nfs_main_sidebar_origin::sameCatalog(*origin->catalog,trusted->catalog())||!origin->frame||origin->frame->wordCount>4||!origin->frame->captionCurrent()||i.copy.args[0]!=i.slots.target[i.slots.selected].w[8]||!i.directory.resolves(i.mapName,i.reset.args[0],614416)||!logo::hashMatches(i.reset.sourceBefore.data(),i.reset.sourceBefore.size(),trusted->catalog().mapSha[i.mapRole]))return {};
+  try{auto pixels=i.pre;if(!replay(i.reset,i.full,false,pixels)||pixels!=i.postReset||!replay(i.copy,i.full,true,pixels)||pixels!=i.clean)return {};
+   auto p=std::shared_ptr<OwnedScene>(new OwnedScene);p->trusted_=std::move(trusted);p->clean_=std::move(pixels);p->owner_=i.owner;p->full_=i.full;p->serial_=i.serial;p->mapRole_=i.mapRole;
+   auto&v=p->inheritedLayers_;v.mapRole=i.mapRole;v.wordCount=origin->frame->wordCount;v.panelClip[2]=343;v.panelClip[3]=480;std::copy(origin->frame->words.begin(),origin->frame->words.end(),v.words);std::copy(origin->frame->logos.begin(),origin->frame->logos.end(),v.logos);p->inheritedRaw_=origin->raw;p->inheritedOrigin_=std::move(origin);return p;
+  }catch(...){return {};}
+ }
+
  static std::shared_ptr<const OwnedScene>create(const SceneInput&i,std::shared_ptr<const Cache>cache,std::shared_ptr<const Trusted>trusted)noexcept{/* NFS_ASSEMBLY_DIAG_BEGIN:105 */nfs_ls_scene::assemblyCheckpoint(20000);/* NFS_ASSEMBLY_DIAG_END:105 */
   if(/* NFS_ASSEMBLY_DIAG_BEGIN:62 */nfs_ls_scene::assemblyGate(2001,/* NFS_ASSEMBLY_DIAG_END:62 */!cache/* NFS_ASSEMBLY_DIAG_BEGIN:63 */)/* NFS_ASSEMBLY_DIAG_END:63 */||/* NFS_ASSEMBLY_DIAG_BEGIN:64 */nfs_ls_scene::assemblyGate(2002,/* NFS_ASSEMBLY_DIAG_END:64 */!trusted/* NFS_ASSEMBLY_DIAG_BEGIN:65 */)/* NFS_ASSEMBLY_DIAG_END:65 */||/* NFS_ASSEMBLY_DIAG_BEGIN:66 */nfs_ls_scene::assemblyGate(2003,/* NFS_ASSEMBLY_DIAG_END:66 */cache->trusted().get()!=trusted.get()/* NFS_ASSEMBLY_DIAG_BEGIN:67 */)/* NFS_ASSEMBLY_DIAG_END:67 */||/* NFS_ASSEMBLY_DIAG_BEGIN:68 */nfs_ls_scene::assemblyGate(2004,/* NFS_ASSEMBLY_DIAG_END:68 */cache->trusted().owner_before(trusted)/* NFS_ASSEMBLY_DIAG_BEGIN:69 */)/* NFS_ASSEMBLY_DIAG_END:69 */||/* NFS_ASSEMBLY_DIAG_BEGIN:70 */nfs_ls_scene::assemblyGate(2005,/* NFS_ASSEMBLY_DIAG_END:70 */trusted.owner_before(cache->trusted())/* NFS_ASSEMBLY_DIAG_BEGIN:71 */)/* NFS_ASSEMBLY_DIAG_END:71 */||/* NFS_ASSEMBLY_DIAG_BEGIN:72 */nfs_ls_scene::assemblyGate(2006,/* NFS_ASSEMBLY_DIAG_END:72 */!i.owner.valid()/* NFS_ASSEMBLY_DIAG_BEGIN:73 */)/* NFS_ASSEMBLY_DIAG_END:73 */||/* NFS_ASSEMBLY_DIAG_BEGIN:74 */nfs_ls_scene::assemblyGate(2007,/* NFS_ASSEMBLY_DIAG_END:74 */!i.serial/* NFS_ASSEMBLY_DIAG_BEGIN:75 */)/* NFS_ASSEMBLY_DIAG_END:75 */||/* NFS_ASSEMBLY_DIAG_BEGIN:76 */nfs_ls_scene::assemblyGate(2008,/* NFS_ASSEMBLY_DIAG_END:76 */i.mapRole>1/* NFS_ASSEMBLY_DIAG_BEGIN:77 */)/* NFS_ASSEMBLY_DIAG_END:77 */||/* NFS_ASSEMBLY_DIAG_BEGIN:78 */nfs_ls_scene::assemblyGate(2009,/* NFS_ASSEMBLY_DIAG_END:78 */!i.mapName/* NFS_ASSEMBLY_DIAG_BEGIN:79 */)/* NFS_ASSEMBLY_DIAG_END:79 */||/* NFS_ASSEMBLY_DIAG_BEGIN:80 */nfs_ls_scene::assemblyGate(2010,/* NFS_ASSEMBLY_DIAG_END:80 */!bg::fullClip(i.full,640)/* NFS_ASSEMBLY_DIAG_BEGIN:81 */)/* NFS_ASSEMBLY_DIAG_END:81 */||/* NFS_ASSEMBLY_DIAG_BEGIN:82 */nfs_ls_scene::assemblyGate(2011,/* NFS_ASSEMBLY_DIAG_END:82 */i.pre.size()!=bg::Full/* NFS_ASSEMBLY_DIAG_BEGIN:83 */)/* NFS_ASSEMBLY_DIAG_END:83 */||/* NFS_ASSEMBLY_DIAG_BEGIN:84 */nfs_ls_scene::assemblyGate(2012,/* NFS_ASSEMBLY_DIAG_END:84 */i.postReset.size()!=bg::Full/* NFS_ASSEMBLY_DIAG_BEGIN:85 */)/* NFS_ASSEMBLY_DIAG_END:85 */||/* NFS_ASSEMBLY_DIAG_BEGIN:86 */nfs_ls_scene::assemblyGate(2013,/* NFS_ASSEMBLY_DIAG_END:86 */i.clean.size()!=bg::Full/* NFS_ASSEMBLY_DIAG_BEGIN:87 */)/* NFS_ASSEMBLY_DIAG_END:87 */||/* NFS_ASSEMBLY_DIAG_BEGIN:88 */nfs_ls_scene::assemblyGate(2014,/* NFS_ASSEMBLY_DIAG_END:88 */!cache->matches(i.owner,i.slots,i.directory,i.cacheRevision,i.copy.sourceBefore.data(),i.copy.sourceBefore.size())/* NFS_ASSEMBLY_DIAG_BEGIN:89 */)/* NFS_ASSEMBLY_DIAG_END:89 */||/* NFS_ASSEMBLY_DIAG_BEGIN:90 */nfs_ls_scene::assemblyGate(2015,/* NFS_ASSEMBLY_DIAG_END:90 */i.copy.args[0]!=i.slots.target[i.slots.selected].w[8]/* NFS_ASSEMBLY_DIAG_BEGIN:91 */)/* NFS_ASSEMBLY_DIAG_END:91 */||/* NFS_ASSEMBLY_DIAG_BEGIN:92 */nfs_ls_scene::assemblyGate(2016,/* NFS_ASSEMBLY_DIAG_END:92 */!i.directory.resolves(i.mapName,i.reset.args[0],614416)/* NFS_ASSEMBLY_DIAG_BEGIN:93 */)/* NFS_ASSEMBLY_DIAG_END:93 */||/* NFS_ASSEMBLY_DIAG_BEGIN:94 */nfs_ls_scene::assemblyGate(2017,/* NFS_ASSEMBLY_DIAG_END:94 */!logo::hashMatches(i.reset.sourceBefore.data(),i.reset.sourceBefore.size(),trusted->catalog().mapSha[i.mapRole])/* NFS_ASSEMBLY_DIAG_BEGIN:95 */)/* NFS_ASSEMBLY_DIAG_END:95 */)return {};
   try{auto pixels=i.pre;if(/* NFS_ASSEMBLY_DIAG_BEGIN:96 */nfs_ls_scene::assemblyGate(2018,/* NFS_ASSEMBLY_DIAG_END:96 */!replay(i.reset,i.full,false,pixels)/* NFS_ASSEMBLY_DIAG_BEGIN:97 */)/* NFS_ASSEMBLY_DIAG_END:97 */||/* NFS_ASSEMBLY_DIAG_BEGIN:98 */nfs_ls_scene::assemblyGate(2019,/* NFS_ASSEMBLY_DIAG_END:98 */pixels!=i.postReset/* NFS_ASSEMBLY_DIAG_BEGIN:99 */)/* NFS_ASSEMBLY_DIAG_END:99 */||/* NFS_ASSEMBLY_DIAG_BEGIN:100 */nfs_ls_scene::assemblyGate(2020,/* NFS_ASSEMBLY_DIAG_END:100 */!replay(i.copy,i.full,true,pixels)/* NFS_ASSEMBLY_DIAG_BEGIN:101 */)/* NFS_ASSEMBLY_DIAG_END:101 */||/* NFS_ASSEMBLY_DIAG_BEGIN:102 */nfs_ls_scene::assemblyGate(2021,/* NFS_ASSEMBLY_DIAG_END:102 */pixels!=i.clean/* NFS_ASSEMBLY_DIAG_BEGIN:103 */)/* NFS_ASSEMBLY_DIAG_END:103 */)return {};auto p=std::shared_ptr<OwnedScene>(new OwnedScene);p->cache_=std::move(cache);p->trusted_=std::move(trusted);p->clean_=std::move(pixels);p->owner_=i.owner;p->full_=i.full;p->serial_=i.serial;p->mapRole_=i.mapRole;return p;}catch(...){return {};}

@@ -117,10 +117,15 @@ struct Adapter {
   auto display=nfs_results_text::PreparedText::createCommands(p->commands,nfs_results_text::resultsFont(),p);if(!display)throw 1;
   auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->building.reset();s->replay.clear();s->capturing=false;
  });}
- static std::shared_ptr<const Frame>acquire(Game&g)noexcept{auto*s=current(g);if(!s||s->presenting!=1||s->capturing||s->string||s->word||!s->published)return {};std::shared_ptr<const Frame>out;safe(g,[&]{
+ // Ordinary bitmap redraws also occur outside Presentation (for example idle refresh).
+ // Admit only the exact published full-page bitmap; all target, pixel, archive,
+ // generation and lifetime checks below apply equally to this lexical draw.
+ static std::shared_ptr<const Frame>acquire(Game&g,uint32_t bitmap=0)noexcept{auto*s=current(g);if(!s||s->capturing||s->string||s->word||!s->published)return {};
+ if(bitmap&&bitmap!=s->published->data().target.w[8])return {};
+ if(s->presenting!=1&&!bitmap)return {};std::shared_ptr<const Frame>out;safe(g,[&]{
   auto f=s->published;const auto&d=f->data();if(d.epoch!=s->epoch||!nfs_logo_capture::same(d.target,target())||d.original!=plane(d.target)||!staticsCurrent(d))throw 1;out=std::move(f);
  });return out;}
- static bool reacquire(Game&g,const std::shared_ptr<const Frame>&f)noexcept{auto now=acquire(g);return now&&now.get()==f.get()&&!now.owner_before(f)&&!f.owner_before(now);}
+ static bool reacquire(Game&g,const std::shared_ptr<const Frame>&f,uint32_t bitmap=0)noexcept{auto now=acquire(g,bitmap);return now&&now.get()==f.get()&&!now.owner_before(f)&&!f.owner_before(now);}
 };
 struct ResourceScope {
  Game&g;State*s=nullptr;Measurement old{};bool entered=false;

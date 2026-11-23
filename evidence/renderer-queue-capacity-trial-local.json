@@ -1,0 +1,64 @@
+{
+  "scope": "Local WSL software GLES2, Proving Grounds split screen, both controllers driving.",
+  "order": [
+    "capacity 256",
+    "capacity 128"
+  ],
+  "method": "Same app objects and verified resources except the render queue capacity. Exact 30-second swap windows after both cars moved. Counters use the 29 whole race samples inside each window. Both returned through Results and started a second race.",
+  "metrics": {
+    "baseline": {
+      "capacity": 128,
+      "intervals": 29,
+      "frames": 936,
+      "medianSwapMs": 30.623907,
+      "p95SwapMs": 36.574694,
+      "medianEngineMsPerSubmission": 13.9348,
+      "rendererCallsPerFrame": 43.1559829059829,
+      "queueMsPerFrame": 2.637732799145299,
+      "executionMsPerFrame": 11.622792735042735
+    },
+    "candidate": {
+      "capacity": 256,
+      "intervals": 29,
+      "frames": 998,
+      "medianSwapMs": 28.973145,
+      "p95SwapMs": 33.418211,
+      "medianEngineMsPerSubmission": 13.5749,
+      "rendererCallsPerFrame": 21.758517034068138,
+      "queueMsPerFrame": 1.599301603206413,
+      "executionMsPerFrame": 11.345251603206414
+    }
+  },
+  "decision": "Adopt capacity 256. Both orders reduced renderer handoffs and median swap spacing. The pending command-count ceiling doubles, with ownership and cancellation rules preserved. Physical iPad FPS, peak memory and energy have not been measured.",
+  "reverseOrder": {
+    "order": [
+      "capacity 128",
+      "capacity 256"
+    ],
+    "metrics": {
+      "baseline": {
+        "capacity": 128,
+        "intervals": 29,
+        "frames": 901,
+        "medianSwapMs": 31.410911,
+        "p95SwapMs": 39.592395,
+        "medianEngineMsPerSubmission": 14.411999999999999,
+        "rendererCallsPerFrame": 43.62264150943396,
+        "queueMsPerFrame": 2.8122661487236402,
+        "executionMsPerFrame": 12.07400987791343
+      },
+      "candidate": {
+        "capacity": 256,
+        "intervals": 29,
+        "frames": 985,
+        "medianSwapMs": 29.077037,
+        "p95SwapMs": 34.653686,
+        "medianEngineMsPerSubmission": 13.8843,
+        "rendererCallsPerFrame": 22.110659898477156,
+        "queueMsPerFrame": 1.6960911675126902,
+        "executionMsPerFrame": 11.639629035532995
+      }
+    }
+  },
+  "verification": "The main-thread test and all 12 owned-renderer scenarios passed with the production bound. The trial also passed those checks under AddressSanitizer and UndefinedBehaviorSanitizer."
+}

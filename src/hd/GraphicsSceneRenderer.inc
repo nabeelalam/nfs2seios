@@ -2,6 +2,9 @@
 /* Actual renderer-owner Graphics426950 adapter. All original uploads, selects
    and triangles still execute. Source scene joins grant no GL authority. */
 #include "GraphicsSceneRuntimeAbi.h"
+#ifndef NFS_GRAPHICS_SCENE_WIDE_FINISH
+#define NFS_GRAPHICS_SCENE_WIDE_FINISH(view,target) ((void)0)
+#endif
 #include "AudioNativePass.h"
 #define NFS_GRAPHICS_SCENE_EXTERNAL_BACKGROUND_IMPLEMENTATION
 #include "GraphicsSceneLayers.c.inc"
@@ -177,7 +180,7 @@ int nfs_private_graphics_scene_finish(uint64_t serial){
  if(!nfs_graphics_read_target(&target,serial)||memcmp(&target,&nfs_graphics_renderer.target,sizeof target)){nfs_graphics_cancel("precommit-target");return 0;}
  if(!nfs_graphics_scene_save(&saved,&guard))goto lost;
  ok=nfs_graphics_copy_color(&target);if(!nfs_graphics_current())goto lost;
- if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;nfs_graphics_trace(ok?"finish-published":"finish-refused",ok?"color-only-commit":"copy-error");nfs_graphics_clear_view();return ok;
+ if(!nfs_graphics_scene_restore(&saved,&guard))goto lost;nfs_graphics_trace(ok?"finish-published":"finish-refused",ok?"color-only-commit":"copy-error");if(ok)NFS_GRAPHICS_SCENE_WIDE_FINISH(&nfs_graphics_renderer.view,&target);nfs_graphics_clear_view();return ok;
  lost:nfs_graphics_abandon();return 0;
 }
 #undef NFS_GRAPHICS_RENDER_GL

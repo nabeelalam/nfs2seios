@@ -1,0 +1,135 @@
+{
+  "scope": "Faithful Credits backdrop candidate and exact original identity foundation; no renderer activation",
+  "localArtifact": ".build/credits-wide-artwork-v1/credits-backdrop-wide-v1.png",
+  "dimensions": [
+    1672,
+    941
+  ],
+  "sha256": "63362031978548c9cecc0d00dd4669c3c3410494ff8b73246d393d13ca98e0ba",
+  "sourceArchiveBytes": 842384,
+  "sourceArchiveSha256": "542d102452b4537499d71b6a3d119cd304e7e554637270071c078faeff160871",
+  "sourceMetadataHeader": "src/hd/ClassicScreens/CreditsSourceCatalog.h",
+  "originalResources": [
+    {
+      "name": "Bac1",
+      "offset": 88,
+      "span": 614416,
+      "width": 640,
+      "height": 480,
+      "format": 120,
+      "headerX": 0,
+      "headerY": 0,
+      "sha256": "27dd8340bc89976c26b3984cedd17095caa29951765e668e654468981a3becad"
+    },
+    {
+      "name": "engl",
+      "offset": 614504,
+      "span": 19984,
+      "width": 156,
+      "height": 64,
+      "format": 120,
+      "headerX": -456,
+      "headerY": -17,
+      "sha256": "47394e4099540fa0ff91ac9dbc315542d0b81a6bfa1df6d739eb4992d49f4000"
+    },
+    {
+      "name": "fren",
+      "offset": 634488,
+      "span": 41488,
+      "width": 319,
+      "height": 65,
+      "format": 120,
+      "headerX": -293,
+      "headerY": -17,
+      "sha256": "9a60700456f327c48ceaa8d85e82efc2e87f6dde25a68be9162d3c2228c67713"
+    },
+    {
+      "name": "germ",
+      "offset": 675976,
+      "span": 35088,
+      "width": 274,
+      "height": 64,
+      "format": 120,
+      "headerX": -338,
+      "headerY": -17,
+      "sha256": "d872d3fc66fb6ef22b9d352b184b2e97cc56430c14c4bf8c56aa3b4507f0ff39"
+    },
+    {
+      "name": "itly",
+      "offset": 711064,
+      "span": 41876,
+      "width": 322,
+      "height": 65,
+      "format": 120,
+      "headerX": -296,
+      "headerY": -17,
+      "sha256": "d883a4c9c572b61822b4b58265a36267313f351996a7821ce2c64befe9d606eb"
+    },
+    {
+      "name": "knwd",
+      "offset": 752940,
+      "span": 8504,
+      "width": 196,
+      "height": 38,
+      "format": 123,
+      "headerX": -64,
+      "headerY": -311,
+      "sha256": "edc17d136faf7dba910fc50001e53e8b57cc6edc5d95395c1e38c4f0c525f31b"
+    },
+    {
+      "name": "span",
+      "offset": 761444,
+      "span": 23056,
+      "width": 180,
+      "height": 64,
+      "format": 120,
+      "headerX": -432,
+      "headerY": -18,
+      "sha256": "3081134f6aff8d4b70bc59a0b0827c2077c4d835750e3ac1abcd4302aa5021de"
+    },
+    {
+      "name": "swed",
+      "offset": 784500,
+      "span": 25236,
+      "width": 194,
+      "height": 65,
+      "format": 120,
+      "headerX": -420,
+      "headerY": -17,
+      "sha256": "7d64897c541e673e4044d8dfc1d0e92d1c37543673b0494f450e9fa1a3aa3222"
+    },
+    {
+      "name": "chy2",
+      "offset": 809736,
+      "span": 32648,
+      "width": 243,
+      "height": 130,
+      "format": 123,
+      "headerX": -347,
+      "headerY": -107,
+      "sha256": "a63fa4b2c6ee84273bd0fa519b1cc356c049fd43bea3179f03ae1dd8bb844982"
+    }
+  ],
+  "authoring": {
+    "method": "Built-in image-generation edit using the separately supplied original Bac1 image, then a targeted physical-plate lettering correction.",
+    "promptRecipe": ".build/credits-wide-artwork-v1/CREATION-PROMPTS.json",
+    "understanding": "Stationary wooded car photograph, reflected branches, petrol-teal palette, translucent layered drafting/grid construction. Reconstruct subject and materials instead of tracing artifacts. No driving blur or wheel spin.",
+    "separateElements": [
+      "Authentic NFS II SE logo and vertical brand watermark must be composited separately.",
+      "All six locale headings must remain separate.",
+      "Preserve Kenwood and Creative House Y2 content and actual original scrolling placement."
+    ]
+  },
+  "remaining": [
+    "Add a source-qualified backdrop lease using the exact Credits owner and actual archive; validate/copy immutable identity once per archive lifetime, not on every scrolling frame.",
+    "Support a qualified backdrop-only first frame when no scrolling text is visible.",
+    "Preserve actual original partner-logo draws and scrolling timing, with proper HD branded artwork.",
+    "Implement full-window Credits backdrop/text/branding composition and parent return, with current context/target/lifetime ownership.",
+    "Group local runtime checks after the complete Credits implementation; no Apple build or user test yet."
+  ],
+  "artworkReviewed": true,
+  "rendererImplemented": false,
+  "applicationActivated": false,
+  "newApplicationBuild": false,
+  "physicalIpadVerified": false
+}

@@ -20,11 +20,12 @@ def fn(symbol, code=""):
 def units():
     initial_caption = "\t{ // checked copy transaction begin\n\tnfs::GuestCopyTransaction guest_transaction;\n\tebp = guest_transaction.load<int32_t>(dword_4D243C); //mov\n\t} // checked copy transaction end\n\t{ // checked copy transaction begin\n\tnfs::GuestCopyTransaction guest_transaction;\n\teax = guest_transaction.load<int32_t>(dword_4D2314+2); //mov\n\tsar(eax, (int32_t)0x10);\n\teax = guest_transaction.load<int32_t>(dword_4D231C+eax*4); //mov\n\t} // checked copy transaction end\n" + call("4825A8") + call("40C110") + call("4824BC") + "loc_40C25E:\n"
     initial = "loc_40C3CC:\n" + "dword_4D4D24\n" + call("4825A8") + "guest_address(aBlk4)\n" + call("405B30") + "eax = esi;\nedx = 0xD3;\nebx = 0x13C;\n" + call("40CD70") + "0x2800\n" + call("405B60") + "edx = 1;\n" + call("428250")
+    rebuild = initial.replace("loc_40C3CC:", "loc_40D2DE:") + "loc_40D363:\n"
     refresh = initial.replace("loc_40C3CC:", "loc_40C5C6:").replace(call("428250"), call("40CAB0") + call("428250"))
     animation = "loc_40C792:\neax = to32i(esi+4);\n" + call("405B30") + "0x1000\n" + call("405B60")
     native = "loc_40C64C:\n\tpush32(0xFFFFFFFF);\n\tecx = 0x20; //mov\n\teax = 1; //mov\n\txor_(edx, edx);\nexisting_location_route;\n" + call("427B30")
-    slide = "loc_40C375:\n" + call("4279E0") + "\tpush32(0xFFFFFFFF);\n\txor_(edx, edx);\n\txor_(eax, eax);\n" + call("427B30") + call("4276F0") + call("4976B8") + "\tif (jle())\n\t\tgoto loc_40C342;\n"
-    unused = "loc_unused:\n" + call("428250") * 8 + call("427B30") * 3
+    slide = "loc_40C342:\n" + call("497680") + call("49769C") + call("427B30") + "loc_40C375:\n" + call("4279E0") + "\tpush32(0xFFFFFFFF);\n\txor_(edx, edx);\n\txor_(eax, eax);\n" + call("427B30") + call("4276F0") + call("4976B8") + "\tif (jle())\n\t\tgoto loc_40C342;\n"
+    unused = "loc_unused:\n" + call("428250") * 8 + call("427B30") * 2
     lazy = " nfs_hd_scene_iteration.start();\n" + "loc_side:\nguest_address(aSide)\n" + call("405B30") + "loc_word:\noff_4D2474+ecx*4\n" + call("405B30") + call("405B30") * 3
     # Word is uniquely selected by the argument lookup, but its region must not
     # accidentally include following logo calls before a label. Real source
@@ -38,8 +39,8 @@ def units():
     word = "guest_store<int16_t>(esi, static_cast<int16_t>(bx)); //mov\n"
     prefix = '#include "FunctionIds.h"\n// Preserved preexisting transformation and UTF-8: Î©\n'
     return {
-        "Methods_01.cpp": prefix + fn("40C160", initial_caption + slide + initial + refresh + native + animation + unused) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
-        "Methods_03.cpp": prefix + fn("428250", " nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);\n" + call("483470") + "loc_4282FB:\n { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n" + call("49755C") + " }\n" + call("482DA0")) + fn("4284B0") + fn("4287F0") + fn("4289F0"),
+        "Methods_01.cpp": prefix + fn("40C160", initial_caption + slide + initial + refresh + native + animation + unused + "loc_40C8F8:\n\tcmp(to16i(dword_4E5928), (int16_t)0xB);\n") + fn("40D1B0", rebuild) + fn("40C110") + fn("405CF0") + fn("40BBE0", lazy) + fn("405B30") + fn("405B60") + fn("405580", call("41B710") + "\tecx = eax; //mov\n" + measure) + fn("40CD70", preview) + fn("40CAB0", swatch_call) + fn("410090", swatch),
+        "Methods_03.cpp": prefix + fn("428250", " nfs_background_scene_live::UploadEndScope nfs_hd_upload_end(*this);\n nfs_logo_publisher::UploadScope nfs_hd_upload(*this);\n" + call("483470") + "loc_4282FB:\n { nfs_logo_publisher::UploadTileScope nfs_hd_tile(*this);\n" + call("49755C") + " }\n" + call("482DA0")) + fn("4284B0") + fn("4287F0") + fn("4289F0") + fn("427ED0", call("40CD70") * 2 + call("4850B0") * 2 + call("49A118") + call("428440") + call("49755C") * 2) + fn("4279E0"),
         "Methods_09.cpp": prefix + fn("4824CC"),
         "Methods_10.cpp": prefix + fn("482DA0") + fn("4848FC") + fn("482BD4") + fn("483070") + fn("483438"),
         "Methods_13.cpp": prefix + fn("4A5830", word * 4) + fn("4A14D4") + fn("4A10BC", "\tcall(to32i(esp+0x38));\n" * 4),
@@ -62,9 +63,9 @@ class PlayerHooksTests(unittest.TestCase):
         after = hooks.add_player_scene_hooks(units()["Methods_01.cpp"], "Methods_01.cpp")
         owner = [after.index(token) for token in ("PlayerMenuOwnerScope", "nfs_player1_caption::OwnerScope", "nfs_player2_caption::OwnerScope", "PlayerScope", "SourceLifetimeScope")]
         self.assertEqual(owner, sorted(owner))
-        self.assertEqual(after.count("nfs_player_copy_live::Scope"), 3)
-        self.assertEqual(after.count("CachedUploadSiteScope"), 3)
-        self.assertEqual(after.count("nfs_player_preview_live::Scope"), 2)
+        self.assertEqual(after.count("nfs_player_copy_live::Scope"), 4)
+        self.assertEqual(after.count("CachedUploadSiteScope"), 4)
+        self.assertEqual(after.count("nfs_player_preview_live::Scope"), 3)
         self.assertEqual(after.count("PresentationScope"), 1)
         self.assertNotIn("nfs_logo_publisher::NativePresentationScope", after)
         self.assertEqual(after.count("nfs_player_swatch_live::Scope"), 2)
@@ -76,6 +77,37 @@ class PlayerHooksTests(unittest.TestCase):
         self.assertNotIn("nfs_player_copy_live::Scope", animated)
         self.assertNotIn("CachedUploadSiteScope", animated)
         self.assertIn("existing_location_route;", after)
+
+    def test_graph_capture_observes_existing_source_calls_only(self):
+        source = units()
+        first = hooks.add_player_scene_hooks(source["Methods_01.cpp"], "Methods_01.cpp")
+        third = hooks.add_player_scene_hooks(source["Methods_03.cpp"], "Methods_03.cpp")
+        rows = hooks.add_player_scene_hooks(source["Methods_13.cpp"], "Methods_13.cpp")
+        self.assertIn('#include "hd/PlayerGraphPhotoCapture.inc"', first)
+        self.assertEqual(first.count("nfs_player_graph_capture::NameScope"), 1)
+        self.assertEqual(first.count("nfs_player_graph_capture::ResolvedScope"), 1)
+        self.assertEqual(first.count("nfs_player_graph_capture::ColorScope"), 1)
+        self.assertEqual(first.count("nfs_player_graph_capture::FillScope"), 1)
+        self.assertEqual(third.count("nfs_player_graph_capture::BuildScope"), 1)
+        self.assertEqual(third.count("nfs_player_graph_capture::PhotoScope"), 2)
+        self.assertEqual(rows.count("nfs_player_graph_capture::RowScope"), 4)
+        self.assertEqual(hooks.reverse_player_scene_hooks(first), source["Methods_01.cpp"])
+        self.assertEqual(hooks.reverse_player_scene_hooks(third), source["Methods_03.cpp"])
+        self.assertEqual(hooks.reverse_player_scene_hooks(rows), source["Methods_13.cpp"])
+
+    def test_final_preview_rebuild_is_exact_and_original_preserving(self):
+        before = units()["Methods_01.cpp"]
+        after = hooks.add_player_scene_hooks(before, "Methods_01.cpp")
+        region = after[after.index("loc_40D2DE:"):after.index("loc_40D363:")]
+        self.assertEqual(region.count("PreviewRebuild"), 3)
+        for symbol in ("405B30", "40CD70", "405B60", "428250"):
+            self.assertEqual(region.count(call(symbol).strip()), 1)
+        self.assertNotIn("40CAB0", region)
+        self.assertEqual(hooks.reverse_player_scene_hooks(after), before)
+        for old, new in (("loc_40D2DE:", "loc_40D2DF:"), ("0xD3;", "0xD2;"), ("0x2800", "0x2801")):
+            broken = before[:before.index("loc_40D2DE:")] + before[before.index("loc_40D2DE:"):].replace(old, new, 1)
+            with self.subTest(anchor=old), self.assertRaises(ValueError):
+                hooks.add_player_scene_hooks(broken, "Methods_01.cpp")
 
     def test_normal_intro_scope_preserves_original_draws_and_swap(self):
         before = units()["Methods_01.cpp"]
@@ -124,6 +156,7 @@ class PlayerHooksTests(unittest.TestCase):
     def test_upload_construction_and_original_tile(self):
         before = units()["Methods_03.cpp"]
         after = hooks.add_player_scene_hooks(before, "Methods_03.cpp")
+        after = after[after.index("Fn(void) Game::_sub_428250()"):after.index("Fn(void) Game::_sub_4284B0()")]
         tokens = ("nfs_player_scene_live::UploadEndScope", "nfs_logo_publisher::UploadScope", "nfs_player_native_live::UploadScope", "nfs_player_initial_native_live::UploadScope", "nfs_player_initial_native_live::stageBegin", "nfs_logo_publisher::UploadTileScope", "nfs_player_native_live::UploadTileScope", "nfs_player_initial_native_live::UploadTileScope", "_sub_49755C();", "nfs_player_initial_native_live::stageFinish", "_sub_482DA0();")
         at = [after.index(token) for token in tokens]
         self.assertEqual(at, sorted(at))

@@ -1,0 +1,98 @@
+{
+  "scope": "History panorama owner, compressed loader, registry, CPU lease and compiled side-only GPU handoff; no panorama activated or runtime-proven",
+  "optimizedChecks": "passed",
+  "asanUbsanChecks": "passed",
+  "cases": [
+    "Valid opaque 16:9 panorama",
+    "Input storage mutation leaves owned pixels unchanged",
+    "Shared lifetime outlives initial owner",
+    "Base generation cleared or replaced rejects lookup",
+    "Wrong History source rejects lookup without changing output",
+    "Title source and out-of-range source rejected",
+    "Wrong generation, oversized dimensions, truncated bytes, wrong hash, wrong aspect and transparency rejected"
+  ],
+  "sourceSHA256": "8075a5facc7d82f26859114750bafb63ac9a05dfb0224be4b478077ca26b0857",
+  "testSHA256": "c827b575ad9fe8400ef4f26c793d0d2886e8974c9b71062b68eaceff1eb8f533",
+  "activeArtworkChanged": false,
+  "remaining": [
+    "Resource authoring/package producer and application activation",
+    "Seam-finished side artwork",
+    "Original-data replay with panorama and physical iPad acceptance"
+  ],
+  "loaderSHA256": "66c48fd55dc3a0ced94cee572a8c6a7a057491edd4cb174a52448a31bb1569f3",
+  "loaderChecks": {
+    "optimized": "passed",
+    "asanUbsan": "passed",
+    "cases": [
+      "Valid complete stream",
+      "Payload tampering against trusted whole-file pin",
+      "Zero or missing trusted pin",
+      "Wrong magic/version/reserved fields despite matching hash",
+      "Title-source identity rejected",
+      "Truncation, trailing bytes and malformed dimensions",
+      "Short stream rejected"
+    ],
+    "currentEncoding": "Version 2: whole-file-authenticated zlib lossless RGBA, exact compressed and decoded byte consumption. Version 1 raw development files remain readable.",
+    "compressionCases": [
+      "Byte-exact RGBA round trip",
+      "Trailing compressed bytes rejected",
+      "Truncated stream rejected",
+      "Declared decoded-size mismatch rejected",
+      "Malformed compressed stream rejected"
+    ]
+  },
+  "projectCtest": {
+    "target": "history_wide_art_tests",
+    "test": "history_wide_art_lifetime",
+    "result": "passed"
+  },
+  "registryChecks": [
+    "Exact background source/base-generation lookup",
+    "Replacement invalidates previous owner identity",
+    "Clear removes draw authority while retained memory remains valid",
+    "Wrong-source and changed-generation lookups rejected"
+  ],
+  "cpuIntegration": {
+    "staticArtRetainsMatchingOptionalPanorama": true,
+    "existingFrameValidationChecksRegistryIdentity": true,
+    "baseArtworkClearDropsRegistry": true,
+    "affectedEngineUnitsCompiled": [
+      "01",
+      "03",
+      "10",
+      "13"
+    ],
+    "providerSyntax": "passed",
+    "projectCtest": "passed",
+    "gameRelinked": false,
+    "runtimeVerified": false
+  },
+  "sourcePins": {
+    "src/hd/ClassicScreens/HistoryWideArtwork.h": "24e37dca4185b1cabd588d5517153da4087e0ad6fc7f9b128afdc2b562b0f8b9",
+    "src/hd/ClassicScreens/HistoryWidePack.h": "66c48fd55dc3a0ced94cee572a8c6a7a057491edd4cb174a52448a31bb1569f3",
+    "src/hd/ClassicScreens/HistoryWideRegistry.h": "1a1960250122b2a5ada80dec58dfb4cf51e711d7b6d82ea24368fe85c4edb96d",
+    "src/hd/ClassicScreens/HistoryCore.h": "75d503a4e3b24592f27b2930f9fccc5688a59bb9d9fdb81252f1a7ac33c4181e",
+    "src/hd/ClassicScreens/HistoryGameHooks.inc": "a1721e7b7a3164697f161f3e507134d18ed02fbc43e4513bcb23ffb0c4457583",
+    "src/hd/ClassicScreens/HistoryArtProvider.cpp": "e4bef249c4cee1044eb4d495adf4a4dae058bf2c31ab957feeda50c3499ec964",
+    "tests/history_wide_art_tests.cpp": "19f84b1e1a665f8f56b30dfc5a096cd8a9329f0c1728c692c1298fb228f2c7f8",
+    "src/hd/ClassicScreens/HistoryPanoramaAbi.h": "c0869209de67cc1e62732c764d38416fac06fc31fa63c22b8ccda5b822aa53d2",
+    "src/hd/ClassicScreens/HistoryLayerAbi.h": "d0823a582e245de7b87c4b3b2df9e9c0f7b042b000fa5168d4a34396206deb72",
+    "src/hd/ClassicScreens/HistoryRenderer.inc": "279f1ad3786d8992dd2dd03ccd00a69c3fb1311f967afbe0a53595c9cd76e032",
+    "src/hd/ClassicScreens/InformationWideRenderer.inc": "48b0fc0381a18d01d7f67d8ae13b76b7dfcac9a36bfab984c1ee256d99a0206c"
+  },
+  "gpuIntegration": {
+    "historyAbiSchema": 2,
+    "leaseRetainedThroughPresentation": true,
+    "sourceAndGenerationCurrentCallback": true,
+    "centralPageSampleUnchanged": true,
+    "panoramaSampleOutsideCenterOnly": true,
+    "textureUnit1Restored": true,
+    "unpackAlignmentRestored": true,
+    "contextOwnedTextureCache": true,
+    "releaseAfterPresentOrRetirement": true,
+    "localGameLinked": true,
+    "registeredOwnerTest": "passed",
+    "runtimePanoramaPixelsVerified": "Synthetic actual-GLES fixture only; see ui-history-panorama-gpu-local.json"
+  },
+  "linkedBinarySHA256": "1fb8243eac30e356c6c12d97168c2dd3be0c3dd2e33177af5f3ad440cde57dd8"
+}

@@ -230,12 +230,12 @@ this workflow edit. Configuration remains the largest measured cost, and its
 SDK checks have not been bypassed. See `evidence/build22-cloud-resource-review.json`.
 
 
-## Current complete artwork delivery envelope
+## 5 November artwork delivery envelope (historical)
 
 Reviewed against GitHub's official Releases documentation on 5 November 2026.
 The eight private artwork bundles total 215,234,068 bytes. The former 128 MiB
 personal-package bound cannot hold these inputs. The personal ZIP bound is now
-512 MiB, matching the local injector's existing enforced limit. The injector
+512 MiB, matching the local injector's enforced limit at that time. The injector
 also bounds decompressed ZIP members to 1 GiB and the member count to 10,000.
 The future finished package must be measured and verified against these bounds.
 
@@ -293,3 +293,38 @@ ASan/UBSan. The corrected source loads both exact selected layouts without
 changing artwork bytes. One replacement validation against that corrected
 revision is justified; no unchanged-revision retry or additional Apple builds
 for artwork iteration are authorized by this failure.
+
+
+The Linux preflight checks the coherent History release catalog, native-loader
+pin agreement, private injection invariants and metadata-only CMake defaults
+before installing graphics dependencies or compiling the engine. These checks
+use synthetic packages and copy no original data or private artwork into CI.
+A personal History package must include the background and all seven panoramas
+and pass the base-executable release-pin check; do not reuse an older base merely
+because its primary classic-UI pin still matches.
+
+
+## 23 November: current private slideshow delivery
+
+The current local injector bounds a finished personal IPA to 768 MiB, its base
+to 512 MiB, individual decompressed members to 512 MiB, total decompressed
+members to 1 GiB and member count to 10,000. These are local package guards,
+not Apple or SideStore acceptance guarantees. The separate 512 MiB private
+Release ZIP policy above is unchanged: measure the actual ZIP before upload;
+a locally valid IPA does not automatically qualify for remote delivery. Public
+Actions transfers remain base-only and capped at 64 MiB.
+
+The complete 98-scene slideshow uses matching photos, 15 shared native footers
+and a 98-entry panorama resource, totaling 238,542,211 bytes. Local finishing
+accepts --slideshow-panorama only with its approved metadata pin and matching
+--slideshow and --slideshow-footer inputs. The trusted base executable must
+contain the entire matching panorama SHA/byte-count marker; the injector does
+not patch executable code or make an old base compatible. All photo, source
+ink and resource bytes remain private. Only the separately approved
+compatibility metadata belongs in reviewed public source.
+
+The Linux integration binary and resource checks do not establish a matching
+Apple base, finished IPA size, signing, installation or physical-device
+acceptance. Produce and measure that matched private package before claiming
+delivery readiness. No package-size limit, account setting, billing policy or
+repository visibility is changed by this documentation update.

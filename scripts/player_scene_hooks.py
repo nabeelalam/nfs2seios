@@ -75,15 +75,19 @@ def add_player_scene_hooks(text, name):
     def captions(kind, args="*this"):
         return "\n".join(" nfs_player" + str(p) + "_caption::" + kind + "(" + args + ");" for p in (1, 2))
     include = '#include "FunctionIds.h"\n'
-    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"\n#include "hd/PlayerIntroQueueAdapter.inc"\n#include "hd/PlayerPhotoGameHooks.inc"\n#include "hd/PlayerIntroWidePreludeQueueAdapter.inc"\n#include "hd/ChildIntroWidePreludeQueueAdapter.inc"'))
+    unique(include, include + block("include", '#include "hd/PlayerSceneQueueAdapter.inc"\n#include "hd/PlayerSwatchGameHooks.inc"\n#include "hd/PlayerInitialNativeUploadGameHooks.inc"\n#include "hd/PlayerIntroQueueAdapter.inc"\n#include "hd/PlayerPhotoGameHooks.inc"\n#include "hd/PlayerGraphPhotoCapture.inc"\n#include "hd/PlayerIntroWidePreludeQueueAdapter.inc"\n#include "hd/ChildIntroWidePreludeQueueAdapter.inc"'))
     if name == "Methods_01.cpp":
         entry("40C160", " nfs_logo_publisher::PlayerMenuOwnerScope nfs_player_menu(*this);\n nfs_player1_caption::OwnerScope nfs_player1_owner(*this);\n nfs_player2_caption::OwnerScope nfs_player2_owner(*this);\n nfs_player_scene_live::PlayerScope nfs_player_scene(*this);\n nfs_player_scene_live::SourceLifetimeScope nfs_player_source_lifetime(*this);\n nfs_player_initial_native_live::SourceLifetimeScope nfs_player_initial_source_lifetime(*this);")
         entry("40C110", " nfs_player_scene_live::TailScope nfs_player_tail(*this);\n nfs_player1_caption::TailScope nfs_player1_tail(*this);\n nfs_player2_caption::TailScope nfs_player2_tail(*this);")
         entry("405CF0", " nfs_player1_caption::StringScope nfs_player1_string(*this);\n nfs_player2_caption::StringScope nfs_player2_string(*this);")
         entry("405580", " nfs_player1_caption::ResourceScope nfs_player1_resource(*this);\n nfs_player2_caption::ResourceScope nfs_player2_resource(*this);")
         entry("40BBE0", " nfs_player_scene_live::IterationScope nfs_player_iteration(*this);")
-        entry("405B30", " nfs_player_preview_live::NameScope nfs_player_preview_name(*this);")
-        entry("405B60", " nfs_player_scene_live::ResolvedScope nfs_player_resolved(*this);\n nfs_player_preview_live::ResolvedScope nfs_player_preview_resolved(*this);\n nfs_player_photo_live::resolved(*this);")
+        entry("405B30", " nfs_player_preview_live::NameScope nfs_player_preview_name(*this);\n nfs_player_graph_capture::NameScope nfs_graph_name(*this);")
+        entry("405B60", " nfs_player_scene_live::ResolvedScope nfs_player_resolved(*this);\n nfs_player_preview_live::ResolvedScope nfs_player_preview_resolved(*this);\n nfs_player_photo_live::resolved(*this);\n nfs_player_graph_capture::ResolvedScope nfs_graph_resolved(*this);")
+        # Keep the original cache comparison and fallback verbatim. Only the
+        # first graph-to-bonus change takes the existing original photo path.
+        graph_anchor = "loc_40C8F8:\n\tcmp(to16i(dword_4E5928), (int16_t)0xB);"
+        unique(graph_anchor, "loc_40C8F8:\n" + block("graph-to-bonus-photo", " if(nfs_player_photo_live::needsBonusPhotoChange(*this))goto loc_40C57B;") + "\tcmp(to16i(dword_4E5928), (int16_t)0xB);")
         anchor = " nfs_hd_scene_iteration.start();"
         unique(anchor, anchor + block("lazy-start", " nfs_player_iteration.start();"))
         def lazy(part):
@@ -160,10 +164,21 @@ def add_player_scene_hooks(text, name):
             anchor = "\tpush32(0xFFFFFFFF);\n\tecx = 0x20; //mov\n\teax = 1; //mov\n\txor_(edx, edx);\n"
             return wrap(part, anchor, "427B30", "presentation", "nfs_player_scene_live::PresentationScope nfs_player_presentation(*this);")
         body("40C160", menu)
+        def preview_rebuild(part):
+            # Original final photo rebuild: no swatch call, unlike Refresh.
+            for symbol, tag, scope, require in (
+                ("405B30", "base", "nfs_player_scene_live::RoleScope nfs_player_base(*this,nfs_player_scene_live::Phase::Base,nfs_player_scene_live::BaseArgument::Blk4Direct);", ("guest_address(aBlk4)", "dword_4D4D24", "_sub_4825A8();")),
+                ("40CD70", "preview", "nfs_player_preview_live::Scope nfs_player_preview(*this,nfs_player_preview_live::Site::PreviewRebuild);", ("eax = esi;", "edx = 0xD3;", "ebx = 0x13C;")),
+                ("405B60", "copy", "nfs_player_copy_live::Scope nfs_player_copy(*this,nfs_player_copy_live::Site::PreviewRebuild);", ("0x2800",)),
+                ("428250", "upload", "nfs_player_scene_live::CachedUploadSiteScope nfs_player_upload_site(*this,nfs_player_scene_live::CachedUploadSite::PreviewRebuild);", ("dword_4D4D24", "edx = 1;")),
+            ):
+                part = wrap(part, "loc_40D2DE:\n", symbol, tag + "-preview-rebuild", scope, require)
+            return part
+        body("40D1B0", preview_rebuild)
         def preview(part):
             counts(part, {"405B30": 10, "48266C": 3, "488620": 3})
-            part = wrap(part, "loc_40CDEB:\n", "48266C", "preview-color", "nfs_player_preview_live::ColorScope nfs_player_preview_color(*this);")
-            return wrap(part, "loc_40CDEB:\n", "488620", "preview-fill", "nfs_player_preview_live::FillScope nfs_player_preview_fill(*this);")
+            part = wrap(part, "loc_40CDEB:\n", "48266C", "preview-color", "nfs_player_preview_live::ColorScope nfs_player_preview_color(*this); nfs_player_graph_capture::ColorScope nfs_graph_color(*this);")
+            return wrap(part, "loc_40CDEB:\n", "488620", "preview-fill", "nfs_player_preview_live::FillScope nfs_player_preview_fill(*this); nfs_player_graph_capture::FillScope nfs_graph_fill(*this);")
         body("40CD70", preview)
         def swatch_call(part):
             counts(part, {"410090": 2})
@@ -177,11 +192,11 @@ def add_player_scene_hooks(text, name):
             return part
         body("410090", swatch)
     elif name == "Methods_03.cpp":
-        entry("427ED0", " nfs_player_photo_live::BuildScope nfs_player_photo_build(*this);")
+        entry("427ED0", " nfs_player_photo_live::BuildScope nfs_player_photo_build(*this);\n nfs_player_graph_capture::BuildScope nfs_graph_build(*this);")
         entry("4279E0", " nfs_player_photo_live::DrawScope nfs_player_photo_animation(*this);")
         def photo_tiles(part):
             counts(part, {"40CD70": 2, "4850B0": 2, "49A118": 1, "428440": 1, "49755C": 2})
-            for symbol,tag,scope,count in [("40CD70","photo-canvas","nfs_player_photo_live::PhotoScope nfs_photo_canvas(*this);",2),("4850B0","photo-crop","nfs_player_photo_live::CropScope nfs_photo_crop(*this);",2),("49A118","photo-convert32","nfs_player_photo_live::ConvertScope nfs_photo_convert(*this,true);",1),("428440","photo-convert16","nfs_player_photo_live::ConvertScope nfs_photo_convert(*this,false);",1),("49755C","photo-tile-upload","nfs_player_photo_live::UploadScope nfs_photo_upload(*this);",2)]:
+            for symbol,tag,scope,count in [("40CD70","photo-canvas","nfs_player_photo_live::PhotoScope nfs_photo_canvas(*this); nfs_player_graph_capture::PhotoScope nfs_graph_canvas(*this);",2),("4850B0","photo-crop","nfs_player_photo_live::CropScope nfs_photo_crop(*this);",2),("49A118","photo-convert32","nfs_player_photo_live::ConvertScope nfs_photo_convert(*this,true);",1),("428440","photo-convert16","nfs_player_photo_live::ConvertScope nfs_photo_convert(*this,false);",1),("49755C","photo-tile-upload","nfs_player_photo_live::UploadScope nfs_photo_upload(*this);",2)]:
                 part=wrap_all(part,symbol,tag,scope,count)
             return part
         body("427ED0",photo_tiles)
@@ -216,7 +231,7 @@ def add_player_scene_hooks(text, name):
             pieces = part.split(anchor)
             result = pieces[0]
             for k, piece in enumerate(pieces[1:]):
-                result += block("row-" + str(k) + "-open", " { nfs_player_scene_live::IndexedSideCallScope nfs_player_indexed(*this,nfs_player_scene_live::indexedSideCallee(*this));\n nfs_player_preview_live::RowScope nfs_player_preview_row(*this);\n nfs_player_swatch_live::RowScope nfs_player_swatch_row(*this);") + anchor + block("row-" + str(k) + "-close", " }") + piece
+                result += block("row-" + str(k) + "-open", " { nfs_player_scene_live::IndexedSideCallScope nfs_player_indexed(*this,nfs_player_scene_live::indexedSideCallee(*this));\n nfs_player_preview_live::RowScope nfs_player_preview_row(*this);\n nfs_player_swatch_live::RowScope nfs_player_swatch_row(*this);\n nfs_player_graph_capture::RowScope nfs_graph_row(*this);") + anchor + block("row-" + str(k) + "-close", " }") + piece
             return result
         body("4A10BC", dispatch)
     elif name == "Methods_14.cpp":

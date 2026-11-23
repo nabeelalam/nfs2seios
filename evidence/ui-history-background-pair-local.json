@@ -1,0 +1,51 @@
+{
+  "scope": "Local matched History artwork packaging; no game or Apple build",
+  "reason": "The earlier locked 4:3 artwork has edge vignettes that remain visible when independently generated side strips are attached.",
+  "method": "Derive both the full panorama and its central 4:3 static background from one normalized authored image. Retain native text/title sources and logical bounds.",
+  "prototype": "Ferrari",
+  "sourceIndex": 7,
+  "pair": {
+    "schema": 1,
+    "scope": "Matched private History background and panorama resources",
+    "baseHistorySHA256": "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c",
+    "historySHA256": "f2083e366c7d09a6f56e8fed30d7a5e4ce452f36c6cf3e6a93328c4061591c61",
+    "historyFileBytes": 26593190,
+    "historyPayloadBytes": 75906424,
+    "imageCount": 49,
+    "unchangedSourceCount": 48,
+    "losslessVerified": true,
+    "replacements": [
+      {
+        "sourceIndex": 7,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "79852a9f419642d9412fa89298a6ae656fcccd488bd1c8bf33cca87fd50ecab1",
+        "panoramaRGBA_SHA256": "f68c5dcd37177308a759f9014fa6c62e15754f8cb5311449a32cc656b6772b8d",
+        "panoramaFileSHA256": "553f320a0464419e363dd3daf7f67432f1e43b619fd47a28e9285f6cd394dfd8",
+        "panoramaFileBytes": 4900344
+      }
+    ],
+    "artworkApproved": false,
+    "runtimeVerified": false,
+    "physicalIpadVerified": false
+  },
+  "checks": {
+    "packerTests": 6,
+    "unrelatedSourcesUnchanged": 48,
+    "centralCropExact": true,
+    "testsPassed": true
+  },
+  "artworkStatus": "Private prototype; compare subjects, branded marks, photo placement and live-text clearances before activation",
+  "applicationActivated": false,
+  "runtimeVerified": false,
+  "physicalIpadVerified": false,
+  "releaseReady": false
+}

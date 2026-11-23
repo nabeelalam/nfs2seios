@@ -12,10 +12,10 @@ namespace bg=nfs_background_scene_cpu;namespace live=nfs_location_scene_live;nam
 struct PreserveErrno{int saved=errno;~PreserveErrno()noexcept{errno=saved;}};
 using Child=nfs_location_initial_sidebar::Proof;using Preview=nfs_location_preview::Packet;
 inline std::shared_ptr<const Child>currentChild(Game&g)noexcept{auto*c=initial::current(g);return c&&c->descriptor==uint32_t(guest_address(off_4D2A20))?c->store.current():std::shared_ptr<const Child>{};}
-struct Proof {std::shared_ptr<const Child>child;std::shared_ptr<const Preview>preview; bg::Plane full;uintptr_t game=0,thread=0;uint64_t epoch=0,baseSequence=0,previewSerial=0,previewSequence=0;uint32_t archive=0,mapRole=0;
+struct Proof {std::shared_ptr<const Child>child;std::shared_ptr<const Preview>preview; bg::Plane full,copiedSidebar;std::array<uint32_t,3>refreshPane{};bool refresh=false;uintptr_t game=0,thread=0;uint64_t epoch=0,baseSequence=0,previewSerial=0,previewSequence=0;uint32_t archive=0,mapRole=0;
  NfsOriginalPreviewLayerView previewView()const noexcept{PreserveErrno preserve;if(!preview||!preview->artworkCurrent()||!child||!child->current())return {};auto v=preview->view(); return v;}
 };
-struct State{std::shared_ptr<const Proof>proof;std::shared_ptr<Proof>pending;bg::Plane before,copySide;std::array<uint32_t,9>table{};std::vector<uint8_t>raw;unsigned depth=0,rows=0;uint32_t key=0;bool failed=false;};
+struct State{std::shared_ptr<const Proof>proof;std::shared_ptr<Proof>pending;bg::Plane before,copySide;std::array<uint32_t,9>table{};std::vector<uint8_t>raw;unsigned depth=0,rows=0;uint32_t key=0;std::array<uint32_t,3>refreshPane{};bool failed=false;};
 inline State*&slot()noexcept{struct Storage{State*p=nullptr;~Storage(){delete p;}};static thread_local Storage s;return s.p;}
 inline void trace(const char*stage,const char*reason,const State*s,uint64_t a=0,uint64_t b=0,uint64_t c=0,uint64_t d=0)noexcept{PreserveErrno preserve;const char*flag=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");if(!flag||flag[0]!='1'||flag[1])return;struct Key{const char*stage;const char*reason;unsigned count;};static thread_local Key keys[64]{};static thread_local unsigned used=0;Key*k=nullptr;for(unsigned i=0;i<used;++i)if(!std::strcmp(keys[i].stage,stage)&&!std::strcmp(keys[i].reason,reason)){k=&keys[i];break;}if(!k){if(used==64)return;k=&keys[used++];*k={stage,reason,0};}if(k->count++>=2)return;std::fprintf(stderr,"INITIAL FULL stage=%s reason=%s form=%x depth=%u rows=%u failed=%u pending=%u proof=%u a=%llu b=%llu c=%llu d=%llu\n",stage,reason,0x4d2a20u,s?s->depth:0,s?s->rows:0,unsigned(s&&s->failed),unsigned(s&&bool(s->pending)),unsigned(s&&bool(s->proof)),(unsigned long long)a,(unsigned long long)b,(unsigned long long)c,(unsigned long long)d);}
 inline bool owned(Game&g,const Proof&p)noexcept{PreserveErrno preserve;
@@ -40,8 +40,37 @@ inline bool readInfoReturnCopyTarget(const Proof&p,uint32_t bitmap,bg::Target&ta
   return target.owner==selected&&target.w[8]==bitmap&&bg::fullClip(target,343)&&!target.header[3];
  }catch(...){return false;}
 }
+// Only the exact40C5C6 refresh copy may read a newly painted selected343
+// pane. The entrance proof remains caption/art identity, never these pixels.
+inline bool readRefreshCopyTarget(const Proof&p,uint32_t bitmap,bg::Target&target,
+                                 std::array<uint32_t,3>&pane)noexcept{
+ try{
+  nfs::GuestCopyTransaction tx;
+  pane={{tx.load<uint32_t>(dword_4D2314+2)>>16,
+         tx.load<uint32_t>(dword_4D231C),tx.load<uint32_t>(dword_4D2320)}};
+  if(!p.refresh||!p.epoch||!bitmap||!p.child||!p.child->current()||
+     p.child->binding().epoch!=p.epoch||p.child->binding().formGuest!=uint32_t(guest_address(off_4D2A20))||
+     pane[0]>1||!pane[1]||!pane[2]||pane[1]==pane[2]||
+     tx.load<uint32_t>(dword_4D40B8)!=p.archive)return false;
+  const uint32_t selected=pane[1+pane[0]];
+  if(tx.load<uint32_t>(selected+0x20)!=bitmap)return false;
+  nfs_logo_publisher::target(tx,target,selected);
+  nfs_soft::SurfaceIdentity identity{};
+  return target.owner==selected&&target.w[8]==bitmap&&
+   nfs_location_scene_cpu::captionIdentity(target,p.epoch,identity);
+ }catch(...){return false;}
+}
 inline bool captureCopySide(Game&g,const Proof&p,State&s,uint32_t bitmap)noexcept{
  if(!live::readBytes(bitmap,16+bg::Side*2,s.raw))return false;
+ if(p.refresh){
+  s.copySide.valid=0;
+  if(!readRefreshCopyTarget(p,bitmap,s.copySide.target,s.refreshPane))return false;
+  for(unsigned i=0;i<4;++i)if(bg::le32(s.raw.data()+4*i)!=s.copySide.target.header[i])return false;
+  s.copySide.width=343;s.copySide.height=480;
+  for(unsigned i=0;i<bg::Side;++i)s.copySide.pixels[i]=bg::le16(s.raw.data()+16+2*i);
+  s.copySide.valid=1;
+  return bg::plane(s.copySide,343);
+ }
  if(bitmap==p.child->post().target.w[8]){
   if(initial::acquire(g,bitmap,s.raw)!=p.child)return false;
   s.copySide=p.child->post();
@@ -59,15 +88,20 @@ inline bool copySideCurrent(Game&g,const Proof&p,const State&s)noexcept{
  const auto bitmap=s.copySide.target.w[8];
  std::vector<uint8_t>after;
  if(!live::readBytes(bitmap,16+bg::Side*2,after)||after!=s.raw)return false;
+ if(p.refresh){
+  bg::Target target{};std::array<uint32_t,3>pane{};
+  return readRefreshCopyTarget(p,bitmap,target,pane)&&pane==s.refreshPane&&
+   nfs_logo_capture::same(target,s.copySide.target);
+ }
  if(bitmap==p.child->post().target.w[8])return initial::acquire(g,bitmap,after)==p.child;
  bg::Target target{};
  return readInfoReturnCopyTarget(p,bitmap,target)&&nfs_logo_capture::same(target,s.copySide.target);
 }
 // Installed only at the exact40C160 initial/refresh405B60; no ordinary draw admission.
 struct CopyScope{Game&g;State*s=nullptr;bool entered=false;int unwind=0;
- explicit CopyScope(Game&game)noexcept:g(game){PreserveErrno preserve;auto*liveState=live::current(g);auto child=currentChild(g);if(!liveState||liveState->invalid||liveState->iteration||!liveState->baseVerified||!child||uint32_t(g.esi)!=uint32_t(guest_address(off_4D2A20))){trace("copy-ctor","owner-or-child",s,uint64_t(liveState!=nullptr),liveState?liveState->iteration:0,liveState?unsigned(liveState->baseVerified):0,uint32_t(g.esi));return;}
+ explicit CopyScope(Game&game,bool refresh=false)noexcept:g(game){PreserveErrno preserve;auto*liveState=live::current(g);auto child=currentChild(g);if(!liveState||liveState->invalid||liveState->iteration||!liveState->baseVerified||!child||uint32_t(g.esi)!=uint32_t(guest_address(off_4D2A20))){trace("copy-ctor","owner-or-child",s,uint64_t(liveState!=nullptr),liveState?liveState->iteration:0,liveState?unsigned(liveState->baseVerified):0,uint32_t(g.esi));return;}
  auto*&storage=slot();if(!storage)storage=new(std::nothrow)State;if(!storage)return;s=storage;s->proof.reset();entered=true;if(s->depth++){s->pending.reset();s->failed=true;return;}unwind=nfs_logo_publisher::exceptions();s->pending.reset();s->rows=0;s->failed=false;
- try{auto p=std::make_shared<Proof>();p->child=std::move(child);p->preview=liveState->preview;p->game=liveState->game;p->thread=liveState->thread;p->epoch=liveState->ownerEpoch;p->archive=liveState->archive;p->baseSequence=liveState->base.event.sequence;p->previewSerial=liveState->previewSerial;p->previewSequence=liveState->previewEvent.sequence;p->mapRole=liveState->base.mapRole;
+ try{auto p=std::make_shared<Proof>();p->child=std::move(child);p->preview=liveState->preview;p->game=liveState->game;p->thread=liveState->thread;p->epoch=liveState->ownerEpoch;p->archive=liveState->archive;p->baseSequence=liveState->base.event.sequence;p->previewSerial=liveState->previewSerial;p->previewSequence=liveState->previewEvent.sequence;p->mapRole=liveState->base.mapRole;p->refresh=refresh;
  if(!owned(g,*p)||!p->preview->baseMatches(liveState->base.post)||uint32_t(g.edx)!=0x2800||g.ebx||g.ecx||p->mapRole>1){trace("copy-ctor","binding-or-input",s,uint32_t(g.eax),uint32_t(g.edx),p->previewSerial,p->baseSequence);return;}
  if(!captureCopySide(g,*p,*s,uint32_t(g.eax))||s->copySide.target.header[3]){trace("copy-ctor","child-source",s,s->raw.size());return;}
  {nfs::GuestCopyTransaction tx;nfs_logo_publisher::table(tx,s->table,true);if(nfs_small_logo_live::overlap(uint32_t(g.eax),s->raw.size(),liveState->base.post.target.w[8],16+bg::Full*2)){trace("copy-ctor","source-overlap",s);return;}}
@@ -75,7 +109,7 @@ struct CopyScope{Game&g;State*s=nullptr;bool entered=false;int unwind=0;
  }catch(...){trace("copy-ctor","exception",s);s->pending.reset();}}
  ~CopyScope(){PreserveErrno preserve;if(!entered)return;if(s->depth==1){auto p=std::move(s->pending);std::array<uint32_t,9>after{};try{nfs::GuestCopyTransaction tx;nfs_logo_publisher::table(tx,after,true);}catch(...){s->failed=true;}
  const bool sourceOkay=p&&copySideCurrent(g,*p,*s);
- if(p&&!s->failed&&s->rows==480&&sourceOkay&&nfs_small_logo_live::tables(s->table,after,true,0,0x7d)&&nfs_logo_publisher::exceptions()==unwind&&owned(g,*p)&&live::readPlane(p->full)&&nfs_setup_initial_full::copied(s->before,s->copySide,p->full,s->key)&&owned(g,*p)){ s->proof=std::move(p);trace("copy-dtor","sealed",s);}else{trace("copy-dtor","rejected",s,unsigned(sourceOkay),unsigned(bool(p)),p?p->full.valid:0);s->proof.reset();}}if(s->depth)--s->depth;}
+ if(p&&!s->failed&&s->rows==480&&sourceOkay&&nfs_small_logo_live::tables(s->table,after,true,0,0x7d)&&nfs_logo_publisher::exceptions()==unwind&&owned(g,*p)&&live::readPlane(p->full)&&nfs_setup_initial_full::copied(s->before,s->copySide,p->full,s->key)&&owned(g,*p)){if(p->refresh||p->child->locationInfoReturn()){p->copiedSidebar=s->copySide;if(p->refresh)p->refreshPane=s->refreshPane;}s->proof=std::move(p);trace("copy-dtor","sealed",s);}else{trace("copy-dtor","rejected",s,unsigned(sourceOkay),unsigned(bool(p)),p?p->full.valid:0);s->proof.reset();}}if(s->depth)--s->depth;}
 };
 inline void row(Game&g)noexcept{PreserveErrno preserve;auto*s=slot();if(!s||s->depth!=1||!s->pending||s->failed)return;auto p=s->pending;
  if(!owned(g,*p)||s->rows>=480||uint32_t(g.ebx)!=343||uint32_t(g.edx)!=uint64_t(s->before.target.w[8])+s->before.target.y[s->rows]+s->before.target.x[0]){trace("row","owner-or-destination",s,uint32_t(g.ebx),uint32_t(g.edx));s->failed=true;return;}

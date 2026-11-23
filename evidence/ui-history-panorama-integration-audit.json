@@ -1,0 +1,25 @@
+{
+  "scope": "Source-derived panoramic History integration requirements; not implemented or device-verified",
+  "findings": [
+    "History provider schema 1 requires every background to cover exactly logical 0,0,640,480; replacing it with wider logical bounds is rejected.",
+    "History loader authenticates the full compressed resource and requires complete payload consumption. Appending side images to the current resource is not compatible.",
+    "Information-wide presentation currently samples the completed native frame for its center and synthesizes side extensions; it has no owned panoramic source."
+  ],
+  "implementationRequirements": [
+    "Keep current 49-image History resource and original source identity checks intact.",
+    "Add a separately pinned, bounded side-art resource keyed by the exact History background source identity, with explicit immutable owner and generation.",
+    "Join side art only to the successfully completed History frame and matching renderer context; revoke on source change, resource clear and context retirement.",
+    "Render side art behind the central native page; never repeat live title/text, sample unrelated car history or crop the central page.",
+    "Use one uniform vertical scale and adaptive symmetric side crop for iPad-like through 16:9 aspects. Validate missing, stale, wrong-source and context-loss paths.",
+    "Do not activate current draft until its source-boundary and footer seams are visually resolved."
+  ],
+  "sourceSHA256": {
+    "src/hd/ClassicScreens/HistoryArtProvider.h": "82e6c11e0e81502efd219b13be46aa6a5bc16c6c5f18f03c3161e1d79c720cf5",
+    "src/hd/ClassicScreens/HistoryArtProvider.cpp": "436ab270c6bea58cb23b03f23185cacc7d8bae64e19c892860834933cbf25dfa",
+    "src/hd/ClassicScreens/HistoryArtworkLoader.cpp": "57edc63f402ff3fdf6a30083f4b76222ef56ad91dfb400e9a9ec5e53abafd7ac",
+    "src/hd/ClassicScreens/HistoryRenderer.inc": "92c0f732fa620a4558df05ec1d522bcfb08777031144908193a7ae552a3ef303",
+    "src/hd/ClassicScreens/InformationWideRenderer.inc": "374f643c505991d1103eed8b1dcc817c89160f3fa749c15664c4d204689525dc"
+  },
+  "draftStatus": "Center-preserving v4 still has visible boundary defects; not packaged",
+  "activeArtworkChanged": false
+}

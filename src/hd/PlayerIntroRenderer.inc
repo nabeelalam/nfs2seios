@@ -83,17 +83,17 @@ static int nfs_player_intro_resource_owner(void*user,const NfsBackgroundResource
 }
 /* Renderer-thread-only last rejection; logged only by the bounded return diagnostic. */
 static struct {unsigned reason,tile,address,x,y,want,got;} nfs_player_intro_cache_diagnostic;
-static int nfs_player_intro_cached_tiles(const uint16_t*pixels,const uint32_t*keys,uint32_t ids[300],GLenum*filter){
+static int nfs_player_intro_cached_tiles_policy(const uint16_t*pixels,const uint32_t*keys,uint32_t ids[300],GLenum*filter,int requirePixels){
  NfsBgSaved saved;NfsBackgroundSceneStage guard=nfs_player_intro_context_stage();GLint mag=0,min=0;GLboolean exists=0;GLenum error;int ok=0;
  memset(&nfs_player_intro_cache_diagnostic,0,sizeof nfs_player_intro_cache_diagnostic);
- if(!pixels||!keys||!filter||!nfs_player_intro_current()){nfs_player_intro_cache_diagnostic.reason=1;return 0;}
+ if((requirePixels&&!pixels)||!keys||!filter||!nfs_player_intro_current()){nfs_player_intro_cache_diagnostic.reason=1;return 0;}
  for(unsigned tile=0;tile<300;++tile){uint32_t address=keys[tile];TextureInfo*ti;const unsigned char*bytes;
   nfs_player_intro_cache_diagnostic.tile=tile;nfs_player_intro_cache_diagnostic.address=address;
   if((address&3)||address>TextureMem-2048){nfs_player_intro_cache_diagnostic.reason=2;return 0;}ti=&g_textures[address>>2];
   if(!ti->id||ti->size!=32||ti->fmt!=GR_TEXFMT_ARGB_1555||ti->hdDigits||ti->data!=g_textureMem+address){nfs_player_intro_cache_diagnostic.reason=3;return 0;}
   if(!nfs_logo_native_upload_valid(address,ti)){nfs_player_intro_cache_diagnostic.reason=4;return 0;}
   ids[tile]=ti->id;bytes=(const unsigned char*)ti->data;
-  for(unsigned y=0;y<32;++y)for(unsigned x=0;x<32;++x){uint16_t source=pixels[((tile%15)*32+y)*640+(tile/15)*32+x];uint16_t a1555=(uint16_t)(((source&0xf800)>>1)|((source&0x7c0)>>1)|(source&31));uint16_t want,got;a1555=a1555?(uint16_t)(a1555|0x8000):0;want=(uint16_t)((a1555<<1)|(a1555>>15));memcpy(&got,bytes+(y*32+x)*2,2);if(got!=want){nfs_player_intro_cache_diagnostic.reason=5;nfs_player_intro_cache_diagnostic.x=x;nfs_player_intro_cache_diagnostic.y=y;nfs_player_intro_cache_diagnostic.want=want;nfs_player_intro_cache_diagnostic.got=got;return 0;}}
+  if(requirePixels)for(unsigned y=0;y<32;++y)for(unsigned x=0;x<32;++x){uint16_t source=pixels[((tile%15)*32+y)*640+(tile/15)*32+x];uint16_t a1555=(uint16_t)(((source&0xf800)>>1)|((source&0x7c0)>>1)|(source&31));uint16_t want,got;a1555=a1555?(uint16_t)(a1555|0x8000):0;want=(uint16_t)((a1555<<1)|(a1555>>15));memcpy(&got,bytes+(y*32+x)*2,2);if(got!=want){nfs_player_intro_cache_diagnostic.reason=5;nfs_player_intro_cache_diagnostic.x=x;nfs_player_intro_cache_diagnostic.y=y;nfs_player_intro_cache_diagnostic.want=want;nfs_player_intro_cache_diagnostic.got=got;return 0;}}
  }
  if(!nfs_graphics_scene_save(&saved,&guard)){nfs_player_intro_cache_diagnostic.reason=6;goto lost;}
  NFS_PLAYER_INTRO_GL(glActiveTexture(GL_TEXTURE0));
@@ -103,6 +103,12 @@ static int nfs_player_intro_cached_tiles(const uint16_t*pixels,const uint32_t*ke
  lost:if(!nfs_player_intro_cache_diagnostic.reason)nfs_player_intro_cache_diagnostic.reason=12;nfs_player_intro_abandon();return 0;
 }
 
+
+static int nfs_player_intro_cached_tiles(const uint16_t*pixels,const uint32_t*keys,uint32_t ids[300],GLenum*filter){return nfs_player_intro_cached_tiles_policy(pixels,keys,ids,filter,1);}
+/* Only a separately authenticated authored parent scene may use this binding
+   witness. It proves current renderer ownership, upload ledger, IDs and filters,
+   and supplies the unchanged300-select/600-triangle native-pass verifier. */
+static int nfs_player_intro_cached_bindings(const uint32_t*keys,uint32_t ids[300],GLenum*filter){return nfs_player_intro_cached_tiles_policy(NULL,keys,ids,filter,0);}
 
 static int nfs_player_intro_stage_owner(void*user,const NfsBackgroundSceneStage*t){
  GLint fbo=0,ct=0,cn=0,dt=0,dn=0;(void)user;
@@ -157,7 +163,7 @@ static void nfs_player_intro_renderer_triangle(const GrVertex*a,const GrVertex*b
 }
 int nfs_private_player_intro_begin(const NfsPlayerIntroFrameView*v){
  NfsNativeLogoTargetProof target,repeat;NfsBackgroundSceneLayers layers;NfsGraphicsSceneGpu gpu;NfsBackgroundSceneStage guard,stage;NfsBgSaved saved;NfsAudioNativeStamp stamp;uint32_t ids[300];GLenum filter=GL_LINEAR,error;int ok=0;
- if(!v||v->schema!=NFS_PLAYER_INTRO_RUNTIME_SCHEMA||(v->form!=0x4d3050&&v->form!=0x4d3100)||!nfs_player_caption_valid(&v->captionWord,v->form==0x4d3050?1u:2u)||!v->requestSerial||v->requestSerial<=nfs_player_intro_renderer.lastSerial||!v->uploadEvent||!v->sourceOwner||!v->sourceBitmap||!v->paddedOriginal565||v->wordsCount!=307200||!nfs_bg_view(&v->inheritedMain)||v->caption.logicalWidth!=343||v->caption.logicalHeight!=480||!nfs_bg_feature()||!nfs_player_intro_current())return 0;
+ if(!v||v->schema!=NFS_PLAYER_INTRO_RUNTIME_SCHEMA||(v->form!=0x4d3050&&v->form!=0x4d3100)||!nfs_player_caption_valid(&v->captionWord,v->form==0x4d3050?1u:2u)||!v->requestSerial||v->requestSerial<=nfs_player_intro_renderer.lastSerial||!v->uploadEvent||!v->sourceOwner||!v->sourceBitmap||!v->paddedOriginal565||v->wordsCount!=307200||!(v->sourceKind==1?nfs_bg_view_common(&v->inheritedMain):v->sourceKind==0&&nfs_bg_view(&v->inheritedMain))||v->caption.logicalWidth!=343||v->caption.logicalHeight!=480||!nfs_bg_feature()||!nfs_player_intro_current())return 0;
  if(nfs_player_intro_renderer.serial){nfs_player_intro_cancel_pending();return 0;}
  drawTriangles();if(!nfs_player_intro_read_target(&target,v->requestSerial)||!nfs_player_intro_cached_tiles(v->paddedOriginal565,v->keys,ids,&filter))return 0;
  if(nfs_player_caption_alias(nfs_player_intro_renderer.captionWord.texture,nfs_player_intro_renderer.caption.texture,0,nfs_player_intro_renderer.color,ids))return 0;

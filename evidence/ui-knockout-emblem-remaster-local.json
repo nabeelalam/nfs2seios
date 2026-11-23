@@ -1,0 +1,312 @@
+{
+  "scope": "Authored remaster of the original TKO5/TKOD gold globe and curved chequered flag",
+  "generation": {
+    "method": "Built-in image generator with exact original reference",
+    "semanticDesign": "Gold circular globe segments, wrapping chequered flag, curved openings and lower tabs; bevelled edges and restrained metallic relief",
+    "masterSha256": "57c554483bfd96d826d456fb9e36257bb21ee9480342dbc6066b5244d73c02e3",
+    "masterRetainedPrivately": true,
+    "originalReferencePixelsPublished": false
+  },
+  "packaging": {
+    "authoredMasterSha256": "57c554483bfd96d826d456fb9e36257bb21ee9480342dbc6066b5244d73c02e3",
+    "sourceIdentities": [
+      {
+        "entry": "tko5",
+        "convertedSha256": "7cf52b12ec5b2db5bcd3cb693241c39196ba6860a9a1d40ee98ee0fab6ae8386",
+        "sourceDimensions": [
+          85,
+          85
+        ],
+        "canvasOffset": [
+          22,
+          0
+        ]
+      },
+      {
+        "entry": "tkod",
+        "convertedSha256": "14857efc9391ca4158a92dc7cb6b578b223b85211012d40d53494e86a238769e",
+        "sourceDimensions": [
+          85,
+          85
+        ],
+        "canvasOffset": [
+          22,
+          0
+        ]
+      }
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "logicalCanvas": [
+      128,
+      128
+    ],
+    "logicalOriginalPlacement": [
+      22,
+      0,
+      85,
+      85
+    ],
+    "authoredPixelSha256": [
+      "f864cf1351c366907409b332469baef6f5659ff4d0286b4fd6ff4d50002ea013",
+      "f9310525e1e24f4273d5023684e92d18779025801fe92bc9e5bea1f095698edc"
+    ],
+    "decodedBytes": 2097152,
+    "compressedBytes": 348998,
+    "losslessRoundtrip": true,
+    "originalPixelsEmbedded": false,
+    "parts": 8
+  },
+  "runtime": [
+    {
+      "tag": "knockout-remastered-player-wide-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "nativeFallbacksAfterStartup": [],
+      "authoredDrawReceipts": [
+        "NATIVE MARK draw-accepted context=1 identity=5566821096482668832 address=1992704 nativeId=630 artId=648 height=450 matchingUploads=1"
+      ],
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 275691,
+          "logEnd": 341022,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "368",
+              "previousFrames": "66"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "488",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 341022,
+          "logEnd": 357161,
+          "routes": []
+        },
+        {
+          "action": "knockout-selected",
+          "logStart": 357161,
+          "logEnd": 384456,
+          "routes": []
+        },
+        {
+          "action": "tournament-committed-main",
+          "logStart": 417667,
+          "logEnd": 446259,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "594",
+              "previousFrames": "106"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "606",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "player-one-knockout",
+          "logStart": 451305,
+          "logEnd": 483882,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "673",
+              "previousFrames": "67"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "690",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "711",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "player-one-return-main",
+          "logStart": 483882,
+          "logEnd": 515439,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "721",
+              "previousFrames": "10"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "740",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "knockout-remastered-player-ipad-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "nativeFallbacksAfterStartup": [],
+      "authoredDrawReceipts": [
+        "NATIVE MARK draw-accepted context=1 identity=5566821096482668832 address=1992704 nativeId=630 artId=648 height=492 matchingUploads=1"
+      ],
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 276292,
+          "logEnd": 342506,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "366",
+              "previousFrames": "70"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "486",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 342506,
+          "logEnd": 361855,
+          "routes": []
+        },
+        {
+          "action": "knockout-selected",
+          "logStart": 361855,
+          "logEnd": 387409,
+          "routes": []
+        },
+        {
+          "action": "tournament-committed-main",
+          "logStart": 420161,
+          "logEnd": 447812,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "589",
+              "previousFrames": "103"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "601",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "player-one-knockout",
+          "logStart": 452858,
+          "logEnd": 485494,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "667",
+              "previousFrames": "66"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "684",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "705",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "player-one-return-main",
+          "logStart": 485494,
+          "logEnd": 516612,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "714",
+              "previousFrames": "9"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "733",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "binarySha256": "c612513b2e9beb71c371da4ca4df8164923ec3664dab211e654516cab9902a37",
+  "build": {
+    "localRendererCompile": true,
+    "currentArtworkActivationCompile": true,
+    "link": true,
+    "cmakeConfigureDownloadsDisabled": true,
+    "cloudBuild": false
+  },
+  "limitations": [
+    "Physical iPad not tested.",
+    "Only active TKO5 was exercised in game; disabled TKOD lookup is prepared from its exact archive-replayed source identity.",
+    "Both image payloads are decoded at provider creation; compressed bytes round-trip exactly.",
+    "Rasterization into the original logical source canvas is separate from lossless storage compression.",
+    "No claim that remaining UI artwork or the port is complete."
+  ],
+  "privacy": "Only authored pixels in bounded ASCII source parts and exact source hashes are added; private original game archive and master PNG remain outside Git."
+}

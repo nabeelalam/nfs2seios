@@ -4,6 +4,7 @@
 /* Nested Audio/Graphics complete-word3 graphics with an independent trusted owner.
    Preparation accepts a context-only guard; draw requires an owned staging guard. */
 #include "NestedCaptionGpu.h"
+#include "NestedSceneLayout.h"
 #include <stdio.h>
 #include "CompactCaptionWordIdentity.h"
 static int nfs_nested_caption_empty(const NfsCompactCaptionWordView*v){unsigned i;if(!v)return 0;if(v->schema||v->word||v->width||v->height||v->rgba||v->bytes||v->left||v->top||v->right||v->bottom)return 0;for(i=0;i<32;++i)if(v->sha256[i])return 0;return 1;}
@@ -45,9 +46,9 @@ static int nfs_nested_caption_prepare(NfsNestedCaptionGpu*s,const NfsCompactCapt
  if(s->program){NFS_NESTED_CAPTION_GL(glDeleteProgram(s->program));}if(s->texture){NFS_NESTED_CAPTION_GL(glDeleteTextures(1,&s->texture));}s->program=p;s->texture=tex;s->matrix=matrix;s->sampler=sampler;s->word=word;s->generation=t->generation;return 1;
  lost:nfs_nested_caption_forget(s);return 0;
 }
-static int nfs_nested_caption_draw(NfsNestedCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t){
+static int nfs_nested_caption_draw_sampled(NfsNestedCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t,int responsive){
  GLint fbo=0,type=0,name=0,vp[4];GLenum error;GLboolean exists=0;GLfloat q[24];
- if(!s||!v||!nfs_nested_caption_current(t)||nfs_nested_caption_empty(v)||!nfs_nested_caption_valid(v,s->word)||s->generation!=t->generation||!s->program||!s->texture||!nfs_frame_sampling_valid(t->width,t->height,&t->sampling))return 0;
+ if(!s||!v||!nfs_nested_caption_current(t)||nfs_nested_caption_empty(v)||!nfs_nested_caption_valid(v,s->word)||s->generation!=t->generation||!s->program||!s->texture||!(responsive?nfs_nested_scene_sidebar_sampling(t->width,t->height,&t->sampling):nfs_frame_sampling_valid(t->width,t->height,&t->sampling)))return 0;
  NFS_NESTED_CAPTION_GL(glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo));NFS_NESTED_CAPTION_GL(glGetIntegerv(GL_VIEWPORT,vp));if((GLuint)fbo!=t->framebuffer||memcmp(vp,t->sampling.viewport,sizeof vp))return 0;
  NFS_NESTED_CAPTION_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type));NFS_NESTED_CAPTION_GL(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name));if(type!=GL_TEXTURE||!name||(GLuint)name==s->texture)return 0;
  NFS_NESTED_CAPTION_GL(exists=glIsProgram(s->program));if(!exists)return 0;NFS_NESTED_CAPTION_GL(exists=glIsTexture(s->texture));if(!exists)return 0;
@@ -56,6 +57,8 @@ static int nfs_nested_caption_draw(NfsNestedCaptionGpu*s,const NfsCompactCaption
  if(getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE")&&getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE")[0]=='1'&&!getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE")[1]&&s->traceLines<64){++s->traceLines;fprintf(stderr,"COMPACT CAPTION WORD word=%u generation=%llu fbo=%u\n",s->word,(unsigned long long)s->generation,(unsigned)t->framebuffer);}return 1;
  lost:nfs_nested_caption_forget(s);return 0;
 }
+static int nfs_nested_caption_draw(NfsNestedCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t){return nfs_nested_caption_draw_sampled(s,v,t,0);}
+static int nfs_nested_caption_draw_responsive(NfsNestedCaptionGpu*s,const NfsCompactCaptionWordView*v,const NfsBackgroundSceneStage*t){return nfs_nested_caption_draw_sampled(s,v,t,1);}
 #undef NFS_NESTED_CAPTION_GL
 
 #endif

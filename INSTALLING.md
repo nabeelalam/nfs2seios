@@ -1,7 +1,7 @@
 # Personal installation without a Mac
 
-Get the latest privately supplied personal ZIP for the classic UI preview.
-[The project plan](PLAN.md#current-private-ipad-candidate) records the build
+Get the latest personal ZIP. Transfer the supplied local ZIP to the iPad if a private download is unavailable.
+[The project plan](PLAN.md#current-local-ipad-candidate) records the build
 revision and package verification. The package requires personal SideStore
 signing and your own separately supplied original game folder.
 
@@ -48,6 +48,13 @@ Logs are also in Files, On My iPad, NFS II SE, Diagnostics. Share last recording
 works after relaunch. Tell the recipient the track, cars and mode; Low Power Mode
 is recorded automatically. Share logs privately. Recording stops on backgrounding
 or after 60 minutes, and interrupted sessions may contain partial logs.
+
+For the split-screen Low Power Mode check, run the same section of North
+Country twice using the same cars, opponents, camera and graphics settings.
+Use Native resolution and leave Lock FPS to 30 off. Set Low Power Mode
+before starting each recording, and label the saved logs Off and On. Start
+the recordings at the same point in the race. The recorder measures
+presentation and CPU timing automatically, so you can hide the overlay.
 
 ## Input and rendering controls
 

@@ -23,6 +23,8 @@ typedef struct NfsChildExitPreludeView {
  NfsChildExitPhotoDescriptor photo[100];
  const uint16_t*sidebar565;size_t sidebarWords;uint32_t sidebarKeys[300];
  void*owner;void(*retain)(void*);void(*release)(void*);int(*current)(void*);
+ /* Optional whole-transaction rejection for a native-revalidated history lease. */
+ void(*rejectLease)(void*);
 }NfsChildExitPreludeView;
 /* Captured at the actual original497D6C source quad and post-conversion,
  * pre-first native triangle. Only initialized native fields may be compared.

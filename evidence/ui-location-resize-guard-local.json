@@ -1,0 +1,31 @@
+{
+  "scope": "Desktop software GLES on an isolated WSL display using copied game data.",
+  "binarySHA256": "6dfecc8fb438a699018de4ad1ba2074b848ee54a09edcfc8d7d7a04c07c6e916",
+  "resize": [
+    [
+      640,
+      480
+    ],
+    [
+      708,
+      492
+    ]
+  ],
+  "staleSwapsSuppressed": 1,
+  "resizedNativeFramesDisplayed": 0,
+  "nextFramePresentedWide": true,
+  "subsequentTrackChangeAndReturnStayedWide": true,
+  "cleanShutdown": true,
+  "physicalIpadVerified": false,
+  "trace": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU TRANSITION WIDE begin kind=9 dstRgb=771 dstAlpha=771 reason=4 serial=228 drawable=640x480",
+    "MENU PRESENTATION choice=native output=708x492 frame=189 previousFrames=188 presented=0 capped=0",
+    "MENU TRANSITION WIDE begin kind=9 dstRgb=771 dstAlpha=771 reason=0 serial=238 drawable=708x492",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=190 previousFrames=1 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-exit-wide output=708x492 frame=250 previousFrames=60 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=271 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-return-wide output=708x492 frame=300 previousFrames=29 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=708x492 frame=319 previousFrames=19 presented=1 capped=0"
+  ]
+}

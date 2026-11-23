@@ -48,12 +48,13 @@ static int nfs_menu_wide_square128(unsigned count,float left,float top){
 /* Original4276F0 selected slot5 pulses a SIGNED integer half-width about
  *574; the quarter-sine table/1024 yields[-64,64], includingzero/flippedwinding.
  * The original128-high canvas/UV/order remains exact and is viewport-clipped. */
-static int nfs_menu_wide_opponent_slot5_pulse(unsigned count){
+static int nfs_menu_wide_opponent_slot5_pulse_at(unsigned count,float top){
  static const unsigned corners[6]={0,1,2,0,2,3};static const float us[4]={0,255.f/256.f,255.f/256.f,0},vs[4]={0,0,255.f/256.f,255.f/256.f};
  if(count!=2)return 0;const float left=g_vertices[0].vertex[0].x,half=574.f-left;
  if(!isfinite(left)||!isfinite(half)||half< -64.f||half>64.f||half!=(float)(int)half)return 0;const float right=574.f+half;
- for(unsigned k=0;k<6;++k){const unsigned c=corners[k],i=k/3,j=k%3;if(g_vertices[i].vertex[j].x!=((c==1||c==2)?right:left)||g_vertices[i].vertex[j].y!=(c>=2?534.f:406.f)||g_vertices[i].vertex[j].z!=1||g_textureCoord[i].vertex[j].s!=us[c]||g_textureCoord[i].vertex[j].t!=vs[c]||g_textureCoord[i].vertex[j].r!=0||g_textureCoord[i].vertex[j].q!=1)return 0;}return 1;
+ for(unsigned k=0;k<6;++k){const unsigned c=corners[k],i=k/3,j=k%3;if(g_vertices[i].vertex[j].x!=((c==1||c==2)?right:left)||g_vertices[i].vertex[j].y!=(c>=2?top+128.f:top)||g_vertices[i].vertex[j].z!=1||g_textureCoord[i].vertex[j].s!=us[c]||g_textureCoord[i].vertex[j].t!=vs[c]||g_textureCoord[i].vertex[j].r!=0||g_textureCoord[i].vertex[j].q!=1)return 0;}return 1;
 }
+static int nfs_menu_wide_opponent_slot5_pulse(unsigned count){return nfs_menu_wide_opponent_slot5_pulse_at(count,406.f);}
 /* Same original4276F0 signed pulse, independently admitted ONLY by the
    existing three-digest Setup mode upload/select/current-owner ledger. */
 static int nfs_menu_wide_setup_mode_pulse(unsigned count){
@@ -74,12 +75,28 @@ static int nfs_menu_wide_slot5_square_for(unsigned count,uint64_t epoch,uint32_t
   /* Shared4276F0 slot5 pulses on Main after returning from Opponents too.
      Keep the exact source epoch/address and authenticated mark checks below;
      this grants no extra geometry to other owners or unrecognized textures. */
+  if(b->texture>=NFS_NATIVE_MARK_MAX_TEXTURES)return 0;
+  const uint64_t artIdentity=nfs_native_marks.textures[b->texture].art.identity;
+  if(artIdentity==UINT64_C(0x4d41524b00000120)||artIdentity==UINT64_C(0x4d41524b00000121)){
+   if(!b->valid||b->generation!=nfs_native_marks.generation||!b->revision||b->preparedBytes!=32768||!nfs_mark_owner()||(b->address&3)||b->address>TextureMem-32768)return 0;
+   const TextureInfo*ti=g_textures+(b->address>>2);const NfsNativeMarkTexture*t=nfs_native_marks.textures+b->texture;
+   if(!b->nativeId||ti->id!=b->nativeId||ti->size!=128||ti->fmt!=GR_TEXFMT_ARGB_1555||ti->hdDigits||ti->data!=g_textureMem+b->address||!t->texture||t->generation!=nfs_native_marks.generation)return 0;
+   if(ownerForm==0x401910u||ownerForm==NFS_MENU_CACHED_OPPONENT)return nfs_menu_wide_opponent_slot5_pulse_at(count,387.f);
+   return nfs_menu_wide_square128(count,510,387);
+  }
   if(ownerForm==0x401910u||ownerForm==NFS_MENU_CACHED_OPPONENT){
    if(!b->valid||b->generation!=nfs_native_marks.generation||!b->revision||b->preparedBytes!=32768||b->texture>=NFS_NATIVE_MARK_MAX_TEXTURES||!nfs_mark_owner()||(b->address&3)||b->address>TextureMem-32768)return 0;
    const TextureInfo*ti=g_textures+(b->address>>2);const NfsNativeMarkTexture*t=nfs_native_marks.textures+b->texture;
    if(!b->nativeId||ti->id!=b->nativeId||ti->size!=128||ti->fmt!=GR_TEXFMT_ARGB_1555||ti->hdDigits||ti->data!=g_textureMem+b->address||!t->texture||t->generation!=nfs_native_marks.generation)return 0;
    return nfs_menu_wide_opponent_slot5_pulse(count);
   }
+ }
+ /* Shared4276F0 TKO5 has its own lower slot position. Exact source,
+    current slot5 upload/selection and owner were checked above. Main and
+    Opponents can pulse this same source; other forms use its full canvas. */
+ if(originalBranding&&nfs_menu_original.knockout){
+  if(ownerForm==0x401910u||ownerForm==NFS_MENU_CACHED_OPPONENT)return nfs_menu_wide_opponent_slot5_pulse_at(count,387.f);
+  return nfs_menu_wide_square128(count,510,387);
  }
  return nfs_menu_wide_square128(count,510,406);
 }
@@ -129,6 +146,13 @@ static void nfs_menu_wide_tail_witness(unsigned reason,unsigned count){
  float left=INFINITY,top=INFINITY,right=-INFINITY,bottom=-INFINITY;unsigned finite=1;
  for(unsigned i=0;i<safe;++i)for(unsigned j=0;j<3;++j){float vx=g_vertices[i].vertex[j].x,vy=g_vertices[i].vertex[j].y;if(!isfinite(vx)||!isfinite(vy)){finite=0;continue;}left=fminf(left,vx);top=fminf(top,vy);right=fmaxf(right,vx);bottom=fmaxf(bottom,vy);}
  ++lines;fprintf(stderr,"MENU WIDE TAIL SOURCE reason=%u owner=%08x epoch=%llu serial=%llu count=%u safe=%u finite=%u rect=%g,%g,%g,%g nativeAddress=%u nativeId=%u nativeFormat=%u nativeEdge=%u font=%d mark=%d markRevision=%llu markEncoding=%u\n",reason,nfs_menu_wide.ownerForm,(unsigned long long)nfs_menu_wide.ownerEpoch,(unsigned long long)nfs_menu_wide.serial,count,safe,finite,(double)left,(double)top,(double)right,(double)bottom,nfs_menu_original_selection.address,nfs_menu_original_selection.id,nfs_menu_original_selection.format,nfs_menu_original_selection.edge,nfs_hd_selected,selected,(unsigned long long)revision,binding?binding->encoding:0);
+ // Hash only a validated live native record; never print original pixels.
+ if(lines<128&&nfs_menu_original_selection.edge==128&&nfs_menu_original_selection.format==GR_TEXFMT_ARGB_1555&&nfs_menu_original_selection.address<=TextureMem-32768&&!(nfs_menu_original_selection.address&3)){
+  const uint32_t address=nfs_menu_original_selection.address;const TextureInfo*ti=g_textures+(address>>2);unsigned char sha[32];NfsNativeMarkArt art={0};
+  if(ti->id==nfs_menu_original_selection.id&&ti->size==128&&ti->fmt==GR_TEXFMT_ARGB_1555&&ti->data==g_textureMem+address&&nfs_texture_sha256(ti->data,32768,sha)){
+   const int known=nfs_hd_native_mark_art(NFS_NATIVE_MARK_SOURCE_RGBA5551_LE,128,sha,&art);++lines;fprintf(stderr,"MENU WIDE TAIL DIGEST owner=%08x epoch=%llu address=%u knownArt=%d sha256=",nfs_menu_wide.ownerForm,(unsigned long long)nfs_menu_wide.ownerEpoch,address,known);for(unsigned k=0;k<32;++k)fprintf(stderr,"%02x",sha[k]);fputc('\n',stderr);
+  }
+ }
  for(unsigned i=0;i<safe&&i<2&&lines<128;++i){++lines;fprintf(stderr,"MENU WIDE TAIL VERTICES owner=%08x epoch=%llu serial=%llu triangle=%u",nfs_menu_wide.ownerForm,(unsigned long long)nfs_menu_wide.ownerEpoch,(unsigned long long)nfs_menu_wide.serial,i);for(unsigned j=0;j<3;++j)fprintf(stderr," v%u=%g,%g,%g uv%u=%g,%g,%g,%g",j,(double)g_vertices[i].vertex[j].x,(double)g_vertices[i].vertex[j].y,(double)g_vertices[i].vertex[j].z,j,(double)g_textureCoord[i].vertex[j].s,(double)g_textureCoord[i].vertex[j].t,(double)g_textureCoord[i].vertex[j].r,(double)g_textureCoord[i].vertex[j].q);fputc('\n',stderr);}
  errno=saved;
 }

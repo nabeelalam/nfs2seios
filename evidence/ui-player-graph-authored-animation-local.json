@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "scope": "Authenticated original graph replay and authored Player animation; scoped desktop acceptance",
+  "binarySha256": "892614f36b9a19d1f8f305f210417a59df40cf930856b4363285bc7e868c4ed2",
+  "cloudBuild": false,
+  "source": {
+    "canvasWidth": 384,
+    "canvasHeight": 160,
+    "formats": [
+      32,
+      16
+    ],
+    "canonicalAssets": [
+      "grph",
+      "grpg",
+      "grpb",
+      "grpr",
+      "grpy"
+    ],
+    "fullCanvasReplayMatched": true,
+    "canonicalAssetShaAndAllPaletteEntriesRequired": true,
+    "originalTranslatedClippingPreserved": true,
+    "actualNativeTiles": 100,
+    "actualNativeTriangles": 200,
+    "existingAuthoredStatMaterialReused": true,
+    "newArtworkResources": 0
+  },
+  "cases": [
+    {
+      "form": "Player Two",
+      "output": [
+        800,
+        450
+      ],
+      "graphReturnFrames": 21,
+      "photoCases": 4,
+      "allPhotoCases21WideFrames": true,
+      "exitCode": 0,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true
+    },
+    {
+      "form": "Player Two",
+      "output": [
+        708,
+        492
+      ],
+      "graphReturnFrames": 21,
+      "photoCases": 4,
+      "allPhotoCases21WideFrames": true,
+      "exitCode": 0,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true
+    },
+    {
+      "form": "Player One",
+      "output": [
+        800,
+        450
+      ],
+      "graphReturnFrames": 21,
+      "photoCases": 4,
+      "allPhotoCases21WideFrames": true,
+      "exitCode": 0,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true
+    }
+  ],
+  "limits": [
+    "Standard-car graph toggle is a static original preload, not a moving transition.",
+    "Separate Graph-to-Car focus change has a reproduced 32-frame native fallback; fix pending.",
+    "Later tail-source refusal occurs before font qualification, during shutdown/current-layout revocation; it is not evidence of an unknown font. No source checks relaxed.",
+    "No whole-UI or physical iPad acceptance inferred."
+  ],
+  "physicalIpadVerified": false,
+  "published": false
+}

@@ -1,0 +1,49 @@
+{
+  "scope": "Complete ordered Credits CPU frame collection and HD content preparation; not GL presentation",
+  "implementation": [
+    "Separate whole-frame collection survives legacy renderer fragment boundaries",
+    "Original text / partner draw / later text ordering retained as immutable events",
+    "Partners use recorded static source positions plus the actual translated cache-call offset and clipping rectangle",
+    "Qualified no-text frames and partner-only frames are represented without inventing glyphs",
+    "Per-frame atomic epoch revokes escaped content at next base, abort or collector destruction; owner/archive lifetime remains required",
+    "HD preparation retains all eleven artwork roles and the original source, maps glyphs and preserves original colors/metrics/clip coordinates",
+    "C views borrow from one retained frame owner; source/frame/artwork-generation callbacks use immutable data and atomic lifetimes only",
+    "Legacy output remains in place until independent native-pass and GL presentation proof is implemented"
+  ],
+  "validation": {
+    "sourceAndFrameASanUBSanLSan": "Credits original identity, static recipe, ordered complete/empty frames and source/frame retirement passed",
+    "wholePreparationASanUBSanLSan": "Credits whole-frame empty/mixed layers, colors, actual-source geometry, C leases and generation/frame invalidation passed",
+    "fixtureScope": "Pinned privately decoded original Credits archive, private classic font header and pinned eleven-layer artwork pack; source-draw geometry is manually constructed from the prior original-game observation",
+    "cases": [
+      "empty frame",
+      "text/partner/text ordering and vertex ranges",
+      "original per-command colors",
+      "translated Kenwood and Y2 rectangles and clip metadata",
+      "incomplete/repeated partner rejection",
+      "unsupported text/clip rejection",
+      "cross-thread source retirement",
+      "next-frame/abort/destructor revocation",
+      "C owner retention after shared handle release",
+      "artwork clear/reinstall generation invalidation with bytes still retained"
+    ],
+    "representativeEngineSyntax": [
+      {
+        "unit": "Methods_03.cpp",
+        "exitCode": 0
+      }
+    ],
+    "newApplicationRun": false,
+    "CMakeConditionalTargetRegistered": true,
+    "CMakeConfigurationExecuted": false
+  },
+  "limits": [
+    "No cached texture upload/native draw/GL target/swap authority is granted by these CPU content packets",
+    "Whole-frame game hooks have syntax verification but have not yet been executed in a freshly linked app",
+    "No new full-width Credits screen displayed in the game",
+    "All five affected game units must be rebuilt together for the next grouped runtime check"
+  ],
+  "next": "Implement the independent guarded compositor and original cached draw receipt, then activate the resource and switch away from legacy fragment staging only under the completed renderer path",
+  "newAppleBuild": false,
+  "newIpadPackage": false,
+  "published": false
+}

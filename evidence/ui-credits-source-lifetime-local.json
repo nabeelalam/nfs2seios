@@ -1,0 +1,59 @@
+{
+  "scope": "Credits original archive identity and menu/game lifetime integration; not full-width renderer acceptance",
+  "decodedArchiveSHA256": "542d102452b4537499d71b6a3d119cd304e7e554637270071c078faeff160871",
+  "sourceBytes": 842384,
+  "resources": 9,
+  "implementation": [
+    "Complete owned archive snapshot authenticated once per Credits owner outside guest-copy lock",
+    "Source lease attached to prepared text payload; game lifetime and owner/archive retirement invalidate retained views",
+    "Exact original archive free entries 482DA0 and 4848FC retire the source before deallocation",
+    "Queued invalidated views explicitly cancel their pending renderer request"
+  ],
+  "validation": {
+    "originalFixtureSanitizers": "ASan/UBSan with leak detection passed: exact archive, altered headers/entries, invalid ranges, cross-thread retirement, same-address game reuse",
+    "sourceInsertionReverseAudit": [
+      {
+        "unit": "Methods_01.cpp",
+        "original_operations_unchanged": true
+      },
+      {
+        "unit": "Methods_03.cpp",
+        "original_operations_unchanged": true
+      },
+      {
+        "unit": "Methods_10.cpp",
+        "original_operations_unchanged": true
+      },
+      {
+        "unit": "Methods_12.cpp",
+        "original_operations_unchanged": true
+      }
+    ],
+    "engineSyntax": [
+      {
+        "unit": "Methods_01.cpp",
+        "exitCode": 0
+      },
+      {
+        "unit": "Methods_03.cpp",
+        "exitCode": 0
+      },
+      {
+        "unit": "Methods_10.cpp",
+        "exitCode": 0
+      },
+      {
+        "unit": "Methods_12.cpp",
+        "exitCode": 0
+      }
+    ]
+  },
+  "limits": [
+    "No new background pixels or full-width presentation activated",
+    "Identity proves the copied archive at binding, not arbitrary subsequent in-place mutation; wide composition still requires actual source/draw witnesses",
+    "Current renderer still snapshots the old 4:3 background",
+    "Backdrop-only initial frames, locale heading/branding, Kenwood/Creative House Y2 draw geometry, wide presentation and return remain unfinished",
+    "No application replay, Apple build, IPA publication or physical iPad acceptance in this step"
+  ],
+  "originalGameDataUnchanged": true
+}

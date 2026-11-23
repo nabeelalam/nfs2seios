@@ -1,0 +1,28 @@
+{
+  "scope": "Desktop software GLES with copied original game data, current local resize-guard binary.",
+  "binarySHA256": "6dfecc8fb438a699018de4ad1ba2074b848ee54a09edcfc8d7d7a04c07c6e916",
+  "route": "Player One, Showcase, McLaren F1, Next Car, Ferrari F50, Escape to Player One.",
+  "drawable": [
+    708,
+    492
+  ],
+  "visuallyReviewed": [
+    "McLaren F1 general page",
+    "Ferrari F50 general page"
+  ],
+  "nextCarNativeRouteFrames": 1,
+  "returnNativeRouteFrames": 38,
+  "cleanShutdown": true,
+  "physicalIpadVerified": false,
+  "trace": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU PRESENTATION choice=information-wide output=708x492 frame=429 previousFrames=428 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=708x492 frame=435 previousFrames=6 presented=1 capped=0",
+    "MENU PRESENTATION choice=information-wide output=708x492 frame=436 previousFrames=1 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=708x492 frame=512 previousFrames=76 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=708x492 frame=550 previousFrames=38 presented=1 capped=0"
+  ],
+  "limits": "Route selection proves an aspect-layout fallback, not necessarily a return of original art. Earlier navigation attempts reached graph and Done and are excluded from this result.",
+  "followup": "Action-bounded v4 found no Next Car fallback at fixed dimensions. The v3 one-frame transition overlapped the resize interval and is not a confirmed Next Car defect. See ui-showcase-action-bounded-handoff-local.json.",
+  "laterFixedWindowFollowup": "v5 and v7 each reproduced one native-aspect frame during Next Car at fixed 708x492 dimensions. v4 did not reproduce it. This intermittent issue remains open and is not explained solely by resizing."
+}

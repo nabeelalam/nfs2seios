@@ -1,0 +1,23 @@
+{
+  "scope": "Current 512-slot desktop binary on isolated X11 with software GLES and copied original data.",
+  "binarySHA256": "2bd8e976322bbcbb7794da4fb4235ca9209444498a45d69e3b2a10ac92e7173f",
+  "route": "Location, change to Outback, Track Info, resize, return to Location.",
+  "presentationTrace": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=800x450 frame=378 previousFrames=377 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-return-wide output=800x450 frame=391 previousFrames=13 presented=1 capped=0",
+    "MENU PRESENTATION choice=information-wide output=800x450 frame=410 previousFrames=19 presented=1 capped=0",
+    "MENU PRESENTATION choice=information-wide output=708x492 frame=551 previousFrames=141 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=579 previousFrames=28 presented=1 capped=0",
+    "MENU PRESENTATION choice=intro-wide output=708x492 frame=596 previousFrames=17 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=617 previousFrames=21 presented=1 capped=0"
+  ],
+  "visuallyConfirmed": [
+    "Outback Track Info at 800x450",
+    "Outback Track Info at 708x492",
+    "HD Location with the Outback photo card after return"
+  ],
+  "nativeFallbackAfterWideResize": false,
+  "cleanAppShutdown": true,
+  "notes": "Initial menu at 640x480 used native presentation before the first wide resize. The runner completed its app checks and restored the copied profile and replay. Its shell wrapper then returned nonzero on a trailing carriage return. The runner mislabeled the selected track. The captures show Outback. Physical iPad and all-track coverage remain unverified."
+}

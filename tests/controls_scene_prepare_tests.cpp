@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "AudioSidebarFixture.h"
+#include "hd/OptionsSidebarOrigin.h"
 #define main controlsSyntheticProofUnusedMain
 #undef CHECK
 #include "controls_dialog_word_proof_tests.cpp"

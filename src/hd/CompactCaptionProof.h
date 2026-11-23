@@ -8,7 +8,7 @@ namespace nfs_player1_caption{struct TailScope;}namespace nfs_player2_caption{st
 namespace nfs_compact_caption {
 enum class Policy:uint32_t{Setup=0x4d2790,Options=0x4d3a88,Player1=0x4d3050,Player2=0x4d3100};
 // Distinct lexical origins; InitialMain never changes the retained Main epoch.
-enum class Route:uint32_t{OrdinaryEbp=1,InitialMain=2};
+enum class Route:uint32_t{OrdinaryEbp=1,InitialMain=2,PlayerShowcaseReturn=3};
 struct Snapshot {
  nfs_logo_capture::Target target{};nfs_soft::SurfaceIdentity identity{};
  uint32_t archive=0,font=0,callback=0,palette=0,color=0,mode=0,flags=0,format=0,selector=0,entry=0,entryWord=0,resource=0;
@@ -32,7 +32,7 @@ class Proof final {
 public:
  const Evidence&evidence()const noexcept{return evidence_;}
  const std::shared_ptr<const nfs_main_sidebar_origin::Proof>&origin()const noexcept{return origin_;}
- bool current()const noexcept{return evidence_.route==Route::OrdinaryEbp?(!origin_&&!routeLife_):(origin_&&origin_->current()&&routeLife_&&routeLife_->load(std::memory_order_acquire));}
+ bool current()const noexcept{switch(evidence_.route){case Route::OrdinaryEbp:return !origin_&&!routeLife_;case Route::InitialMain:return origin_&&origin_->current()&&routeLife_&&routeLife_->load(std::memory_order_acquire);case Route::PlayerShowcaseReturn:return !origin_&&routeLife_&&routeLife_->load(std::memory_order_acquire)&&(evidence_.policy==Policy::Player1||evidence_.policy==Policy::Player2);default:return false;}}
  const std::shared_ptr<const nfs_soft::FramePacket>&packet()const noexcept{return packet_;}
  const std::shared_ptr<const nfs_soft::FontCatalog>&font()const noexcept{return packet_->font();}
  // Immutable HISTORICAL source evidence only. A future join must acquire an

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "scope": "Normal split-screen race through original menus, Victory animated logo, Results and return",
+  "compiledBaseSha256": "11f18571dc6a2f86bf569bde37fe0f32f4013088e0b6955c30bf2e77c95af050",
+  "runtimeBinarySha256": "f82e5fdaddf7df16747ccb065b65472e16e0766a5f77ea6170312f16736939fe",
+  "inputShimReview": {
+    "maintainedMainSha256": "750f8a6fe43334b19dd42fc606d7fe41e04b96f2d86dfb507ffbeda0b94d2572",
+    "privateInputMainSha256": "c565cdec88776eaf315f60cbbcc5203ff5a2e79ed68745542c4d6903570dbc38",
+    "onlyThreeInsertions": true,
+    "originalMainOperationsUnchanged": true,
+    "directEngineUiCallsInjected": false
+  },
+  "runtimeBackend": "Local WSL X11 software GLES2; no iPad performance or battery claim",
+  "track": "Proving Grounds",
+  "laps": 2,
+  "virtualControllers": 2,
+  "winnerArtworkImage": 1,
+  "winnerCar": "McLaren F1",
+  "bothControllersSentIndependentThrottle": true,
+  "directEngineUiCallsInjected": false,
+  "forcedVictoryFixture": false,
+  "hdVictoryFrames": 35,
+  "exactSourceLogoFrames": 35,
+  "allNativeAndLogoRequestContentPairsMatched": true,
+  "successfulWidePresentationTraceFrames": 32,
+  "presentationTraceCap": 32,
+  "everyObservedPresentationMatchesCompletedLogoParent": true,
+  "extent": [
+    708,
+    492
+  ],
+  "inheritedFogAmounts": [
+    3
+  ],
+  "cleanShutdown": true,
+  "copiedFixtureRestoredExactly": true,
+  "all22ResourcesUnchanged": true,
+  "actualWindowCaptureVisuallyInspected": true,
+  "resultSha256": "4bfd6a597f0ebc0da41d501d80071ca88f6631d7311342f34c1d088075b94eb1",
+  "gameLogSha256": "6f37aadae1bf379de56e8cc42ad3fa41927d4f48a3102ee0face1d4c0e1b00c4",
+  "physicalDeviceVerified": false
+}

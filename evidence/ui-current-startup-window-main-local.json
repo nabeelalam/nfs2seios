@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "scope": "Current desktop initial Main swipe refresh at708x492; no physical-device or second-ratio acceptance",
+  "binarySha256": "07a14680fbf6eafb51bff3494bbf71e1e7f72f5adcd2dc4bc565fa73d81ecda3",
+  "privateCandidateChange": "Only desktop initial SDL window dimensions640x480 to708x492 before engine rendering; private source override, one application object compiled and direct linked; canonical source and cache unchanged",
+  "initialDrawable": [
+    708,
+    492
+  ],
+  "observerResized": false,
+  "input": "One ordinary server-acknowledged Escape after actual original Electronic Arts movie positively observed; original title publication acknowledged it; no repeated input",
+  "frames": {
+    "movieNative": [
+      1,
+      33
+    ],
+    "authoredTitle": [
+      34,
+      34
+    ],
+    "blackClear": [
+      35,
+      35
+    ],
+    "firstMainWide": [
+      36,
+      94
+    ],
+    "settledMainWideFirst": 95
+  },
+  "firstMain": {
+    "all59PresentedWide": true,
+    "motionSteps0Through32": true,
+    "additionalHeldEndFrames": 26,
+    "noNativeAfterSwipeOpened": true,
+    "authoredTitleClearSwipeAndSettledCapturesReviewed": true,
+    "everyFramePixelScreenshot": false
+  },
+  "firstWindow": "Black capture before first presentation trace; actual initial708x492 geometry verified",
+  "earlierAttempts": "Resource staging failure and later movie-only image-budget exhaustion are pre-Main evidence, not UI regressions",
+  "priorAcceptance": "Separate v24 acceptance remains documented in evidence/ui-current-first-main-swipe-local.json at both ratios",
+  "preservation": {
+    "wholeCopiedFixtureExact": true,
+    "all22ResourcesUnchanged": true,
+    "binaryUnchanged": true,
+    "sourceAndCachedInputsUnchanged": true,
+    "cleanShutdown": true,
+    "exitCode": 0,
+    "ownedGameAndDisplayTerminal": true
+  },
+  "cleanup": {
+    "scope": "Redundant movie-only numbered screenshots in owned prior-attempt directory only",
+    "removedFiles": 314,
+    "removedBytes": 328149468,
+    "retained": "Six representative first/subject/last screenshots, failure capture, complete hashes/index, logs and result receipts",
+    "resolvedContainmentAndRegularFilesVerified": true
+  },
+  "notClaimed": [
+    "physical iPad",
+    "current800x450 startup refresh",
+    "every-frame pixel screenshots",
+    "whole UI",
+    "performance or battery"
+  ]
+}

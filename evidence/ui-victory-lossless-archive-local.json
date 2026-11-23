@@ -1,0 +1,69 @@
+{
+  "scope": "Bounded lossless victory artwork archive and independently readable image chunks",
+  "preview": {
+    "fileBytes": 24447735,
+    "metadataBytes": 2072,
+    "metadataSha256": "8492d53f0c4503ba83ab01432d99dceac6500f9f8da4c190d72cf4cc319454d1",
+    "packSha256": "bd02843d0a441185cc3c872d492aef5463153dffb055820b322311b169cf8ebd",
+    "images": 16,
+    "draftOnly": true,
+    "productionOpenRejected": true,
+    "productionAssemblyRejected": true,
+    "originalGamePixelsIncluded": false
+  },
+  "format": {
+    "magic": "NFSVIC01",
+    "version": 1,
+    "recordBytes": 128,
+    "productionImages": 32,
+    "productionAspects": [
+      "4:3",
+      "16:9"
+    ],
+    "codec": "PNG method0 row filters, opaque RGB8, zlib",
+    "completeAspectSourceAssociationsRequired": true,
+    "metadataAndChunkAndDecodedPixelHashes": true
+  },
+  "memoryModel": {
+    "retainedByReader": "metadata and path only",
+    "decodeRequest": "one source-matched image",
+    "largestRealDecodedImageBytes": 6290112,
+    "allImagesDecodedAtStartup": false,
+    "peakProcessMemoryMeasured": false
+  },
+  "checks": {
+    "decodedImages": 48,
+    "malformedCases": 9,
+    "largestDecodedBytes": 6290112,
+    "legacyAspectPreserved": true,
+    "draftProductionRejected": true,
+    "asanUbsan": true,
+    "productionPackRealArtwork": false,
+    "realPreviewImages": 16,
+    "syntheticCompleteImages": 32,
+    "applicationIntegrated": false
+  },
+  "sanitizerStderrBytes": 0,
+  "cmakeTargetChecks": [
+    {
+      "step": "configure",
+      "exitCode": 0
+    },
+    {
+      "step": "build-target",
+      "exitCode": 0
+    }
+  ],
+  "legacySlideshowContract": "inflatePixels remains strict4:3; new inflateCanvasPixels accepts only bounded4:3 or16:9",
+  "generationInput": "Sixteen private authored master images, no original bitmap/palette pixels",
+  "liveGameOwnership": "Archive metadata is not rendering authority; exact original backdrop/photo draw-chain integration remains pending",
+  "applicationIntegrated": false,
+  "physicalDeviceVerified": false,
+  "cloudBuild": false,
+  "limitations": [
+    "Real adaptive artwork remains unfinished; complete32-image acceptance was checked using a tiny synthetic fixture.",
+    "No original Victory gameplay or final image layout acceptance in this step.",
+    "Optional fixture-driven target was compiled; the default CTest suite was not claimed run.",
+    "No performance/battery improvement claimed."
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "history": {
+    "filename": "history-ui.ownedz",
+    "bytes": 26534977,
+    "payloadBytes": 75490552,
+    "sha256": "144f4adc797de220b00ad96f5807a07c8fac6179c1dc3023687a1f929234e963"
+  },
+  "panoramas": [
+    {
+      "sourceIndex": 0,
+      "filename": "history-panorama-0.ownedz",
+      "bytes": 4787300,
+      "sha256": "520a52046760b8f3eab0330f00e450e318b2b7ced0d2e33583521d29809af5f5"
+    },
+    {
+      "sourceIndex": 7,
+      "filename": "history-panorama-7.ownedz",
+      "bytes": 4757666,
+      "sha256": "b55c958aa82137e2ad8378e554c9060f2d4e988b19eddaecff4a1abd0be4add6"
+    },
+    {
+      "sourceIndex": 14,
+      "filename": "history-panorama-14.ownedz",
+      "bytes": 4710472,
+      "sha256": "f0fb7bf04cd47a04df78db11d35db3ed724ea49b700edc5428fa954092192f5f"
+    },
+    {
+      "sourceIndex": 21,
+      "filename": "history-panorama-21.ownedz",
+      "bytes": 4461489,
+      "sha256": "32440d1b8f17140e20b0746215e3483510c402e11eadd1bba248f7343909904c"
+    },
+    {
+      "sourceIndex": 28,
+      "filename": "history-panorama-28.ownedz",
+      "bytes": 4548887,
+      "sha256": "d5194925ad1df76ff2040683df6be18dd9ac204a8c46b0d6ba6300e27ff369e6"
+    },
+    {
+      "sourceIndex": 35,
+      "filename": "history-panorama-35.ownedz",
+      "bytes": 4384906,
+      "sha256": "b48a31b5caeec63360778c582e14dd22e6d1e5114e1145502dd1e35371addfae"
+    },
+    {
+      "sourceIndex": 42,
+      "filename": "history-panorama-42.ownedz",
+      "bytes": 5089493,
+      "sha256": "fe99862ce693fcc838374d4f585d2711f33c157e9101264db03e90775e3be81b"
+    }
+  ]
+}

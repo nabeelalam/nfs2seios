@@ -4,9 +4,12 @@
 #include <stddef.h>
 #include "hd/SoftwareTextLayerAbi.h"
 typedef struct NfsVictoryWordView {uint32_t index;int32_t left,top;uint32_t width,height;} NfsVictoryWordView;
+enum {NFS_VICTORY_VIEW_SCHEMA=2};
+typedef struct NfsVictoryArtworkIdentity {uint32_t present,image;unsigned char sourceSha256[32];}NfsVictoryArtworkIdentity;
 typedef struct NfsVictoryLiveView {
  uint32_t schema,width,height;uint64_t request,content;
  const uint16_t*original;const uint16_t*clean;size_t pixels;
+ NfsVictoryArtworkIdentity artwork;
  NfsSoftwareTextLayerView text;
  const NfsVictoryWordView*words;size_t wordCount;
  void*owner;void(*retain)(void*);void(*release)(void*);

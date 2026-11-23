@@ -1,0 +1,60 @@
+{
+  "scope": "Optional authenticated wide title photograph provider, pinned loader and lossless pack format; compositor pending",
+  "pack": {
+    "version": 2,
+    "fileBytes": 6187645,
+    "payloadBytes": 13772320,
+    "sha256": "bff0d7b7d7f97191583d86833d003d9907c5163f93fb1dc7c0a1f6fccd8ae8f2",
+    "localPath": ".build/title-wide-artwork-v1/intro-wide.ownedz",
+    "originalPhotographAndCopyrightPlanesUnchanged": true
+  },
+  "changes": [
+    "Schema1 file/input remains accepted and ignores the appended wide input.",
+    "Schema2 adds an opaque authenticated 16:9 photograph, allowing one-pixel rounding.",
+    "Provider copies and retains both photos independently; original 4:3 photo geometry remains unchanged.",
+    "Version2 metadata appends wide width/height before unchanged original image planes, then appends wide RGBA bytes.",
+    "Existing active artwork pin and pack remain unchanged until compositor integration."
+  ],
+  "validation": {
+    "providerASanUBSanPassed": true,
+    "losslessPackBoundaryTestsPassed": true,
+    "syntheticPinnedLoaderCases": [
+      {
+        "version": 1,
+        "compileExit": 0,
+        "runExit": 0
+      },
+      {
+        "version": 2,
+        "compileExit": 0,
+        "runExit": 0
+      }
+    ],
+    "actualWidePackPinnedLoader": [
+      {
+        "version": 2,
+        "compileExit": 0,
+        "runExit": 0
+      }
+    ],
+    "loaderFixtureScope": "Actual loader/provider implementation with synthetic authenticated small-logo provider; this is not application or pixel acceptance.",
+    "imagePackingDependency": "Project-local Pillow 13.0.0; no Windows or WSL configuration changes"
+  },
+  "sourceSha256": {
+    "src/hd/ClassicScreens/IntroArtProvider.h": "57ae345666faf8f4462d9fa1d589414a0219258942b638b716340632f8ed7b3c",
+    "src/hd/ClassicScreens/IntroArtProvider.cpp": "908728078a4907a6ffa24ea004dc6f37dbc21ee0bfca7b6f68bb309797cc424f",
+    "src/hd/ClassicScreens/IntroArtworkLoader.cpp": "90260434edf6f12bacaf502cf1ff6d861b6e47082e980ac22b7ab67ebeefe0d9",
+    "scripts/extend_intro_artwork.py": "2f90e27474374a76df55d1c760e309643db4d79e45d8196f676ad04a46ff0e0e",
+    "tests/intro_art_provider_tests.cpp": "144fad1da1bdcb289c131043b4e8838e4494e281fe825166461af6dc7c3a4bb2",
+    "tests/intro_artwork_pack_tests.py": "3521a77bc8dfe2ae56045b0c5133cab46678dd98cb8ceb002a61f98d98c5e1e4"
+  },
+  "remaining": [
+    "Implement independently owned full-drawable title presentation with source/context/FBO/generation authority through swap.",
+    "Preserve proportional logo/copyright and retire on mutation/resize/context loss.",
+    "Recompile renderer and provider together: extended internal C structs are source compatible, not binary compatible with prior objects.",
+    "Activate version2 pin only for a prepared package and verify actual title/startup at 4:3, iPad and 16:9."
+  ],
+  "fullApplicationBuild": false,
+  "cloudBuild": false,
+  "physicalIpadVerified": false
+}

@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "hd/SoftwareTextLayerAbi.h"
+#include "HistoryPanoramaAbi.h"
 // Immutable renderer borrow. Both image and text live until release(owner).
 typedef struct NfsSlideshowLiveView {
  uint32_t schema,width,height,imageWidth,imageHeight;uint64_t request,content;
@@ -12,6 +13,9 @@ typedef struct NfsSlideshowLiveView {
  uint32_t footerWidth,footerHeight;const unsigned char*footer;size_t footerBytes;unsigned char footerSha[32];
  NfsSoftwareTextLayerView text;
  void*owner;void(*retain)(void*);void(*release)(void*);
+ // Schema3 append-only optional CPU panorama, independently retained by its owner.
+ // Schema2 callers end immediately before this field. Never native-pass authority.
+ NfsHistoryPanoramaView panorama;
 }NfsSlideshowLiveView;
 #ifdef __cplusplus
 extern "C" {

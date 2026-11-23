@@ -1,0 +1,25 @@
+{
+  "scope": "Desktop software GLES and copied original game assets. Sidebar-source integration replay before added return-state tracing.",
+  "drawable": [
+    708,
+    492
+  ],
+  "fixedBeforePlayerEntry": true,
+  "returnPresentationTrace": [
+    "MENU PRESENTATION choice=native output=708x492 frame=362 previousFrames=4 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=708x492 frame=400 previousFrames=38 presented=1 capped=0"
+  ],
+  "result": "38 native-aspect frames remain before the wide Player frame. The new source path is not established as active by this replay.",
+  "cleanShutdown": true,
+  "logSHA256": "da84b20f3df6d65dce0f38dafb13f0efbedee9d089b6f9f936b3f08dbe525e78",
+  "fixtureValidation": {
+    "player1SourceAndCopy": "PASS",
+    "player2SourceAndCopy": "PASS",
+    "completeCopyReplayVerified": true,
+    "mutatedRowsAndSourceAndDestinationRejected": true,
+    "retiredSourceRejected": true
+  },
+  "nextAction": "Read bounded PLAYER INITIAL SOURCE diagnostics from the next local replay to establish actual incoming state and caption refusal.",
+  "visibleFlashFixed": false,
+  "physicalIpadVerified": false
+}

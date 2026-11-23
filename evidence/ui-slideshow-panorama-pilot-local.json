@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "scope": "One actual original-data offscreen slideshow panorama at800x450; private instrumented local binary, not all images or physical iPad acceptance",
+  "binarySha256": "98db4320d1dd2a9bb658ebf3a69e463c8ee9fda3089adeb7f85840cc7652c44c",
+  "resource": {
+    "format": "lossless side-only NFSSPANv1",
+    "bytes": 1214684,
+    "sha256": "0c5c6e43010db65bac9f7422a027fcdb565c0608de7821ebfbffd01077ac8f0e",
+    "backing": [
+      1932,
+      1086
+    ],
+    "protectedMasterCenter": [
+      242,
+      0,
+      1448,
+      1086
+    ],
+    "exactFourKeyBinding": true,
+    "centerStoredInSideResource": false,
+    "gammaOrFeatherBaked": false
+  },
+  "runtime": {
+    "elapsedSeconds": 42.901238721,
+    "actions": 6,
+    "qualifiedGpuPanoramaPresentationObserved": true,
+    "allOriginalNativePassChecksRetained": true,
+    "protectedDisplayCenterRect": [
+      100,
+      0,
+      600,
+      450
+    ],
+    "protectedCenterRgbMae": 0.0,
+    "nativeSourceBufferByteExactBeforeAfter": true,
+    "singleEscapeAcceptedByOriginalHandler": true,
+    "originalHandlerReturn": "0xfffffffe",
+    "hdParentReturnObserved": true,
+    "hdMainReturnObserved": true,
+    "nativeFallbackAfterFirstWideMenu": 0,
+    "exitCode": 0,
+    "cleanShutdown": true
+  },
+  "preservation": {
+    "copiedFixtureRestoredExactly": true,
+    "all22ReleaseResourcesUnchanged": true,
+    "pilotResourceUnchanged": true,
+    "binaryUnchanged": true
+  },
+  "limits": [
+    "One selected photo only; no98image batch or user approval",
+    "Earlier uninstrumented Escape timeouts not reproduced here; this is not a general input bug fix",
+    "No live-resize continuity acceptance",
+    "High-density filtering tested separately with actual GLES2 synthetic data, not a physical iPad",
+    "Fine mortar/paving joins remain subject to per-image visual review",
+    "No game performance or battery claim"
+  ],
+  "cloudBuild": false
+}

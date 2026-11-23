@@ -1,0 +1,155 @@
+{
+  "scope": "First actual original-game run of nested renderer integration at iPad-shaped708x492; rendering acceptance failed",
+  "binarySHA256": "838eb8a94b0d3c0313f740a85f5302976a10884b6191be0995cacd3cf0175b44",
+  "appLinked": true,
+  "driverExit": 0,
+  "savedRecordsUnchanged": true,
+  "copiedConfigsRestored": true,
+  "menus": [
+    "Audio",
+    "Controls",
+    "Graphics"
+  ],
+  "nestedWidePreparedLines": 0,
+  "nestedWidePresentationLines": 0,
+  "renderingAccepted": false,
+  "physicalIpadVerified": false,
+  "actions": [
+    {
+      "action": "options-parent",
+      "logStart": 198433,
+      "logEnd": 275955,
+      "routes": [
+        {
+          "choice": "transition-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "315",
+          "previousFrames": "17"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "435",
+          "previousFrames": "120"
+        }
+      ]
+    },
+    {
+      "action": "enter-audio",
+      "logStart": 295777,
+      "logEnd": 322170,
+      "routes": [
+        {
+          "choice": "native",
+          "width": "708",
+          "height": "492",
+          "frame": "457",
+          "previousFrames": "22"
+        }
+      ]
+    },
+    {
+      "action": "return-audio",
+      "logStart": 322170,
+      "logEnd": 346744,
+      "routes": [
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "598",
+          "previousFrames": "141"
+        }
+      ]
+    },
+    {
+      "action": "enter-controls",
+      "logStart": 349674,
+      "logEnd": 367966,
+      "routes": [
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "701",
+          "previousFrames": "88"
+        },
+        {
+          "choice": "native",
+          "width": "708",
+          "height": "492",
+          "frame": "702",
+          "previousFrames": "1"
+        }
+      ]
+    },
+    {
+      "action": "return-controls",
+      "logStart": 367966,
+      "logEnd": 386632,
+      "routes": [
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "844",
+          "previousFrames": "142"
+        }
+      ]
+    },
+    {
+      "action": "enter-graphics",
+      "logStart": 403981,
+      "logEnd": 419825,
+      "routes": [
+        {
+          "choice": "native",
+          "width": "708",
+          "height": "492",
+          "frame": "872",
+          "previousFrames": "28"
+        }
+      ]
+    },
+    {
+      "action": "return-graphics",
+      "logStart": 419825,
+      "logEnd": 435114,
+      "routes": [
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "1014",
+          "previousFrames": "142"
+        }
+      ]
+    },
+    {
+      "action": "return-main",
+      "logStart": 435114,
+      "logEnd": 476042,
+      "routes": [
+        {
+          "choice": "child-return-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "1030",
+          "previousFrames": "16"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "1042",
+          "previousFrames": "12"
+        }
+      ]
+    }
+  ],
+  "gameLogSHA256": "13d655a9232d52b5d197112279574c91be2811b19eabb09685650b1fa7eeeb04",
+  "linkRecipeCorrection": "Fresh renderer must receive maintained prepare_adaptive_race renderer patches to match cached engine and bridge; first link failed without them",
+  "nextAction": "Bounded checkpoint telemetry now distinguishes geometry, native target, authored resource, allocation and layer-composition rejection; run once after compilation"
+}

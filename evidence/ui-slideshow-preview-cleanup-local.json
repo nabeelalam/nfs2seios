@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "scope": "Disposable files from the completed private slideshow preview batch only",
+  "removedBrowserDirectories": 219,
+  "removedBrowserFiles": 22783,
+  "removedBrowserLogicalBytes": 844710254,
+  "removedSupersededIntermediateResourceBytes": 214837977,
+  "totalRemovedLogicalBytes": 1059548231,
+  "retainedFilesBeforeAfterHashMatched": 2807,
+  "final98SelectedCentersAndResourcesVerified": true,
+  "all22PriorRuntimeRollbackResourcesVerified": true,
+  "original219036319BytePhotoReleaseVerified": true,
+  "oldIntermediateNeverRuntimeActivated": true,
+  "selectionRecipesHeadersReceiptsRetained": true,
+  "resolvedContainmentAndNoReparseTargetsVerified": true,
+  "liveOwnedBrowserReferencesBeforeDuringAfter": 0,
+  "symlinkDeletionOrProcessKill": false,
+  "unrelatedDataTouched": false,
+  "publicArtworkPayloadsAdded": false
+}

@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "scope": "Full pinned lossless-artwork catalog and retained base IPA size accounting, not a new Apple build",
+  "resources": 22,
+  "resourceBytes": 541576669,
+  "referenceBaseIpaBytes": 13600399,
+  "referenceBaseIpaSha256": "d6eef32b3f9685b320fec803f14b7c90c5bb883b2109edfcd7ab5d86d32ae7d8",
+  "addedZipHeadersBytes": 3684,
+  "referenceCompleteIpaBytes": 555180752,
+  "referenceCompleteUnpackedBytes": 602922077,
+  "finalPackageLimitBytes": 805306368,
+  "baseIpaLimitBytes": 536870912,
+  "memberLimitBytes": 536870912,
+  "unpackedLimitBytes": 1073741824,
+  "fitsReferenceByteAccounting": true,
+  "guardOrigin": "Local bounded packaging policy, not an Apple/SideStore restriction",
+  "pixelDataChanged": false,
+  "artworkOmitted": false,
+  "newIpaProduced": false,
+  "newAppleBuildRequired": true,
+  "physicalInstallVerified": false
+}

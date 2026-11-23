@@ -22,7 +22,16 @@ struct Domain {
  std::shared_ptr<const bg::SourceCatalog>catalog;
 };
 struct Token {uintptr_t game=0,thread=0;uint32_t formGuest=0;uint64_t epoch=0;std::atomic<bool>alive{true};};
+// Independently authenticated persistent slot0 upload, retained without guest reads.
+struct SidebarRecord {
+ mutable std::atomic<bool>alive{true};
+ uintptr_t game=0,thread=0;uint32_t form=0,formGuest=0,archive=0;uint64_t epoch=0,content=0,uploadEvent=0;
+ std::shared_ptr<const void>typed;std::shared_ptr<const std::vector<uint8_t>>raw;
+ nfs_logo_capture::Target target{};std::array<uint8_t,32>sha{};std::array<uint32_t,300>keys{};
+ std::shared_ptr<const bg::SourceCatalog>catalog;std::shared_ptr<const nfs_main_sidebar_origin::GameLife>gameLife;std::shared_ptr<const Token>token;
+};
 struct Record {
+ std::shared_ptr<const SidebarRecord>sidebarOrigin;
  Domain domain;std::shared_ptr<const void>typed;std::shared_ptr<const bg::Prepared>full;
  NfsChildExitPreludeView view{};std::shared_ptr<const std::vector<uint8_t>>sidebarRaw;
  nfs_logo_capture::Target sidebarTarget{};std::array<uint8_t,32>sidebarSha{};
@@ -31,22 +40,24 @@ struct Record {
 class MenuScope;
 inline MenuScope*&active()noexcept{static thread_local MenuScope*p=nullptr;return p;}
 class MenuScope final {
- MenuScope*previous_=nullptr;std::shared_ptr<Token>token_;std::shared_ptr<const Record>record_;
+ MenuScope*previous_=nullptr;std::shared_ptr<Token>token_;std::shared_ptr<const Record>record_;std::shared_ptr<const SidebarRecord>sidebar_;
 public:
  MenuScope(uintptr_t game,uintptr_t thread,uint32_t formGuest)noexcept:previous_(active()){
   try{static std::atomic<uint64_t>next{0};uint64_t n=next.load();do{if(n==UINT64_MAX){active()=this;return;}}while(!next.compare_exchange_weak(n,n+1));
    token_=std::make_shared<Token>();token_->game=game;token_->thread=thread;token_->formGuest=formGuest;token_->epoch=n+1;
   }catch(...){}active()=this;
  }
- ~MenuScope(){if(token_)token_->alive.store(false,std::memory_order_release);record_.reset();if(active()==this)active()=previous_;}
+ ~MenuScope(){if(sidebar_)sidebar_->alive.store(false,std::memory_order_release);if(token_)token_->alive.store(false,std::memory_order_release);record_.reset();if(active()==this)active()=previous_;}
  MenuScope(const MenuScope&)=delete;MenuScope&operator=(const MenuScope&)=delete;
  const std::shared_ptr<Token>&token()const noexcept{return token_;}
  const std::shared_ptr<const Record>&record()const noexcept{return record_;}
+ const std::shared_ptr<const SidebarRecord>&sidebar()const noexcept{return sidebar_;}
+ void storeSidebar(std::shared_ptr<const SidebarRecord>r)noexcept{if(sidebar_&&sidebar_!=r)sidebar_->alive.store(false,std::memory_order_release);sidebar_=std::move(r);}
  void store(std::shared_ptr<const Record>r)noexcept{record_=std::move(r);}
 };
 inline bool matching(const Token&t,uintptr_t game,uintptr_t thread,uint32_t form)noexcept{return t.alive.load(std::memory_order_acquire)&&t.epoch&&t.game==game&&t.thread==thread&&t.formGuest==form;}
 inline bool current(const Record&r,uintptr_t game,uintptr_t thread,uint32_t form,uint64_t event)noexcept{
- auto*s=active();return s&&r.token&&s->token()==r.token&&matching(*r.token,game,thread,form)&&r.gameLife&&r.gameLife->current()&&r.domain.uploadEvent==event&&event&&r.domain.game==game&&r.domain.thread==thread&&r.domain.formGuest==form;
+ auto*s=active();return s&&r.token&&s->token()==r.token&&matching(*r.token,game,thread,form)&&r.gameLife&&r.gameLife->current()&&(!r.sidebarOrigin||(s->sidebar()==r.sidebarOrigin&&r.sidebarOrigin->alive.load(std::memory_order_acquire)))&&r.domain.uploadEvent==event&&event&&r.domain.game==game&&r.domain.thread==thread&&r.domain.formGuest==form;
 }
 inline void diagnostic(unsigned reason,uint64_t a=0,uint64_t b=0)noexcept{const int saved=errno;const char*on=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");if(on&&on[0]=='1'&&!on[1]){static thread_local unsigned count[32]{};if(reason<32&&count[reason]++<3)std::fprintf(stderr,"CHILD STATIC source reason=%u a=%llu b=%llu\n",reason,(unsigned long long)a,(unsigned long long)b);}errno=saved;}
 inline std::shared_ptr<const Record>acquire(uintptr_t game,uintptr_t thread,uint32_t form,uint64_t event)noexcept{
@@ -54,6 +65,17 @@ inline std::shared_ptr<const Record>acquire(uintptr_t game,uintptr_t thread,uint
  if(s->token()->formGuest!=form||r.domain.formGuest!=form){diagnostic(3,s->token()->formGuest,form);return {};}
  if(r.domain.uploadEvent!=event){diagnostic(4,r.domain.uploadEvent,event);return {};}
  if(!current(r,game,thread,form,event)){diagnostic(5);return {};}diagnostic(6,r.domain.ownerEpoch,event);return s->record();}
+// Player preview changes intentionally replay historical outgoing semantics.
+// This lease does NOT attest a fresh upload. The renderer must independently
+// revalidate every full/sidebar pixel and original draw before publishing it.
+inline std::shared_ptr<const Record>acquirePlayerHistoryForNativeRevalidation(const Domain&live,uint32_t form,std::shared_ptr<const SidebarRecord>&sidebar)noexcept{
+ sidebar.reset();auto*s=active();if(!s||!s->token()||!s->record()||!s->sidebar()||(form!=0x4d3050&&form!=0x4d3100)||!live.uploadEvent||live.uploadEvent==UINT64_MAX)return {};
+ const auto r=s->record();const auto q=s->sidebar();const auto&d=r->domain;
+ if(!r->token||r->token!=s->token()||!matching(*r->token,live.game,live.thread,live.formGuest)||d.game!=live.game||d.thread!=live.thread||d.formGuest!=live.formGuest||d.ownerEpoch!=live.ownerEpoch||d.archive!=live.archive||!d.catalog||d.catalog!=live.catalog||!d.ownerEpoch||!d.archive||!d.uploadEvent||d.uploadEvent>live.uploadEvent||!d.groupSerial||!d.copySerial||!r->typed||!r->full||!r->full->valid||!r->gameLife||!r->gameLife->current())return {};
+ if(r->view.form!=form||r->view.family!=(form==0x4d3050?NFS_CHILD_EXIT_PLAYER1:NFS_CHILD_EXIT_PLAYER2)||!r->view.player.schema||r->view.sourceGame!=live.game||r->view.sourceArchive!=live.archive||r->view.sourceCatalog!=reinterpret_cast<uintptr_t>(live.catalog.get()))return {};
+ if(!q->alive.load(std::memory_order_acquire)||q->token!=r->token||q->game!=live.game||q->thread!=live.thread||q->form!=form||q->formGuest!=live.formGuest||q->epoch!=live.ownerEpoch||q->archive!=live.archive||q->catalog!=live.catalog||q->gameLife!=r->gameLife||!q->gameLife->current()||!q->typed||!q->raw||q->raw->size()!=16+bg::Side*2||!q->content||!q->uploadEvent||q->uploadEvent>live.uploadEvent)return {};
+ sidebar=q;return r;
+}
 template<class T>inline bool validFamily(const T&,const NfsChildExitPreludeView&)noexcept{return false;}
 // Opponent is enrolled only by its exact accepted full-source factory below.
 // Immutable original343 bytes are evidence; transition GPU checks remain live.

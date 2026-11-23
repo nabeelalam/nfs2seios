@@ -1,11 +1,22 @@
 {
-  "scope": "Current source-only presentation boundary; not true widescreen completion",
+  "scope": "Source review of explicit paired local race-aspect integration; not complete world/HUD or device acceptance",
   "rendererDefaultKeepAspectRatio": 1,
   "defaultSource": "src/RendererConfig.cpp",
   "viewportInjection": "scripts/prepare_renderer.py prepare_aspect block",
-  "policy": "640x480 source canvas contained inside actual drawable pixel rectangle; Main-only proven responsive texture may use full drawable",
+  "policy": "Regular preparation retains contain. Explicit paired race preparation adds a native-ratio world raster with separate contained HUD placement; authenticated menu-wide compositors remain independent.",
   "photoCropOrStretchRequired": false,
-  "worldHorPlusIntegrated": false,
-  "worldAspectStage": "src/hd/AdaptiveAspectIntegration.md remains inactive",
+  "worldHorPlusIntegrated": true,
+  "integrationSelection": "scripts/prepare_adaptive_race.py; explicit matching engine and renderer outputs required",
+  "reviewedLocalPair": ".build/location-refresh-source-v30/paired (used by local v31 candidate)",
+  "camera": "Exact fresh single/split race camera sites adjust float focal 4D5294, integer focal 4DAC24 and horizontal angle 4DAC30 after 4808D0",
+  "frameBoundary": "Committed renderer target extent before 46F7A0 race-frame generation",
+  "drawOwnership": "42A3C0 execution scope captures mode/player into queued Glide draws; separate world/HUD raster transforms",
+  "existingRuntimeEvidence": "AdaptiveAspectIntegration.md records local original-data single/split North Country resize routes, including contained mirror clear; not rerun for this source review",
+  "remaining": [
+    "Complete horizontal CPU visibility/culling-consumer and camera save/restore coverage",
+    "Mixed deferred-list ownership and alternate cockpit/camera coverage",
+    "Current-candidate visual HUD/minimap/radar alignment acceptance across ratios",
+    "Physical-device acceptance"
+  ],
   "runtimeOrDeviceVerificationThisTurn": false
 }

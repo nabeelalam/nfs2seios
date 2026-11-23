@@ -1,0 +1,62 @@
+{
+  "scope": "Fresh maintained engine, classic UI and adaptive renderer preparation; targeted Linux compilation",
+  "enginePin": "fde04b571533ba20a60c473ab99d2431bb5cfd60",
+  "sdlPin": "829a65d769d935c4852f8159e964312c0957260a",
+  "preparation": {
+    "freshEngineGeneration": true,
+    "freshRendererGeneration": true,
+    "freshAdaptivePair": true,
+    "adaptiveChangesReverseExactly": true,
+    "newAbortReceiptCount": 1,
+    "intermediateSourceCopiesRemoved": 307,
+    "intermediateBytesFreed": 162481421,
+    "engineMethods": 15,
+    "cloudBuild": false
+  },
+  "headerMode": "canonical-project-src-no-header-copies",
+  "canonicalCurrentHelpers": [
+    {
+      "header": "FullSceneGameHooks.inc",
+      "sha256": "d49ed3fcf536a44410b372542bc7f6426c72c5e6b4a324c2d3a5182c8dde1cb9",
+      "canonicalDependencyObserved": true
+    },
+    {
+      "header": "FullSceneSource.h",
+      "sha256": "e1d86fbb18f5e267fc1b0f58a2b02b5637bbf4bf5a4f56c4d3777c25222b8885",
+      "canonicalDependencyObserved": true
+    },
+    {
+      "header": "LiveGameHooks.inc",
+      "sha256": "9220244b1b9b6474e079be30d18b0a256fb9bd1d3c46c6a19818618716e8c59e",
+      "canonicalDependencyObserved": true
+    },
+    {
+      "header": "LivePacketCore.h",
+      "sha256": "23d343a7f44d5c913556470bd9d9ceff235b7d9f9dc61f90f08e19d689cf66a9",
+      "canonicalDependencyObserved": true
+    }
+  ],
+  "freshCompilation": {
+    "results": [
+      {
+        "unit": "Methods_01.cpp",
+        "exitCode": 0,
+        "freshPairedSource": true
+      },
+      {
+        "unit": "Glide2x.c",
+        "exitCode": 0,
+        "freshPairedSource": true
+      }
+    ],
+    "linkedApplication": false,
+    "appleBuild": false
+  },
+  "rendererWarnings": "Only the existing RendererLfbGL.inc const-array pointer mismatch warning",
+  "limits": [
+    "Two targeted fresh units compiled; this is not a fresh fully linked game application.",
+    "No Apple SDK compile, IPA package, physical device or performance acceptance."
+  ],
+  "cloudBuild": false,
+  "published": false
+}

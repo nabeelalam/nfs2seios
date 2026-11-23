@@ -1,0 +1,52 @@
+{
+  "scope": "Local original-data software-GLES baseline; no iPad acceptance",
+  "run": "grouped-512-showcase-history-slideshow-v21",
+  "historyPublished": 17,
+  "slideshowPublished": 2,
+  "cleanRouteExit": true,
+  "historyVisualFinding": "Remastered page remains pillarboxed; successful History finish lacks the existing information-wide style 3 mark",
+  "slideshowVisualFinding": "Remastered photograph and footer fill output; side strips are visibly extended. This does not establish final artwork quality.",
+  "candidateChange": "After a successful authored History commit, mark existing information-wide style 3. No source page, artwork, text or original calls are replaced by this change.",
+  "logSHA256": "7eb59a654f29d52adf58cd6e67fa6d989f4f48970d4cd15be1d8c4699a538a05",
+  "candidateValidation": {
+    "run": "grouped-512-showcase-history-wide-v22",
+    "output": [
+      708,
+      492
+    ],
+    "cleanRouteExit": true,
+    "informationWideDeclines": 0,
+    "historyPublished": 17,
+    "slideshowPublished": 2,
+    "visualReview": "History left/right black bars removed; source page preserved at uniform scale. Edge reflection is visible and is not final art approval. Slideshow remains remastered and fills output.",
+    "binarySHA256": "d48d66155ff5374e6b3d0151dfc952d225c6043a7a4f61886736210f26a369a5",
+    "logSHA256": "739d0aa9198782731547eaedbbe8d92d05ae88603ade738cfdf7b1094aed8bbc",
+    "historyCaptureSHA256": "f18b4ec2e929e07ec5e9ea571735b07cd145f03927df5140b8cefccd4d0ec977"
+  },
+  "limits": [
+    "Physical iPad acceptance pending",
+    "Creative side-extension artwork quality remains separate from presentation coverage"
+  ],
+  "widescreenValidation": {
+    "run": "grouped-512-showcase-history-wide-v23",
+    "output": [
+      800,
+      450
+    ],
+    "cleanRouteExit": true,
+    "informationWideDeclines": 0,
+    "historyPublished": 16,
+    "slideshowPublished": 2,
+    "screenshotReviewed": true,
+    "visualLimit": "Edge reflection and dark side extension remain visible; complete creative widescreen artwork is not established.",
+    "logSHA256": "a832ffaaadaca4bffe91467be2085b3ea396479560adbde38d8c34243330514e",
+    "historyCaptureSHA256": "1e1b0810837c2d710fae056e7ff52c2ef4a3edc208c8e41d853b8601a79c2bf2"
+  },
+  "cleanRendererGeneration": {
+    "result": "passed",
+    "typedGlideExports": 46,
+    "generatedHistoryMatchesSource": true,
+    "historyRendererSHA256": "92c0f732fa620a4558df05ec1d522bcfb08777031144908193a7ae552a3ef303",
+    "limits": "Generated renderer was inspected, not separately compiled for Apple."
+  }
+}

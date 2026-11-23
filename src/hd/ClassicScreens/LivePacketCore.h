@@ -15,7 +15,7 @@ class OwnedFrame;
 // packet. Neither a caller-set ready flag nor historical capture is authority.
 class ObservedNow final {
  friend class LiveIssuer;friend class OwnedFrame;
- source::Authority authority_;source::Targets targets_;source::Snapshot font_;
+ source::Authority authority_;source::Targets targets_;nfs_soft::SurfaceIdentity surface_;
  std::vector<uint16_t>post_;uint64_t ticket_=0;
  ObservedNow()=default;
 public:
@@ -30,8 +30,11 @@ public:
  const std::shared_ptr<const nfs_soft::FramePacket>&packet()const noexcept{return packet_;}
  const source::Evidence&evidence()const noexcept{return evidence_;}
  const source::Profile&profile()const noexcept{return profile_;}
+ // Glyph settings belong to the immutable, independently authenticated paint
+ // receipt. Redisplay authenticates current bitmap ownership and exact pixels;
+ // the original native tile upload/selection/triangle witness remains required.
  bool matches(const ObservedNow&n)const noexcept{
-  return ticket_&&ticket_==n.ticket_&&source::sameAuthority(evidence_.exit,n.authority_)&&n.targets_.valid(n.authority_.owner)&&evidence_.targetsAfter.resourcesEqual(n.targets_)&&n.targets_.selected==evidence_.targetsAfter.selected&&n.targets_.selectedOwner==evidence_.targetsAfter.selectedOwner&&n.font_.valid(profile_,n.authority_.owner)&&n.font_.font==evidence_.post.font&&n.font_.palette==evidence_.post.palette&&n.font_.surface==evidence_.post.surface&&packet_&&packet_->matches(n.font_.surface,n.authority_.owner.serial,n.post_.data(),n.post_.size());
+  return ticket_&&ticket_==n.ticket_&&source::sameAuthority(evidence_.exit,n.authority_)&&n.targets_.valid(n.authority_.owner)&&evidence_.targetsAfter.resourcesEqual(n.targets_)&&n.targets_.selected==evidence_.targetsAfter.selected&&n.targets_.selectedOwner==evidence_.targetsAfter.selectedOwner&&evidence_.post.valid(profile_,n.authority_.owner)&&n.surface_==evidence_.post.surface&&packet_&&packet_->matches(n.surface_,n.authority_.owner.serial,n.post_.data(),n.post_.size());
  }
 };
 // Shared pointers own every queued CPU allocation. The C renderer has a paired

@@ -1,0 +1,46 @@
+{
+  "scope": "Fresh normal original-game application reload of record saved by isolated qualification fixture, with visual review of both fullwindow Track Records layouts",
+  "baselineBinarySHA256": "1fb8243eac30e356c6c12d97168c2dd3be0c3dd2e33177af5f3ad440cde57dd8",
+  "qualificationFixtureDuringReload": false,
+  "savedRecordOrigin": "Previous isolated qualification fixture; no claim of normally qualifying gameplay",
+  "savedRecordSHA256": "bddc5ee281b4f27d17b6243343dde21269dea05b065dc46fa5e7d37918d13dc0",
+  "testName": "nfsui",
+  "visibleReloadedFirstPlaceNameAtBothRatios": true,
+  "drawables": [
+    [
+      800,
+      450
+    ],
+    [
+      708,
+      492
+    ]
+  ],
+  "recordsSourceTrack": 0,
+  "recordFileUnchangedByReload": true,
+  "returnedLocationAndMain": true,
+  "settledMainVisuallyReviewed": true,
+  "cleanShutdown": true,
+  "all13ResourcesUnchanged": true,
+  "baselineBinaryUnchanged": true,
+  "captures": [
+    {
+      "capture": "006-reloaded-records-wide.bmp",
+      "sha256": "cdfcbf8b715c13766d069e678cc8e95b0fe2ab926e7f928534ce5f9e8b97c7fe"
+    },
+    {
+      "capture": "007-reloaded-records-ipad.bmp",
+      "sha256": "f56ab2211452575a72179c692fdbec53c5897353f7607f0a6e2bb858a7b8cceb"
+    },
+    {
+      "capture": "009-returned-main-ipad.bmp",
+      "sha256": "e4cf0fbf8702cfc511225fb521509144a64661fc75b9eac50e2009856d8c3a5c"
+    }
+  ],
+  "currentSourceRebuilt": false,
+  "firstActualVisibleFrameProven": false,
+  "physicalIpadVerified": false,
+  "iosPopupKeyboardVerified": false,
+  "wholeUIComplete": false,
+  "cloudBuild": false
+}

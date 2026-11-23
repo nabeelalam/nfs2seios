@@ -1,0 +1,49 @@
+{
+  "scope": "Desktop WSL software GLES2, Proving Grounds split screen, Quit Race to Summary, Lap Times, and Main at 1180x820.",
+  "method": "Test-only link wrapper read every RGB pixel in the default framebuffer immediately before swapping. Swaps were matched to the application presentation trace.",
+  "dimensions": [
+    1180,
+    820
+  ],
+  "originalRouteFrames": [
+    3005,
+    3006,
+    3007
+  ],
+  "firstAuthoredRouteFrame": 3008,
+  "captures": [
+    {
+      "Frame": 3004,
+      "NonblackPixels": 952946,
+      "NonblackEdgePixels": 28519
+    },
+    {
+      "Frame": 3005,
+      "NonblackPixels": 0,
+      "NonblackEdgePixels": 0
+    },
+    {
+      "Frame": 3006,
+      "NonblackPixels": 0,
+      "NonblackEdgePixels": 0
+    },
+    {
+      "Frame": 3007,
+      "NonblackPixels": 0,
+      "NonblackEdgePixels": 0
+    },
+    {
+      "Frame": 3008,
+      "NonblackPixels": 0,
+      "NonblackEdgePixels": 0
+    },
+    {
+      "Frame": 3009,
+      "NonblackPixels": 11687,
+      "NonblackEdgePixels": 11687
+    }
+  ],
+  "result": "All three original-route frames were fully black. Authored step zero was black and the following step revealed the leading edge. The process exited cleanly after starting a second race.",
+  "limitation": "Physical iPad and full-frame capture of the natural finish were not verified. Earlier probe used GLES3 queries on GLES2 and its results were discarded.",
+  "traceSha256": "99b79d390e1f15b9f9c447d5c84e83bf373e98782d2665b91f49b502994d23af"
+}

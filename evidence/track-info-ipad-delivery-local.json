@@ -1,0 +1,18 @@
+{
+  "run": 44323861157,
+  "sourceCommit": "9e98035cfc57a83e9aa4a60176b7b274663388fe",
+  "linuxPassed": true,
+  "applePassed": true,
+  "zipBytes": 468343249,
+  "zipSha256": "990ed988f5c2ef1371f7324af76ba6030667f6228e377869b8b88fe51678dc42",
+  "ipaSha256": "a33d7b2cbdf1bfa30bda4c77d8b1a3f799221ca9f8a142731b24fa77c6716788",
+  "verifiedArtworkPacks": 13,
+  "unchangedAppleBaseMembers": 12,
+  "deviceArchitecture": "ARM64",
+  "originalGameDataIncluded": false,
+  "privateUploadVerified": true,
+  "localZipVerified": true,
+  "physicalGameplayVerified": false,
+  "temporaryDraftBaseRemoved": true,
+  "downloadUrl": "https://github.com/nabeelalam/nfs-ii-se-ios/releases/download/classic-ui-widescreen-44323861157-1/NFSIISE-remastered-personal-unsigned.zip"
+}

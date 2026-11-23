@@ -1,0 +1,15 @@
+{
+  "scope": "WSL software GLES2, Proving Grounds split screen, 512-slot queue and two virtual controller inputs.",
+  "method": "Verified every maximum inside the measured 30-second race window was positive and no larger than total execution time in that interval. Clean recorder end and no dropped frame records.",
+  "observed": {
+    "raceSamples": 63,
+    "raceMaximumMs": 16.8067,
+    "windowSamples": 29,
+    "windowMedianOfIntervalMaximaMs": 4.8528,
+    "windowMaximumMs": 7.6755,
+    "frameRecordsDropped": 0
+  },
+  "productionDesktopBuildPassed": true,
+  "limitations": "The private replay reused an older test input driver object with recording mode engaged throughout. The normal desktop app was rebuilt from the current source separately. A concurrent local build can affect timings. Host timing can include driver and swap waiting and is not a direct measurement of GPU time or input latency.",
+  "physicalIpadVerified": false
+}

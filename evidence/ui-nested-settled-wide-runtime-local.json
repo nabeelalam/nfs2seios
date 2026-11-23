@@ -1,0 +1,441 @@
+{
+  "scope": "Final local settled Audio, Controls and Graphics composition at both supported wide shapes; first-visible continuity remains incomplete",
+  "binarySHA256": "c0f89f20215304198be67eb62c295ecd5c40809d59a386e1e5fe1f87131f8d2f",
+  "changes": [
+    "Authored dialog renderers now expose separate exact responsive projection entries; legacy entry validation is retained",
+    "Actual registered source-stage owner is revalidated throughout centred dialog rendering",
+    "Sidebar-clipped source logos retain their left-sheet anchor at both ratios; interactive dialog remains centred",
+    "Bounded context-safe rejection checkpoints enabled only with existing private background trace"
+  ],
+  "sourceSHA256": {
+    "src/hd/NestedSceneRenderer.inc": "20ea2b6d7b3f6bc1df5c03fc24a8fbe911ae74f35f3be75194e4be01905b1c37",
+    "src/hd/AudioDialogWordGpu.c.inc": "5dac7ff22e1454464c1c5f470a3e6b8e370cf8d26e85e6db88a227dcea39ea49",
+    "src/hd/GraphicsDialogWordGpu.c.inc": "03e485878c36f66b9841843bb335e9aa9ee75423c81b3d557e33aec1a03d4552",
+    "src/hd/ControlsDialogWordGpu.c.inc": "3a20add3fa16f96666797bd30570de812f4b74e465f5938b94ccc0d6a631825c",
+    "src/hd/AudioSceneLayers.c.inc": "a0dbe76c74044d957b62586aab791815bf87ee4c86f8842389024662e4e9ad05",
+    "src/hd/GraphicsSceneLayers.c.inc": "ea83273761fef1711351c14bb50ec6bce2d52f453d4a30919e7068f8ae0ed1b9",
+    "src/hd/ControlsSceneLayers.c.inc": "656d04c6d3806093512ca0c90756a0ef5e3b92034451e2d753c135f41da7a5f6",
+    "src/hd/BackgroundSceneCompositor.c.inc": "2d76ebf90e6aab53e5837ab2de1c567a322dbd742c5a11d7a1f9bd3535c23ed4"
+  },
+  "legacyGlesRegressionSuites": {
+    "audio": true,
+    "graphics": true,
+    "controls": true,
+    "scope": "Run after responsive-dialog separation; following sidebar-anchor change touches only responsive background composition verified by the final original-game runs"
+  },
+  "runs": [
+    {
+      "output": [
+        708,
+        492
+      ],
+      "driverExit": 0,
+      "copiedConfigsRestored": true,
+      "savedRecordsUnchanged": true,
+      "physicalIpadVerified": false,
+      "allThreeEntriesSelectNestedWide": true,
+      "gameLogSHA256": "743728cd57e1d4811881aefdf8858650a713cff618a93754963cb2861afd5d97",
+      "settledCaptures": {
+        "007-enter-audio-settled.bmp": "374edc706b59141de9f2a7140a2f9fb788df67411a45beb8837f7080b586b6fa",
+        "014-enter-controls-settled.bmp": "0e88b9cc4c28622b86d6092b713f791796ed073ac4c27bd8680bfdf7599fcbdb",
+        "021-enter-graphics-settled.bmp": "1a756d6b378b36c044fc3e4dd688fabef15770c18124c58428e945054dd0f250"
+      },
+      "actions": [
+        {
+          "action": "options-parent",
+          "logStart": 197245,
+          "logEnd": 274250,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "316",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "436",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "logStart": 294072,
+          "logEnd": 320377,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "457",
+              "previousFrames": "21"
+            },
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "469",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "471",
+              "previousFrames": "2"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "logStart": 320377,
+          "logEnd": 346048,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "483",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "598",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "logStart": 354253,
+          "logEnd": 372166,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "620",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "634",
+              "previousFrames": "14"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "logStart": 372166,
+          "logEnd": 390036,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "647",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "762",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "logStart": 407210,
+          "logEnd": 424663,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "789",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "801",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "803",
+              "previousFrames": "2"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "logStart": 424663,
+          "logEnd": 439554,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "815",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "930",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 439602,
+          "logEnd": 480530,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "945",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "957",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "output": [
+        800,
+        450
+      ],
+      "driverExit": 0,
+      "copiedConfigsRestored": true,
+      "savedRecordsUnchanged": true,
+      "physicalIpadVerified": false,
+      "allThreeEntriesSelectNestedWide": true,
+      "gameLogSHA256": "efa8cfee442c2b60a7785ebca2dd2bb3246788baca0b20600e0cdbc89c34d931",
+      "settledCaptures": {
+        "007-enter-audio-settled.bmp": "cf8d44fe1116bf24bb9fb0d4a47a36e0eadf9d87013cefd1fe9a13641e1ed166",
+        "014-enter-controls-settled.bmp": "7e280ae56415ab4e30565435ac71b195bde85c586c2f7d5fadfa3f41d080a3c3",
+        "021-enter-graphics-settled.bmp": "23161d5d87322400d1ff49bc2ddc950c201723c5233ca2f27362007872a8248c"
+      },
+      "actions": [
+        {
+          "action": "options-parent",
+          "logStart": 210295,
+          "logEnd": 287839,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "346",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "466",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "logStart": 307894,
+          "logEnd": 335096,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "488",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "502",
+              "previousFrames": "14"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "logStart": 335096,
+          "logEnd": 358892,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "514",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "629",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "logStart": 367121,
+          "logEnd": 384146,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "651",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "665",
+              "previousFrames": "14"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "logStart": 384146,
+          "logEnd": 402747,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "678",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "793",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "logStart": 419731,
+          "logEnd": 437427,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "821",
+              "previousFrames": "28"
+            },
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "833",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "835",
+              "previousFrames": "2"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "logStart": 437427,
+          "logEnd": 453086,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "848",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "963",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 453086,
+          "logEnd": 493541,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "979",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "991",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "visualReview": {
+    "sixSettledFramesInspected": true,
+    "fullWindowBackgrounds": true,
+    "sidebarLogoInsideSheet": true,
+    "centredDialogAndAudioBars": true,
+    "correlatedCursorVisible": true,
+    "userAssetApprovalClaimed": false
+  },
+  "settledNestedPresentationRuntimeVerified": true,
+  "firstVisibleContinuityVerified": false,
+  "physicalIpadVerified": false,
+  "cloudBuildStarted": false,
+  "remaining": [
+    "Native-format frames occur during entry and return spans; source-qualified transition coverage still required",
+    "Credits still needs its authored responsive backdrop",
+    "LoadSave entry and return handoffs remain open",
+    "Do not build a new iPad package until remaining UI batch is ready"
+  ]
+}

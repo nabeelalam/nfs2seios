@@ -1,0 +1,208 @@
+{
+  "schema": 1,
+  "scope": "Natural HD Victory constant-fog fix plus scoped actual-GPU composition/rejection checks",
+  "sourceSha256": {
+    "VictoryRenderer.inc": "906aac5bc245aa4a9de619c259c4ad3a2dcbb05fb39a61760ba2908762f488ee",
+    "VictoryWideRenderer.inc": "ff22c489d59e5af418040d72e6003c926b3a3c2c35166b67fc86cff08f443fdf"
+  },
+  "rootCause": "Natural original trophy passed source/owner/queue checks but inherited post-race texture/fog state caused exact native-target rejection128.",
+  "change": "Defer only exact128 state to per-tile textured-geometry and constant-fog proof; reproduce the validated fog once after authored art, gold words and caption, in native and wide private stages.",
+  "genericNativeVerifierChanged": false,
+  "originalEngineChanged": false,
+  "naturalRace": {
+    "captureVisuallyReviewed": true,
+    "widePreparedFrames": 33,
+    "widePresentedFrames": 0,
+    "field": 2,
+    "extent": [
+      708,
+      492
+    ],
+    "binarySha256": "fe6d91bb76bb68be8b8c2a60b362d29172e5c3cb33d5103afab52bdad23c53c9",
+    "cars": [
+      "McLaren F1",
+      "Nazca C2"
+    ],
+    "logSha256": "dd5217bc92c2c81acb883d367e760983584d518176f59f860693459c5e9ec27d",
+    "track": "Proving Grounds",
+    "laps": 2,
+    "runtime": {
+      "driverStopRequested": true,
+      "exitCode": 0,
+      "cleanShutdown": true,
+      "normalEngineMain": true,
+      "forcedVictoryFixture": false,
+      "virtualControllers": 2,
+      "actions": 35,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true,
+      "failure": null
+    },
+    "forcedSceneCalls": false,
+    "validatedFogAmount": 3,
+    "hdNativeFrames": 33
+  },
+  "scopedGpuFixture": {
+    "result": {
+      "exitCode": 0,
+      "forcedDiagnosticFixture": true,
+      "actualRaceWin": false,
+      "cases": [
+        [
+          0,
+          1,
+          1,
+          0,
+          1,
+          1,
+          300,
+          300,
+          600
+        ],
+        [
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          300,
+          300,
+          600
+        ],
+        [
+          2,
+          1,
+          1,
+          0,
+          1,
+          1,
+          300,
+          300,
+          600
+        ],
+        [
+          3,
+          1,
+          0,
+          1,
+          0,
+          0,
+          2,
+          2,
+          2
+        ],
+        [
+          4,
+          1,
+          0,
+          1,
+          0,
+          0,
+          2,
+          2,
+          2
+        ],
+        [
+          5,
+          1,
+          0,
+          1,
+          0,
+          0,
+          2,
+          2,
+          2
+        ]
+      ],
+      "authoredNativeFrames": 3,
+      "widePreparedFrames": 3,
+      "changedFogRejections": 2,
+      "untexturedRejections": 1,
+      "privateGlStateRestoredCases": 3,
+      "sourceCallsOriginal": true,
+      "pixelComparisons": [
+        {
+          "kind": "native",
+          "fogAmount": 3,
+          "extent": [
+            656,
+            492
+          ],
+          "channels": 968256,
+          "maximumChannelError": 1,
+          "channelsOverTwo": 0
+        },
+        {
+          "kind": "native",
+          "fogAmount": 255,
+          "extent": [
+            656,
+            492
+          ],
+          "channels": 968256,
+          "maximumChannelError": 0,
+          "channelsOverTwo": 0
+        },
+        {
+          "kind": "wide",
+          "fogAmount": 3,
+          "extent": [
+            708,
+            492
+          ],
+          "channels": 1045008,
+          "maximumChannelError": 1,
+          "channelsOverTwo": 0
+        },
+        {
+          "kind": "wide",
+          "fogAmount": 255,
+          "extent": [
+            708,
+            492
+          ],
+          "channels": 1045008,
+          "maximumChannelError": 0,
+          "channelsOverTwo": 0
+        }
+      ],
+      "failure": null,
+      "copiedFixtureRestoredExactly": true,
+      "allResourcesUnchanged": true
+    },
+    "forcedOriginalArtFixture": true,
+    "logSha256": "5efb0b508adb8ad3920ae60d9846ce8a21fb2cde5c06fd925fab942ed11862f0",
+    "fogCases": [
+      0,
+      3,
+      255,
+      "amount-change",
+      "color-change",
+      "untextured"
+    ],
+    "actualRaceWin": false,
+    "binarySha256": "6981d42fb012c06996cc376811c2334ca5b935349849cf77267b08e06c21a46e"
+  },
+  "captures": [
+    {
+      "file": "011-029-wait_for_victory.bmp",
+      "sha256": "716aa0156cf50b89b62801baab9d4c7ec1a9c10b0920e83f5638e04b8e96a953"
+    },
+    {
+      "file": "012-030-wait.bmp",
+      "sha256": "c30b9bdc94049e78a9d6fa3821ebe50574eb0a941ff93059d12a899f4d8c79a1"
+    },
+    {
+      "file": "014-032-key.bmp",
+      "sha256": "8a43e5aebbff3453b2ad838a630caebb1fe8601b5c3a3b6a844a350ae3256573"
+    },
+    {
+      "file": "015-034-wait.bmp",
+      "sha256": "800f517e1451837986c5d615530bca883bf98b9f2e5ecf983de8dea702d43c5e"
+    }
+  ],
+  "remainingGap": "Natural trophy wide stage prepares but does not present; later original logo/presentation operations still revoke or bypass it. Exact later operation remains under review. HD native trophy is verified; full-window natural trophy is not.",
+  "appleBuildOrDeviceAcceptance": false,
+  "performanceOrBatteryClaim": false
+}

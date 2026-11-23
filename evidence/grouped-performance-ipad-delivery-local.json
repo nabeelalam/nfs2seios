@@ -1,0 +1,14 @@
+{
+  "scope": "Successful GitHub standard-runner build and verified private unsigned iPadOS delivery.",
+  "source": "8b592b2b3127c7c50fd81d69bedd7d291c95e1f7",
+  "run": 44288567225,
+  "architecture": "arm64",
+  "platform": "iOS device",
+  "configuration": "Release",
+  "privateZipBytes": 468341565,
+  "privateZipSha256": "436f45d456395f9e208b48eebabbe36bea6fe32daa83d9e9eeccfe2c0eafefbe",
+  "actionsArtifacts": 0,
+  "publicTemporaryDraftRemoved": true,
+  "personalSigningRequired": true,
+  "physicalIpadVerified": false
+}

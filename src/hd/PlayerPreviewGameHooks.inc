@@ -4,12 +4,12 @@
 #include "PlayerSceneLiveGameHooks.inc"
 #endif
 #include "PlayerPreviewPacket.h"
-// Original-preserving producer. Only two explicit original call sites may enter;
+// Original-preserving producer. Only explicit original call sites may enter;
 // temporary preview generation and other forms never borrow this authority.
 namespace nfs_player_preview_live {
 namespace live=nfs_player_scene_live;namespace pv=nfs_player_preview;
 using Target=nfs_logo_capture::Target;
-enum class Site:uint32_t{Initial=0x40c3cc,Refresh=0x40c5c6};
+enum class Site:uint32_t{Initial=0x40c3cc,Refresh=0x40c5c6,PreviewRebuild=0x40d2de};
 enum class Failure:uint32_t{None,Owner,Nested,Order,Read,Target,Source,Palette,Row,Unwind,Overflow,Allocation,Verify};
 struct State {
  pv::Input input;live::State*owner=nullptr;uintptr_t game=0,thread=0;uint64_t epoch=0,serial=0;live::bg::Event baseEvent{};
@@ -28,11 +28,11 @@ inline bool bytes(uint32_t at,size_t n,std::vector<uint8_t>&out)noexcept{return 
 inline bool table(std::array<uint32_t,9>&out,uint32_t at)noexcept{try{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<9;++k)out[k]=tx.load<uint32_t>(at+4*k);return true;}catch(...){return false;}}
 inline bool bound(State&s,Game&g)noexcept{auto*l=live::current(g);return l&&l==s.owner&&!l->invalid&&l->baseVerified&&l->ownerEpoch==s.epoch&&l->nextPreviewSerial==s.serial&&sameEvent(l->base.event,s.baseEvent)&&l->archive==s.input.archive&&live::archiveCurrent(*l);}
 inline bool initialSelection(live::State&owner,uint32_t&car,uint32_t&graph)noexcept{try{nfs::GuestCopyTransaction tx;car=tx.load<uint8_t>(uint32_t(guest_address(owner.form==pv::Player1Form?byte_512DBF:byte_512DDA)));graph=tx.load<uint8_t>(uint32_t(guest_address(byte_512DD1)));return car<15;}catch(...){return false;}}
-inline bool selection(live::State&owner,pv::Selection&out)noexcept{out={};try{nfs::GuestCopyTransaction tx;const uint32_t car=tx.load<uint8_t>(uint32_t(guest_address(owner.form==pv::Player1Form?byte_512DBF:byte_512DDA)));const int32_t index=tx.load<int32_t>(uint32_t(guest_address(dword_4E5924))+2)>>16;if(car>=15||index<0||index>=15)return false;out.selectedCar=car;out.cachedCarIndex=uint32_t(index);out.graphEnabled=tx.load<uint8_t>(uint32_t(guest_address(byte_512DD1)));if(out.graphEnabled&&car<=11){const uint32_t arrays[4]={uint32_t(guest_address(dword_4D236C)),uint32_t(guest_address(dword_4D2330)),uint32_t(guest_address(dword_4D23E4)),uint32_t(guest_address(dword_4D23A8))};for(unsigned k=0;k<4;++k)out.graphValues[k]=tx.load<uint32_t>(arrays[k]+4*out.cachedCarIndex);}return true;}catch(...){return false;}}
+inline bool selection(live::State&owner,pv::Selection&out)noexcept{out={};try{nfs::GuestCopyTransaction tx;const uint32_t car=tx.load<uint8_t>(uint32_t(guest_address(owner.form==pv::Player1Form?byte_512DBF:byte_512DDA)));const int32_t index=tx.load<int32_t>(uint32_t(guest_address(dword_4E5924))+2)>>16;if(car>=15||index<0||index>=15)return false;out.selectedCar=car;out.cachedCarIndex=uint32_t(index);out.graphEnabled=tx.load<uint8_t>(uint32_t(guest_address(byte_512DD1)));if(out.graphEnabled&&out.cachedCarIndex<=11){const uint32_t arrays[4]={uint32_t(guest_address(dword_4D236C)),uint32_t(guest_address(dword_4D2330)),uint32_t(guest_address(dword_4D23E4)),uint32_t(guest_address(dword_4D23A8))};for(unsigned k=0;k<4;++k)out.graphValues[k]=tx.load<uint32_t>(arrays[k]+4*out.cachedCarIndex);}return true;}catch(...){return false;}}
 inline bool drawName(const pv::Selection&s,size_t count,const std::array<uint8_t,4>&name,int32_t x,int32_t y)noexcept{if(!(s.graphEnabled&&s.selectedCar<=11))return count==0&&name==pv::carName(s.cachedCarIndex)&&x==211&&y==316;static const char names[5][5]={"grph","grpg","grpb","grpr","grpy"};if(count>=5||std::memcmp(name.data(),names[count],4))return false;return x==(count?237-9*(12-int32_t(s.graphValues[count-1])):211)&&y==int32_t(count?327+30*(count-1):316);}
 struct Scope {
  Game&g;State*s=nullptr;bool entered=false,claimed=false;int unwind=0;
- Scope(Game&game,Site site)noexcept:g(game){auto*l=live::current(g);if(!l||l->invalid||!l->baseVerified||uint32_t(g.eax)!=l->formGuest||(l->form!=pv::Player1Form&&l->form!=pv::Player2Form)||g.edx!=211||g.ebx!=316||(site!=Site::Initial&&site!=Site::Refresh))return;
+ Scope(Game&game,Site site)noexcept:g(game){auto*l=live::current(g);if(!l||l->invalid||!l->baseVerified||uint32_t(g.eax)!=l->formGuest||(l->form!=pv::Player1Form&&l->form!=pv::Player2Form)||g.edx!=211||g.ebx!=316||(site!=Site::Initial&&site!=Site::Refresh&&site!=Site::PreviewRebuild))return;
   if(!live::archiveCurrent(*l))return;Target now;if(!target(now)||!nfs_background_scene_cpu::fullClip(now,640)||!nfs_logo_capture::same(now,l->base.post.target))return;
   uintptr_t expected=0,t=nfs_logo_publisher::threadToken();if(!ownerThread().compare_exchange_strong(expected,t)&&expected!=t)return;claimed=expected==0;
   auto*&p=slot();if(!p)p=new(std::nothrow)State;if(!p){if(claimed)ownerThread().store(0);return;}s=p;if(s->depth){reject(*s,Failure::Nested);return;}

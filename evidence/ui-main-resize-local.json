@@ -1,0 +1,25 @@
+{
+  "scope": "WSL software GLES2, settled Main Menu after split-screen Quit Race and Lap Times.",
+  "method": "Matched full RGB readbacks before swap to the renderer route at the first frame of each new extent.",
+  "observed": [
+    {
+      "from": "1180x820",
+      "to": "800x450",
+      "firstNewExtentFrame": 3242,
+      "route": "menu-wide",
+      "nonblackPixels": 357220,
+      "nonblackEdgePixels": 17997,
+      "traceSha256": "b4fc133bc23b83b39d4abd24b9ad37d57a0a67ece3936f55ad1f7ca7af51ce7c"
+    },
+    {
+      "from": "800x450",
+      "to": "1180x820",
+      "firstNewExtentFrame": 3307,
+      "route": "menu-wide",
+      "nonblackPixels": 967570,
+      "nonblackEdgePixels": 32800,
+      "traceSha256": "5f55c515c8bf1cce40da65d444bfccbff8ce770999c2182822bc77778b8d6201"
+    }
+  ],
+  "limitation": "One run per direction on settled Main. A previous natural-finish run with a resize nearer the entrance recorded a one-frame original-route fallback. Physical iPad remains unverified."
+}

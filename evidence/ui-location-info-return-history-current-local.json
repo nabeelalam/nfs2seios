@@ -1,0 +1,583 @@
+{
+  "schema": 1,
+  "scope": "Current normal desktop InfoReturn sidebar-history regression; observed route coverage only, not whole UI or device acceptance",
+  "binarySha256": "14036b81baa3b170da71b8c54ca73fc6bd1331abc5c0adb5a6e255c0985f1c00",
+  "sameBinaryBothRatios": true,
+  "sourceCorrection": {
+    "sealedActualCopiedSidebarRetainedForInfoReturn": true,
+    "ordinaryEntranceUnchanged": true,
+    "refreshSelectedPaneValidationUnchanged": true,
+    "directInfoReturnUsesOriginalChildAcquire": true,
+    "oppositeInfoReturnChecksCurrentPaneTargetHeaderEveryPixel": true,
+    "copy480RowsSourceAfterFullCopyRequired": true,
+    "historyCheckedBeforeAfterCurrentDescriptors": true,
+    "strictUploadAndNativeRenderGuardsUnchanged": true
+  },
+  "previousObservedFailure": {
+    "output": [
+      800,
+      450
+    ],
+    "route": "Track Info to Location to Track Records entry",
+    "nativeFirstFrame": 609,
+    "wideResumeFrame": 628,
+    "nativeFrames": 19,
+    "sidebarHeaderMatched": true,
+    "sidebarPixelsMismatched": true,
+    "firstMismatchByte": 26
+  },
+  "runtime": {
+    "wide800": {
+      "output": [
+        800,
+        450
+      ],
+      "completedCoreRoute": true,
+      "elapsedSeconds": 86.749591103,
+      "sourceInput": "Ordinary synchronized keyboard with explicit neutral release and bounded acknowledgment",
+      "actions": [
+        {
+          "action": "location-ready",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 136,
+              "previousFrames": 10
+            },
+            {
+              "choice": "intro-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 153,
+              "previousFrames": 17
+            },
+            {
+              "choice": "transition-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 174,
+              "previousFrames": 21
+            },
+            {
+              "choice": "menu-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 277,
+              "previousFrames": 103
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "entered-track info...",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 306,
+              "previousFrames": 29
+            },
+            {
+              "choice": "information-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 325,
+              "previousFrames": 19
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "returned-track info...",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 442,
+              "previousFrames": 117
+            },
+            {
+              "choice": "intro-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 459,
+              "previousFrames": 17
+            },
+            {
+              "choice": "transition-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 480,
+              "previousFrames": 21
+            },
+            {
+              "choice": "menu-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 583,
+              "previousFrames": 103
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "entered-track records...",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 606,
+              "previousFrames": 23
+            },
+            {
+              "choice": "records-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 625,
+              "previousFrames": 19
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "returned-track records...",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 635,
+              "previousFrames": 10
+            },
+            {
+              "choice": "intro-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 652,
+              "previousFrames": 17
+            },
+            {
+              "choice": "transition-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 673,
+              "previousFrames": 21
+            },
+            {
+              "choice": "menu-wide",
+              "output": [
+                800,
+                450
+              ],
+              "firstFrame": 776,
+              "previousFrames": 103
+            }
+          ],
+          "nativeIntervals": 0
+        }
+      ],
+      "recordsEntry": {
+        "childReturnWideFirstFrame": 606,
+        "recordsWideFirstFrame": 625,
+        "wideTransitionFrames": 19
+      }
+    },
+    "ipadShaped708": {
+      "output": [
+        708,
+        492
+      ],
+      "coreRoutePassed": true,
+      "sourceInput": "Ordinary relative desktop pointer movement and one click per measured Location widget; original Escape returns",
+      "actions": [
+        {
+          "action": "location-ready",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 127,
+              "previousFrames": 11
+            },
+            {
+              "choice": "intro-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 144,
+              "previousFrames": 17
+            },
+            {
+              "choice": "transition-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 165,
+              "previousFrames": 21
+            },
+            {
+              "choice": "menu-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 268,
+              "previousFrames": 103
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "entered-track info...",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 288,
+              "previousFrames": 20
+            },
+            {
+              "choice": "information-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 307,
+              "previousFrames": 19
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "returned-track info...",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 425,
+              "previousFrames": 118
+            },
+            {
+              "choice": "intro-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 442,
+              "previousFrames": 17
+            },
+            {
+              "choice": "transition-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 463,
+              "previousFrames": 21
+            },
+            {
+              "choice": "menu-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 566,
+              "previousFrames": 103
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "entered-track records...",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 590,
+              "previousFrames": 24
+            },
+            {
+              "choice": "records-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 609,
+              "previousFrames": 19
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "returned-track records...",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 620,
+              "previousFrames": 11
+            },
+            {
+              "choice": "intro-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 637,
+              "previousFrames": 17
+            },
+            {
+              "choice": "transition-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 658,
+              "previousFrames": 21
+            },
+            {
+              "choice": "menu-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 761,
+              "previousFrames": 103
+            }
+          ],
+          "nativeIntervals": 0
+        },
+        {
+          "action": "entered-personal statistics...",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 782,
+              "previousFrames": 21
+            },
+            {
+              "choice": "information-wide",
+              "output": [
+                708,
+                492
+              ],
+              "firstFrame": 801,
+              "previousFrames": 19
+            }
+          ],
+          "nativeIntervals": 0
+        }
+      ],
+      "recordsEntry": {
+        "childReturnWideFirstFrame": 590,
+        "recordsWideFirstFrame": 609,
+        "wideTransitionFrames": 19
+      },
+      "statisticsReturn": {
+        "wideFadeFirstFrame": 811,
+        "widePhotoFirstFrame": 828,
+        "wideFullCacheFirstFrame": 849,
+        "settledMenuWideFirstFrame": 952,
+        "finalLocationNativeRequest": 1163,
+        "nativeSelections": 300,
+        "nativeTriangles": 600,
+        "currentLocationSourceEpoch": 14,
+        "actualSelectedRow": "personal statistics...",
+        "actualCaptureReviewed": true
+      },
+      "pointerReceipts": [
+        {
+          "item": 2,
+          "widget": [
+            315,
+            159,
+            388,
+            189
+          ],
+          "relativeHostPixels": [
+            -28,
+            55
+          ],
+          "actualConsumedGuestCursors": [
+            [
+              351.6341463414634,
+              173
+            ],
+            [
+              351.6341463414634,
+              173
+            ]
+          ],
+          "opaqueRecognitionErrors": [
+            4.733623104995931,
+            4.733623104995931
+          ],
+          "singleMotion": true,
+          "singleClick": true
+        },
+        {
+          "item": 3,
+          "widget": [
+            292,
+            185,
+            388,
+            215
+          ],
+          "relativeHostPixels": [
+            -40,
+            29
+          ],
+          "actualConsumedGuestCursors": [
+            [
+              339.6341463414634,
+              200
+            ],
+            [
+              339.6341463414634,
+              200
+            ]
+          ],
+          "opaqueRecognitionErrors": [
+            3.218571694483365,
+            3.218571694483365
+          ],
+          "singleMotion": true,
+          "singleClick": true
+        },
+        {
+          "item": 4,
+          "widget": [
+            257,
+            211,
+            388,
+            241
+          ],
+          "relativeHostPixels": [
+            -58,
+            29
+          ],
+          "actualConsumedGuestCursors": [
+            [
+              322.6341463414634,
+              226
+            ],
+            [
+              322.6341463414634,
+              226
+            ]
+          ],
+          "opaqueRecognitionErrors": [
+            4.797159114615106,
+            4.797159114615106
+          ],
+          "singleMotion": true,
+          "singleClick": true
+        }
+      ],
+      "wholeObserverCompleted": false,
+      "observerFalseFailure": "The return predicate required another kind9 wide diagnostic line after its256-line per-kind cap; positive typed native completion, wide route intervals and current Location capture prove the observed return. No rerun performed.",
+      "kind9WideDiagnosticLinesEmitted": 256,
+      "kind9WideDiagnosticCap": 256
+    }
+  },
+  "nativeFallbackAfterInitialWideMenu": {
+    "wide800": 0,
+    "ipadShaped708": 0
+  },
+  "startupNativeIntervalsExcluded": true,
+  "typedStatsNative300Uploads300Selections600TrianglesObserved": true,
+  "visualReview": {
+    "records800": true,
+    "records708": true,
+    "statistics708": true,
+    "returnedLocation708": true,
+    "scope": "Authored crest/table/graph/text, pointer and selected return row inspected; no all-artwork approval"
+  },
+  "preservation": {
+    "bothExitZero": true,
+    "bothCleanShutdown": true,
+    "bothWholeCopiedFixturesRestoredExactly": true,
+    "both22ReleaseResourcesUnchanged": true,
+    "bothBinariesUnchanged": true,
+    "ownedDisplaysTerminal": true,
+    "tcpDisabled": true,
+    "privateScreenConfigurationOnly": true,
+    "originalDisplayHelperUnchanged": true,
+    "noOriginalGameEdits": true
+  },
+  "evidenceSha256": {
+    "wide800GameLog": "38dd7e4357d838f80bf41d6a5cac08811110a162b211a213ade856ec13c33619",
+    "wide800Result": "8276403ab1d22fbff358ea7e899f6fc630940f03e8ddc5e69be7fb9d31b51c4d",
+    "wide800PresentationIntervals": "648a2e3bd06217074d582dbe60cb1386a5861117e09dac7b0ac0d0b48aa09adc",
+    "ipadShaped708GameLog": "393cb028dc6ca4c1b7bf499fd03c85604319c67547f3b6491df84c1a4908e86e",
+    "ipadShaped708Result": "01256f3fa6f4500087f5ea529737af7790b49ad133590777af5efbcf752b6e79",
+    "ipadShaped708PresentationIntervals": "c8872520aee5da33aca237ea18cbb253d90864e5976127ef01f1dc5949f9056d",
+    "ipadShaped708StatisticsCapture": "e4e612dac72fe6fba9864ab9138f4380ca2d3f9b79e09eaa31df237199464d64",
+    "ipadShaped708ReturnedLocationCapture": "8118d6c3deb27588db560d476ea3a2101ce43f25842cbf8a0e2dfdd42e1f3dea"
+  },
+  "remaining": [
+    "Opponents not attempted in this group",
+    "Other track information/records/statistics cases",
+    "No live-resize continuity acceptance",
+    "Physical iPad and broader UI acceptance"
+  ],
+  "gameRaceRun": false,
+  "cloudBuild": false,
+  "published": false
+}

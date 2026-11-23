@@ -4,6 +4,7 @@
 #include "AudioSidebarPacket.h"
 #include "ControlsSceneRuntimeAbi.h"
 #include "ControlsDialogWordDisplay.h"
+#include "OptionsSidebarOrigin.h"
 #include <atomic>
 namespace nfs_controls_scene_cpu {
 // Immutable CPU join only. Independent live owners supply current bindings,
@@ -12,6 +13,7 @@ class Prepared final {
  std::shared_ptr<const nfs_graphics_frame::GraphicsFramePacket>frame_;
  std::shared_ptr<const nfs_audio_sidebar::Packet>sidebar_;unsigned mapRole_=0;
  std::shared_ptr<const nfs_controls_dialog_display::Prepared>dialog_;
+ std::shared_ptr<const nfs_options_sidebar_origin::Origin>initialSidebar_;
  Prepared()=default;
  static bool captionWordValid(const std::shared_ptr<const nfs_audio_sidebar::Packet>&sidebar)noexcept{
   if(!sidebar)return false;const auto&word=sidebar->captionWord();
@@ -60,15 +62,25 @@ public:
   if(!textView(sidebar->caption(),343,v.layers.sidebarCaption))return {};
   auto&b=v.layers.background;b.mapRole=role;b.wordCount=sidebar->wordCount();std::copy(sidebar->words().begin(),sidebar->words().end(),b.words);std::copy(sidebar->logos().begin(),sidebar->logos().end(),b.logos);return v;
  }
+ static std::shared_ptr<const Prepared>createInitial(std::shared_ptr<const nfs_graphics_frame::GraphicsFramePacket>frame,
+ std::shared_ptr<const nfs_options_sidebar_origin::Origin>origin,const nfs_audio_frame::Binding&current,
+ uint64_t serial,const uint16_t*post,size_t count,const nfs_graphics_frame::SidebarBinding&side,
+ std::shared_ptr<const nfs_controls_dialog_display::Prepared>dialog,uintptr_t game,uintptr_t thread)noexcept{
+  if(!frame||!origin||current.pass!=1||!side.valid()||!dialogWordValid(frame,dialog)||!dialog||dialog->binding().game!=game||!dialog->proof()||dialog->proof()->evidence().thread!=thread||!frame->matches(current,serial,post,count))return {};
+  const auto&b=frame->background();if(!b||!b->catalog()||!(b->sidebar()==side)||side.target.ownerState[3]!=current.owner||!origin->matches(game,thread,current.archive,side.source.data(),side.source.size()))return {};
+  for(unsigned k=1;k<5;++k)if(side.target.ownerState[k]!=dialog->proof()->evidence().post.target.ownerState[k])return {};
+  unsigned role=2;for(unsigned k=0;k<2;++k)if(b->catalog()->sha()==origin->catalog->mapSha[k]){if(role!=2)return {};role=k;}if(role==2)return {};
+  try{auto p=std::shared_ptr<Prepared>(new Prepared);p->frame_=std::move(frame);p->initialSidebar_=std::move(origin);p->dialog_=std::move(dialog);p->mapRole_=role;return p;}catch(...){return {};}
+ }
  const std::shared_ptr<const nfs_graphics_frame::GraphicsFramePacket>&frame()const noexcept{return frame_;}
  const std::shared_ptr<const nfs_audio_sidebar::Packet>&sidebar()const noexcept{return sidebar_;}
  NfsControlsSceneFrameView view(uint64_t serial)const noexcept{
-  NfsControlsSceneFrameView v{};if(!serial||!frame_||!sidebar_||!captionWordValid(sidebar_)||!dialogWordValid(frame_,dialog_))return v;
-  v.layers.sidebarWord=sidebar_->captionWord()->view();if(!v.layers.sidebarWord.schema||v.layers.sidebarWord.word!=3)return {};
+  NfsControlsSceneFrameView v{};if(!serial||!frame_||(!initialSidebar_&&(!sidebar_||!captionWordValid(sidebar_)))||(initialSidebar_&&!initialSidebar_->current())||!dialogWordValid(frame_,dialog_))return v;
+  v.layers.sidebarWord=initialSidebar_?initialSidebar_->frame->wordView():sidebar_->captionWord()->view();if(!v.layers.sidebarWord.schema||v.layers.sidebarWord.word!=3)return {};
   v.layers.dialogWords=dialog_->view();if(v.layers.dialogWords.schema!=NFS_CONTROLS_DIALOG_WORD_SCHEMA||v.layers.dialogWords.count!=NFS_CONTROLS_DIALOG_WORD_PLACEMENTS)return {};
   v.schema=NFS_CONTROLS_SCENE_RUNTIME_SCHEMA;v.width=640;v.height=480;v.serial=serial;v.contentRevision=frame_->binding().pass;v.planeWords=nfs_graphics_frame::Pixels;v.original565=frame_->text()->original().data();
-  auto&b=v.layers.background;b.mapRole=mapRole_;b.wordCount=sidebar_->wordCount();b.panelClip[2]=343;b.panelClip[3]=480;std::copy(sidebar_->words().begin(),sidebar_->words().end(),b.words);std::copy(sidebar_->logos().begin(),sidebar_->logos().end(),b.logos);
-  if(!textView(sidebar_->caption(),343,v.layers.sidebarCaption)||!textView(frame_->text(),640,v.layers.text))return {};
+  auto&b=v.layers.background;b.mapRole=mapRole_;b.wordCount=sidebar_?sidebar_->wordCount():0;b.panelClip[2]=343;b.panelClip[3]=480;if(initialSidebar_){const auto&s=*initialSidebar_->frame;b.wordCount=s.wordCount;std::copy(s.words.begin(),s.words.end(),b.words);std::copy(s.logos.begin(),s.logos.end(),b.logos);}else{std::copy(sidebar_->words().begin(),sidebar_->words().end(),b.words);std::copy(sidebar_->logos().begin(),sidebar_->logos().end(),b.logos);}
+  if(!textView(initialSidebar_?initialSidebar_->frame->caption:sidebar_->caption(),343,v.layers.sidebarCaption)||!textView(frame_->text(),640,v.layers.text))return {};
   return v;
  }
 };

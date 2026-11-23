@@ -14,7 +14,11 @@ inline bool enabled()noexcept{const char*p=std::getenv("NFS_PRIVATE_VICTORY_HD")
 inline uintptr_t threadToken()noexcept{static thread_local char value;return reinterpret_cast<uintptr_t>(&value);}
 struct Measurement {bool ready=false;uint32_t text=0;int width=0,anchor=0;unsigned alignment=0;};
 struct BitmapCapture {unsigned index=12;uint32_t source=0,span=0,mode=0;NfsVictoryWordView view{};nfs_logo_capture::Target target{};std::vector<uint16_t>before,after;bool resolved=false;};
+struct ArtCapture {const nfs_victory_original::Source*source=nullptr;uint32_t address=0;nfs_logo_capture::Target target{};std::shared_ptr<const nfs_victory_art_proof::Image>image;};
+struct LogoProof;struct LogoBuild;struct LogoTailScope;
 struct State {
+ unsigned logoCar=UINT32_MAX;std::shared_ptr<const LogoProof>logo;LogoBuild*logoBuilding=nullptr;LogoTailScope*logoTail=nullptr;bool logoMesh=false;uint64_t lastNativeRequest=0;std::shared_ptr<const Frame>lastNativeFrame;
+ std::shared_ptr<ArtCapture>activeArt;std::shared_ptr<const nfs_victory_art_proof::Scene>artScene;nfs_logo_capture::Target artTarget{};
  Game*game=nullptr;uintptr_t thread=0;uint64_t epoch=0,serial=0;unsigned owner=0,presenting=0;bool ready=false;
  bool failed=false,capturing=false,string=false,word=false;
  uint32_t textAddress=0,metricAddress=0,fontAddress=0,form=0;uint16_t formType=0;
@@ -24,7 +28,7 @@ struct State {
  std::vector<std::shared_ptr<BitmapCapture>>bitmapWords;std::shared_ptr<BitmapCapture>activeBitmap;
  std::vector<uint16_t>replay;nfs_soft::TextCommand command{};
  std::array<uint8_t,96>textBefore{};Measurement measurement{};unsigned resourceDepth=0;
- void invalidate()noexcept{failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();bitmapWords.clear();activeBitmap.reset();}
+ void invalidate()noexcept{logo.reset();logoCar=UINT32_MAX;logoBuilding=nullptr;logoTail=nullptr;logoMesh=false;lastNativeRequest=0;lastNativeFrame.reset();activeArt.reset();artScene.reset();failed=true;capturing=string=word=false;building.reset();published.reset();replay.clear();bitmapWords.clear();activeBitmap.reset();}
 };
 inline State&state()noexcept{static thread_local State s;return s;}
 inline State*current(Game&g)noexcept{auto&s=state();return s.owner==1&&s.game==&g&&s.thread==threadToken()&&!s.failed?&s:nullptr;}
@@ -39,12 +43,49 @@ inline std::vector<uint16_t>plane(const nfs_logo_capture::Target&t){std::vector<
 
 inline int finiteWord(const unsigned char*name){for(unsigned k=0;k<12;++k)if(!std::memcmp(name,nfs_victory_words[k].name,4))return int(k);return -1;}
 inline bool bitmapSha(const BitmapCapture&b){if(b.index>=12||!b.source||!b.span)return false;unsigned char sha[32];return nfs_texture_sha256(static_cast<const unsigned char*>(nfs_host_address(b.source,b.span)),b.span,sha)&&!std::memcmp(sha,nfs_victory_words[b.index].source,32);}
+// Original-image proof collection; startup enables it after artwork registration.
+inline bool artEnabled()noexcept{const char*p=std::getenv("NFS_PRIVATE_VICTORY_ART_PROOF");return p&&p[0]=='1'&&!p[1];}
+template<class F>inline void artSafe(Game&g,F&&f)noexcept{CpuErrno preserve(g);try{f();}catch(...){state().activeArt.reset();state().artScene.reset();}}
+struct ArtworkScope {
+ Game&g;State*s=nullptr;std::shared_ptr<ArtCapture>b;int unwind=0;
+ explicit ArtworkScope(Game&x)noexcept:g(x){
+  s=current(g);if(!s||!s->ready||s->capturing||!artEnabled())return;
+  artSafe(g,[&]{unsigned char name[4];{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<4;++k)name[k]=tx.load<uint8_t>(uint32_t(g.eax)+k);}
+   const auto*source=nfs_victory_original::find(name);if(!source)return;
+   if(s->activeArt||uint32_t(g.edx)!=0x400)throw 1;
+   if(source->image==0)s->artScene.reset();
+   else if(!s->artScene||s->artScene->photo())throw 1;
+   b=std::make_shared<ArtCapture>();b->source=source;b->target=target();if(source->image&&!nfs_logo_capture::same(s->artTarget,b->target))throw 1;s->activeArt=b;unwind=nfs_logo_publisher::exceptions();
+  });
+ }
+ ~ArtworkScope()noexcept{
+  if(!b||!s||s!=current(g))return;
+  artSafe(g,[&]{
+   if(s->activeArt!=b||!b->image||!b->address||nfs_logo_publisher::exceptions()>unwind||!nfs_logo_capture::same(b->target,target()))throw 1;
+   const auto&bytes=b->image->bytes();
+   {nfs::GuestCopyTransaction tx;if(std::memcmp(nfs_host_address(b->address,bytes.size()),bytes.data(),bytes.size()))throw 1;}
+   auto observed=plane(b->target);
+   auto scene=b->source->image?nfs_victory_art_proof::Scene::winner(s->artScene,b->image,observed):nfs_victory_art_proof::Scene::background(b->image,observed);
+   if(!scene)throw 1;s->artTarget=b->target;s->artScene=std::move(scene);s->activeArt.reset();
+  });
+ }
+};
+inline void artworkResolved(Game&g)noexcept{
+ auto*s=current(g);if(!s||!s->activeArt)return;
+ artSafe(g,[&]{auto&b=*s->activeArt;if(b.image||!b.source)throw 1;
+  b.address=uint32_t(g.eax);const uint64_t end=uint64_t(b.address)+b.source->span,first=uint64_t(b.target.w[8]);
+  if(!b.address||end>UINT64_C(0x100000000)||(uint64_t(b.address)<first+614416&&end>first))throw 1;
+  std::vector<unsigned char>bytes(b.source->span);
+  {nfs::GuestCopyTransaction tx;std::memcpy(bytes.data(),nfs_host_address(b.address,bytes.size()),bytes.size());}
+  b.image=nfs_victory_art_proof::Image::create(reinterpret_cast<const unsigned char*>(b.source->name),bytes);if(!b.image)throw 1;
+ });
+}
 struct BitmapScope {
- Game&g;State*s=nullptr;std::shared_ptr<BitmapCapture>b;int unwind=0;
- explicit BitmapScope(Game&x)noexcept:g(x){s=current(g);if(!s||!s->ready||s->capturing)return;safe(g,[&]{unsigned char name[4];{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<4;++k)name[k]=tx.load<uint8_t>(uint32_t(g.eax)+k);}if(!std::memcmp(name,"back",4)){s->bitmapWords.clear();s->activeBitmap.reset();return;}int index=finiteWord(name);if(index<0)return;if(s->activeBitmap||s->bitmapWords.size()>=2)throw 1;b=std::make_shared<BitmapCapture>();b->index=unsigned(index);b->mode=uint32_t(g.edx);if(b->mode!=0x2800&&b->mode!=0x400){b.reset();return;}b->target=target();b->before=plane(b->target);s->activeBitmap=b;unwind=nfs_logo_publisher::exceptions();});}
+ Game&g;ArtworkScope artwork;State*s=nullptr;std::shared_ptr<BitmapCapture>b;int unwind=0;
+ explicit BitmapScope(Game&x)noexcept:g(x),artwork(x){s=current(g);if(!s||!s->ready||s->capturing)return;safe(g,[&]{unsigned char name[4];{nfs::GuestCopyTransaction tx;for(unsigned k=0;k<4;++k)name[k]=tx.load<uint8_t>(uint32_t(g.eax)+k);}if(!std::memcmp(name,"back",4)){s->bitmapWords.clear();s->activeBitmap.reset();return;}int index=finiteWord(name);if(index<0)return;if(s->activeBitmap||s->bitmapWords.size()>=2)throw 1;b=std::make_shared<BitmapCapture>();b->index=unsigned(index);b->mode=uint32_t(g.edx);if(b->mode!=0x2800&&b->mode!=0x400){b.reset();return;}b->target=target();b->before=plane(b->target);s->activeBitmap=b;unwind=nfs_logo_publisher::exceptions();});}
  ~BitmapScope()noexcept{if(!b||!s||s!=current(g))return;safe(g,[&]{if(s->activeBitmap!=b||nfs_logo_publisher::exceptions()>unwind||!b->resolved||!bitmapSha(*b)||!nfs_logo_capture::same(b->target,target()))throw 1;b->after=plane(b->target);s->bitmapWords.push_back(b);s->activeBitmap.reset();});}
 };
-inline void bitmapResolved(Game&g)noexcept{auto*s=current(g);if(!s||!s->activeBitmap)return;safe(g,[&]{auto&b=*s->activeBitmap;if(b.resolved)throw 1;const auto&asset=nfs_victory_words[b.index];nfs::GuestCopyTransaction tx;uint32_t source=uint32_t(g.eax);if(uint64_t(source)+asset.span>UINT64_C(0x100000000))throw 1;uint32_t head=tx.load<uint32_t>(source),wh=tx.load<uint32_t>(source+4);if((head&255)!=0x7b||(wh&65535)!=asset.width||(wh>>16)!=asset.height)throw 1;uint32_t pal=source+(head>>8),count=tx.load<uint16_t>(pal+4);if((tx.load<uint32_t>(pal)&255)!=0x2a||!count||count>256||(head>>8)+16+4*count!=asset.span)throw 1;b.source=source;b.span=asset.span;if(!bitmapSha(b))throw 1;b.view.index=b.index;b.view.width=asset.width;b.view.height=asset.height;uint32_t pos=tx.load<uint32_t>(source+12);b.view.left=int32_t(pos<<20)>>20;b.view.top=int32_t(pos<<4)>>20;if(b.view.left<-640||b.view.top<-480||b.view.left>640||b.view.top>480)throw 1;b.resolved=true;});}
+inline void bitmapResolved(Game&g)noexcept{artworkResolved(g);auto*s=current(g);if(!s||!s->activeBitmap)return;safe(g,[&]{auto&b=*s->activeBitmap;if(b.resolved)throw 1;const auto&asset=nfs_victory_words[b.index];nfs::GuestCopyTransaction tx;uint32_t source=uint32_t(g.eax);if(uint64_t(source)+asset.span>UINT64_C(0x100000000))throw 1;uint32_t head=tx.load<uint32_t>(source),wh=tx.load<uint32_t>(source+4);if((head&255)!=0x7b||(wh&65535)!=asset.width||(wh>>16)!=asset.height)throw 1;uint32_t pal=source+(head>>8),count=tx.load<uint16_t>(pal+4);if((tx.load<uint32_t>(pal)&255)!=0x2a||!count||count>256||(head>>8)+16+4*count!=asset.span)throw 1;b.source=source;b.span=asset.span;if(!bitmapSha(b))throw 1;b.view.index=b.index;b.view.width=asset.width;b.view.height=asset.height;uint32_t pos=tx.load<uint32_t>(source+12);b.view.left=int32_t(pos<<20)>>20;b.view.top=int32_t(pos<<4)>>20;if(b.view.left<-640||b.view.top<-480||b.view.left>640||b.view.top>480)throw 1;b.resolved=true;});}
 
 inline void metricTable(State&s,uint32_t font,uint32_t table,unsigned count){
  if(s.metricAddress==table&&s.fontAddress==font)return;if(!font||!table||!count||count>4096)throw 1;
@@ -65,7 +106,7 @@ struct Adapter {
  static void begin(Game&g)noexcept{auto*s=current(g);if(!s||!s->ready)return;safe(g,[&]{
   if(s->capturing||s->string||s->word||s->serial==UINT64_MAX)throw 1;
   auto p=std::make_shared<Payload>();p->target=target();p->form=s->form;p->formType=s->formType;p->epoch=s->epoch;p->serial=++s->serial;
-  s->stores.clear();s->replay.clear();s->building=std::move(p);s->published.reset();s->metricAddress=s->fontAddress=0;s->capturing=true;
+  s->lastNativeRequest=0;s->lastNativeFrame.reset();s->stores.clear();s->replay.clear();s->building=std::move(p);s->published.reset();s->metricAddress=s->fontAddress=0;s->capturing=true;
  });}
  static void end(Game&g)noexcept{auto*s=current(g);if(!s||!s->capturing)return;safe(g,[&]{
   if(s->string||s->word||!s->building||s->building->commands.empty())throw 1;
@@ -78,6 +119,7 @@ struct Adapter {
    unsigned red=(c.color>>11)&31,green=(c.color>>5)&63,blue=c.color&31;if(numeric&&red>12&&green>20&&blue<12)c.role=1;
    if(n&&c.role==1){auto&shadow=p->commands[n-1];if(shadow.color==0&&shadow.text==c.text&&shadow.x==c.x+1&&shadow.y==c.y+1)shadow.role=1;}
   }
+  if(!s->activeArt&&s->artScene&&nfs_logo_capture::same(s->artTarget,p->target)&&s->artScene->pixels()==p->clean)p->artwork=s->artScene;
   auto display=nfs_victory_text::PreparedText::createCommands(p->commands,nfs_victory_text::victoryFont(),p);if(!display)throw 1;
   auto f=std::shared_ptr<Frame>(new Frame);f->data_=p;f->display_=std::move(display);s->published=std::move(f);s->building.reset();s->replay.clear();s->capturing=false;
  });}
@@ -133,3 +175,5 @@ struct Presentation {
 };
 inline void retire(Game&g,uint32_t owner)noexcept{auto*s=current(g);if(!s||!s->published)return;CpuErrno preserve(g);const auto&t=s->published->data().target;if(owner==t.owner||owner==t.w[8]||owner==t.w[11]||owner==t.w[12])s->invalidate();}
 } // namespace nfs_victory_ui_live
+
+#include "VictoryLogoGameHooks.inc"

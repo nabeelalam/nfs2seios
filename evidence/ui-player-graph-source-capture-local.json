@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "scope": "Observation-only original Player graph canvas capture; HD graph animation not implemented",
+  "privateOptInOnly": true,
+  "rendererAuthorizationUnchanged": true,
+  "gameStateAndGameFilesNotWrittenByRecorder": true,
+  "hookInsertionAndReversalTestsPassed": 14,
+  "build": {
+    "binarySha256": "2ee0b416ff03349a259b9f80aad1bf4e3d7c6557e783d6024fc488dc4353e7d9",
+    "binaryBytes": 63898608,
+    "cloudBuild": false
+  },
+  "observations": [
+    {
+      "form": "4d3100",
+      "carIndex": 9,
+      "phase": 0,
+      "bits": 32,
+      "fillRows": 128,
+      "fillCallback": "f0001ab0",
+      "draws": 5,
+      "canvasSha256": "61d9d09f8d9c049b8dc830729ac87d18d6120dae4671d6b1fff7fc14f43d2e77"
+    },
+    {
+      "form": "4d3100",
+      "carIndex": 9,
+      "phase": 1,
+      "bits": 16,
+      "fillRows": 128,
+      "fillCallback": "f0001aa8",
+      "draws": 5,
+      "canvasSha256": "3965805d504d8ad4af20df731ffc0eeaba15c5233026835fe7f6c5dd2641d56e"
+    },
+    {
+      "form": "4d3100",
+      "carIndex": 11,
+      "phase": 0,
+      "bits": 32,
+      "fillRows": 128,
+      "fillCallback": "f0001ab0",
+      "draws": 5,
+      "canvasSha256": "8d55af597c354285ea6508c786d0c645cf686c3e207923e475a3a981e50987da"
+    },
+    {
+      "form": "4d3100",
+      "carIndex": 11,
+      "phase": 1,
+      "bits": 16,
+      "fillRows": 128,
+      "fillCallback": "f0001aa8",
+      "draws": 5,
+      "canvasSha256": "c6edb35a4494c1c897b574e3784e61add8f62364c91c76f2d78891afa32a1e23"
+    }
+  ],
+  "assetNames": [
+    "grph",
+    "grpg",
+    "grpb",
+    "grpr",
+    "grpy"
+  ],
+  "drawRowsPerAsset": [
+    147,
+    15,
+    15,
+    15,
+    15
+  ],
+  "observedDrawPipelines": {
+    "16bit": {
+      "callback": "f0001850",
+      "function": "483288",
+      "converter": "0",
+      "indexedSourceCaptured": true
+    },
+    "32bit": {
+      "callback": "f000211c",
+      "function": "4A1090",
+      "converter": "f0002218",
+      "converterFunction": "4A6A7E",
+      "sourceSpanKnown": false,
+      "staticConverterSemantics": "Indexed bytes expanded through the pointer in off_4DD044; wrapper forwards through dword_571260",
+      "nextRequiredCapture": "Exact converter palette, forward callback and input indexed row bytes"
+    }
+  },
+  "normalPhotoTransitions": {
+    "completeCases": 4,
+    "wideFramesPerCase": 21,
+    "exitCode": 0,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true
+  },
+  "physicalIpadVerified": false,
+  "hdGraphAnimationComplete": false,
+  "published": false
+}

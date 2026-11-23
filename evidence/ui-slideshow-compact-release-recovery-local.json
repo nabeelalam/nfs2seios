@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Restore exact lossless slideshow release and reconcile packaging pins",
+  "verification": {
+    "checkedImages": 98,
+    "sourceBytes": 240423232,
+    "recoveredBytes": 219036319,
+    "sourceSha256": "e36dec6e311e55fad6d5824c0b746b3009e5ecf03e021143f03a4e3f1b25a6a4",
+    "recoveredSha256": "32ec9ebc8d683ccfb6567d33de3a17e113842d56a59ba9665ae3b602d452d837",
+    "exactPreviouslyVerifiedPackRecovered": true,
+    "currentNativeDecoderRgbaEquality": true,
+    "asanUbsan": true,
+    "sanitizerStderrBytes": 0,
+    "currentCatalogMatchesPriorVerifiedCandidate": true,
+    "appRuntimeReplayed": false,
+    "physicalIpadVerified": false
+  },
+  "bytesSavedFromRetainedRgbaPack": 21386913,
+  "artworkPixelsEdited": false,
+  "existingPacksModified": false,
+  "currentTrackedCatalogUnchanged": true,
+  "buildAndInjectorUseOneReleaseCatalog": true,
+  "syntheticDeliverySuite": {
+    "tests": 12,
+    "passed": true
+  },
+  "limitations": [
+    "This recovers earlier compression; it is not an additional saving beyond the injector catalog already counted.",
+    "The complete22-resource catalog remains541576669bytes before base/ZIP overhead, above the current536870912byte tool guard.",
+    "No new Apple build, runtime replay, iPad performance or battery validation."
+  ]
+}

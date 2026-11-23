@@ -20,6 +20,7 @@ struct DrawScope {
   if(std::uncaught_exception()&&!unwinding){nfs_background_scene_live::activeRequest()=0;lease.reset();return;}
   try{nfs::check_worker_stop();auto keep=lease;uint64_t serial=request;bool valid=Adapter::reacquire(g,frame);
    auto result=nfs::enqueue_owned_renderer([keep,serial,valid]{(void)keep;return int32_t(valid?nfs_private_victory_finish(serial):nfs_private_victory_cancel(serial));});
+   if(auto*s=current(g)){if(valid&&result==nfs::OwnedRendererAcceptance::Consumed&&s->published==frame){s->lastNativeRequest=request;s->lastNativeFrame=frame;}else{s->lastNativeRequest=0;s->lastNativeFrame.reset();}}
    nfs_background_scene_live::activeRequest()=0;lease.reset();if(result!=nfs::OwnedRendererAcceptance::Consumed)throw std::logic_error("Victory renderer owner changed");
   }catch(...){if(nfs_background_scene_live::activeRequest()==request)nfs_background_scene_live::activeRequest()=0;lease.reset();throw;}
  }

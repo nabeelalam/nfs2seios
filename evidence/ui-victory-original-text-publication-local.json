@@ -1,0 +1,193 @@
+{
+  "scope": "Original Victory bitmap, congratulations and dynamic text publication in a forced local engine fixture",
+  "binarySha256": "37ec1373f288e3b2829408971d94513dddf4d233a9110a0bddd57e0d79ad0499",
+  "result": {
+    "exitCode": 0,
+    "originalBitmapProofs": [
+      [
+        "1",
+        "mcf1",
+        "307200"
+      ],
+      [
+        "2",
+        "ff50",
+        "307200"
+      ],
+      [
+        "3",
+        "f355",
+        "307200"
+      ],
+      [
+        "4",
+        "fgt9",
+        "307200"
+      ],
+      [
+        "5",
+        "find",
+        "307200"
+      ],
+      [
+        "6",
+        "fmus",
+        "307200"
+      ],
+      [
+        "7",
+        "jagr",
+        "307200"
+      ],
+      [
+        "8",
+        "lgt1",
+        "307200"
+      ],
+      [
+        "9",
+        "lesp",
+        "307200"
+      ],
+      [
+        "10",
+        "nazc",
+        "307200"
+      ],
+      [
+        "11",
+        "cala",
+        "307200"
+      ],
+      [
+        "12",
+        "isde",
+        "307200"
+      ],
+      [
+        "13",
+        "bbfs",
+        "307200"
+      ],
+      [
+        "14",
+        "dayt",
+        "307200"
+      ],
+      [
+        "15",
+        "fzr2",
+        "307200"
+      ]
+    ],
+    "completed15": true,
+    "forcedDiagnosticFixture": true,
+    "actualRaceWin": false,
+    "actualVictoryTextPresentation": false,
+    "originalTextCollectedInForcedFixture": true,
+    "copiedFixtureRestoredExactly": true,
+    "all21ResourcesUnchanged": true
+  },
+  "publishedFrames": [
+    {
+      "image": 1,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 2,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 3,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 4,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 5,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 6,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 7,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 8,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 9,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 10,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 11,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 12,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 13,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 14,
+      "words": 1,
+      "commands": 2
+    },
+    {
+      "image": 15,
+      "words": 1,
+      "commands": 2
+    }
+  ],
+  "originalCalls": [
+    "410E80 loads Victory form/archive",
+    "428A20 starts each frame and selects target",
+    "405B30/405B60 draw original background/photo",
+    "405B30 draws locale-selected congratulations in mode2800",
+    "415CC0 draws original Victory track text"
+  ],
+  "receiptChecks": [
+    "Exact source identities and same target retained for every backdrop/photo",
+    "Original congratulations captured and removed by existing whole-plane reversal",
+    "Original dynamic-text stores reversed without weakening verification",
+    "Final clean plane equals authenticated backdrop/photo scene",
+    "Published immutable payload retains correct artwork image identity for every car"
+  ],
+  "diagnosticSetup": [
+    "Collector OwnerScope entered manually from private Main-handler branch, not natural4154C0entry",
+    "The private loop wrote its index to dword51221C, a track selector interpreted by41A3A0 (0..8, clamped to0 beyond8); this is not15car-name-label coverage",
+    "No original drawing algorithm or production acceptance predicate changed"
+  ],
+  "limitations": [
+    "English locale only; other localized congratulations not exercised",
+    "Forced fixture, not an actual race win",
+    "Published engine frame only; no final Victory GPU presentation or remastered image activation",
+    "No iPad, FPS, battery, cloud build or upload acceptance"
+  ]
+}

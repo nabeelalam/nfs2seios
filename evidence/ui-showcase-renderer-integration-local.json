@@ -1,0 +1,66 @@
+{
+  "scope": "Local source/copy/animation implementation plus original-data desktop software-GLES replay. No iPad acceptance.",
+  "binarySHA256": "258c47a6322bb13ccfd7f57cd06fc200c558deb09bc5b5d3d680b574d3c8980b",
+  "sourceSHA256": {
+    "src/hd/PlayerInitialSidebarProof.h": "d3c11e44c65febb1954a9ade2f18acd853e7d4a9dc9aab96af6d0c87d12da5d1",
+    "src/hd/PlayerSceneLiveGameHooks.inc": "b438adcc8ceaff21fb8f943ed4b3b96cb213ba8f574b84276cc6c4fe7f26eda7",
+    "src/hd/PlayerScenePrepare.h": "41a2fb8847cead1f06dfbe5e62ebf57b4d7b87b3892a0bbf82a46f9d107fce1b",
+    "src/hd/PlayerCopyGameHooks.inc": "c65a067cad629eda9857c30bf0b9a46e19c53ac2c6ae0f7fd2607e12c91df843",
+    "src/hd/MenuTransitionGameHooks.inc": "2ab07750cfefdfaf07c0c8904994025efe7c1740304733b895aa2187679b2400",
+    "src/hd/PlayerIntroPrepare.h": "af11ac2b0c9fccda1c53d6424421d45c1869612c97b161420f83eafa9c55b0c2",
+    "src/hd/PlayerIntroRuntimeAbi.h": "646d98b2031b0cc684aaba53b2d586c213c5642bb78171cb1ae4cb2e1711a9dc",
+    "src/hd/PlayerIntroRenderer.inc": "f1f064487da84cb66f2565088e1660d0fe77dbbd3a083f8234683690adc5007d",
+    "src/hd/PlayerIntroWideRenderer.inc": "50cbd2bb13226b1d2e2421d910d2219ac16e3ee8a4cbfface43ceb6a94154b5a",
+    "src/hd/IntroWideGpuBorrow.h": "b75b71b651d7fa53a75488152182a8137ffbfe1cfef411e4a090921c349fcac2",
+    "tests/options_caption_runtime_tests.cpp": "69c4df8104c6ca6e9c8f06d1950edb60afdd2ff1a3c85cb8a65c0f485b4b1231",
+    "tests/PlayerIntroPreparedCases.h": "47ac9333ff892e371e62518f318fbb75b96217c06675b421123c2b662b4a8c06"
+  },
+  "drawable": [
+    708,
+    492
+  ],
+  "returnSourceTrace": [
+    "PLAYER INITIAL SOURCE form=004d3050 previous=00404f15 showcase=00404f15 captionRoute=3 failure=none"
+  ],
+  "nativeTypedSidebarCommits": 17,
+  "nativePlayerAnimationCommits": 21,
+  "presentationChanges": [
+    "MENU PRESENTATION choice=native output=708x492 frame=384 previousFrames=3 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=708x492 frame=422 previousFrames=38 presented=1 capped=0"
+  ],
+  "cleanShutdown": true,
+  "fixtureResults": {
+    "Player1Integrated": "PASS",
+    "Player2Integrated": "PASS",
+    "assertionsEnabled": true,
+    "sourceCopyAndUploadWitnessCovered": true,
+    "retirementCovered": true
+  },
+  "wideFadeRemaining": "Typed Player sidebar requires sourceKind3 destination. The actual Showcase return first publishes a witnessed bare-map sourceKind1. Keep the two sources distinct while implementing this route.",
+  "wideSwipeRemaining": [
+    "INTRO WIDE event=2 family=1 form=4d3050 serial=492 countdown=0 output=708x492 phase=1 stage=3 reason=30 mainSelections=0 mainTriangles=0 panelSelections=300 panelTriangles=600 photoTriangles=0 tailTriangles=0",
+    "INTRO WIDE event=2 family=1 form=4d3050 serial=494 countdown=0 output=708x492 phase=1 stage=3 reason=30 mainSelections=0 mainTriangles=0 panelSelections=300 panelTriangles=600 photoTriangles=0 tailTriangles=0"
+  ],
+  "nextCarFallback": "One native-aspect frame reproduced again before Escape at fixed dimensions.",
+  "visibleWidescreenReturnFixed": false,
+  "cloudBuildStarted": false,
+  "visualReview": {
+    "run": "grouped-512-showcase-return-visual-v9",
+    "routeVerifiedByTrace": true,
+    "reviewed": [
+      "004-return-early.bmp",
+      "005-return-middle.bmp",
+      "006-return-late.bmp"
+    ],
+    "earlyFrame": "Remastered logo, Player caption, sidebar and Ferrari image present, with native-aspect side bars still visible.",
+    "laterFrames": "Settled full-width Player page with Ferrari F50 controls and photo.",
+    "limits": "Early frame still carries the previous McLaren manufacturer mark until the original tail updates. No claim that every transition layer is now correct.",
+    "excludedRun": "v8 did not enter Showcase and is not used as return evidence.",
+    "captureSHA256": {
+      "004-return-early.bmp": "ce30b8280b47befeca3eef546dbb248c638e9dbd022e09126e01cfad97e30744",
+      "005-return-middle.bmp": "5ff90915c92368fc113e1fe6c9ee3c3e4422b8e7b421b9b7d679705cb5e3e7da",
+      "006-return-late.bmp": "295931f4c1846a94e915593632c48924b1c0301bd01663b9766a69aaac26f897"
+    },
+    "logSHA256": "0f61974ffc0409d18b0be7a0a3b9202185b9fdc7cdce775d007a4074a10de412"
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "schema": 1,
+  "scope": "Production startup registration through actual original bitmap/text execution; wider-window counterexample",
+  "binarySha256": "f9ca9f1641c17577d36497555ad416ba7095130e0d0be9eb9e25b507108da3b7",
+  "runs": [
+    {
+      "run": "attempt01",
+      "result": {
+        "exitCode": 0,
+        "originalBitmapProofs": [
+          [
+            "1",
+            "mcf1",
+            "307200"
+          ],
+          [
+            "2",
+            "ff50",
+            "307200"
+          ],
+          [
+            "3",
+            "f355",
+            "307200"
+          ],
+          [
+            "4",
+            "fgt9",
+            "307200"
+          ],
+          [
+            "5",
+            "find",
+            "307200"
+          ],
+          [
+            "6",
+            "fmus",
+            "307200"
+          ],
+          [
+            "7",
+            "jagr",
+            "307200"
+          ],
+          [
+            "8",
+            "lgt1",
+            "307200"
+          ],
+          [
+            "9",
+            "lesp",
+            "307200"
+          ],
+          [
+            "10",
+            "nazc",
+            "307200"
+          ],
+          [
+            "11",
+            "cala",
+            "307200"
+          ],
+          [
+            "12",
+            "isde",
+            "307200"
+          ],
+          [
+            "13",
+            "bbfs",
+            "307200"
+          ],
+          [
+            "14",
+            "dayt",
+            "307200"
+          ],
+          [
+            "15",
+            "fzr2",
+            "307200"
+          ]
+        ],
+        "completed15": true,
+        "forcedDiagnosticFixture": true,
+        "actualRaceWin": false,
+        "actualVictoryTextPresentation": false,
+        "originalTextCollectedInForcedFixture": true,
+        "normalStartupRegistrationRequired": true,
+        "directFixtureRegistration": false,
+        "protectedResourceCount": 22,
+        "authoredGpuFrames": 15,
+        "copiedFixtureRestoredExactly": true,
+        "allResourcesUnchanged": true
+      },
+      "acceptedNativeTargetExtents": [
+        [
+          640,
+          480
+        ]
+      ],
+      "captureSha256": "9d8c0dc5274c5bfcd5868e8cd41d20fff82621083209f07ffbc559ba5cbb6326"
+    },
+    {
+      "run": "attempt02-wide-probe",
+      "result": {
+        "exitCode": 0,
+        "originalBitmapProofs": [
+          [
+            "1",
+            "mcf1",
+            "307200"
+          ],
+          [
+            "2",
+            "ff50",
+            "307200"
+          ],
+          [
+            "3",
+            "f355",
+            "307200"
+          ],
+          [
+            "4",
+            "fgt9",
+            "307200"
+          ],
+          [
+            "5",
+            "find",
+            "307200"
+          ],
+          [
+            "6",
+            "fmus",
+            "307200"
+          ],
+          [
+            "7",
+            "jagr",
+            "307200"
+          ],
+          [
+            "8",
+            "lgt1",
+            "307200"
+          ],
+          [
+            "9",
+            "lesp",
+            "307200"
+          ],
+          [
+            "10",
+            "nazc",
+            "307200"
+          ],
+          [
+            "11",
+            "cala",
+            "307200"
+          ],
+          [
+            "12",
+            "isde",
+            "307200"
+          ],
+          [
+            "13",
+            "bbfs",
+            "307200"
+          ],
+          [
+            "14",
+            "dayt",
+            "307200"
+          ],
+          [
+            "15",
+            "fzr2",
+            "307200"
+          ]
+        ],
+        "completed15": true,
+        "forcedDiagnosticFixture": true,
+        "actualRaceWin": false,
+        "actualVictoryTextPresentation": false,
+        "originalTextCollectedInForcedFixture": true,
+        "requestedWindowExtent": [
+          708,
+          492
+        ],
+        "normalStartupRegistrationRequired": true,
+        "directFixtureRegistration": false,
+        "protectedResourceCount": 22,
+        "authoredGpuFrames": 15,
+        "copiedFixtureRestoredExactly": true,
+        "allResourcesUnchanged": true
+      },
+      "acceptedNativeTargetExtents": [
+        [
+          656,
+          492
+        ]
+      ],
+      "captureSha256": "180dfebe4748f076556fa642f717c6fa27307f10c96758431961a39420b2d5b2"
+    }
+  ],
+  "normalStartup": {
+    "directTestLoaderRemoved": true,
+    "manualVictoryFeatureOverridesRemoved": true,
+    "productionMetadataRegistrationRequiredBeforeOriginalDraws": true,
+    "selectedArtworkResourceCount": 32,
+    "gpuPresentedCarVariantsPerRun": 15
+  },
+  "visualReview": "Inspected actual private-stage readbacks for McLaren at640x480and656x492; authored trophy/photo/gold congratulations/white track text present.",
+  "widescreenCounterexample": {
+    "requestedWindow": [
+      708,
+      492
+    ],
+    "observedNativeTarget": [
+      656,
+      492
+    ],
+    "targetRemains4by3": true,
+    "wideArtworkSelectionProven": false,
+    "actualFullWindowVictoryPresentation": false,
+    "nextImplementation": "Add an independent full-window Victory compositor using the completed original native-pass receipt, exact front color/depth attachment ownership, resource/context generation and mutation invalidation, following existing title/credits presentation patterns."
+  },
+  "limitations": [
+    "Manual diagnostic OwnerScope still drives the original bitmap/text sequence; natural4154C0entry and race-win sequence unverified.",
+    "This is a forced local desktop diagnostic, not physical iPad acceptance.",
+    "No fresh whole-application preparation/build, Apple build or performance/battery claim."
+  ]
+}

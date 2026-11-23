@@ -1,0 +1,387 @@
+{
+  "schema": 1,
+  "scope": "Fifteen-photo integration and actual Player One bonus-menu observation; local only",
+  "pack": {
+    "sha256": "27b01190715f4369ebc3152f34164cdd4daed76a6b16a3241514b8e70587cad8",
+    "fileBytes": 27187927,
+    "payloadBytes": 43029848,
+    "imageCount": 15,
+    "baselineSha256": "752ef12f7e0345ebef890e6ba984e46495aaa6332a3034ee932021b174472342",
+    "first12CompleteRecordsByteIdentical": true
+  },
+  "canvas": [
+    1228,
+    584
+  ],
+  "logicalCanvas": [
+    307,
+    146
+  ],
+  "originalBonusSourceSize": [
+    306,
+    146
+  ],
+  "existingStandardPhotoRecordsChanged": false,
+  "compressedResourceDeltaBytes": 4499068,
+  "all22ResourceBytes": 546075737,
+  "build": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exitCode": 0
+      },
+      {
+        "stage": "build",
+        "exitCode": 0
+      }
+    ],
+    "binarySha256": "92e0f938e3d402fb56c09a9e7a4e4ed2d89efe42fa34d4aff4c0609e5a3a3473",
+    "binaryBytes": 63853728,
+    "freshSourcePair": true,
+    "naturalGameplayRun": false,
+    "cloudBuild": false,
+    "elapsedSeconds": 198.755201191
+  },
+  "playerOne": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 0,
+    "actions": 4,
+    "hdVictoryFrames": 0,
+    "exactLogoTailFrames": 0,
+    "actualWidePresentedTraceFrames": 0,
+    "menuOnlyCarTraversal": true,
+    "bonusObservedCases": [
+      {
+        "command": "001.json",
+        "op": "bonus",
+        "elapsedBefore": 39.869298402,
+        "originalCode": "BOMBER",
+        "observedBonusCar": 12,
+        "photoSourceSerial": 1,
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 48.60588258
+      },
+      {
+        "command": "002.json",
+        "op": "bonus",
+        "elapsedBefore": 48.61620389,
+        "originalCode": "TOMBSTONE",
+        "observedBonusCar": 13,
+        "photoSourceSerial": 2,
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 59.207661621
+      },
+      {
+        "command": "003.json",
+        "op": "bonus",
+        "elapsedBefore": 59.213419797,
+        "originalCode": "FZR2000",
+        "observedBonusCar": 14,
+        "photoSourceSerial": 3,
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 68.690436202
+      }
+    ],
+    "raceStarted": false,
+    "playerPhotoSourceCarIndices": [
+      12,
+      13,
+      14
+    ],
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "visualReview": {
+    "allThreeBonusPhotosReviewed": true,
+    "consistentRectangularPhotoPlacement": true,
+    "oldCurvedBlackPhotoMaskAbsent": true
+  },
+  "validation": {
+    "actualLoaderProviderASanUBSanPassed": true,
+    "oldTwelvePhotoPackRejected": true,
+    "index15Rejected": true,
+    "retainedBonusLeaseSurvivesClear": true,
+    "opponentProviderRegressionASanUBSanPassed": true,
+    "classPictureDeliveryTestsPassed": 2
+  },
+  "remaining": [
+    "Player Two full-width presentation; captured menu is still 4:3 with side bars",
+    "Bonus photo behavior with positively observed original graph ON",
+    "Natural bonus-winner remote Victory tail",
+    "Apple SDK compilation and physical iPad acceptance"
+  ],
+  "privacy": {
+    "artworkAndCapturesPrivate": true,
+    "originalGameDataUnchanged": true,
+    "cloudBuild": false,
+    "push": false
+  },
+  "playerTwoCorrection": {
+    "cause": "Exact outgoing/incoming transition receipt retained twelve-car bounds after the photo provider expanded to fifteen.",
+    "change": "Use shared fifteen-source bounds for both old/new selections; graph flag rejects photographic receipt only for standard cars, matching original bonus photo behavior.",
+    "preservedGuards": [
+      "current source bytes and archive",
+      "selected old/new car and exact stack values",
+      "Game identity, thread, owner epoch and form",
+      "current artwork generation",
+      "original 100-upload tile and 200-triangle draw verification"
+    ],
+    "build": {
+      "stages": [
+        {
+          "stage": "configure",
+          "exitCode": 0
+        },
+        {
+          "stage": "build",
+          "exitCode": 0
+        }
+      ],
+      "binarySha256": "dad3d30bf4e3d6cbbd6e92b5cec5216e3e4cbe99a11bc8da5a66206d8c0dc02f",
+      "binaryBytes": 63853816,
+      "freshSourcePair": true,
+      "naturalGameplayRun": false,
+      "cloudBuild": false,
+      "elapsedSeconds": 196.936274466
+    },
+    "resourceAudit": {
+      "matched": 22,
+      "mismatches": []
+    },
+    "runtimeVerification": "All three actual bonus source and 100-select/200-triangle joins passed; clean exit, exact fixture restoration and all 22 resources unchanged."
+  },
+  "playerTwoPreCorrection": {
+    "driverStopRequested": false,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 0,
+    "actions": 1,
+    "hdVictoryFrames": 0,
+    "exactLogoTailFrames": 0,
+    "actualWidePresentedTraceFrames": 0,
+    "menuOnlyCarTraversal": true,
+    "bonusObservedCases": [],
+    "player2WideAndGraphProbe": true,
+    "raceStarted": false,
+    "playerPhotoSourceCarIndices": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": "Actual Player2 bonus source/animation not reached 12",
+    "sourceAnimationCounts": [
+      {
+        "serial": 1,
+        "car": 9,
+        "publishedAnimationFrames": 21
+      },
+      {
+        "serial": 2,
+        "car": 10,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 3,
+        "car": 11,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 4,
+        "car": 12,
+        "publishedAnimationFrames": 0
+      },
+      {
+        "serial": 5,
+        "car": 13,
+        "publishedAnimationFrames": 0
+      },
+      {
+        "serial": 6,
+        "car": 14,
+        "publishedAnimationFrames": 0
+      },
+      {
+        "serial": 7,
+        "car": 0,
+        "publishedAnimationFrames": 0
+      },
+      {
+        "serial": 8,
+        "car": 1,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 9,
+        "car": 2,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 10,
+        "car": 3,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 11,
+        "car": 4,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 12,
+        "car": 5,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 13,
+        "car": 6,
+        "publishedAnimationFrames": 19
+      },
+      {
+        "serial": 14,
+        "car": 7,
+        "publishedAnimationFrames": 19
+      }
+    ]
+  },
+  "playerTwo": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 0,
+    "actions": 7,
+    "hdVictoryFrames": 0,
+    "exactLogoTailFrames": 0,
+    "actualWidePresentedTraceFrames": 0,
+    "menuOnlyCarTraversal": true,
+    "bonusObservedCases": [
+      {
+        "command": "002.json",
+        "op": "p2_car",
+        "elapsedBefore": 322.273833583,
+        "observedBonusCar": 12,
+        "photoSourceSerial": 4,
+        "actualPhotoStates": [
+          {
+            "serial": 1,
+            "car": 9
+          },
+          {
+            "serial": 2,
+            "car": 10
+          },
+          {
+            "serial": 3,
+            "car": 11
+          },
+          {
+            "serial": 4,
+            "car": 12
+          }
+        ],
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 327.210921401
+      },
+      {
+        "command": "003.json",
+        "op": "p2_car",
+        "elapsedBefore": 327.219951396,
+        "observedBonusCar": 13,
+        "photoSourceSerial": 5,
+        "actualPhotoStates": [
+          {
+            "serial": 4,
+            "car": 12
+          },
+          {
+            "serial": 5,
+            "car": 13
+          }
+        ],
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 329.537445395
+      },
+      {
+        "command": "004.json",
+        "op": "p2_car",
+        "elapsedBefore": 329.54364257,
+        "observedBonusCar": 14,
+        "photoSourceSerial": 6,
+        "actualPhotoStates": [
+          {
+            "serial": 5,
+            "car": 13
+          },
+          {
+            "serial": 6,
+            "car": 14
+          }
+        ],
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 331.863881066
+      }
+    ],
+    "player2WideAndGraphProbe": true,
+    "raceStarted": false,
+    "playerPhotoSourceCarIndices": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "wideVisualReview": {
+    "capturedDrawableSizes": [
+      [
+        708,
+        492
+      ],
+      [
+        800,
+        450
+      ]
+    ],
+    "allThreeBonusPhotosVisible": true,
+    "fullWidthPresentationPassed": false,
+    "observation": "Player Two photographs are HD, but the composition remains centered at original 4:3 with side bars at both drawable extents.",
+    "graphOnConfirmed": false,
+    "graphProbeObservation": "The captured input changed color, while graph remained OFF; this does not validate graph-on behavior."
+  }
+}

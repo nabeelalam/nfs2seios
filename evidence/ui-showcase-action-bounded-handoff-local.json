@@ -1,0 +1,102 @@
+{
+  "scope": "Action-bounded local desktop replay at fixed iPad-like aspect, software GLES and copied game assets.",
+  "binarySHA256": "6dfecc8fb438a699018de4ad1ba2074b848ee54a09edcfc8d7d7a04c07c6e916",
+  "drawable": [
+    708,
+    492
+  ],
+  "windowResizedBeforeEnteringPlayer": true,
+  "actions": [
+    {
+      "action": "enter-player",
+      "seconds": 17.485670557,
+      "logBytes": 113078
+    },
+    {
+      "action": "enter-showcase",
+      "seconds": 27.154210771,
+      "logBytes": 247850
+    },
+    {
+      "action": "next-car",
+      "seconds": 34.624609654,
+      "logBytes": 270156
+    },
+    {
+      "action": "escape-showcase",
+      "seconds": 40.091385693,
+      "logBytes": 285765
+    },
+    {
+      "action": "finished-return",
+      "seconds": 47.557520129,
+      "logBytes": 297380
+    }
+  ],
+  "segments": [
+    {
+      "action": "enter-player",
+      "seconds": 9.668540214,
+      "presentationChanges": [
+        "MENU PRESENTATION choice=transition-wide output=708x492 frame=191 previousFrames=16 presented=1 capped=0",
+        "MENU PRESENTATION choice=intro-wide output=708x492 frame=208 previousFrames=17 presented=1 capped=0",
+        "MENU PRESENTATION choice=menu-wide output=708x492 frame=229 previousFrames=21 presented=1 capped=0"
+      ],
+      "carIndices": [],
+      "originDecisions": [
+        "MAIN ORIGIN INITIAL reason=acquired child=004050ed entries=2"
+      ]
+    },
+    {
+      "action": "enter-showcase",
+      "seconds": 7.470398882999998,
+      "presentationChanges": [
+        "MENU PRESENTATION choice=child-return-wide output=708x492 frame=280 previousFrames=51 presented=1 capped=0",
+        "MENU PRESENTATION choice=information-wide output=708x492 frame=299 previousFrames=19 presented=1 capped=0"
+      ],
+      "carIndices": [
+        0
+      ],
+      "originDecisions": []
+    },
+    {
+      "action": "next-car",
+      "seconds": 5.466776039000003,
+      "presentationChanges": [],
+      "carIndices": [
+        0,
+        1
+      ],
+      "originDecisions": []
+    },
+    {
+      "action": "escape-showcase",
+      "seconds": 7.466134435999997,
+      "presentationChanges": [
+        "MENU PRESENTATION choice=native output=708x492 frame=346 previousFrames=47 presented=1 capped=0"
+      ],
+      "carIndices": [
+        1
+      ],
+      "originDecisions": [
+        "MAIN ORIGIN INITIAL reason=history-or-pixels child=004050ed entries=0"
+      ]
+    }
+  ],
+  "cleanShutdown": true,
+  "profileRestoredByHarness": true,
+  "logSHA256": "0782763a15c962659ae1eccb6120797d6c672e37c58e40c71174350184e44f94",
+  "findings": [
+    "Next Car changed McLaren F1 to Ferrari F50 without selecting a native-aspect presentation route in its action interval.",
+    "Escape reproduced native-aspect presentation with an original background, confirmed in the final capture.",
+    "Initial Player caption origin acquisition during return declined with history-or-pixels and zero current entries.",
+    "The previous v3 single-frame native route cannot be attributed to Next Car because resizing was not separated by action boundaries."
+  ],
+  "limits": [
+    "Return capture after seven seconds is still native; no claim that it settled within this interval.",
+    "This is desktop evidence, not iPad acceptance.",
+    "The missing origin is an observed refusal, not proof that relaxing its ownership checks would be correct."
+  ],
+  "nextImplementation": "Provide a source-owned Player re-entry path from Showcase that authenticates the actual selected sidebar and current caption, independently of Main-only initial-caption history.",
+  "laterFixedWindowFollowup": "v5 and v7 each reproduced one native-aspect frame during Next Car at fixed 708x492 dimensions. v4 did not reproduce it. This intermittent issue remains open and is not explained solely by resizing."
+}

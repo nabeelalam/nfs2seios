@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "scope": "Full-window Victory renderer from authenticated original native passes",
+  "binarySha256": "392a215f9ea2459935bbd1d028105328e8ba32d6c4673149c2c113a7b1c22af2",
+  "sourceSha256": {
+    "src/hd/ClassicScreens/VictoryRenderer.inc": "24930ffa309042a95676b34908420344eef5296465eea69ece34008e2129f21b",
+    "src/hd/ClassicScreens/VictoryWideRenderer.inc": "20f3cd3b1b5f99658d8b3149c3f09c112ad56d63001a2bfa2db59e93fc44039c",
+    "scripts/menu_responsive_renderer_hooks.py": "59de2a7d160e84b974a49be742a46b2d562719d7602771a740027e87dfee2370"
+  },
+  "runs": [
+    {
+      "extent": [
+        708,
+        492
+      ],
+      "exitCode": 0,
+      "nativeCarFrames": 15,
+      "preparedWideFrames": 15,
+      "actualWideSwaps": 2,
+      "invalidSizeRevocations": 1,
+      "unownedTriangleRevocations": 1,
+      "normalStartupRegistrationRequired": true,
+      "manualProviderRegistration": false,
+      "copiedFixtureRestoredExactly": true,
+      "protectedResources": 22,
+      "allResourcesUnchanged": true,
+      "logSha256": "1eec299080e2025871bc13498e37f887ca09e8b4f2d2b47c44f42deda0bd7647",
+      "captures": [
+        {
+          "image": 1,
+          "extent": [
+            708,
+            492
+          ],
+          "sha256": "b568e3954767a3d7a9a22994a0ad8851e850030fb4c0e4bbd62bac7678f0ec9e",
+          "matchesReviewedImage": true
+        },
+        {
+          "image": 15,
+          "extent": [
+            708,
+            492
+          ],
+          "sha256": "f2fdf0c73872019b0cd898a93c69fe104e153eeeba5e02edba6e15057bec16e8",
+          "matchesReviewedImage": true
+        }
+      ],
+      "presentationRouteObserved": true
+    },
+    {
+      "extent": [
+        800,
+        450
+      ],
+      "exitCode": 0,
+      "nativeCarFrames": 15,
+      "preparedWideFrames": 15,
+      "actualWideSwaps": 2,
+      "invalidSizeRevocations": 1,
+      "unownedTriangleRevocations": 1,
+      "normalStartupRegistrationRequired": true,
+      "manualProviderRegistration": false,
+      "copiedFixtureRestoredExactly": true,
+      "protectedResources": 22,
+      "allResourcesUnchanged": true,
+      "logSha256": "478c6d0a7dc9e06c99718ab7f574002519c0361533e2e3e8eb58c0b4b2bfbfde",
+      "captures": [
+        {
+          "image": 1,
+          "extent": [
+            800,
+            450
+          ],
+          "sha256": "865174b46c8ab6445c2a25801e1ef098368c99f08e9e13d07dd19397088b27d8",
+          "matchesReviewedImage": true
+        },
+        {
+          "image": 15,
+          "extent": [
+            800,
+            450
+          ],
+          "sha256": "a9ce2e0be278d90331c33139bef9501620e8ed99e93f15a3455591772b930b26",
+          "matchesReviewedImage": true
+        }
+      ],
+      "presentationRouteObserved": true
+    }
+  ],
+  "invariants": [
+    "Complete native300uploads/300selections/600triangles before wide staging.",
+    "Exact source identity and resource/context generation retained.",
+    "Separate color/photo/FBO; no native attachment sampled by the compositor.",
+    "Display selection requires matching actual front color/depth attachments and extent.",
+    "Actual buffer swap preserves only the completed frame; unknown state/upload/selection/triangle and size changes revoke it.",
+    "4:3generic text sampling remains strict; wide text uses existing owned-responsive interface with exact centered projection."
+  ],
+  "intermediateFailure": {
+    "originalFramesStillPassed": 15,
+    "wideFrames": 0,
+    "cause": "Generic text staging correctly refused the centered subviewport in a wide FBO.",
+    "resolution": "Used existing strict owned-responsive text interface; no generic check relaxed.",
+    "failedRunRetained": true
+  },
+  "limitations": [
+    "Forced original bitmap/text sequence with manual OwnerScope, not a natural race-win or original4154C0entry witness.",
+    "Retained compatible renderer baseline plus current Victory files; not a fresh full-project preparation/link.",
+    "Repeated-frame residency/allocation costs remain unprofiled.",
+    "No Apple build, physical-device, FPS or battery validation."
+  ]
+}

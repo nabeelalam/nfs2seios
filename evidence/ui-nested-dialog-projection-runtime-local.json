@@ -1,0 +1,454 @@
+{
+  "scope": "Original-game nested menu route after exact responsive dialog projection correction; sidebar-logo alignment follow-up remains",
+  "binarySHA256": "a7374435eddf2574190bc65762bc410293e44c99ad006dfd7b38ba1e608a6adb",
+  "fix": "Separate exact centred responsive dialog entry points for Audio, Graphics and Controls; original legacy validation unchanged",
+  "diagnosticBeforeFix": "All three kinds reached owned target and authored art but rejected layer composition at checkpoint6; authored dialog draw still required original640 projection",
+  "legacyGlesSuites": {
+    "scope": "Grouped legacy GLES regressions after separate responsive dialog entry points; new responsive mode requires original-game run",
+    "checks": [
+      {
+        "step": "audio-compile",
+        "exitCode": 0
+      },
+      {
+        "step": "graphics-compile",
+        "exitCode": 0
+      },
+      {
+        "step": "controls-compile",
+        "exitCode": 0
+      },
+      {
+        "step": "audio-link",
+        "exitCode": 0
+      },
+      {
+        "step": "audio-run",
+        "exitCode": 0
+      },
+      {
+        "step": "graphics-link",
+        "exitCode": 0
+      },
+      {
+        "step": "graphics-run",
+        "exitCode": 0
+      },
+      {
+        "step": "controls-link",
+        "exitCode": 0
+      },
+      {
+        "step": "controls-run",
+        "exitCode": 0
+      }
+    ],
+    "physicalIpadVerified": false,
+    "allPassed": true
+  },
+  "runs": [
+    {
+      "output": [
+        708,
+        492
+      ],
+      "driverExit": 0,
+      "copiedConfigsRestored": true,
+      "savedRecordsUnchanged": true,
+      "allThreeEntriesSelectNestedWide": true,
+      "gameLogSHA256": "bad239b35c93d43b0d747b68c1e1dd5c6e6a5e338ee5efcabc3e4dc62990e932",
+      "settledCaptures": {
+        "007-enter-audio-settled.bmp": "b89f8f5905c59337434e2812b049714b247dd24a3feeea66864c200f27726455",
+        "014-enter-controls-settled.bmp": "a211006bafff6305bdb509913813ed7ebd32a0854f2a94c7dc4e51f4c715f718",
+        "021-enter-graphics-settled.bmp": "5f9447930df8ab793ed78bd20761cfc64442a53bddd578540a5dc131c832c707"
+      },
+      "actions": [
+        {
+          "action": "options-parent",
+          "logStart": 183587,
+          "logEnd": 261131,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "335",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "455",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "logStart": 281208,
+          "logEnd": 308410,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "477",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "491",
+              "previousFrames": "14"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "logStart": 308506,
+          "logEnd": 332206,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "503",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "618",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "logStart": 340614,
+          "logEnd": 359047,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "640",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "652",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "654",
+              "previousFrames": "2"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "logStart": 359047,
+          "logEnd": 377208,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "667",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "782",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "logStart": 393917,
+          "logEnd": 411370,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "809",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "821",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "823",
+              "previousFrames": "2"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "logStart": 411370,
+          "logEnd": 427272,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "836",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "951",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 427272,
+          "logEnd": 467262,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "967",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "979",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "output": [
+        800,
+        450
+      ],
+      "driverExit": 0,
+      "copiedConfigsRestored": true,
+      "savedRecordsUnchanged": true,
+      "allThreeEntriesSelectNestedWide": true,
+      "gameLogSHA256": "0a2059f9ef018344e297318c72e660d2cf4b6945e2fb6f9e52d121204ffa85ca",
+      "settledCaptures": {
+        "007-enter-audio-settled.bmp": "e10a584df95586c242ec4a301d5e7aa9922ef0f3f40fb987e91533a025b14255",
+        "014-enter-controls-settled.bmp": "1e119923cab415ca8847d1a294103ea0201e7a7bfb1e86086959743f72d50999",
+        "021-enter-graphics-settled.bmp": "343bc2cfe1677c0c20800fc7e8cab6d37e7df70bc233d0a66ce4c49dc1de0eef"
+      },
+      "actions": [
+        {
+          "action": "options-parent",
+          "logStart": 190888,
+          "logEnd": 268432,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "400",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "520",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "logStart": 278686,
+          "logEnd": 308668,
+          "routes": [
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "609",
+              "previousFrames": "74"
+            },
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "610",
+              "previousFrames": "1"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "624",
+              "previousFrames": "14"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "logStart": 308668,
+          "logEnd": 331925,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "636",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "751",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "logStart": 340056,
+          "logEnd": 357101,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "772",
+              "previousFrames": "21"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "786",
+              "previousFrames": "14"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "logStart": 357101,
+          "logEnd": 375650,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "799",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "914",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "logStart": 392443,
+          "logEnd": 408985,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "942",
+              "previousFrames": "28"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "956",
+              "previousFrames": "14"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "logStart": 408985,
+          "logEnd": 424936,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "969",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1084",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 424936,
+          "logEnd": 466471,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "1100",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1112",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "visualReview": "All six settled frames manually reviewed. Full-window HD backgrounds, authored dialog words and Audio bars render with correlated cursor. At16:9 sidebar logos incorrectly move to the right; follow-up source anchor correction is being linked.",
+  "settledWidePresentationRuntimeVerified": true,
+  "firstVisibleContinuityVerified": false,
+  "knownRemaining": [
+    "Native-format frames still occur in entry/return spans",
+    "Sidebar logo anchor requires corrected-candidate runtime review",
+    "Credits backdrop and LoadSave handoff gaps remain"
+  ],
+  "physicalIpadVerified": false,
+  "cloudBuildStarted": false
+}

@@ -45,6 +45,7 @@ from child_photo_hooks import add_child_photo_hooks
 from child_exit_hooks import add_child_exit_hooks
 from child_return_hooks import add_child_return_hooks
 from child_initial_sidebar_hooks import add_child_initial_sidebar_hooks
+from options_bitmap_prelude_hooks import add_options_bitmap_prelude_hooks
 from location_initial_sidebar_hooks import add_location_initial_sidebar_hooks
 from opponent_caption_hooks import add_opponent_caption_hooks
 from opponent_scene_hooks import add_opponent_scene_hooks
@@ -411,6 +412,7 @@ def prepare_full(bounded_rep_words=False, output_dir=None, checked_copy_bundle=F
         text=add_opponent_preview_hooks(text,path.name)
         text=add_child_exit_hooks(text,path.name)
         text=add_child_return_hooks(text,path.name)
+        text=add_options_bitmap_prelude_hooks(text,path.name)
         path.write_text(text)
     validate_game_helper_includes(dest, generated_files)
     if (bounded_rep_words or checked_copy_bundle) and rep_word_loops != 12:

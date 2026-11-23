@@ -1,0 +1,148 @@
+{
+  "scope": "Actual nested Options original-game walkthrough on coherent candidate; a clean navigation run that reveals incomplete UI rendering",
+  "candidateBinarySHA256": "7903105a29540ac21bf6ccb9d096390d3416552193c24d40da5f997f707c4e87",
+  "drawable": [
+    708,
+    492
+  ],
+  "newCompile": false,
+  "rendererAcceptancePassed": false,
+  "sourceQualifiedEntries": [
+    "AUDIO NATIVE finish-published",
+    "CONTROLS NATIVE finish-published",
+    "LOADSAVE NATIVE finish-published",
+    "GRAPHICS NATIVE finish-published",
+    "CREDITS NATIVE finish-published"
+  ],
+  "actions": [
+    {
+      "action": "options-parent",
+      "routeChoices": [
+        "transition-wide",
+        "menu-wide"
+      ]
+    },
+    {
+      "action": "enter-audio",
+      "routeChoices": [
+        "native"
+      ]
+    },
+    {
+      "action": "return-audio",
+      "routeChoices": [
+        "menu-wide"
+      ]
+    },
+    {
+      "action": "enter-controls",
+      "routeChoices": [
+        "native"
+      ]
+    },
+    {
+      "action": "return-controls",
+      "routeChoices": [
+        "menu-wide"
+      ]
+    },
+    {
+      "action": "enter-loadsave",
+      "routeChoices": [
+        "native",
+        "loadsave-wide"
+      ]
+    },
+    {
+      "action": "return-loadsave",
+      "routeChoices": [
+        "native",
+        "menu-wide"
+      ]
+    },
+    {
+      "action": "enter-graphics",
+      "routeChoices": [
+        "native"
+      ]
+    },
+    {
+      "action": "return-graphics",
+      "routeChoices": [
+        "menu-wide"
+      ]
+    },
+    {
+      "action": "enter-credits",
+      "routeChoices": [
+        "native"
+      ]
+    },
+    {
+      "action": "return-credits",
+      "routeChoices": [
+        "menu-wide"
+      ]
+    },
+    {
+      "action": "return-main",
+      "routeChoices": [
+        "native",
+        "menu-wide"
+      ]
+    }
+  ],
+  "reviewedCaptures": [
+    {
+      "screen": "audio",
+      "capture": "007-enter-audio-settled.bmp",
+      "sha256": "29ccca804a7f49e5582e2c9601612544bd61b55d4efb6aa901300042238c5402"
+    },
+    {
+      "screen": "controls",
+      "capture": "014-enter-controls-settled.bmp",
+      "sha256": "eca73ec310fd4e37e01e6e9af21a5406aa70e9edc5941db8f2ac1bb7f0c77962"
+    },
+    {
+      "screen": "loadsave",
+      "capture": "021-enter-loadsave-settled.bmp",
+      "sha256": "8bac6fa4479fb9a51241831cf3a3d2db2e497cfa09bf659f28b402643a3b960e"
+    },
+    {
+      "screen": "graphics",
+      "capture": "028-enter-graphics-settled.bmp",
+      "sha256": "555c7d95816208f28ca5b1ce30a7d8c8e7364698371a5b57c99c53628da9c683"
+    },
+    {
+      "screen": "credits",
+      "capture": "035-enter-credits-settled.bmp",
+      "sha256": "18a7507e5cc41c094041b0fdb46a8280f64620674d103113e61bac69fd2e3985"
+    }
+  ],
+  "findings": {
+    "audio": "HD type/bars but stable4:3 containing side bars",
+    "controls": "HD type but stable4:3 containing side bars",
+    "graphics": "HD type but stable4:3 containing side bars",
+    "credits": "HD scrolling text over original backdrop snapshot; stable4:3 side bars",
+    "loadsave": "Settled fullwindow view; entry and parent return each include native presentation",
+    "finalOptionsToMain": "Includes a native route before Main fullwindow restoration"
+  },
+  "sourceInspection": {
+    "audioControlsGraphics": "Existing adapters commit native-target-sized color and clear their retained view at finish; no responsive presentation slot is prepared",
+    "credits": "nfs_private_credits_ui_begin snapshots the original framebuffer as clean backdrop before drawing HD scrolling text",
+    "preserve": "Native source passes, borrowed resource lifetimes, target/context checks and full content must remain intact; do not solve with nonuniform stretching or cropping"
+  },
+  "copiedSaveLoadDeleteActionsSent": false,
+  "copiedConfigurationRestored": true,
+  "copiedStatsUnchanged": true,
+  "all20ResourcesUnchanged": true,
+  "cleanShutdown": true,
+  "physicalIpadVerified": false,
+  "wholeUIComplete": false,
+  "cloudBuild": false,
+  "nextImplementationBatch": [
+    "Shared owned fullwindow staging/presentation for Audio, Controls and Graphics with actual source lifetime and cursor correlation",
+    "Close native LoadSave entry/return handoffs",
+    "Integrate an authored Credits backdrop and responsive scrolling layout"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "scope": "Natural eligible Victory collector and immediate original trophy capture",
+  "privateObservationBuild": {
+    "binarySha256": "4c905f55f6b0c5c86ebad84bbf56497e8fc9adc3753ba5b0428bee6a4061bf76",
+    "baseEngineUnitSha256": "ee5de8e89b3687d8e33055e7309e36ff88c3d179d3a81fcd437c8bfc78156c6c",
+    "instrumentedUnitSha256": "af2852e9c45ba3f0922ff7f33e1aea4cf6bc58ef263300df68739bf766793325",
+    "observationOnly": true,
+    "guestStateWritesAdded": false,
+    "directOriginalCallsAdded": false,
+    "virtualControllers": 2,
+    "testRun": false
+  },
+  "extent": [
+    708,
+    492
+  ],
+  "track": "Proving Grounds",
+  "laps": 2,
+  "field": 2,
+  "firstCollectorCheckpoints": [
+    "VICTORY COLLECTOR event=owner enabled=1 artEnabled=1 owner=1 ready=0 failed=0 capturing=0 commands=0 words=0 art=0 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=archive enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=0 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=after-4159E0 enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=0 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=after-428A20 enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=0 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=after-405B30 enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=1 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=after-405B30 enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=1 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=after-405B30 enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=1 art=1 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=capture-begin enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=1 commands=0 words=1 art=1 activeArt=0 published=0 string=0 word=0",
+    "VICTORY COLLECTOR event=capture-end enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=1 activeArt=0 published=1 string=0 word=0",
+    "VICTORY COLLECTOR event=presentation enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=1 activeArt=0 published=1 string=0 word=0",
+    "VICTORY COLLECTOR event=after-428A20 enabled=1 artEnabled=1 owner=1 ready=1 failed=0 capturing=0 commands=0 words=0 art=1 activeArt=0 published=1 string=0 word=0"
+  ],
+  "allObservedCollectorCheckpointsUnfailed": true,
+  "observedPublishedPresentationCheckpoints": 13,
+  "originalTrophyCaptured": true,
+  "captureVisuallyReviewed": true,
+  "hdVictoryNativePasses": 0,
+  "runtime": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 2,
+    "actions": 35,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "captures": [
+    {
+      "file": "011-029-wait_for_victory.bmp",
+      "sha256": "27a964ffd791248a966a49efcd6e7e8349a1e0985405db4a6d9b8f3b9bb706de"
+    },
+    {
+      "file": "012-030-wait.bmp",
+      "sha256": "11c2a47bb10d0f404de3c071801fa1f56e0a25e7a5c8b38a676e53ee148a3168"
+    },
+    {
+      "file": "013-031-wait.bmp",
+      "sha256": "6a75765a1b947ff9b3d445dc4a53cae5f5795d39f0c26a88d94c237cfb86b188"
+    },
+    {
+      "file": "015-034-wait.bmp",
+      "sha256": "ed010290bd2ae41e518638a44612d63f05b330eb33a32a33f01d337669482e45"
+    }
+  ],
+  "logSha256": "b532343082c2c9066227c856a0e5243afb4fe04cd0d857de6590547db9e773f6",
+  "nextBoundary": "Collector publishes and enters presentation without failure; observe exact native queue ownership, current source and renderer target admission.",
+  "forcedSceneCalls": false,
+  "guestStateWritesAdded": false,
+  "physicalDeviceOrPerformanceClaim": false
+}

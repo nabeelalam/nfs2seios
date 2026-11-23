@@ -1,0 +1,104 @@
+{
+  "scope": "Original-data local desktop software-GLES verification at iPad-like and 16:9 proportions. This does not establish iPad acceptance.",
+  "binarySHA256": "53c98df18e8dbf076174c2d62a1b82c60e2b81c9e1cd32d75f7c511b6f0132c3",
+  "testedSourceSHA256": {
+    "src/hd/CachedMenuCaptionGameHooks.inc": "7e93ef110e1049e8771641331b66ed9172f289d8eba13afe34dda2b333614b9e",
+    "src/hd/CompactCaptionProof.h": "40097d4bf00748d0935b1d67a24d2eb88f73d603ed24b8ad758480ed526af568",
+    "src/hd/IntroWideGpuBorrow.h": "b75b71b651d7fa53a75488152182a8137ffbfe1cfef411e4a090921c349fcac2",
+    "src/hd/MenuTransitionAbi.h": "ac0c07b65e502621f3caf451b876c62889ca5c0ce0014ac51829284b67905757",
+    "src/hd/MenuTransitionGameHooks.inc": "8a38994763c29f71d94f9f44daf1e180f43fc31f6bf55635fb8a2c6811cbed6b",
+    "src/hd/MenuTransitionRenderer.inc": "0ad5857aa126948e8cb8fa6e7fbfd142517714e7dee2516e7014769f3f6cd7a4",
+    "src/hd/PlayerCaptionDisplay.h": "e7aaf100558da946b73900fa04a5f2d5c819917a2e4bb10750d986da338742aa",
+    "src/hd/PlayerCopyGameHooks.inc": "c65a067cad629eda9857c30bf0b9a46e19c53ac2c6ae0f7fd2607e12c91df843",
+    "src/hd/PlayerInitialSidebarProof.h": "d3c11e44c65febb1954a9ade2f18acd853e7d4a9dc9aab96af6d0c87d12da5d1",
+    "src/hd/PlayerIntroPrepare.h": "af11ac2b0c9fccda1c53d6424421d45c1869612c97b161420f83eafa9c55b0c2",
+    "src/hd/PlayerIntroRenderer.inc": "f1f064487da84cb66f2565088e1660d0fe77dbbd3a083f8234683690adc5007d",
+    "src/hd/PlayerIntroRuntimeAbi.h": "646d98b2031b0cc684aaba53b2d586c213c5642bb78171cb1ae4cb2e1711a9dc",
+    "src/hd/PlayerIntroWidePreludeQueueAdapter.inc": "3f450a821c8effd53e64d864c034686fb47691a0e787afceab2cc1cae387833c",
+    "src/hd/PlayerIntroWideRenderer.inc": "41685b1fdaf04155efe6eb06a7b0f7c6d68f942959bc846315545c94b150a244",
+    "src/hd/PlayerSceneLiveGameHooks.inc": "b438adcc8ceaff21fb8f943ed4b3b96cb213ba8f574b84276cc6c4fe7f26eda7",
+    "src/hd/PlayerScenePrepare.h": "41a2fb8847cead1f06dfbe5e62ebf57b4d7b87b3892a0bbf82a46f9d107fce1b",
+    "src/hd/WideTransitionRenderer.inc": "61b87b9f9628ac1ad03f3bf86eea00e8e15496c69147940ab42ab2655592ca0f",
+    "tests/PlayerIntroPreparedCases.h": "47ac9333ff892e371e62518f318fbb75b96217c06675b421123c2b662b4a8c06",
+    "tests/options_caption_runtime_tests.cpp": "69c4df8104c6ca6e9c8f06d1950edb60afdd2ff1a3c85cb8a65c0f485b4b1231"
+  },
+  "formatOnlyAfterReplay": {
+    "file": "src/hd/IntroWideGpuBorrow.h",
+    "beforeSHA256": "b75b71b651d7fa53a75488152182a8137ffbfe1cfef411e4a090921c349fcac2",
+    "afterSHA256": "19a07d11505a758f24249dfb2dd1795447429807b9e003e1cc090bc07645521a",
+    "change": "CRLF to LF only, matching original tracked header. Declaration bytes otherwise unchanged.",
+    "preparedCopyMatches": true
+  },
+  "implementation": [
+    "Separate Showcase-return caption and sidebar lifetime, without borrowing Main history.",
+    "Actual source-owned copy replay and native slot0 sidebar upload witness.",
+    "Explicit return source kind for the animation renderer.",
+    "Bare-map underlay accepted only for the authenticated Showcase return.",
+    "Wide swipe joins the retained real slot1 map packet, with worker revalidation and immutable renderer borrows.",
+    "Actual map pass remains separate from the panel and logo pass."
+  ],
+  "runs": [
+    {
+      "run": "grouped-512-showcase-map-join-v12",
+      "drawable": [
+        708,
+        492
+      ],
+      "route": "Player One, McLaren F1 Showcase, Next Car to Ferrari F50, Escape to Player One",
+      "routeVerified": true,
+      "priorPresentation": "MENU PRESENTATION choice=information-wide output=708x492 frame=306 previousFrames=19 presented=1 capped=0",
+      "returnChanges": [
+        "MENU PRESENTATION choice=transition-wide output=708x492 frame=322 previousFrames=16 presented=1 capped=0",
+        "MENU PRESENTATION choice=intro-wide output=708x492 frame=339 previousFrames=17 presented=1 capped=0",
+        "MENU PRESENTATION choice=menu-wide output=708x492 frame=360 previousFrames=21 presented=1 capped=0"
+      ],
+      "wideFadeFrames": 17,
+      "wideSwipeFrames": 21,
+      "nativeAspectFallbacks": 0,
+      "wideRendererDeclines": 0,
+      "cleanShutdown": true,
+      "profileRestoredByHarness": true,
+      "logSHA256": "b9f35f993c16557617150782b8a8be4aec9d1156f22ba5b07048659a08703006",
+      "captureSHA256": {
+        "004-return-early.bmp": "1a4adcd9f7265d1f15899e391740ca379f6993365ff9d22b00358f3b1ef2044e",
+        "005-return-middle.bmp": "2b86d4fe0a059304dbdb2b95b6c91bd98615d801beadcf986f64a802e8c46cca",
+        "006-return-late.bmp": "2fd36407b9f3bc19603071b999de2a770c2de16717267bd34bde94c3a5fb0635",
+        "007-return-settled.bmp": "c8a6c676ff76309fde388ade888aa2bd2774804072309a53ef15ca1d98044843"
+      }
+    },
+    {
+      "run": "grouped-512-showcase-map-join-wide-v13",
+      "drawable": [
+        800,
+        450
+      ],
+      "route": "Player One, McLaren F1 Showcase, Next Car to Ferrari F50, Escape to Player One",
+      "routeVerified": true,
+      "priorPresentation": "MENU PRESENTATION choice=information-wide output=800x450 frame=367 previousFrames=19 presented=1 capped=0",
+      "returnChanges": [
+        "MENU PRESENTATION choice=transition-wide output=800x450 frame=383 previousFrames=16 presented=1 capped=0",
+        "MENU PRESENTATION choice=intro-wide output=800x450 frame=400 previousFrames=17 presented=1 capped=0",
+        "MENU PRESENTATION choice=menu-wide output=800x450 frame=421 previousFrames=21 presented=1 capped=0"
+      ],
+      "wideFadeFrames": 17,
+      "wideSwipeFrames": 21,
+      "nativeAspectFallbacks": 0,
+      "wideRendererDeclines": 0,
+      "cleanShutdown": true,
+      "profileRestoredByHarness": true,
+      "logSHA256": "580e450e767cffd0d0fbe1452a5ab16337a4e8d290d35bafa807ac0ab8a7f42e",
+      "captureSHA256": {
+        "004-return-early.bmp": "2102b7c8b4bc950ee579051a780c549998d4ec537621fb99ec43f5a45a3eab46",
+        "005-return-middle.bmp": "80b3da8b683adf90b5740b5096f0ed1a768b941e8e844f094300331836bbb35f",
+        "006-return-late.bmp": "1f66b374454fae0521a0bf20dcd8f4ed75f65aba11e6bbd1a7b784e6ff1e9c2c",
+        "007-return-settled.bmp": "51450b4856207de373f7381d69702b3bdc9e281a350c30bfce2f34b8720164d7"
+      }
+    }
+  ],
+  "visuallyReviewed": true,
+  "visualLimits": "The previous McLaren manufacturer mark appears briefly during the Ferrari return until the original tail updates. This remains open.",
+  "nextCarLimit": "Intermittent one-frame Next Car aspect fallback was reproduced in earlier fixed-size runs. It did not occur in these two runs and is not marked fixed.",
+  "physicalIpadVerified": false,
+  "cloudBuildStarted": false,
+  "excludedNavigationRun": "v10 stopped on graph and never entered Showcase; excluded from return acceptance."
+}

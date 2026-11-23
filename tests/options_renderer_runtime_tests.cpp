@@ -104,6 +104,11 @@ static int nfs_logo_fullbox(const GLint*b,unsigned w,unsigned h){return b[0]==0&
 static NfsBackgroundSceneCompositor nfs_bg_compositor;
 #include "hd/GraphicsSceneRenderer.inc"
 #include "hd/OptionsSceneRenderer.inc"
+// The responsive presenter is outside this legacy color/depth adapter fixture.
+static void nfs_menu_wide_cancel_at(unsigned){}
+static void nfs_menu_wide_native_done(uint64_t,int){}
+static void nfs_menu_wide_prepare_cached(const NfsBackgroundSceneFrameView*,const NfsNativeLogoTargetProof*,const NfsMenuCachedSnapshot*,int(*)(const float*,void*),void*){}
+
 #undef glActiveTexture
 #undef glAttachShader
 #undef glBindAttribLocation

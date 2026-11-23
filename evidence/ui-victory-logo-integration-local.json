@@ -1,0 +1,167 @@
+{
+  "schema": 1,
+  "scope": "Victory animated car-logo source and native/wide renderer integration; coherent compilation and forced all-standard-car presentation reproduction passed",
+  "sourceSha256": {
+    "scripts/classic_screens/victory_hooks.py": "4337694ad555cecb6a7ec62bc980d0189ca02cdedf253f9c51205e7a9c7ecada",
+    "scripts/menu_responsive_renderer_hooks.py": "28227c208a3177d8ada54e0a1462479a8c8684f04090b54cfb32baae51a04854",
+    "src/hd/ClassicScreens/VictoryGameHooks.inc": "aa63f64618dbf3a5462b652d6989cb5c21ce3830bcbade77f40533ec42b2ed7a",
+    "src/hd/ClassicScreens/VictoryQueueAdapter.inc": "6444dd2d3ecd688a755f9bbddbca3f2a124de2d405ccb774a335371d989fac81",
+    "src/hd/ClassicScreens/VictoryRenderer.inc": "016f50556e561bdf29ec606e567b0d20427754469f800ce9aa298d661e654e89",
+    "src/hd/ClassicScreens/VictoryWideRenderer.inc": "f84642b0de0eea17558c4c715e00be67e795f2b5a6aaa319889571030d1a8a1d",
+    "src/hd/ClassicScreens/VictoryLogoGameHooks.inc": "e34e05f559ea6f279d7a6182492f33684caa0c77eb55e1c35c81319bd316b0f2",
+    "src/hd/ClassicScreens/VictoryLogoRenderer.inc": "a8b2db694c25f717f1169e102d61c09f24c424aa57cd8f42243025c76f351b79",
+    "src/hd/ClassicScreens/VictoryLogoLayerAbi.h": "f7eeadda3fff5a8f7b6233e9e2a270a623852111fd860f6e10adf7aa0ab76cfc",
+    "src/hd/ClassicScreens/VictoryLogoSourceCatalog.h": "5cbbfec595fa7830ed489bdb5f2c776d83871324a6c13fc4e93ceb622834ec86"
+  },
+  "originalEngineUnits": [
+    1,
+    2,
+    3,
+    10,
+    12,
+    13
+  ],
+  "insertionRemovalRestoresOriginalOperations": true,
+  "freshCoherentPreparationPassed": [
+    {
+      "stage": "engine",
+      "exitCode": 0
+    },
+    {
+      "stage": "renderer",
+      "exitCode": 0
+    },
+    {
+      "stage": "adaptive",
+      "exitCode": 0
+    }
+  ],
+  "strictOtherOperationRejectionUnchanged": true,
+  "widePresentationRejectsPendingTail": true,
+  "actualShaderMatrixAndTextureEnableChecked": true,
+  "queuedSourceAndParentOwnershipRetained": true,
+  "supportedLogicalCarCount": 12,
+  "bonusOrOmegaVerified": false,
+  "compilationPassed": true,
+  "runtimePassed": true,
+  "naturalRacePassed": true,
+  "physicalIpadPassed": false,
+  "cloudBuildStarted": false,
+  "lineEndingOnlyCleanupAfterPreparation": true,
+  "stagedClassicHeadersMatchMaintainedIgnoringLineEndings": true,
+  "localBinarySha256": "11f18571dc6a2f86bf569bde37fe0f32f4013088e0b6955c30bf2e77c95af050",
+  "localBinaryBytes": 63854104,
+  "firstRuntimeAttempt": {
+    "result": "Incomplete: remained 640x480; required wide parent was never prepared",
+    "exitCode": 4,
+    "authenticatedSourceCars": 1,
+    "hdNativeFrames": 1,
+    "exactLogoTailPublishedFrames": 1,
+    "widePreparedFrames": 0,
+    "widePresentedFrames": 0,
+    "copiedFixtureRestoredExactly": true,
+    "allResourcesUnchanged": true,
+    "resultSha256": "0e5e41e356c34a70dff75fc87925e0ee6d4b68be5ffc95ec46f84bfc31f07979"
+  },
+  "secondRuntimeAttempt": {
+    "result": "Driver timed out finding a top-level 640x480 client; no logo acceptance established",
+    "applicationClosedCleanly": true,
+    "copiedFixtureRestoredExactly": true,
+    "allResourcesUnchanged": true,
+    "resultSha256": "c485ad690d0b7a96f86415efefdc36c0e29f6848575bfbf30c603b616afd5c8e",
+    "receiptLimitation": "Harness exception was emitted after cleanup; old RESULT failure field was null, so it is not treated as success"
+  },
+  "nextRuntimeDriver": "Explicit X11; bounded recursive exact-title client lookup; verified client resize; exception captured in final receipt",
+  "verifiedPreparedHeaderCount": 8,
+  "preparedHeaderVerificationCorrection": "Initial comparison used absent engine header copies and was vacuous; corrected to require all eight renderer-side header copies explicitly",
+  "thirdRuntimeAttempt": {
+    "result": "All source/logo/ready-frame checks passed; harness rejected 32 printed presentations because it did not account for the production trace cap",
+    "applicationExitCode": 0,
+    "authenticatedSourceCars": 12,
+    "exactLogoTailPublishedFrames": 36,
+    "widePreparedFrames": 36,
+    "widePresentedTraceEntries": 32,
+    "productionPresentationTraceCap": 32,
+    "allCapturesAfterOriginalSwap": true,
+    "copiedFixtureRestoredExactly": true,
+    "allResourcesUnchanged": true,
+    "resultSha256": "9d485f937b09e7477959389dab2482bba7ff71f6aa4cb56c05fd7097fd4217f2",
+    "limit": "Last four actual presentations still require uncapped witness; ready captures alone are not display proof"
+  },
+  "forcedDiagnosticFixture": true,
+  "runtimeBackend": "Local WSL X11 software GLES2; not iPad or hardware performance evidence",
+  "runtimeBinarySha256": "4ede77da12477bc68221ee260ab799f40af9552513ba917f5b244a77408f4bbc",
+  "fourthRuntimeAttempt": {
+    "result": "Passed",
+    "applicationExitCode": 0,
+    "authenticatedSourceCars": 12,
+    "sourceCarMap": [
+      0,
+      1,
+      1,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "exactLogoTailPublishedFrames": 36,
+    "widePreparedFrames": 36,
+    "actualWidePresentedFrames": 36,
+    "productionPresentationTraceCap": 32,
+    "testOnlyCounterVerifiesEachPresentedParentRequest": true,
+    "syntheticAnimationPhases": [
+      18,
+      126,
+      234
+    ],
+    "copiedFixtureRestoredExactly": true,
+    "allResourcesUnchanged": true,
+    "noExtraDiagnosticSwap": true,
+    "resultSha256": "bdaca310d4708bad0721dae3365090a6f60e4239a4053cbaae24159e38338a3a"
+  },
+  "remainingAcceptance": [
+    "Bonus winner presentation when original remote flag is1",
+    "Physical iPad validation"
+  ],
+  "visualInspection": {
+    "frames": [
+      1,
+      36
+    ],
+    "formatConversion": "Raw RGB to PNG lossless; no authored pixels edited",
+    "observed": "Full-width trophy/car/caption composition; sharp F1 logo at phase18 and narrow edge-on Isdera logo at phase234",
+    "limits": "Two private wide-stage readbacks inspected; actual presentation separately established by per-request witness"
+  },
+  "sixteenByNineRuntime": {
+    "result": "Passed",
+    "extent": [
+      800,
+      450
+    ],
+    "logicalCars": 12,
+    "syntheticAnimationPhases": [
+      18,
+      126,
+      234
+    ],
+    "actualWidePresentedFrames": 36,
+    "perFrameSuccessfulParentRequestMatched": true,
+    "copiedFixtureRestoredExactly": true,
+    "allResourcesUnchanged": true,
+    "sameBinaryAsIpadRatioFixture": true,
+    "resultSha256": "bdaca310d4708bad0721dae3365090a6f60e4239a4053cbaae24159e38338a3a",
+    "forcedDiagnosticFixture": true,
+    "naturalRace": false,
+    "physicalDevice": false,
+    "firstWideReadbackVisuallyInspected": true
+  },
+  "naturalRaceEvidence": "ui-victory-natural-logo-local.json",
+  "alternateSourceAudit": "ui-victory-alternate-source-audit-local.json",
+  "negativeRendererCasesPassed": true,
+  "negativeRendererEvidence": "ui-victory-logo-negative-local.json"
+}

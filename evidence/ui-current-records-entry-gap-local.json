@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "scope": "Current original-data offscreen navigation at800x450, stopped at first presentation continuity fault",
+  "binarySha256": "98db4320d1dd2a9bb658ebf3a69e463c8ee9fda3089adeb7f85840cc7652c44c",
+  "passed": "Track Info entry and return to Location remain authored-wide in this observed route",
+  "defect": {
+    "route": "Location -> Track Info -> Location -> Track Records entry",
+    "nativeIntervalStart": 609,
+    "wideResume": 628,
+    "nativeFrames": 19,
+    "output": [
+      800,
+      450
+    ],
+    "sourceDiagnostic": "CHILD RETURN sidebar-mismatch initial=0 family=3 actualWidth=343 actualHeight=480 expectedBytes=329296 headerEqual=1 pixelsEqual=0 firstOffset=26",
+    "logLines": [
+      1855,
+      1859,
+      1902
+    ],
+    "meaning": "presentation/layout fallback, not pixel proof of original artwork during every frame",
+    "source": "src/hd/ChildReturnGameHooks.inc:321-325",
+    "guardsUnchanged": true
+  },
+  "historyBranchConfirmed": "Source reasons32 and29 select accepted-upload history and its authenticated sidebar before the actual343 upload mismatch",
+  "diagnosis": "InfoReturn full-copy producer can use a different sidebar buffer from its fade; retained full history previously kept the fade plane instead of the plane actually copied",
+  "candidateFix": "Retain copied sidebar only after unchanged480row/source-after/full-copy seals; repeat the existing direct-child or opposite-pane source predicate before and after history descriptor observation",
+  "currentValidation": "Source review, genuine child-source sanitizer fixture, normal app link and actual800x450 formerly failing route passed; see ui-location-info-return-records-local.json for scope and708precondition limit",
+  "preservation": {
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "pilotResourceUnchanged": true,
+    "binaryUnchanged": true,
+    "exitCode": 0,
+    "cleanShutdown": true
+  },
+  "notClaimed": [
+    "Per-frame screenshots proving every native frame has original artwork",
+    "Records return, Statistics, Opponents or second-ratio coverage",
+    "Physical iPad acceptance"
+  ],
+  "cloudBuild": false
+}

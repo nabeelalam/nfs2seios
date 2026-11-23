@@ -8,7 +8,8 @@ struct PlayerIntroFixture {
  std::shared_ptr<const bg::SourceCatalog>catalog;
  nfs_player_initial_native::Binding binding{};
  std::unique_ptr<bg::Plane>actual,stage;
- explicit PlayerIntroFixture(std::shared_ptr<const nfs_player_initial_sidebar::Proof>s):source(std::move(s)),catalog(source->origin()->catalog()),actual(new bg::Plane(source->post())),stage(new bg::Plane(source->origin()->base().post)){
+ explicit PlayerIntroFixture(std::shared_ptr<const nfs_player_initial_sidebar::Proof>s):PlayerIntroFixture(s,s->origin()->catalog(),s->origin()->base().post){}
+ PlayerIntroFixture(std::shared_ptr<const nfs_player_initial_sidebar::Proof>s,std::shared_ptr<const bg::SourceCatalog>c,const bg::Plane&full):source(std::move(s)),catalog(std::move(c)),actual(new bg::Plane(source->post())),stage(new bg::Plane(full)){
   binding.sidebar=source->binding();binding.sourceOwner=source->post().target.owner;binding.sourceBitmap=source->post().target.w[8];auto&t=stage->target;t.owner=0xb000;t.w[8]=0x100000;t.w[12]=0x8000;t.w[11]=0x9000;t.ownerWords=t.w;t.ownerState=actual->target.ownerState;stage->pixels.fill(0);for(unsigned y=0;y<480;++y)std::copy_n(actual->pixels.begin()+y*343,343,stage->pixels.begin()+y*640);assert(nfs_player_initial_native::padded(*source,*stage));
  }
  nfs_player_initial_native::TileObservation tile(unsigned n)const{

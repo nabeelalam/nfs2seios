@@ -21,7 +21,19 @@ def add_loadsave_hooks(text, unit):
         if end > previous: raise ValueError('Overlapping Load/Save scopes: ' + unit)
         text = text[:start] + replacement + text[end:]
         previous = start
+    if unit == 'Methods_01.cpp':
+        text = add_original_abort_receipt(text)
     return add_pointer_presentation(text) if unit == 'Methods_03.cpp' else text
+
+
+def add_original_abort_receipt(text):
+    anchor = 'loc_40BCFF:\n'
+    if text.count(anchor) != 1 or 'NFS_PRIVATE_LOADSAVE_LIVE_BEGIN:original-input-abort' in text:
+        raise ValueError('Load/Save original input-abort anchor changed or already observed')
+    receipt = ('// NFS_PRIVATE_LOADSAVE_LIVE_BEGIN:original-input-abort\n'
+               ' nfs_ls_scene_live::observeOriginalInputAbort(*this);\n'
+               '// NFS_PRIVATE_LOADSAVE_LIVE_END:original-input-abort\n')
+    return text.replace(anchor, anchor + receipt, 1)
 
 
 def add_pointer_presentation(text):

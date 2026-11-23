@@ -7,3 +7,9 @@ Within exact owner4154C0, named source draws capture complete pre/post planes. B
 Six congratulations phrases have the exact verified4154C0 consumer. The six champion phrase graphics are prepared and actual-GLES validated, but no consuming source path has been verified. They are not claimed unused globally or activated through an invented owner. The optional4154C0 bitmap is a winner car photograph; its original draw remains intact.
 
 Each phrase alpha texture is decoded/uploaded lazily only on use, then cached within the renderer context. Retirement/loss discards its private cache. No photograph, trophy, animation criterion, timing or original source write is replaced.
+
+Source follow-up: the explicit `eng2` name table is not a Victory consumer.
+`47D5E0` copies only the first six entries of `off47D350` and resolves them in
+a separately loaded Loading archive. Its second six pointers do not establish
+a champion draw. Tournament/Knockout completion form requests remain a separate
+source question. See `evidence/ui-victory-alternate-source-audit-local.json`.

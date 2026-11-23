@@ -1,0 +1,23 @@
+{
+  "scope": "Desktop runtime in isolated WSL X11 with copied game data and software GLES.",
+  "binarySHA256": "ff5384298830a38c4d7b3cd32663d1857287a05a8e4f2c2ecf19305c34df09d6",
+  "drawable": [
+    708,
+    492
+  ],
+  "route": "Location, Track Info, eight Next Track activations, Escape back to Location.",
+  "outgoingFadeActivations": 8,
+  "authoredOutgoingFadeFrames": 192,
+  "presentationTrace": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=708x492 frame=304 previousFrames=303 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-return-wide output=708x492 frame=317 previousFrames=13 presented=1 capped=0",
+    "MENU PRESENTATION choice=information-wide output=708x492 frame=336 previousFrames=19 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=1337 previousFrames=1001 presented=1 capped=0",
+    "MENU PRESENTATION choice=intro-wide output=708x492 frame=1354 previousFrames=17 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=1375 previousFrames=21 presented=1 capped=0"
+  ],
+  "nativeFallbackAfterWideResize": false,
+  "cleanAppShutdown": true,
+  "physicalIpadVerified": false
+}

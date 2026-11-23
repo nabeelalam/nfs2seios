@@ -1,0 +1,42 @@
+{
+  "scope": "Prior local software-rendered North Country split-screen sessions at 800x450; current maintained binary was not rebuilt.",
+  "trialBinaryHashes": {
+    "baseline": "bff03ae790db033b6f98bbc9520b83d26248f9e36c29621038ac5b713a92908e",
+    "candidate": "91dca6d48f455981d7a0fbf1ff0f8f3fccb78ff170da7ca3d855962c7ef6ede0"
+  },
+  "changedUnitCount": 8,
+  "verifiedTrials": [
+    {
+      "order": "baseline-first",
+      "baseline": {
+        "frames": 924,
+        "medianSwapSpacingMs": 32.372963,
+        "p95SwapSpacingMs": 40.314276,
+        "medianEngineCpuMsPerSubmission": 15.7158
+      },
+      "candidate": {
+        "frames": 939,
+        "medianSwapSpacingMs": 32.341351,
+        "p95SwapSpacingMs": 38.7849,
+        "medianEngineCpuMsPerSubmission": 15.52045
+      }
+    },
+    {
+      "order": "candidate-first",
+      "baseline": {
+        "frames": 951,
+        "medianSwapSpacingMs": 31.71733,
+        "p95SwapSpacingMs": 38.470522,
+        "medianEngineCpuMsPerSubmission": 14.966999999999999
+      },
+      "candidate": {
+        "frames": 974,
+        "medianSwapSpacingMs": 31.185164999999998,
+        "p95SwapSpacingMs": 36.683933,
+        "medianEngineCpuMsPerSubmission": 14.75625
+      }
+    }
+  ],
+  "decision": "Median desktop spacing gain was about 0.03 ms in one order and 0.53 ms in the other. The p95 gains were larger. Do not promote the experimental multiply change on these limited desktop samples.",
+  "limits": "Each trial has one measured 30-second window. The later reverse-order harness has more setup retries. Wide race views were verified before and after each window. No physical iPad, GPU, battery or sustained 60 FPS conclusion."
+}

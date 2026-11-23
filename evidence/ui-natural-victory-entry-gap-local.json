@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "scope": "Original eligible Victory entry followed by natural results at 16:9",
+  "extent": [
+    800,
+    450
+  ],
+  "privateObservationBuild": {
+    "binarySha256": "921d5d8086f4338703fba872237e87033c53645d146c5bfda06281ab26c007f5",
+    "baseEngineUnitSha256": "ee5de8e89b3687d8e33055e7309e36ff88c3d179d3a81fcd437c8bfc78156c6c",
+    "instrumentedUnitSha256": "ed524fd6d541adb32ac2e018b01eb4e8843b1aef62439ce339b64b4aa755d543",
+    "observationOnly": true,
+    "guestStateWritesAdded": false,
+    "directOriginalCallsAdded": false,
+    "virtualControllers": 2,
+    "testRun": false
+  },
+  "track": "Proving Grounds",
+  "laps": 2,
+  "cars": [
+    "McLaren F1",
+    "Nazca C2"
+  ],
+  "field": 2,
+  "eligibilityTrace": [
+    "VICTORY ELIGIBILITY caller enabled=1 mode=1 local=0 racers=2 plus=0",
+    "VICTORY ELIGIBILITY entry count=2 mode=1 local=0",
+    "VICTORY ELIGIBILITY row=0 rank=1 flags=5 state=2",
+    "VICTORY ELIGIBILITY row=1 rank=2 flags=5 state=2",
+    "VICTORY ELIGIBILITY candidate eligible=1 index=0"
+  ],
+  "originalVictoryRoutineEntered": true,
+  "originalWinnerQualified": true,
+  "hdVictoryNativePasses": 0,
+  "hdVictoryWidePresentations": 0,
+  "wideResultsPresentations": 32,
+  "forcedEngineOrVictoryCalls": false,
+  "guestStateWritesAdded": false,
+  "runtime": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 2,
+    "actions": 39,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "logSha256": "ec33f62d619867979609395cd0d3271b30a0005fcf333d5e478fcbaaf187ea94",
+  "remainingIssue": "Eligible natural original Victory entry produces no HD Victory pass; narrow collector/presentation integration boundary rather than changing race configuration.",
+  "captures": [
+    {
+      "file": "016-034-wait.bmp",
+      "sha256": "0c68c5193ba70c4abb012b9d1e62abfd7b220d38ea4155b86e7e3238e662dab9"
+    },
+    {
+      "file": "018-036-key.bmp",
+      "sha256": "a1e0c67e86d50e0ea98f5d8929d73c402fdfd4febd2484deaace807bd31833d9"
+    },
+    {
+      "file": "019-038-wait.bmp",
+      "sha256": "b0d267bcf84b5b0241b2a65e1ad85e6b3573ad4d49052e4950ad1911c566e56d"
+    }
+  ],
+  "physicalDeviceOrPerformanceClaim": false
+}

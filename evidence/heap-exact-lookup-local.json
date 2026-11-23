@@ -1,0 +1,73 @@
+{
+  "scope": "WSL Ubuntu with software GLES. Device FPS and battery usage remain unverified.",
+  "baselineSource": "191a41ebe4d38af07e80fcfce3f3f981313a53c5",
+  "sanitizers": "Existing heap suite passed with ASan and UBSan on the integrated header.",
+  "syntheticMethod": "Eight alternating pairs per order. Thread CPU for 20 arenas with 1800 releases each. Checksums matched and arenas coalesced to full capacity.",
+  "synthetic": {
+    "sanitizers": 0,
+    "fragmented": {
+      "pairs": [
+        76.04151934228246,
+        73.09823887243442,
+        72.81671541072923,
+        77.42094669177327,
+        79.7145573422454,
+        77.93561890734317,
+        75.59122639169414,
+        74.86108653335693
+      ],
+      "median": 75.8163728669883
+    },
+    "ascending": {
+      "pairs": [
+        -7.3134165621763,
+        2.2343221930153923,
+        -2.366911705307384,
+        2.2157234692802175,
+        -0.6583080663224994,
+        -0.04291154857050117,
+        2.6384804895493885,
+        0.608650958963397
+      ],
+      "median": 0.28286970519644794
+    }
+  },
+  "desktopRoute": "Proving Grounds split screen with both controller inputs, widescreen race, Quit Race, Summary, Lap Times, Main and second race with clock advancement. Copied profile and replay restored.",
+  "candidateTiming": {
+    "swapMs": {
+      "count": 1044,
+      "median": 28.269681,
+      "mean": 28.706650581417623,
+      "p95": 33.42596
+    },
+    "ownerCpuMsPerSubmission": {
+      "count": 16,
+      "median": 12.80325,
+      "mean": 13.1844,
+      "p95": 14.4368
+    },
+    "timing": {
+      "startSDLNs": 46033842357,
+      "endSDLNs": 76033842357
+    }
+  },
+  "baselinePriorSession": {
+    "swapMs": {
+      "count": 1029,
+      "median": 28.712889,
+      "mean": 29.133212620019435,
+      "p95": 34.500536
+    },
+    "ownerCpuMsPerSubmission": {
+      "count": 15,
+      "median": 13.0896,
+      "mean": 13.064266666666667,
+      "p95": 14.2398
+    },
+    "timing": {
+      "startSDLNs": 47596520811,
+      "endSDLNs": 77596520811
+    }
+  },
+  "timingInterpretation": "Independent sessions provide descriptive timing and a stability check."
+}

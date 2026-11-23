@@ -1,0 +1,446 @@
+{
+  "scope": "Original-data desktop Options bitmap entrance and cache handoff; six dialog returns at two screen shapes. Physical iPad acceptance remains open.",
+  "binarySHA256": "f124d4b5612acd0bc675946d146a1dd47c01ef856b8c042c9af8a918893b11d8",
+  "sourceSHA256": {
+    "src/hd/OptionsBitmapPreludeAbi.h": "509f2871519881abfcb29213b6e9c2151b095f9869653fde5a3a7d62e23884e9",
+    "src/hd/OptionsBitmapPrelude.h": "d9ce1878dd737e90a4b86ba539b2dd50796ff7deb36786b8b4efd03c4de68788",
+    "src/hd/OptionsBitmapPreludeGameHooks.inc": "cd99936137deef7b5a6bbbcb89687c2aa7f1c1ebee6be33436a9c6eb8cc49c81",
+    "src/hd/OptionsBitmapPreludeRenderer.inc": "db67b015f708a0cdc895cd18e8158e9e49d732f390a9a815635c6dc8df377032",
+    "src/hd/NestedSceneRenderer.h": "acd3d30ee44a274b4abaa8ac69a74abbc7129cff6a1511ede00a2b07aa187a8d",
+    "src/hd/NestedSceneRenderer.inc": "9b13093caa4467b0a0a6bd68724ce5756999d3dac1ed66bd06e9b237368ce086",
+    "src/hd/ClassicScreens/RendererHooks.inc": "3b3edb6423bdc319e3fd9c3403217e8b97503f340c25a41181978cf25e1805ca",
+    "scripts/options_bitmap_prelude_hooks.py": "50b326a6b0e42b9e3a1062d598b96f3c6ecb7112ead16202660b6b66623a95e9",
+    "scripts/prepare_full_mapped.py": "6f06364fac983e68f169165daf756cdc9a28cf4361dfae24b93b798fbb858628",
+    "scripts/prepare_renderer.py": "e0cdebd0998eb915cf853586d7cb956298b766cb80b4a31deba08c4335e564b8",
+    "tests/NestedSidebarCaptionProofCases.h": "6d0f8c583fc488c99a1128005ebae119796b5e2ba0af5964898a2eb4b1517d73",
+    "tests/options_bitmap_renderer_runtime_tests.cpp": "34b759ec2b6454ed200bbae4d5f2961ed6a4b5c942dee8a9a1ce333ad74e2dd4",
+    "tests/graphics_renderer_runtime_tests.cpp": "d5d639b122c21e965c4a673f5ed2f9cdbb1662ee5f990f9296dd53359fb0f4e7"
+  },
+  "preparation": {
+    "reverseInsertionAudit": [
+      {
+        "unit": "Methods_01.cpp",
+        "originalControlFlowPreserved": true,
+        "injectedSHA256": "3c406baf38b81d4241965c4e2f3d069c75472ace1d81f80683cc679010e98dbf"
+      },
+      {
+        "unit": "Methods_03.cpp",
+        "originalControlFlowPreserved": true,
+        "injectedSHA256": "6f11d8113fbb4a59b77cb1397d2e968574143f67ad6e130427cb2ff7d4ccfe56"
+      },
+      {
+        "unit": "Methods_10.cpp",
+        "originalControlFlowPreserved": true,
+        "injectedSHA256": "7c0b7b35c4515cc5f82880416ecbd8fb63d7a0db1d3ff6753ab71b4603c0424b"
+      }
+    ],
+    "freshAll15PreparationVerified": true,
+    "freshInventorySHA256": "a4f9baa9b16c16fb95fb303c946ade1e1d7e1ae3f17e1cba7b4dd971f1f8906b",
+    "freshRendererABIByteIdentical": true,
+    "freshRendererImplementationByteIdentical": true
+  },
+  "mechanism": [
+    "Lexical 40C792 frame, fixed Options owner, explicit Audio/Controls/Graphics previous form and the original 1001..1551 phase grid.",
+    "The exact mode-0x1000 source call executes once; immutable current sidebar, verified current map/base and full-plane transparent-copy replay qualify its complete bitmap.",
+    "A retained immutable lease crosses the original renderer FIFO. Source admission happens on the worker; renderer lifetime checks read only immutable/atomic state.",
+    "A distinct RGB565 native adapter validates all 300 original interleaved uploads/selections and 600 original triangles before preparing a separate full-width HD output. No original native color/depth is overwritten or sampled.",
+    "Only this qualified Options entrance permits the already-verified original hidden-cursor state. Audio/Controls/Graphics cursor admission remains unchanged.",
+    "Target queries are independently guarded; retired/foreign owners refuse before flushing original work. The original grBufferSwap is a renderer barrier, so it drains the finish before the lexical frame life retires."
+  ],
+  "runs": [
+    {
+      "shape": "ipad",
+      "output": [
+        708,
+        492
+      ],
+      "receipt": {
+        "physicalIpadVerified": false,
+        "durableBackupWritten": true,
+        "driverExit": 0,
+        "runtimeRecordsUnchanged": true,
+        "protectedFilesRestored": true
+      },
+      "actions": [
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "430",
+              "previousFrames": "20"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "442",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "465",
+              "previousFrames": "23"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "568",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "589",
+              "previousFrames": "21"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "601",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "626",
+              "previousFrames": "25"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "729",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "756",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "768",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "792",
+              "previousFrames": "24"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "895",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "909",
+              "previousFrames": "14"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "921",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "qualifiedBitmapFrames": 36,
+      "nativeWitnessPerFrame": {
+        "uploads": 300,
+        "selections": 300,
+        "triangles": 600
+      },
+      "remainingNativeFramesInObservedEntriesAndReturns": 0
+    },
+    {
+      "shape": "wide",
+      "output": [
+        800,
+        450
+      ],
+      "receipt": {
+        "physicalIpadVerified": false,
+        "durableBackupWritten": true,
+        "driverExit": 0,
+        "runtimeRecordsUnchanged": true,
+        "protectedFilesRestored": true
+      },
+      "actions": [
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "445",
+              "previousFrames": "21"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "457",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "480",
+              "previousFrames": "23"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "583",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "611",
+              "previousFrames": "28"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "623",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "648",
+              "previousFrames": "25"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "751",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "778",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "790",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "815",
+              "previousFrames": "25"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "918",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "934",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "946",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "qualifiedBitmapFrames": 36,
+      "nativeWitnessPerFrame": {
+        "uploads": 300,
+        "selections": 300,
+        "triangles": 600
+      },
+      "remainingNativeFramesInObservedEntriesAndReturns": 0
+    }
+  ],
+  "sourceRegressions": [
+    {
+      "test": "audio_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "graphics_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    }
+  ],
+  "sanitizers": [
+    {
+      "test": "audio_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "graphics_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "audio_native_pass",
+      "compileExit": 0,
+      "runExit": 0
+    }
+  ],
+  "gles": {
+    "checks": [
+      {
+        "step": "compile",
+        "exitCode": 0
+      },
+      {
+        "step": "runtime",
+        "exitCode": 0
+      }
+    ],
+    "assertions": 57,
+    "scope": "Real EGL/GLES adapter, exact synthetic native observations, cold/warm state and lease cleanup, malformed/incomplete/corrupt/cancelled/foreign owner rejection, and mid-query context loss. Original drawTriangles and wide output are counter stubs; actual original-game wide presentation is covered by the separate six routes."
+  },
+  "visualReview": [
+    "iPad-proportion Audio bitmap and cache-start captures reviewed; both retain HD art and aligned logo/Options caption.",
+    "16:9 Audio bitmap/cache-start captures reviewed; full-width artwork and left anchors remain consistent."
+  ],
+  "startupScope": "The driver resizes after Main is available. Initial startup/first Main animation is not accepted by these return tests.",
+  "remaining": [
+    "Audit the other menu and post-race routes, including their initial entry/animation and resize boundaries.",
+    "Complete required artwork/layout coverage before the next Apple build.",
+    "Apple packaging and physical iPad gameplay, performance, battery and Low Power Mode acceptance remain open."
+  ],
+  "cleanup": {
+    "files": [
+      {
+        "path": "options-bitmap-native-v1/nfs_game_app",
+        "bytes": 63233232,
+        "sha256": "08522d3db5b22e4788ee682b5f07807f57d8fb3074816eebd72eb001c55151df"
+      },
+      {
+        "path": "options-bitmap-native-v1/Glide2x.c.o",
+        "bytes": 15707744,
+        "sha256": "abb7310952ffe10d2acd12199ba34f051c7c24e8273e93ef2eefcd498bc3745a"
+      }
+    ],
+    "reclaimedBytes": 78940976,
+    "retained": "Final v2 binary/renderer, required v1 three engine objects, previous accepted baseline, source-generation audit, all captures/logs/settings backups"
+  },
+  "cloudBuild": false,
+  "publication": false,
+  "physicalIpadVerified": false
+}

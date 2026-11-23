@@ -1,0 +1,148 @@
+{
+  "scope": "Final candidate original widescreen populated chooser, acknowledged keyboard selection, delete-confirmation cancellation and returns",
+  "candidateSHA256": "e29f75b34a677fbc323e6509b8d956df56390cdda59094c6a86ea80243e2dad5",
+  "drawable": [
+    800,
+    450
+  ],
+  "originalEnterAcknowledged": true,
+  "appInputCodeChanged": false,
+  "testHarnessChange": "Hold the chooser confirmation key until original key acknowledgement, then await its actual return; fixed-duration input was not observed in prior slow software-GLES run.",
+  "result": {
+    "driverExitCode": 0,
+    "cleanShutdown": true,
+    "testEntriesUnchangedBeforeCleanup": true,
+    "temporaryFilesRemoved": true,
+    "statsUnchanged": true,
+    "protectedFilesRestored": true,
+    "all21ResourcesUnchanged": true
+  },
+  "routeChanges": [
+    {
+      "action": "options-parent",
+      "logStart": 195631,
+      "logEnd": 279314,
+      "routes": [
+        {
+          "choice": "transition-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "312",
+          "previousFrames": "16"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "432",
+          "previousFrames": "120"
+        }
+      ]
+    },
+    {
+      "action": "enter-loadsave",
+      "logStart": 332579,
+      "logEnd": 344575,
+      "routes": [
+        {
+          "choice": "child-return-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "465",
+          "previousFrames": "33"
+        },
+        {
+          "choice": "loadsave-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "477",
+          "previousFrames": "12"
+        }
+      ]
+    },
+    {
+      "action": "chooser-open",
+      "logStart": 350799,
+      "logEnd": 355975,
+      "routes": []
+    },
+    {
+      "action": "delete-confirm-open",
+      "logStart": 358048,
+      "logEnd": 361346,
+      "routes": []
+    },
+    {
+      "action": "delete-confirm-cancel",
+      "logStart": 361346,
+      "logEnd": 374833,
+      "routes": []
+    },
+    {
+      "action": "return-loadsave",
+      "logStart": 374833,
+      "logEnd": 422005,
+      "routes": [
+        {
+          "choice": "nested-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "590",
+          "previousFrames": "113"
+        },
+        {
+          "choice": "transition-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "602",
+          "previousFrames": "12"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "705",
+          "previousFrames": "103"
+        }
+      ]
+    },
+    {
+      "action": "return-main",
+      "logStart": 427166,
+      "logEnd": 463079,
+      "routes": [
+        {
+          "choice": "child-return-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "727",
+          "previousFrames": "22"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "739",
+          "previousFrames": "12"
+        }
+      ]
+    }
+  ],
+  "capturesVisuallyReviewed": [
+    {
+      "capture": "012-chooser-next-file.png",
+      "sha256": "6e215e86c14b55aaa9961b64e9fafb97eb8e0dd140177e321bf0ad2926f58460"
+    },
+    {
+      "capture": "013-delete-confirmation.png",
+      "sha256": "4741fa90d86786a971b0f0db1103b07f805a5a35dec474e983d38312895fec62"
+    }
+  ],
+  "replacesEarlierPendingWidePopupCoverage": true,
+  "limits": [
+    "Original list/confirmation/cancel tested on disposable entries; no original tournament loaded or deleted.",
+    "Local diagnostic software-GLES runtime, not physical iPad/controller input or performance acceptance."
+  ],
+  "cloudBuild": false,
+  "published": false
+}

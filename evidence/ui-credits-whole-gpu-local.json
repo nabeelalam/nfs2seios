@@ -1,0 +1,99 @@
+{
+  "scope": "Independent full-drawable Credits GPU staging renderer; application presentation not activated",
+  "implementation": [
+    "Opaque authored background fills 4:3/iPad/16:9 drawables; authentic logo/watermark and right-anchored selected heading remain separate",
+    "Original text coordinates are uniformly centered; ordered partner layers use source rectangles/clip and remain between the correct glyph ranges",
+    "Adjacent contiguous glyph events are combined without crossing a partner event",
+    "Owned target/program/artwork/font resources are retained across frames and resized/retried safely",
+    "Every new GL operation has current context/source checks; source-only retirement restores state through the separate trusted context guard",
+    "No original target sampled or written; returned staging color grants no native-pass or swap authority"
+  ],
+  "validation": {
+    "actualGLES": "PASS Credits independent GLES staging: 181 checks; full drawable, ordered text/partners, clip/locale, state/color/depth, cache/retry and selected source/context loss. Native cached pass and application swap not exercised.",
+    "sanitizers": "ASan/UBSan, Mesa leak detection disabled; explicit source C-reference balancing checked",
+    "ratios": [
+      [
+        640,
+        480
+      ],
+      [
+        708,
+        492
+      ],
+      [
+        800,
+        450
+      ]
+    ],
+    "tests": [
+      "opaque full output",
+      "locale selection/right alignment",
+      "text before/after partners",
+      "two partner sprites and clip edges",
+      "GL state and original native color/depth preservation",
+      "no repeated art/font/output uploads at stable dimensions",
+      "contiguous text batch preserves color/primitive order",
+      "incomplete event coverage refusal without GL",
+      "same-context source retirement restores state",
+      "art generation retirement refuses output",
+      "shader retry and image/font/output upload retries",
+      "selected save/shader/upload/draw/restore context-loss points stop foreign GL",
+      "retirement stops resource deletion after actual context loss",
+      "balanced frame references"
+    ],
+    "productionCSyntax": {
+      "exitCode": 0,
+      "source": "Retained final title renderer plus new independent Credits GPU helper",
+      "activated": false
+    },
+    "cCheckCorrection": "First C check mixed current helper headers with a retained renderer checkpoint and failed in unrelated player-photo declarations. The corrected check used matched retained renderer headers and the new Credits helper; it passed with only the pre-existing framebuffer pointer warning. No unrelated source was changed.",
+    "actualPrivatePackPreview": {
+      "scope": "Actual authenticated artwork pack and complete empty frame through real GLES; synthetic source placement/target context, no original cached pass or game swap",
+      "images": [
+        {
+          "width": 640,
+          "height": 480,
+          "rawReadbackSHA256": "708ad2aff9ee850a55bab27e50170a9e87708282b8a15f7bf89adfb9172bb831",
+          "pngSHA256": "c920799e49fb35b3b65c180dcb617198d7ca68f6717313945787f1289cc7b48f",
+          "pngBytes": 468934,
+          "formatConversionLossless": true,
+          "actualGameFrame": false
+        },
+        {
+          "width": 708,
+          "height": 492,
+          "rawReadbackSHA256": "d5f7d9bcce7f2a9f69ede96a68b123603b23aecad2b0bb470b344d9b945be34d",
+          "pngSHA256": "80a1b102bdb46f05bfe850254cd9403238497858b71172ae2afea055df2c86a5",
+          "pngBytes": 530933,
+          "formatConversionLossless": true,
+          "actualGameFrame": false
+        },
+        {
+          "width": 800,
+          "height": 450,
+          "rawReadbackSHA256": "45eb5f6dc9c6b652d79b3fd79848453dc6b26370f9e2789634d8ebd742b78670",
+          "pngSHA256": "58aded3c2d8df9450fcf4646c63d9825f19bcd44abe94a2032059224d6cf65e8",
+          "pngBytes": 554862,
+          "formatConversionLossless": true,
+          "actualGameFrame": false
+        }
+      ],
+      "rawFilesRemovedAfterPixelEqualityCheck": true
+    },
+    "previewBuildScope": "Actual pinned pack through C++ complete-empty-frame preparation and GLES; synthetic placement/target context, no original cached pass or app swap. Static preview path preceded the separate contiguous-text batching change; its empty-frame drawing path is unchanged.",
+    "previewLog": "PASS actual private pack through complete-frame preparation and GLES at three ratios; synthetic source placement, no original cached pass or app swap",
+    "CMakeTargetRegistered": true,
+    "CMakeConfigurationExecuted": false
+  },
+  "remaining": [
+    "Original cached upload/texture/draw receipt under the Credits source owner",
+    "Backend source submission and real front-FBO/color/depth/drawable/swap qualification",
+    "Switch off redundant legacy fragment staging only under the completed whole-frame path",
+    "Grouped original-game empty/scroll/partner/return and ratio verification before Apple/device delivery"
+  ],
+  "originalGameDataChanged": false,
+  "newApplicationBuild": false,
+  "newAppleBuild": false,
+  "newIpadPackage": false,
+  "published": false
+}

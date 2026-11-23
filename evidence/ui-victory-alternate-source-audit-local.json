@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "scope": "Alternate original logo and champion source audit; no new source admission or runtime claim",
+  "sourceSha256": {
+    "Methods_01.cpp": "176a937f5530d8cab1e123395819785dd20b7fee6a6b827ad5f7d3b107a50099",
+    "Methods_02.cpp": "ec323e4c0a512c40a2521fe1e57ed98848beb3b936ca03dc0404997940602681",
+    "Methods_03.cpp": "2a300e0179ad67f1e7f4f04b0a4107bb63beea995aa7c815559496e99a9e766f",
+    "Methods_09.cpp": "55d5a98588a7765db906817706fb007f9481dc1ca07810e16b31278147f4f29d",
+    "MappedMemory.cpp": "b083d3aed71989c6bb95efc721b15c48e1cee426686d18c91cfd61628281bff3"
+  },
+  "victoryBuilder": {
+    "caller": "4154C0",
+    "modeDx": 1,
+    "archiveOpen410E80PreservesEdx": true,
+    "standardCarCount": 12,
+    "bonusPhotographCount": 3,
+    "remoteFlagSource": "4088B9/408A16 branch stores byte512ECC from strcmp('remote',dword513468)",
+    "bonusWinnerRemoteFlagZero": "Original main and exit paths skip the animated logo for car indices12..14",
+    "bonusWinnerRemoteFlagOne": "Original main path calls4274F0 even when4159E0 mode1 skipped its builder for car>=12; actual descriptor/presentation behavior still needs observation"
+  },
+  "otherBuilderCallers": [
+    {
+      "owner": "415E60",
+      "modeDx": 2
+    },
+    {
+      "owner": "416884",
+      "modeDx": 2
+    },
+    {
+      "owner": "417230",
+      "modeDx": 2
+    },
+    {
+      "owner": "417900",
+      "modeDx": 2
+    },
+    {
+      "owner": "417DD4",
+      "modeDx": 0
+    },
+    {
+      "owner": "419044",
+      "modeDx": 0
+    }
+  ],
+  "alternateSources": {
+    "omg6": "Builder mode0; also mode2 when remote flag1",
+    "rec6": "Builder mode2 when remote flag is not1",
+    "limit": "These alternate builder modes are not the observed Victory4154C0 mode1 call; no speculative Victory Omega/track admission was added"
+  },
+  "championSource": {
+    "preparedPhrases": 6,
+    "verifiedConsumer": false,
+    "onlyExplicitNameTable": "off47D350 contains12 pointers;47D5E0 copies first6 only",
+    "copiedHalf": "eng1/ger1/fre1/spa1/ita1/swe1",
+    "uncopiedHalf": "eng2/ger2/fre2/spa2/ita2/swe2",
+    "actualArchiveOfThisConsumer": "Loading archive, selected via %ssld%s.qfs or %s%sload.qfs",
+    "victoryCongratulationsTable": "off414C30 selects econ/gcon/fcon/scon/icon/wcon",
+    "limit": "No verified champion consumer; dynamic form/resource-driven paths remain unproven. No global-unused claim."
+  }
+}

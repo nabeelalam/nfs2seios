@@ -1,0 +1,222 @@
+{
+  "scope": "Authored Victory artwork connected to the original native pass in a forced local GLES fixture",
+  "binarySha256": "ce58331f78d8d35e6af3be40d7a6b9bac2784fd25c359906212907bc424ba6d3",
+  "frameInterfaceSchema": 2,
+  "productionStartupActivation": false,
+  "previewAdmissionExplicit": true,
+  "forcedFixture": true,
+  "naturalRaceWin": false,
+  "language": "English",
+  "nativeFrames": [
+    {
+      "request": 2,
+      "content": 1,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 3,
+      "content": 2,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 4,
+      "content": 3,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 5,
+      "content": 4,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 6,
+      "content": 5,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 7,
+      "content": 6,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 8,
+      "content": 7,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 9,
+      "content": 8,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 10,
+      "content": 9,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 11,
+      "content": 10,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 12,
+      "content": 11,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 13,
+      "content": 12,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 14,
+      "content": 13,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 15,
+      "content": 14,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    },
+    {
+      "request": 16,
+      "content": 15,
+      "width": 640,
+      "height": 480,
+      "uploads": 300,
+      "selections": 300,
+      "triangles": 600
+    }
+  ],
+  "readbacks": [
+    {
+      "image": 1,
+      "width": 640,
+      "height": 480,
+      "sha256": "d543d2af38ac14070a1788386596c389cb92fdf3adca5784672d2733d5ca3713",
+      "visualReview": "Trophy/car plate, authored congratulations and original track-name text composed; no other-aspect acceptance inferred"
+    },
+    {
+      "image": 15,
+      "width": 640,
+      "height": 480,
+      "sha256": "8c1fea4b62c10e2abc77a756261d77994332586853e6329172321cf51a9958cb",
+      "visualReview": "Trophy/car plate, authored congratulations and original track-name text composed; no other-aspect acceptance inferred"
+    }
+  ],
+  "resourceAndDataChecks": {
+    "exitCode": 0,
+    "copiedFixtureRestoredExactly": true,
+    "all21ResourcesUnchanged": true
+  },
+  "implementation": [
+    "Immutable original composition receipt supplies finite artwork image identity and full original-source digest",
+    "C renderer validates identity through C provider API; no C++ metadata headers enter C translation unit",
+    "Every optional authored operation follows complete original300upload/300selection/600triangle validation",
+    "Selected RGBA image authenticated, uploaded to owned texture and cached by renderer context/provider generation/image/pixel digest/dimensions",
+    "Provider generation and original target rechecked before committing private-stage composition",
+    "4:3 text remains centered on wider canvases; artwork side extensions cropped with matching UV geometry"
+  ],
+  "localChecks": {
+    "providerAndLayoutAsanUbsan": "passed",
+    "layouts": [
+      [
+        640,
+        480
+      ],
+      [
+        708,
+        492
+      ],
+      [
+        800,
+        450
+      ],
+      [
+        2360,
+        1640
+      ],
+      [
+        1920,
+        1080
+      ]
+    ],
+    "centralOriginalCompositionEdges": "within1physical pixel",
+    "providerLibraryBuild": "passed",
+    "affectedEngineUnitsRecompiled": [
+      1,
+      2,
+      3,
+      10,
+      13
+    ],
+    "cRendererCompile": "passed with pre-existing framebuffer const-array pointer warning"
+  },
+  "diagnosticCorrections": [
+    "First authored run completed14GPUframes because exit preceded its last queued finish; explicit renderer queue flush verifies all15.",
+    "Engine and retained renderer header roots must remain separate; engine compiled against canonical helpers, renderer against consistent retained base plus current Victory leaves.",
+    "Original415CC0 label is a track name. The earlier private loop wrote its index to dword51221C;41A3A0 clamps indices beyond8to0. This is not15car-name-label coverage."
+  ],
+  "limits": [
+    "Current complete real artwork resource is4:3preview only; real16:9masters remain unfinished.",
+    "Wider layout mathematics and tiny two-aspect images passed; authored widescreen Victory GPU acceptance is not established.",
+    "Readbacks are completed private GLES staging images, not physical-device screenshots or a natural race-win transition.",
+    "No production Victory resource registration, ordinary gameplay/battery/FPS acceptance, iPad build, cloud build or upload."
+  ]
+}

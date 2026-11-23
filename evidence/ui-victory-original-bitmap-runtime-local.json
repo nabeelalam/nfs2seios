@@ -1,0 +1,128 @@
+{
+  "scope": "Original Victory bitmap routines exercised with all15winner resources in an isolated local engine fixture",
+  "binarySha256": "b25d6e052fed84f7a174bb8354fe1722e9eccd9f8a1cf68b03b9a77345d970f3",
+  "forcedFixture": true,
+  "entry": "private diagnostic branch at original Main handler40D3D0",
+  "calls": [
+    "original410E80 loads Victory form/archive",
+    "existing collector OwnerScope entered manually for the diagnostic",
+    "original428A20 starts each drawing frame and selects the target",
+    "original405B30/405B60 resolve and draw back plus each winner resource",
+    "original483470/4A10BC perform the actual mode0400blits"
+  ],
+  "result": {
+    "exitCode": 0,
+    "originalBitmapProofs": [
+      [
+        "1",
+        "mcf1",
+        "307200"
+      ],
+      [
+        "2",
+        "ff50",
+        "307200"
+      ],
+      [
+        "3",
+        "f355",
+        "307200"
+      ],
+      [
+        "4",
+        "fgt9",
+        "307200"
+      ],
+      [
+        "5",
+        "find",
+        "307200"
+      ],
+      [
+        "6",
+        "fmus",
+        "307200"
+      ],
+      [
+        "7",
+        "jagr",
+        "307200"
+      ],
+      [
+        "8",
+        "lgt1",
+        "307200"
+      ],
+      [
+        "9",
+        "lesp",
+        "307200"
+      ],
+      [
+        "10",
+        "nazc",
+        "307200"
+      ],
+      [
+        "11",
+        "cala",
+        "307200"
+      ],
+      [
+        "12",
+        "isde",
+        "307200"
+      ],
+      [
+        "13",
+        "bbfs",
+        "307200"
+      ],
+      [
+        "14",
+        "dayt",
+        "307200"
+      ],
+      [
+        "15",
+        "fzr2",
+        "307200"
+      ]
+    ],
+    "completed15": true,
+    "forcedDiagnosticFixture": true,
+    "actualRaceWin": false,
+    "actualVictoryTextPresentation": false,
+    "copiedFixtureRestoredExactly": true,
+    "all21ResourcesUnchanged": true
+  },
+  "failedAttempts": [
+    {
+      "attempt": 1,
+      "result": "background proof absent; copied fixture and21resources restored"
+    },
+    {
+      "attempt": 2,
+      "result": "private diagnostic confirmed target rejection before source resolution; copied fixture and21resources restored"
+    }
+  ],
+  "resolution": "The diagnostic omitted original428A20frame-start/target selection. Added that original call to the private fixture; production collector/model unchanged. All15thenpassed without relaxing target/source/pixel validation.",
+  "boundaries": {
+    "originalBitmapExecution": true,
+    "wholePlaneMatches": true,
+    "sourceDigestChecks": true,
+    "ownerClearedAfterDiagnostic": true,
+    "naturalVictoryOwnerEntered": false,
+    "raceWin": false,
+    "dynamicVictoryTextPresented": false,
+    "newArtworkActivated": false,
+    "physicalIpad": false,
+    "performanceOrBatteryAcceptance": false,
+    "cloudBuild": false
+  },
+  "remaining": [
+    "Exercise final text/finite-word reversal and artwork-receipt publication.",
+    "Integrate the bounded authored resource and adaptive renderer.",
+    "Finish widescreen masters and actual race-win presentation acceptance."
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "scope": "Victory authored adaptive preview, lossless canvas handling",
+  "result": {
+    "decodedRealImages": 32,
+    "roundedWideImages": 16,
+    "losslessPixelDigests": "all matched",
+    "cropCases": 5,
+    "pixelAspectPreserved": true,
+    "central4by3EdgesWithinOnePixel": true,
+    "unreviewedProductionRejected": true,
+    "asanUbsan": "passed",
+    "sanitizerStderrBytes": 0,
+    "gpuVerification": false,
+    "startupActivation": false
+  },
+  "pack": {
+    "fileBytes": 47854261,
+    "metadataSha256": "8b180b580ea66c21252aedc60e8d44b44ce7986fcc80e76f1985b7cb665fabe9",
+    "packSha256": "aaac1f8dbebd9e2d331104de79bc82a4ec833603017771345e3e756aa95181a3"
+  },
+  "canvasPolicy": {
+    "exact4by3Unchanged": true,
+    "wideMaximumDimension": 4096,
+    "roundedMinimumWidth": 640,
+    "roundedMinimumHeight": 360,
+    "maximumVerticalRoundingPixels": 0.5,
+    "actualSourceDimensionsUsedForCoverCrop": true,
+    "artworkResampled": false
+  },
+  "nazcaCorrection": {
+    "selectedWidth": 1672,
+    "selectedHeight": 941,
+    "priorOutlierWidth": 1671,
+    "priorOutlierHeight": 941,
+    "priorOutlierRejected": true,
+    "selectedSha256": "c41c72ef8e7c75eb04e6536886437e869f48e0e4a6743a997c0a24a8aa83a50b",
+    "oldVariantsRetained": true
+  },
+  "regressions": {
+    "archive": {
+      "decodedImages": 48,
+      "malformedCases": 9,
+      "largestDecodedBytes": 6290112,
+      "legacyAspectPreserved": true,
+      "draftProductionRejected": true,
+      "asanUbsan": true,
+      "productionPackRealArtwork": false,
+      "realPreviewImages": 16,
+      "syntheticCompleteImages": 32,
+      "applicationIntegrated": false
+    },
+    "provider": {
+      "realPreviewImages": 16,
+      "syntheticProductionImages": 32,
+      "sourceMapping": "exact original backdrop and15car identities",
+      "cacheReuse": "same owned pixel pointer",
+      "retainedViewsAcrossClearReload": "passed including2concurrent holders",
+      "failedOutputPreserved": true,
+      "asanUbsan": "passed",
+      "sanitizerStderrBytes": 0,
+      "damagedChunkDeferredUntilAcquire": true,
+      "otherChunkAndCacheUnaffected": true,
+      "appIntegration": false
+    }
+  },
+  "limitations": [
+    "Preview remains unreviewed and production admission remains refused.",
+    "No rounded-wide GPU runtime witness yet.",
+    "No normal startup registration or natural race-win acceptance.",
+    "No Apple build, iPad performance or battery validation."
+  ]
+}

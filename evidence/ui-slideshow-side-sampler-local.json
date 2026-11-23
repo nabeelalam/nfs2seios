@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "scope": "Actual GLES2 synthetic sampler test of extracted production fragment shader; not native source authority, full game or physical-device acceptance",
+  "change": "Only qualified slideshow panorama side UVs are bounded to actual side-texel centers; protected native center and History sampling remain unchanged",
+  "syntheticPanorama": {
+    "width": 1932,
+    "height": 1086,
+    "centerWidth": 1448,
+    "centerLeft": 242,
+    "hiddenCenter": "red",
+    "nativeCenter": "blue",
+    "leftSide": "green",
+    "rightSide": "cyan"
+  },
+  "checks": [
+    {
+      "output": [
+        2360,
+        1640
+      ],
+      "firstOutsidePixels": [
+        86,
+        2273
+      ],
+      "hiddenRedBefore": 100,
+      "hiddenRedAfter": 0,
+      "nativeSeamAdjacentCenterUnchanged": true,
+      "historyWholeOutputByteExact": true
+    },
+    {
+      "output": [
+        2732,
+        2048
+      ],
+      "firstOutsidePixels": [
+        0,
+        2731
+      ],
+      "hiddenRedBefore": 105,
+      "hiddenRedAfter": 0,
+      "nativeSeamAdjacentCenterUnchanged": true,
+      "historyWholeOutputByteExact": true
+    }
+  ],
+  "standaloneBuild": "C++14 warnings as errors; cached SDL/GLES2, independent offscreen display",
+  "productionShaderExtracted": true,
+  "rootIndependentRerunPassed": true,
+  "notClaimed": [
+    "Actual authored panorama runtime acceptance",
+    "All-photo or all-ratio acceptance",
+    "Physical iPad GPU acceptance",
+    "Performance or battery improvement"
+  ],
+  "cloudBuild": false
+}

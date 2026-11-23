@@ -1,0 +1,128 @@
+{
+  "scope": "Original Tournament selected, Done committed, Main to Location and Main at800x450",
+  "visualReview": [
+    "Done highlighted rather than Cancel",
+    "Main top label explicitly one player - tournament",
+    "Ordinary Proving Grounds photo and full-width Location",
+    "Full-width Main return"
+  ],
+  "driverExitCode": 0,
+  "protectedFilesRestored": true,
+  "all21ResourcesUnchanged": true,
+  "cleanShutdown": true,
+  "actions": [
+    {
+      "action": "setup-initial",
+      "logStart": 268462,
+      "logEnd": 332978,
+      "routes": [
+        {
+          "choice": "transition-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "409",
+          "previousFrames": "64"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "529",
+          "previousFrames": "120"
+        }
+      ]
+    },
+    {
+      "action": "race-type-selected",
+      "logStart": 332978,
+      "logEnd": 349208,
+      "routes": []
+    },
+    {
+      "action": "tournament-selected",
+      "logStart": 349208,
+      "logEnd": 368175,
+      "routes": []
+    },
+    {
+      "action": "tournament-committed-main",
+      "logStart": 401393,
+      "logEnd": 429341,
+      "routes": [
+        {
+          "choice": "child-return-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "626",
+          "previousFrames": "97"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "638",
+          "previousFrames": "12"
+        }
+      ]
+    },
+    {
+      "action": "location-current-mode",
+      "logStart": 434004,
+      "logEnd": 458160,
+      "routes": [
+        {
+          "choice": "transition-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "702",
+          "previousFrames": "64"
+        },
+        {
+          "choice": "intro-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "719",
+          "previousFrames": "17"
+        },
+        {
+          "choice": "transition-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "740",
+          "previousFrames": "21"
+        }
+      ]
+    },
+    {
+      "action": "location-return-main",
+      "logStart": 458160,
+      "logEnd": 482906,
+      "routes": [
+        {
+          "choice": "child-return-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "754",
+          "previousFrames": "14"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "773",
+          "previousFrames": "19"
+        }
+      ]
+    }
+  ],
+  "sourceCorrection": {
+    "trnm": "Completed-track overlay, not a universal Tournament preview",
+    "originalGuard": "40D0C0 requires race type1, nonzero current tournament record and the selected-track completion bit at record+0x2C4; caller draws trnm and localized completion word only after nonzero result",
+    "authoredImplementation": "LocationCompletedFlag.h retains exact original trnm/word source checks and three-draw requirement",
+    "completedTrackFixtureExercised": false
+  },
+  "limitations": [
+    "No completed-track overlay or Tournament race acceptance claimed.",
+    "Local diagnostic, not physical iPad."
+  ]
+}

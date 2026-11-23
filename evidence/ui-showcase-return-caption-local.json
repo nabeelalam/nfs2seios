@@ -1,0 +1,43 @@
+{
+  "scope": "Local C++ caption acquisition and complete original-word replay fixture. Synthetic guest state, actual caption hooks and text packet builder. No desktop game or iPad runtime acceptance.",
+  "feature": "Distinct PlayerShowcaseReturn caption route at the exact existing initial Player caption call. No Main origin borrowed.",
+  "sourceSHA256": {
+    "src/hd/CompactCaptionProof.h": "40097d4bf00748d0935b1d67a24d2eb88f73d603ed24b8ad758480ed526af568",
+    "src/hd/CachedMenuCaptionGameHooks.inc": "7e93ef110e1049e8771641331b66ed9172f289d8eba13afe34dda2b333614b9e",
+    "src/hd/PlayerCaptionDisplay.h": "e7aaf100558da946b73900fa04a5f2d5c819917a2e4bb10750d986da338742aa",
+    "tests/options_caption_runtime_tests.cpp": "b8680fc86b5961c865eda9f8c1c6883344e06f77628518e23e1dd70d4ff7414d"
+  },
+  "verification": {
+    "player1": "PASS",
+    "player2": "PASS",
+    "setupSharedPolicy": "PASS",
+    "optionsSharedPolicy": "PASS",
+    "returnCasesPerPlayer": 11,
+    "returnCases": [
+      "normal",
+      "slot-one",
+      "wrong-previous",
+      "wrong-global",
+      "wrong-type",
+      "alias",
+      "same-handle",
+      "archive-during",
+      "post-pixel",
+      "post-global",
+      "retire"
+    ],
+    "ownerExitRevokesEscapedProof": true,
+    "noGuestLeaseAllocations": true,
+    "assertionsEnabled": true,
+    "compiler": "g++ C++17 -O1 -g0 -pthread, real MainThreadBridge and PlayerPhotoArtProvider dependencies"
+  },
+  "remaining": [
+    "Integrate this caption and its separately authenticated sidebar into Player initial/native source preparation.",
+    "Keep remastered background, preview and sidebar through return fade, swipe and settled cache.",
+    "Replay actual original-data Showcase return and relevant Player entry routes.",
+    "Validate on iPad in a future grouped build."
+  ],
+  "visibleShowcaseReturnFixed": false,
+  "cloudBuildStarted": false,
+  "currentPlayableBinaryRebuilt": false
+}

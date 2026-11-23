@@ -26,6 +26,13 @@ class Tests(unittest.TestCase):
   self.assertEqual(value.count("nfs_setup_initial_full_live::CopyScope"),2)
   self.assertLess(value.index("nfs_setup_refresh_full"),value.rindex("_sub_405B60();"))
   self.assertEqual(value.count("_sub_405B60();"),2)
+  initial=value[value.index("// NFS_CHILD_INITIAL_BEGIN:full-copy-open"):value.index("// NFS_CHILD_INITIAL_END:full-copy-open")]
+  refresh=value[value.index("// NFS_CHILD_INITIAL_BEGIN:full-refresh-copy-open"):value.index("// NFS_CHILD_INITIAL_END:full-refresh-copy-open")]
+  self.assertIn("nfs_location_initial_full(*this);",initial)
+  self.assertNotIn("nfs_location_initial_full(*this,true)",value)
+  self.assertIn("nfs_location_refresh_full(*this,true);",refresh)
+  self.assertEqual(value.count("nfs_location_refresh_full(*this,true);"),1)
+  self.assertNotIn("nfs_location_refresh_full(*this);",value)
   source='#include "FunctionIds.h"\nFn(void) Game::_sub_483070()\n{\n}\n'
   value=add_child_initial_sidebar_hooks(source,"Methods_10.cpp")
   self.assertEqual(value.count("nfs_setup_initial_full_live::row"),1)

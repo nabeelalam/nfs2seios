@@ -12,6 +12,7 @@ class Lease final {
  std::array<unsigned char,32>sha_{};
  nfs_logo_capture::Target target_{};
  Lease()=default;
+ static int panoramaCurrent(void*p){const auto*x=static_cast<Lease*>(p);return x->image_&&x->image_->panorama&&x->image_->panorama->current();}
  static void retain(void*p){static_cast<Lease*>(p)->refs_.fetch_add(1,std::memory_order_relaxed);}
  static void release(void*p){auto*x=static_cast<Lease*>(p);if(x->refs_.fetch_sub(1,std::memory_order_acq_rel)==1)delete x;}
 public:
@@ -45,10 +46,15 @@ public:
  }
  NfsSlideshowLiveView view(uint64_t request)const noexcept {
   NfsSlideshowLiveView v{};if(!request||!image_||!controls_||!display_)return v;
-  v.schema=2;v.width=640;v.height=480;v.imageWidth=image_->width;v.imageHeight=image_->height;
+  v.schema=3;v.width=640;v.height=480;v.imageWidth=image_->width;v.imageHeight=image_->height;
   v.request=request;v.content=image_->epoch;v.original=controls_->original.data();v.pixels=controls_->original.size();
   v.rgba=image_->rgba.data();v.rgbaBytes=image_->rgba.size();std::copy(sha_.begin(),sha_.end(),v.imageSha);
   if(image_->footer){const auto&f=*image_->footer;v.footerWidth=f.width();v.footerHeight=f.height();v.footer=f.rgba().data();v.footerBytes=f.rgba().size();std::copy(f.sha().begin(),f.sha().end(),v.footerSha);}
+  if(image_->panorama&&image_->panorama->current()){const auto&p=*image_->panorama;
+   v.panorama.width=p.width();v.panorama.height=p.height();v.panorama.baseGeneration=p.generation();
+   v.panorama.pixels=p.rgba().data();v.panorama.bytes=p.rgba().size();std::copy(p.sha().begin(),p.sha().end(),v.panorama.sha);
+   v.panorama.owner=const_cast<Lease*>(this);v.panorama.retain=retain;v.panorama.release=release;v.panorama.current=panoramaCurrent;
+  }
   v.text=display_->layer();v.owner=const_cast<Lease*>(this);v.retain=retain;v.release=release;return v;
  }
 };

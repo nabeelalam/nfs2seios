@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "HistoryArtProvider.h"
+#include "HistoryWideRegistry.h"
 #include "HistorySourceCatalog.h"
 #include "TextureDigest.h"
 #include <array>
@@ -27,7 +28,7 @@ bool copy(Image&to,const NfsHistoryArtImage&in,size_t&total){
 struct Lease {std::atomic<unsigned>refs{1};std::shared_ptr<const Art>art;static void retain(void*p){static_cast<Lease*>(p)->refs.fetch_add(1,std::memory_order_relaxed);}static void release(void*p){auto*l=static_cast<Lease*>(p);if(l->refs.fetch_sub(1,std::memory_order_acq_rel)==1)delete l;}};
 }
 extern "C" int nfs_history_art_install(const NfsHistoryArtInput*in){if(!in||in->schema!=1||!in->images||!in->count||in->count>NFS_HISTORY_SOURCE_COUNT)return 0;try{auto art=std::make_shared<Art>();size_t total=0;for(size_t k=0;k<in->count;++k){const auto&i=in->images[k];if(i.sourceIndex>=NFS_HISTORY_SOURCE_COUNT||art->images[i.sourceIndex].present||!copy(art->images[i.sourceIndex],i,total))return 0;}for(unsigned source=0;source<NFS_HISTORY_SOURCE_COUNT;++source)if(!art->images[source].present)return 0;std::lock_guard<std::mutex>lock(providerMutex);if(active||serial==UINT64_MAX)return 0;art->generation=++serial;active=std::move(art);published.store(active->generation,std::memory_order_release);return 1;}catch(...){return 0;}}
-extern "C" void nfs_history_art_clear(){std::lock_guard<std::mutex>lock(providerMutex);published.store(0,std::memory_order_release);active.reset();}
+extern "C" void nfs_history_art_clear(){std::lock_guard<std::mutex>lock(providerMutex);published.store(0,std::memory_order_release);active.reset();nfs_history_wide::registry().clear();}
 extern "C" uint64_t nfs_history_art_generation(){return published.load(std::memory_order_acquire);}
 extern "C" int nfs_history_art_acquire(const uint32_t ids[2],NfsHistoryArtView*out){
  if(!ids||!out||ids[0]>=NFS_HISTORY_SOURCE_COUNT)return 0;

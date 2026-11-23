@@ -1,0 +1,47 @@
+{
+  "scope": "Actual original record-name handler input, confirmation and disk save in isolated local qualification fixture; no physical device claim",
+  "qualificationFixture": true,
+  "fixtureOnlyChange": "Seed ten in-memory record time thresholds at the original comparison; race completion and original prompt/save code execute normally",
+  "normalGameplayQualificationVerified": false,
+  "baselineBinarySHA256": "1fb8243eac30e356c6c12d97168c2dd3be0c3dd2e33177af5f3ad440cde57dd8",
+  "fixtureBinarySHA256": "d39a09605747565d0d255ea1be65b0ae40875a89758a0578327019ff9111fab7",
+  "originalEngineSourceSHA256": "8f71515ec29945f22e49358b1fd59398427808c982c59fa0ca28d13404e4f33a",
+  "fixtureEngineSourceSHA256": "b5459784520f247b8ec715239a6ce4c0e6673115a6e0b3245d3d69c78065a964",
+  "defaultNameClearedWithBackspace": true,
+  "testName": "nfsui",
+  "typedNameVisuallyReviewed": true,
+  "enterConfirmed": true,
+  "returnedSummaryVisuallyReviewed": true,
+  "wideNamePresentationCount": 32,
+  "wideDrawable": [
+    800,
+    450
+  ],
+  "savedRecordSHA256": "bddc5ee281b4f27d17b6243343dde21269dea05b065dc46fa5e7d37918d13dc0",
+  "savedNameByteOffset": 20,
+  "savedNameVerifiedOnDisk": true,
+  "reloadInFreshProcessVerified": false,
+  "captures": [
+    {
+      "capture": "002-name-prompt-before-submit.bmp",
+      "sha256": "5347d3a142e1f4c06f6627ffa6b03e165fd836e54c487a80149803639016438e"
+    },
+    {
+      "capture": "003-name-entered.bmp",
+      "sha256": "eea3cc3386a8a393067cc14fe9b8cdd8deb9cd7fc306cf42a0ce43d73f609b05"
+    },
+    {
+      "capture": "004-name-submitted.bmp",
+      "sha256": "4f6db5c33ee2a3048a47f28514080043fa11949d2f2284ff5d0d417a7295c25b"
+    }
+  ],
+  "cleanShutdown": true,
+  "baselineBinaryUnchanged": true,
+  "all13BaselineResourcesUnchanged": true,
+  "gameScope": "Disposable copied assets and saves; retained original game was not launched",
+  "firstPass": "Reached prompt, then root-review timeout before input; bounded clean exit; disposable copy removed after retaining evidence",
+  "physicalIpadVerified": false,
+  "iosPopupKeyboardVerified": false,
+  "wholeUIComplete": false,
+  "cloudBuild": false
+}

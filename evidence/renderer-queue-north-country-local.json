@@ -1,0 +1,108 @@
+{
+  "scope": "WSL software GLES2, North Country split screen, both cars driven.",
+  "drawable": [
+    1180,
+    820
+  ],
+  "order": [
+    256,
+    512
+  ],
+  "method": "Matched binaries with 98 common link inputs. One 30-second race window per variant, with 29 complete samples inside each window.",
+  "metrics": {
+    "baseline": {
+      "capacity": 256,
+      "intervals": 29,
+      "frames": 803,
+      "medianSwapMs": 36.876272,
+      "memoryKiB": {
+        "startKiB": {
+          "VmRSS": 1249588,
+          "VmHWM": 1249588
+        },
+        "endKiB": {
+          "VmRSS": 1263844,
+          "VmHWM": 1263844
+        }
+      },
+      "p95SwapMs": 45.465879,
+      "medianEngineMsPerSubmission": 14.86025,
+      "rendererCallsPerFrame": 21.555417185554173,
+      "queueMsPerFrame": 1.6634668742216687,
+      "executionMsPerFrame": 16.585193897882938
+    },
+    "candidate": {
+      "capacity": 512,
+      "intervals": 29,
+      "frames": 822,
+      "medianSwapMs": 35.453067,
+      "memoryKiB": {
+        "startKiB": {
+          "VmRSS": 1238808,
+          "VmHWM": 1238808
+        },
+        "endKiB": {
+          "VmRSS": 1253852,
+          "VmHWM": 1253852
+        }
+      },
+      "p95SwapMs": 45.846611,
+      "medianEngineMsPerSubmission": 14.4622,
+      "rendererCallsPerFrame": 11.22749391727494,
+      "queueMsPerFrame": 0.9549490267639903,
+      "executionMsPerFrame": 15.63085291970803
+    }
+  },
+  "limits": "Both orders reduced median swap spacing and renderer queue wait. The direction of the 95th percentile, renderer execution time and memory difference reversed. No repeatable gain or regression for those metrics has been shown. No iPad FPS, memory, responsiveness or energy evidence.",
+  "physicalIpadVerified": false,
+  "reverse": {
+    "order": [
+      512,
+      256
+    ],
+    "metrics": {
+      "baseline": {
+        "capacity": 256,
+        "intervals": 29,
+        "frames": 790,
+        "medianSwapMs": 36.892261,
+        "memoryKiB": {
+          "startKiB": {
+            "VmRSS": 1237004,
+            "VmHWM": 1237004
+          },
+          "endKiB": {
+            "VmRSS": 1253364,
+            "VmHWM": 1253364
+          }
+        },
+        "p95SwapMs": 46.369599,
+        "medianEngineMsPerSubmission": 14.633700000000001,
+        "rendererCallsPerFrame": 22.078481012658226,
+        "queueMsPerFrame": 1.6202232911392405,
+        "executionMsPerFrame": 15.380078734177214
+      },
+      "candidate": {
+        "capacity": 512,
+        "intervals": 29,
+        "frames": 821,
+        "medianSwapMs": 35.663855,
+        "memoryKiB": {
+          "startKiB": {
+            "VmRSS": 1247084,
+            "VmHWM": 1247084
+          },
+          "endKiB": {
+            "VmRSS": 1261604,
+            "VmHWM": 1261604
+          }
+        },
+        "p95SwapMs": 45.124212,
+        "medianEngineMsPerSubmission": 14.5126,
+        "rendererCallsPerFrame": 11.131546894031668,
+        "queueMsPerFrame": 1.1784095006090134,
+        "executionMsPerFrame": 16.7977359317905
+      }
+    }
+  }
+}

@@ -1,0 +1,935 @@
+{
+  "scope": "Original startup movie dismissal, title and first Main swipe, existing tested desktop candidate",
+  "binarySha256": "f124d4b5612acd0bc675946d146a1dd47c01ef856b8c042c9af8a918893b11d8",
+  "localEvidence": ".build/startup-aspect-observation-v2",
+  "method": "Private X display; resize as soon as mapped and before first presentation; bounded existing Escape dismissal; 90 periodic lossless PNG captures per shape; durable config/replay/stats backups and finally restoration",
+  "cases": [
+    {
+      "shape": "708x492",
+      "resizeBeforeFirstPresentation": true,
+      "resizeSecondsAfterLaunch": 6.891665022000012,
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "recordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "routes": [
+        {
+          "choice": "native",
+          "width": 708,
+          "height": 492,
+          "frame": 1
+        },
+        {
+          "choice": "transition-wide",
+          "width": 708,
+          "height": 492,
+          "frame": 99
+        },
+        {
+          "choice": "menu-wide",
+          "width": 708,
+          "height": 492,
+          "frame": 158
+        }
+      ],
+      "transitionPresentationWitnesses": [
+        {
+          "kind": 4,
+          "serial": 2,
+          "width": 708,
+          "height": 492,
+          "step": 0
+        },
+        {
+          "kind": 4,
+          "serial": 3,
+          "width": 708,
+          "height": 492,
+          "step": 1
+        },
+        {
+          "kind": 4,
+          "serial": 4,
+          "width": 708,
+          "height": 492,
+          "step": 2
+        },
+        {
+          "kind": 4,
+          "serial": 5,
+          "width": 708,
+          "height": 492,
+          "step": 3
+        },
+        {
+          "kind": 4,
+          "serial": 6,
+          "width": 708,
+          "height": 492,
+          "step": 4
+        },
+        {
+          "kind": 4,
+          "serial": 7,
+          "width": 708,
+          "height": 492,
+          "step": 5
+        },
+        {
+          "kind": 4,
+          "serial": 8,
+          "width": 708,
+          "height": 492,
+          "step": 6
+        },
+        {
+          "kind": 4,
+          "serial": 9,
+          "width": 708,
+          "height": 492,
+          "step": 7
+        },
+        {
+          "kind": 4,
+          "serial": 10,
+          "width": 708,
+          "height": 492,
+          "step": 8
+        },
+        {
+          "kind": 4,
+          "serial": 11,
+          "width": 708,
+          "height": 492,
+          "step": 9
+        },
+        {
+          "kind": 4,
+          "serial": 12,
+          "width": 708,
+          "height": 492,
+          "step": 10
+        },
+        {
+          "kind": 4,
+          "serial": 13,
+          "width": 708,
+          "height": 492,
+          "step": 11
+        },
+        {
+          "kind": 4,
+          "serial": 14,
+          "width": 708,
+          "height": 492,
+          "step": 12
+        },
+        {
+          "kind": 4,
+          "serial": 15,
+          "width": 708,
+          "height": 492,
+          "step": 13
+        },
+        {
+          "kind": 4,
+          "serial": 16,
+          "width": 708,
+          "height": 492,
+          "step": 14
+        },
+        {
+          "kind": 4,
+          "serial": 17,
+          "width": 708,
+          "height": 492,
+          "step": 15
+        },
+        {
+          "kind": 4,
+          "serial": 18,
+          "width": 708,
+          "height": 492,
+          "step": 16
+        },
+        {
+          "kind": 4,
+          "serial": 19,
+          "width": 708,
+          "height": 492,
+          "step": 17
+        },
+        {
+          "kind": 4,
+          "serial": 20,
+          "width": 708,
+          "height": 492,
+          "step": 18
+        },
+        {
+          "kind": 4,
+          "serial": 21,
+          "width": 708,
+          "height": 492,
+          "step": 19
+        },
+        {
+          "kind": 4,
+          "serial": 22,
+          "width": 708,
+          "height": 492,
+          "step": 20
+        },
+        {
+          "kind": 4,
+          "serial": 23,
+          "width": 708,
+          "height": 492,
+          "step": 21
+        },
+        {
+          "kind": 4,
+          "serial": 24,
+          "width": 708,
+          "height": 492,
+          "step": 22
+        },
+        {
+          "kind": 4,
+          "serial": 25,
+          "width": 708,
+          "height": 492,
+          "step": 23
+        },
+        {
+          "kind": 4,
+          "serial": 26,
+          "width": 708,
+          "height": 492,
+          "step": 24
+        },
+        {
+          "kind": 4,
+          "serial": 27,
+          "width": 708,
+          "height": 492,
+          "step": 25
+        },
+        {
+          "kind": 4,
+          "serial": 28,
+          "width": 708,
+          "height": 492,
+          "step": 26
+        },
+        {
+          "kind": 4,
+          "serial": 29,
+          "width": 708,
+          "height": 492,
+          "step": 27
+        },
+        {
+          "kind": 4,
+          "serial": 30,
+          "width": 708,
+          "height": 492,
+          "step": 28
+        },
+        {
+          "kind": 4,
+          "serial": 31,
+          "width": 708,
+          "height": 492,
+          "step": 29
+        },
+        {
+          "kind": 4,
+          "serial": 32,
+          "width": 708,
+          "height": 492,
+          "step": 30
+        },
+        {
+          "kind": 4,
+          "serial": 33,
+          "width": 708,
+          "height": 492,
+          "step": 31
+        },
+        {
+          "kind": 4,
+          "serial": 34,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 36,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 38,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 40,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 42,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 44,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 46,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 48,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 50,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 52,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 54,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 56,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 58,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 60,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 62,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 64,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 66,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 68,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 70,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 72,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 74,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 76,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 78,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 80,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 82,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 84,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 86,
+          "width": 708,
+          "height": 492,
+          "step": 32
+        }
+      ],
+      "capturedFrames": 90,
+      "titleOriginalPass": [
+        "INTRO NATIVE finish-published reason=authored-title-photo-logo-copyright request=1 content=1 size=656x492 uploads=300 selections=300 triangles=600"
+      ]
+    },
+    {
+      "shape": "800x450",
+      "resizeBeforeFirstPresentation": true,
+      "resizeSecondsAfterLaunch": 6.077738743999987,
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "recordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "routes": [
+        {
+          "choice": "native",
+          "width": 800,
+          "height": 450,
+          "frame": 1
+        },
+        {
+          "choice": "transition-wide",
+          "width": 800,
+          "height": 450,
+          "frame": 42
+        },
+        {
+          "choice": "menu-wide",
+          "width": 800,
+          "height": 450,
+          "frame": 101
+        }
+      ],
+      "transitionPresentationWitnesses": [
+        {
+          "kind": 4,
+          "serial": 2,
+          "width": 800,
+          "height": 450,
+          "step": 0
+        },
+        {
+          "kind": 4,
+          "serial": 3,
+          "width": 800,
+          "height": 450,
+          "step": 1
+        },
+        {
+          "kind": 4,
+          "serial": 4,
+          "width": 800,
+          "height": 450,
+          "step": 2
+        },
+        {
+          "kind": 4,
+          "serial": 5,
+          "width": 800,
+          "height": 450,
+          "step": 3
+        },
+        {
+          "kind": 4,
+          "serial": 6,
+          "width": 800,
+          "height": 450,
+          "step": 4
+        },
+        {
+          "kind": 4,
+          "serial": 7,
+          "width": 800,
+          "height": 450,
+          "step": 5
+        },
+        {
+          "kind": 4,
+          "serial": 8,
+          "width": 800,
+          "height": 450,
+          "step": 6
+        },
+        {
+          "kind": 4,
+          "serial": 9,
+          "width": 800,
+          "height": 450,
+          "step": 7
+        },
+        {
+          "kind": 4,
+          "serial": 10,
+          "width": 800,
+          "height": 450,
+          "step": 8
+        },
+        {
+          "kind": 4,
+          "serial": 11,
+          "width": 800,
+          "height": 450,
+          "step": 9
+        },
+        {
+          "kind": 4,
+          "serial": 12,
+          "width": 800,
+          "height": 450,
+          "step": 10
+        },
+        {
+          "kind": 4,
+          "serial": 13,
+          "width": 800,
+          "height": 450,
+          "step": 11
+        },
+        {
+          "kind": 4,
+          "serial": 14,
+          "width": 800,
+          "height": 450,
+          "step": 12
+        },
+        {
+          "kind": 4,
+          "serial": 15,
+          "width": 800,
+          "height": 450,
+          "step": 13
+        },
+        {
+          "kind": 4,
+          "serial": 16,
+          "width": 800,
+          "height": 450,
+          "step": 14
+        },
+        {
+          "kind": 4,
+          "serial": 17,
+          "width": 800,
+          "height": 450,
+          "step": 15
+        },
+        {
+          "kind": 4,
+          "serial": 18,
+          "width": 800,
+          "height": 450,
+          "step": 16
+        },
+        {
+          "kind": 4,
+          "serial": 19,
+          "width": 800,
+          "height": 450,
+          "step": 17
+        },
+        {
+          "kind": 4,
+          "serial": 20,
+          "width": 800,
+          "height": 450,
+          "step": 18
+        },
+        {
+          "kind": 4,
+          "serial": 21,
+          "width": 800,
+          "height": 450,
+          "step": 19
+        },
+        {
+          "kind": 4,
+          "serial": 22,
+          "width": 800,
+          "height": 450,
+          "step": 20
+        },
+        {
+          "kind": 4,
+          "serial": 23,
+          "width": 800,
+          "height": 450,
+          "step": 21
+        },
+        {
+          "kind": 4,
+          "serial": 24,
+          "width": 800,
+          "height": 450,
+          "step": 22
+        },
+        {
+          "kind": 4,
+          "serial": 25,
+          "width": 800,
+          "height": 450,
+          "step": 23
+        },
+        {
+          "kind": 4,
+          "serial": 26,
+          "width": 800,
+          "height": 450,
+          "step": 24
+        },
+        {
+          "kind": 4,
+          "serial": 27,
+          "width": 800,
+          "height": 450,
+          "step": 25
+        },
+        {
+          "kind": 4,
+          "serial": 28,
+          "width": 800,
+          "height": 450,
+          "step": 26
+        },
+        {
+          "kind": 4,
+          "serial": 29,
+          "width": 800,
+          "height": 450,
+          "step": 27
+        },
+        {
+          "kind": 4,
+          "serial": 30,
+          "width": 800,
+          "height": 450,
+          "step": 28
+        },
+        {
+          "kind": 4,
+          "serial": 31,
+          "width": 800,
+          "height": 450,
+          "step": 29
+        },
+        {
+          "kind": 4,
+          "serial": 32,
+          "width": 800,
+          "height": 450,
+          "step": 30
+        },
+        {
+          "kind": 4,
+          "serial": 33,
+          "width": 800,
+          "height": 450,
+          "step": 31
+        },
+        {
+          "kind": 4,
+          "serial": 34,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 36,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 38,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 40,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 42,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 44,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 46,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 48,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 50,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 52,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 54,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 56,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 58,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 60,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 62,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 64,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 66,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 68,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 70,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 72,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 74,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 76,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 78,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 80,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 82,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 84,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        },
+        {
+          "kind": 4,
+          "serial": 86,
+          "width": 800,
+          "height": 450,
+          "step": 32
+        }
+      ],
+      "capturedFrames": 90,
+      "titleOriginalPass": [
+        "INTRO NATIVE finish-published reason=authored-title-photo-logo-copyright request=1 content=1 size=600x450 uploads=300 selections=300 triangles=600"
+      ]
+    }
+  ],
+  "visualReview": {
+    "ipadFrames": [
+      28,
+      32,
+      35,
+      38,
+      41,
+      45,
+      80
+    ],
+    "wideFrames": [
+      22,
+      23,
+      24,
+      28,
+      35,
+      38,
+      80
+    ],
+    "observed": "Reviewed initial Main swipe samples at both shapes contain authored panel/logo. Wide frame 23 shows the original map reveal in progress and frame 24 its authored full-width background. Both settled Main views are HD and fill the drawable.",
+    "limits": [
+      "Periodic screenshots do not prove every intermediate frame is correct.",
+      "Intro movie remains low resolution by design and is a separate low-priority remaster task.",
+      "HD title native compositor still uses a centered 4:3 target (656x492 or 600x450); full-width title presentation remains incomplete.",
+      "Other menu/post-race routes, artwork gaps and physical iPad performance remain open."
+    ]
+  },
+  "newApplicationBuild": false,
+  "cloudBuild": false,
+  "physicalIpadVerified": false,
+  "goalComplete": false
+}

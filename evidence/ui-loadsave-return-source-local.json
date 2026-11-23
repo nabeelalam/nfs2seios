@@ -1,0 +1,117 @@
+{
+  "scope": "Partial Load/Save continuity: original-data English iPad-shaped desktop check",
+  "implementation": [
+    "Distinct fifth Options return family admits only the actual Load/Save form",
+    "Completed Load/Save Cache supplies immutable raw sidebar, original caption callback/store proof, word/logo content and pinned Options caption artwork",
+    "The publisher validates the dedicated source-owner TLS token while recording the shared publisher TLS token on the same verified original owner thread",
+    "Returning Options still requires exact current bytes, game/archive/catalogue identity, complete original copy and native bitmap/cache receipts",
+    "No catalogue pointer check was relaxed and the intermediate catalogue-adaptation experiment was removed",
+    "No original input, file action, drawing call or timing operation was suppressed"
+  ],
+  "validation": {
+    "build": {
+      "binarySHA256": "f527c5240585f57dfb84f868e93baced311317ff19e594b141ebff2337fb3a78",
+      "diagnosticOnly": true,
+      "matchingEngineUnits": [
+        1,
+        3,
+        9,
+        10,
+        12,
+        13,
+        14
+      ],
+      "rendererReused": true,
+      "resourcesSymlinked": 21,
+      "cloudBuild": false
+    },
+    "run": {
+      "scope": "Original Load/Save entry and parent-return continuity; copied fixture",
+      "durableBackupWritten": true,
+      "physicalIpadVerified": false,
+      "newArtworkActivated": true,
+      "driverExitCode": 0,
+      "statsUnchanged": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "staticSourceRecords": [],
+      "loadsaveWidePresented": true,
+      "cacheSourcesReady": 0,
+      "nativePassesVerified": 0,
+      "cleanShutdown": true
+    },
+    "entryRoutes": [
+      {
+        "choice": "child-return-wide",
+        "width": "708",
+        "height": "492",
+        "frame": "479",
+        "previousFrames": "36"
+      },
+      {
+        "choice": "native",
+        "width": "708",
+        "height": "492",
+        "frame": "491",
+        "previousFrames": "12"
+      },
+      {
+        "choice": "loadsave-wide",
+        "width": "708",
+        "height": "492",
+        "frame": "492",
+        "previousFrames": "1"
+      }
+    ],
+    "returnRoutes": [
+      {
+        "choice": "native",
+        "width": "708",
+        "height": "492",
+        "frame": "512",
+        "previousFrames": "20"
+      },
+      {
+        "choice": "nested-wide",
+        "width": "708",
+        "height": "492",
+        "frame": "513",
+        "previousFrames": "1"
+      },
+      {
+        "choice": "transition-wide",
+        "width": "708",
+        "height": "492",
+        "frame": "525",
+        "previousFrames": "12"
+      },
+      {
+        "choice": "menu-wide",
+        "width": "708",
+        "height": "492",
+        "frame": "628",
+        "previousFrames": "103"
+      }
+    ],
+    "wideBitmapReturnFrames": 12,
+    "wideCachedReturnFrames": 103,
+    "additionalFinalExitNativeFrame": 1,
+    "originalBitmapEntryNativeFrames": 1,
+    "all12BitmapPasses300Uploads300Selections600Triangles": true,
+    "returnCaptureReviewed": true,
+    "firstOriginalEntryBitmap": {
+      "bytes": 614400,
+      "sha256": "91ef70669c373a819693c59ade4c418a8663def7b4c1940efa3a22a2424ba9a6",
+      "classification": "Visually reviewed exact original bitmap of the first native-qualified pass: old Load/Save backdrop, logo, Options sidebar caption and list. It is not a black transition."
+    }
+  },
+  "remaining": [
+    "One old initial Load/Save bitmap frame remains before the first completed Load/Save cache; trace its pre-owner/initial-sidebar producer rather than substituting a later source",
+    "One additional final exit native presentation follows LOADSAVE SOURCE declined phase=7 and precedes the 12 bitmap return frames; needs separately qualified final frame",
+    "16:9 verification is deferred until the entry/exit group is complete",
+    "No physical iPad, performance, energy or Low Power Mode acceptance"
+  ],
+  "next": "Complete the true initial-sidebar and final-exit drawing paths, then one grouped iPad/16:9 check before broader UI/HUD/manufacturer/aspect work",
+  "cloudBuild": false,
+  "published": false
+}

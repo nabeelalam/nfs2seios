@@ -1,0 +1,44 @@
+{
+  "scope": "Source-bound lazy Victory artwork provider; not yet linked into application rendering",
+  "implementation": {
+    "registration": "Pinned archive metadata only; all16original source identities validated in each available aspect",
+    "production": "32images required;16-image preview requires explicit diagnostic admission",
+    "selection": "Caller supplies aspect, image and independently authenticated original source digest",
+    "cache": "One immutable decoded image; same selection reuses the owned pixel pointer",
+    "lifetime": "Retained views preserve bytes across cache eviction, clear and reload; generation changes invalidate publication eligibility",
+    "decode": "Archive reader validates requested compressed and reconstructed pixel hashes before output",
+    "failure": "Caller output and previously valid cache remain unchanged on failed selection/decode"
+  },
+  "checks": {
+    "realPreviewImages": 16,
+    "syntheticProductionImages": 32,
+    "sourceMapping": "exact original backdrop and15car identities",
+    "cacheReuse": "same owned pixel pointer",
+    "retainedViewsAcrossClearReload": "passed including2concurrent holders",
+    "failedOutputPreserved": true,
+    "asanUbsan": "passed",
+    "sanitizerStderrBytes": 0,
+    "damagedChunkDeferredUntilAcquire": true,
+    "otherChunkAndCacheUnaffected": true,
+    "appIntegration": false
+  },
+  "projectTestTargetBuild": "passed, optional target only; no app build",
+  "additionalCoverage": [
+    "Valid archive with incorrect original-source associations refused",
+    "Production mode refuses real16-image preview",
+    "Wrong metadata digest, invalid preview admission, repeated registration refused",
+    "Invalid aspect/index/null source/null output and wrong source refuse without changing output",
+    "All16real4:3preview images retain exact metadata pixel digests",
+    "All32tiny synthetic4:3/16:9images retain exact metadata pixel digests",
+    "Old views survive clear/reload while generation increases",
+    "Two concurrent view holders remain valid after clear/reload",
+    "Synthetic damaged chunk accepted at metadata registration, then refused on first image request",
+    "Undamaged chunk remains readable and cached despite another chunk failure"
+  ],
+  "limits": [
+    "Synthetic32-image resource is a test fixture, not completed widescreen artwork.",
+    "One cached image is not a peak-memory bound; outstanding acquired views and temporary decode buffers also consume memory.",
+    "No production startup call, renderer consumer, Victory artwork activation or physical iPad validation yet.",
+    "No battery/FPS improvement claimed; no cloud build or upload."
+  ]
+}

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "GraphicsSceneLayers.h"
+#include "NestedSceneStage.h"
 #ifndef NFS_GRAPHICS_SCENE_EXTERNAL_BACKGROUND_IMPLEMENTATION
 #include "BackgroundSceneCompositor.c.inc"
 #endif
@@ -33,9 +34,9 @@ static int nfs_graphics_scene_ready(NfsGraphicsSceneGpu*s,const NfsBackgroundSce
  for(i=0;i<8;++i){NFS_GRAPHICS_GL(yes=glIsTexture(textures[i]));if(!yes)return 0;}
  return 1;
 }
-static int nfs_graphics_scene_target(NfsGraphicsSceneGpu*s,const NfsBackgroundSceneStage*t){
+static int nfs_graphics_scene_target_sampled(NfsGraphicsSceneGpu*s,const NfsBackgroundSceneStage*t,int responsive){
  GLint fbo=0,vp[4],sc[4],maxTexture=0,maxViewport[2]={0,0},type=0,name=0;GLenum status;GLboolean enabled;
- if(!t->width||!t->height||t->width>NFS_FRAME_MAX_DIMENSION||t->height>NFS_FRAME_MAX_DIMENSION||(uint64_t)t->width*t->height>NFS_FRAME_MAX_PIXELS||!nfs_frame_sampling_valid(t->width,t->height,&t->sampling)||t->framebuffer==s->background->fbo[0]||t->framebuffer==s->background->fbo[1])return 0;
+ if(!t->width||!t->height||t->width>NFS_FRAME_MAX_DIMENSION||t->height>NFS_FRAME_MAX_DIMENSION||(uint64_t)t->width*t->height>NFS_FRAME_MAX_PIXELS||!(responsive?nfs_nested_scene_sidebar_sampling(t->width,t->height,&t->sampling):nfs_frame_sampling_valid(t->width,t->height,&t->sampling))||t->framebuffer==s->background->fbo[0]||t->framebuffer==s->background->fbo[1])return 0;
  NFS_GRAPHICS_GL(glGetIntegerv(GL_MAX_TEXTURE_SIZE,&maxTexture));NFS_GRAPHICS_GL(glGetIntegerv(GL_MAX_VIEWPORT_DIMS,maxViewport));
  if(t->width>(unsigned)maxTexture||t->height>(unsigned)maxTexture||t->width>(unsigned)maxViewport[0]||t->height>(unsigned)maxViewport[1])return 0;
  NFS_GRAPHICS_GL(glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo));NFS_GRAPHICS_GL(glGetIntegerv(GL_VIEWPORT,vp));
@@ -47,6 +48,7 @@ static int nfs_graphics_scene_target(NfsGraphicsSceneGpu*s,const NfsBackgroundSc
  for(unsigned i=0;i<5;++i)if((GLuint)name==s->background->textures[i])return 0;
  NFS_GRAPHICS_GL(status=glGetError());return status==GL_NO_ERROR;
 }
+static int nfs_graphics_scene_target(NfsGraphicsSceneGpu*s,const NfsBackgroundSceneStage*t){return nfs_graphics_scene_target_sampled(s,t,0);}
 static int nfs_graphics_scene_blend(const NfsBackgroundSceneStage*t,int enabled){
  if(enabled){NFS_GRAPHICS_GL(glEnable(GL_BLEND));NFS_GRAPHICS_GL(glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD));NFS_GRAPHICS_GL(glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA));}else{NFS_GRAPHICS_GL(glDisable(GL_BLEND));}return 1;
 }
@@ -82,6 +84,21 @@ int nfs_graphics_scene_draw_layers_into_staging(NfsGraphicsSceneGpu*s,const NfsB
  if(!nfs_graphics_scene_ready(s,t)||!nfs_graphics_scene_target(s,t))return nfs_graphics_scene_current(t)?0:nfs_graphics_scene_abandon(s);
  if(!nfs_graphics_scene_save(&saved,t))return nfs_graphics_scene_abandon(s);
  ok=nfs_graphics_scene_draw(s,t,v);
+ if(!nfs_graphics_scene_current(t))return nfs_graphics_scene_abandon(s);
+ if(!nfs_graphics_scene_restore(&saved,t))return nfs_graphics_scene_abandon(s);
+ return nfs_graphics_scene_current(t)?ok:nfs_graphics_scene_abandon(s);
+}
+int nfs_graphics_scene_draw_layers_into_nested_staging(NfsGraphicsSceneGpu*s,const NfsBackgroundSceneStage*t,const NfsGraphicsSceneLayers*v,const NfsNestedBackdropTextures*art){
+ NfsBgSaved saved;NfsNestedSceneScope scope;NfsBackgroundSceneStage content;int ok;
+ if(!art||!nfs_nested_scene_scope(t,&scope,&content))return 0;
+ if(!s||!s->background||!s->sidebarCaption||!s->text||!v||!nfs_graphics_dialog_valid(&v->dialogWords,&v->text)||(!nfs_graphics_dialog_empty(&v->dialogWords)&&!s->dialogWords)||!nfs_nested_caption_valid(&v->sidebarWord,3)||(!nfs_nested_caption_empty(&v->sidebarWord)&&!s->sidebarWord)||!nfs_graphics_scene_current(t)||!nfs_bg_stage_layers(&v->background)||!nfs_graphics_scene_font(s->sidebarCaption,&v->sidebarCaption,343,t->generation)||!nfs_graphics_scene_font(s->text,&v->text,640,t->generation))return 0;
+ if(!nfs_graphics_dialog_empty(&v->dialogWords)&&!nfs_graphics_scene_dialog_ready(s,t,v))return nfs_graphics_scene_current(t)?0:nfs_graphics_scene_abandon(s);
+ if(!nfs_nested_caption_empty(&v->sidebarWord)&&!nfs_graphics_scene_word_ready(s,t,v))return nfs_graphics_scene_current(t)?0:nfs_graphics_scene_abandon(s);
+ if(!nfs_graphics_scene_ready(s,t)||!nfs_graphics_scene_target_sampled(s,t,1))return nfs_graphics_scene_current(t)?0:nfs_graphics_scene_abandon(s);
+ if(!nfs_graphics_scene_save(&saved,t))return nfs_graphics_scene_abandon(s);
+ ok=nfs_bg_scene_draw_nested_into_staging(s->background,t,&v->background,art)&&
+  (nfs_nested_caption_empty(&v->sidebarWord)?nfs_graphics_scene_text(s->sidebarCaption,t,&v->sidebarCaption):nfs_nested_caption_draw_responsive(s->sidebarWord,&v->sidebarWord,t))&&
+  (nfs_graphics_dialog_empty(&v->dialogWords)?nfs_graphics_scene_text(s->text,&content,&v->text):nfs_graphics_dialog_draw_responsive(s->dialogWords,&v->dialogWords,s->text,&v->text,&content));
  if(!nfs_graphics_scene_current(t))return nfs_graphics_scene_abandon(s);
  if(!nfs_graphics_scene_restore(&saved,t))return nfs_graphics_scene_abandon(s);
  return nfs_graphics_scene_current(t)?ok:nfs_graphics_scene_abandon(s);

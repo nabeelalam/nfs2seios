@@ -1,0 +1,465 @@
+{
+  "scope": "First complete Audio, Controls and Graphics frames reuse exact independently verified Options sidebar content at both supported desktop shapes; broader UI continuity remains incomplete",
+  "binarySHA256": "5f1ff5ad87f51fe78d7e8e1d72a8c2a6acc5b507c5e8b0c3be34513c4140d9b3",
+  "sourceSHA256": {
+    "src/hd/OptionsSidebarOrigin.h": "a6d80bf1ea5e54ef15a33b68ee7d3e9f99913d73e055f613b58f496a4a42e80f",
+    "src/hd/OptionsSceneLiveGameHooks.inc": "9cbca6748345727b64e954f53de0fdb40e6228a797043fa3d0e6cead0d2efc67",
+    "src/hd/CachedMenuSceneLiveGameHooks.inc": "594ad4cb6da7aa8d9356e2da5fdc2853ec69f2f86bfb9b957c7a0d83b91e6982",
+    "src/hd/OptionsSceneQueueAdapter.inc": "8e6dd5cec70a00987eac7e66182e3d247b26f35d99f29932a09d40fed9d99480",
+    "src/hd/AudioScenePrepare.h": "4d7b70bbd82430afc8267dc1f44fa3a6bce3a0630f6901103414b3837ae66b30",
+    "src/hd/AudioSceneQueueAdapter.inc": "671d8d34d1502e918f824d9697205df9f160b01bd7a511958c6e36ca57c8aef7",
+    "src/hd/GraphicsScenePrepare.h": "42760f3049d82053f74395e3ba7b79cf0a7ea560e7c614048aedf25ea8413882",
+    "src/hd/GraphicsSceneQueueAdapter.inc": "ba9e30ab0401f50825f6fd4e5461f4e1e542832872e5f7bc3d6ef66b7e35f6e8",
+    "src/hd/ControlsScenePrepare.h": "c4d2462d7be3a54a55303f0141db3adac221a0b1e947faf30201c1263c3dbd0e",
+    "src/hd/ControlsSceneQueueAdapter.inc": "cf0820ba99ca9032855781d2f280914459bc34c743890463f955e87c304c2f9c"
+  },
+  "design": [
+    "Sidebar content is immutable semantic data, not a retained old menu owner or GPU authority",
+    "Options seals its independently replay-verified 343-wide panel, words, three logos and caption before a later original full-copy or upload can be interrupted",
+    "A completed full Options source can publish the same content; identical content is retained without repeated full-frame ownership",
+    "The child independently validates its current complete original frame, dialog, game, thread, archive, catalog and exact sidebar bytes",
+    "Graphics text and shared publisher thread tokens are validated in their separate domains",
+    "The original complete native upload/select/triangle witness still executes unchanged before HD publication"
+  ],
+  "diagnosis": {
+    "firstOriginalLazyRedrawSkipped": true,
+    "shortAndLongEnterPressBothReproducedGap": true,
+    "liveOptionsOwnerAlreadyRetired": true,
+    "retainedOptionsSidebarCompared": true,
+    "differingPixels": 0,
+    "comparedBytes": 329296
+  },
+  "runs": [
+    {
+      "output": [
+        800,
+        450
+      ],
+      "physicalIpadVerified": false,
+      "durableBackupWritten": true,
+      "driverExit": 0,
+      "runtimeRecordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "gameLogSHA256": "9b757358a2fe57e4d1691290dfe1e47dad724e95ab54bdc75019981a7927dd6a",
+      "actions": [
+        {
+          "action": "options-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "305",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "425",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "523",
+              "previousFrames": "84"
+            },
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "524",
+              "previousFrames": "1"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "536",
+              "previousFrames": "12"
+            }
+          ],
+          "firstDialogPass": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600,
+          "oldLayoutBetweenFadeAndDialog": false
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "548",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "663",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "764",
+              "previousFrames": "87"
+            },
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "765",
+              "previousFrames": "1"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "777",
+              "previousFrames": "12"
+            }
+          ],
+          "firstDialogPass": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600,
+          "oldLayoutBetweenFadeAndDialog": false
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "790",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "905",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1009",
+              "previousFrames": "83"
+            },
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1010",
+              "previousFrames": "1"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1022",
+              "previousFrames": "12"
+            }
+          ],
+          "firstDialogPass": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600,
+          "oldLayoutBetweenFadeAndDialog": false
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "1035",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1150",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "1164",
+              "previousFrames": "14"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1177",
+              "previousFrames": "13"
+            }
+          ]
+        }
+      ],
+      "settledCaptureSHA256": {
+        "007-enter-audio-settled.bmp": "578a2e29afb8f9d71944fee6efa3e5b4f942658137cf67d51187d81f4843a4fc",
+        "014-enter-controls-settled.bmp": "91711e32e4ca63be6f31419b3f285ee53c68b432cc91faf1a9bde6b037bde920",
+        "021-enter-graphics-settled.bmp": "6af1fc0669099b8b19d86cb071845bffece9125584bab6666ea34669365a5a08"
+      }
+    },
+    {
+      "output": [
+        708,
+        492
+      ],
+      "physicalIpadVerified": false,
+      "durableBackupWritten": true,
+      "driverExit": 0,
+      "runtimeRecordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "gameLogSHA256": "01b90a3fa7fb4ed4b517ae329acc38114d2ff37d94ba3fa6d241f835345f3649",
+      "actions": [
+        {
+          "action": "options-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "299",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "419",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "510",
+              "previousFrames": "77"
+            },
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "511",
+              "previousFrames": "1"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "523",
+              "previousFrames": "12"
+            }
+          ],
+          "firstDialogPass": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600,
+          "oldLayoutBetweenFadeAndDialog": false
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "534",
+              "previousFrames": "11"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "649",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "670",
+              "previousFrames": "21"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "682",
+              "previousFrames": "12"
+            }
+          ],
+          "firstDialogPass": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600,
+          "oldLayoutBetweenFadeAndDialog": false
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "695",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "810",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "837",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "849",
+              "previousFrames": "12"
+            }
+          ],
+          "firstDialogPass": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600,
+          "oldLayoutBetweenFadeAndDialog": false
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "862",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "977",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "992",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1004",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "settledCaptureSHA256": {
+        "007-enter-audio-settled.bmp": "d831fe333a910f7edd044c62ecd6473c87154c6ae63b8531b03fdbcc0325dd34",
+        "014-enter-controls-settled.bmp": "fe6c77912f80f2df77f62fbe8adadf15b16675103ce86ee1e0e370ae46d3312d",
+        "021-enter-graphics-settled.bmp": "c1575897823400374eb7ad17bef9240c180baff8c6298e3a35b49d2c8da91fb4"
+      }
+    }
+  ],
+  "existingSceneAndQueueRegressions": [
+    {
+      "test": "audio_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "graphics_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_queue_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    }
+  ],
+  "knownRemaining": [
+    "Original-layout frames during Options navigation when an original redraw is interrupted",
+    "All three nested-dialog returns still contain original-layout presentations",
+    "A separate interrupted two-ratio attempt and a missed Setup keypress are retained privately as unsuccessful runs; neither is counted as passing",
+    "Other UI pages, rapid nested actions, complete animations, physical iPad acceptance and performance/battery goals remain open"
+  ],
+  "cloudBuildStarted": false,
+  "physicalIpadVerified": false,
+  "settledVisualReview": {
+    "capturesReviewed": 6,
+    "bothOutputShapes": true,
+    "contentFitsViewport": true,
+    "noPillarboxBarsInSettledDialogs": true,
+    "artworkUnchanged": true
+  }
+}

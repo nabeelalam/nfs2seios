@@ -21,6 +21,12 @@ int main(){
  initial::Store store;auto catalog=f->trusted();auto accept=[&](initial::Binding b){return store.accept(origin,caption,b,*actual,f->workspace,catalog);};
  auto p=accept(binding);assert(p&&p->current());auto v=p->view();assert(v.schema==1&&v.form==initial::Form&&v.ownerEpoch==1&&v.captionSerial==e.serial&&v.captionLifetime==e.lifetime&&v.caption.word==2&&v.caption.left==116&&v.caption.top==162&&v.caption.rgba);
  assert(store.acquire(binding,*actual,catalog)==p);
+ // Direct-child retention ignores only the ambient selected-buffer word.
+ // Actual pane handles and every source pixel remain authoritative. This
+ // exercises the underlying proof store, not full-copy/history/native admission.
+ actual->target.ownerState[0]^=0x10000;assert(store.acquire(binding,*actual,catalog)==p);actual->target.ownerState[0]^=0x10000;
+ actual->target.ownerState[1]^=4;assert(!store.acquire(binding,*actual,catalog)&&!p->current());actual->target.ownerState[1]^=4;p=accept(binding);assert(p);
+ actual->pixels[100]^=1;assert(!store.acquire(binding,*actual,catalog)&&!p->current());actual->pixels[100]^=1;p=accept(binding);assert(p);
  auto zero=binding;zero.incomingEbp=0;p=accept(zero);assert(p&&p->current());assert(store.acquire(zero,*actual,catalog)==p);auto zeroChanged=zero;zeroChanged.incomingEbp=UINT32_MAX;assert(!store.acquire(zeroChanged,*actual,catalog)&&!p->current());p=accept(binding);assert(p);
  std::vector<uint8_t>raw(16+bg::Side*2);std::memcpy(raw.data(),actual->target.header.data(),16);std::memcpy(raw.data()+16,actual->pixels.data(),bg::Side*2);assert(p->sourceMatches(actual->target.w[8],raw.data(),raw.size()));
  assert(!p->sourceMatches(actual->target.w[8]+2,raw.data(),raw.size()));assert(!p->sourceMatches(actual->target.w[8],raw.data(),raw.size()-2));raw[0]^=1;assert(!p->sourceMatches(actual->target.w[8],raw.data(),raw.size()));raw[0]^=1;raw[216]^=1;assert(!p->sourceMatches(actual->target.w[8],raw.data(),raw.size()));raw[216]^=1;

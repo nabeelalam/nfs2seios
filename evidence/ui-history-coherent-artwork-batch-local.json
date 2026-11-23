@@ -1,0 +1,761 @@
+{
+  "scope": "Seven privately authored coherent History candidates and grouped lossless resources; no application rendering claim",
+  "sourceCheckpoint": "cf929f9",
+  "method": "AI-authored continuous background plates; retained source photographs and manufacturer marks composed at fixed original coordinates; normalized footer; paired central crop and wide sides from the same canvas",
+  "authoringHelpersSHA256": {
+    "driver": "6f27157465c7c4bf3d0c8ceaad33d3df3420b78e57366557c4b6168ae7ac33e3",
+    "composition": "9e57c45753591d36b80efed6a147121c14d650056f11243d1ac588a10e2024bd"
+  },
+  "imageCount": 49,
+  "backgroundsReplaced": 7,
+  "titleSourcesUnchanged": 42,
+  "canvasSize": [
+    1920,
+    1080
+  ],
+  "centralCrop": [
+    240,
+    0,
+    1440,
+    1080
+  ],
+  "historySHA256": "144f4adc797de220b00ad96f5807a07c8fac6179c1dc3023687a1f929234e963",
+  "historyFileBytes": 26534977,
+  "historyPayloadBytes": 75490552,
+  "panoramaFileBytes": 32740213.0,
+  "totalFileBytes": 59275190.0,
+  "largestPanoramaBytes": 5089493.0,
+  "averagePanoramaBytes": 4677173.285714285,
+  "losslessRoundTrip": true,
+  "productionPanoramaDecoderAccepted": 7,
+  "allDecodedPixelDigestsMatch": true,
+  "wideAndCentralLayoutSheetsReviewed": true,
+  "visualReview": [
+    "Continuous scene composition removes independent side-strip joins.",
+    "Original remastered car photo contents and manufacturer lettering retained through deterministic composition.",
+    "Jaguar and Lotus portraits moved into central crop; four-to-three review keeps faces visible.",
+    "Jaguar and Italdesign source-color mattes remove the visible rectangular footer patches.",
+    "Common footer boundary and bottom black strip used across all seven pages.",
+    "Original master files remain unchanged."
+  ],
+  "status": "Candidates prepared for grouped original-game review",
+  "applicationActivated": false,
+  "runtimeVerified": false,
+  "physicalIpadVerified": false,
+  "appleCompilationVerified": false,
+  "releaseReady": false,
+  "remaining": [
+    "Review live History text clearance and all seven archive changes in the original-data game.",
+    "Check wide and iPad proportions and returns without original-art/aspect fallback.",
+    "Only after grouped local acceptance, include the resources in a useful Apple candidate."
+  ],
+  "rows": [
+    {
+      "archive": "hismac",
+      "sourceIndex": 0,
+      "candidate": "hismac-coherent-wide-v4.png",
+      "candidateSHA256": "9756d3da184dfb21c39e318e60c9c39f39df0ea8e269525d92e7e0b184d7a821",
+      "masterSHA256": "7bea08108ee775ab1affde8bbf4fb75c8ea565296dde22e7882942081d846cb3",
+      "plateSHA256": "cbfb9773dbdbb406b69ab6468865c98e347a4fa4f8e8befa9c3925e7c00d16a9",
+      "componentSourceBounds": [
+        {
+          "destination": [
+            749,
+            211,
+            401,
+            242
+          ],
+          "shape": 0,
+          "source": [
+            512,
+            212,
+            403,
+            243
+          ],
+          "id": "upper-photo"
+        },
+        {
+          "destination": [
+            312,
+            500,
+            413,
+            286
+          ],
+          "shape": 0,
+          "source": [
+            72,
+            503,
+            415,
+            288
+          ],
+          "id": "lower-left-photo"
+        },
+        {
+          "destination": [
+            748,
+            544,
+            402,
+            243
+          ],
+          "shape": 0,
+          "source": [
+            511,
+            547,
+            404,
+            244
+          ],
+          "id": "lower-middle-photo"
+        },
+        {
+          "destination": [
+            1000,
+            903,
+            638,
+            127
+          ],
+          "shape": 0,
+          "source": [
+            764,
+            908,
+            642,
+            128
+          ],
+          "id": "manufacturer-mark"
+        }
+      ],
+      "sourcePlateFooterY": 737,
+      "destinationFooterY": 876,
+      "pair": {
+        "sourceIndex": 0,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "1bf14f944a3904741483f4d50ef61670c5005776cd5de167898256257b9f699b",
+        "panoramaRGBA_SHA256": "36f11e60d4dc45fa24d50aa001eab6626857e0945973cbbd8cfcfe000e5fc60c",
+        "panoramaFileSHA256": "520a52046760b8f3eab0330f00e450e318b2b7ced0d2e33583521d29809af5f5",
+        "panoramaFileBytes": 4787300
+      },
+      "decoder": {
+        "sourceIndex": 0,
+        "width": 1920,
+        "height": 1080,
+        "decodedBytes": 8294400,
+        "rgbaSHA256": "36f11e60d4dc45fa24d50aa001eab6626857e0945973cbbd8cfcfe000e5fc60c",
+        "decoderAccepted": true
+      }
+    },
+    {
+      "archive": "hisfer",
+      "sourceIndex": 7,
+      "candidate": "hisfer-coherent-wide-v4.png",
+      "candidateSHA256": "dfe5ab11c2116d8a550edde35c516b8b02b2f6ae2712f0534aae5084aeb8f165",
+      "masterSHA256": "5c7c61127cbfed335de065dbccae8bf974e8c949c003f9f6f9889530bd82e198",
+      "plateSHA256": "af842ae45434276e412e63b0c3f1d60cf24911c97162d152498abf4785e75bce",
+      "componentSourceBounds": [
+        {
+          "destination": [
+            749,
+            211,
+            401,
+            242
+          ],
+          "shape": 0,
+          "source": [
+            512,
+            212,
+            403,
+            243
+          ],
+          "id": "upper-photo"
+        },
+        {
+          "destination": [
+            312,
+            500,
+            413,
+            286
+          ],
+          "shape": 0,
+          "source": [
+            72,
+            503,
+            415,
+            288
+          ],
+          "id": "lower-left-photo"
+        },
+        {
+          "destination": [
+            748,
+            544,
+            402,
+            243
+          ],
+          "shape": 0,
+          "source": [
+            511,
+            547,
+            404,
+            244
+          ],
+          "id": "lower-middle-photo"
+        },
+        {
+          "destination": [
+            1416,
+            733,
+            189,
+            328
+          ],
+          "shape": 2,
+          "source": [
+            1183,
+            737,
+            190,
+            330
+          ],
+          "id": "manufacturer-mark"
+        }
+      ],
+      "sourcePlateFooterY": 763,
+      "destinationFooterY": 876,
+      "pair": {
+        "sourceIndex": 7,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "3db3bb2e2cc9a901baab8ed4d8540b444afcecae584e1691a071831fef8eeec3",
+        "panoramaRGBA_SHA256": "073b283596113fd76e105f75df560837242d07e650a53da87b1282c8f588f6ad",
+        "panoramaFileSHA256": "b55c958aa82137e2ad8378e554c9060f2d4e988b19eddaecff4a1abd0be4add6",
+        "panoramaFileBytes": 4757666
+      },
+      "decoder": {
+        "sourceIndex": 7,
+        "width": 1920,
+        "height": 1080,
+        "decodedBytes": 8294400,
+        "rgbaSHA256": "073b283596113fd76e105f75df560837242d07e650a53da87b1282c8f588f6ad",
+        "decoderAccepted": true
+      }
+    },
+    {
+      "archive": "hisfrd",
+      "sourceIndex": 14,
+      "candidate": "hisfrd-coherent-wide-v4.png",
+      "candidateSHA256": "ef844e427260b9ba7664d0b91e3af3bb3d50dbe0a096e3775fc0dbaf55a88bad",
+      "masterSHA256": "a7be50e468128aed36ca227a21c82b02985ae7548b5db0ba3a4899a63abe6b13",
+      "plateSHA256": "a7adc1eef0044cfe2b1b8d441eef5bd58de456387c71ebaa13a7ce39b3791d80",
+      "componentSourceBounds": [
+        {
+          "destination": [
+            749,
+            211,
+            401,
+            242
+          ],
+          "shape": 0,
+          "source": [
+            512,
+            212,
+            403,
+            243
+          ],
+          "id": "upper-photo"
+        },
+        {
+          "destination": [
+            312,
+            500,
+            413,
+            286
+          ],
+          "shape": 0,
+          "source": [
+            72,
+            503,
+            415,
+            288
+          ],
+          "id": "lower-left-photo"
+        },
+        {
+          "destination": [
+            748,
+            544,
+            402,
+            243
+          ],
+          "shape": 0,
+          "source": [
+            511,
+            547,
+            404,
+            244
+          ],
+          "id": "lower-middle-photo"
+        },
+        {
+          "destination": [
+            1180,
+            862,
+            450,
+            170
+          ],
+          "shape": 1,
+          "source": [
+            945,
+            867,
+            452,
+            171
+          ],
+          "id": "manufacturer-mark"
+        }
+      ],
+      "sourcePlateFooterY": 770,
+      "destinationFooterY": 876,
+      "pair": {
+        "sourceIndex": 14,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "57e4c5e40444f4e45c347dcb93d46355c5422afa20994efcd9aaddf57f074c7b",
+        "panoramaRGBA_SHA256": "1bdfde714c9288a4ce5de30c49b9fea557779b77cf91e443ad62079f6c2d9482",
+        "panoramaFileSHA256": "f0fb7bf04cd47a04df78db11d35db3ed724ea49b700edc5428fa954092192f5f",
+        "panoramaFileBytes": 4710472
+      },
+      "decoder": {
+        "sourceIndex": 14,
+        "width": 1920,
+        "height": 1080,
+        "decodedBytes": 8294400,
+        "rgbaSHA256": "1bdfde714c9288a4ce5de30c49b9fea557779b77cf91e443ad62079f6c2d9482",
+        "decoderAccepted": true
+      }
+    },
+    {
+      "archive": "hisjag",
+      "sourceIndex": 21,
+      "candidate": "hisjag-coherent-wide-v5.png",
+      "candidateSHA256": "5e204ca5f82aadf3d031145575b418b435659767980b35feed0e3ae71644ee5e",
+      "masterSHA256": "527f63b7c68290c4a53dcce543e07d01abc6889b8dcf438957d7840bc8074db4",
+      "plateSHA256": "c2ebaa8073fbb56940b50941a80fb6fb4c59aa1f35ae8a4c3236ad44248f1a58",
+      "componentSourceBounds": [
+        {
+          "destination": [
+            749,
+            211,
+            401,
+            242
+          ],
+          "shape": 0,
+          "source": [
+            512,
+            212,
+            403,
+            243
+          ],
+          "id": "upper-photo"
+        },
+        {
+          "destination": [
+            312,
+            500,
+            413,
+            286
+          ],
+          "shape": 0,
+          "source": [
+            72,
+            503,
+            415,
+            288
+          ],
+          "id": "lower-left-photo"
+        },
+        {
+          "destination": [
+            748,
+            544,
+            402,
+            243
+          ],
+          "shape": 0,
+          "source": [
+            511,
+            547,
+            404,
+            244
+          ],
+          "id": "lower-middle-photo"
+        },
+        {
+          "destination": [
+            1145,
+            810,
+            527,
+            270
+          ],
+          "shape": 4,
+          "source": [
+            910,
+            815,
+            530,
+            271
+          ],
+          "id": "manufacturer-mark"
+        }
+      ],
+      "sourcePlateFooterY": 768,
+      "destinationFooterY": 876,
+      "pair": {
+        "sourceIndex": 21,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "d7cf92028f3bcfc276e9e2e464e8ed6d4787c54a2801c68a960b6e407f7382b2",
+        "panoramaRGBA_SHA256": "1182b0191f99e5a455ae4523a9a46da90f910a5bc0d3504e6e319b6e69464c8c",
+        "panoramaFileSHA256": "32440d1b8f17140e20b0746215e3483510c402e11eadd1bba248f7343909904c",
+        "panoramaFileBytes": 4461489
+      },
+      "decoder": {
+        "sourceIndex": 21,
+        "width": 1920,
+        "height": 1080,
+        "decodedBytes": 8294400,
+        "rgbaSHA256": "1182b0191f99e5a455ae4523a9a46da90f910a5bc0d3504e6e319b6e69464c8c",
+        "decoderAccepted": true
+      }
+    },
+    {
+      "archive": "hisltus",
+      "sourceIndex": 28,
+      "candidate": "hisltus-coherent-wide-v4.png",
+      "candidateSHA256": "61a5116b2c2bef8db5848e1e8397249812f810ecb17dc5bb65fe8b00a76a7a74",
+      "masterSHA256": "3315cd077148ccb97f1a8b414ab80ea74b2fbd18feac6a61479efc4b33e87500",
+      "plateSHA256": "2bb73c612a457cf3952d830766b0721f9198ec6655122cc17bb719e46cae7a25",
+      "componentSourceBounds": [
+        {
+          "destination": [
+            749,
+            211,
+            401,
+            242
+          ],
+          "shape": 0,
+          "source": [
+            512,
+            212,
+            403,
+            243
+          ],
+          "id": "upper-photo"
+        },
+        {
+          "destination": [
+            312,
+            500,
+            413,
+            286
+          ],
+          "shape": 0,
+          "source": [
+            72,
+            503,
+            415,
+            288
+          ],
+          "id": "lower-left-photo"
+        },
+        {
+          "destination": [
+            748,
+            544,
+            402,
+            243
+          ],
+          "shape": 0,
+          "source": [
+            511,
+            547,
+            404,
+            244
+          ],
+          "id": "lower-middle-photo"
+        },
+        {
+          "destination": [
+            1349,
+            783,
+            269,
+            271
+          ],
+          "shape": 1,
+          "source": [
+            1115,
+            787,
+            270,
+            273
+          ],
+          "id": "manufacturer-mark"
+        }
+      ],
+      "sourcePlateFooterY": 770,
+      "destinationFooterY": 876,
+      "pair": {
+        "sourceIndex": 28,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "4bd2f04b02684bfef6dea4ec58136ff5919bec629bcc0501687944ca9c641351",
+        "panoramaRGBA_SHA256": "21ae51814007285e7b10fa6b0a5e10421ade5c9a4ba81c1cc2c977f00e28d2c0",
+        "panoramaFileSHA256": "d5194925ad1df76ff2040683df6be18dd9ac204a8c46b0d6ba6300e27ff369e6",
+        "panoramaFileBytes": 4548887
+      },
+      "decoder": {
+        "sourceIndex": 28,
+        "width": 1920,
+        "height": 1080,
+        "decodedBytes": 8294400,
+        "rgbaSHA256": "21ae51814007285e7b10fa6b0a5e10421ade5c9a4ba81c1cc2c977f00e28d2c0",
+        "decoderAccepted": true
+      }
+    },
+    {
+      "archive": "hisita",
+      "sourceIndex": 35,
+      "candidate": "hisita-coherent-wide-v5.png",
+      "candidateSHA256": "d10c24d72ea3063262bc07eb9e8446b6e0e75f548e95f789059f699aec743a51",
+      "masterSHA256": "a9e87ba8f6443be39719832db4ba751364fe309ab1790bba7abe48023d2dd3e4",
+      "plateSHA256": "cb58cf5e91925ebc47582783e76f369703a342cde7a9f3e6e7c78e98573fe20e",
+      "componentSourceBounds": [
+        {
+          "destination": [
+            749,
+            211,
+            401,
+            242
+          ],
+          "shape": 0,
+          "source": [
+            512,
+            212,
+            403,
+            243
+          ],
+          "id": "upper-photo"
+        },
+        {
+          "destination": [
+            312,
+            500,
+            413,
+            286
+          ],
+          "shape": 0,
+          "source": [
+            72,
+            503,
+            415,
+            288
+          ],
+          "id": "lower-left-photo"
+        },
+        {
+          "destination": [
+            748,
+            544,
+            402,
+            243
+          ],
+          "shape": 0,
+          "source": [
+            511,
+            547,
+            404,
+            244
+          ],
+          "id": "lower-middle-photo"
+        },
+        {
+          "destination": [
+            1145,
+            879,
+            535,
+            201
+          ],
+          "shape": 5,
+          "source": [
+            910,
+            884,
+            538,
+            202
+          ],
+          "id": "manufacturer-mark"
+        }
+      ],
+      "sourcePlateFooterY": 783,
+      "destinationFooterY": 876,
+      "pair": {
+        "sourceIndex": 35,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "5afe3173cb50d835e5fb5abd026c185594a3ac20621c9a17b6e27d94cb60d1ea",
+        "panoramaRGBA_SHA256": "65c14a69214bacf85f2580fd0ec318feaaca3faca715427e22c78f7002853fd9",
+        "panoramaFileSHA256": "b48a31b5caeec63360778c582e14dd22e6d1e5114e1145502dd1e35371addfae",
+        "panoramaFileBytes": 4384906
+      },
+      "decoder": {
+        "sourceIndex": 35,
+        "width": 1920,
+        "height": 1080,
+        "decodedBytes": 8294400,
+        "rgbaSHA256": "65c14a69214bacf85f2580fd0ec318feaaca3faca715427e22c78f7002853fd9",
+        "decoderAccepted": true
+      }
+    },
+    {
+      "archive": "hisisd",
+      "sourceIndex": 42,
+      "candidate": "hisisd-coherent-wide-v4.png",
+      "candidateSHA256": "9bc500bbe163244a363cfd7788a29bd38d656d48bf055d7f7e03bba0ad43de58",
+      "masterSHA256": "f37761eaa21ca7d0e62ac01573e29a1ef2da01e731bd6a2ac229967143244add",
+      "plateSHA256": "797f8ba6a02813f44daedfb000fe77e1a9734254e873ade425f9039fef09430c",
+      "componentSourceBounds": [
+        {
+          "destination": [
+            749,
+            211,
+            401,
+            242
+          ],
+          "shape": 0,
+          "source": [
+            512,
+            212,
+            403,
+            243
+          ],
+          "id": "upper-photo"
+        },
+        {
+          "destination": [
+            312,
+            500,
+            413,
+            286
+          ],
+          "shape": 0,
+          "source": [
+            72,
+            503,
+            415,
+            288
+          ],
+          "id": "lower-left-photo"
+        },
+        {
+          "destination": [
+            748,
+            544,
+            402,
+            243
+          ],
+          "shape": 0,
+          "source": [
+            511,
+            547,
+            404,
+            244
+          ],
+          "id": "lower-middle-photo"
+        },
+        {
+          "destination": [
+            1425,
+            751,
+            189,
+            298
+          ],
+          "shape": 0,
+          "source": [
+            1192,
+            755,
+            190,
+            300
+          ],
+          "id": "manufacturer-mark"
+        }
+      ],
+      "sourcePlateFooterY": 775,
+      "destinationFooterY": 876,
+      "pair": {
+        "sourceIndex": 42,
+        "panoramaSize": [
+          1920,
+          1080
+        ],
+        "cropRectangle": [
+          240,
+          0,
+          1440,
+          1080
+        ],
+        "centerRGBA_SHA256": "801d1a57bb82aba2cb1f62caa689a95774aeeed6ebf83dbd484c6b81f321144e",
+        "panoramaRGBA_SHA256": "1bb9f6935f413d1405e57efe96889af052bc22eef334a39169c612e19eab98fa",
+        "panoramaFileSHA256": "fe99862ce693fcc838374d4f585d2711f33c157e9101264db03e90775e3be81b",
+        "panoramaFileBytes": 5089493
+      },
+      "decoder": {
+        "sourceIndex": 42,
+        "width": 1920,
+        "height": 1080,
+        "decodedBytes": 8294400,
+        "rgbaSHA256": "1bb9f6935f413d1405e57efe96889af052bc22eef334a39169c612e19eab98fa",
+        "decoderAccepted": true
+      }
+    }
+  ]
+}

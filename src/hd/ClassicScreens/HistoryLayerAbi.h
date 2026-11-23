@@ -4,10 +4,11 @@
 #include <stddef.h>
 #include "hd/SoftwareTextLayerAbi.h"
 #include "HistoryArtProvider.h"
+#include "HistoryPanoramaAbi.h"
 typedef struct NfsHistoryLiveView {
  uint32_t schema,width,height,formType,archiveIndex,languageRole;uint64_t request,content;
  const uint16_t*original;const uint16_t*clean;size_t pixels;
- NfsSoftwareTextLayerView text;NfsHistoryArtView art;
+ NfsSoftwareTextLayerView text;NfsHistoryArtView art;NfsHistoryPanoramaView panorama;
  void*owner;void(*retain)(void*);void(*release)(void*);
 } NfsHistoryLiveView;
 #ifdef __cplusplus

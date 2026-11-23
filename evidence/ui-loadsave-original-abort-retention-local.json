@@ -1,0 +1,416 @@
+{
+  "scope": "Original input-aborted Load/Save redraw retains authenticated completed pixels and scene",
+  "physicalIpadVerified": false,
+  "candidateSHA256": "e29f75b34a677fbc323e6509b8d956df56390cdda59094c6a86ea80243e2dad5",
+  "sourceSemantics": [
+    "The original 405C70/428770 and423BE4 paths redisplay a finished bitmap through426B70/426950; current glyph-painting parameters are not their text source.",
+    "String/Tail/seal retain strict original font/palette/callback/store checks. Current display observations authenticate the real persistent surface, exact pixels, authority, target identities, selected sidebar slot and ticket against the immutable sealed paint receipt.",
+    "An exact40BCFF receipt recognizes original pending-input cancellation before logos or after one/two completed logo draws, with original argument zero and zero return.",
+    "Prior scene retention additionally requires the same owner/epoch/archive/catalogue, exact full target/pixels and unchanged selected-sidebar bytes. Unfinished unselected sidebar pixels are never published.",
+    "Attempt revisions continue advancing. Matching the retained cache uses its actual completed revision, without relabelling it as the interrupted attempt.",
+    "Actual original300 uploads/300 selections/600 triangles remain required for the current native pass."
+  ],
+  "runs": [
+    {
+      "case": "retained-abort-observed-ipad-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "recordsUnchanged": true,
+      "all21ResourcesUnchanged": true,
+      "actualAbortReceipts": [
+        {
+          "stage": "receipt",
+          "epoch": 2,
+          "attempt": 1,
+          "logos": 0,
+          "cache": 0
+        },
+        {
+          "stage": "completed-source-retained",
+          "epoch": 2,
+          "attempt": 1,
+          "logos": 0,
+          "cache": 0
+        }
+      ],
+      "originalNativePasses": 6,
+      "routeChanges": [
+        {
+          "action": "options-parent",
+          "logStart": 204348,
+          "logEnd": 288023,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "332",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "452",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "return-loadsave-fast-0",
+          "logStart": 342332,
+          "logEnd": 391105,
+          "routes": [
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "499",
+              "previousFrames": "2"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "511",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "614",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-loadsave-fast-1",
+          "logStart": 395314,
+          "logEnd": 438769,
+          "routes": [
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "644",
+              "previousFrames": "2"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "656",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "759",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-loadsave-fast-2",
+          "logStart": 442978,
+          "logEnd": 478925,
+          "routes": [
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "789",
+              "previousFrames": "2"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "801",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "904",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 483406,
+          "logEnd": 525920,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "929",
+              "previousFrames": "25"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "941",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "logSHA256": "329b0b50d1e0b19dada0aeb4441aa17b22276c0fa7e911c1f8b12e135242d0ff"
+    },
+    {
+      "case": "retained-abort-observed-wide-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "recordsUnchanged": true,
+      "all21ResourcesUnchanged": true,
+      "actualAbortReceipts": [
+        {
+          "stage": "receipt",
+          "epoch": 2,
+          "attempt": 1,
+          "logos": 1,
+          "cache": 0
+        },
+        {
+          "stage": "completed-source-retained",
+          "epoch": 2,
+          "attempt": 1,
+          "logos": 1,
+          "cache": 0
+        }
+      ],
+      "originalNativePasses": 2,
+      "routeChanges": [
+        {
+          "action": "options-parent",
+          "logStart": 197784,
+          "logEnd": 290156,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "316",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "436",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "return-loadsave-fast-0",
+          "logStart": 340434,
+          "logEnd": 388454,
+          "routes": [
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "483",
+              "previousFrames": "2"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "495",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "598",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 394346,
+          "logEnd": 433106,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "621",
+              "previousFrames": "23"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "633",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "logSHA256": "195b0079e173474c7ee61ed78bdef12688afacd5ffc560f035fe9bd52decb279"
+    },
+    {
+      "case": "retained-abort-cached-ipad-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "recordsUnchanged": true,
+      "all21ResourcesUnchanged": true,
+      "actualAbortReceipts": [
+        {
+          "stage": "receipt",
+          "epoch": 2,
+          "attempt": 4,
+          "logos": 1,
+          "cache": 0
+        },
+        {
+          "stage": "completed-source-retained",
+          "epoch": 2,
+          "attempt": 4,
+          "logos": 1,
+          "cache": 3
+        }
+      ],
+      "originalNativePasses": 5,
+      "routeChanges": [
+        {
+          "action": "options-parent",
+          "logStart": 196491,
+          "logEnd": 280166,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "313",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "433",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "return-loadsave-fast-0",
+          "logStart": 341464,
+          "logEnd": 389483,
+          "routes": [
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "489",
+              "previousFrames": "5"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "501",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "604",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 395375,
+          "logEnd": 435721,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "627",
+              "previousFrames": "23"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "639",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "logSHA256": "d6e1d1e320c60cc974ba8ed91839c41f07ee46fba19900b8f218722d2b7d1655"
+    }
+  ],
+  "focusedChecks": {
+    "sourcePolicyChecksPreviouslyPassed": 55651,
+    "bitmapObservationFaultCases": 12,
+    "sealedPaintOwnershipAndFreshPaintRejection": true,
+    "addressAndUndefinedSanitizers": "passed",
+    "originalAbortHookAndSourceContracts": 8,
+    "stagedObserverReverseRestoresOriginalUnitExactly": true,
+    "maintainedAbortHelperMatchesStagedUnit": true,
+    "fullEnginePipelineRegenerated": false
+  },
+  "retainedFailures": [
+    {
+      "case": "pointer-redraw-ipad-v2",
+      "reason": "Original observation rejected the live glyph snapshot while re-presenting completed pixels; selected1 equalled drawn1.",
+      "native708Rows": [
+        "MENU PRESENTATION choice=native output=708x492 frame=568 previousFrames=90 presented=1 capped=0"
+      ],
+      "faults": [
+        "LOADSAVE REDRAW site=observe reason=3 a=1 b=1"
+      ]
+    },
+    {
+      "case": "bitmap-pointer-ipad-v1",
+      "reason": "Bitmap observation corrected; source collector still retired after interrupted logo production.",
+      "native708Rows": [
+        "MENU PRESENTATION choice=native output=708x492 frame=620 previousFrames=89 presented=1 capped=0"
+      ],
+      "faults": [
+        "LOADSAVE SCENE fault line=214 epoch=2 revision=89 phase=3 retireCheck=0"
+      ]
+    },
+    {
+      "case": "retained-abort-ipad-v1",
+      "reason": "Partial-logo-only receipt missed the original before-logo abort.",
+      "native708Rows": [
+        "MENU PRESENTATION choice=native output=708x492 frame=575 previousFrames=87 presented=1 capped=0"
+      ],
+      "faults": [
+        "LOADSAVE SCENE fault line=239 epoch=2 revision=87 phase=0 retireCheck=0"
+      ]
+    }
+  ],
+  "limits": [
+    "English local O1/software-GLES checks; no physical iPad, performance or energy claim.",
+    "Both initial inherited source and completed cache3 retained during actual witnessed input aborts; two-logo abort is source-guarded but not separately observed.",
+    "Earlier widescreen populated-chooser admission failed on the bitmap-only intermediate candidate; final-candidate popup replay remains pending.",
+    "Fresh complete source generation and Apple compilation/package verification remain before delivery.",
+    "Menu retention adds full-bitmap source snapshots; device cost remains unmeasured."
+  ],
+  "cloudBuild": false,
+  "published": false
+}

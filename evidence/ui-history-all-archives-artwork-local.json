@@ -1,0 +1,137 @@
+{
+  "scope": "Local original-data History archive reference capture and private artwork drafts",
+  "capture": "grouped-512-history-all-archives-v26",
+  "gameLogSHA256": "b69ed76cad61d81cc3138bc097c44afdb6f80c03b0dbfe4e23cf9143c5ed1fae",
+  "captureCleanExit": true,
+  "liveArchives": 7,
+  "informationWideDeclines": 0,
+  "referenceResolution": [
+    800,
+    450
+  ],
+  "centerRectangle": [
+    100,
+    0,
+    600,
+    450
+  ],
+  "previewCenterPixelsDifferent": 0,
+  "previewOnly": true,
+  "artActivated": false,
+  "physicalIpadVerified": false,
+  "releaseReady": false,
+  "rows": [
+    {
+      "archive": "hismac",
+      "sourceIndex": 0,
+      "reference": "003-history-page.bmp",
+      "referenceSHA256": "1e1b0810837c2d710fae056e7ff52c2ef4a3edc208c8e41d853b8601a79c2bf2",
+      "candidate": "hismac-panorama-combined-v9.png",
+      "candidateSHA256": "ea4833804ddbbf3db0cc7e4a521afdeab8ac20036519721c3e6e803f6130e394",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "previewCenterDifferentPixels": 0,
+      "artStatus": "Working candidate; side joins require further polish",
+      "activated": false
+    },
+    {
+      "archive": "hisfer",
+      "sourceIndex": 7,
+      "reference": "004-history-archive-1.bmp",
+      "referenceSHA256": "41eebdd78ddbfd823f0e51879008b05c073cce4d9d639c09ef3c4c64bc456882",
+      "candidate": "hisfer-panorama-v1.png",
+      "candidateSHA256": "a1795a2bad1e671881769939e1a563c74b98c273575545c668b7f803fbbb8779",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "previewCenterDifferentPixels": 0,
+      "artStatus": "Working candidate; side joins require further polish",
+      "activated": false
+    },
+    {
+      "archive": "hisfrd",
+      "sourceIndex": 14,
+      "reference": "005-history-archive-2.bmp",
+      "referenceSHA256": "b0a701b9ab872254ccfe468b22abf594995b7957d60e0dbf27d7cfd02bf54ea0",
+      "candidate": "hisfrd-panorama-v1.png",
+      "candidateSHA256": "960f9e37f3e526b57131dfc4b8e874e4f21935d1e05ad16c788074473a581125",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "previewCenterDifferentPixels": 0,
+      "artStatus": "Working candidate; side joins require further polish",
+      "activated": false
+    },
+    {
+      "archive": "hisjag",
+      "sourceIndex": 21,
+      "reference": "006-history-archive-3.bmp",
+      "referenceSHA256": "d3cd17c1e95920f04e88b9e3636e404eadb239917e1e5b26b650aacefd5ff161",
+      "candidate": "hisjag-panorama-v1.png",
+      "candidateSHA256": "4b61736d7f14212aa8d4a01b01c4488d8a9a1812d1bf34b1f39520d647513762",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "previewCenterDifferentPixels": 0,
+      "artStatus": "Working candidate; side joins require further polish",
+      "activated": false
+    },
+    {
+      "archive": "hisltus",
+      "sourceIndex": 28,
+      "reference": "007-history-archive-4.bmp",
+      "referenceSHA256": "a5500c15b7800af2a9c781c2ab0c750b71ea08e63197ca06c23e145efe597aab",
+      "candidate": "hisltus-panorama-v1.png",
+      "candidateSHA256": "ecb584e92f8ce74d10d135ab9720a352f5e3fdbeab4a7491980a12f6946bf364",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "previewCenterDifferentPixels": 0,
+      "artStatus": "Working candidate; side joins require further polish",
+      "activated": false
+    },
+    {
+      "archive": "hisita",
+      "sourceIndex": 35,
+      "reference": "008-history-archive-5.bmp",
+      "referenceSHA256": "871f0e411797a25b0f65fb47c12fbe0bcc1d654240608b62ab44d1e5b0a4e212",
+      "candidate": "hisita-panorama-v1.png",
+      "candidateSHA256": "7bd259509dbce561ff804bb1b8cb0980d6b085a9e16713f2c0798d8f5391b9e4",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "previewCenterDifferentPixels": 0,
+      "artStatus": "Working candidate; side joins require further polish",
+      "activated": false
+    },
+    {
+      "archive": "hisisd",
+      "sourceIndex": 42,
+      "reference": "009-history-archive-6.bmp",
+      "referenceSHA256": "4ee0a222443f0c72391d87e67fb3e1b71f87de00f2c8b35f0177e6feb650803c",
+      "candidate": "hisisd-panorama-v1.png",
+      "candidateSHA256": "d1ff99a86d183dc8fa52822ff571cf68aea389f67378a00c918d4f5251e65ac7",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "previewCenterDifferentPixels": 0,
+      "artStatus": "Working candidate; side joins require further polish",
+      "activated": false
+    }
+  ],
+  "followUp": [
+    "First-pass side joins require lighting and architecture continuity corrections before activation.",
+    "Isdera v2 neutralizes the yellow hotspot but still mismatches warm native stucco at the join; not accepted as final.",
+    "Wider artwork remains private and outside Git.",
+    "Do not build an Apple package for individual artwork drafts; group finished resources."
+  ],
+  "isderaSecondDraftSHA256": "53ba5e8067c0ddea5c66cb88fb1e7e5af36db59b87dc8a4fd8139795fd4f7549"
+}

@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "scope": "Twelve logical trophy cars through original temporary QFS/car6/alpha200/upload and true original logo/swap path",
+  "logicalCars": 12,
+  "originalAnimationFrames": 36,
+  "syntheticAnimationPhases": [
+    18,
+    126,
+    234
+  ],
+  "sourceMap": [
+    0,
+    1,
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "uploadedWordBytes": 131072,
+  "preRotation": true,
+  "rows": [
+    {
+      "car": 0,
+      "sourceCar": 0,
+      "accepted": true,
+      "rawSourceSha256": "21922bbd118c757c2775cf3dfa7215565693210ebec747c3ceacf07217fc31df",
+      "wordsSha256": "ba8963867766c5decd24eaa5f591daf10a5d803c554dcbfd7a1a653e9bf6b493",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 1,
+      "sourceCar": 1,
+      "accepted": true,
+      "rawSourceSha256": "49a9309c6f923ead77975cdbf9612905798b9985818a6c4eccb43a3f077d2652",
+      "wordsSha256": "72942bb12d321f7e6b55e350b6b2925579e70f27d5f97a00d0e50473232fa077",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 2,
+      "sourceCar": 1,
+      "accepted": true,
+      "rawSourceSha256": "49a9309c6f923ead77975cdbf9612905798b9985818a6c4eccb43a3f077d2652",
+      "wordsSha256": "72942bb12d321f7e6b55e350b6b2925579e70f27d5f97a00d0e50473232fa077",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 3,
+      "sourceCar": 3,
+      "accepted": true,
+      "rawSourceSha256": "4b552dc0c3c7b981aaf6fdb6bb2300549c1771708ecb7d3009ab0daaa15200a9",
+      "wordsSha256": "0ba14ed874351c3dc97a44538b6564524437b6e7c974c6cf6eba799d29d810d9",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 4,
+      "sourceCar": 4,
+      "accepted": true,
+      "rawSourceSha256": "8a29b1688177b5743b0d5ac56cc8a730088c1429def409a6f6b593bcb65360dc",
+      "wordsSha256": "0ba14ed874351c3dc97a44538b6564524437b6e7c974c6cf6eba799d29d810d9",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 5,
+      "sourceCar": 5,
+      "accepted": true,
+      "rawSourceSha256": "8a29b1688177b5743b0d5ac56cc8a730088c1429def409a6f6b593bcb65360dc",
+      "wordsSha256": "0ba14ed874351c3dc97a44538b6564524437b6e7c974c6cf6eba799d29d810d9",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 6,
+      "sourceCar": 6,
+      "accepted": true,
+      "rawSourceSha256": "86e42010c127701ac782f84749d605b3e3c086e1549d0cf67f71581ba891bd7a",
+      "wordsSha256": "d643af57ece857129264d5433d135693b6770103d1ce69261d924c52ee1424dc",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 7,
+      "sourceCar": 7,
+      "accepted": true,
+      "rawSourceSha256": "16877bb3d12255fdd5df9d32bdf9b831a2d0738808afc3c7f9981268c3bf6f7c",
+      "wordsSha256": "6b8415d9e9cb6be7f89e2e3e8153de32cd27ccd49cc0ef36227c4935e9a261d8",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 8,
+      "sourceCar": 8,
+      "accepted": true,
+      "rawSourceSha256": "649976ae06d4828737a889b04bf56f013111b8b18aa9390466dbd1e232cf3aaa",
+      "wordsSha256": "6b8415d9e9cb6be7f89e2e3e8153de32cd27ccd49cc0ef36227c4935e9a261d8",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 9,
+      "sourceCar": 9,
+      "accepted": true,
+      "rawSourceSha256": "915cc4685ec2e0856583aa65c9030f0d16037a40e998fd4f5325ea06309c139c",
+      "wordsSha256": "265a5f6106e68ea33465e8d13e6e3bdf69139dcaf3edc5d10b76472a14d600b6",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 10,
+      "sourceCar": 10,
+      "accepted": true,
+      "rawSourceSha256": "915cc4685ec2e0856583aa65c9030f0d16037a40e998fd4f5325ea06309c139c",
+      "wordsSha256": "265a5f6106e68ea33465e8d13e6e3bdf69139dcaf3edc5d10b76472a14d600b6",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    },
+    {
+      "car": 11,
+      "sourceCar": 11,
+      "accepted": true,
+      "rawSourceSha256": "c668602ef21b6b3e4eb87f9d69ca85c43ddcb96c098ff453abf56c3f42665609",
+      "wordsSha256": "2f2fdad95774b9f7c434f80020cc62210cd90e96751e2051bb3e367815f9a5a5",
+      "inputStableAcrossOriginalUpload": true,
+      "bytes": 131072,
+      "preRotation": true
+    }
+  ],
+  "catalogHeaderSha256": "5cbbfec595fa7830ed489bdb5f2c776d83871324a6c13fc4e93ceb622834ec86",
+  "baselineBinarySha256": "fae63f6a4b502d43a5e6d33278f044eb2fbd09afdab855d418d42f84577451a1",
+  "baselineLogSha256": "f3178685f0b5b5508c64d9d9725ac433c664fa98713a7e26377a3aa3ef56b69d",
+  "baselineWholeFixtureRestored": true,
+  "baselineArtworkResourcesUnchanged": true,
+  "baselineWidePrepared": 36,
+  "baselineWidePresented": 0,
+  "forcedOriginalCallFixture": true,
+  "actualRaceWin": false,
+  "bonusCarsOrOmegaNotCovered": true,
+  "physicalDeviceClaim": false
+}

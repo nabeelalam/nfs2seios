@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "scope": "Matched private desktop application link and delivery-plumbing checks; runtime and Apple acceptance remain separate.",
+  "sourceCommit": "96079a9",
+  "desktopBuild": {
+    "exitCode": 0,
+    "binarySha256": "eb7c31381dea6bca285facc1fce5c98ee62729e7e023b1931271262d7904c7d0",
+    "binaryBytes": 63965856,
+    "compiledOnly": [
+      "Methods_01.cpp",
+      "ArtworkActivation.cpp"
+    ],
+    "directLinkObjectCount": 99,
+    "reusedCacheObjects": 96,
+    "reusedPrivate708SDLObject": true,
+    "wholeExactPanoramaDeliveryMarkerPresent": true,
+    "legacyPrivateInputReadbackProbeStringsAbsent": true,
+    "all112ProtectedInputsUnchanged": true,
+    "canonicalPrivateHeadersUnchanged": true,
+    "resources23BesideActualExecutableVerified": true,
+    "elapsedSeconds": 119.167032003,
+    "gameRun": false,
+    "cloudBuild": false
+  },
+  "deliveryChecks": {
+    "focusedChecksPassed": 26,
+    "approvedPhotoEntries": 98,
+    "approvedFooterImages": 15,
+    "approvedFooterBindings": 98,
+    "privateResourceCount": 23,
+    "exactPanoramaMarkerRequired": true,
+    "oldExecutableNotPatchedByInjector": true
+  },
+  "privacy": {
+    "privateArtworkPayloadPublished": false,
+    "approvedCompatibilityMetadataOnly": true,
+    "cloudBuild": false,
+    "push": false
+  },
+  "remaining": [
+    "Grouped live application/GPU route acceptance for final98 resources",
+    "Matched Apple ARM64 base and actual finished private package measurement",
+    "Physical iPad acceptance and remaining performance/battery work"
+  ],
+  "goalComplete": false
+}

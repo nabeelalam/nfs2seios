@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "scope": "Current existing desktop candidate first Main swipe at both wider ratios",
+  "binarySha256": "2ee0b416ff03349a259b9f80aad1bf4e3d7c6557e783d6024fc488dc4353e7d9",
+  "cases": [
+    {
+      "shape": [
+        708,
+        492
+      ],
+      "resizedBeforeFirstPresentation": true,
+      "all59SwipeFramesPresentedWide": true,
+      "motionSteps0Through32Observed": true,
+      "heldEndFrames": 26,
+      "routes": [
+        {
+          "choice": "native",
+          "output": [
+            708,
+            492
+          ],
+          "frame": 1,
+          "previousFrames": 0
+        },
+        {
+          "choice": "title-wide",
+          "output": [
+            708,
+            492
+          ],
+          "frame": 39,
+          "previousFrames": 38
+        },
+        {
+          "choice": "native",
+          "output": [
+            708,
+            492
+          ],
+          "frame": 40,
+          "previousFrames": 1
+        },
+        {
+          "choice": "transition-wide",
+          "output": [
+            708,
+            492
+          ],
+          "frame": 41,
+          "previousFrames": 1
+        },
+        {
+          "choice": "menu-wide",
+          "output": [
+            708,
+            492
+          ],
+          "frame": 100,
+          "previousFrames": 59
+        }
+      ],
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true,
+      "boundaryCaptureClassification": {
+        "021.png": "HD title preceding cleared boundary; screen capture/log sampling can straddle swaps",
+        "022.png": "all RGB pixels black",
+        "023.png": "authored first Main panel visually inspected at708x492"
+      },
+      "everyFramePixelScreenshot": false
+    },
+    {
+      "shape": [
+        800,
+        450
+      ],
+      "resizedBeforeFirstPresentation": true,
+      "all59SwipeFramesPresentedWide": true,
+      "motionSteps0Through32Observed": true,
+      "heldEndFrames": 26,
+      "routes": [
+        {
+          "choice": "native",
+          "output": [
+            800,
+            450
+          ],
+          "frame": 1,
+          "previousFrames": 0
+        },
+        {
+          "choice": "title-wide",
+          "output": [
+            800,
+            450
+          ],
+          "frame": 40,
+          "previousFrames": 39
+        },
+        {
+          "choice": "native",
+          "output": [
+            800,
+            450
+          ],
+          "frame": 41,
+          "previousFrames": 1
+        },
+        {
+          "choice": "transition-wide",
+          "output": [
+            800,
+            450
+          ],
+          "frame": 42,
+          "previousFrames": 1
+        },
+        {
+          "choice": "menu-wide",
+          "output": [
+            800,
+            450
+          ],
+          "frame": 101,
+          "previousFrames": 59
+        }
+      ],
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true,
+      "boundaryCaptureClassification": {
+        "021.png": "HD title preceding cleared boundary; screen capture/log sampling can straddle swaps",
+        "022.png": "all RGB pixels black",
+        "023.png": "authored first Main panel visually inspected at708x492"
+      },
+      "everyFramePixelScreenshot": false
+    }
+  ],
+  "method": "Per-present authenticated wide-compositor trace and uninterrupted presentation-route frame counts, supported by periodic lossless startup screenshots; original movies excluded",
+  "limits": [
+    "Periodic captures are not59separate synchronized pixel screenshots",
+    "No physical iPad acceptance inferred",
+    "No new app build was needed for this audit"
+  ],
+  "physicalIpadVerified": false,
+  "cloudBuild": false
+}

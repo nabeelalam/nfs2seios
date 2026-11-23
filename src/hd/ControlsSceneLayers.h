@@ -20,6 +20,8 @@ extern "C" {
    Same-owner failure restores GL state; owner loss forgets metadata without GL.
    Every individual GL operation is checked before and after ownership. */
 int nfs_controls_scene_draw_layers_into_staging(NfsControlsSceneGpu*,const NfsBackgroundSceneStage*,const NfsControlsSceneLayers*);
+/* Responsive authored background; left sidebar and centred interactive text. */
+int nfs_controls_scene_draw_layers_into_nested_staging(NfsControlsSceneGpu*,const NfsBackgroundSceneStage*,const NfsControlsSceneLayers*,const NfsNestedBackdropTextures*);
 #ifdef __cplusplus
 }
 #endif

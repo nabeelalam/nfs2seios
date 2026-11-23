@@ -1,0 +1,291 @@
+{
+  "scope": "Grouped actual original Setup race-type walkthrough and attempted committed Tournament Location preview",
+  "binarySha256": "e29f75b34a677fbc323e6509b8d956df56390cdda59094c6a86ea80243e2dad5",
+  "runs": [
+    {
+      "tag": "setup-mode-group-ipad-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 284582,
+          "logEnd": 356096,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "397",
+              "previousFrames": "109"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "542",
+              "previousFrames": "145"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 356096,
+          "logEnd": 372235,
+          "routes": []
+        },
+        {
+          "action": "race-type-0",
+          "logStart": 372235,
+          "logEnd": 395568,
+          "routes": []
+        },
+        {
+          "action": "race-type-1",
+          "logStart": 395568,
+          "logEnd": 415636,
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "614",
+              "previousFrames": "72"
+            }
+          ]
+        },
+        {
+          "action": "race-type-2",
+          "logStart": 415636,
+          "logEnd": 434427,
+          "routes": [
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "653",
+              "previousFrames": "39"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 434427,
+          "logEnd": 462850,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "691",
+              "previousFrames": "38"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "703",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "location-current-mode",
+          "logStart": 468724,
+          "logEnd": 492891,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "766",
+              "previousFrames": "63"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "783",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "804",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "location-return-main",
+          "logStart": 492891,
+          "logEnd": 518344,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "816",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "835",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ],
+      "setupOriginalNativeFinishes": 149
+    },
+    {
+      "tag": "setup-tournament-location-wide-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 281731,
+          "logEnd": 348355,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "483",
+              "previousFrames": "67"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "603",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 348355,
+          "logEnd": 368238,
+          "routes": []
+        },
+        {
+          "action": "tournament-selected",
+          "logStart": 368238,
+          "logEnd": 387893,
+          "routes": []
+        },
+        {
+          "action": "tournament-committed-main",
+          "logStart": 428898,
+          "logEnd": 457528,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "710",
+              "previousFrames": "107"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "722",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "location-current-mode",
+          "logStart": 461880,
+          "logEnd": 486036,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "787",
+              "previousFrames": "65"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "804",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "825",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "location-return-main",
+          "logStart": 486036,
+          "logEnd": 511912,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "839",
+              "previousFrames": "14"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "858",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ],
+      "setupOriginalNativeFinishes": 107
+    }
+  ],
+  "visualReview": {
+    "raceTypes": [
+      "single race",
+      "tournament",
+      "knockout"
+    ],
+    "knockoutNativeFallback": true,
+    "fallbackWitness": {
+      "owner": "0x004d2790",
+      "serial": 643,
+      "reason": 6,
+      "rect": [
+        510,
+        387,
+        638,
+        515
+      ],
+      "sourceAddress": 1992704,
+      "nativeId": 630,
+      "format": 11,
+      "edge": 128
+    },
+    "tournamentPreviewVerified": false,
+    "locationObserved": "Proving Grounds with regular photo; intended Tournament mode commit not proven"
+  },
+  "limitations": [
+    "Driver success means clean walkthrough and restoration, not semantic mode acceptance.",
+    "Inherited wrapper LoadSave/Credits aggregate fields are unrelated to this route.",
+    "No physical iPad, performance or battery evidence."
+  ],
+  "next": "Trace original Knockout lower-right emblem and bind its exact resource/draw into responsive tail; correct mode commit navigation before Tournament preview acceptance."
+}

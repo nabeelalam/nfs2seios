@@ -1,0 +1,12 @@
+{
+  "scope": "Two previously recorded alternating North Country split-screen trials at 1180x820 in WSL software GLES2, with both cars controlled. Desktop only.",
+  "method": "Use per-frame CSV rows whose complete swap-to-swap interval is inside the same 30-second race window. All selected swap calls were measured, the drawable epoch stayed constant, and no capture records were dropped. Outside-swap time is each frame interval minus its ending swap call.",
+  "trials": [
+    {"order": [256, 512], "capacity": 256, "frameCount": 829, "medianSpacingMs": 36.876, "p99SpacingMs": 53.873, "medianSwapCallMs": 4.571, "p99SwapCallMs": 6.371, "medianOutsideSwapMs": 32.325, "p99OutsideSwapMs": 47.943, "slowestFivePercentMedianSwapShare": 0.115},
+    {"order": [256, 512], "capacity": 512, "frameCount": 851, "medianSpacingMs": 35.453, "p99SpacingMs": 51.960, "medianSwapCallMs": 4.565, "p99SwapCallMs": 6.443, "medianOutsideSwapMs": 30.888, "p99OutsideSwapMs": 45.899, "slowestFivePercentMedianSwapShare": 0.120},
+    {"order": [512, 256], "capacity": 256, "frameCount": 823, "medianSpacingMs": 36.892, "p99SpacingMs": 54.061, "medianSwapCallMs": 4.561, "p99SwapCallMs": 6.519, "medianOutsideSwapMs": 32.285, "p99OutsideSwapMs": 47.672, "slowestFivePercentMedianSwapShare": 0.116},
+    {"order": [512, 256], "capacity": 512, "frameCount": 849, "medianSpacingMs": 35.664, "p99SpacingMs": 51.813, "medianSwapCallMs": 4.588, "p99SwapCallMs": 6.554, "medianOutsideSwapMs": 31.009, "p99OutsideSwapMs": 46.002, "slowestFivePercentMedianSwapShare": 0.121}
+  ],
+  "decision": "The median gain occurred outside the swap call in both desktop orders. Inspect engine and renderer work before attempting changes to the desktop swap path.",
+  "limits": "Outside-swap time includes work, scheduling and waits; it is not CPU time, GPU time or energy. The two paired orders cannot establish iPad behavior. The per-frame filter differs from the complete one-second samples used for queue totals."
+}

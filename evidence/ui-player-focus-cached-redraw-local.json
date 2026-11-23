@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "scope": "Player cached redraw after clear, fresh layout and exact native revalidation",
+  "binarySha256": "f97a0bcdeb8c64e46581aba57e4e218233890ef31f44b47dc1b55456cf150879",
+  "cloudBuild": false,
+  "clearInvalidationUnchanged": true,
+  "oldDisplayedFramebufferReused": false,
+  "freshResponsiveEpochRequired": true,
+  "retainedTokenLifetimeCatalogUploadEventRequired": true,
+  "actualNativeSelections": 300,
+  "actualNativeTriangles": 600,
+  "cases": [
+    {
+      "form": "Player Two",
+      "output": [
+        800,
+        450
+      ],
+      "graphToCarNativeFallbackEvents": 0,
+      "focusIntervalCompletedNative300x600Passes": 11,
+      "graphReturnWideFrames": 21,
+      "photoCases": 4,
+      "photoWideFramesEach": 21,
+      "exitCode": 0,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true
+    },
+    {
+      "form": "Player Two",
+      "output": [
+        708,
+        492
+      ],
+      "graphToCarNativeFallbackEvents": 0,
+      "focusIntervalCompletedNative300x600Passes": 10,
+      "graphReturnWideFrames": 21,
+      "photoCases": 4,
+      "photoWideFramesEach": 21,
+      "exitCode": 0,
+      "copiedFixtureRestoredExactly": true,
+      "all22ResourcesUnchanged": true
+    }
+  ],
+  "pending": [
+    "Grouped whole-UI current-candidate pass",
+    "Physical iPad acceptance"
+  ],
+  "physicalIpadVerified": false,
+  "published": false
+}

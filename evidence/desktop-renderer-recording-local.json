@@ -1,0 +1,13 @@
+{
+  "scope": "WSL software GLES2, Proving Grounds split-screen race-only intervals, two controller inputs.",
+  "route": "Drove both cars, quit through Summary and Lap Times, returned to Main and started another race.",
+  "measurement": {
+    "samples": 64,
+    "observed_race_seconds": 64.0723,
+    "observed_race_presentations": 1997,
+    "renderer_calls_per_presentation": 41.042563845768655,
+    "renderer_queue_ms_per_presentation": 2.8100789183775663,
+    "renderer_execution_ms_per_presentation": 12.524011967951928
+  },
+  "limitations": "Times measure host queue and execution, not GPU time. No iPad Low Power Mode or battery measurement."
+}

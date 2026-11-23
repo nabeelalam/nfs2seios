@@ -1,0 +1,38 @@
+{
+  "scope": "Full current desktop game on WSL software GLES2 with 512 permitted pending renderer commands and the original data copy.",
+  "verified": [
+    "Both Opponents entries and exits preserved a wide presentation route",
+    "First four-car preview committed on both visits",
+    "Clean process and recorder shutdown"
+  ],
+  "routes": [
+    {
+      "output": "1180x820",
+      "startFrame": 281,
+      "firstSettledReturnFrame": 371,
+      "routes": [
+        "menu-wide",
+        "transition-wide",
+        "intro-wide",
+        "transition-wide",
+        "child-return-wide",
+        "menu-wide"
+      ]
+    },
+    {
+      "output": "800x450",
+      "startFrame": 479,
+      "firstSettledReturnFrame": 577,
+      "routes": [
+        "menu-wide",
+        "transition-wide",
+        "intro-wide",
+        "transition-wide",
+        "child-return-wide",
+        "menu-wide"
+      ]
+    }
+  ],
+  "observation": "2c5374c0725b033fa5289170eec5196c6f463ad0eeff2f65cf448c6f56478bfe",
+  "physicalIpadVerified": false
+}

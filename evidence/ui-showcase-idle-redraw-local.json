@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "scope": "Local original-data software-GLES Showcase replay only; no physical iPad claim",
+  "baseline": "grouped-512-showcase-idle-diagnostic-v16",
+  "candidate": "grouped-512-showcase-idle-qualified-v17",
+  "stationarySeconds": 20,
+  "baselineInformationDeclines": 1,
+  "candidateInformationDeclines": 0,
+  "extraBitmapDrawsObserved": 1,
+  "extraDrawsCompletedRemastered": 1,
+  "cleanRouteExit": true,
+  "guard": "Exact bitmap identity at draw entry and completion; existing epoch, target, complete pixels, static archive and lifetime validations retained",
+  "binarySHA256": "7614f6d18f12dd8a12ad26ffac00a5b250d3b49245356d89ca376bf742da20c1",
+  "logSHA256": "493f4d101dbb26f3d71678715c152e586842a6b827961f7f832f0204cc4fc4ff",
+  "remaining": [
+    "Assess previous manufacturer mark during early return separately from original spin animation",
+    "Apple build and physical iPad validation",
+    "Broader UI transition acceptance"
+  ],
+  "widescreenFollowup": {
+    "run": "grouped-512-showcase-qualified-wide-v18",
+    "output": [
+      800,
+      450
+    ],
+    "carChanges": 6,
+    "informationDeclines": 0,
+    "cleanRouteExit": true,
+    "logSHA256": "7ad2d60e45cffd394a5eaf8a911af3fd8808768fb8123f61b1c61435ed324123",
+    "visualReview": "Early return remains HD and widescreen and shows the previous McLaren mark. Magnified settled-return capture identifies the Jaguar leaper and mirrored JAGUAR lettering during the original spinning-logo animation. The earlier Mazda identification was a visual inspection error, not proof of a wrong artwork mapping.",
+    "visualCorrection": {
+      "inspection": "Magnified manufacturer-detail.png from the unchanged settled BMP",
+      "cropSHA256": "aa7fcff78178f06a2e1727926be1cfa57523b2cddad3b0fa8105bf5c0b967850",
+      "result": "Settled identity mismatch not established; do not remap Jaguar based on this screenshot"
+    }
+  }
+}

@@ -53,6 +53,12 @@ struct Owner {
   return o->view.route==NFS_CHILD_RETURN_FADE||(o->view.route==NFS_CHILD_RETURN_REVERSE&&o->sideSealed&&o->bare&&o->bare->life&&o->bare->life->current())?0:20;
  }
  static int current(void*p){return invalidReason(p)==0;}
+ static int semanticSidebarCurrent(void*p){const auto*o=static_cast<const Owner*>(p);
+  if(!o||invalidReason(p)||o->view.route!=NFS_CHILD_RETURN_FADE)return 0;
+  if(o->view.semantic.family==NFS_CHILD_EXIT_SETUP)return setupFrameCurrent(*o)?1:0;
+  if(o->view.semantic.family==NFS_CHILD_EXIT_OPTIONS)return optionsFrameCurrent(*o)?1:0;
+  return 0;
+ }
 };
 inline bool framePhase(unsigned route,unsigned index,int32_t phase)noexcept{return route==1?index<12&&phase==140+10*int32_t(index):route==2&&index<19&&phase==-15*int32_t(index);}
 inline std::shared_ptr<Owner>adopt(Owner*p){return std::shared_ptr<Owner>(p,[](Owner*q){Owner::release(q);});}
@@ -172,7 +178,25 @@ inline std::shared_ptr<old::Owner>captureSemantic(Game&g,uint64_t session,const 
   }
   if(!o->view.setup.schema)return {};
  }
- else if(f==uint32_t(guest_address(off_4D3A88))){auto*s=nfs_options_scene_live::current(g);if(!s||!old::fullSource(s,s->published,g,*o,NFS_CHILD_EXIT_OPTIONS,0x4d3a88)){optionsFullSourceRefusal(g,s);return {};}capturedOptions=s->published;o->view.options=capturedOptions->view();if(!o->view.options.schema)return {};}
+ else if(f==uint32_t(guest_address(off_4D3A88))){
+  auto*s=nfs_options_scene_live::current(g);if(!s)return {};
+  const auto published=s->published;
+  if(old::fullSource(s,published,g,*o,NFS_CHILD_EXIT_OPTIONS,0x4d3a88)){capturedOptions=published;o->view.options=published->view();}
+  else {
+   auto uploaded=nfs_options_uploaded_source::pendingForReturn(g,*s);if(!uploaded)return {};
+   // Transfer immutable completed-upload content to this exact return session.
+   // The return renderer still proves the actual full300/600 native pass; no
+   // partial current collector or older cached widget packet is adopted.
+   capturedOptions=uploaded->frame;
+   o->typed=uploaded;o->full=uploaded->frame;o->catalog=uploaded->catalog;
+   o->authenticatedSidebar=uploaded->sidebarHistory;
+   o->view.family=NFS_CHILD_EXIT_OPTIONS;o->view.form=0x4d3a88;
+   o->view.ownerEpoch=uploaded->domain.ownerEpoch;o->view.sourceGame=uploaded->domain.game;
+   o->view.sourceCatalog=uploaded->domain.catalog;o->view.sourceArchive=uploaded->domain.archive;
+   o->view.uploadEvent=uploaded->domain.uploadEvent;o->view.options=uploaded->frame->view();
+  }
+  if(!o->view.options.schema)return {};
+ }
  else if(f==uint32_t(guest_address(off_4D2A20))){auto*s=nfs_location_scene_live::current(g);if(!s||!old::fullSource(s,s->published,g,*o,NFS_CHILD_EXIT_LOCATION,0x4d2a20))return {};o->view.location=s->published->view();if(!o->view.location.schema)return {};}
  else if(f==uint32_t(guest_address(off_4D3204))){auto*s=nfs_opponent_scene_live::current(g);if(!s||!old::fullSource(s,s->published,g,*o,NFS_CHILD_EXIT_OPPONENT,0x4d3204))return {};o->view.opponent=s->published->view();if(!o->view.opponent.schema)return {};}
  else if(nfs_player_scene_live::canonicalForm(f)){auto*s=nfs_player_scene_live::current(g);const uint32_t c=nfs_player_scene_live::canonicalForm(f);const auto a=nfs_player_scene_live::accepted();auto*source=nfs_player_source_live::slot();if(!s||s->invalid||s->form!=c||s->formGuest!=f||!s->published||a.owner!=s||a.epoch!=s->ownerEpoch||!a.proof||a.prepared!=s->published||!source)return {};nfs_player_native::CurrentBinding binding{};auto proof=nfs_player_native_live::proofForPresentation(g,binding,source->upload);if(!proof||proof!=a.proof||!proof->current(binding)||!proof->source(binding))return {};o->typed=a.prepared;o->full=a.prepared;o->catalog=s->catalogue;o->playerNative=proof;o->playerBinding=binding;o->view.family=c==0x4d3050?NFS_CHILD_EXIT_PLAYER1:NFS_CHILD_EXIT_PLAYER2;o->view.form=c;o->view.ownerEpoch=s->ownerEpoch;o->view.sourceGame=s->game;o->view.sourceCatalog=reinterpret_cast<uintptr_t>(s->catalogue.get());o->view.sourceArchive=binding.source.archive;o->view.uploadEvent=proof->uploadEvent(binding);o->view.player=a.prepared->view();if(!o->view.player.schema)return {};}
@@ -187,7 +211,7 @@ inline bool initialSemantic(Game&g,Owner&o,uint64_t serial)noexcept{try{
  auto sem=old::adopt(new old::Owner);auto&v=sem->view;v.schema=1;v.session=serial;v.sourceGame=p->game;v.sourceCatalog=reinterpret_cast<uintptr_t>(p->catalog.get());v.sourceArchive=p->archive;v.sourceLife=p->life->serial();v.uploadEvent=nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire);sem->catalog=p->catalog;sem->gameLife=p->life;sem->life=o.life;sem->formGuest=uint32_t(g.esi);
  NfsBackgroundSceneFrameView b{};b.schema=1;b.width=640;b.height=480;b.mapRole=p->mapRole;b.wordCount=p->layers.wordCount;b.serial=serial;b.contentRevision=p->content;b.planeWords=bg::Full;b.original565=p->original.data();std::copy(p->addresses.begin(),p->addresses.end(),b.rendererAddress);std::copy(p->layers.panelClip,p->layers.panelClip+4,b.panelClip);std::copy(p->layers.words,p->layers.words+4,b.words);std::copy(p->layers.logos,p->layers.logos+3,b.logos);
  const bg::Plane*side=nullptr;
- if(p->kind==8){auto q=p->setupInitialFull;if(!q||!q->child||!q->child->current()||!nfs_setup_initial_full_live::owned(g,*q)||!nfs_setup_initial_full_live::rawMatches(*q,p->raw))return false;v.form=q->form;v.ownerEpoch=q->epoch;side=&q->child->post();if(q->form==0x4d2790){v.family=NFS_CHILD_EXIT_SETUP;v.setup.schema=NFS_SETUP_SCENE_RUNTIME_SCHEMA;b.tailKind=4;v.setup.scene=b;v.setup.captionWord=q->child->wordView();}else if(q->form==0x4d3a88){v.family=NFS_CHILD_EXIT_OPTIONS;v.options.schema=NFS_OPTIONS_SCENE_RUNTIME_SCHEMA;b.tailKind=3;v.options.scene=b;v.options.captionWord=q->child->wordView();}else return false;}
+ if(p->kind==8){auto q=p->setupInitialFull;if(!q||(!q->child&&!q->optionsReturn)||(q->child&&!q->child->current())||(q->optionsReturn&&!q->optionsReturn->current())||!nfs_setup_initial_full_live::owned(g,*q)||!nfs_setup_initial_full_live::rawMatches(*q,p->raw))return false;v.form=q->form;v.ownerEpoch=q->epoch;side=&nfs_setup_initial_full_live::sidebar(*q);if(q->form==0x4d2790){v.family=NFS_CHILD_EXIT_SETUP;v.setup.schema=NFS_SETUP_SCENE_RUNTIME_SCHEMA;b.tailKind=4;v.setup.scene=b;v.setup.captionWord=q->child->wordView();}else if(q->form==0x4d3a88){v.family=NFS_CHILD_EXIT_OPTIONS;v.options.schema=NFS_OPTIONS_SCENE_RUNTIME_SCHEMA;b.tailKind=3;v.options.scene=b;v.options.captionWord=q->child?q->child->wordView():q->optionsReturn->frame->wordView();}else return false;}
  else if(p->kind==9){auto q=p->locationInitialFull;if(!q||!q->child||!q->child->current()||!nfs_location_initial_full_live::owned(g,*q))return false;v.form=0x4d2a20;v.family=NFS_CHILD_EXIT_LOCATION;v.ownerEpoch=q->epoch;side=&q->child->post();v.location.schema=NFS_LOCATION_SCENE_RUNTIME_SCHEMA;b.tailKind=2;v.location.scene=b;v.location.captionWord=q->child->view().caption;v.location.preview=q->previewView();if(!v.location.preview.schema)return false;}
  else {auto q=p->opponentInitialFull;if(!q||!q->child||!q->child->current()||!nfs_opponent_initial_full_live::owned(g,*q))return false;v.form=0x4d3204;v.family=NFS_CHILD_EXIT_OPPONENT;v.ownerEpoch=q->epoch;side=&q->child->post();v.opponent.schema=NFS_OPPONENT_SCENE_RUNTIME_SCHEMA;b.tailKind=6;v.opponent.scene=b;v.opponent.caption=q->child->view().caption;v.opponent.preview=q->previewView();if(!v.opponent.preview.schema)return false;}
  const uint32_t expected=v.form==0x4d2790?uint32_t(guest_address(off_4D2790)):v.form==0x4d3a88?uint32_t(guest_address(off_4D3A88)):v.form==0x4d2a20?uint32_t(guest_address(off_4D2A20)):v.form==0x4d3204?uint32_t(guest_address(off_4D3204)):0;if(!expected||uint32_t(g.esi)!=expected||!side||!bg::plane(*side,343)||!v.uploadEvent||p->raw.size()!=16+bg::Full*2)return false;for(unsigned k=0;k<bg::Full;++k)if(bg::le16(p->raw.data()+16+2*k)!=p->original[k])return false;
@@ -281,6 +305,9 @@ public:
     o->sideKeys=side->addresses;o->sideSealed=true;v.semantic.sidebar565=o->side.data();v.semantic.sidebarWords=bg::Full;std::copy(o->sideKeys.begin(),o->sideKeys.end(),v.semantic.sidebarKeys);v.semantic.sidebarContent=side->content;
    }
   }else if(route!=NFS_CHILD_RETURN_REVERSE)return;
+  if(route==NFS_CHILD_RETURN_FADE&&Owner::semanticSidebarCurrent(o.get())==1){
+   v.schema=2;v.semanticSidebarCurrent=Owner::semanticSidebarCurrent;
+  }
   owner_=o;session()=this;note(0,o.get());
  }catch(...){note(3);}}
  std::shared_ptr<Owner>owner(){return owner_;}

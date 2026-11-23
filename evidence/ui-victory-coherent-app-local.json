@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "scope": "Fresh coherent maintained-source desktop app and normal Opponents/Main flow",
+  "upstreamPins": {
+    "engine": "fde04b571533ba20a60c473ab99d2431bb5cfd60",
+    "sdl": "829a65d769d935c4852f8159e964312c0957260a"
+  },
+  "preparation": {
+    "stages": [
+      {
+        "stage": "engine",
+        "exitCode": 0
+      },
+      {
+        "stage": "renderer",
+        "exitCode": 0
+      },
+      {
+        "stage": "adaptive",
+        "exitCode": 0
+      }
+    ],
+    "engineUnits": 15,
+    "freshMaintainedPreparation": true,
+    "cloudBuild": false,
+    "elapsedSeconds": 47.223309273
+  },
+  "build": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exitCode": 0
+      },
+      {
+        "stage": "build",
+        "exitCode": 0
+      }
+    ],
+    "binarySha256": "ac017bffba11933c97731551b9af5596a3209c47e792efa313a726d8a40281ec",
+    "binaryBytes": 63798032,
+    "freshSourcePair": true,
+    "naturalGameplayRun": false,
+    "cloudBuild": false,
+    "elapsedSeconds": 183.75444824399997
+  },
+  "resourceAudit": {
+    "matched": 22,
+    "mismatches": []
+  },
+  "smoke": {
+    "opponentsOpenedAndReturned": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "observedPresentationRoutes": [
+    {
+      "choice": "native",
+      "width": 640,
+      "height": 480,
+      "frame": 1
+    },
+    {
+      "choice": "menu-wide",
+      "width": 708,
+      "height": 492,
+      "frame": 277
+    },
+    {
+      "choice": "transition-wide",
+      "width": 708,
+      "height": 492,
+      "frame": 288
+    },
+    {
+      "choice": "intro-wide",
+      "width": 708,
+      "height": 492,
+      "frame": 305
+    },
+    {
+      "choice": "transition-wide",
+      "width": 708,
+      "height": 492,
+      "frame": 326
+    },
+    {
+      "choice": "child-return-wide",
+      "width": 708,
+      "height": 492,
+      "frame": 360
+    },
+    {
+      "choice": "menu-wide",
+      "width": 708,
+      "height": 492,
+      "frame": 379
+    }
+  ],
+  "wideIntervalHasNoNativeRoute": true,
+  "opponentsTransitionAccepted": true,
+  "opponentsFirstFrameCommitted": true,
+  "normalAppEntry": true,
+  "manualOwnerScopeOrDirectVictoryDraws": false,
+  "screensReviewed": [
+    "Opponents open at708x492",
+    "Main returned at708x492"
+  ],
+  "logSha256": "f424068403527d6774b0e62e50a6eb93d3d38641975440190fb77cb20d1b0b1d",
+  "earlierHarnessFailure": {
+    "cause": "Driver deadline150s equaled the menu helper cleanup reserve, so its45s-ready loop had no time left.",
+    "appExitedCleanly": true,
+    "copiedFixtureRestoredExactly": true,
+    "fixedDriverDeadlineSeconds": 240,
+    "appCodeChangedForRetry": false
+  },
+  "limits": [
+    "No natural race-win/Victory owner entry witnessed.",
+    "Initial640x480native route is not classified as an old-UI visual regression by this menu check.",
+    "No Apple SDK compile, physical-device, gameplay FPS or battery validation.",
+    "Final artwork-package sizing still pending."
+  ]
+}

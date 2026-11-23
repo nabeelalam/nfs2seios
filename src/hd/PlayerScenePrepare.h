@@ -57,14 +57,14 @@ struct Prepared:bg::Prepared {
  }
 };
 
-enum class SourceKind:uint32_t{Initial,Refresh,Lazy};
+enum class SourceKind:uint32_t{Initial,Refresh,Lazy,PreviewRebuild};
 struct SourceBinding {
  uint32_t form=0,formGuest=0,sourceOwner=0,archive=0;uintptr_t gameOwner=0,thread=0;
  uint64_t epoch=0,lifetime=0,generation=0,contentSerial=0,copySerial=0;
  SourceKind kind=SourceKind::Initial;
 };
 inline bool sameBinding(const SourceBinding&a,const SourceBinding&b)noexcept{return a.form==b.form&&a.formGuest==b.formGuest&&a.sourceOwner==b.sourceOwner&&a.archive==b.archive&&a.gameOwner==b.gameOwner&&a.thread==b.thread&&a.epoch==b.epoch&&a.lifetime==b.lifetime&&a.generation==b.generation&&a.contentSerial==b.contentSerial&&a.copySerial==b.copySerial&&a.kind==b.kind;}
-inline bool validBinding(const SourceBinding&b)noexcept{return tail(b.form)&&b.formGuest&&b.sourceOwner==b.formGuest&&b.archive&&b.gameOwner&&b.thread&&b.epoch&&b.lifetime==b.epoch&&b.generation&&b.contentSerial&&b.copySerial&&(b.kind==SourceKind::Initial||b.kind==SourceKind::Refresh||b.kind==SourceKind::Lazy);}
+inline bool validBinding(const SourceBinding&b)noexcept{return tail(b.form)&&b.formGuest&&b.sourceOwner==b.formGuest&&b.archive&&b.gameOwner&&b.thread&&b.epoch&&b.lifetime==b.epoch&&b.generation&&b.contentSerial&&b.copySerial&&(b.kind==SourceKind::Initial||b.kind==SourceKind::Refresh||b.kind==SourceKind::Lazy||b.kind==SourceKind::PreviewRebuild);}
 // formGuest/sourceOwner are independently relocated exact form descriptors,
 // distinct from gameOwner (host Game occurrence) and actual target.owner.
 inline bool sameEvent(const Event&a,const Event&b)noexcept{return a.ownerEpoch==b.ownerEpoch&&a.sequence==b.sequence&&a.iteration==b.iteration;}
@@ -160,7 +160,7 @@ inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&i,Wor
  if(!validBinding(a)||!validCatalog(catalog)||b.form!=form||b.event.ownerEpoch!=a.epoch||b.event.iteration||!b.event.sequence||c.serial!=a.copySerial)return reject(Failure::Binding);
  // Direct Initial/Refresh copies occur outside40BBE0 (iteration0); only
  // genuine Lazy copies carry a nonzero lazy iteration. No synthetic group.
- if((a.kind==SourceKind::Initial&&(i.swatch||i.copyEvent.iteration))||
+ if(((a.kind==SourceKind::Initial||a.kind==SourceKind::PreviewRebuild)&&(i.swatch||i.copyEvent.iteration))||
     (a.kind==SourceKind::Refresh&&(!i.swatch||i.copyEvent.iteration))||
     (a.kind==SourceKind::Lazy&&!i.copyEvent.iteration))return reject(Failure::Binding);
  if(b.mapRole>1||b.sourceBefore.size()!=614416||b.sourceBefore!=b.sourceAfter||!nfs_small_logo_live::hashMatches(b.sourceBefore.data(),614416,catalog.mapSha[b.mapRole])||!plane(b.post,640)||le32(b.sourceBefore.data())!=0x78||le32(b.sourceBefore.data()+4)!=(640u|(480u<<16))||le32(b.sourceBefore.data()+8)||le32(b.sourceBefore.data()+12))return reject(Failure::Base);
@@ -175,17 +175,17 @@ inline std::shared_ptr<const VerifiedSource>verifySource(const JoinedInput&i,Wor
  std::shared_ptr<const nfs_soft::FramePacket>caption;std::shared_ptr<const nfs_compact_caption::Proof>compactCaption;uint64_t captionSerial=0,captionLifetime=0;
  unsigned wordCount=0;std::array<NfsBackgroundSceneWordLayer,4>words{};std::array<NfsSmallLogoLayer,3>logos{};
  if(i.initialSidebar){const auto&p=*i.initialSidebar;const auto&ib=p.binding();const auto&event=ib.captionEvent;
-  if((a.kind!=SourceKind::Initial&&a.kind!=SourceKind::Refresh)||i.acceptedSidebarSerial||i.sidebarLifetime||!p.current()||!p.catalogMatches(catalog)||ib.form!=form||ib.formGuest!=a.formGuest||ib.archive!=a.archive||ib.game!=a.gameOwner||ib.thread!=a.thread||ib.epoch!=a.epoch||event.ownerEpoch!=a.epoch||event.iteration||!event.sequence||event.sequence>=b.event.sequence||!p.origin()||!p.origin()->current()||!p.origin()->frame()||!p.origin()->frame()->valid||p.origin()->game()!=a.gameOwner||p.origin()->publisherThread()!=a.thread||p.origin()->archive()!=a.archive||!p.captionProof()||!p.caption()||!p.captionSerial()||!p.captionLifetime())return reject(Failure::Binding);
-  sidebarGroup=&p.origin()->group();sidebarPost=&p.post();caption=p.caption();compactCaption=p.captionProof();captionSerial=p.captionSerial();captionLifetime=p.captionLifetime();
-  const auto&inherited=*p.origin()->frame();wordCount=inherited.wordCount;words=inherited.words;logos=inherited.logos;
+  if((a.kind!=SourceKind::Initial&&a.kind!=SourceKind::Refresh&&a.kind!=SourceKind::PreviewRebuild)||i.acceptedSidebarSerial||i.sidebarLifetime||!p.current()||!p.catalogMatches(catalog)||ib.form!=form||ib.formGuest!=a.formGuest||ib.archive!=a.archive||ib.game!=a.gameOwner||ib.thread!=a.thread||ib.epoch!=a.epoch||event.ownerEpoch!=a.epoch||event.iteration||!event.sequence||event.sequence>=b.event.sequence||!p.frame()||!p.frame()->valid||(!p.showcaseReturn()&&(!p.origin()||!p.origin()->current()||p.origin()->game()!=a.gameOwner||p.origin()->publisherThread()!=a.thread||p.origin()->archive()!=a.archive))||!p.captionProof()||!p.caption()||!p.captionSerial()||!p.captionLifetime())return reject(Failure::Binding);
+  sidebarGroup=p.showcaseReturn()?nullptr:&p.origin()->group();sidebarPost=&p.post();caption=p.caption();compactCaption=p.captionProof();captionSerial=p.captionSerial();captionLifetime=p.captionLifetime();
+  const auto&inherited=*p.frame();wordCount=inherited.wordCount;words=inherited.words;logos=inherited.logos;
  }else{const auto&p=*i.sidebar;
   if(!p.catalogMatches(catalog)||p.form()!=form||p.serial()!=i.acceptedSidebarSerial||!i.acceptedSidebarSerial||p.lifetime()!=i.sidebarLifetime||!i.sidebarLifetime||p.sceneEvent().ownerEpoch!=a.epoch||p.tailEvent().sequence>=ve.sequence)return reject(Failure::Binding);
   sidebarGroup=&p.group();sidebarPost=&p.post();caption=p.caption();compactCaption=p.compactCaption();captionSerial=p.captionSerial();captionLifetime=i.sidebarLifetime;wordCount=p.wordCount();words=p.words();logos=p.logos();
  }
- if(!sidebarGroup||!sidebarPost||!plane(*sidebarPost,343)||!sameCaptionOwner(sidebarPost->target,i.actualSidebarPost->target)||!std::equal(sidebarPost->pixels.begin(),sidebarPost->pixels.begin()+Side,i.actualSidebarPost->pixels.begin()))return reject(Failure::Binding);
+ if((!sidebarGroup&&!(i.initialSidebar&&i.initialSidebar->showcaseReturn()))||!sidebarPost||!plane(*sidebarPost,343)||!sameCaptionOwner(sidebarPost->target,i.actualSidebarPost->target)||!std::equal(sidebarPost->pixels.begin(),sidebarPost->pixels.begin()+Side,i.actualSidebarPost->pixels.begin()))return reject(Failure::Binding);
  if(!sameCaptionOwner(c.sourceOwner,i.actualSidebarPost->target)||c.sourceOwner.owner==c.pre.target.owner||c.sourceOwner.ownerState[3]!=c.pre.target.owner||!retainedBaseTarget(b.post.target,c.pre.target)||!i.actualUploadPost||!pv::planeValid(*i.actualUploadPost)||!retainedBaseTarget(b.post.target,i.actualUploadPost->target))return reject(Failure::Target);
  for(unsigned k=0;k<Side;++k)if(le16(c.sourceBefore.data()+16+2*k)!=i.actualSidebarPost->pixels[k])return reject(Failure::Copy);
- std::unique_ptr<nfs_small_logo_live::Prepared>copyProof(new(std::nothrow)nfs_small_logo_live::Prepared);if(!copyProof)return reject(Failure::Source);if(nfs_small_logo_live::verifyAndPrepare(*sidebarGroup,c,w.logo,*copyProof,catalog.logos)!=nfs_small_logo_live::Failure::None)return reject(Failure::Logos);
+ if(i.initialSidebar&&i.initialSidebar->showcaseReturn()){if(!i.initialSidebar->verifiesShowcaseCopy(c,w))return reject(Failure::Copy);}else{std::unique_ptr<nfs_small_logo_live::Prepared>copyProof(new(std::nothrow)nfs_small_logo_live::Prepared);if(!copyProof)return reject(Failure::Source);if(nfs_small_logo_live::verifyAndPrepare(*sidebarGroup,c,w.logo,*copyProof,catalog.logos)!=nfs_small_logo_live::Failure::None)return reject(Failure::Logos);}
  if(i.swatch){const auto&sa=i.swatchAuthority;const auto&se=i.swatchEvent;const auto&sc=i.swatchCopyEvent;
   if(!sw::valid(sa)||!i.acceptedSwatchCopySerial||sa.binding.origin!=sw::Origin::Refresh||sa.binding.form!=form||sa.binding.owner!=a.formGuest||sa.binding.epoch!=a.epoch||sa.binding.lifetime!=a.lifetime||sa.binding.archive!=a.archive||sa.binding.car!=i.preview->selection().selectedCar||sc.ownerEpoch!=a.epoch||sc.iteration||se.iteration||sc.sequence<=i.previewEvent.sequence||sc.sequence>ce.sequence||sa.events.enter<=sc.sequence||se.ownerEpoch!=a.epoch||se.sequence!=sa.events.exit||se.sequence>=ue.sequence||!i.swatchCopyPost||!i.actualSwatchPost||!sw::plane(*i.swatchCopyPost)||!sw::plane(*i.actualSwatchPost)||!retainedBaseTarget(b.post.target,i.swatchCopyPost->target)||!retainedBaseTarget(b.post.target,i.actualSwatchPost->target)||!i.swatch->preMatches(*i.swatchCopyPost)||!i.swatch->matches(sa,i.actualSwatchPost->target,i.actualSwatchPost->pixels.data(),Full))return reject(Failure::Binding);
   // A Refresh is bound to this exact original copy. Lazy may retain only

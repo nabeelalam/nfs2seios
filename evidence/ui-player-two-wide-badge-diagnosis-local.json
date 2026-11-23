@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "scope": "Actual Player Two wide-tail refusal diagnosis and private additive badge-pack candidate",
+  "diagnosticBinarySha256": "2afbe673bfa8455f996ce8ca07ed0a9afb71d3bbff7032d378930e65e6286565",
+  "rendererDiagnosticOverlay": true,
+  "engineUnchangedFromVerifiedBonusTransitionBuild": true,
+  "runtime": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 0,
+    "actions": 7,
+    "hdVictoryFrames": 0,
+    "exactLogoTailFrames": 0,
+    "actualWidePresentedTraceFrames": 0,
+    "menuOnlyCarTraversal": true,
+    "bonusObservedCases": [
+      {
+        "command": "002.json",
+        "op": "p2_car",
+        "elapsedBefore": 210.384258518,
+        "observedBonusCar": 12,
+        "photoSourceSerial": 4,
+        "actualPhotoStates": [
+          {
+            "serial": 1,
+            "car": 9
+          },
+          {
+            "serial": 2,
+            "car": 10
+          },
+          {
+            "serial": 3,
+            "car": 11
+          },
+          {
+            "serial": 4,
+            "car": 12
+          }
+        ],
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 215.316402998
+      },
+      {
+        "command": "003.json",
+        "op": "p2_car",
+        "elapsedBefore": 215.323562258,
+        "observedBonusCar": 13,
+        "photoSourceSerial": 5,
+        "actualPhotoStates": [
+          {
+            "serial": 4,
+            "car": 12
+          },
+          {
+            "serial": 5,
+            "car": 13
+          }
+        ],
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 217.643017902
+      },
+      {
+        "command": "004.json",
+        "op": "p2_car",
+        "elapsedBefore": 217.648573806,
+        "observedBonusCar": 14,
+        "photoSourceSerial": 6,
+        "actualPhotoStates": [
+          {
+            "serial": 5,
+            "car": 13
+          },
+          {
+            "serial": 6,
+            "car": 14
+          }
+        ],
+        "photoAnimationSelects": 100,
+        "photoAnimationTriangles": 200,
+        "forcedGuestSelection": false,
+        "elapsedAfter": 219.96711037
+      }
+    ],
+    "player2WideAndGraphProbe": true,
+    "raceStarted": false,
+    "playerPhotoSourceCarIndices": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "rejectedTail": {
+    "form": "Player Two",
+    "nativeSquare": [
+      510,
+      215,
+      638,
+      343
+    ],
+    "sourceName": "fzr5",
+    "convertedSourceSha256": "ceb032873b3a4be4348dadf43aa96c75d17a821eb0b2e2c267cea6e71d5c3862",
+    "artProviderMatched": false,
+    "independentHistoricalOriginalSourceMetadataMatched": true
+  },
+  "currentPackAudit": {
+    "sha256": "eacd58533bcf04ddfc5436f54205d1d9d9e7be4e5fec2a25e3074c2bb6ea9015",
+    "bindings": 30,
+    "fzr5BindingPresent": false
+  },
+  "candidate": {
+    "schema": 1,
+    "currentBaseSha256": "eacd58533bcf04ddfc5436f54205d1d9d9e7be4e5fec2a25e3074c2bb6ea9015",
+    "bonusDonorSha256": "4eda92b41bb6a16d42731d940983767153830abba6c6291ccc14ef9d5f2a717d",
+    "outputSha256": "8e83caefa2c88691b9d020d7193148f4789681e7918ab74df7cef67f5a8609b0",
+    "bytes": 112931576,
+    "sections": 62,
+    "nativeBindings": 33,
+    "nativeTextures": 33,
+    "allExisting30BindingRecordsByteIdentical": true,
+    "allExistingNonBindingPayloadsByteIdentical": true,
+    "bonusPixelsByteIdenticalToRetainedArtwork": true,
+    "additions": [
+      {
+        "entry": "bom5",
+        "role": 30,
+        "identity": 5566821096482734110,
+        "convertedSourceSha256": "883a2213c2003f72ba63f80011b81028aaf34047365412f86a5eb9e69f8250e0",
+        "pixelSha256": "f7e7d9ef491a28ae2161fcde717824abe3062386c95760b8e87ad0c66cddc766"
+      },
+      {
+        "entry": "tom5",
+        "role": 31,
+        "identity": 5566821096482734111,
+        "convertedSourceSha256": "d153c5f6e8d49bb5a6c7d2e232bc5d0db9d9415264ae9d654b9906834ea06816",
+        "pixelSha256": "e10bf2e3b2fdecfc50449927ec18ce24733dc4f4c628c6d8ee22f78b756f20cc"
+      },
+      {
+        "entry": "fzr5",
+        "role": 32,
+        "identity": 5566821096482734112,
+        "convertedSourceSha256": "ceb032873b3a4be4348dadf43aa96c75d17a821eb0b2e2c267cea6e71d5c3862",
+        "pixelSha256": "96939c06e2dab1948a6b04c1baee5082f46bc0e95e2ebb5aa41fb92ac60c6524"
+      }
+    ],
+    "productionPinsChanged": false,
+    "runtimeVerified": false
+  },
+  "remaining": [
+    "Actual loader/provider acceptance of all 33 candidate bindings",
+    "Regenerate owned template and source recipe without original headers",
+    "Update exact packaging pins and reference sizes",
+    "Observe full-width Player Two after additive integration",
+    "Check positively observed graph ON and remaining rare UI paths",
+    "Apple compilation and physical iPad acceptance"
+  ],
+  "cloudBuild": false,
+  "push": false
+}

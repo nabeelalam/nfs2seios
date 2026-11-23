@@ -1,0 +1,714 @@
+{
+  "scope": "Options completed-source reuse across an actual original post-copy early return; normal two-ratio and held-navigation original-game routes passed; nested dialog return transitions remain unfinished",
+  "binarySHA256": "c5cb0ec73586819cc25f61ce1b82a06d9e42f2cd1491386c3978c29b771977b4",
+  "sourceSHA256": {
+    "src/hd/OptionsUploadedSourceAbi.h": "ec289d995b0fb8b0ea6934c531a43601e565ab686d8e6bcf7c5f2f680d76be1d",
+    "src/hd/OptionsUploadedSourceGameHooks.inc": "b3ada261578511161fe225af835d103882ac52fe9d8df77b45565f704495016f",
+    "src/hd/OptionsUploadedSourceRenderer.inc": "2ae36c9f196b4a3f1b0b5c9d014f6235b2e55f93100a3971f1cf9dc2d98bc541",
+    "src/hd/OptionsSceneLiveGameHooks.inc": "e424fa77b850b34707ad22b3a91d4551d0d5a58f76b5b4bd84778882e277f0a9",
+    "src/hd/OptionsSceneQueueAdapter.inc": "dc25310f87be2aed1c2112228370a412dbd7ca2df84d5c1d3c439e4e45b04ced",
+    "src/hd/ChildReturnGameHooks.inc": "d7f2fd01b3c5a6ebdbb29d7902e62156fc7d6b412166c2cea236c00b439deb31",
+    "src/hd/ClassicScreens/RendererHooks.inc": "1a08120ba89c0855c8d1c26dfe5b4f58dcde6553c282a76f22af06444dfa09a1",
+    "scripts/prepare_renderer.py": "97605de7bb9c1f195421429e46173b05d076f4c75263c74a2d343a26a8c0d738"
+  },
+  "implementation": [
+    "Separate Options owner/domain and GPU seal, without expanding Setup ownership or accepting another form",
+    "Only a fully verified original source followed by successful actual native GPU completion is sealed",
+    "Source reuse requires the same live menu/game/catalog/archive/epoch/upload, exact original abort receipt and all 300 current descriptors",
+    "The renderer validates context/thread, retained owner/token/domain and all 300 texture IDs, upload revisions and bytes; overlapping uploads and context retirement revoke the seal",
+    "Original select/triangle calls and their new actual-pass witness execute on every reused frame",
+    "The matching completed source can be transferred to the exact Options return session; partial new collector work is never adopted"
+  ],
+  "rendererGeneration": {
+    "fresh": true,
+    "typedGlideExports": 46,
+    "sourceReverseAuditPassed": true,
+    "adaptiveRendererPairedWithExistingEngine": true
+  },
+  "runs": [
+    {
+      "scenario": "focused-wide-v1",
+      "output": [
+        800,
+        450
+      ],
+      "physicalIpadVerified": false,
+      "durableBackupWritten": true,
+      "driverExit": 0,
+      "runtimeRecordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "logSHA256": "90d86c0511b5ba3ea4e63642b4c2973b90740713baa7f57b2c719178648aab4f",
+      "normalCompletedSealRecords": 8,
+      "retainedCompletedNativePasses": [],
+      "remainingNativeIntervals": [
+        {
+          "startFrame": 472,
+          "frames": 115,
+          "next": "menu-wide"
+        },
+        {
+          "startFrame": 636,
+          "frames": 115,
+          "next": "menu-wide"
+        },
+        {
+          "startFrame": 806,
+          "frames": 115,
+          "next": "menu-wide"
+        }
+      ],
+      "actions": [
+        {
+          "action": "options-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "306",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "426",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "448",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "460",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "472",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "587",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "610",
+              "previousFrames": "23"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "622",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "636",
+              "previousFrames": "14"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "751",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "781",
+              "previousFrames": "30"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "793",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "806",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "921",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "937",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "949",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "focused-ipad-v1",
+      "output": [
+        708,
+        492
+      ],
+      "physicalIpadVerified": false,
+      "durableBackupWritten": true,
+      "driverExit": 0,
+      "runtimeRecordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "logSHA256": "e57bb1943523ac2ce5c8f22c8cb36a4010560b0c5b3b1f30551c9920007e880a",
+      "normalCompletedSealRecords": 8,
+      "retainedCompletedNativePasses": [
+        {
+          "serial": 531,
+          "ownerEpoch": 2,
+          "uploadEvent": 77,
+          "token": 32,
+          "context": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600
+        },
+        {
+          "serial": 532,
+          "ownerEpoch": 2,
+          "uploadEvent": 77,
+          "token": 32,
+          "context": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600
+        },
+        {
+          "serial": 533,
+          "ownerEpoch": 2,
+          "uploadEvent": 77,
+          "token": 32,
+          "context": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600
+        },
+        {
+          "serial": 534,
+          "ownerEpoch": 2,
+          "uploadEvent": 77,
+          "token": 32,
+          "context": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600
+        },
+        {
+          "serial": 535,
+          "ownerEpoch": 2,
+          "uploadEvent": 77,
+          "token": 32,
+          "context": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600
+        },
+        {
+          "serial": 536,
+          "ownerEpoch": 2,
+          "uploadEvent": 77,
+          "token": 32,
+          "context": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600
+        }
+      ],
+      "remainingNativeIntervals": [
+        {
+          "startFrame": 488,
+          "frames": 115,
+          "next": "menu-wide"
+        },
+        {
+          "startFrame": 651,
+          "frames": 115,
+          "next": "menu-wide"
+        },
+        {
+          "startFrame": 819,
+          "frames": 115,
+          "next": "menu-wide"
+        }
+      ],
+      "actions": [
+        {
+          "action": "options-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "321",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "441",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "463",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "475",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "488",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "603",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "625",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "637",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "651",
+              "previousFrames": "14"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "766",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "793",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "805",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "819",
+              "previousFrames": "14"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "934",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "948",
+              "previousFrames": "14"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "960",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "held-navigation-ipad-v1",
+      "output": [
+        708,
+        492
+      ],
+      "physicalIpadVerified": false,
+      "durableBackupWritten": true,
+      "driverExit": 0,
+      "runtimeRecordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "logSHA256": "31f345efe69acb7bf0004996662f2dd8e55b357c7f275518b1210a6f7f6e5396",
+      "normalCompletedSealRecords": 8,
+      "retainedCompletedNativePasses": [
+        {
+          "serial": 587,
+          "ownerEpoch": 2,
+          "uploadEvent": 91,
+          "token": 49,
+          "context": 1,
+          "nativeSelections": 300,
+          "nativeTriangles": 600
+        }
+      ],
+      "remainingNativeIntervals": [
+        {
+          "startFrame": 539,
+          "frames": 115,
+          "next": "menu-wide"
+        },
+        {
+          "startFrame": 699,
+          "frames": 115,
+          "next": "menu-wide"
+        },
+        {
+          "startFrame": 865,
+          "frames": 115,
+          "next": "menu-wide"
+        }
+      ],
+      "actions": [
+        {
+          "action": "options-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "321",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "441",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "held-down-navigation",
+          "routes": []
+        },
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "515",
+              "previousFrames": "74"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "527",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "539",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "654",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "674",
+              "previousFrames": "20"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "686",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "699",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "814",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "841",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "853",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "865",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "980",
+              "previousFrames": "115"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "995",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1007",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "existingCpuAndQueueRegressions": [
+    {
+      "test": "options_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "audio_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "graphics_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_queue_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    }
+  ],
+  "legacyOptionsActualGlesRegression": {
+    "scope": "Existing actual GLES Options layer/state regression; completed-source reuse is covered by the original-game route separately",
+    "checks": [
+      {
+        "step": "compile-link",
+        "exitCode": 0
+      },
+      {
+        "step": "actual-gles-runtime",
+        "exitCode": 0
+      }
+    ],
+    "physicalIpadVerified": false,
+    "passed": true,
+    "adapterChecks": 11159,
+    "lossPoints": 1852,
+    "originalNativeDrawIsStubInThisFixture": true,
+    "coversNewUploadedSeal": false
+  },
+  "verifiedReusePhases": [
+    2
+  ],
+  "knownRemaining": [
+    "Abort phases 0, 1 and 3 have guards but were not directly exercised for Options in these runs",
+    "New Options seal invalidation hooks are installed; the legacy GLES loss campaign does not directly exercise this new wrapper",
+    "Each nested Audio/Controls/Graphics return still contains 115 original-layout frames in the observed routes",
+    "Other menus, full transition coverage, physical iPad verification and performance/battery acceptance remain open"
+  ],
+  "cloudBuildStarted": false,
+  "physicalIpadVerified": false
+}

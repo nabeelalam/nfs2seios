@@ -1,0 +1,40 @@
+{
+  "scope": "Nested Audio, Graphics and Controls actual renderer adapter and widescreen presentation integration; compilation only in this checkpoint",
+  "implemented": [
+    "Prepare authored full-window map and panel in a separate owned color attachment only after successful original scene completion",
+    "Borrow each retained scene synchronously; retain no guest or frame-packet pointer after producer returns",
+    "Reuse prepared HD sidebar, dialog words and Audio bars with left, centred and right projections",
+    "Replay only the authenticated current 32-square original cursor family with original geometry, UV, shader and clipped canonical viewport",
+    "Reject unrelated draw batches, native uploads, LFB writes, clears and resize; revoke every prepared frame after presentation",
+    "Preserve existing output arbitration and original 4:3 path; add nested-wide route telemetry",
+    "Context/thread/generation ownership checks and bounded dimensions; no foreign-context cleanup"
+  ],
+  "validation": {
+    "freshPinnedVendorGeneration": true,
+    "actualAppRendererFlagsSyntaxExit": 0,
+    "compileLogSHA256": "698059f62babee59fbf8569a44140ec2f91d044908a86fd287347e203536b760",
+    "existingWarning": "RendererLfbGL pointer type mismatch; no new compiler diagnostics",
+    "sourceReverseAudit": "Fresh preparation completed its marked-block reversal checks",
+    "initialCheckSetupFailure": "Copying an older modified renderer and replacing headers exposed stale unmarked hooks; switched to current generator from verified offline pinned sources",
+    "correctedCursorAbiField": "Use logicalWidth and logicalHeight from actual NativeMarkArt structure"
+  },
+  "sourceSHA256": {
+    "src/hd/NestedSceneRenderer.h": "12621331feeaffca20a41f43807dd020bb9c7dede671595185c3c06f402dc080",
+    "src/hd/NestedSceneRenderer.inc": "a44e1fe1dd0dfd8b616cec4a0a35e31f00ecc54a18ce4d4bca44f0aa2a26c9f4",
+    "src/hd/AudioSceneRenderer.inc": "4c5787ac16b54f456b1645635d4676e05ce3b435c8014128a1b8aa5ccf6cb6cb",
+    "src/hd/GraphicsSceneRenderer.inc": "a7f89edc2f3b6bbe147895de8f5c32244ffc02b314491944bf05c394228ddb31",
+    "src/hd/ControlsSceneRenderer.inc": "d9a9b5ff2b94e939766d730297571cb032f50598579bf015576013d6209b83ac",
+    "scripts/menu_responsive_renderer_hooks.py": "9904c445d7212a447404949ff52085cd48db72ae0b0c403b1df457707e8d8086",
+    "scripts/prepare_renderer.py": "ef098af9d80287be7df80494b56ce6887d5c844c5c2f7d09a958886e0c60095d"
+  },
+  "appLinked": false,
+  "newResponsiveLayersRuntimeVerified": false,
+  "cursorAndPresentationRuntimeVerified": false,
+  "physicalIpadVerified": false,
+  "cloudBuildStarted": false,
+  "next": [
+    "Link one local candidate using the new renderer",
+    "Run original nested Options route with source-qualified navigation at both ratios and inspect cursor and stable frames",
+    "Address remaining Credits backdrop and LoadSave/parent-transition gaps before a new device package"
+  ]
+}

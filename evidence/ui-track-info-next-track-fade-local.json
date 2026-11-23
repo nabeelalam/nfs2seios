@@ -1,0 +1,24 @@
+{
+  "scope": "Desktop runtime in isolated WSL X11 with software GLES and copied game data.",
+  "binarySHA256": "ff5384298830a38c4d7b3cd32663d1857287a05a8e4f2c2ecf19305c34df09d6",
+  "route": "Location, Track Info, two Next Track activations, and Escape back to Location at 800x450.",
+  "fix": "Preserve sealed prior Track Info art during the original 24-step fade. Recheck all 300 live tiles and the clear event shared by both layers.",
+  "outgoingFadeFramesPerActivation": 24,
+  "outgoingFadeActivations": 2,
+  "firstAndLastPhase": [
+    250,
+    20
+  ],
+  "presentationTrace": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=800x450 frame=295 previousFrames=294 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-return-wide output=800x450 frame=309 previousFrames=14 presented=1 capped=0",
+    "MENU PRESENTATION choice=information-wide output=800x450 frame=328 previousFrames=19 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=686 previousFrames=358 presented=1 capped=0",
+    "MENU PRESENTATION choice=intro-wide output=800x450 frame=703 previousFrames=17 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=724 previousFrames=21 presented=1 capped=0"
+  ],
+  "nativeFallbackAfterWideResize": false,
+  "cleanAppShutdown": true,
+  "limitations": "No Apple build or physical iPad test for this source. The 16:9 desktop regression covered two consecutive changes."
+}

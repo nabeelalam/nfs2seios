@@ -7,7 +7,59 @@ It is an independent workstream. Performance, battery work and session recording
 continue on main; no unfinished visual changes are required there. This document
 establishes the work, not a claim that replacement artwork is implemented.
 
-## Current execution checkpoint — 6 November
+## Current execution checkpoint — 19 November
+
+Current UI integration branch: `codex/ui-activation`. The earlier artwork branch
+name above describes the original split from main.
+
+- The seven coherent History page/background pairs are authored and source-pinned.
+  Both grouped original-game routes passed locally; private delivery now requires
+  the matching eight History digests in the Apple executable. This newer set is
+  not in the last delivered iPad package.
+- Later original-game Records runs supersede the early fullwindow failure for
+  sampled table and Location-return frames. The current shared Location card
+  pack also ran through three track changes and Main return with consistent
+  shapes/shadows. See the retained Records audit and current-card runtime evidence.
+- Record-name Backspace, typing, Enter, summary restoration and disk saving passed
+  in an isolated qualification fixture. A fresh normal app then reloaded that
+  saved name in Track Records at 800x450 and 708x492 and returned to Main cleanly.
+  See `evidence/ui-record-name-submit-runtime-local.json` and
+  `evidence/ui-record-name-reload-runtime-local.json`.
+- These results do not prove first-visible-frame continuity across every menu,
+  iPad popup-keyboard behavior, normal gameplay record qualification, or physical
+  acceptance of the complete new asset set. Keep those scopes open.
+- Audio, Graphics and Controls now render their settled HD composition through
+  an actual owned widescreen target at708x492 and800x450. The same final binary
+  completed both original-game routes with clean exits, restored copied settings
+  and unchanged saved records. All six settled captures were inspected: full
+  backgrounds, centred controls, correlated cursor and sidebar-contained logo.
+  The old dialog renderer admitted only the legacy projection; separate exact
+  responsive entries fix that rejection while retaining legacy validation.
+  All three existing GLES scene suites passed after the dialog change. See
+  `evidence/ui-nested-settled-wide-runtime-local.json`.
+- This does not finish nested UI continuity: native-format frames remain during
+  entry/return spans. Credits and Load/Save remain separate implementation gaps.
+  The first failed renderer run and the intermediate logo-anchor finding remain
+  recorded as historical evidence; they are superseded only for settled layout.
+- One combined top-level route now covers Setup, Location, Player One, Opponents
+  and Options at both ratios with26 action sections, no recorded native fallback,
+  reviewed intermediate/settled frames, clean exits and unchanged saved records.
+  Nested Options screens and the exact first visible frame remain separate gaps;
+  see `evidence/ui-combined-top-menu-transitions-local.json`.
+- The earlier combined nested Options run is partially superseded for settled
+  Audio, Controls and Graphics. Its Credits original-snapshot backdrop and
+  Load/Save entry/return gaps remain. The exact first visible frame is still
+  unproven across the menus. See `evidence/ui-nested-options-runtime-gaps-local.json`.
+- Continue the code batch: source-qualified entry and return transitions for the
+  three nested pages, exact Load/Save handoffs, and authored responsive Credits.
+  Preserve native passes, source lifetimes, cursor correlation and complete
+  content. Group local verification after the batch.
+- Finish these nested screens and first-frame coverage before the next useful
+  grouped Apple build. Then resume performance/battery work without waiting for
+  user feedback, as requested. Low Power Mode split-screen 60 FPS remains open;
+  software-rendered desktop timings cannot establish that device target.
+
+## Archived execution checkpoint — 6 November
 
 Finish the complete UI/artwork batch before one grouped iPad package. The user
 is unavailable; make routine decisions without approval questions. After that

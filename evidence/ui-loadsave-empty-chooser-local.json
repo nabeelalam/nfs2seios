@@ -1,0 +1,72 @@
+{
+  "scope": "Original Load tournament empty chooser and cancellation; current local UI candidate",
+  "binarySHA256": "48a3e158daff4734c698b615cce50d7f610a99c035a71619f74b2cc8ca3cf648",
+  "physicalIpadVerified": false,
+  "drawables": [
+    [
+      708,
+      492
+    ]
+  ],
+  "qualification": "No saved tournament filenames in copied fixture; no save/load/delete confirmation or existing record modification",
+  "verifiedRun": {
+    "scope": "Original Load/Save entry and parent-return continuity; copied fixture",
+    "durableBackupWritten": true,
+    "physicalIpadVerified": false,
+    "newArtworkActivated": true,
+    "driverExitCode": 0,
+    "statsUnchanged": true,
+    "protectedFilesRestored": true,
+    "all21ResourcesUnchanged": true,
+    "staticSourceRecords": [],
+    "loadsaveWidePresented": true,
+    "cacheSourcesReady": 0,
+    "nativePassesVerified": 0,
+    "cleanShutdown": true
+  },
+  "inputReadyObserved": true,
+  "escapeIssuedAfterInputReady": true,
+  "originalChooserReturned": true,
+  "returnedOptionsAndMain": true,
+  "chooserEntryAndCancellationRouteChanges": [
+    {
+      "action": "chooser-open",
+      "logStart": 351425,
+      "logEnd": 356991,
+      "routes": []
+    },
+    {
+      "action": "chooser-cancel",
+      "logStart": 358356,
+      "logEnd": 371328,
+      "routes": []
+    }
+  ],
+  "nativeFallbackDuringAcceptedChooserInterval": false,
+  "childDrawFrames": 57,
+  "visibleEmptyList": "Reviewed gold list drawer over remastered parent, with no filename text; nonempty-list text coverage is not established",
+  "retainedFailures": [
+    {
+      "tag": "chooser-cancel-ipad-v1",
+      "driverExitCode": 1,
+      "failure": "Escape was issued before the original chooser completed its opening/input-ready phase; final expected Options route absent. A successful child draw alone is not input-ready proof.",
+      "nativeRouteRows": [
+        "MENU PRESENTATION choice=native output=708x492 frame=542 previousFrames=20 presented=1 capped=0"
+      ],
+      "protectedFilesRestored": true
+    },
+    {
+      "tag": "chooser-detail-ipad-v1",
+      "driverExitCode": 1,
+      "failure": "Older diagnostic executable refused seeded parent; expected child draw prefix absent. Not an acceptance run for current source.",
+      "protectedFilesRestored": true
+    }
+  ],
+  "remaining": [
+    "Earlier extra native frame before chooser entry remains intermittent and uncorrected.",
+    "Nonempty chooser labels and name/confirm/alert routes require current-source grouped review.",
+    "No iPad gameplay, performance or battery inference."
+  ],
+  "cloudBuild": false,
+  "originalGameDataModified": false
+}

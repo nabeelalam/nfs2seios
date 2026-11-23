@@ -1,0 +1,20 @@
+{
+  "scope": "WSL component timing only, no original assets or Apple build used.",
+  "candidate": "After the existing heap check, validate fixed DATA and BSS spans directly using compiled layout sizes. Leave the generic fallback and exception text intact.",
+  "oracle": "Baseline and candidate ASan/UBSan runs produced byte-identical output for bounds, address round trips, freed spans, codec mutex routing and cancellation.",
+  "method": "Six pairs in alternating order per route. Equal checksums and repeats per pair. Thread CPU time; positive percentages mean less CPU time.",
+  "pairedReductionPercent": {
+    "DATA": [5.263, 3.992, 1.479, 4.81, 9.355, -3.173],
+    "BSS": [11.475, 11.444, 7.472, 13.627, 12.521, 18.084],
+    "heapToData": [3.772, -4.838, 1.308, 1.115, 3.094, 2.444],
+    "heapControl": [-0.045, 0.488, 4.198, -0.654, -3.047, -2.221]
+  },
+  "medianReductionPercent": {
+    "DATA": 4.401,
+    "BSS": 11.998,
+    "heapToData": 1.876,
+    "heapControl": -0.35
+  },
+  "runnerNote": "All comparisons and the report completed. The shell wrapper then returned nonzero because the last here-document delimiter was passed to Python without its terminating newline.",
+  "decision": "Do not integrate based on the component results. The isolated BSS gain is larger than the mixed-route gain. There is no whole-race or iPad result."
+}

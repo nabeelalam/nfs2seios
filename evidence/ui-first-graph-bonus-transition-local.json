@@ -1,0 +1,134 @@
+{
+  "schema": 3,
+  "scope": "Original graph-to-bonus Player car-photo transitions; broader UI remains in progress",
+  "originalBranch": "loc_40C8F8 to original photo path40C57B/40D1B0",
+  "originalFinalPreviewProducer": "40D2DE",
+  "originalCallsAndSeparateGameAssetsPreserved": true,
+  "changes": [
+    "Route first standard-graph to bonus selection through the existing original photo animation",
+    "Capture independent actual343-pixel sidebar uploads and authenticated full-frame history",
+    "Revalidate retained full/sidebar native pixel and descriptor evidence before historical wide presentation; revoke failed leases",
+    "Capture the final original preview rebuild using a distinct no-swatch iteration-zero recipe",
+    "Accept outgoing Lazy graph overlap only with unchanged consumed cache and allfour statistics; retain captured palette/colour and exact replay proofs"
+  ],
+  "build": {
+    "exitCode": 0,
+    "binarySha256": "e0adf91256339d7c010077d196bfdcb63dc4dd47df4a516b3542280419b2ddc5",
+    "binaryBytes": 63870008,
+    "reusedVerifiedV21SourcePair": true,
+    "maintainedSourceHooksRecompiled": true,
+    "cloudBuild": false
+  },
+  "desktopRuntime": {
+    "player": 2,
+    "graphOnPositivelyObserved": true,
+    "runs": [
+      {
+        "accepted": true,
+        "completeTransitions": 3,
+        "framesPerTransition": 21,
+        "output": [
+          708,
+          492
+        ],
+        "exitCode": 0,
+        "copiedFixtureRestoredExactly": true,
+        "all22ResourcesUnchanged": true,
+        "sourceRefusalLines": 0,
+        "physicalIpad": false
+      },
+      {
+        "accepted": true,
+        "completeTransitions": 12,
+        "framesPerTransition": 21,
+        "wideFrames": 252,
+        "output": [
+          800,
+          450
+        ],
+        "sourceRefusalLines": 0,
+        "exitCode": 0,
+        "copiedFixtureRestoredExactly": true,
+        "all22ResourcesUnchanged": true,
+        "physicalIpad": false
+      }
+    ],
+    "totalCompleteTransitions": 15,
+    "totalCompleteWideFrames": 315,
+    "originalInputsUsed": true,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true
+  },
+  "focusedTests": {
+    "exactHookInsertionAndReversalPassed": 13,
+    "sanitizedPureSourceNegativeCasesPassed": 47,
+    "bothPlayersSourceJoinAndPreviewReaderPassed": true,
+    "newOutgoingGraphPositiveCases": 4,
+    "newOutgoingGraphNegativeCases": 28,
+    "nestedGuestReadRegressionGuard": true
+  },
+  "currentCandidateGuardFaultSuite": {
+    "completedModes": [
+      {
+        "mode": 1,
+        "exitCode": 0,
+        "passed": true,
+        "wideFrames": 21,
+        "fixtureRestored": true,
+        "artUnchanged": true,
+        "failure": null
+      },
+      {
+        "mode": 2,
+        "exitCode": 0,
+        "passed": true,
+        "wideFrames": 0,
+        "fixtureRestored": true,
+        "artUnchanged": true,
+        "failure": null
+      },
+      {
+        "mode": 3,
+        "exitCode": 0,
+        "passed": true,
+        "wideFrames": 2,
+        "fixtureRestored": true,
+        "artUnchanged": true,
+        "failure": null
+      },
+      {
+        "mode": 4,
+        "exitCode": 0,
+        "passed": true,
+        "wideFrames": 2,
+        "fixtureRestored": true,
+        "artUnchanged": true,
+        "failure": null
+      },
+      {
+        "mode": 5,
+        "exitCode": 0,
+        "passed": true,
+        "wideFrames": 2,
+        "fixtureRestored": true,
+        "artUnchanged": true,
+        "failure": null
+      }
+    ],
+    "requiredModes": 5,
+    "accepted": true,
+    "privateFixtureOnly": true,
+    "generatedSourceRestoredExactly": true,
+    "playableCandidateUnchanged": true,
+    "privateFixtureBinarySha256": "13f8cba3e1b7d1f612a572e2df3386b69e0d14bb34ee587df673b965681387ab"
+  },
+  "remaining": [
+    "Verify graph-toggle/standard graph animations and remaining broader UI transitions",
+    "Complete remaining UI integration before a new Apple build",
+    "Verify actual iPad behavior and resume performance/battery work"
+  ],
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false,
+  "cloudBuild": false,
+  "published": false
+}

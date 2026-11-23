@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "scope": "Fresh coherent app, normal two-player Proving Grounds race, lap times and Main return",
+  "inputFixture": {
+    "binarySha256": "1c5c5501cae3dd0047bc84f67e89da940fc4687bffc9040d66ec50a341d4a519",
+    "baseBuildSha256": "ac017bffba11933c97731551b9af5596a3209c47e792efa313a726d8a40281ec",
+    "onlyMainInputShimChanged": true,
+    "freshEngineRendererUnchanged": true,
+    "virtualControllers": 2,
+    "directEngineUiCallsInjected": false,
+    "gameplayRun": false
+  },
+  "route": {
+    "track": "Proving Grounds",
+    "laps": 2,
+    "players": [
+      "McLaren F1",
+      "Nazca C2"
+    ],
+    "observedFieldCars": 8,
+    "virtualControllers": 2,
+    "originalEngineOrRaceStateModified": false,
+    "forcedVictoryCalls": false,
+    "resultsReachedBeforeInputRelease": true,
+    "firstResultsLogLine": 3112,
+    "firstInputReleaseLogLine": 3571,
+    "lapTimesScreenshotReviewed": true,
+    "mainReturnScreenshotReviewed": true,
+    "lapsSeconds": {
+      "McLaren F1": [
+        125.46,
+        127.49
+      ],
+      "Nazca C2": [
+        181.81,
+        180.5
+      ]
+    },
+    "naturalHumanWinVerified": false,
+    "independentAccelerationPhasesVerified": false
+  },
+  "shutdown": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 2,
+    "actions": 37,
+    "copiedFixtureRestoredExactly": false,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "restoration": {
+    "settingsSavesStatsReplayAndOtherFilesRestored": true,
+    "allOtherCopiedFilesUnchanged": true,
+    "wholeFixtureExact": false,
+    "generatedTrackCacheOnlyChanged": true,
+    "oldCacheWasNotBackedUp": true,
+    "oldCacheRecovered": false,
+    "isolatedCacheHasOneHardlink": true,
+    "futureBackupIncludesGeneratedCache": true
+  },
+  "limitations": [
+    "No human-win Victory flow acceptance: AI opponents remained in this run.",
+    "The no-opponents menu selection was not committed because the test counted disabled rows; do not classify this as an app bug.",
+    "Both cars moved with virtual input, but a one-controller-at-a-time phase has not proved independent assignment.",
+    "Only a generated copied-fixture track cache differs; do not claim whole-fixture exact restoration.",
+    "No Apple build, physical iPad, gameplay FPS or battery claim."
+  ],
+  "captures": [
+    {
+      "file": "004-019-wait.bmp",
+      "sha256": "a4a7358fc1dc3aad6a5e160472d4f705eaa132917137180fb22f37b5ce8ddcdb"
+    },
+    {
+      "file": "006-031-wait.bmp",
+      "sha256": "7f1c5880ff4d8b05c2513b9bfdc52534644fc94a084d7413114e9f8620360730"
+    },
+    {
+      "file": "007-034-key.bmp",
+      "sha256": "2f89b7c844431b6f59815b1e21975f4fadc485254bdc69f282a7e006f686d2c8"
+    },
+    {
+      "file": "008-036-wait.bmp",
+      "sha256": "f567bbd57c42bded3ed830be7114650e374e8f94e02f83cf8028988d6b7337ed"
+    }
+  ]
+}

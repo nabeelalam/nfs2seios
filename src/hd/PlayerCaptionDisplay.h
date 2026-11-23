@@ -15,7 +15,7 @@ class Prepared final {
   if((!one&&b.form!=0x4d3100)||!b.formGuest||!b.archive||!b.game||!b.serial||!b.lifetime||!p.current()||!packet||p.packet()!=packet||packet->serial()!=b.serial||packet->surface().lifetime!=b.lifetime||packet->commands()!=1||!packet->writes()||packet->pixels()!=343*480||e.policy!=(one?nfs_compact_caption::Policy::Player1:nfs_compact_caption::Policy::Player2)||e.formGuest!=b.formGuest||e.game!=b.game||e.serial!=b.serial||e.lifetime!=b.lifetime||!e.policyThread||!e.resourceSerial||e.requestedResource!=resource||e.inputCategory!=1||e.inputAnchor!=168||e.inputY!=(one?198:234)||e.measureWidth!=(one?68:70)||e.measureAnchor!=168||e.measureKind!=2)return false;
   const auto&c=e.command;if(c.role!=1||c.sourceSize!=18||c.alignment!=2||c.color!=0xffff||c.x!=(one?100:98)||c.y!=e.inputY||c.originX||c.originY||c.advance!=e.measureWidth||c.length!=10||memcmp(c.text.data(),one?"player one":"player two",10)||c.clip.left!=0||c.clip.top!=0||c.clip.right!=343||c.clip.bottom!=480)return false;
   for(size_t i=10;i<c.text.size();++i)if(c.text[i])return false;
-  if(e.route!=nfs_compact_caption::Route::OrdinaryEbp&&e.route!=nfs_compact_caption::Route::InitialMain)return false;
+  if(e.route!=nfs_compact_caption::Route::OrdinaryEbp&&e.route!=nfs_compact_caption::Route::InitialMain&&e.route!=nfs_compact_caption::Route::PlayerShowcaseReturn)return false;
   for(const auto*s:{&e.resolved,&e.measure,&e.stringBefore,&e.stringAfter})if(s->archive!=b.archive||s->selector!=resource||s->resource!=resource||s->identity.lifetime!=b.lifetime)return false;
   return e.stringAfter.identity==packet->surface()&&p.current();
  }

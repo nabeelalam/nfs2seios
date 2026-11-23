@@ -1,0 +1,60 @@
+{
+  "scope": "Desktop software GLES on isolated WSL X11 display with copied original data.",
+  "binarySHA256": "ff5384298830a38c4d7b3cd32663d1857287a05a8e4f2c2ecf19305c34df09d6",
+  "drawable": [
+    708,
+    492
+  ],
+  "reviewedTrackOrder": [
+    "Proving Grounds",
+    "Outback",
+    "Last Resort",
+    "Outback"
+  ],
+  "otherInputs": [
+    "Down",
+    "Up",
+    "Escape"
+  ],
+  "nativePresentationsAtLiveResize": 1,
+  "nativeFallbackDuringSubsequentInputs": false,
+  "cleanShutdown": true,
+  "physicalIpadVerified": false,
+  "presentationTrace": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=708x492 frame=194 previousFrames=193 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=195 previousFrames=1 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-exit-wide output=708x492 frame=241 previousFrames=46 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=262 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-exit-wide output=708x492 frame=287 previousFrames=25 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=308 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-exit-wide output=708x492 frame=333 previousFrames=25 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=354 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=708x492 frame=457 previousFrames=103 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-return-wide output=708x492 frame=460 previousFrames=3 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=708x492 frame=479 previousFrames=19 presented=1 capped=0"
+  ],
+  "resizeFrameWitnesses": [
+    "MENU TRANSITION finish-published serial=242 kind=9 slot=1 draw=2 phase=-1 origin=0,0 step=32 selections=300 triangles=600",
+    "MENU PRESENTATION choice=native output=708x492 frame=194 previousFrames=193 presented=1 capped=0",
+    "MENU TRANSITION finish-published serial=243 kind=9 slot=1 draw=2 phase=-1 origin=0,0 step=32 selections=300 triangles=600",
+    "MENU PRESENTATION choice=transition-wide output=708x492 frame=195 previousFrames=1 presented=1 capped=0",
+    "MENU TRANSITION WIDE presented kind=9 serial=243 output=708x492 phase=-1 step=32 fresh=1"
+  ],
+  "resizeFinding": "The authenticated remastered Location transition committed before the first resized swap. That swap selected the native aspect presentation route. The next authenticated transition selected the full-width route. Native route selection here establishes a layout fallback; it does not establish that original artwork pixels returned.",
+  "resizeTiming": "The trace spans a single affected frame. A drawable size change between transition preparation and presentation is consistent with the observations, but the preparation size was not captured for this exact frame.",
+  "resizeReplay": {
+    "trace": [
+      "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+      "MENU TRANSITION WIDE begin kind=9 dstRgb=771 dstAlpha=771 reason=4 serial=245 drawable=640x480",
+      "MENU PRESENTATION choice=native output=708x492 frame=247 previousFrames=246 presented=1 capped=0",
+      "MENU TRANSITION WIDE begin kind=9 dstRgb=771 dstAlpha=771 reason=0 serial=248 drawable=708x492",
+      "MENU PRESENTATION choice=transition-wide output=708x492 frame=248 previousFrames=1 presented=1 capped=0",
+      "MENU PRESENTATION choice=child-return-wide output=708x492 frame=303 previousFrames=55 presented=1 capped=0",
+      "MENU PRESENTATION choice=menu-wide output=708x492 frame=322 previousFrames=19 presented=1 capped=0",
+      "Native app: SDL shutdown completed; status=0"
+    ],
+    "binarySHA256": "62868ab47f3af0aec03d6c1d791724ea2728390e20ccfaf5f908436ef2321db0",
+    "scope": "Trace-only desktop build. Begin events are deduplicated by reason and blend state; the pre-resize event does not establish the exact size of every intervening frame."
+  }
+}

@@ -53,6 +53,9 @@ int main(){try{
  for(unsigned player:{1u,2u})for(bool graph:{false,true}){originalPlayer(g,*f,*owner,player,graph,1,2);if(!owner->preview){auto*s=pp::slot();std::fprintf(stderr,"Player preview failure=%u pure=%u\n",unsigned(s->failure),unsigned(s->verifyFailure));}CHECK(owner->preview&&owner->preview->form()==owner->form);CHECK(owner->preview->selection().selectedCar==1&&owner->preview->selection().cachedCarIndex==1);CHECK(owner->preview->sources().size()==(graph?5:1));CHECK(owner->preview->post()==std::vector<uint16_t>(owner->actualPreviewPost.pixels.begin(),owner->actualPreviewPost.pixels.end()));CHECK(pp::sameEvent(owner->previewBaseEvent,owner->base.event));retained=owner->preview;}
  // Every car name including secretcars; graphenabled secretcar still takes photo.
  for(unsigned car=0;car<15;++car){originalPlayer(g,*f,*owner,2,true,car,car);CHECK(owner->preview&&owner->preview->sources().size()==(car<=11?5:1));}
+ // Actual guest reader follows the consumed cache even after selection moves
+ // into a bonus car; it must read outgoing statistics, not the incoming row.
+ for(unsigned player:{1u,2u}){originalPlayer(g,*f,*owner,player,true,11,11);CHECK(owner->preview);const auto captured=owner->preview->selection();memory[player==1?byte_512DBF:byte_512DDA]=12;nfs_player_preview::Selection observed;CHECK(pp::selection(*owner,observed));CHECK(observed.selectedCar==12&&observed.cachedCarIndex==11&&observed.graphValues==captured.graphValues);m32(dword_4D236C+4*11,99);CHECK(pp::selection(*owner,observed)&&observed.graphValues[0]==99);}
  // Entry cache can be stale/sentinel; consumed index is the subsequent original write.
  originalPlayer(g,*f,*owner,1,true,1,999);CHECK(owner->preview&&owner->preview->selection().cachedCarIndex==1);
  // Corruptions and current-source changes invalidate rather than lending stale data.

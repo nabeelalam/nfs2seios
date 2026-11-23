@@ -4,12 +4,14 @@
 #include "BackgroundSceneRuntimeAbi.h"
 #include "SoftwareTextLayerAbi.h"
 #include "PlayerCaptionRuntimeAbi.h"
-#define NFS_PLAYER_INTRO_RUNTIME_SCHEMA 2u
+#define NFS_PLAYER_INTRO_RUNTIME_SCHEMA 3u
 /* Immutable synchronous borrows retained by the producer. Historical Main
    serial/content/events stay historical; requestSerial is a distinct request.
    No field supplies GL/context/target authority or changes native buffers. */
 typedef struct NfsPlayerIntroFrameView {
  uint32_t schema,form;
+ /* 0 retains Main history; 1 is a separately captured Showcase return. */
+ uint32_t sourceKind;
  uint64_t requestSerial,uploadEvent;
  uint32_t sourceOwner,sourceBitmap;
  NfsBackgroundSceneFrameView inheritedMain;

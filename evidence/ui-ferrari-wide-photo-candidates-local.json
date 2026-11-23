@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "scope": "Eight coherent wide Ferrari photo candidates and a complete private image resource; offline artwork/resource validation only",
+  "artwork": {
+    "newPhotos": 8,
+    "backing": [1920, 1080],
+    "newCenter": [1440, 1080],
+    "centerLeft": 240,
+    "reviewedPreviewSizes": [[800, 450], [708, 492]],
+    "method": "One coherent photo with new matching center and sides; separate exact existing native footer. No old rectangular photo pasted into a shifted generated scene.",
+    "semanticReview": "Complete cars, mirrors and wheels fit both previews. Original viewpoints, stationary versus burnout wheels, plate spelling and scene-specific backgrounds reviewed.",
+    "originalMastersPreserved": true,
+    "newCenterIdentitiesRequired": true,
+    "gammaOrFeatherBaked": false
+  },
+  "panoramaResource": {
+    "images": 8,
+    "bytes": 7282057,
+    "sha256": "38daa46ee7830b67b5e51ef66da1fee9b4d40c63ff4e144dadce6949fb34eb6b",
+    "compressedSideTotalBytes": 7280297,
+    "compressedSideAverageBytes": 910037.125,
+    "compressedSideLargestBytes": 1057056,
+    "losslessOpaquePixelRecompositionVerified": true,
+    "sourceEntryCenterFooterBindingsVerified": true
+  },
+  "completePhotoResource": {
+    "images": 98,
+    "newEncodedImages": 8,
+    "unchangedReusedImages": 90,
+    "bytes": 214837977,
+    "sha256": "f5eed9a9ac9a1d659db1287bbee32cead7401324acab49458bdd0586cf38c033",
+    "catalogSha256": "ec430d26edc8d9378ae7695a2c00e04d660c7536da0b0359cb30d571a597c521",
+    "newCompressedImageBytes": 13690171,
+    "reusedCompressedImageBytes": 201147790,
+    "newCentersDecodeExactlyToPanoramaKeys": true,
+    "unchanged90IdentitiesAndCompressedBytesVerified": true,
+    "codec": "Lossless opaque RGB PNG row filters and zlib"
+  },
+  "combinedResourceBytes": 222120034,
+  "previousPhotoResourceBytes": 219036319,
+  "combinedIncreaseBytes": 3083715,
+  "preservation": {
+    "originalGameUnchanged": true,
+    "originalManifestsAndMastersUnchanged": true,
+    "currentPrivateHeadersAndReleaseUnchanged": true,
+    "noArtworkOrOriginalGameBytesInThisEvidence": true
+  },
+  "remaining": [
+    "No runtime activation or new application build for this candidate",
+    "Remaining slideshow scenes retain existing reviewed masters and need coherent wide scenery review",
+    "No all-UI first-frame, physical iPad, performance or battery acceptance",
+    "Live resizing while a record-name prompt is open still requires a retained completed-parent reconstruction receipt"
+  ],
+  "productionProviderBatchCheck": {
+    "cppStandard": 14,
+    "addressAndUndefinedSanitizersPassed": true,
+    "actualPinnedEightEntryPackLoaded": true,
+    "allEightNewCenterRoutesAcquired": true,
+    "allEightComposedPixelDigestsVerified": true,
+    "allEightOldCenterKeysRejected": true,
+    "productionPhotoDecoderMatchesAllEightCenters": true,
+    "noGameRun": true,
+    "candidateAndCurrentReleasePinsUnchanged": true
+  }
+}

@@ -1,0 +1,520 @@
+{
+  "scope": "Source-owned Setup/Options parent fades replace obsolete sidebar colors; nested dialog first-visible and returns remain incomplete",
+  "binarySHA256": "cef357d39d21876cb2593d81ae0203f346c39e9349de157d2896c23fb2e8c273",
+  "sourceSHA256": {
+    "src/hd/ChildReturnGameHooks.inc": "3b6d081799d97884d8ee67f0f061652c5fc9520397a41a5a3ca8b90d5cbd6c94",
+    "src/hd/ChildReturnRenderer.inc": "e060d363f8431ce102e66b0ee8cc28b920e6278169f46a9fb3e878c9bdf18728",
+    "src/hd/ChildReturnPreludeAbi.h": "bcca743ce13070b3875c1a6b438e51aca550f6b8f4b23da7ce488d6666b8455e",
+    "src/hd/PlayerIntroRenderer.inc": "ee8722768d5896d4627a9a8ccec239f0dfea2c2dd352b9a0b05c2de3d3c2d613"
+  },
+  "authority": [
+    "Schema 2 is offered only by the current typed Setup or Options parent frame and matching caption owner",
+    "Complete base source pixels remain exact; sidebar colors from the old cached raster no longer choose authored parent content for this semantic path",
+    "Native texture bindings, upload ledger, current context, exact 300 selections and 600 triangles, original draw order and fade motion remain mandatory",
+    "Legacy schema 1 routes retain exact cached pixel comparison"
+  ],
+  "runs": [
+    {
+      "output": [
+        800,
+        450
+      ],
+      "driverExit": 0,
+      "copiedConfigsRestored": true,
+      "savedRecordsUnchanged": true,
+      "physicalIpadVerified": false,
+      "gameLogSHA256": "09f3d87b729c0004d7ee0723205b3d3a8f3827274c0b9f7a42ce3c065b69b213",
+      "hdFadeFrames": 60,
+      "actions": [
+        {
+          "action": "setup-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "373",
+              "previousFrames": "67"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "493",
+              "previousFrames": "120"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "return-setup",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "509",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "521",
+              "previousFrames": "12"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "options-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "628",
+              "previousFrames": "107"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "748",
+              "previousFrames": "120"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "769",
+              "previousFrames": "21"
+            },
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "781",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "783",
+              "previousFrames": "2"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "795",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "910",
+              "previousFrames": "115"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "932",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "944",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "946",
+              "previousFrames": "2"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "958",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1073",
+              "previousFrames": "115"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1100",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "1112",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1114",
+              "previousFrames": "2"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "800",
+              "height": "450",
+              "frame": "1126",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1241",
+              "previousFrames": "115"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1256",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "1268",
+              "previousFrames": "12"
+            }
+          ],
+          "hdFadeFrames": 12
+        }
+      ]
+    },
+    {
+      "output": [
+        708,
+        492
+      ],
+      "driverExit": 0,
+      "copiedConfigsRestored": true,
+      "savedRecordsUnchanged": true,
+      "physicalIpadVerified": false,
+      "gameLogSHA256": "b538685b4e72e5a961a867e1c7619063450ad8ccb61eba46332553d0f5669786",
+      "hdFadeFrames": 60,
+      "actions": [
+        {
+          "action": "setup-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "373",
+              "previousFrames": "65"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "493",
+              "previousFrames": "120"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "return-setup",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "508",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "520",
+              "previousFrames": "12"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "options-parent",
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "624",
+              "previousFrames": "104"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "744",
+              "previousFrames": "120"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "enter-audio",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "766",
+              "previousFrames": "22"
+            },
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "778",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "780",
+              "previousFrames": "2"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "return-audio",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "791",
+              "previousFrames": "11"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "906",
+              "previousFrames": "115"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "enter-controls",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "927",
+              "previousFrames": "21"
+            },
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "939",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "941",
+              "previousFrames": "2"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "return-controls",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "954",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1069",
+              "previousFrames": "115"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "enter-graphics",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1096",
+              "previousFrames": "27"
+            },
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "1108",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1110",
+              "previousFrames": "2"
+            }
+          ],
+          "hdFadeFrames": 12
+        },
+        {
+          "action": "return-graphics",
+          "routes": [
+            {
+              "choice": "native",
+              "width": "708",
+              "height": "492",
+              "frame": "1122",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1237",
+              "previousFrames": "115"
+            }
+          ],
+          "hdFadeFrames": 0
+        },
+        {
+          "action": "return-main",
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1252",
+              "previousFrames": "15"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "1264",
+              "previousFrames": "12"
+            }
+          ],
+          "hdFadeFrames": 12
+        }
+      ]
+    }
+  ],
+  "legacyActualGlesRegression": {
+    "scope": "Existing actual GLES intro-adapter regression; semantic fade path is covered by original-game route separately",
+    "checks": [
+      {
+        "step": "compile-link",
+        "exitCode": 0
+      },
+      {
+        "step": "actual-gles-runtime",
+        "exitCode": 0
+      }
+    ],
+    "physicalIpadVerified": false,
+    "passed": true
+  },
+  "knownRemaining": [
+    "Each nested Audio/Controls/Graphics entry has two original-layout presentation frames",
+    "Nested dialog exits still use the old-layout return transition",
+    "One separate focused Options-to-Main attempt lacked a published source owner; grouped routes passed but this is not universal acceptance",
+    "Other menus, supported shapes and physical iPad acceptance remain open"
+  ],
+  "rejectedFollowUp": {
+    "scope": "Iteration-close and cursor-visibility hypotheses tested together at 708x492",
+    "driverExit": 0,
+    "configsRestored": true,
+    "recordsUnchanged": true,
+    "result": "All three two-frame entry gaps and 115-frame exit gaps persist; both speculative changes reverted",
+    "logSHA256": "ca1bc80b27c2f2ce2f4ffa6f551cb5d8764716e1249dd58b47e62c7c39d095a8",
+    "diagnosis": "First Audio full frame is accepted before the first Audio sidebar cache-accepted record; first frame has no usable published sidebar packet"
+  },
+  "physicalIpadVerified": false,
+  "cloudBuildStarted": false
+}

@@ -50,6 +50,16 @@ extern "C" {
    On late failure discard staging; owner loss abandons resource metadata with
    no foreign GL cleanup. Existing Main/Location begin/finish remain separate. */
 int nfs_bg_scene_draw_layers_into_staging(NfsBackgroundSceneCompositor*,const NfsBackgroundSceneStage*,const NfsBackgroundSceneLayers*);
+/* Responsive background/decorations only. The trusted stage owner must prove
+   an unpublished registered color target and the two independently uploaded,
+   current authored wide textures. Native targets and sampling are unchanged. */
+typedef struct NfsNestedBackdropTextures {
+ uint64_t generation;GLuint map,panel;unsigned ratio;
+} NfsNestedBackdropTextures;
+int nfs_bg_scene_draw_nested_into_staging(NfsBackgroundSceneCompositor*,
+ const NfsBackgroundSceneStage*,const NfsBackgroundSceneLayers*,
+ const NfsNestedBackdropTextures*);
+
 int nfs_bg_scene_context_created(NfsBackgroundSceneCompositor*,uint64_t generation);
 void nfs_bg_scene_context_retired(NfsBackgroundSceneCompositor*,uint64_t generation,int ownerCurrent);
 int nfs_bg_scene_prepare(NfsBackgroundSceneCompositor*);

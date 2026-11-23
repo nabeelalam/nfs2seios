@@ -2,6 +2,7 @@
 from pathlib import Path
 import hashlib,json,os,re,subprocess,sys
 from validate_artwork_sha256 import validate
+from slideshow_panorama_release import CATALOG as PANORAMA_CATALOG, load as load_panorama_release
 ROOT=Path(__file__).resolve().parents[1]
 ASSETS=Path('assets/hud/classic-screens')
 MANIFEST=ASSETS/'APPROVED_ASSETS.json'
@@ -87,7 +88,7 @@ def _metadata_uint(value,maximum=0xffffffff):
     return value
 
 
-def _slideshow_structure(catalog,footer):
+def _slideshow_structure(catalog,footer,approved_counts=None):
     """Full-file grammars permit four fixed pin tables, not image/blob arrays."""
     def clean(data):
         if len(data)>131072:raise ValueError('Slideshow metadata header is oversized')
@@ -106,7 +107,12 @@ def _slideshow_structure(catalog,footer):
     if not cm or not fm:raise ValueError('Unexpected slideshow metadata header structure')
     sources,images=(_metadata_initializer(x)for x in cm.groups())
     resources,bindings=(_metadata_initializer(x)for x in fm.groups()[1:])
-    if tuple(map(len,(sources,images,resources,bindings)))!=(98,98,17,98):
+    counts={'sourcePins':len(sources),'runtimeImagePins':len(images),'resourcePins':len(resources),'bindings':len(bindings)}
+    if (approved_counts is None or set(approved_counts)!=set(counts)
+            or any(type(x)is not int for x in approved_counts.values())
+            or approved_counts['sourcePins']!=98 or approved_counts['runtimeImagePins']!=98
+            or approved_counts['bindings']!=98 or not 1<=approved_counts['resourcePins']<=98
+            or counts!=approved_counts):
         raise ValueError('Unexpected slideshow metadata table counts')
     sourceKeys=[]
     for row in sources:
@@ -143,9 +149,9 @@ def _slideshow_structure(catalog,footer):
     bindingKeys=[]
     for row in bindings:
         if not isinstance(row,list)or len(row)!=3:raise ValueError('Invalid Binding metadata')
-        bindingKeys.append((_metadata_digest(row[0]),_metadata_digest(row[1])));_metadata_uint(row[2],16)
+        bindingKeys.append((_metadata_digest(row[0]),_metadata_digest(row[1])));_metadata_uint(row[2],len(resources)-1)
     if bindingKeys!=sourceKeys:raise ValueError('Footer binding/source fingerprint mismatch')
-    return {'sourcePins':98,'runtimeImagePins':98,'resourcePins':17,'bindings':98}
+    return counts
 
 
 def metadata_approval():
@@ -162,7 +168,7 @@ def metadata_approval():
         tracked(SLIDESHOW_NOTICE)
         payloads[name]=tracked(ASSETS/name).read_bytes()
         if hashlib.sha256(payloads[name]).hexdigest()!=row['sha256']:raise ValueError('Slideshow metadata SHA mismatch: '+name)
-    counts=_slideshow_structure(payloads['SlideshowCatalogData.h'],payloads['SlideshowFooterData.h'])
+    counts=_slideshow_structure(payloads['SlideshowCatalogData.h'],payloads['SlideshowFooterData.h'],manifest['counts'])
     if manifest['counts']!=counts:raise ValueError('Slideshow metadata approval count mismatch')
     return hashlib.sha256(data).hexdigest()
 
@@ -170,7 +176,7 @@ def metadata_approval():
 def main():
     value=os.environ.get('NFS_CLASSIC_UI_REQUESTED','false')
     if value not in {'false','true'}:raise ValueError('Classic UI input must be boolean')
-    classic=value=='true';fingerprint='';metadata_fingerprint=''
+    classic=value=='true';fingerprint='';metadata_fingerprint='';panorama=None
     adaptive = os.environ.get('NFS_ADAPTIVE_RACE_REQUESTED', 'false')
     if adaptive not in {'false', 'true'}:
         raise ValueError('Adaptive race input must be boolean')
@@ -183,6 +189,8 @@ def main():
         validate(os.environ.get('NFS_HD_ARTWORK_SHA256',''),required=True)
         fingerprint=approval()
         metadata_fingerprint=metadata_approval()
+        if (ROOT/PANORAMA_CATALOG).exists():
+            panorama=load_panorama_release(tracked(PANORAMA_CATALOG))
     if sys.argv[1:]==['--check-only']:return
     if sys.argv[1:]:raise ValueError('Only --check-only is accepted')
     engine='.build/classic-fullmapped'if classic else'.build/fullmapped'
@@ -200,6 +208,8 @@ def main():
         engine = (pair / 'engine').as_posix()
         renderer = (pair / 'renderer').as_posix()
     values={'NFS_CLASSIC_UI':'ON'if classic else'OFF','NFS_CLASSIC_DEFER_OWNER_TEMPLATE':'ON'if classic else'OFF','NFS_CI_ENGINE_SOURCE':engine,'NFS_CI_RENDERER_SOURCE':renderer,'NFS_CLASSIC_ASSET_MANIFEST_SHA256':fingerprint,'NFS_CLASSIC_SLIDESHOW_METADATA_SHA256':metadata_fingerprint}
+    values.update(NFS_CLASSIC_SLIDESHOW_PANORAMA_SHA256=panorama['sha256']if panorama else'',
+                  NFS_CLASSIC_SLIDESHOW_PANORAMA_BYTES=str(panorama['fileBytes'])if panorama else'0')
     target=os.environ.get('GITHUB_ENV')
     if target:
         with open(target,'a',encoding='utf-8')as out:

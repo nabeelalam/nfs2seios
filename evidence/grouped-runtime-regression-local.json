@@ -1,0 +1,14 @@
+{
+  "scope": "Local WSL full production desktop target with software GLES2 and copied original data.",
+  "source": "41e904daf86c16bf34e522c33e7116d24c15660c",
+  "binarySha256": "7099b98a14fe7eef8d2d78bac7a2901b40de405136982594ec76c4dd4f1017fd",
+  "verifiedHostTests": 22,
+  "verifiedAnalyzerTests": 23,
+  "publicationPolicyPassed": true,
+  "independentHistorySecretScanPassed": true,
+  "opponentsFirstFrameCommits": 2,
+  "opponentsMenuExits": 2,
+  "cleanShutdown": true,
+  "observerCorrection": "The first observer could not recognize Main in a root-window capture. The second used a focused-window capture and the pinned copied profile.",
+  "deviceEvidence": "No Apple build or physical iPad result for this revision."
+}

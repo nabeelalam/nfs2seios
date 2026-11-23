@@ -1,0 +1,328 @@
+{
+  "scope": "Victory trophy and winner-photo artwork completion source review",
+  "originalArchiveSha256": "0504360ff41c29a1e2968714126d33b1aac74f94c7f7f84771319433437f92ba",
+  "originalDecodedSha256": "373ba8d60b0ec3cc52cc65177ee234541c604e3fe08a7b0bc36f0b5f3f0d3ba6",
+  "backdrop": {
+    "name": "back",
+    "dimensions": [
+      640,
+      480
+    ],
+    "spanSha256": "e567c5f152d441bad50cd92371bb28ca460de8cf4e40c3027b5387e9943f34ab"
+  },
+  "winnerPhotos": [
+    {
+      "carIndex": 0,
+      "name": "mcf1",
+      "archiveIndex": 9,
+      "sourceSpanSha256": "64f84cd51bc3bb99010c2425aafcfbaeb8728cb63b9c1b9575875cd834dbecb3",
+      "sourceOffset": 1896852,
+      "sourceSpan": 164284,
+      "dimensions": [
+        351,
+        234
+      ],
+      "intrinsicPlacement": [
+        288,
+        184
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "draft master authored"
+    },
+    {
+      "carIndex": 1,
+      "name": "ff50",
+      "archiveIndex": 7,
+      "sourceSpanSha256": "c642acc9b69a0fd4da052debd68e9228bc9083dec516c54e627c3816e5d3af97",
+      "sourceOffset": 1585312,
+      "sourceSpan": 154276,
+      "dimensions": [
+        349,
+        221
+      ],
+      "intrinsicPlacement": [
+        290,
+        184
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 2,
+      "name": "f355",
+      "archiveIndex": 12,
+      "sourceSpanSha256": "b009d9009f677525b3fcbd2a0b2ff22666b3674e726b7863a222934073e522f4",
+      "sourceOffset": 2375624,
+      "sourceSpan": 151092,
+      "dimensions": [
+        358,
+        211
+      ],
+      "intrinsicPlacement": [
+        281,
+        181
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 3,
+      "name": "fgt9",
+      "archiveIndex": 5,
+      "sourceSpanSha256": "4b7a4418cdc156f8bf637fd5e57de2eef3688f8f75c73efbfe8696850168478c",
+      "sourceOffset": 1278336,
+      "sourceSpan": 155600,
+      "dimensions": [
+        352,
+        221
+      ],
+      "intrinsicPlacement": [
+        288,
+        184
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 4,
+      "name": "find",
+      "archiveIndex": 4,
+      "sourceSpanSha256": "b2a9b1c487c953a47ff48cbe190e9ace3a9fa670221fe32c9f164c21c8006982",
+      "sourceOffset": 1116620,
+      "sourceSpan": 161716,
+      "dimensions": [
+        350,
+        231
+      ],
+      "intrinsicPlacement": [
+        289,
+        185
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 5,
+      "name": "fmus",
+      "archiveIndex": 10,
+      "sourceSpanSha256": "ba1004973645b86d6754cb0d8fbdde09ee045ad039a2941871f37b9c64a62b67",
+      "sourceOffset": 2061136,
+      "sourceSpan": 160732,
+      "dimensions": [
+        354,
+        227
+      ],
+      "intrinsicPlacement": [
+        286,
+        184
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 6,
+      "name": "jagr",
+      "archiveIndex": 8,
+      "sourceSpanSha256": "37e41fab89bcb289ef174e61d9f84f83c91e3ae83fdaf71b6a469d086f0e61c0",
+      "sourceOffset": 1739588,
+      "sourceSpan": 157264,
+      "dimensions": [
+        351,
+        224
+      ],
+      "intrinsicPlacement": [
+        288,
+        180
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 7,
+      "name": "lgt1",
+      "archiveIndex": 2,
+      "sourceSpanSha256": "369681a7d5a2341346f82b90474d9920858b9365a51f7eba90252ba5b3eef9d7",
+      "sourceOffset": 783588,
+      "sourceSpan": 167576,
+      "dimensions": [
+        355,
+        236
+      ],
+      "intrinsicPlacement": [
+        285,
+        174
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 8,
+      "name": "lesp",
+      "archiveIndex": 6,
+      "sourceSpanSha256": "a84d68bbd36c596adf79ddf14258e55beef72d6ea6d9399ea8cec85d4c1095ee",
+      "sourceOffset": 1433936,
+      "sourceSpan": 151376,
+      "dimensions": [
+        352,
+        215
+      ],
+      "intrinsicPlacement": [
+        287,
+        186
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 9,
+      "name": "nazc",
+      "archiveIndex": 11,
+      "sourceSpanSha256": "822cf46c967ea9d4196928da350f353fa06fce996644e4dab7f857ba84b948e4",
+      "sourceOffset": 2221868,
+      "sourceSpan": 153756,
+      "dimensions": [
+        351,
+        219
+      ],
+      "intrinsicPlacement": [
+        289,
+        186
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 10,
+      "name": "cala",
+      "archiveIndex": 3,
+      "sourceSpanSha256": "88eb2f61fccafcfdb863b543bee3c914f34307359b2b4173ce1aeb3d68e82f71",
+      "sourceOffset": 951164,
+      "sourceSpan": 165456,
+      "dimensions": [
+        352,
+        235
+      ],
+      "intrinsicPlacement": [
+        288,
+        181
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 11,
+      "name": "isde",
+      "archiveIndex": 1,
+      "sourceSpanSha256": "8d3a45c071c2afdb4f969a2339346b28daa7846b6b3fe7dc292721df91937c69",
+      "sourceOffset": 614656,
+      "sourceSpan": 168932,
+      "dimensions": [
+        349,
+        242
+      ],
+      "intrinsicPlacement": [
+        291,
+        182
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 12,
+      "name": "bbfs",
+      "archiveIndex": 14,
+      "sourceSpanSha256": "a7c8571910d4b7d9946cd4b603a17f86d0d36baad050bfe8e5f8cf29aeb3ec0f",
+      "sourceOffset": 2679076,
+      "sourceSpan": 153504,
+      "dimensions": [
+        362,
+        212
+      ],
+      "intrinsicPlacement": [
+        277,
+        180
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 13,
+      "name": "dayt",
+      "archiveIndex": 13,
+      "sourceSpanSha256": "3f33b3c2b1407e031e230bab193679988c4bb1cdfe2c71e46daa09723f36a1e5",
+      "sourceOffset": 2526716,
+      "sourceSpan": 152360,
+      "dimensions": [
+        361,
+        211
+      ],
+      "intrinsicPlacement": [
+        279,
+        181
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    },
+    {
+      "carIndex": 14,
+      "name": "fzr2",
+      "archiveIndex": 15,
+      "sourceSpanSha256": "502d21c89298f85b3f6f10f6a6b1e3197032e53fb8b0e68657881fb48639f973",
+      "sourceOffset": 2832580,
+      "sourceSpan": 167104,
+      "dimensions": [
+        354,
+        236
+      ],
+      "intrinsicPlacement": [
+        286,
+        185
+      ],
+      "sourceType": "uncompressed RGB565 0x78",
+      "authoringStatus": "pending"
+    }
+  ],
+  "authoredMasters": [
+    {
+      "name": "background-4x3-v1.png",
+      "sha256": "665c6c2341124987f7d4b0f5c4c090fc75e5dbd925c9ed4f3fb866c420d10a67",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1777356
+    },
+    {
+      "name": "mcf1-4x3-v1.png",
+      "sha256": "c7593e0c55031402e57c10c2a7f163ee6908527b51c9f7fb28643d77607a5b9d",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1709041
+    }
+  ],
+  "visualStrategy": "Reference-guided trophy restoration followed by full-scene car variants sharing the authored base, preserving source poses, lighting and text space. No arbitrary substitution of menu photographs.",
+  "sourceFindings": {
+    "owner": "4154C0",
+    "carNamesTable": "414C48, fifteen entries",
+    "finiteWords": "414C30, six congratulations entries",
+    "currentCollector": "VictoryGameHooks captures finite words and dynamic text but retains original backdrop and winner photo",
+    "currentRenderer": "VictoryRenderer clean565 base plus authored words/text; no dedicated authored victory background or photo installation",
+    "completedArtifactSet": false
+  },
+  "next": [
+    "Finish the fourteen remaining winner-car master variants with source/model fidelity",
+    "Prepare deliberate adaptive compositions and source-bound artwork catalog",
+    "Bind authored backgrounds/photos to actual original owner, source lookup and completed draw chain before activation",
+    "Group actual victory-screen validation with original game timing and data preserved"
+  ],
+  "limitations": [
+    "Draft artwork is not active in the app.",
+    "No winner-screen gameplay or physical iPad validation in this step.",
+    "Original images and master PNGs remain private; public evidence contains identity and authoring metadata only.",
+    "No cloud build or new install package."
+  ]
+}

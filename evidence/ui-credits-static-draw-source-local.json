@@ -1,0 +1,123 @@
+{
+  "scope": "Credits static image source/placement collector, actual original-game verification",
+  "binarySHA256": "47568e703792be4d1902ba38cff70ff00d7480ecacd32e9241238132f56013aa",
+  "staticSourceRecords": [
+    {
+      "index": 5,
+      "slot": 0,
+      "x": 100,
+      "y": 50,
+      "completed": 1,
+      "locale": 0
+    },
+    {
+      "index": 8,
+      "slot": 1,
+      "x": 300,
+      "y": 30,
+      "completed": 2,
+      "locale": 0
+    },
+    {
+      "index": 0,
+      "slot": 2,
+      "x": 0,
+      "y": 0,
+      "completed": 3,
+      "locale": 0
+    },
+    {
+      "index": 1,
+      "slot": 3,
+      "x": 456,
+      "y": 17,
+      "completed": 4,
+      "locale": 0
+    }
+  ],
+  "proven": {
+    "originalSourceHashes": "All four called spans match CreditsSourceCatalog before and after the genuine 4A10BC call",
+    "originalTarget": "Full 640x480 RGB565 owner/geometry/header/maps validated before and unchanged after each call",
+    "sourceRecipe": "Kenwood, Creative House Y2, backdrop, selected locale heading in original order",
+    "scopeLifetime": "Actual game/archive source lease; changed locale during a resource call or before frame submission, wrong call order, wrong target or retired owner cannot supply the captured scene",
+    "originalOperationsPreserved": [
+      {
+        "unit": "Methods_01.cpp",
+        "original_operations_unchanged": true
+      },
+      {
+        "unit": "Methods_03.cpp",
+        "original_operations_unchanged": true
+      },
+      {
+        "unit": "Methods_10.cpp",
+        "original_operations_unchanged": true
+      },
+      {
+        "unit": "Methods_12.cpp",
+        "original_operations_unchanged": true
+      },
+      {
+        "unit": "Methods_13.cpp",
+        "original_operations_unchanged": true
+      }
+    ],
+    "sanitizers": "ASan/UBSan with leak detection passed the private original archive and source lease/scene rejection/retirement cases; synthetic geometry is not live-placement evidence"
+  },
+  "runtime": {
+    "scope": "Actual Credits source draw placement at 708x492, followed by Options/Main return",
+    "physicalIpadVerified": false,
+    "newArtworkActivated": false,
+    "staticSourceRecords": [
+      {
+        "index": 5,
+        "slot": 0,
+        "x": 100,
+        "y": 50,
+        "completed": 1,
+        "locale": 0
+      },
+      {
+        "index": 8,
+        "slot": 1,
+        "x": 300,
+        "y": 30,
+        "completed": 2,
+        "locale": 0
+      },
+      {
+        "index": 0,
+        "slot": 2,
+        "x": 0,
+        "y": 0,
+        "completed": 3,
+        "locale": 0
+      },
+      {
+        "index": 1,
+        "slot": 3,
+        "x": 456,
+        "y": 17,
+        "completed": 4,
+        "locale": 0
+      }
+    ],
+    "cleanShutdown": true,
+    "gameAbsentVerified": true,
+    "protectedFilesRestored": true,
+    "statsUnchanged": true,
+    "all20ResourcesUnchanged": true,
+    "harnessFailure": "Post-exit wrapper inspected unrelated protected system-process metadata before restoration; recovery verified no live game and restored durable backups without replaying",
+    "recoveryCompleted": true
+  },
+  "pipelineRepair": "Credits generator explicitly writes UTF-8; the first Windows audit exposed a Unicode arrow in Methods_13 comments that the system encoding could not write. Corrected reverse audit and all five real compiler units passed. The empty partial failed audit is not compilation evidence.",
+  "limits": [
+    "This supplies CPU static-draw provenance, not cached texture upload/native-pass or GL presentation authority",
+    "No wide Credits frame or new artwork activated",
+    "Only English 708x492 placement observed; six-locale mapping validated structurally, not six live sessions",
+    "Qualified backdrop-only first frames, partner scroll/cache/native witness, full-drawable renderer and parent-return continuity remain open"
+  ],
+  "newAppleBuild": false,
+  "physicalIpadVerified": false,
+  "originalGameAssetsChanged": false
+}

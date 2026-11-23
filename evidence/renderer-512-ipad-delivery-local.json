@@ -1,0 +1,19 @@
+{
+  "scope": "Successful standard-runner build and verified private unsigned iPadOS delivery.",
+  "source": "9728f5d5b39de9e4e7424742955e91de02c3c6ee",
+  "run": 44301780017,
+  "architecture": "arm64",
+  "platform": "iOS device",
+  "rendererQueueCapacity": 512,
+  "privateZipBytes": 468341740,
+  "privateZipSha256": "da1aeba61d8064c0bf8fd6bea3c3ca0ae242fa172a04dd914bc6379f50d2fc95",
+  "actionsArtifacts": 0,
+  "publicTemporaryDraftRemoved": true,
+  "personalSigningRequired": true,
+  "physicalIpadVerified": false,
+  "verifiedIpaSha256": "fd703f7cbdd2c1bb999c65aadd2c0ea15bb689d3f3b4c5b503c746ede9c58783",
+  "verifiedMainExecutableSha256": "5873d1e712c34134e94ef3561bdedc5be03ed7ba5a39f3108b85e97979e12eb6",
+  "unchangedAppleBundleMembers": 12,
+  "verifiedArtworkPacks": 13,
+  "originalGameFilesPresent": false
+}

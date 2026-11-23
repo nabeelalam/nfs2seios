@@ -1,0 +1,23 @@
+{
+  "scope": "Widescreen title photograph candidate; separate from runtime acceptance",
+  "localArtifact": ".build/title-wide-artwork-v1/title-photograph-wide-v1.png",
+  "sha256": "425816eb1633f827f0ab7f0a8e1be6e53115f8dc4be68702fed5ac5bfaae170e",
+  "dimensions": [
+    1672,
+    941
+  ],
+  "method": "Built-in image generation edit of losslessly extracted retained photograph",
+  "promptRecipe": ".build/title-wide-artwork-v1/PROMPT.txt",
+  "retainedPhotographUnchanged": true,
+  "visualReview": "Same upper red-car montage and lower two-car composition; extended surrounding reflections/motion/road; no baked logo or copyright. Candidate needs final in-game layout review.",
+  "runtimeIntegrated": false,
+  "newApplicationBuild": false,
+  "physicalIpadVerified": false,
+  "remaining": [
+    "Add optional authenticated wide-photo provider/pack while preserving old pack compatibility.",
+    "Create independently owned full-drawable title output after existing native pass proof; preserve original target and require actual FBO/context/generation before selection.",
+    "Retain source/art authority through presentation; revoke on native mutation, owner loss and resize.",
+    "Keep logo/copyright proportional, compare 4:3, iPad and 16:9 visual outputs.",
+    "Do not accept broader menu or device behavior from this artwork candidate."
+  ]
+}

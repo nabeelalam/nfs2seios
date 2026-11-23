@@ -11,7 +11,7 @@ static constexpr uint32_t byte_512DBF=0xe200,byte_512DDA=0xe201,byte_512DC1=0xe2
 namespace nfs_player_scene_live {
 namespace bg=nfs_player_scene_cpu;using Plane=nfs_logo_capture::Plane;
 struct SidebarCapture{bg::Scene scene;rec::Group group;rec::Copy originalCopy;std::shared_ptr<const nfs_soft::FramePacket>caption;std::shared_ptr<const bg::SourceCatalog>catalogue;uint64_t captionSerial=0,captionLifetime=0,groupSerial=0,copySerial=0;bg::Event groupEvent{},tailEvent{},copyEvent{};uint32_t archive=0,form=0;std::shared_ptr<const nfs_compact_caption::Proof>compactCaption;uintptr_t captionGame=0;uint32_t captionFormGuest=0,captionArchive=0;};
-enum class CachedUploadSite:uint32_t{None,Initial,Refresh,Lazy};
+enum class CachedUploadSite:uint32_t{None,Initial,Refresh,Lazy,PreviewRebuild};
 struct State{
  std::shared_ptr<const nfs_player_initial_sidebar::Proof>pendingInitialSidebar;
  bg::Base base;bg::Workspace workspace;std::shared_ptr<const bg::SourceCatalog>catalogue;std::shared_ptr<const SidebarCapture>retainedSidebar;std::shared_ptr<const rec::Copy>currentCopy;std::shared_ptr<const nfs_player_preview::Packet>preview;std::shared_ptr<const nfs_player_swatch::Packet>swatch;nfs_player_swatch::Authority swatchAuthority;
@@ -28,14 +28,14 @@ inline bool archiveCurrent(State&s)noexcept{try{nfs::GuestCopyTransaction tx;ret
 inline bool initialSidebarCurrent(State&)noexcept{return false;}
 inline const SidebarCapture*retainedSidebarCapture(const State&s)noexcept{return s.retainedSidebar&&s.retainedSidebar->form==s.form&&s.retainedSidebar->archive==s.archive?s.retainedSidebar.get():nullptr;}
 }
-namespace nfs_player_preview_live {static bool selectionOkay=true;inline bool selection(nfs_player_scene_live::State&s,nfs_player_preview::Selection&out)noexcept{out=s.previewSelection;if(!selectionOkay)++out.selectedCar;return selectionOkay;}}
-namespace nfs_player_copy_live {enum class Site:uint32_t{Initial,Refresh,Lazy};struct State{std::shared_ptr<const nfs_player_initial_sidebar::Proof>initialSidebar;bool invalid=false;unsigned depth=0;nfs_player_scene_live::State*owner=nullptr;uintptr_t game=0,thread=0;uint64_t epoch=0,serial=0,iteration=0;uint32_t form=0,formGuest=0,sourceOwner=0,archive=0;nfs_player_scene_cpu::Event baseEvent{};Site site=Site::Initial;};inline State*&slot()noexcept{static thread_local State*s=nullptr;return s;}}
+namespace nfs_player_preview_live {static bool selectionOkay=true,overrideSelection=false;static nfs_player_preview::Selection observedSelection;inline bool selection(nfs_player_scene_live::State&s,nfs_player_preview::Selection&out)noexcept{if(leaseDepth)return false;out=overrideSelection?observedSelection:s.previewSelection;if(!selectionOkay)++out.selectedCar;return selectionOkay;}}
+namespace nfs_player_copy_live {enum class Site:uint32_t{Initial,Refresh,Lazy,PreviewRebuild};struct State{std::shared_ptr<const nfs_player_initial_sidebar::Proof>initialSidebar;bool invalid=false;unsigned depth=0;nfs_player_scene_live::State*owner=nullptr;uintptr_t game=0,thread=0;uint64_t epoch=0,serial=0,iteration=0;uint32_t form=0,formGuest=0,sourceOwner=0,archive=0;nfs_player_scene_cpu::Event baseEvent{};Site site=Site::Initial;};inline State*&slot()noexcept{static thread_local State*s=nullptr;return s;}}
 #define NFS_PLAYER_SOURCE_RUNTIME_TEST 1
 #include "hd/PlayerSourceGameHooks.inc"
 #undef NFS_PLAYER_SOURCE_RUNTIME_TEST
 namespace source=nfs_player_source_live;namespace sl=nfs_player_scene_live;namespace cp=nfs_player_copy_live;namespace ps=nfs_player_scene_cpu;namespace pn=nfs_player_native;
 static void load(Game&g,player_scene_fixture::Fixture&f,sl::State&l,cp::State&c){
- source::reset();prepareMemory(f);l.pendingInitialSidebar.reset();l.invalid=false;l.on=l.baseVerified=true;l.form=f.binding.form;l.formGuest=l.sourceOwner=sl::relocatedForm(l.form);l.archive=f.binding.archive;l.ownerEpoch=1;l.game=reinterpret_cast<uintptr_t>(&g);l.thread=pub::threadToken();l.sequence=100;l.nextContent=l.nativeUploadEvent=0;l.base=f.base;l.catalogue=std::make_shared<const ps::SourceCatalog>(f.catalog);
+ nfs_player_preview_live::overrideSelection=false;source::reset();prepareMemory(f);l.pendingInitialSidebar.reset();l.invalid=false;l.on=l.baseVerified=true;l.form=f.binding.form;l.formGuest=l.sourceOwner=sl::relocatedForm(l.form);l.archive=f.binding.archive;l.ownerEpoch=1;l.game=reinterpret_cast<uintptr_t>(&g);l.thread=pub::threadToken();l.sequence=100;l.nextContent=l.nativeUploadEvent=0;l.base=f.base;l.catalogue=std::make_shared<const ps::SourceCatalog>(f.catalog);
  auto raw=std::make_shared<sl::SidebarCapture>();raw->scene=f.scene;raw->group=f.group;raw->originalCopy=f.copy;raw->caption=f.caption;raw->catalogue=l.catalogue;raw->captionSerial=5;raw->captionLifetime=7;raw->copySerial=19;raw->groupSerial=f.group.serial;raw->groupEvent={1,21,1};raw->tailEvent={1,22,1};raw->archive=l.archive;raw->form=l.form;l.retainedSidebar=raw;
  auto input=f.input();l.currentCopy=std::make_shared<const rec::Copy>(f.copy);l.copySerial=f.copy.serial;l.currentCopyEvent=l.copyEvent=input.copyEvent;l.actualSidebarPost=f.scene.tailPost;l.sidebarValidationEvent=input.sidebarValidationEvent;l.preview=f.preview;l.previewSelection=f.preview->selection();l.previewSerial=input.acceptedPreviewSerial;l.previewLifetime=input.previewLifetime;l.previewEvent=input.previewEvent;l.previewBaseEvent=input.previewBaseEvent;l.actualPreviewPost=*input.actualPreviewPost;l.swatch=f.swatch;l.swatchCurrent=bool(f.swatch);l.acceptedSwatchCopySerial=input.acceptedSwatchCopySerial;
  if(f.swatch){l.swatchAuthority=input.swatchAuthority;l.swatchCopyEvent=input.swatchCopyEvent;l.swatchEvent=input.swatchEvent;l.swatchCopyPost=*input.swatchCopyPost;l.actualSwatchPost=*input.actualSwatchPost;}
@@ -52,6 +52,24 @@ int main(){try{auto l=std::unique_ptr<sl::State>(new sl::State);cp::State copy;s
   // Candidate occurrence fields cannot supply a missing current identity.
   auto occurrence=sealed->binding();++occurrence.archive;CHECK(!source::currentBinding(g,occurrence,now));CHECK(!now.source.gameOwner);
  }
+ // Actual source join must bind the final preview rebuild as its own site.
+ for(unsigned player:{1u,2u}){auto f=std::unique_ptr<player_scene_fixture::Fixture>(new player_scene_fixture::Fixture(player,0));load(g,*f,*l,copy);copy.site=cp::Site::PreviewRebuild;l->cachedUploadSite=sl::CachedUploadSite::PreviewRebuild;auto sealed=source::prepareSource(g,77);CHECK(sealed&&sealed->binding().kind==ps::SourceKind::PreviewRebuild);pn::CurrentBinding now;CHECK(source::currentBinding(g,sealed->binding(),now));copy.site=cp::Site::Refresh;CHECK(!source::currentBinding(g,sealed->binding(),now));}
+ // Independently observed outgoing graph: next selected car, old consumed
+ // cache/statistics and original swatch/palette remain bound to the old frame.
+ for(unsigned player:{1u,2u})for(unsigned next:{1u,12u}){
+  auto graph=std::unique_ptr<player_scene_fixture::Fixture>(new player_scene_fixture::Fixture(player,2,true));CHECK(graph->source);
+  for(unsigned fault=0;fault<8;++fault){load(g,*graph,*l,copy);namespace reader=nfs_player_preview_live;reader::overrideSelection=true;reader::observedSelection=l->previewSelection;reader::observedSelection.selectedCar=next;const auto carAt=player==1?byte_512DBF:byte_512DDA;memory[carAt]=uint8_t(next);
+   if(fault==1)++reader::observedSelection.cachedCarIndex;
+   if(fault==2)reader::observedSelection.graphEnabled=0;
+   if(fault==3)++reader::observedSelection.graphValues[2];
+   if(fault==4)reader::observedSelection.selectedCar=15;
+   if(fault==5)copy.iteration=0;
+   if(fault==6)memory[(player==1?byte_512DC1:byte_512DDC)+l->previewSelection.selectedCar]^=1;
+   if(fault==7)m32(dword_4D62C8+16*l->swatchAuthority.binding.color,0x12345678);
+   auto sealed=source::prepareSource(g,77);if(fault){CHECK(!sealed);}else{CHECK(sealed&&l->preview->selection()==l->previewSelection&&sealed->original()==graph->actualUpload.pixels);pn::CurrentBinding now;CHECK(source::currentBinding(g,sealed->binding(),now));++reader::observedSelection.graphValues[0];CHECK(!source::currentBinding(g,sealed->binding(),now));}
+  }
+ }
+ nfs_player_preview_live::overrideSelection=false;
  auto f=std::unique_ptr<player_scene_fixture::Fixture>(new player_scene_fixture::Fixture(1,1));
  for(unsigned v=0;v<29;++v){load(g,*f,*l,copy);
   if(v==0)++l->form;if(v==1)++l->formGuest;if(v==2)++l->sourceOwner;if(v==3){++l->archive;m32(dword_4D40B8,l->archive);}if(v==4)++l->ownerEpoch;if(v==5)++copy.serial;if(v==6)copy.site=cp::Site::Initial;if(v==7)l->cachedUploadSite=sl::CachedUploadSite::Initial;if(v==8)++copy.iteration;if(v==9)++copy.baseEvent.sequence;if(v==10)pub::uploadEvents().store(78);if(v==11)++l->copySerial;if(v==12)++l->copyEvent.sequence;if(v==13)++l->previewSelection.selectedCar;if(v==14)nfs_player_preview_live::selectionOkay=false;
@@ -67,5 +85,5 @@ int main(){try{auto l=std::unique_ptr<sl::State>(new sl::State);cp::State copy;s
  // same-owner source change after a previously successful preparation.
  for(unsigned v=0;v<9;++v){load(g,*f,*l,copy);auto sealed=source::prepareSource(g,77);CHECK(sealed);auto old=sealed->binding();if(v==0)++l->formGuest;if(v==1)++l->sourceOwner;if(v==2)++l->archive;if(v==3)++l->nativeUploadEvent;if(v==4)++l->nextContent;if(v==5)++copy.serial;if(v==6)m32(0x41000+32,0x600000);if(v==7)pub::uploadEvents().store(78);if(v==8){auto cat=std::make_shared<ps::SourceCatalog>(*l->catalogue);cat->identities[1].sha[0]^=1;l->catalogue=cat;}pn::CurrentBinding now;CHECK(!source::currentBinding(g,old,now)&&!now.source.gameOwner);}
  load(g,*f,*l,copy);auto before=reads,alloc=allocationCount.load();sl::feature=false;CHECK(!source::prepareSource(g,77));pn::CurrentBinding none;CHECK(!source::currentBinding(g,{},none));sl::feature=true;CHECK(reads==before&&allocationCount==alloc);
- std::thread foreign([&]{Game other;CHECK(!source::prepareSource(other,77));pn::CurrentBinding out;CHECK(!source::currentBinding(other,{},out));CHECK(!source::slot());});foreign.join();CHECK(reads==before&&allocationInLease==0&&!leaseDepth);CHECK(retained&&retained->original().size()==ps::Full);sl::slot()=nullptr;cp::slot()=nullptr;std::puts("PASS Player source join: sealed both-player Initial/Refresh/Lazy records, actual cached owner/default selection separation, independent current callbacks, source/event/catalog/current-plane rejections, disabled/foreign inert/no lease allocations; lexical owner/copy metadata and selection reader are explicit stubs");return 0;
+ std::thread foreign([&]{Game other;CHECK(!source::prepareSource(other,77));pn::CurrentBinding out;CHECK(!source::currentBinding(other,{},out));CHECK(!source::slot());});foreign.join();CHECK(reads==before&&allocationInLease==0&&!leaseDepth);CHECK(retained&&retained->original().size()==ps::Full);sl::slot()=nullptr;cp::slot()=nullptr;std::puts("PASS Player source join: sealed both-player Initial/Refresh/Lazy/PreviewRebuild records, actual cached owner/default selection separation, independent current callbacks, source/event/catalog/current-plane rejections, disabled/foreign inert/no lease allocations; lexical owner/copy metadata and selection reader are explicit stubs");return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}}

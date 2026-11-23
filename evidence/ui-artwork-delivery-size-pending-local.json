@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "scope": "Pre-delivery artwork catalog size audit",
+  "pinnedResourceCount": 22,
+  "pinnedResourceBytes": 541576669,
+  "currentIpaLimitBytes": 536870912,
+  "baseAppAndZipOverheadNotIncluded": true,
+  "fullSetCurrentlyFits": false,
+  "sizeLimitChanged": false,
+  "additionalDrift": "Resolved: recovered exact219036319byte version4 resource, current native decoder compared98images byte for byte, and CMake/injector now share one release catalog.",
+  "nextAction": "Complete full-resource size accounting and runtime acceptance before a delivery. The compact slideshow was already counted in the original total, so recovery does not resolve the remaining size overhead.",
+  "physicalDeviceOrFinalIpaClaim": false,
+  "slideshowDriftResolved": true,
+  "guardOrigin": "Project packaging tool constant; no claim of an iPad or SideStore512MiB platform limit."
+}

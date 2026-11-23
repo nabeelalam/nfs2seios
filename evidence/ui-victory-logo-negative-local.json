@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "scope": "Private combined invalid-source and interrupted Victory logo renderer test",
+  "runtimeBackend": "Local WSL X11 software GLES2; not physical iPad acceptance",
+  "runtimeBinarySha256": "5a14a039554ff241bd2d6b9698d32f3bab27a8180d67e63e77369d28316ab2f0",
+  "sourceReview": "Only private C API inputs/observers and presentation selector are faulted. Guest values and original native draw/swap calls remain unchanged.",
+  "cases": [
+    {
+      "mode": 1,
+      "name": "wrong-parent",
+      "attempts": 6,
+      "allRejected": true
+    },
+    {
+      "mode": 2,
+      "name": "wrong-content",
+      "attempts": 5,
+      "allRejected": true
+    },
+    {
+      "mode": 3,
+      "name": "wrong-address",
+      "attempts": 5,
+      "allRejected": true
+    },
+    {
+      "mode": 4,
+      "name": "changed-quad-corner",
+      "attempts": 5,
+      "allRejected": true
+    },
+    {
+      "mode": 5,
+      "name": "unexpected-operation-observer",
+      "attempts": 5,
+      "allRejected": true
+    },
+    {
+      "mode": 6,
+      "name": "pending-presentation-before-batch",
+      "attempts": 5,
+      "allRejected": true
+    },
+    {
+      "mode": 7,
+      "name": "pending-presentation-after-batch-before-END",
+      "attempts": 5,
+      "allRejected": true
+    }
+  ],
+  "totalFrames": 36,
+  "authenticatedSourceCars": 12,
+  "originalNativeVictoryFrames": 36,
+  "preparedWideParents": 36,
+  "acceptedLogoTailFrames": 0,
+  "actualWidePresentedFrames": 0,
+  "changedQuadRejectedAtActualTriangle": 5,
+  "alreadyCompletedBatchesRejectedBeforeEnd": 5,
+  "allOriginalSourceScopesStillValid": true,
+  "everyCaptureAfterOriginalSwap": true,
+  "extraDiagnosticSwaps": 0,
+  "allPendingScopesCleared": true,
+  "copiedFixtureRestoredExactly": true,
+  "all22ResourcesUnchanged": true,
+  "productionSourceSnapshotRestored": true,
+  "resultSha256": "7446cc8460386c8c78fda4b7c03f3bc7e5f3fc62dc88a8c2bfb09559b175a099",
+  "faultWrapperSha256": "0b630caf5119a92f99664e24b7e759ee34350b402a2508dca9717c9e373deb34",
+  "firstPrivateHelperAttempt": "Compilation failed on an unintended readback format-string newline. Corrected helper compiled; no production source change or runtime acceptance was claimed for the failed attempt.",
+  "physicalDeviceVerified": false
+}

@@ -1,8 +1,18 @@
-# Adaptive world aspect stage (inactive)
+# Adaptive world aspect stage (explicit paired local integration)
 
-`AdaptiveAspect.h` supplies camera and per-view placement calculations only. It
-is not connected to the safe-contain presentation switch, and no current renderer
-advertises its required capabilities. This does not implement true widescreen.
+`scripts/prepare_adaptive_race.py` supplies an explicit engine/renderer pair;
+the regular preparers do not enable it automatically. The current local UI
+candidate uses that paired integration. Fresh single/split race cameras adjust
+float horizontal focal, integer focal and horizontal angle, using one target
+extent committed before each race frame. Mode/player ownership travels with
+queued draws so the world uses the wide raster while the HUD remains contained.
+Menu-wide presentation is a separate mechanism and does not prove world aspect.
+
+Later sections record local original-data single/split race and resize evidence.
+Complete CPU-culling coverage, mixed-list ownership, alternate cameras and
+physical-device acceptance remain unverified. The following original-engine
+boundaries and required stages are retained as historical design/audit notes;
+their implementation status must be read with the later integration evidence.
 
 ## Verified original-engine boundaries
 
@@ -978,6 +988,54 @@ observer. Moving the window to the virtual origin resolved the capture
 failure. No iPad behavior, natural record entry or return to Main was
 established by the corrected replay.
 
+### Full split-screen race on Proving Grounds
+
+An original-data desktop run selected Split Screen through Setup and
+started a two-lap Proving Grounds race. Two virtual controllers moved
+both cars, and later captures show each car on lap two. The fixture used
+throttle, shift and car-reset inputs to complete the course. The original
+race flow opened the remastered Race Summary. The captured 640x480 screen
+listed Player One's McLaren F1 in seventh at 6:03.67 and Player Two's
+Nazca C2 in eighth at 6:08.34. The trace confirmed authenticated Results
+artwork and clean shutdown, and the harness restored the disposable
+profile and replay. An earlier observer stopped after proving movement
+because it read the wrong log path. This complete run verifies the
+desktop 4:3 race-to-Results route. Split-screen wide Results and iPad
+performance remain unverified by this run.
+
+A linked desktop run with the Apple workflow's adaptive race hooks and
+checked-copy options also finished both Proving Grounds laps. During the
+race, the 800x450 capture contained world pixels at both outer edges of
+both players' views. Race Summary selected wide output on its first
+presentation at frame 12681, resized to 1180x820 at frame 12716, and
+returned to 800x450 at frame 12752 with no Results fallback in the
+uncapped route trace. The observed Summary lists both original results,
+and Continue opened the full-width two-player Lap Times page. The game
+exited cleanly and restored the disposable profile and replay. The
+iPad-like extent was exercised in Results. The race itself was driven
+at 16:9 after the initial 4:3 setup.
+
+A follow-up normal two-player finish went from Race Summary to Lap
+Times and used its Main Menu option at 1180x820. The presentation
+trace stayed on wide Results through frame 13782, used the native route
+for three presentations at 13783 through 13785, then switched to the
+authored Main entrance at 13786 and steady wide Main at 13845. The
+settled capture shows the authored title logo, background and both
+selected cars. The three native presentations occurred before the
+incoming Main archive was sealed. Their visible contents were not
+captured. The desktop process exited cleanly and the test profile and
+replay were restored.
+
+The shorter Quit Race route reached the same Lap Times to Main handoff
+at 1180x820 and reproduced three native-route presents followed by the
+authored entrance. A timed capture during the native-route run was
+entirely black at the pixel level. The next changed capture contained
+the leading edge of the authored Main panel and the following samples
+showed its original slide timing with remastered art. No original
+menu artwork was visible in the sampled handoff. This covers the
+aborted route visually. The natural finish has the corresponding
+presentation trace, but its three intermediate pixels were not captured.
+
 ### Deferred Results backdrop trial
 
 The trial leaves 20,808,068 decoded bytes on disk until the Results handler
@@ -1021,6 +1079,18 @@ one acceptance, even with two class changes per visit. Both returned to Main
 and the app exited cleanly. The diagnostic desktop flag enables the same
 app log sink used on iPad. The separate scene renderer checkpoints did not
 fire on these visits. The physical crash remains unverified.
+
+### Main left-panel line check
+
+The previously reported pale vertical line was not apparent in the
+settled 2360x1640 desktop Main capture after returning from Opponents.
+A pixel check of two native captures at that size and two at 1280x720
+scanned the left 40 percent of the frame. It counted rows where a column
+was at least 16 luma levels brighter than both nearby columns two pixels
+away. No column met that threshold for more than 8.5 percent of checked
+rows at the iPad-like ratio or 16.9 percent at 16:9. This bounds a
+continuous bright line in these captures; it does not cover a faint,
+intermittent, or device-only seam.
 
 ### Opponents 16:9 presentation replay
 
@@ -1147,6 +1217,39 @@ no race measurement.
 Keep the change based on the improvement in both orders. Desktop software
 GLES does not measure iPad frame time, energy use or Low Power Mode.
 
+The measurements above used the 4:3 path. The follow-up rebuilt both
+variants with the Apple workflow's checked-copy options and adaptive race
+hooks. Both cars were moving before capture, and checks near the edges
+of both player views confirmed fullscreen 800x450 before and after each
+30-second window. All four sessions exited cleanly. The interrupted
+observer runs were excluded.
+
+| Order | Baseline engine CPU median | Candidate engine CPU median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 15.716 ms | 15.520 ms | 32.373 ms | 32.341 ms |
+| Candidate, baseline | 14.967 ms | 14.756 ms | 31.717 ms | 31.185 ms |
+
+Median engine CPU improved 1.2 to 1.4 percent. The frame-spacing median
+improved 0.1 to 1.7 percent. The widescreen desktop effect is smaller
+than the earlier 4:3 result. The iPad effect remains unmeasured.
+
+### Follow-up register arithmetic experiment
+
+Adding register-only FPU addition, subtraction and division to the batching
+allowlist reduced the generated scope count from 9,410 to 9,385. Four
+generated method units changed, with identical normalized operation
+sequences. All 12 batching tests and 40,000 exact-state checks passed.
+The matched 30-second North Country desktop split-screen results were:
+
+| Order | Baseline engine CPU median | Candidate engine CPU median | Baseline swap median | Candidate swap median |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline, candidate | 16.219 ms | 16.522 ms | 32.245 ms | 32.020 ms |
+| Candidate, baseline | 16.612 ms | 16.421 ms | 31.728 ms | 32.250 ms |
+
+Both comparisons finished. CPU and swap timing moved in opposite directions
+within each pair, and the direction reversed with test order. The trial was
+reverted. The previously verified multiply batching remains selected.
+
 ### Crash breadcrumb storage experiment
 
 A private candidate grouped the per-thread ring, indices and monitor slot
@@ -1156,6 +1259,24 @@ history and monitor messages after 50 million calls. In six alternating
 desktop pairs the candidate took 4.8 percent longer at the median. The
 existing layout stays in production. This isolated Linux result does not
 measure the cost of thread-local access on iPadOS.
+
+### Heap release coalescing
+
+A release only coalesces the neighboring free blocks. Existing free
+blocks are already coalesced, and allocation splits them without
+creating adjacent free blocks. The mutex, live-span validation and
+revision invalidation remain in effect. Baseline and candidate passed
+the address and undefined behavior sanitizer allocator checks, including
+fragmentation, resizing and 4,000 threaded allocations.
+
+In six alternating-order component pairs, median release CPU fell 70.0
+percent for randomly ordered frees of 1,800 allocations and 83.1
+percent for ascending frees. A linked adaptive desktop test then drove
+Proving Grounds with both controllers, quit through widescreen Results,
+returned to Main and started a second split race with both clocks
+advancing. The game exited cleanly and the disposable profile and
+replay were restored. These checks do not establish race FPS or energy
+savings on iPad.
 
 ### Checked FPU store experiment
 
@@ -1339,3 +1460,48 @@ at both 18 and 20 ms. The other two fell within the JSON timestamp
 rounding margin and were excluded from the independent comparison.
 The recorder lost no rows and shut down cleanly. The analyzer's longest
 run calculation now uses a 0.2 ms rounding tolerance.
+
+### Natural finish at 16:9
+
+A Proving Grounds split-screen run with two driven cars reached authored
+Lap Times at 800x450. The first confirm returned to Main at that extent.
+The presentation trace recorded three original-route presentations,
+then 59 authored entrance frames before steady widescreen Main. The
+probe produced no swap-buffer readbacks, so the contents of the three
+original-route frames remain unknown. The settled capture showed the
+authored Main menu. Resizing it to 1180x820 produced one original-route
+presentation before the widescreen Main renderer resumed.
+
+The replay's next timed confirm started another race because Main
+was already active. Use a verified Lap Times screen and one confirm on
+future attempts. The process exited cleanly and restored the copied
+profile and replay. This run establishes desktop behavior only.
+
+### Victory startup and remaining presentation extent
+
+The reviewed32-image production resource now registers through normal artwork
+startup in the local forced original-draw fixture. Direct fixture registration
+and manual Victory feature overrides were removed. Both runs complete all15
+car frames with the full native pass verified, clean exit and exact copied-file
+restoration. This does not exercise a natural race win or the original owner entry.
+
+The708x492window probe still binds a656x492native framebuffer. Consequently
+Victory selects its4:3image; adaptive canvas math alone has not enabled a
+full-window image. A separate completed-pass-bound compositor and exact
+front-attachment selection remain necessary before widescreen acceptance.
+
+### Full-window Victory stage
+
+An independent wide Victory stage now follows the completed native pass and
+uses actual source dimensions for cover cropping. It keeps original word/text
+positions centered and uses the existing owned-responsive text contract. Actual
+front color/depth attachments, output extent and generation must match before
+display selection. Unknown native activity or a mismatched extent revokes it.
+
+The final forced desktop fixture prepared all15cars at708x492and800x450. Each
+run performed2actual wide swaps and rejected a wrong extent and an unrelated
+triangle observer event. All protected copied files and22resources remained
+unchanged. The captures match the reviewed plates. This supersedes the earlier
+4:3-only output observation for this fixture; natural race-win/owner entry and
+physical-device acceptance remain unverified. Repeated-frame costs were not
+measured by this functional fixture.

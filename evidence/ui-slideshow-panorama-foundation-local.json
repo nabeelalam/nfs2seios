@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "scope": "Local source integration, compiler checks and synthetic resource interoperability only; no integrated game runtime or physical iPad acceptance",
+  "provider": {
+    "selectedEntryOnlyDecoded": true,
+    "acceptedCenterCopiedExactly": true,
+    "binding": [
+      "archive digest",
+      "entry digest",
+      "center RGBA digest",
+      "footer RGBA digest"
+    ],
+    "compressedSideStorage": "one exact lossless zlib stream",
+    "maximumEntries": 98,
+    "maximumImageMiB": 64,
+    "oldGenerationRevoked": true
+  },
+  "session": {
+    "attachment": "explicit opt-in after original source and center selection",
+    "refusedAttachment": "restores accepted center-only frame",
+    "reselectOrClose": "retires attached frame identity",
+    "existingDefaultCallerLinksWithoutProvider": true
+  },
+  "checks": [
+    "C++14 provider ASan/UBSan selected replay, routing, bounds, stream and lifetime checks passed",
+    "C++14 synthetic Session original640x480 archive + pinned image/footer attachment checks passed",
+    "Default Session link without optional provider implementation passed",
+    "Python side-strip packer six synthetic tests passed",
+    "C++14 pack loader ASan/UBSan malformed file, metadata, bounds, stream and exact pin checks passed",
+    "Actual Python packer to pinned C++ loader interoperability passed for two synthetic RGBA routes, including exact reconstruction and four independent routing-key mutations",
+    "Seven isolated CMake optional-resource configuration cases matched expected accept/reject outcomes",
+    "Independent source review of transport and startup integration found no material blocker"
+  ],
+  "pilot": {
+    "acceptedCenterByteExact": true,
+    "invisibleJoinAccepted": false,
+    "runtimeIntegrated": false,
+    "batchApproved": false,
+    "diagnosis": "Existing slideshow center clamp repeats five columns at each edge; generated paving also has residual texture mismatch",
+    "next": "Verify native framebuffer edge validity before any slideshow-only clamp change; refine pilot before batching"
+  },
+  "notClaimed": [
+    "All98 artworks complete",
+    "Physical iPad acceptance",
+    "Renderer runtime acceptance",
+    "Battery or performance improvement",
+    "Current Apple link/build acceptance; required object-consumer dependencies are explicitly declared"
+  ],
+  "resource": {
+    "formatVersion": 1,
+    "headerBytes": 32,
+    "recordBytes": 216,
+    "storesOnlyCompressedSides": true,
+    "releaseLoadRequiresExactWholeFileShaAndBytes": true,
+    "startupDoesNotInflatePhotos": true,
+    "defaultDisabled": true
+  },
+  "transport": {
+    "schema": 3,
+    "schema2PrefixCompatible": true,
+    "panoramaMarkedOnlyAfterUnchangedCompleteNativePass": true,
+    "sharedHistoryPathPreserved": true,
+    "generationCheckedBeforeUploadAndAfterDraw": true,
+    "actualRendererSyntaxChecked": true,
+    "engineBridgeAndPresentationSyntaxChecked": true,
+    "activationWithGeneratedPinSyntaxChecked": true,
+    "fullApplicationLinked": false,
+    "runtimeVisualAcceptance": false
+  }
+}

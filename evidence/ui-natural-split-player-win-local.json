@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "scope": "Normal two-player race, independent controller phases, natural player win and results-to-Main return",
+  "track": "Proving Grounds",
+  "laps": 2,
+  "cars": [
+    "McLaren F1",
+    "Nazca C2"
+  ],
+  "fieldSizeVerified": 2,
+  "setup": {
+    "noOpponentsSavedAndReopened": true,
+    "playerTwoAutomaticSelectedAndDoneVerified": true
+  },
+  "controllerPhases": {
+    "playerOneOnly": {
+      "playerTwoSpeed": 0,
+      "playerOneSpeed": 143
+    },
+    "bothThenAccelerated": true,
+    "playerTwoOnly": {
+      "playerOneCoastingSpeed": 20,
+      "playerTwoSpeed": 93
+    }
+  },
+  "raceResult": {
+    "playerTwoTotalSeconds": 262.46,
+    "playerOneTotalSeconds": 254.0,
+    "playerOnePlace": 1,
+    "playerTwoPlace": 2
+  },
+  "normalContinueOpenedLapTimes": true,
+  "mainReturnReviewed": true,
+  "forcedEngineOrVictoryCalls": false,
+  "raceStateEdits": false,
+  "naturalVictoryArtworkObserved": false,
+  "runtime": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 2,
+    "actions": 54,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "captures": [
+    {
+      "file": "011-023-key.bmp",
+      "sha256": "2e09e63df812f4fb2acc72bb1fd496f85a30b80530ae73a082bef422c75e28d6"
+    },
+    {
+      "file": "013-028-key.bmp",
+      "sha256": "1042f945414d8ca9be08d62503792ac8599aa2bd5db1a931696386b66e8831ea"
+    },
+    {
+      "file": "015-034-wait.bmp",
+      "sha256": "65b9610931b188a860861e2acfd6f43551deaf411db30f719b62f3543abee59d"
+    },
+    {
+      "file": "016-036-wait.bmp",
+      "sha256": "d2f2ba4af3bc20bbfcb818ad6afb1512c2df55eb30825760338d91c2f09d4a03"
+    },
+    {
+      "file": "017-039-wait.bmp",
+      "sha256": "941d696c3f40a1ff2a1e9f8e0a3fa9e8ae41c9afe9253c6053a90b135004a65c"
+    },
+    {
+      "file": "023-046-wait.bmp",
+      "sha256": "efaf810b8eaedad0211c1709b61400be9116b83ff901835077b2c1e7a1a87857"
+    },
+    {
+      "file": "026-049-capture.bmp",
+      "sha256": "c73b24d29e5640674ff4979b699c7274b3bf4be8f73432992107242561428044"
+    },
+    {
+      "file": "027-053-wait.bmp",
+      "sha256": "c78272ce194a710731ca1076c3f18f6479ca6aca7ba46ae10ea6e99a587aaf43"
+    }
+  ],
+  "logSha256": "df86582bc8e5cba207f9a62c11f880457cf3538407ffae2be76ad646537968e5",
+  "limitations": [
+    "Normal human win was observed, but separate Victory artwork was not displayed in this configuration. Original eligibility gates require further observation; no forced call is substituted.",
+    "Software-rendered desktop runtime establishes UI/control integration only, not Apple build, iPad gameplay, battery or performance.",
+    "Virtual-controller host input shim only; maintained game engine and renderer are unchanged."
+  ],
+  "inputFixtureSha256": "1c5c5501cae3dd0047bc84f67e89da940fc4687bffc9040d66ec50a341d4a519"
+}

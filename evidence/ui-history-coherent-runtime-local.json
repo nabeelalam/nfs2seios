@@ -1,0 +1,197 @@
+{
+  "scope": "Original copied game data, seven coherent History pages, local software GLES only",
+  "sourceCheckpoint": "b70533e plus bounded per-manufacturer panorama diagnostics",
+  "rendererHelperSHA256": "143f3b8ce9249df7b60c32f96e1c06e4adc0c4584167b406c632cb80aec209b0",
+  "pilotScriptSHA256": "22d09b958a8541d7262213096cfa9debd3ecd3159eee942a9aee4a126e8eeae3",
+  "baselineBinarySHA256": "1fb8243eac30e356c6c12d97168c2dd3be0c3dd2e33177af5f3ad440cde57dd8",
+  "candidateBinarySHA256": "7903105a29540ac21bf6ccb9d096390d3416552193c24d40da5f997f707c4e87",
+  "baselineHistorySHA256": "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c",
+  "candidateHistorySHA256": "144f4adc797de220b00ad96f5807a07c8fac6179c1dc3023687a1f929234e963",
+  "temporaryHistoryPinOverride": true,
+  "allGeneratedPanoramaPinsVerifiedBeforeBuild": true,
+  "ctest": {
+    "names": [
+      "history_panorama_files_integration",
+      "history_background_pair_lossless",
+      "history_wide_art_lifetime",
+      "history_panorama_actual_gles"
+    ],
+    "tests": 4,
+    "failed": 0,
+    "logSHA256": "56457321b623a38347c9a5681e865e74ecb9512ef16d266671b5605365cba2cc"
+  },
+  "replays": [
+    {
+      "tag": "grouped-512-history-coherent-all-wide-v27",
+      "output": [
+        800,
+        450
+      ],
+      "archiveCount": 7,
+      "panoramaSources": [
+        0,
+        7,
+        14,
+        21,
+        28,
+        35,
+        42
+      ],
+      "presentationLines": 14,
+      "informationWideDeclines": 0,
+      "cleanExit": true,
+      "gameLogSHA256": "7d2dc720d3943dafc38f8c9670d85a7658005064543ec97eab9abf444aff225c",
+      "archives": {
+        "0": "003-history-page.bmp",
+        "1": "004-history-archive-1.bmp",
+        "2": "005-history-archive-2.bmp",
+        "3": "006-history-archive-3.bmp",
+        "4": "007-history-archive-4.bmp",
+        "5": "008-history-archive-5.bmp",
+        "6": "009-history-archive-6.bmp"
+      }
+    },
+    {
+      "tag": "grouped-512-history-coherent-all-ipad-v27",
+      "output": [
+        708,
+        492
+      ],
+      "archiveCount": 7,
+      "panoramaSources": [
+        0,
+        7,
+        14,
+        21,
+        28,
+        35,
+        42
+      ],
+      "presentationLines": 14,
+      "informationWideDeclines": 0,
+      "cleanExit": true,
+      "gameLogSHA256": "7d0892cf05f2ece14a7040b3135483599bfe6d775fb1f95d610730ad06720b99",
+      "archives": {
+        "0": "003-history-page.bmp",
+        "1": "004-history-archive-1.bmp",
+        "2": "005-history-archive-2.bmp",
+        "3": "006-history-archive-3.bmp",
+        "4": "007-history-archive-4.bmp",
+        "5": "008-history-archive-5.bmp",
+        "6": "009-history-archive-6.bmp"
+      }
+    }
+  ],
+  "actualCaptureCount": 14,
+  "photoComparison": {
+    "regions": [
+      [
+        318,
+        94,
+        473,
+        182
+      ],
+      [
+        136,
+        215,
+        295,
+        321
+      ],
+      [
+        318,
+        233,
+        473,
+        321
+      ]
+    ],
+    "rows": [
+      {
+        "archive": 0,
+        "retainedPhotoInteriorMAE_RGB_0_255": [
+          3.283504,
+          6.401883,
+          2.737243
+        ]
+      },
+      {
+        "archive": 1,
+        "retainedPhotoInteriorMAE_RGB_0_255": [
+          3.954203,
+          5.309244,
+          3.906647
+        ]
+      },
+      {
+        "archive": 2,
+        "retainedPhotoInteriorMAE_RGB_0_255": [
+          4.823289,
+          7.946877,
+          2.692937
+        ]
+      },
+      {
+        "archive": 3,
+        "retainedPhotoInteriorMAE_RGB_0_255": [
+          5.0348,
+          10.628773,
+          2.887634
+        ]
+      },
+      {
+        "archive": 4,
+        "retainedPhotoInteriorMAE_RGB_0_255": [
+          4.728739,
+          6.914145,
+          2.576051
+        ]
+      },
+      {
+        "archive": 5,
+        "retainedPhotoInteriorMAE_RGB_0_255": [
+          2.99609,
+          6.044737,
+          2.898607
+        ]
+      },
+      {
+        "archive": 6,
+        "retainedPhotoInteriorMAE_RGB_0_255": [
+          4.3,
+          3.801827,
+          2.768353
+        ]
+      }
+    ],
+    "scope": "Three photo interiors per 800x450 actual screenshot compared with the prior real-game 800x450 captures; this reports resampling differences and is not pixel identity"
+  },
+  "visualReview": [
+    "Both actual-game overview sheets inspected.",
+    "Live caption placement clears the retained photo frames in the observed pages.",
+    "All seven wider scenes presented with live title/timeline/menu text.",
+    "Jaguar and Italdesign marks have no visible rectangular footer patches.",
+    "No independent side-strip joins were apparent in the observed pages.",
+    "All seven pages, slideshow and return completed at each tested ratio."
+  ],
+  "captureMetricsSHA256": "e8dd7a6256a0f5fa36fbd1ac19fcd93037db1436db86b2e083717ae7edb0b03a",
+  "originalHistoryNodeWasSymlink": true,
+  "restoration": {
+    "baselineBinaryRestored": true,
+    "sourcePinRestored": true,
+    "originalHistoryRestored": true,
+    "panoramaResourcesRemoved": true,
+    "cachedHelperRestored": true,
+    "panoramaConfigurationRestoredInactive": true
+  },
+  "invocationNote": "After the Python pilot completed and restored state successfully, the shell wrapper emitted a trailing carriage-return command. Terminal receipts and clean game exits were inspected; neither replay was repeated.",
+  "acceptance": "Grouped local routes and observed presentation passed; candidate remains separate from the shipping app",
+  "nativeIpadVerified": false,
+  "appleCompilationVerified": false,
+  "shippingPinsPromoted": false,
+  "releaseReady": false,
+  "next": [
+    "Promote the matched History resource pins and private injection support together.",
+    "Keep generated artwork and captures outside public Git.",
+    "Use one useful Apple build after the final artwork/package integration is ready.",
+    "Verify physical installation, UI, gameplay, audio and input on the resulting exact package."
+  ]
+}

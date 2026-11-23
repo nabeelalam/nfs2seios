@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "scope": "Reviewed Victory artwork production loader, startup wiring and packaging",
+  "artworkReview": {
+    "images": 32,
+    "ratios": [
+      "4:3",
+      "wide"
+    ],
+    "reviewer": "Codex visual comparison",
+    "userApprovalClaimed": false,
+    "criteria": [
+      "paired trophy composition and open text space",
+      "finite car identity and corrected concept/bonus details",
+      "logo, cup, handle and framing consistency"
+    ],
+    "pixelsChangedDuringPackaging": false
+  },
+  "release": {
+    "schema": 1,
+    "filename": "victory-ui.ownedz",
+    "fileBytes": 47854261,
+    "metadataSha256": "7f72be629cefcb2ab2c8dbde705d3b375dd8035de568b7cbc84c9f697590d9b2",
+    "sha256": "7ea96bc4bc900170a2d256aeca94a27cceb95869e1b02389b5d1f0235cd11a0f",
+    "imageCount": 32
+  },
+  "productionLoader": {
+    "productionImagesAcquired": 32,
+    "previewRefused": true,
+    "missingRefused": true,
+    "activeGenerationPreservedAfterRefusal": true,
+    "asanUbsan": true,
+    "sanitizerStderrBytes": 0,
+    "normalApplicationRuntime": false
+  },
+  "packagingChecks": {
+    "syntheticDeliverySuiteTests": 12,
+    "passed": true,
+    "nativeAndCompressedStoragePreserved": true,
+    "wrongSizeOrHashRejected": true,
+    "duplicateAndCombinedSizeLimitsPreserved": true,
+    "baseExecutableMetadataPinRequired": true
+  },
+  "compilation": {
+    "providerStaticLibrary": true,
+    "normalAppArtworkActivationObject": true,
+    "normalAppVictoryLoaderObject": true,
+    "freshCompleteAppLink": false
+  },
+  "startupBehavior": "Production metadata registration before worker; original-image collection enabled after success; lazy selected-image decode retained.",
+  "limitations": [
+    "Full normal startup execution not yet witnessed.",
+    "No rounded-wide GPU execution or natural race-win acceptance yet.",
+    "No new Apple build, iPad acceptance, FPS or battery claim."
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual original-data Location menu on existing grouped desktop baseline, current shared card pack, local software GLES",
+  "binarySHA256": "1fb8243eac30e356c6c12d97168c2dd3be0c3dd2e33177af5f3ad440cde57dd8",
+  "currentSourceRebuilt": false,
+  "locationArtworkSHA256": "e78edb5444ecdfbfc1604b3cf2c554e6d080d7079411696c7e437c69bc75d340",
+  "drawable": [
+    800,
+    450
+  ],
+  "ordinaryTrackChanges": 3,
+  "photoPublications": 4,
+  "reviewedCaptures": [
+    {
+      "capture": "004-location-open.bmp",
+      "sha256": "84c845ceac1c6e7d820051a00fe7605932e6ac67b276df8a06b861166deaea66"
+    },
+    {
+      "capture": "007-location-after-right-3.bmp",
+      "sha256": "66a89f005664bff5aa2bdeda043cff5f79fc6cac62e2cdd6585e04ea2218c060"
+    }
+  ],
+  "visualReview": "North Country and Mystic Peaks use consistent rectangular rounded face and soft shadow; old stepped source silhouette absent. Foreground panel bars still intentionally occlude the left side.",
+  "menuRoutes": [
+    "MENU PRESENTATION choice=native output=640x480 frame=1 previousFrames=0 presented=1 capped=0",
+    "MENU PRESENTATION choice=native output=800x450 frame=10 previousFrames=9 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=14 previousFrames=4 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=800x450 frame=73 previousFrames=59 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=117 previousFrames=44 presented=1 capped=0",
+    "MENU PRESENTATION choice=intro-wide output=800x450 frame=134 previousFrames=17 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=155 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-exit-wide output=800x450 frame=190 previousFrames=35 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=211 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-exit-wide output=800x450 frame=243 previousFrames=32 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=264 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-exit-wide output=800x450 frame=297 previousFrames=33 presented=1 capped=0",
+    "MENU PRESENTATION choice=transition-wide output=800x450 frame=318 previousFrames=21 presented=1 capped=0",
+    "MENU PRESENTATION choice=child-return-wide output=800x450 frame=351 previousFrames=33 presented=1 capped=0",
+    "MENU PRESENTATION choice=menu-wide output=800x450 frame=370 previousFrames=19 presented=1 capped=0"
+  ],
+  "cleanShutdown": true,
+  "profileAndReplayRestored": true,
+  "resourcesUnchanged": true,
+  "binaryUnchanged": true,
+  "supersededObservation": "Stepped thumbnail in retained integration86/87 Records return captures used older 5b723e artwork pack, not current e78edb pack",
+  "firstActualVisibleFrameProven": false,
+  "allEightRuntimePhotosVerified": false,
+  "physicalIpadVerified": false,
+  "wholeUIComplete": false
+}

@@ -28,7 +28,7 @@ def add_child_initial_sidebar_hooks(text,name):
  # Re-observe that actual copy with a fresh base/preview binding, not a lease
  # borrowed from the earlier initial copy. All producer predicates stay exact.
  copyopen='// NFS_PLAYER_SCENE_END:copy-refresh-open\n'
- replace(copyopen,copyopen+block("full-refresh-copy-open"," { nfs_setup_initial_full_live::CopyScope nfs_setup_refresh_full(*this);\n nfs_location_initial_full_live::CopyScope nfs_location_refresh_full(*this);\n nfs_opponent_initial_full_live::CopyScope nfs_opponent_refresh_full(*this,true);"))
+ replace(copyopen,copyopen+block("full-refresh-copy-open"," { nfs_setup_initial_full_live::CopyScope nfs_setup_refresh_full(*this);\n nfs_location_initial_full_live::CopyScope nfs_location_refresh_full(*this,true);\n nfs_opponent_initial_full_live::CopyScope nfs_opponent_refresh_full(*this,true);"))
  copyclose='// NFS_PLAYER_SCENE_BEGIN:copy-refresh-close\n'
  replace(copyclose,block("full-refresh-copy-close"," }")+copyclose)
  seal=' nfs_player_scene_live::completeInitialCaption(*this);'

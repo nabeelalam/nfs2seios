@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "scope": "Natural Victory queue and renderer target refusal",
+  "privateObservationBuild": {
+    "binarySha256": "c81a551f7d767282e7f4fe095be2ef7360d2f1f0adc594345d30185cd958360f",
+    "observationOnly": true,
+    "guestStateWritesAdded": false,
+    "directOriginalCallsAdded": false,
+    "originalGeneratedSourcesRestored": true,
+    "engineUnitSourceSha256": "018b1f6d23a0ff793c5491e757f01655d7eee161a8c0bf295ee7809cbbfd2b39",
+    "rendererObservationSourceSha256": "92b9af09da0849d01086ad1425f53f7ea32647bf91d12efaeb17fcffe11c9bf1"
+  },
+  "normalRace": true,
+  "eligibleWinner": true,
+  "capturedSourceAndTargetMatched": true,
+  "queueUnblockedBeforeVictory": true,
+  "rendererView": {
+    "wordCount": 1,
+    "schema": 2,
+    "contextCurrent": true,
+    "featureEnabled": true,
+    "artworkIdentityValid": true,
+    "textVertexCount": 168
+  },
+  "targetRefusalCount": 70,
+  "allTargetRefusalsExactly128": true,
+  "targetFailureMeaning": "Only texture/fog graphics state; all source/context/owner/view checks passed.",
+  "existingResultsPrecedent": "evidence/hd-results-backdrop-transport.json",
+  "runtime": {
+    "driverStopRequested": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "normalEngineMain": true,
+    "forcedVictoryFixture": false,
+    "virtualControllers": 2,
+    "actions": 35,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "failure": null
+  },
+  "logSha256": "318bde4a471ccc50db1be16998962344c398fa1836309f3586abbf5081d2d577",
+  "forcedSceneCalls": false,
+  "originalGuestStateChanges": false,
+  "fix": "Reviewed constant-tile fog parity drafted and applied to maintained native/wide renderer; runtime validation pending.",
+  "physicalDeviceOrPerformanceClaim": false
+}

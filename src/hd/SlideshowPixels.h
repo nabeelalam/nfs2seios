@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 #include "TextureDigest.h"
+#include "hd/AdaptiveCanvasBounds.h"
 #include <array>
 #include <cstdint>
 #include <cstring>
@@ -19,11 +20,11 @@ struct PixelPin {
 };
 // Decompress one pinned RGBA8 canvas. No scaling, color remapping or image edits.
 // Output is changed only after the complete image and digest have been validated.
-inline bool inflatePixels(const unsigned char* compressed, size_t bytes,
+inline bool inflateCanvasPixels(const unsigned char* compressed, size_t bytes,
                           const PixelPin& pin, std::vector<unsigned char>& output) noexcept {
     if(!compressed || !bytes || bytes>32u*1024u*1024u ||
        !pin.width || !pin.height || pin.width>4096 || pin.height>4096 ||
-       pin.width*3!=pin.height*4 || pin.predictor>2) return false;
+       (pin.width*3!=pin.height*4 && !nfs_authored_wide_canvas(pin.width,pin.height)) || pin.predictor>2) return false;
     struct InflateOwner {
         z_stream z{}; bool initialized=false;
         ~InflateOwner(){if(initialized)inflateEnd(&z);}
@@ -98,5 +99,12 @@ inline bool inflatePixels(const unsigned char* compressed, size_t bytes,
         output.swap(candidate);
         return true;
     } catch (...) {return false;}
+}
+// Preserve the existing slideshow's strict 4:3 contract. Authored adaptive
+// scene packs explicitly use the bounded 4:3/16:9 canvas entry point above.
+inline bool inflatePixels(const unsigned char* compressed,size_t bytes,
+                          const PixelPin&pin,std::vector<unsigned char>&output)noexcept{
+    if(pin.width*3!=pin.height*4)return false;
+    return inflateCanvasPixels(compressed,bytes,pin,output);
 }
 } // namespace nfs_slideshow

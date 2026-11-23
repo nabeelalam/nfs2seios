@@ -119,6 +119,8 @@ static NfsBackgroundSceneCompositor nfs_bg_compositor;
 // Optional wide staging is tested independently; native proof eligibility stays real.
 static void nfs_menu_wide_prepare_player(const NfsPlayerSceneFrameView*,const NfsNativeLogoTargetProof*){}
 static void nfs_menu_wide_native_done(uint64_t,int){}
+static void nfs_menu_wide_cancel_at(unsigned){}
+static void nfs_menu_wide_prepare_cached(const NfsBackgroundSceneFrameView*,const NfsNativeLogoTargetProof*,const NfsMenuCachedSnapshot*,int(*)(const float*,void*),void*){}
 #include "hd/PlayerIntroRenderer.inc"
 #undef glCopyTexSubImage2D
 #undef glFramebufferRenderbuffer

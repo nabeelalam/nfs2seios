@@ -8,7 +8,9 @@ H=lambda data:hashlib.sha256(data).hexdigest()
 class Delivery(unittest.TestCase):
  def test_public_pins_and_route(self):
   self.assertEqual(m.resource_pins()['class-picture-ui.ownedz'],(5207398,'c2c9cea9e69bd307cf4c76c5bbd87bc28e7fe6cac08162911b531dd44cea4747'))
-  self.assertEqual(m.MAX_IPA,512*1024*1024)
+  self.assertEqual(m.MAX_IPA,768*1024*1024)
+  self.assertEqual(m.MAX_BASE_IPA,512*1024*1024)
+  self.assertEqual(m.MAX_MEMBER_BYTES,512*1024*1024)
   activation=(ROOT/'src/hd/ArtworkActivation.cpp').read_text();self.assertIn('#include "OpponentPreviewCatalogData.h"',activation);self.assertNotIn('private/OpponentPreviewCatalogData.h',activation)
   self.assertNotIn('OpponentPreviewCatalogData.h',(ROOT/'scripts/classic_screens_assets.py').read_text())
  def test_inject_exact_bytes_and_rejections(self):
@@ -36,6 +38,11 @@ class Delivery(unittest.TestCase):
     for name in ['badsize','badhash']:
      with self.assertRaises(ValueError):m.inject(base,H(base.read_bytes()),d/'template',d/(name+'.ipa'),class_picture=d/name)
     with self.assertRaises(ValueError):m.inject(d/'out.ipa',H((d/'out.ipa').read_bytes()),d/'template',d/'duplicate.ipa',class_picture=d/'art')
+    with patch.object(m,'MAX_BASE_IPA',base.stat().st_size-1):
+     with self.assertRaisesRegex(ValueError,'Base IPA size limit'):m.inject(base,H(base.read_bytes()),d/'template',d/'large-base.ipa',class_picture=d/'art')
+    with patch.object(m,'MAX_UNPACKED',sum(map(len,members.values()))+len(template)+len(art)-1):
+     with self.assertRaisesRegex(ValueError,'Combined unpacked size limit'):m.inject(base,H(base.read_bytes()),d/'template',d/'unpacked.ipa',class_picture=d/'art')
+     self.assertFalse((d/'unpacked.ipa').exists())
     with patch.object(m,'MAX_IPA',base.stat().st_size+len(template)+len(art)+65535):
      with self.assertRaisesRegex(ValueError,'Combined IPA size limit'):m.inject(base,H(base.read_bytes()),d/'template',d/'oversize.ipa',class_picture=d/'art')
 if __name__=='__main__':unittest.main()

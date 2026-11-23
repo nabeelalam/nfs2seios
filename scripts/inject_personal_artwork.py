@@ -6,6 +6,7 @@ The input IPA and original game files are never modified. Python3 stdlib only.
 # SPDX-License-Identifier: MIT
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -18,13 +19,16 @@ import tempfile
 import unicodedata
 import zipfile
 
-TEMPLATE_BYTES = 16043117
-TEMPLATE_SHA256 = "0705d2ec777b04f58e882cc7a7efb54ea0250db08b688c9c363c518156edcdce"
-OUTPUT_PACK_SHA256 = "eacd58533bcf04ddfc5436f54205d1d9d9e7be4e5fec2a25e3074c2bb6ea9015"
+TEMPLATE_BYTES = 16227314
+TEMPLATE_SHA256 = "09745bbf4577925f0426d11cbfab932dd9d6e1c096e55e16beadf4a3b5fa4ae7"
+OUTPUT_PACK_SHA256 = "8e83caefa2c88691b9d020d7193148f4789681e7918ab74df7cef67f5a8609b0"
 RESOURCE = "classic-ui.ownedz"
+CREDITS_RESOURCE = "credits-ui.ownedz"
+CREDITS_BYTES = 3189214
+CREDITS_SHA256 = "a82ec61a8f1d26ecd2dc384f408220a262c970648c320ddb52d14b4343bab1d0"
 INTRO_RESOURCE = "intro-ui.ownedz"
-INTRO_BYTES = 3202202
-INTRO_SHA256 = "af4677103a79488f64b55538885bcf798038c549683aa1a955c4a4e4d5aab1a5"
+INTRO_BYTES = 6187645
+INTRO_SHA256 = "bff0d7b7d7f97191583d86833d003d9907c5163f93fb1dc7c0a1f6fccd8ae8f2"
 TRACK_INFO_RESOURCE = "track-info-ui.ownedz"
 TRACK_INFO_BYTES = 36501092
 TRACK_INFO_SHA256 = "ebb70bf576f21ad46bb926c4d282c5ac26e002ea6f53c6e1a292f342fbad711d"
@@ -32,8 +36,8 @@ CAR_INFO_RESOURCE = "car-info-ui.ownedz"
 CAR_INFO_BYTES = 85094133
 CAR_INFO_SHA256 = "cfadc3458f55bb015aa925430217c74ea103acbaa6ddc9139ce7f2784d5c6f2d"
 PLAYER_PHOTO_RESOURCE = "player-photo-ui.ownedz"
-PLAYER_PHOTO_BYTES = 22688859
-PLAYER_PHOTO_SHA256 = "752ef12f7e0345ebef890e6ba984e46495aaa6332a3034ee932021b174472342"
+PLAYER_PHOTO_BYTES = 27187927
+PLAYER_PHOTO_SHA256 = "27b01190715f4369ebc3152f34164cdd4daed76a6b16a3241514b8e70587cad8"
 LOCATION_PHOTO_RESOURCE = "location-photo-ui.ownedz"
 LOCATION_PHOTO_BYTES = 9468676
 LOCATION_PHOTO_SHA256 = "e78edb5444ecdfbfc1604b3cf2c554e6d080d7079411696c7e437c69bc75d340"
@@ -50,28 +54,109 @@ RESULTS_BACKDROP_BYTES = 8286561
 RESULTS_BACKDROP_SHA256 = "1c41d5d60cf951cc5bc134fcfc2f8ee9f483ff5e5cdfe0cfaac0325103096969"
 
 
-SLIDESHOW_RESOURCE = "slideshow-ui.ownedz"
-SLIDESHOW_BYTES = 219036319
-SLIDESHOW_SHA256 = "32ec9ebc8d683ccfb6567d33de3a17e113842d56a59ba9665ae3b602d452d837"
+def _load_slideshow_release():
+    path = Path(__file__).resolve().parents[1] / "src/hd/ClassicScreens/SlideshowArtworkRelease.json"
+    if path.stat().st_size > 4096:
+        raise ValueError("Slideshow release catalog exceeds limit")
+    value = json.loads(path.read_bytes())
+    if (set(value) != {"schema", "filename", "fileBytes", "sha256", "formatVersion", "imageCount"}
+            or value["schema"] != 1 or value["filename"] != "slideshow-ui.ownedz"
+            or value["formatVersion"] != 4 or value["imageCount"] != 98
+            or type(value["fileBytes"]) is not int or not 16 < value["fileBytes"] <= 512 * 1024 * 1024
+            or not isinstance(value["sha256"], str)
+            or not re.fullmatch(r"[0-9a-f]{64}", value["sha256"]) or value["sha256"] == "0" * 64):
+        raise ValueError("Invalid Slideshow release catalog")
+    return value
+
+
+_SLIDESHOW_RELEASE = _load_slideshow_release()
+SLIDESHOW_RESOURCE = _SLIDESHOW_RELEASE["filename"]
+SLIDESHOW_BYTES = _SLIDESHOW_RELEASE["fileBytes"]
+SLIDESHOW_SHA256 = _SLIDESHOW_RELEASE["sha256"]
 SLIDESHOW_FOOTER_RESOURCE = "slideshow-footer.ownedz"
-SLIDESHOW_FOOTER_BYTES = 6229762
-SLIDESHOW_FOOTER_SHA256 = "ac3b1083ae688e8ea34862e0e011450167506052d13c3bae747b671588e4452a"
+SLIDESHOW_FOOTER_BYTES = 5321403
+SLIDESHOW_FOOTER_SHA256 = "bbd3016b6a3b21d36f84ae859a267cc70d653b5a7191585e9cdaea4428675c91"
+
+# This optional catalog contains fingerprints only, never artwork payloads.
+_panorama_spec = importlib.util.spec_from_file_location(
+    "slideshow_panorama_release", Path(__file__).with_name("slideshow_panorama_release.py"))
+_panorama_module = importlib.util.module_from_spec(_panorama_spec)
+_panorama_spec.loader.exec_module(_panorama_module)
+_SLIDESHOW_PANORAMA_RELEASE = _panorama_module.load(
+    Path(__file__).resolve().parents[1] / _panorama_module.CATALOG)
+SLIDESHOW_PANORAMA_RESOURCE = "slideshow-panorama.ownedz"
 
 
-HISTORY_RESOURCE = "history-ui.ownedz"
-HISTORY_BYTES = 26467971
-HISTORY_SHA256 = "ee022614b8f0e6fbfb883b68e5f46e16d05c65a9fd52c1e97bee2bd82c549b2c"
+def _load_history_release():
+    path = Path(__file__).resolve().parents[1] / "src/hd/ClassicScreens/HistoryArtworkRelease.json"
+    if path.stat().st_size > 65536:
+        raise ValueError("History release catalog exceeds limit")
+    catalog = json.loads(path.read_bytes())
+    if set(catalog) != {"schema", "history", "panoramas"} or catalog["schema"] != 1:
+        raise ValueError("Invalid History release catalog")
+    history = catalog["history"]
+    if (set(history) != {"filename", "bytes", "payloadBytes", "sha256"}
+            or history["filename"] != "history-ui.ownedz"
+            or type(history["bytes"]) is not int or not 16 < history["bytes"] <= 64 * 1024**2
+            or type(history["payloadBytes"]) is not int or not 8 <= history["payloadBytes"] <= 128 * 1024**2
+            or not isinstance(history["sha256"], str)
+            or not re.fullmatch("[0-9a-f]{64}", history["sha256"])):
+        raise ValueError("Invalid History background release")
+    panoramas = catalog["panoramas"]
+    if not isinstance(panoramas, list) or len(panoramas) != 7:
+        raise ValueError("Expected seven History panorama pins")
+    for index, row in enumerate(panoramas):
+        if (set(row) != {"sourceIndex", "filename", "bytes", "sha256"}
+                or type(row["sourceIndex"]) is not int or row["sourceIndex"] != index * 7
+                or row["filename"] != "history-panorama-" + str(index * 7) + ".ownedz"
+                or type(row["bytes"]) is not int or not 32 < row["bytes"] <= 34 * 1024**2
+                or not isinstance(row["sha256"], str)
+                or not re.fullmatch("[0-9a-f]{64}", row["sha256"])
+                or row["sha256"] == "0" * 64):
+            raise ValueError("Invalid History panorama release")
+    return catalog
+
+
+_HISTORY_RELEASE = _load_history_release()
+HISTORY_RESOURCE = _HISTORY_RELEASE["history"]["filename"]
+HISTORY_BYTES = _HISTORY_RELEASE["history"]["bytes"]
+HISTORY_SHA256 = _HISTORY_RELEASE["history"]["sha256"]
+HISTORY_PANORAMA_PINS = {row["filename"]: (row["bytes"], row["sha256"])
+                         for row in _HISTORY_RELEASE["panoramas"]}
 
 
 CLASS_PICTURE_RESOURCE = "class-picture-ui.ownedz"
 CLASS_PICTURE_BYTES = 5207398
 CLASS_PICTURE_SHA256 = "c2c9cea9e69bd307cf4c76c5bbd87bc28e7fe6cac08162911b531dd44cea4747"
 
+def _load_victory_release():
+    path = Path(__file__).resolve().parents[1] / "src/hd/ClassicScreens/VictoryArtworkRelease.json"
+    if path.stat().st_size > 4096:
+        raise ValueError("Victory release catalog exceeds limit")
+    value = json.loads(path.read_bytes())
+    if (set(value) != {"schema", "filename", "fileBytes", "metadataSha256", "sha256", "imageCount"}
+            or value["schema"] != 1 or value["filename"] != "victory-ui.ownedz"
+            or value["imageCount"] != 32 or not 0 < value["fileBytes"] <= 512 * 1024 * 1024
+            or any(not re.fullmatch(r"[0-9a-f]{64}", value[key]) or value[key] == "0" * 64
+                   for key in ("metadataSha256", "sha256"))):
+        raise ValueError("Invalid Victory release catalog")
+    return value
+
+
+_VICTORY_RELEASE = _load_victory_release()
+VICTORY_RESOURCE = _VICTORY_RELEASE["filename"]
+VICTORY_BYTES = _VICTORY_RELEASE["fileBytes"]
+VICTORY_SHA256 = _VICTORY_RELEASE["sha256"]
+
+
 def resource_pins():
     return {RESOURCE: (TEMPLATE_BYTES, TEMPLATE_SHA256),
             CLASS_PICTURE_RESOURCE: (CLASS_PICTURE_BYTES, CLASS_PICTURE_SHA256),
             HISTORY_RESOURCE: (HISTORY_BYTES, HISTORY_SHA256),
+            VICTORY_RESOURCE: (VICTORY_BYTES, VICTORY_SHA256),
+            **HISTORY_PANORAMA_PINS,
             INTRO_RESOURCE: (INTRO_BYTES, INTRO_SHA256),
+            CREDITS_RESOURCE: (CREDITS_BYTES, CREDITS_SHA256),
             TRACK_INFO_RESOURCE: (TRACK_INFO_BYTES, TRACK_INFO_SHA256),
             CAR_INFO_RESOURCE: (CAR_INFO_BYTES, CAR_INFO_SHA256),
             PLAYER_PHOTO_RESOURCE: (PLAYER_PHOTO_BYTES, PLAYER_PHOTO_SHA256),
@@ -80,8 +165,15 @@ def resource_pins():
             WIDE_MENU_RESOURCE: (WIDE_MENU_BYTES, WIDE_MENU_SHA256),
             RESULTS_BACKDROP_RESOURCE: (RESULTS_BACKDROP_BYTES, RESULTS_BACKDROP_SHA256),
             SLIDESHOW_RESOURCE: (SLIDESHOW_BYTES, SLIDESHOW_SHA256),
-            SLIDESHOW_FOOTER_RESOURCE: (SLIDESHOW_FOOTER_BYTES, SLIDESHOW_FOOTER_SHA256)}
-MAX_IPA = 512 * 1024 * 1024
+            SLIDESHOW_FOOTER_RESOURCE: (SLIDESHOW_FOOTER_BYTES, SLIDESHOW_FOOTER_SHA256),
+            **({SLIDESHOW_PANORAMA_RESOURCE: (_SLIDESHOW_PANORAMA_RELEASE['fileBytes'],
+                                             _SLIDESHOW_PANORAMA_RELEASE['sha256'])}
+               if _SLIDESHOW_PANORAMA_RELEASE else {})}
+# These are local bounded-input policies, not Apple or SideStore limits.
+# The complete authenticated artwork catalog alone is larger than 512 MiB.
+MAX_BASE_IPA = 512 * 1024 * 1024
+MAX_MEMBER_BYTES = 512 * 1024 * 1024
+MAX_IPA = 768 * 1024 * 1024
 MAX_UNPACKED = 1024 * 1024 * 1024
 MAX_MEMBERS = 10000
 CHUNK = 1024 * 1024
@@ -90,6 +182,35 @@ CHUNK = 1024 * 1024
 def require(value, message):
     if not value:
         raise ValueError(message)
+
+
+class ReleasePinMatcher:
+    """Match raw or hexadecimal loader pins, including chunk-boundary matches."""
+    def __init__(self, pins, sizes=None):
+        self.patterns = {}
+        for name, pin in pins.items():
+            require(isinstance(pin, str) and re.fullmatch("[0-9a-fA-F]{64}", pin),
+                    "Invalid required artwork release pin")
+            self.patterns[name] = (bytes.fromhex(pin), pin.lower().encode("ascii"),
+                                   pin.upper().encode("ascii"))
+        for name, size in (sizes or {}).items():
+            require(type(size) is int and 0 < size <= _panorama_module.MAX_BYTES,
+                    "Invalid required artwork release size")
+            pin = pins.get(name)
+            require(pin is not None, "Required artwork size lacks its digest")
+            self.patterns[name + ':bytes'] = (
+                ('NFS-SLIDESHOW-PANORAMA:' + pin.lower() + ':' + str(size)).encode('ascii'),)
+        self.missing = set(self.patterns)
+        self.tail = b""
+
+    def feed(self, block):
+        if not self.missing:
+            return
+        window = self.tail + block
+        for name in tuple(self.missing):
+            if any(pattern in window for pattern in self.patterns[name]):
+                self.missing.remove(name)
+        self.tail = window[-63:] if self.missing else b""
 
 
 def digest_file(path, limit=MAX_IPA):
@@ -131,7 +252,8 @@ def safe_name(info, allow_artwork=False):
             "Signed or protected bundle; use the unsigned base IPA")
     require(folded[-1] not in ("embedded.mobileprovision", "embedded.provisionprofile"),
             "Provisioned bundle; use the unsigned base IPA")
-    require(allow_artwork or folded[-1] not in resource_pins(), "Artwork resource already present")
+    require(allow_artwork or (folded[-1] not in resource_pins()
+                             and folded[-1] != SLIDESHOW_PANORAMA_RESOURCE), "Artwork resource already present")
     return name, parts
 
 
@@ -204,7 +326,7 @@ def raw_storage(path, info):
     return (info.header_offset, count, h.hexdigest())
 
 
-def inspect(path, allow_resource=False, required_artwork_sha256=None):
+def inspect(path, allow_resource=False, required_artwork_sha256=None, required_release_pins=None, required_release_sizes=None):
     # Complete stream reads also validate ZIP CRCs; no member is extracted to disk.
     result = {}
     storage = {}
@@ -239,7 +361,7 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
                 require(parts[1].endswith(".app"), "Unexpected Payload member")
                 app_roots.add("Payload/" + parts[1])
             total += info.file_size
-            require(info.file_size <= MAX_IPA and total <= MAX_UNPACKED,
+            require(info.file_size <= MAX_MEMBER_BYTES and total <= MAX_UNPACKED,
                     "ZIP uncompressed-size limit")
             require(info.file_size <= 1024 * max(info.compress_size, 1) or info.file_size < CHUNK,
                     "Unexpected ZIP compression ratio")
@@ -267,11 +389,11 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
                     first, macho = macho_check(prefix, f, name, name == main_name)
                     h = hashlib.sha256(first)
                     count = len(first)
-                    # The owned-artwork loader embeds this exact digest as bytes.
-                    pin = (bytes.fromhex(required_artwork_sha256)
-                           if required_artwork_sha256 and name == main_name else None)
-                    matched = pin is None or pin in first
-                    tail = first[-31:] if not matched else b""
+                    release = dict(required_release_pins or {}) if name == main_name else {}
+                    if required_artwork_sha256 and name == main_name:
+                        release[RESOURCE] = required_artwork_sha256
+                    matcher = ReleasePinMatcher(release, required_release_sizes if name == main_name else None)
+                    matcher.feed(first)
                     while True:
                         b = f.read(CHUNK)
                         if not b:
@@ -279,12 +401,9 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
                         count += len(b)
                         require(count <= info.file_size, "ZIP member grew")
                         h.update(b)
-                        if not matched:
-                            window = tail + b
-                            matched = pin in window
-                            tail = window[-31:]
+                        matcher.feed(b)
                     require(count == info.file_size, "ZIP member length mismatch")
-                    require(matched, "Base executable lacks the required artwork release pin")
+                    require(not matcher.missing, "Base executable lacks the required artwork release pin")
                     digest = h.hexdigest()
                     require(name not in artwork_digests or digest == artwork_digests[name],
                             "Injected artwork digest does not match its pin")
@@ -300,7 +419,11 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None):
                     unpackedBytes=total, comment=z.comment)
 
 
-def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None, wide_menu=None, results_backdrop=None, slideshow=None, slideshow_footer=None, history=None, class_picture=None, location_photo=None):
+def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None, car_info=None, player_photo=None, track_badge=None, wide_menu=None, results_backdrop=None, slideshow=None, slideshow_footer=None, history=None, class_picture=None, location_photo=None, history_panoramas_dir=None, credits=None, victory=None, slideshow_panorama=None):
+    require(slideshow_panorama is None or (_SLIDESHOW_PANORAMA_RELEASE is not None and slideshow is not None and slideshow_footer is not None),
+            "Slideshow panorama requires its approved pin and matching photo/footer pair")
+    require((history is None) == (history_panoramas_dir is None),
+            "History backgrounds and all seven panoramas must be supplied together")
     require(re.fullmatch("[0-9a-f]{64}", base_sha256 or ""), "Provide the trusted base IPA SHA-256")
     base = Path(base_ipa).resolve(strict=True)
     source = Path(template).resolve(strict=True)
@@ -310,7 +433,7 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
     require(base.is_file() and source.is_file() and parent.is_dir(), "Expected regular input files/output folder")
     require(not target.exists() and not target.is_symlink() and target not in (base, source),
             "Output must be a new file")
-    require(0 < base.stat().st_size <= MAX_IPA - TEMPLATE_BYTES - 65536, "Base IPA size limit")
+    require(0 < base.stat().st_size <= min(MAX_BASE_IPA, MAX_IPA - TEMPLATE_BYTES - 65536), "Base IPA size limit")
     require(source.stat().st_size == TEMPLATE_BYTES, "Wrong personal artwork size")
     with source.open("rb") as f:
         artwork = f.read(TEMPLATE_BYTES + 1)
@@ -331,6 +454,17 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                 "Wrong or mutated intro artwork")
         extra_inputs[intro_source] = INTRO_SHA256
         artwork_inputs[INTRO_RESOURCE] = intro_artwork
+    if credits is not None:
+        credits_source = Path(credits).resolve(strict=True)
+        require(credits_source.is_file() and credits_source != target, "Expected regular credits artwork input")
+        require(credits_source.stat().st_size == CREDITS_BYTES, "Wrong credits artwork size")
+        with credits_source.open("rb") as f:
+            credits_artwork = f.read(CREDITS_BYTES + 1)
+        require(len(credits_artwork) == CREDITS_BYTES
+                and hashlib.sha256(credits_artwork).hexdigest() == CREDITS_SHA256,
+                "Wrong or mutated credits artwork")
+        extra_inputs[credits_source] = CREDITS_SHA256
+        artwork_inputs[CREDITS_RESOURCE] = credits_artwork
     if track_info is not None:
         track_source = Path(track_info).resolve(strict=True)
         require(track_source.is_file() and track_source != target, "Expected regular track-info artwork input")
@@ -390,7 +524,9 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                             (results_backdrop, RESULTS_BACKDROP_RESOURCE),
                             (slideshow, SLIDESHOW_RESOURCE),
                             (slideshow_footer, SLIDESHOW_FOOTER_RESOURCE),
+                            (slideshow_panorama, SLIDESHOW_PANORAMA_RESOURCE),
                             (history, HISTORY_RESOURCE),
+                            (victory, VICTORY_RESOURCE),
                             (class_picture, CLASS_PICTURE_RESOURCE)):
         if value is None:
             continue
@@ -404,12 +540,38 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                 f"Wrong or mutated {resource}")
         extra_inputs[source_path] = expected
         artwork_inputs[resource] = artwork_bytes
+    if history_panoramas_dir is not None:
+        panorama_dir = Path(history_panoramas_dir).resolve(strict=True)
+        require(panorama_dir.is_dir(), "Expected History panorama folder")
+        for name, (size, expected) in HISTORY_PANORAMA_PINS.items():
+            path = (panorama_dir / name).resolve(strict=True)
+            require(path.is_file() and path != target, "Expected regular History panorama")
+            require(path.stat().st_size == size, "Wrong History panorama size")
+            with path.open("rb") as stream:
+                data = stream.read(size + 1)
+            require(len(data) == size and hashlib.sha256(data).hexdigest() == expected,
+                    "Wrong or mutated History panorama")
+            extra_inputs[path] = expected
+            artwork_inputs[name] = data
     added_bytes = sum(len(value) for value in artwork_inputs.values())
     require(base.stat().st_size <= MAX_IPA - added_bytes - 65536, "Combined IPA size limit")
     require(digest_file(base) == base_sha256, "Base IPA identity mismatch")
     with base.open("rb") as f:
         require(f.read(4) == b"PK\x03\x04", "Expected a plain IPA ZIP archive")
-    before = inspect(base, required_artwork_sha256=OUTPUT_PACK_SHA256)
+    release_pins = ({HISTORY_RESOURCE: HISTORY_SHA256,
+                     **{name: pin[1] for name, pin in HISTORY_PANORAMA_PINS.items()}}
+                    if history is not None else {})
+    if victory is not None:
+        release_pins[VICTORY_RESOURCE] = _VICTORY_RELEASE["metadataSha256"]
+    release_sizes = {}
+    if slideshow_panorama is not None:
+        for name in (SLIDESHOW_RESOURCE, SLIDESHOW_FOOTER_RESOURCE, SLIDESHOW_PANORAMA_RESOURCE):
+            release_pins[name] = resource_pins()[name][1]
+        release_sizes[SLIDESHOW_PANORAMA_RESOURCE] = _SLIDESHOW_PANORAMA_RELEASE['fileBytes']
+    before = inspect(base, required_artwork_sha256=OUTPUT_PACK_SHA256,
+                     required_release_pins=release_pins, required_release_sizes=release_sizes)
+    require(before["unpackedBytes"] + added_bytes <= MAX_UNPACKED,
+            "Combined unpacked size limit")
     resource = before["app"] + "/" + RESOURCE
     additions = {before["app"] + "/" + name: data for name, data in artwork_inputs.items()}
     temporary = None
@@ -470,8 +632,10 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                       allExistingMemberBytesIdentical=True,
                       allExistingCompressedStorageIdentical=True,
                       machOHashes=after["machos"], signed=False,
-                      originalInputsUnchanged=True)
-        if intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None or wide_menu is not None or results_backdrop is not None or slideshow is not None or history is not None or class_picture is not None or location_photo is not None:
+                      originalInputsUnchanged=True,
+                      historyReleasePinsVerified=history is not None)
+        result['slideshowPanoramaReleasePinsVerified'] = slideshow_panorama is not None
+        if credits is not None or intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None or wide_menu is not None or results_backdrop is not None or slideshow is not None or history is not None or class_picture is not None or location_photo is not None or victory is not None:
             result["additionalResources"] = {
                 name: dict(sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
                 for name, data in artwork_inputs.items() if name != RESOURCE}
@@ -490,6 +654,7 @@ def main():
                    help="Trusted SHA-256 from the public unsigned build artifact")
     p.add_argument("--template", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--credits", type=Path, help="Optional pinned eleven-layer Credits artwork")
     p.add_argument("--intro", type=Path, help="Optional separately pinned splash artwork")
     p.add_argument("--track-info", type=Path, help="Optional separately pinned track-info artwork")
     p.add_argument("--car-info", type=Path, help="Optional separately pinned car-info artwork")
@@ -499,11 +664,15 @@ def main():
     p.add_argument("--results-backdrop", type=Path, help="Optional separately pinned Results backdrops")
     p.add_argument("--slideshow", type=Path, help="Pinned lossless slideshow photos; supply with --slideshow-footer")
     p.add_argument("--slideshow-footer", type=Path, help="Pinned matching slideshow overlay resource")
+    p.add_argument("--slideshow-panorama", type=Path, help="Optional pinned side strips; requires matching slideshow photo/footer pair and compiled pin")
     p.add_argument("--history", type=Path, help="Pinned manufacturer-history photographs and localized headings")
     p.add_argument("--class-picture", type=Path, help="Optional separately pinned Opponents class A/B/C collages")
     p.add_argument("--location-photo", type=Path, help="Separately pinned eight Location photos; use a base with required Location support")
+    p.add_argument("--history-panoramas-dir", type=Path,
+                   help="Folder with all seven pinned panoramas; required with --history")
+    p.add_argument("--victory", type=Path, help="Pinned adaptive victory artwork")
     args = p.parse_args()
-    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge, args.wide_menu, args.results_backdrop, args.slideshow, args.slideshow_footer, args.history, args.class_picture, args.location_photo), indent=2))
+    print(json.dumps(inject(args.base_ipa, args.base_sha256, args.template, args.output, args.intro, args.track_info, args.car_info, args.player_photo, args.track_badge, args.wide_menu, args.results_backdrop, args.slideshow, args.slideshow_footer, args.history, args.class_picture, args.location_photo, args.history_panoramas_dir, args.credits, args.victory, args.slideshow_panorama), indent=2))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,98 @@
+{
+  "scope": "Audit of retained original-game Records walkthroughs and newly reviewed settled return images; no new runtime or build",
+  "supersedes": "ui-records-fullwindow-runtime-failure-local.json only for later sampled normal Track Records wide presentation and settled Location return",
+  "runs": [
+    {
+      "run": "ui-records-normal-prepared-v86",
+      "sourceLogSHA256": "5b2160b35ec261cd3b79242b3d14c90af55c5a4ee04c2cdfb1888301e7d8b80a",
+      "sourceResultSHA256": "81ec0500b26a0c118a88b4f3339132708fe6e87fba8d9431061e846955d2bc7f",
+      "rendererAcceptancePassed": true,
+      "recordedWidePresentations": 16,
+      "recordsNativeFallbackRows": 0,
+      "returnNativeFallbackRoutes": 0,
+      "returnRoutes": [
+        {
+          "choice": "transition-wide",
+          "output": "2360x1640",
+          "frame": "769",
+          "previousFrames": "25",
+          "presented": "1",
+          "capped": "0"
+        },
+        {
+          "choice": "intro-wide",
+          "output": "2360x1640",
+          "frame": "786",
+          "previousFrames": "17",
+          "presented": "1",
+          "capped": "0"
+        },
+        {
+          "choice": "transition-wide",
+          "output": "2360x1640",
+          "frame": "807",
+          "previousFrames": "21",
+          "presented": "1",
+          "capped": "0"
+        }
+      ],
+      "reviewedSettledReturnImageSHA256": "70658ebbe34ae903b55970b955a457da88822437d8d8aaa5cc025989fe2a634a",
+      "settledReturnVisualReview": "Location page with North Country, authored background, logo, badge and text fills window; thumbnail edge/shadow still visibly stepped",
+      "appGone": true,
+      "launcherExitCode": 0,
+      "resourcesUnchanged": true,
+      "copiedProfileRestored": true
+    },
+    {
+      "run": "ui-records-return16x9-v87",
+      "sourceLogSHA256": "0025bc0f8614bb1f8b375117fccd415f3666b3d2adf2bf18ec5303d82df206fa",
+      "sourceResultSHA256": "190b3e47785545591c175f982afea1bfed6aefc20797b9f2925ec9662ee5b9ae",
+      "rendererAcceptancePassed": true,
+      "recordedWidePresentations": 16,
+      "recordsNativeFallbackRows": 0,
+      "returnNativeFallbackRoutes": 0,
+      "returnRoutes": [
+        {
+          "choice": "transition-wide",
+          "output": "1280x720",
+          "frame": "783",
+          "previousFrames": "24",
+          "presented": "1",
+          "capped": "0"
+        },
+        {
+          "choice": "intro-wide",
+          "output": "1280x720",
+          "frame": "800",
+          "previousFrames": "17",
+          "presented": "1",
+          "capped": "0"
+        },
+        {
+          "choice": "transition-wide",
+          "output": "1280x720",
+          "frame": "821",
+          "previousFrames": "21",
+          "presented": "1",
+          "capped": "0"
+        }
+      ],
+      "reviewedSettledReturnImageSHA256": "2ef0ba975a2fdb3dcdde48ae42246ca34f6a841bc92644e7f82494663886959f",
+      "settledReturnVisualReview": "Location page with North Country, authored background, logo, badge and text fills window; thumbnail edge/shadow still visibly stepped",
+      "appGone": true,
+      "launcherExitCode": 0,
+      "resourcesUnchanged": true,
+      "copiedProfileRestored": true
+    }
+  ],
+  "firstActualVisibleFrameProven": false,
+  "postraceRecordsVerified": false,
+  "currentSourceRebuilt": false,
+  "physicalIpadVerified": false,
+  "wholeUIComplete": false,
+  "remaining": [
+    "First visible entry frame and all transitions require current-candidate grouped coverage",
+    "Postrace records and name submission remain separate acceptance routes",
+    "Older stepped thumbnail observation superseded for current shared-card pack by ui-location-current-card-runtime-local.json; full all-track route remains unverified"
+  ]
+}

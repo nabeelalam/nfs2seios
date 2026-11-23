@@ -1,0 +1,141 @@
+{
+  "scope": "Original Load/Save first-frame inherited Options sidebar and parent return",
+  "physicalIpadVerified": false,
+  "binarySHA256": "48a3e158daff4734c698b615cce50d7f610a99c035a71619f74b2cc8ca3cf648",
+  "sourceObservation": "LOADSAVE INITIAL inherited-read=1 inherited-match=1 prior=1 prior-current=1 same-game=1 same-thread=1 same-archive=1 same-bytes=1 words=4",
+  "implementation": [
+    "Distinct inherited source retains the completed immutable Options sidebar, rather than manufacturing a Load/Save Cache.",
+    "Exact game/thread/archive/raw bitmap and full catalogue match; genuine map reset and sidebar copy callbacks/stores replayed to the actual whole clean plane.",
+    "A source-local frame serial covers revision zero before the first new cache; cache producer revision and original selector-flip checks remain intact.",
+    "Display lease binds the current Load/Save owner epoch and existing child text packet; actual 300 uploads/300 selections/600 triangles remain required."
+  ],
+  "runs": [
+    {
+      "tag": "inherited-frame-ipad-v1",
+      "result": {
+        "scope": "Original Load/Save entry and parent-return continuity; copied fixture",
+        "durableBackupWritten": true,
+        "physicalIpadVerified": false,
+        "newArtworkActivated": true,
+        "driverExitCode": 0,
+        "statsUnchanged": true,
+        "protectedFilesRestored": true,
+        "all21ResourcesUnchanged": true,
+        "staticSourceRecords": [],
+        "loadsaveWidePresented": true,
+        "cacheSourcesReady": 0,
+        "nativePassesVerified": 0,
+        "cleanShutdown": true
+      },
+      "entryRoutes": [
+        {
+          "choice": "child-return-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "480",
+          "previousFrames": "35"
+        },
+        {
+          "choice": "loadsave-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "492",
+          "previousFrames": "12"
+        }
+      ],
+      "returnRoutes": [
+        {
+          "choice": "nested-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "514",
+          "previousFrames": "22"
+        },
+        {
+          "choice": "transition-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "526",
+          "previousFrames": "12"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "629",
+          "previousFrames": "103"
+        }
+      ],
+      "firstOriginalPass": "LOADSAVE NATIVE finish-published reason=authored-scene-plus-HD-text request=522 content=1 size=656x492 uploads=300 selections=300 triangles=600",
+      "fullNativePasses": 22,
+      "initialInheritedSceneObserved": true
+    },
+    {
+      "tag": "inherited-frame-wide-v1",
+      "result": {
+        "scope": "Original Load/Save entry and parent-return continuity; copied fixture",
+        "durableBackupWritten": true,
+        "physicalIpadVerified": false,
+        "newArtworkActivated": true,
+        "driverExitCode": 0,
+        "statsUnchanged": true,
+        "protectedFilesRestored": true,
+        "all21ResourcesUnchanged": true,
+        "staticSourceRecords": [],
+        "loadsaveWidePresented": true,
+        "cacheSourcesReady": 0,
+        "nativePassesVerified": 0,
+        "cleanShutdown": true
+      },
+      "entryRoutes": [
+        {
+          "choice": "child-return-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "476",
+          "previousFrames": "35"
+        },
+        {
+          "choice": "loadsave-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "488",
+          "previousFrames": "12"
+        }
+      ],
+      "returnRoutes": [
+        {
+          "choice": "nested-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "510",
+          "previousFrames": "22"
+        },
+        {
+          "choice": "transition-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "522",
+          "previousFrames": "12"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "800",
+          "height": "450",
+          "frame": "625",
+          "previousFrames": "103"
+        }
+      ],
+      "firstOriginalPass": "LOADSAVE NATIVE finish-published reason=authored-scene-plus-HD-text request=519 content=1 size=600x450 uploads=300 selections=300 triangles=600",
+      "fullNativePasses": 22,
+      "initialInheritedSceneObserved": true
+    }
+  ],
+  "visualReview": "Actual 708x492 Load/Save capture reviewed; remastered full-width map/panel/logo/options caption and original list layout retained.",
+  "limits": [
+    "English desktop original-data runs, O1 diagnostics/Mesa; no device performance or energy inference.",
+    "Earlier intermittent terminal rejection was not reproduced and is not declared fixed.",
+    "No Apple/cloud build, publication or original game-data modification.",
+    "Wrapper legacy aggregate cache/native counters are superseded by the direct log counts above."
+  ]
+}

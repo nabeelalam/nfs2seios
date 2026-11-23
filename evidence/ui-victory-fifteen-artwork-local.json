@@ -1,0 +1,220 @@
+{
+  "scope": "Complete first authored pass of all fifteen original winner-car variants",
+  "method": "Built-in image generator; exact original complete scene and car detail references with a common authored trophy base",
+  "sourceNamesCovered": [
+    "mcf1",
+    "ff50",
+    "f355",
+    "fgt9",
+    "find",
+    "fmus",
+    "jagr",
+    "lgt1",
+    "lesp",
+    "nazc",
+    "cala",
+    "isde",
+    "bbfs",
+    "dayt",
+    "fzr2"
+  ],
+  "masters": [
+    {
+      "name": "mcf1-4x3-v1.png",
+      "carIndex": 0,
+      "entry": "mcf1",
+      "sha256": "c7593e0c55031402e57c10c2a7f163ee6908527b51c9f7fb28643d77607a5b9d",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1709041
+    },
+    {
+      "name": "ff50-4x3-v1.png",
+      "carIndex": 1,
+      "entry": "ff50",
+      "sha256": "9cba05d8b7b00c5530d236f1f0ba502112ec0f40273e650ab53ab13bcc4f99b8",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1729890
+    },
+    {
+      "name": "f355-4x3-v1.png",
+      "carIndex": 2,
+      "entry": "f355",
+      "sha256": "14f2f668da5d1ba46103dadbd1098bdfd80c9b81754db9223cc3accc593881a8",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1779769
+    },
+    {
+      "name": "fgt9-4x3-v1.png",
+      "carIndex": 3,
+      "entry": "fgt9",
+      "sha256": "3b054ce160ef5257ba32ee436624611288b11371830e6be9d8a09f9d1e424fc9",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1682444
+    },
+    {
+      "name": "find-4x3-v1.png",
+      "carIndex": 4,
+      "entry": "find",
+      "sha256": "cadfeb1854cb308c89d0d72282eb6457af28c5528289d87fcb829d836e6f553a",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1751176
+    },
+    {
+      "name": "fmus-4x3-v1.png",
+      "carIndex": 5,
+      "entry": "fmus",
+      "sha256": "cdbf4cd8b9875f4c8276c7e1ebfa50b1aac8e25a3028eef91aba51adeeb0cd8c",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1718210
+    },
+    {
+      "name": "jagr-4x3-v1.png",
+      "carIndex": 6,
+      "entry": "jagr",
+      "sha256": "15d4ebd6a44c104b3fb59891385b77d8a4df3ea32abcc14e6474b5975a68afd5",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1671492
+    },
+    {
+      "name": "lgt1-4x3-v1.png",
+      "carIndex": 7,
+      "entry": "lgt1",
+      "sha256": "7badd4bdc65b7431dfd77b4f572070c300403a422a7694eb0aba77de0f023674",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1721856
+    },
+    {
+      "name": "lesp-4x3-v1.png",
+      "carIndex": 8,
+      "entry": "lesp",
+      "sha256": "41516a558036da0e2b43805afff9805cef46f9b72d5391035b77bc29bcbe48f8",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1767702
+    },
+    {
+      "name": "nazc-4x3-v1.png",
+      "carIndex": 9,
+      "entry": "nazc",
+      "sha256": "589e44428db4a570e2371eef54644b36c773a96388e793717965c0f115a6078a",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1713776
+    },
+    {
+      "name": "cala-4x3-v1.png",
+      "carIndex": 10,
+      "entry": "cala",
+      "sha256": "aa14380aa0e0e7622f4e362157b5f8c6ab86ff0fcfa7ec5d8daa74c21663d173",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1740149
+    },
+    {
+      "name": "isde-4x3-v2.png",
+      "carIndex": 11,
+      "entry": "isde",
+      "sha256": "c91ffc9cadbcd4008579e7c15cc4be72b7e8a66b8155b3d9b1e0f33cdeb6a0c5",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1678353
+    },
+    {
+      "name": "bbfs-4x3-v1.png",
+      "carIndex": 12,
+      "entry": "bbfs",
+      "sha256": "1d5be13dc2d3ff51f62da03521d9cc80e65e77fc5f158d2d6b1ca1b78dfb7811",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1849083
+    },
+    {
+      "name": "dayt-4x3-v1.png",
+      "carIndex": 13,
+      "entry": "dayt",
+      "sha256": "f6dac8766f39298e8a212a82947b53c356c177e874abd0625322ef154db858a1",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1785421
+    },
+    {
+      "name": "fzr2-4x3-v2.png",
+      "carIndex": 14,
+      "entry": "fzr2",
+      "sha256": "5287df7baf9cf675a8524ce9d5a8538a412f8f5c0f1ae141dedeb03ec0cdb10e",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "bytes": 1602224
+    }
+  ],
+  "allSourceNamesCovered": true,
+  "allMastersExact4by3": true,
+  "totalMasterBytes": 25900586,
+  "targetedCorrections": {
+    "isde": "Roof-mounted mirror proportion reduced",
+    "fzr2": "Non-source yellow road stripes removed"
+  },
+  "originalReferenceImagesPublished": false,
+  "mastersKeptPrivate": true,
+  "promptsPreservedPrivately": true,
+  "runtimeActivated": false,
+  "limitations": [
+    "First-pass authored assets; final source-fidelity/layout review is still required.",
+    "No byte-identical background claim between generated variants.",
+    "Adaptive artwork and source-bound rendering integration are pending.",
+    "No game/device test or new app build was performed for this artwork batch."
+  ]
+}

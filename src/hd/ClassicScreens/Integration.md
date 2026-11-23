@@ -37,3 +37,25 @@ phrases have no verified consumer and remain outside this new loading integratio
 See `evidence/hd-loading-finite-words.json`.
 
 For personal packaging, use the matching base and the verified resource inputs listed in the packaging evidence. The optional `--wide-menu` and `--results-backdrop` inputs carry the responsive map layers and post-race backgrounds separately. The runtime keeps the classic artwork available when an optional resource is absent or fails authentication.
+
+
+### Coherent History release
+
+The central History backgrounds and seven widescreen panoramas are one matched
+release. Their public metadata-only catalog is `HistoryArtworkRelease.json`;
+the photographs, logos and resource bytes remain separately held. Fresh owned
+builds embed all seven panorama pins. Explicit empty cache pins remain a
+developer opt-out; deferred public builds copy no private artwork.
+
+For personal injection, supply `--history` and `--history-panoramas-dir`
+together. The folder must contain every exact `history-panorama-N.ownedz`
+resource listed in the catalog. The injector authenticates all eight History
+files and requires their release digests in the base executable, accepting the
+raw or hexadecimal encoding used by the loaders. This rejects an incompatible
+older base before publishing output. The existing native bytes, ZIP member
+storage, original inputs, size limits and create-only output behavior remain
+protected.
+
+The local original-data routes cover seven pages, slideshow and returns at
+800x450 and 708x492. This does not establish Apple compilation, personal signing,
+physical iPad rendering or gameplay for a newly packaged candidate.

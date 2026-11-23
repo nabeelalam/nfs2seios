@@ -2,6 +2,9 @@
 /* Independent actual renderer-owner Controls426950 adapter. All original uploads, selects
    and triangles still execute. Source scene joins grant no GL authority. */
 #include "ControlsSceneRuntimeAbi.h"
+#ifndef NFS_CONTROLS_SCENE_WIDE_FINISH
+#define NFS_CONTROLS_SCENE_WIDE_FINISH(view,target) ((void)0)
+#endif
 #include "AudioNativePass.h"
 #define NFS_CONTROLS_SCENE_EXTERNAL_BACKGROUND_IMPLEMENTATION
 #include "ControlsSceneLayers.c.inc"
@@ -177,7 +180,7 @@ int nfs_private_controls_scene_finish(uint64_t serial){
  if(!nfs_controls_read_target(&target,serial)||memcmp(&target,&nfs_controls_renderer.target,sizeof target)){nfs_controls_cancel("precommit-target");return 0;}
  if(!nfs_controls_scene_save(&saved,&guard))goto lost;
  ok=nfs_controls_copy_color(&target);if(!nfs_controls_current())goto lost;
- if(!nfs_controls_scene_restore(&saved,&guard))goto lost;nfs_controls_trace(ok?"finish-published":"finish-refused",ok?"color-only-commit":"copy-error");nfs_controls_clear_view();return ok;
+ if(!nfs_controls_scene_restore(&saved,&guard))goto lost;nfs_controls_trace(ok?"finish-published":"finish-refused",ok?"color-only-commit":"copy-error");if(ok)NFS_CONTROLS_SCENE_WIDE_FINISH(&nfs_controls_renderer.view,&target);nfs_controls_clear_view();return ok;
  lost:nfs_controls_abandon();return 0;
 }
 #undef NFS_CONTROLS_RENDER_GL

@@ -1,0 +1,121 @@
+{
+  "scope": "Original-data desktop trace of nested Options returns, 708x492. Private probe; shipping source unchanged.",
+  "binarySHA256": "3afe3a0ec112324b06a8192e8249253934fc31002b7c71f1ec39901ec7ca1f1f",
+  "buildChecks": [
+    {
+      "step": "probe-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "probe-link",
+      "exitCode": 0
+    }
+  ],
+  "runtime": {
+    "physicalIpadVerified": false,
+    "durableBackupWritten": true,
+    "driverExit": 0,
+    "runtimeRecordsUnchanged": true,
+    "protectedFilesRestored": true
+  },
+  "returns": [
+    {
+      "action": "return-audio",
+      "routes": [
+        {
+          "choice": "native",
+          "width": "708",
+          "height": "492",
+          "frame": "465",
+          "previousFrames": "11"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "580",
+          "previousFrames": "115"
+        }
+      ]
+    },
+    {
+      "action": "return-controls",
+      "routes": [
+        {
+          "choice": "native",
+          "width": "708",
+          "height": "492",
+          "frame": "626",
+          "previousFrames": "13"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "741",
+          "previousFrames": "115"
+        }
+      ]
+    },
+    {
+      "action": "return-graphics",
+      "routes": [
+        {
+          "choice": "native",
+          "width": "708",
+          "height": "492",
+          "frame": "794",
+          "previousFrames": "13"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "909",
+          "previousFrames": "115"
+        }
+      ]
+    }
+  ],
+  "inlineLoopObservations": [
+    {
+      "ownerEpoch": 2,
+      "labels": {
+        "40C274": 1,
+        "40C77B": 1,
+        "40C792": 12,
+        "40C3CC": 1
+      }
+    },
+    {
+      "ownerEpoch": 3,
+      "labels": {
+        "40C274": 1,
+        "40C77B": 1,
+        "40C792": 12,
+        "40C3CC": 1
+      }
+    },
+    {
+      "ownerEpoch": 4,
+      "labels": {
+        "40C274": 1,
+        "40C77B": 1,
+        "40C792": 12,
+        "40C3CC": 1
+      }
+    }
+  ],
+  "findings": [
+    "Each return bypasses InitialMain caption creation and runs 12 iterations of loc_40C792 before loc_40C3CC.",
+    "The loop calls 40B6C4, 428A20, base draw 405B30, sidebar copy 405B60 mode 0x1000 and 405C70.",
+    "405C70 calls 428770, which presents the full original bitmap through 426B70 then 4976B8; this differs from typed 427xxx cached-tile fades.",
+    "Later initial full copy mode 0x2800 lacks the InitialMain-only child proof.",
+    "All three returns still contain 115 native presentations; 12 loop iterations do not establish complete temporal attribution."
+  ],
+  "limitations": [
+    "The 40C473 diagnostic cap exhausted in the first owner; later main-loop timing is unmeasured.",
+    "No fix, Apple build, physical-device acceptance or performance gain is claimed."
+  ],
+  "nextImplementation": "Qualify explicit nested-return bitmap presentation and later full-cache source under the new Options owner, using exact immutable sidebar semantics and actual original base/copy/upload witnesses."
+}

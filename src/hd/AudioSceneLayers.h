@@ -23,6 +23,8 @@ extern "C" {
    or suppression authority. Failure means discard the entire staging image.
    Owner loss abandons all resource metadata without foreign GL cleanup. */
 int nfs_audio_scene_draw_layers_into_staging(NfsAudioSceneGpu*,const NfsBackgroundSceneStage*,const NfsAudioSceneLayers*);
+/* Responsive authored background; left sidebar, centred bars and dialog text. */
+int nfs_audio_scene_draw_layers_into_nested_staging(NfsAudioSceneGpu*,const NfsBackgroundSceneStage*,const NfsAudioSceneLayers*,const NfsNestedBackdropTextures*);
 #ifdef __cplusplus
 }
 #endif

@@ -1,0 +1,291 @@
+{
+  "scope": "Fix the actual Setup Knockout source-specific widescreen fallback",
+  "sourceIdentity": {
+    "entry": "tko5",
+    "archiveIndex": 73,
+    "dimensions": [
+      85,
+      85
+    ],
+    "convertedCanvasEdge": 128,
+    "converted5551Sha256": "7cf52b12ec5b2db5bcd3cb693241c39196ba6860a9a1d40ee98ee0fab6ae8386",
+    "referenceVisuallyMatchesRejectedEmblem": true
+  },
+  "admission": {
+    "retainsUploadSelectionEpochContextSlotAndTextureChecks": true,
+    "owner": "Setup only",
+    "exactCanvas": [
+      510,
+      387,
+      638,
+      515
+    ],
+    "genericUnknownTextureAllowance": false
+  },
+  "binarySHA256": "b6faef0cb2505e40ff7ee21b2166c374a85d5737669ff47b0690acf31eebdcfd",
+  "runs": [
+    {
+      "tag": "knockout-mode-group-ipad-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "nonStartupNativeRoutes": [],
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 270585,
+          "logEnd": 335937,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "361",
+              "previousFrames": "65"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "481",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 335937,
+          "logEnd": 356356,
+          "routes": []
+        },
+        {
+          "action": "race-type-0",
+          "logStart": 356356,
+          "logEnd": 376943,
+          "routes": []
+        },
+        {
+          "action": "race-type-1",
+          "logStart": 376943,
+          "logEnd": 395872,
+          "routes": []
+        },
+        {
+          "action": "race-type-2",
+          "logStart": 395872,
+          "logEnd": 416063,
+          "routes": []
+        },
+        {
+          "action": "return-main",
+          "logStart": 416304,
+          "logEnd": 446619,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "636",
+              "previousFrames": "155"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "648",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "location-current-mode",
+          "logStart": 453020,
+          "logEnd": 478513,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "717",
+              "previousFrames": "69"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "734",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "755",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "location-return-main",
+          "logStart": 478513,
+          "logEnd": 506749,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "771",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "790",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "knockout-mode-group-wide-v1",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "nonStartupNativeRoutes": [],
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 274535,
+          "logEnd": 339865,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "366",
+              "previousFrames": "67"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "486",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 339865,
+          "logEnd": 356004,
+          "routes": []
+        },
+        {
+          "action": "race-type-0",
+          "logStart": 356004,
+          "logEnd": 374462,
+          "routes": []
+        },
+        {
+          "action": "race-type-1",
+          "logStart": 374462,
+          "logEnd": 393880,
+          "routes": []
+        },
+        {
+          "action": "race-type-2",
+          "logStart": 393880,
+          "logEnd": 412099,
+          "routes": []
+        },
+        {
+          "action": "return-main",
+          "logStart": 412099,
+          "logEnd": 440470,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "633",
+              "previousFrames": "147"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "645",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "location-current-mode",
+          "logStart": 446226,
+          "logEnd": 470747,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "708",
+              "previousFrames": "63"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "725",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "746",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "location-return-main",
+          "logStart": 470747,
+          "logEnd": 496590,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "759",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "778",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "baseline": "ui-setup-modes-grouped-local.json confirms native fallback during Knockout",
+  "limitations": [
+    "Existing original TKO5 artwork is retained, not newly remastered.",
+    "Main and other owners with saved Knockout mode are not newly admitted or verified.",
+    "Tournament commit and tournament track preview remain unverified.",
+    "Local diagnostic O1 software GLES; no device performance or energy claim."
+  ],
+  "build": {
+    "localRendererCompileAndLink": true,
+    "engineReused": true,
+    "cloudBuild": false,
+    "warning": "Existing framebuffer const-array pointer mismatch only"
+  }
+}

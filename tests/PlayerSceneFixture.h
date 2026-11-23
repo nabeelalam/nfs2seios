@@ -42,14 +42,14 @@ struct Fixture: ::Fixture {
  nfs_soft::FontDescription description{};std::vector<uint8_t>alpha;std::shared_ptr<const nfs_soft::FontCatalog>font;std::shared_ptr<const nfs_soft::FramePacket>caption;
  std::shared_ptr<const ps::SidebarProof>sidebar;std::shared_ptr<const nfs_player_preview::Packet>preview;std::shared_ptr<const sw::Packet>swatch;std::shared_ptr<const ps::VerifiedSource>source;
  std::unique_ptr<pf::Fixture>p;std::unique_ptr<sf::Fixture>s;ps::SourceBinding binding;rec::Plane oldCopyPost,actualUpload;unsigned mode=0;ps::Failure failure=ps::Failure::None;
- Fixture(unsigned player=1,unsigned selectedMode=1):alpha(1024*512),mode(selectedMode){
+ Fixture(unsigned player=1,unsigned selectedMode=1,bool graphPreview=false):alpha(1024*512),mode(selectedMode){
   const uint32_t form=player==1?ps::Player1Form:ps::Player2Form;base.form=scene.form=form;scene.tailKind=ps::tail(form);scene.tailPredicate=scene.tailSymbol=form;scene.event={1,20,1};
   auto&side=scene.draws[0];side.sourceBefore[16+TransparentAt]=0;side.sourceAfter=side.sourceBefore;side.rows[0].payload[TransparentAt]=0;catalog.identities[0].sha=digest(side.sourceBefore);scene.postSide.pixels[TransparentAt]=scene.postWords.pixels[TransparentAt]=group.pre.pixels[TransparentAt]=group.post.pixels[TransparentAt]=scene.tailPre.pixels[TransparentAt]=scene.tailPost.pixels[TransparentAt]=0;
   alpha[1025]=255;for(auto&role:description.glyphs)for(auto&g:role){g.x=g.y=g.w=g.h=1;g.advance=65536;}font=nfs_soft::FontCatalog::create(description,alpha.data(),alpha.size(),77);CHECK(font);
   nfs_soft::TextCommand cmd{};cmd.length=10;std::memcpy(cmd.text.data(),player==1?"player one":"player two",10);cmd.role=1;cmd.alignment=2;cmd.x=player==1?100:98;cmd.y=player==1?198:234;cmd.sourceSize=18;cmd.advance=player==1?68:70;cmd.color=65535;cmd.clip={0,0,343,480};nfs_soft::SurfaceIdentity identity{};CHECK(ps::captionIdentity(copy.sourceOwner,7,identity));nfs_soft::FramePacketBuilder builder(font);CHECK(builder.begin(identity,5,scene.tailPre.pixels.data(),bg::Side));CHECK(builder.beginString(cmd));CHECK(builder.word(CaptionAt,scene.tailPre.pixels[CaptionAt],65535,65535));scene.tailPost.pixels[CaptionAt]=65535;CHECK(builder.endString(cmd));caption=builder.finish(identity,scene.tailPost.pixels.data(),bg::Side);CHECK(caption);
   // This old original side/group/caption proof precedes the NEW map refresh.
   syncCopy(base.post);
-  p.reset(new pf::Fixture(false,form));p->in.lifetime=1;p->in.pre.target=base.post.target;p->in.post.target=base.post.target;p->in.fill.before=p->in.fill.after=base.post.target;for(auto&draw:p->in.draws)draw.before=draw.after=base.post.target;
+  p.reset(new pf::Fixture(graphPreview,form));p->in.lifetime=1;p->in.pre.target=base.post.target;p->in.post.target=base.post.target;p->in.fill.before=p->in.fill.after=base.post.target;for(auto&draw:p->in.draws)draw.before=draw.after=base.post.target;
   base.post=p->in.pre;base.event={1,50,0};for(unsigned k=0;k<bg::Full;++k)put16(base.sourceBefore.data()+16+2*k,base.post.pixels[k]);base.sourceAfter=base.sourceBefore;catalog.mapSha[0]=digest(base.sourceBefore);preview=nfs_player_preview::createPacket(p->in,base.post);CHECK(preview);
   // Finish the one immutable synthetic catalog BEFORE sealing old sidebar
   // evidence. Its actual recorded events remain20/21/22 and originalCopy

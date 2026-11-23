@@ -1,0 +1,124 @@
+{
+  "scope": "Credits complete eleven-layer candidate and pinned owned provider/loader, not activated",
+  "pack": {
+    "schema": 1,
+    "fileBytes": 3189214,
+    "payloadBytes": 21655040,
+    "sha256": "a82ec61a8f1d26ecd2dc384f408220a262c970648c320ddb52d14b4343bab1d0",
+    "compression": "lossless zlib of authenticated premultiplied RGBA",
+    "artworkRedistributionApproved": false
+  },
+  "roles": [
+    {
+      "role": "backdrop",
+      "width": 1672,
+      "height": 941,
+      "bytes": 6293408,
+      "sha256": "ed6e2ffffe02d102d5aa4c30b0b624cb8499019447f3a15daa115fe4cbb4d8ce"
+    },
+    {
+      "role": "logo",
+      "width": 868,
+      "height": 368,
+      "bytes": 1277696,
+      "sha256": "3f33eba4d394164f1b0fb596abc35526270e6509358fc8d5c237eff32905da0a"
+    },
+    {
+      "role": "watermark",
+      "width": 200,
+      "height": 1680,
+      "bytes": 1344000,
+      "sha256": "e5e931b75f662c830e3d2dba89ad8dfecfc8c3bbda72fcc9aa23c37b7047abf6"
+    },
+    {
+      "role": "heading_en",
+      "width": 624,
+      "height": 256,
+      "bytes": 638976,
+      "sha256": "f09035f999844541cfe76271d9d4ee7ff50b3d6801b6634228be4ed3ad7e330a"
+    },
+    {
+      "role": "heading_de",
+      "width": 1096,
+      "height": 256,
+      "bytes": 1122304,
+      "sha256": "a5608d2a73f40d08c53307d145487e26df5fa7f29ca99655fd7af2d775f59328"
+    },
+    {
+      "role": "heading_fr",
+      "width": 1276,
+      "height": 260,
+      "bytes": 1327040,
+      "sha256": "68cbdb26a3c16f1294cc595db8cf747eefb4a7c4a05412d8dfbae1de6b37cd38"
+    },
+    {
+      "role": "heading_es",
+      "width": 720,
+      "height": 256,
+      "bytes": 737280,
+      "sha256": "c366bf30e05cfc071dab6e309a66fe6cdae9f13516a0fbe64895415de0276a17"
+    },
+    {
+      "role": "heading_it",
+      "width": 1288,
+      "height": 260,
+      "bytes": 1339520,
+      "sha256": "5d36d53b369ecd899add1f87568b97061e0ad598b082d975890c0ee3d352ff68"
+    },
+    {
+      "role": "heading_sv",
+      "width": 776,
+      "height": 260,
+      "bytes": 807040,
+      "sha256": "b0884ac65a73b3ad7f4a7c01a9a214310bfca953e94b60fc0c24767b2e928151"
+    },
+    {
+      "role": "kenwood",
+      "width": 784,
+      "height": 152,
+      "bytes": 476672,
+      "sha256": "9f31ebf81b581ce1d7f0e55b5e2fe0da1ebe3d4b158139f242ef0341610f822d"
+    },
+    {
+      "role": "creative_house_y2",
+      "width": 1715,
+      "height": 917,
+      "bytes": 6290620,
+      "sha256": "3ba71119766a2927f8d80c4942388353e63fc944f83604dfe90db535872e9619"
+    }
+  ],
+  "methods": {
+    "nfsLogo": "Reused accepted nfs2se-logo-v2.svg",
+    "nfsWatermark": "Same twelve brand letter outlines in flat low-opacity teal, rotated; no replacement logo font",
+    "headings": "New League Gothic outlines with rightward italic geometry, exact source labels and six-locale ordering",
+    "kenwood": "Authored fine white geometric monoline brand lettering with original red triangle"
+  },
+  "creativeHouseMethod": "Built-in transparent image edit from original chy2; copied output retained privately",
+  "validation": {
+    "originalPackASanUBSan": "Passed with leak detection: all eleven roles, SHA256, shape/PMA rejection, independent byte copies, retained leases, clear/reinstall generations and cross-thread clear",
+    "staticCompositionReviewedAt": [
+      [
+        800,
+        450
+      ],
+      [
+        708,
+        492
+      ]
+    ],
+    "actualApplicationFrames": false,
+    "CMakeTargetsRegistered": true,
+    "CMakeConfigurationExecuted": false
+  },
+  "remaining": [
+    "Connect startup activation only with the completed renderer, to avoid allocating unused texture memory",
+    "Observe actual backdrop/locale/partner source draws and scrolling destinations; original header offsets alone are not proof",
+    "Permit qualified backdrop-only first frames",
+    "Implement guarded independent full-drawable Credits composition and actual swap ownership, plus parent return",
+    "One grouped original-game desktop check, then later full-UI Apple/iPad acceptance"
+  ],
+  "originalArtworkUnchanged": true,
+  "gameFilesUnchanged": true,
+  "newAppleBuild": false,
+  "published": false
+}

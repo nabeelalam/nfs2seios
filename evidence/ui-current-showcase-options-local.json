@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "scope": "Local offscreen desktop runtime only; no Apple build or physical iPad acceptance",
+  "binarySha256": "b57552a272fb6fed4afc221aa67aee9481e24208d77ce1a6f1232fb05d0dbc50",
+  "showcase": {
+    "output": [
+      708,
+      492
+    ],
+    "elapsedSeconds": 79.334922673,
+    "actions": 19,
+    "statisticsPages": [
+      2,
+      3,
+      1
+    ],
+    "historyObserved": true,
+    "slideshowObserved": true,
+    "nextCarCases": 6,
+    "nativeFallbackAfterFirstWideMenu": 0,
+    "startupNativeFrames": 162,
+    "caveat": "An older intermittent Next Car gap did not reproduce; this run does not prove that issue fixed or cover every car history."
+  },
+  "options": {
+    "output": [
+      800,
+      450
+    ],
+    "elapsedSeconds": 35.188098065,
+    "actions": 4,
+    "scope": "Options-only 800x450 smoke: matching typed native begin/finish300600 and live uploaded seal, wide screenshot, ordinary Escape to wide Main; not complete per-frame UI proof",
+    "completed": true
+  },
+  "preservation": {
+    "bothExitZero": true,
+    "bothCleanShutdown": true,
+    "bothCopiedFixturesRestored": true,
+    "both22ResourcesUnchanged": true,
+    "bothBinariesUnchanged": true
+  },
+  "remaining": [
+    "Slideshow side bands still use edge blur in the application; authored panorama pilot is not integrated",
+    "All-car histories and alternate drawable sizes remain unverified",
+    "No first-frame continuity claim for all UI routes",
+    "No new gameplay performance, battery or physical-device claim"
+  ]
+}

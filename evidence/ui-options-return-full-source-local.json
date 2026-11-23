@@ -1,0 +1,219 @@
+{
+  "scope": "Desktop original-data nested return handoff; six returns at two shapes. This is a partial UI continuity fix, not physical iPad acceptance.",
+  "binarySHA256": "cea9abfaacbca486d4d3fea50f78687acd356bac831ac9766d4c3d2d685cc63a",
+  "sourceSHA256": {
+    "src/hd/SetupInitialFullGameHooks.inc": "328dc27f3949e4ba744409d5a8455b50f3f1e1840043d63d8baaa4f0038cf76b",
+    "src/hd/MenuTransitionGameHooks.inc": "1f317bab73da15ab5b852ab040cacb040e25f4c5ea387ca96dc77588fdcb98a2",
+    "src/hd/OptionsSidebarOrigin.h": "489efcc869d087c06f2feed275d7674e2c3f6dfbd0445bfa7886ad78da220819",
+    "src/hd/AudioSidebarLiveGameHooks.inc": "38f1845fc9b15a6a1039a0bd3342d6609c3b695e204c21fb52c1cc9cc1f5fef8",
+    "src/hd/ControlsSidebarLiveGameHooks.inc": "decb34d592501b043386e0d0decd93138aa804775b27915b577c983255b2cc33",
+    "src/hd/GraphicsSidebarLiveGameHooks.inc": "50f02fb58d71a15aab5e99c37256a7f53ee344d8bccdbb772b425c2f7a9b617d",
+    "src/hd/AudioScenePrepare.h": "e04996a88dd7033e05ddd71cf92516840e362fb497a2ad2ac6b9ea076df05d95",
+    "src/hd/GraphicsScenePrepare.h": "1f4b834e0fbdc99cff044baae39c460fb015406a87cb41edb0c204ee4505e57d",
+    "src/hd/ControlsScenePrepare.h": "0479e0a30cc96034582c2b9edbef52e1f8d7b0739a9aa68a638b5324239e19bc",
+    "src/hd/ChildReturnGameHooks.inc": "0a5c10cb8d5d8dac0836f4435ddd8ac1513128fcc5c877109d5c7d44364b98e2"
+  },
+  "buildChecks": [
+    {
+      "step": "Methods_01.cpp-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "Methods_03.cpp-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "Methods_09.cpp-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "Methods_10.cpp-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "Methods_12.cpp-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "Methods_13.cpp-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "Methods_14.cpp-compile",
+      "exitCode": 0
+    },
+    {
+      "step": "candidate-link",
+      "exitCode": 0
+    }
+  ],
+  "mechanism": [
+    "Completed Audio/Controls/Graphics sidebar packets publish immutable Options sidebar content, including current moving lettering and the independently verified literal Options caption. They grant no authority from the closed dialog owner.",
+    "Bounded per-bitmap history retains up to four completed sources; receiver still requires exact bytes, game/thread/archive and current catalogue.",
+    "Copied sidebar catalogues are compared using existing complete identity/pin comparison; the receiving Origin retains the current trusted catalogue.",
+    "A new Options owner accepts this source only on explicit Audio/Controls/Graphics return, with its verified initial base, exact copy arguments, 480 converted rows, converter/key/table/target rechecks and full plane replay.",
+    "The unchanged transition adapter then verifies the real 300 texture uploads and original native pass. Setup and InitialMain proofs retain their original policies."
+  ],
+  "runs": [
+    {
+      "shape": "ipad",
+      "output": [
+        708,
+        492
+      ],
+      "receipt": {
+        "physicalIpadVerified": false,
+        "durableBackupWritten": true,
+        "driverExit": 0,
+        "runtimeRecordsUnchanged": true,
+        "protectedFilesRestored": true
+      },
+      "returns": [
+        {
+          "action": "return-audio",
+          "nativeStart": 490,
+          "hdTransitionStart": 502,
+          "settledStart": 605,
+          "remainingNativeFrames": 12,
+          "restoredHDFramesBeforeSettled": 103
+        },
+        {
+          "action": "return-controls",
+          "nativeStart": 654,
+          "hdTransitionStart": 666,
+          "settledStart": 769,
+          "remainingNativeFrames": 12,
+          "restoredHDFramesBeforeSettled": 103
+        },
+        {
+          "action": "return-graphics",
+          "nativeStart": 821,
+          "hdTransitionStart": 833,
+          "settledStart": 936,
+          "remainingNativeFrames": 12,
+          "restoredHDFramesBeforeSettled": 103
+        }
+      ]
+    },
+    {
+      "shape": "wide",
+      "output": [
+        800,
+        450
+      ],
+      "receipt": {
+        "physicalIpadVerified": false,
+        "durableBackupWritten": true,
+        "driverExit": 0,
+        "runtimeRecordsUnchanged": true,
+        "protectedFilesRestored": true
+      },
+      "returns": [
+        {
+          "action": "return-audio",
+          "nativeStart": 500,
+          "hdTransitionStart": 512,
+          "settledStart": 615,
+          "remainingNativeFrames": 12,
+          "restoredHDFramesBeforeSettled": 103
+        },
+        {
+          "action": "return-controls",
+          "nativeStart": 661,
+          "hdTransitionStart": 673,
+          "settledStart": 776,
+          "remainingNativeFrames": 12,
+          "restoredHDFramesBeforeSettled": 103
+        },
+        {
+          "action": "return-graphics",
+          "nativeStart": 832,
+          "hdTransitionStart": 844,
+          "settledStart": 947,
+          "remainingNativeFrames": 12,
+          "restoredHDFramesBeforeSettled": 103
+        }
+      ]
+    }
+  ],
+  "regressions": [
+    {
+      "test": "audio_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "graphics_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "audio_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "graphics_scene_prepare",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "setup_initial_full",
+      "compileExit": 0,
+      "runExit": 0
+    }
+  ],
+  "sanitizers": [
+    {
+      "test": "audio_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "controls_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "graphics_sidebar_caption_runtime",
+      "compileExit": 0,
+      "runExit": 0
+    },
+    {
+      "test": "setup_initial_full",
+      "compileExit": 0,
+      "runExit": 0
+    }
+  ],
+  "visualReview": [
+    "Three middle-return captures reviewed at 708x492; Audio and Graphics also reviewed at 800x450. Authored background, logo, Options caption, live selection and full-width presentation remain visible."
+  ],
+  "negativeEvidence": [
+    "Early exact-old-Options-sidebar candidate was rejected as its moving-lettering pixels differed.",
+    "First nested publisher compared copied catalogue objects by pointer and refused the new source; actual-game evidence exposed a fixture gap. Positive identical-copy and altered-pin cases now cover the intended content comparison.",
+    "The first trial observer failed its final Main highlight assertion; failure and restored-file receipt remain private. Final routes use a short final Escape release and pass."
+  ],
+  "remaining": [
+    "Each nested return still presents 12 native bitmap frames through loc_40C792 / 405C70 / 428770 / 426950. All 103 subsequent formerly-native cached frames are HD in the observed routes.",
+    "The bitmap presentation needs its own source-qualified native-pass handoff; do not skip the original animation or reuse a retired full-menu owner.",
+    "Other UI routes, broader input/aspect changes, Apple packaging and physical iPad/gameplay/performance/battery acceptance remain open."
+  ],
+  "cleanup": {
+    "removedCompilerFiles": 47,
+    "reclaimedBytes": 366860176,
+    "currentCandidateAndCapturedSourceOracleRetained": true
+  },
+  "cloudBuild": false,
+  "publication": false,
+  "physicalIpadVerified": false
+}

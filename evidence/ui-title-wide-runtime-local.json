@@ -1,0 +1,241 @@
+{
+  "scope": "Full-drawable authored title after the actual original native pass; local desktop acceptance only",
+  "binarySha256": "101382fcf07040d55953d1e3b8d22d722b4e758cb724e8050fbeaa82fafa64eb",
+  "localEvidence": ".build/title-wide-startup-v3",
+  "implementation": [
+    "Separate retained source/art packet, independent color-only staging texture/FBO; no native attachment is sampled or written by the added compositor.",
+    "Verified existing original title pass remains mandatory (300 uploads, 300 selections, 600 triangles).",
+    "Wide photograph fills the actual wider drawable; authentic logo and locale copyright use uniform scale and horizontal centering. Original 4:3 photo path stays unchanged.",
+    "Selection requires actual front FBO/color/depth identities, same context/thread/generation, current artwork generation and output dimensions.",
+    "Explicit swap scope preserves the completed title; native mutation, resize/LFB/clear and retirement revoke it. Retained CPU leases are balanced.",
+    "Per-operation context guards cover new drawing/allocation/queries/cleanup. Avoid the shared dimension helper because it contains two unguarded GL queries.",
+    "Inactive revocation returns before copying or clearing the large title structures; trace output is bounded."
+  ],
+  "build": {
+    "checks": [
+      {
+        "step": "renderer",
+        "exitCode": 0
+      },
+      {
+        "step": "link",
+        "exitCode": 0
+      }
+    ],
+    "physicalIpadVerified": false,
+    "binarySHA256": "101382fcf07040d55953d1e3b8d22d722b4e758cb724e8050fbeaa82fafa64eb"
+  },
+  "sourceAudit": {
+    "stagedTitleHelpersMatchCurrentSources": true,
+    "rendererGeneratorOriginalOperationReverseAuditPassed": true,
+    "normalizedHookUnchangedAfterPreparation": true,
+    "providerAndLoaderRecompiledForExpandedInternalAbi": true
+  },
+  "cases": [
+    {
+      "shape": "708x492",
+      "resizeBeforeFirstPresentation": true,
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "recordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "capturedFrames": 60,
+      "firstPresentedTitleCapture": "009.png",
+      "titleNativeWitness": [
+        "INTRO NATIVE finish-published reason=authored-title-photo-logo-copyright request=1 content=1 size=656x492 uploads=300 selections=300 triangles=600"
+      ],
+      "titleWideWitness": [
+        "TITLE WIDE presented request=1 output=708x492 native300600=1"
+      ],
+      "routes": [
+        {
+          "choice": "native",
+          "width": 708,
+          "height": 492,
+          "frame": 1,
+          "precedingRunFrames": 0
+        },
+        {
+          "choice": "title-wide",
+          "width": 708,
+          "height": 492,
+          "frame": 39,
+          "precedingRunFrames": 38
+        },
+        {
+          "choice": "native",
+          "width": 708,
+          "height": 492,
+          "frame": 40,
+          "precedingRunFrames": 1
+        },
+        {
+          "choice": "transition-wide",
+          "width": 708,
+          "height": 492,
+          "frame": 41,
+          "precedingRunFrames": 1
+        },
+        {
+          "choice": "menu-wide",
+          "width": 708,
+          "height": 492,
+          "frame": 100,
+          "precedingRunFrames": 59
+        }
+      ]
+    },
+    {
+      "shape": "800x450",
+      "resizeBeforeFirstPresentation": true,
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "recordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "capturedFrames": 60,
+      "firstPresentedTitleCapture": "009.png",
+      "titleNativeWitness": [
+        "INTRO NATIVE finish-published reason=authored-title-photo-logo-copyright request=1 content=1 size=600x450 uploads=300 selections=300 triangles=600"
+      ],
+      "titleWideWitness": [
+        "TITLE WIDE presented request=1 output=800x450 native300600=1"
+      ],
+      "routes": [
+        {
+          "choice": "native",
+          "width": 800,
+          "height": 450,
+          "frame": 1,
+          "precedingRunFrames": 0
+        },
+        {
+          "choice": "title-wide",
+          "width": 800,
+          "height": 450,
+          "frame": 40,
+          "precedingRunFrames": 39
+        },
+        {
+          "choice": "native",
+          "width": 800,
+          "height": 450,
+          "frame": 41,
+          "precedingRunFrames": 1
+        },
+        {
+          "choice": "transition-wide",
+          "width": 800,
+          "height": 450,
+          "frame": 42,
+          "precedingRunFrames": 1
+        },
+        {
+          "choice": "menu-wide",
+          "width": 800,
+          "height": 450,
+          "frame": 101,
+          "precedingRunFrames": 59
+        }
+      ]
+    },
+    {
+      "shape": "640x480",
+      "resizeBeforeFirstPresentation": true,
+      "cleanShutdown": true,
+      "exitCode": 0,
+      "recordsUnchanged": true,
+      "protectedFilesRestored": true,
+      "capturedFrames": 60,
+      "firstPresentedTitleCapture": "009.png",
+      "titleNativeWitness": [
+        "INTRO NATIVE finish-published reason=authored-title-photo-logo-copyright request=1 content=1 size=640x480 uploads=300 selections=300 triangles=600"
+      ],
+      "titleWideWitness": [],
+      "routes": [
+        {
+          "choice": "native",
+          "width": 640,
+          "height": 480,
+          "frame": 1,
+          "precedingRunFrames": 0
+        }
+      ]
+    }
+  ],
+  "visualReview": {
+    "status": "Reviewed exact final-binary 009.png captures at 708x492, 800x450 and 640x480. Wider title fills the drawable with proportional authentic logo/copyright; 4:3 retains the original photograph composition.",
+    "originalMovie": "Still original low resolution; separate lower priority work.",
+    "mainHandoff": "Classified using retained captures 021/022 at both wider ratios: every RGB pixel is zero during the single native-route boundary, followed by HD transition-wide. See evidence/ui-main-cleared-startup-boundary-local.json. This interval contains no observed old UI artwork."
+  },
+  "gpuChecks": {
+    "result": [
+      {
+        "step": "compile",
+        "exitCode": 0
+      },
+      {
+        "step": "runtime",
+        "exitCode": 0
+      }
+    ],
+    "checks": 61,
+    "asan": true,
+    "ubsan": true,
+    "leakSanitizer": false,
+    "leakScope": "Mesa process leak detection disabled; source/art retain/release counters balanced.",
+    "scope": "Actual GLES filled output pixels at both wider ratios, native color and GL state preservation, resize/art generation/foreign context rejection, mid-save loss and loss during retirement deletion. Preceding original native pass/target proof is an explicit fixture stub, supplied by actual original-game runs separately."
+  },
+  "packager": {
+    "titlePackMatchesPackager": true,
+    "otherResourcePinsUnchanged": true,
+    "compiledExecutableContainsTitleReleasePin": true,
+    "ipaCreated": false,
+    "physicalIpadVerified": false
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "path": "title-wide-runtime-v1\\nfs_game_app",
+        "bytes": 63254048,
+        "sha256": "b21ad3ca6c63ce920f20163172cce4396af678e72bc8ed1e46c2f515be1b20f0"
+      },
+      {
+        "path": "title-wide-runtime-v1\\Glide2x.c.o",
+        "bytes": 15734068,
+        "sha256": "3fb571782662c1464441e30c95f5515e739197917dbcb7d56cbf5782671b3391"
+      },
+      {
+        "path": "title-wide-runtime-v2\\nfs_game_app",
+        "bytes": 63253920,
+        "sha256": "2bcae02d915001785a7cd3cfdf9cb9ff85b1b98d3060fb8e6e4d93d9a3fe1e4f"
+      },
+      {
+        "path": "title-wide-runtime-v2\\Glide2x.c.o",
+        "bytes": 15734628,
+        "sha256": "dafed1156d1324c1b8cf32cbaf13a523af79d2c503cb7ff11c6d026e2f5092b1"
+      }
+    ],
+    "bytesFreed": 157976664.0,
+    "currentBinaryPreserved": true,
+    "matchingProviderAndLoaderObjectsPreserved": true,
+    "allEvidencePreserved": true
+  },
+  "sourceSha256": {
+    "CMakeLists.txt": "18cb2f37cf9569e8c3ecf165079102adaaa16c3f013c86af0943d2f2590e932f",
+    "scripts/menu_responsive_renderer_hooks.py": "2eb7fb843b61aef52261470c5a0aa952efc28f63f5d8125878782523b2413225",
+    "scripts/inject_personal_artwork.py": "60761978de45f6d199c8938e80c5d0a19519b44c1665b1951a8ecc01e46207e9",
+    "src/hd/ClassicScreens/IntroArtworkPin.h": "c1dfb7f44881e4fd1505084407473c8c1dfd219235286f751f74b54046927958",
+    "src/hd/ClassicScreens/IntroRenderer.inc": "8c36088bebe6a581a3c5ce30bc7acba7ea3f7dbea82e02f01351bf6999bce366",
+    "src/hd/ClassicScreens/IntroWideRenderer.inc": "370403f6200c23d08a5bb1efd22a3bc9f9131c4c7b66476920044eebeafdf077",
+    "tests/intro_wide_renderer_runtime_tests.cpp": "8e0a12bdc6a587ace86e5798163f8c30048254052ae3ef92f5ac047327471fd9"
+  },
+  "remaining": [
+    "Continue broader menus/post-race, artwork gaps and responsive layout work before requesting an iPad test or Apple build.",
+    "Physical iPad gameplay, Low Power Mode performance and battery remain unverified for this candidate."
+  ],
+  "newAppleBuild": false,
+  "ipaCreated": false,
+  "published": false,
+  "physicalIpadVerified": false,
+  "goalComplete": false
+}

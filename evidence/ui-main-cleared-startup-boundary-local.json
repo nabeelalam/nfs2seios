@@ -1,0 +1,81 @@
+{
+  "scope": "Classify only the single native-route title-to-first-Main boundary in the final local title candidate",
+  "binarySha256": "101382fcf07040d55953d1e3b8d22d722b4e758cb724e8050fbeaa82fafa64eb",
+  "localEvidence": ".build/title-wide-startup-v3",
+  "method": "Correlate frame log offsets with the native-route interval after successful title-wide and before the first transition-wide. Decode retained PNG captures and inspect every RGB pixel.",
+  "cases": [
+    {
+      "shape": "708x492",
+      "intervalStartLogBytes": 4656,
+      "intervalEndLogBytes": 5798,
+      "observations": [
+        {
+          "file": "021.png",
+          "secondsAfterLaunch": 14.416556143000008,
+          "dimensions": [
+            708,
+            492
+          ],
+          "rgbMinimum": 0,
+          "rgbMaximum": 0,
+          "allPixelsBlack": true,
+          "sha256": "a93df860a697e2026642efa70eb8685268e1fa8436c733f3520fd990a610781f"
+        },
+        {
+          "file": "022.png",
+          "secondsAfterLaunch": 14.705717574000005,
+          "dimensions": [
+            708,
+            492
+          ],
+          "rgbMinimum": 0,
+          "rgbMaximum": 0,
+          "allPixelsBlack": true,
+          "sha256": "a93df860a697e2026642efa70eb8685268e1fa8436c733f3520fd990a610781f"
+        }
+      ],
+      "followingPresentation": "transition-wide"
+    },
+    {
+      "shape": "800x450",
+      "intervalStartLogBytes": 4656,
+      "intervalEndLogBytes": 5798,
+      "observations": [
+        {
+          "file": "021.png",
+          "secondsAfterLaunch": 13.850985800000018,
+          "dimensions": [
+            800,
+            450
+          ],
+          "rgbMinimum": 0,
+          "rgbMaximum": 0,
+          "allPixelsBlack": true,
+          "sha256": "5af5162019fee9e0b1d4e84afca9d4f721b1a59077111fa017db64a2e65ca2ba"
+        },
+        {
+          "file": "022.png",
+          "secondsAfterLaunch": 14.142925843,
+          "dimensions": [
+            800,
+            450
+          ],
+          "rgbMinimum": 0,
+          "rgbMaximum": 0,
+          "allPixelsBlack": true,
+          "sha256": "5af5162019fee9e0b1d4e84afca9d4f721b1a59077111fa017db64a2e65ca2ba"
+        }
+      ],
+      "followingPresentation": "transition-wide"
+    }
+  ],
+  "conclusion": "The observed interval shows a completely cleared black screen at both wider ratios, followed by authored HD Main animation; these captures contain no old UI artwork.",
+  "limits": [
+    "Periodic screenshots classify this observed interval, not every menu or every future startup.",
+    "Original intro movies remain low-resolution and are separate work.",
+    "No physical iPad acceptance is inferred."
+  ],
+  "newApplicationBuild": false,
+  "cloudBuild": false,
+  "physicalIpadVerified": false
+}

@@ -31,6 +31,8 @@ constexpr uint32_t game_id_sub_4A14D4 = 0xf0002124u;
 static constexpr uint32_t aBlk4=0x7850;
 static constexpr uint32_t off_4D2A20=0x8000,dword_4DD770=0xc000,dword_4DD77C=0xc004,dword_4DD774=0xc008,dword_4DD714=0xc00c,dword_4D20A0=0xc010,byte_4DB25E=0xc014,dword_4DD6F4=0xc018,dword_4DD6F8=0xc01c,dword_4E54AC=0xc020,dword_4DD6EC=0xc024;
 static constexpr uint32_t game_id_sub_4A5830=0xfade0010;
+// Independent synthetic Main source-frame observation addresses.
+static constexpr uint32_t dword_4D4C7C=0xc030,dword_4D4C80=0xc034,dword_4EB5A4=0xc038;
 #include "hd/BackgroundSceneQueueAdapter.inc"
 #include "hd/LocationSceneQueueAdapter.inc"
 #include "LocationPreviewFixture.h"

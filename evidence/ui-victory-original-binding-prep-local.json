@@ -1,0 +1,48 @@
+{
+  "scope": "Victory original-resource binding preparation and widescreen artwork drafts",
+  "source": {
+    "decodedArchiveSha256": "373ba8d60b0ec3cc52cc65177ee234541c604e3fe08a7b0bc36f0b5f3f0d3ba6",
+    "identities": 16,
+    "indexZero": "backdrop",
+    "indicesOneThroughFifteen": "one plus original car index, table414C48",
+    "sourcePixelsPublished": false,
+    "allDigestsMatchPrivateInventory": true,
+    "deterministicRegeneration": true,
+    "wrongArchiveRejected": true,
+    "cpp14HeaderSyntax": "passed"
+  },
+  "originalDrawOrder": {
+    "owner": "4154C0",
+    "background": "back, mode0400",
+    "optionalWinnerPhoto": "four-character car resource copied into local string, mode0400",
+    "localizedCongratulations": "off414C30 copied to local stack8C; locale512DFB; mode2800",
+    "dynamicText": "415CC0 after the static image calls",
+    "evidenceLevel": "translated original source inspection, not a live victory trace"
+  },
+  "wideDrafts": [
+    {
+      "master": "background-wide-draft-v1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1720717,
+      "sha256": "5cef6768191def4581fa571d42007caf3acac2576ed005e6c19b72571afb94e7",
+      "exact16by9": false,
+      "reviewComplete": false
+    },
+    {
+      "master": "mcf1-wide-draft-v1.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1628519,
+      "sha256": "af8c139cda61ee8d763ddf9c310a29300beb7c7b4e13e02df9d33e4a365b9de2",
+      "exact16by9": false,
+      "reviewComplete": false
+    }
+  ],
+  "limitations": [
+    "Widescreen drafts are1672x941, close to but not exact16:9; production packing still correctly rejects these dimensions.",
+    "Visual inspection is a composition review, not pixel-identical preservation of the original4:3 central region.",
+    "Fourteen remaining car widescreen variants, final shared geometry and live source/draw integration remain.",
+    "No app rebuild, cloud build, upload or physical-device verification."
+  ]
+}

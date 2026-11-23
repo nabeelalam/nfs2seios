@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "scope": "Local original-data offscreen slideshow edge correction; one selected photo only, not all artwork or device acceptance",
+  "change": "Authenticated slideshow page5 samples its complete center to the edges; all other information pages retain their existing five-pixel guard",
+  "before": {
+    "binarySha256": "668cc38af3c27b39fb0b86260e9cb5e36230232ae4183a813a417f34f0a6c352",
+    "sourceBufferEdgeDetailVerified": true,
+    "routeCompleted": false,
+    "failure": "RuntimeError: Required original route not observed: CAR INFO NATIVE finish-published",
+    "limitation": "A post-resize helper still expected the earlier drawable dimensions; captured return was HD. Live resize continuity is not accepted."
+  },
+  "after": {
+    "binarySha256": "aded25879ba1ac2eebd8841d3238b786de17f98b4f80310c1345be8b6d6e2edb",
+    "output": [
+      708,
+      492
+    ],
+    "completed": true,
+    "elapsedSeconds": 53.580558935,
+    "actions": 7,
+    "interiorPhotoRgbMae": 0.0,
+    "nativeSourceBufferByteExactBeforeAfter": true,
+    "sampleRows": 380,
+    "repeatedLeftAdjacentEdgeRowsBefore": 380,
+    "repeatedLeftAdjacentEdgeRowsAfter": 1,
+    "repeatedRightAdjacentEdgeRowsBefore": 380,
+    "repeatedRightAdjacentEdgeRowsAfter": 2,
+    "cleanShutdown": true,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "binaryUnchanged": true
+  },
+  "widescreenEntry": {
+    "output": [
+      800,
+      450
+    ],
+    "actualNativeSource": [
+      600,
+      450
+    ],
+    "hdSlideshowEntryObserved": true,
+    "screenshotVisuallyReviewed": true,
+    "returnCompleted": false,
+    "failure": "RuntimeError: Required original route not observed: CAR INFO NATIVE finish-published",
+    "observation": "The scene remained in slideshow after the requested Escape. Distinguish input/focus delivery from game behavior before claiming widescreen return acceptance.",
+    "cleanShutdown": true,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true
+  },
+  "remaining": [
+    "Authored panorama not enabled in runtime candidate",
+    "Test high-density panorama boundary filtering to prevent hidden legacy-footer taps",
+    "Refine remaining generated paving join before photo batch",
+    "Investigate widescreen Escape delivery/return and live resize",
+    "Physical iPad and broader UI acceptance"
+  ],
+  "cloudBuild": false
+}

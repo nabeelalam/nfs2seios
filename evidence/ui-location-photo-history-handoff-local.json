@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "scope": "Location incoming photo history handoff; moving phase accepted, final redraw incomplete",
+  "binarySha256": "102eaea7367b0d4e8ad91d2eb47b26fc878791ccac1516181447aeedf737c24f",
+  "cloudBuild": false,
+  "source": {
+    "family": 7,
+    "form": "4d2a20",
+    "historyUploadEvent": 28,
+    "canonicalFamilyMappingClosed": true,
+    "strictUploadTokenLifetimeCatalogChecksRetained": true,
+    "incomingTrackLocaleAndThreeOriginalAssetsChecked": true,
+    "expiredEntranceSourceRevived": false,
+    "nativePhotoTiles": 100
+  },
+  "case": {
+    "output": [
+      800,
+      450
+    ],
+    "incomingTrack": "Outback",
+    "incomingIndex": 1,
+    "photoSourcePublished": true,
+    "actualMovingWideFrames": 21,
+    "firstMovingFrame": 406,
+    "firstFollowingNativeFrame": 427,
+    "followingNativeDurationKnown": false,
+    "postAnimationSourceRefusal": "INITIAL FULL copy-ctor reason=child-source; copy-dtor rejected, rows=0"
+  },
+  "preservation": {
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "binaryUnchanged": true
+  },
+  "limits": [
+    "Driver stops at first native post-animation presentation; no complete redraw or eight-track sweep acceptance.",
+    "Original full/sidebar source and native pixel/draw checks remain unchanged.",
+    "Opponent historical family retained but not reaccepted in this run.",
+    "No Apple build, public publication or physical iPad acceptance."
+  ],
+  "next": "Authenticate the actual post-photo Location full-background copy; diagnose the original source boundary rather than retain stale framebuffer authority.",
+  "wholeTransitionAccepted": false,
+  "physicalIpadVerified": false,
+  "published": false
+}

@@ -11,6 +11,10 @@ typedef struct NfsChildReturnPreludeView {
  uint32_t schema,route,frameIndex; int32_t minimum,maximum,direction,phase,originX,originY,stepX; uint32_t rgba;
  NfsChildExitPreludeView semantic;
  const uint16_t*baseOriginal565;size_t baseWords;uint32_t baseKeys[300],baseMapRole;uint64_t baseContent;
+ /* Schema2: exact current Setup/Options parent-scene authority. The complete
+    parent source is independently verified by the base pass; obsolete cached
+    sidebar colors do not choose its authored replacement. No GPU authority. */
+ int(*semanticSidebarCurrent)(void*);
 }NfsChildReturnPreludeView;
 typedef NfsChildExitQuad NfsChildReturnQuad;
 #ifdef __cplusplus

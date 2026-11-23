@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "scope": "Final private slideshow resources in one actual hidden desktop708x492 route. Not all98 runtime, whole UI, Apple or performance acceptance.",
+  "result": "PASS",
+  "elapsedSeconds": 45.423102127,
+  "binarySha256": "eb7c31381dea6bca285facc1fce5c98ee62729e7e023b1931271262d7904c7d0",
+  "route": [
+    "Main",
+    "Player One",
+    "Showcase",
+    "Slideshow",
+    "two original Right photo changes",
+    "Showcase",
+    "Player One",
+    "Main"
+  ],
+  "ordinaryOriginalInputOnly": true,
+  "forcedGuestState": false,
+  "observerResize": false,
+  "pages": [
+    {
+      "archive": "sldmac.qfs",
+      "entry": "back",
+      "content": "6",
+      "nativeProof": "SLIDESHOW NATIVE finish-published reason=remastered-picture-plus-HD-controls request=279 content=6 size=656x492 uploads=300 selections=300 triangles=600",
+      "captureSha256": "820795e6e2e0fd0f61ed1d672c92d70807d4ee6605509c9c67c7b511ca8b311c"
+    },
+    {
+      "archive": "sldmac2.qfs",
+      "entry": "back",
+      "content": "9",
+      "nativeProof": "SLIDESHOW NATIVE finish-published reason=remastered-picture-plus-HD-controls request=281 content=9 size=656x492 uploads=300 selections=300 triangles=600",
+      "captureSha256": "f8c7a6707d2f2093e17f90a8c6e8da66c0d0a568a268ef37d1f0d749e47c5d5b"
+    },
+    {
+      "archive": "sldmac3.qfs",
+      "entry": "back",
+      "content": "12",
+      "nativeProof": "SLIDESHOW NATIVE finish-published reason=remastered-picture-plus-HD-controls request=282 content=12 size=656x492 uploads=300 selections=300 triangles=600",
+      "captureSha256": "c6058da661569f46d610625c054c4b0c149217bd47b64b83e127efda486ba833"
+    }
+  ],
+  "postSettledMainNativeFallbacks": 0,
+  "visualReview": {
+    "allThreeViewed": true,
+    "wholeHeroCarsAndMirrorsWheelsFit": true,
+    "independentNativeMcLarenFooterVisible": true,
+    "naturalDetailedWideSidesVisible": true,
+    "noOldSmearBandsObserved": true,
+    "sourceFboWidth": 656,
+    "outputWidth": 708,
+    "beyondSourceCenterVisiblePixelsPerSide": 26
+  },
+  "hiddenDisplay": {
+    "tcpDisabled": true,
+    "desktopWindowShown": false
+  },
+  "preservation": {
+    "protectedInputsChecked": 112,
+    "allProtectedInputsUnchanged": true,
+    "privateResourcesUnchanged": 23,
+    "binaryUnchanged": true,
+    "wholeCopiedFixtureRestoredExactly": true,
+    "exitCode": 0,
+    "cleanShutdown": true
+  },
+  "resourceBytes": 559536064,
+  "earlierObserverFailures": {
+    "cases": 3,
+    "causes": [
+      "Geometry variable used before assignment",
+      "Two stale screen-dimension predicates",
+      "Dense capture incorrectly enabled by an unacknowledged movie-dismissal input"
+    ],
+    "separateEvidencePreserved": true,
+    "notClassifiedAsGameDefects": true
+  },
+  "remaining": [
+    "Matched Apple ARM64 base and measured private IPA",
+    "Physical iPad installation and UI acceptance",
+    "Broader remaining UI and Low Power Mode/performance/battery work"
+  ],
+  "cloudBuild": false,
+  "published": false,
+  "goalComplete": false
+}

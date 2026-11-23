@@ -15,6 +15,7 @@ struct Configuration {
  const nfs_slideshow::RuntimeImagePin* images=nullptr;size_t imageCount=0;
  std::string path;uint32_t expectedForm=0;bool preview=false;
  std::shared_ptr<const nfs_slideshow_footer::Catalog> footers;
+ std::shared_ptr<const nfs_slideshow_panorama::Registry> panoramas;
 };
 struct Bridge {
  Configuration configuration;nfs_slideshow::Session session;
@@ -62,7 +63,12 @@ inline void receive(const Snapshot&event) {
   }
   const auto&c=b.configuration;
   if(b.session.select(source.data(),source.size(),c.sources,c.sourceCount,
-                      c.images,c.imageCount,c.path.c_str(),c.preview,c.footers))b.archive=event.archive;
+                      c.images,c.imageCount,c.path.c_str(),c.preview,c.footers)){
+   // Optional side artwork cannot grant original source authority. Attach before
+   // controls are collected so their immutable frame identity stays coherent.
+   if(c.panoramas)(void)b.session.attachPanorama(*c.panoramas);
+   b.archive=event.archive;
+  }
   return;
  }
  if(event.event==Event::PresentBefore){
@@ -87,8 +93,8 @@ inline void configureOnEntry(Game&g)noexcept {
 #ifdef NFS_SLIDESHOW_PRIVATE_CATALOG_AVAILABLE
  try {
   auto value=nfs_slideshow::startup();if(value.path.empty())return;
-  auto&b=bridge();if(b.configuration.path==value.path&&b.configuration.preview==value.preview&&b.configuration.footers==value.footers&&sink()==receive)return;
-  Configuration c;c.path=std::move(value.path);c.preview=value.preview;c.footers=std::move(value.footers);
+  auto&b=bridge();if(b.configuration.path==value.path&&b.configuration.preview==value.preview&&b.configuration.footers==value.footers&&b.configuration.panoramas==value.panoramas&&sink()==receive)return;
+  Configuration c;c.path=std::move(value.path);c.preview=value.preview;c.footers=std::move(value.footers);c.panoramas=std::move(value.panoramas);
   c.sources=nfs_slideshow_private::sources;c.sourceCount=sizeof(nfs_slideshow_private::sources)/sizeof(*c.sources);
   c.images=nfs_slideshow_private::images;c.imageCount=sizeof(nfs_slideshow_private::images)/sizeof(*c.images);
   (void)configure(std::move(c));

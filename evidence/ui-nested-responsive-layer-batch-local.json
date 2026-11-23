@@ -1,0 +1,42 @@
+{
+  "scope": "Shared responsive composition layer implementation for nested Audio, Graphics and Controls; application presentation integration remains pending",
+  "implemented": [
+    "Isotropic480-unit responsive layout with left sidebar, centred interactive content and right-anchored decorations",
+    "Synchronous content-stage borrow revalidates original registered target/context/extent on every owner check",
+    "Separate responsive background, sidebar, bars and dialog layer entries; legacy entry points retain exact original sampling validation",
+    "Audio caption draw restores caller GL state; native target pixels and source vertices are not copied or rewritten",
+    "Renderer preparation copies both shared headers"
+  ],
+  "legacyGlesRegressions": [
+    {
+      "suite": "audio scene layers actual GLES",
+      "passed": true,
+      "checkCount": 7971920,
+      "logSHA256": "edf7f1db38b9d8db5dd9887f84176033bc49d33b29dbf543da5365b933bbc824"
+    },
+    {
+      "suite": "graphics scene layers actual GLES",
+      "passed": true,
+      "checkCount": 8437361,
+      "logSHA256": "ab054040a6ce56a4274ce1404ef80981c9706b97086966bb019741325ff4bd74"
+    },
+    {
+      "suite": "controls scene layers actual GLES",
+      "passed": true,
+      "checkCount": 666186,
+      "logSHA256": "06fa478b1a55ba7ca6bd79c8ba57ec74355aa2889ded85ee754163b0cc3690ca"
+    }
+  ],
+  "newResponsiveEntryCodeCompiled": true,
+  "newResponsiveDrawRuntimeVerified": false,
+  "applicationRendererWiringImplemented": false,
+  "cursorAndPresentationIntegrationVerified": false,
+  "testDependencyCorrection": "The three optional scene-layer test targets now link the existing LocationPhotoArtProvider used by their shared compositor",
+  "firstCheckSetup": "Optional test targets absent from the existing app cache; used isolated documented source/link inputs, then corrected missing provider dependency without changing app build configuration",
+  "appBinaryUnchanged": true,
+  "newAppBuild": false,
+  "cloudBuild": false,
+  "physicalIpadVerified": false,
+  "nestedSideBarsFixed": false,
+  "wholeUIComplete": false
+}

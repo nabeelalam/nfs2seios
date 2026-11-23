@@ -2,7 +2,7 @@
 #include "PlayerPhotoArtworkLoader.h"
 #include "PlayerPhotoArtworkPin.h"
 #include "PlayerPhotoArtProvider.h"
-enum {NFS_PLAYER_PHOTO_SOURCE_COUNT=12};
+// NFS_PLAYER_PHOTO_SOURCE_COUNT is defined by the provider ABI header.
 #include "TextureDigest.h"
 #include <zlib.h>
 #include <array>

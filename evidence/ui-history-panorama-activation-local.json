@@ -1,0 +1,70 @@
+{
+  "scope": "Synthetic panorama with original copied game assets; local software GLES only",
+  "baselineBinarySHA256": "1fb8243eac30e356c6c12d97168c2dd3be0c3dd2e33177af5f3ad440cde57dd8",
+  "packSHA256": "e126e08e3aafd0a93aedf278fde11bb1c814fa14d1dfa1a2048d8d828e259cbb",
+  "physicalIpadVerified": false,
+  "draftArtworkUsed": false,
+  "generatedPinVerifiedBeforeBuild": true,
+  "candidateBinarySHA256": "a90cbdaceed19c5b3ed0e843dff5d3f4c9fae4a3619ea51c6a3a20e13f7886ca",
+  "cleanRouteExit": true,
+  "panoramaPresentations": 15,
+  "informationWideDeclines": 0,
+  "replay": "grouped-512-history-panorama-live-v25",
+  "gameLogSHA256": "df704be709efb4d97719fa1f6a5bb77654435aa51002477a55f6d04377f6a547",
+  "panoramaConfigurationRestoredInactive": true,
+  "baselineBinaryRestored": true,
+  "syntheticResourceRemoved": true,
+  "centerComparison": {
+    "baseline": "grouped-512-showcase-history-wide-v23",
+    "candidate": "grouped-512-history-panorama-live-v25",
+    "rectangle": [
+      100,
+      0,
+      600,
+      450
+    ],
+    "pixelExact": true,
+    "rgba32SHA256": "06b7efdbef469d51cb5d526d160014e433b0ed2117bc6fd166d73c858837c799",
+    "scope": "One actual History page screenshot at 800x450; not every dynamic screen or iPad"
+  },
+  "registeredTests": [
+    "history_panorama_files_integration passed",
+    "history_wide_art_lifetime passed",
+    "history_panorama_actual_gles passed"
+  ],
+  "producerInterop": {
+    "optimized": "passed",
+    "asanUbsan": "passed",
+    "features": [
+      "Python zlib writer to C++ file loader",
+      "byte-exact pixels",
+      "no overwrite of existing output",
+      "wrong pin/source rejection",
+      "one failed load attempt per base generation",
+      "reload on generation change",
+      "stale install rejected under registry lock"
+    ]
+  },
+  "excludedPilot": {
+    "run": "history-panorama-activation-v1",
+    "reason": "Pin configuration was initially inside the non-deferred byte-packaging block; generated pins were absent. No original-game panorama replay was accepted. Configuration and prior executable restored. Fixed before second pilot."
+  },
+  "remaining": [
+    "Finished side artwork and seam validation",
+    "Final panorama resources and delivery injection verification",
+    "Apple compilation and physical iPad validation"
+  ],
+  "sourceSHA256": {
+    "scripts/history_panorama_pack.py": "930d10428ea1631a10276fb24818ed52a145b0c82652ff48bdc2a59ad0126bbf",
+    "src/hd/ClassicScreens/HistoryWideFiles.h": "0cd2dd12e64efa34101de3d51d73281fd8f9a2e8d1d31888bd571a30db9a36e9",
+    "src/hd/ClassicScreens/HistoryWideRegistry.h": "8af029ef1907c1f58015d7f5f77358591fa7acd4daf49ec0e4243977d3a67d34",
+    "src/hd/ClassicScreens/HistoryCore.h": "5c774db91e993f85b0ffe4de725ab79c6698a0efd72b1bcd3cb20d9035ec5a3c",
+    "src/hd/ClassicScreens/HistoryArtworkLoader.h": "a443ac806c635b5ca1bdc056cfcd284854a82e830f7898dbb5b5cfbc8bb58bd3",
+    "src/hd/ClassicScreens/HistoryArtworkLoader.cpp": "87c4551f1896cebdb9f0f000c68d7747c75edc37738f630d21f3828dcf09ff82",
+    "src/hd/ArtworkActivation.cpp": "6c7f439d400b6eaa5e2d658d9f09cf7ffd9c4b04352206695bb1fdf83a060019",
+    "cmake/BundledOwnedArtwork.cmake": "e0bc6a8faf8c9a647d28c4a35501975c54a5be0b3f9be3c2c2ace0ba84a9218a",
+    "src/hd/ClassicScreens/HistoryPanoramaConfiguration.template.h": "555493f0bbf490e0e9dc189f8c46475e912b5d93aa8f0cf5eb38c1a99e4bab0c",
+    "tests/history_panorama_files_tests.cpp": "ec2407c9716d712637825a9ebfaf3720e3fb03f1f145de695df3592014cd238e",
+    "tests/history_panorama_files_test.py": "261a08ebd1ac2ff1d4b2be460fa0859af702af2f68c88f757b794066747481ad"
+  }
+}

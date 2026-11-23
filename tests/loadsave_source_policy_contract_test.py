@@ -38,4 +38,20 @@ class Contracts(unittest.TestCase):
         # This stage intentionally cannot change compiled production behavior.
         for name in ("scripts/prepare_renderer.py", "CMakeLists.txt"):
             self.assertNotIn("LoadSaveSourcePolicy",(ROOT/name).read_text())
+class OriginalAbortInsertion(unittest.TestCase):
+    @staticmethod
+    def insert(text):
+        import importlib.util
+        spec=importlib.util.spec_from_file_location("ls_hooks",ROOT/"scripts/classic_screens/loadsave_hooks.py")
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module.add_original_abort_receipt(text)
+    def test_exact_label_insert_preserves_original_statements(self):
+        original="before();\nloc_40BCFF:\nrestore();\nreturn_zero();\n"
+        output=self.insert(original)
+        self.assertEqual(output.count("observeOriginalInputAbort(*this);"),1)
+        stripped=re.sub(r"// NFS_PRIVATE_LOADSAVE_LIVE_BEGIN:original-input-abort\n.*?// NFS_PRIVATE_LOADSAVE_LIVE_END:original-input-abort\n","",output,flags=re.S)
+        self.assertEqual(stripped,original)
+    def test_missing_ambiguous_or_duplicate_receipt_rejected(self):
+        for text in ("unrelated();\n","loc_40BCFF:\nloc_40BCFF:\n",self.insert("loc_40BCFF:\n")):
+            with self.subTest(text=text),self.assertRaises(ValueError):self.insert(text)
 if __name__ == "__main__": unittest.main()

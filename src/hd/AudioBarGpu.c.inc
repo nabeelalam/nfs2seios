@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "AudioBarGpu.h"
+#include "NestedSceneLayout.h"
 #ifndef NFS_AUDIO_BAR_EXTERNAL_SCENE_IMPLEMENTATION
 #include "SceneGpuSupport.inc"
 #endif
@@ -63,12 +64,15 @@ static int nfs_audio_bar_scissor(const NfsAudioBarStage*t){
  y0=vp[1]+(m[5]*232+m[13]+1.0)*vp[3]*0.5;y1=vp[1]+(m[5]*147+m[13]+1.0)*vp[3]*0.5;
  glGetIntegerv(GL_SCISSOR_BOX,sc);return sc[2]>=0&&sc[3]>=0&&sc[0]<=floor(x0)&&sc[1]<=floor(y0)&&(double)sc[0]+sc[2]>=ceil(x1)&&(double)sc[1]+sc[3]>=ceil(y1);
 }
-int nfs_audio_bar_draw_into_staging(NfsAudioBarGpu*s,const NfsAudioBarStage*t,const NfsAudioBarVertex*v,size_t n){
+static int nfs_audio_bar_draw_sampled(NfsAudioBarGpu*s,const NfsAudioBarStage*t,const NfsAudioBarVertex*v,size_t n,int responsive){
  GLint fbo=0,viewport[4],attachmentType=0,attachmentName=0;NfsFrameSaved saved;GLboolean depthMask=GL_TRUE;int ok;
- if(!nfs_audio_bar_ready(s)||!t||t->generation!=s->generation||!t->framebuffer||!nfs_frame_dimensions(t->width,t->height)||!nfs_frame_sampling_valid(t->width,t->height,&t->sampling)||!nfs_audio_bar_vertices(v,n))return 0;
+ if(!nfs_audio_bar_ready(s)||!t||t->generation!=s->generation||!t->framebuffer||!nfs_frame_dimensions(t->width,t->height)||!(responsive?nfs_nested_scene_content_sampling(t->width,t->height,&t->sampling):nfs_frame_sampling_valid(t->width,t->height,&t->sampling))||!nfs_audio_bar_vertices(v,n))return 0;
  glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);glGetIntegerv(GL_VIEWPORT,viewport);if((GLuint)fbo!=t->framebuffer||memcmp(viewport,t->sampling.viewport,sizeof viewport)||!nfs_audio_bar_scissor(t)||glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE||glGetError()!=GL_NO_ERROR)return 0;
  glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&attachmentType);glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&attachmentName);if((attachmentType==GL_TEXTURE&&(GLuint)attachmentName==s->texture)||glGetError()!=GL_NO_ERROR)return 0;
  nfs_frame_save(&saved);glGetBooleanv(GL_DEPTH_WRITEMASK,&depthMask);nfs_frame_draw_state();glDepthMask(GL_FALSE);
  glUseProgram(s->program);glUniformMatrix4fv(s->matrix,1,GL_FALSE,t->sampling.projection);glUniform1i(s->sampler,0);glBindTexture(GL_TEXTURE_2D,s->texture);glBindBuffer(GL_ARRAY_BUFFER,0);glEnableVertexAttribArray(0);glDisableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(NfsAudioBarVertex),v);
  glEnable(GL_BLEND);glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);glDrawArrays(GL_TRIANGLES,0,(GLsizei)n);if(!nfs_audio_bar_current(s)){nfs_audio_bar_forget(s);return 0;}ok=glGetError()==GL_NO_ERROR;if(!nfs_audio_bar_current(s)){nfs_audio_bar_forget(s);return 0;}glDepthMask(depthMask);nfs_frame_restore(&saved);if(!nfs_audio_bar_current(s)){nfs_audio_bar_forget(s);return 0;}return ok;
 }
+
+int nfs_audio_bar_draw_into_staging(NfsAudioBarGpu*s,const NfsAudioBarStage*t,const NfsAudioBarVertex*v,size_t n){return nfs_audio_bar_draw_sampled(s,t,v,n,0);}
+int nfs_audio_bar_draw_into_nested_staging(NfsAudioBarGpu*s,const NfsAudioBarStage*t,const NfsAudioBarVertex*v,size_t n){return nfs_audio_bar_draw_sampled(s,t,v,n,1);}

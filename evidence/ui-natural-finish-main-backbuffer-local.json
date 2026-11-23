@@ -1,0 +1,32 @@
+{
+  "scope": "WSL software GLES2 at 16:9. Proving Grounds split screen, McLaren F1 and Nazca C2, two laps, both driven.",
+  "route": "Confirmed remastered Race Summary, then Lap Times, then one confirm to the remastered Main Menu.",
+  "method": "Read all RGB pixels before buffer swap. Matched the contiguous readback sequence to the app presentation trace, with nonblack frames on both sides of the black interval.",
+  "observed": {
+    "dimensions": [
+      800,
+      450
+    ],
+    "capturedSwaps": 110,
+    "frames": [
+      {
+        "frame": 12130,
+        "litPixels": 0,
+        "litEdgePixels": 0
+      },
+      {
+        "frame": 12131,
+        "litPixels": 0,
+        "litEdgePixels": 0
+      },
+      {
+        "frame": 12132,
+        "litPixels": 0,
+        "litEdgePixels": 0
+      }
+    ],
+    "followingAuthoredRouteFrame": 12133,
+    "traceSha256": "650f4bc3526bd86d515eb15d30f44b8c2490d48847887d648beb4ff4717a0621"
+  },
+  "physicalIpadVerified": false
+}

@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "scope": "Source audit of later original Victory logo draw invalidating full-window output",
+  "currentNaturalEvidence": "evidence/ui-victory-constant-fog-local.json",
+  "sourceSha256": {
+    "src/hd/ClassicScreens/VictoryRenderer.inc": "906aac5bc245aa4a9de619c259c4ad3a2dcbb05fb39a61760ba2908762f488ee",
+    "src/hd/ClassicScreens/VictoryWideRenderer.inc": "ff22c489d59e5af418040d72e6003c926b3a3c2c35166b67fc86cff08f443fdf",
+    "src/hd/ClassicScreens/ResultsQueueAdapter.inc": "b726c79b308f9d7d8f2f688e972057ca1aed5c8c3f4cfdefdee53898979fa815",
+    "src/hd/ClassicScreens/ResultsCursorRenderer.inc": "dd761605ef2f359c68c9faa2ccdfa5eb466597d071a28748818edb2e3836e3bb",
+    "src/hd/TrackBadgeGameHooks.inc": "4ffe27918162b836b453406e41c4c84509b008062ccc200722cf1d0b5ba9e6dc",
+    "src/hd/TrackBadgeSourceCatalog.h": "5bb8e0926327e9cf929671d399e84557a19552b8526136541787576c64c38782"
+  },
+  "logoType": "Original textured animated quad, not a 3D mesh",
+  "firstDeterministicRevocation": [
+    "Victory loc_4156FE calls original _4274F0 after _426B70",
+    "_4274F0 selects dword_4D4E44 via _497738 selector1",
+    "_4975E8 first calls grTexSource before color/alpha state setup",
+    "native_grTexSource forwards the native selection to Victory observer",
+    "No active native view after finish: existing Victory selector revokes the retained wide stage"
+  ],
+  "additionalRevocations": "Subsequent generic state calls and triangles also revoke; exempting selection alone is insufficient.",
+  "finiteSource": {
+    "archiveFreedAfterUpload": true,
+    "staging": "256x256 RGBA then alpha cutoff200",
+    "catalog": "TrackBadgeSourceCatalog role2 final12 rows",
+    "carIndices": "0..11",
+    "uploadedBytes": 131072,
+    "transientArchive": "dword_4D4208",
+    "descriptor": "dword_4D4E44",
+    "loader": "_4159E0",
+    "bitmap": "car6"
+  },
+  "requiredOwnership": "Seal source/conversion/upload while transient archive is live; retain owned proof and current descriptor/upload identity afterward. Never dereference the freed QFS or weaken the existing live-archive TrackBadge owner.",
+  "nextImplementation": [
+    "Bind a lexical Victory logo tail to its exact current parent native request/content and sealed source proof.",
+    "Reuse Results branding-tail pattern with exact four converted vertices and only the two corresponding triangles and one two-triangle batch.",
+    "Replay the authenticated original batch into the wide private target with centered original logical coordinates and exact state restoration.",
+    "Keep unrelated selection/state/draw invalidation strict."
+  ],
+  "nextLocalReproduction": "Extend short original-art fixture with actual car-QFS resolve, _4280B0 upload, _4274F0 and original _4976B8 swap/flush; capture after the true tail/swap without an additional diagnostic swap.",
+  "implementationOrRuntimeReplayVerified": false,
+  "physicalDeviceClaim": false
+}

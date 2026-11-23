@@ -25,6 +25,7 @@ static constexpr uint32_t off_4D3A88=0x100,dword_4D40B8=0x200,dword_4DD770=0x208
 static constexpr uint32_t off_4D2790=0x110,dword_4D3E24=0x2d0;
 static constexpr uint32_t off_4D3EC4=0x140,dword_4D2314=0x340,dword_4D231C=0x350,dword_4D2320=0x354;
 static constexpr uint32_t dword_4EB74C=0x6000,dword_4D4D24=0x360,dword_4DABE4=0x364;
+static constexpr uint32_t dword_4D2E78=0x150;
 static constexpr uint32_t off_4D3050=0x120,off_4D3100=0x130,dword_4D3E4C=0x300,dword_4D3E60=0x320;
 #if defined(NFS_TEST_PLAYER1_CAPTION)
 static constexpr uint32_t testOwner=off_4D3050,testRecord=dword_4D3E4C;
@@ -284,6 +285,70 @@ static void initialCaptionCases(){
  }
  assert(originalFixtureSide.owner==0x1800);
 }
+// An independently owned Showcase return is never Main history. Observe only
+// the original caption call; this proof alone grants no background/copy draw.
+static void showcaseSidebarCopyCases(const std::shared_ptr<const nfs_compact_caption::Proof>&caption,Game&g){
+ auto f=std::unique_ptr<main343_origin_fixture::Fixture>(new main343_origin_fixture::Fixture);
+ auto actual=actualCaptionPlane();auto binding=initialBinding(g);auto catalog=f->trusted();
+ nfs_player_initial_sidebar::Store store;auto source=store.acceptShowcaseReturn(caption,binding,*actual,catalog,123,dword_4D2E78);
+ assert(source&&source->current()&&source->showcaseReturn()&&!source->origin()&&source->frame()&&source->frame()->valid&&source->frame()->wordCount==0);
+ PlayerIntroFixture introFixture(source,catalog,f->base.post);nfs_player_initial_native::Witness nativeWitness;auto nativeProof=introFixture.seal(nativeWitness);
+ auto intro=nfs_player_intro_cpu::Prepared::create(nativeProof,introFixture.binding,*introFixture.actual,catalog,801);assert(intro&&intro->current()&&intro->view().sourceKind==1&&intro->view().inheritedMain.wordCount==0);auto introView=intro->view();assert(introView.inheritedMain.tailKind==(binding.form==0x4d3050?NFS_BACKGROUND_TAIL_PLAYER1_CAPTION:NFS_BACKGROUND_TAIL_PLAYER2_CAPTION));for(unsigned k=0;k<300;++k)assert(introView.inheritedMain.rendererAddress[k]==introView.keys[k]);
+ auto&c=f->copy;c.linkedGroup=0;c.sourceOwner=actual->target;c.args[0]=actual->target.w[8];c.pre=f->base.post;c.post=c.pre;
+ for(unsigned k=0;k<4;++k)put32(c.sourceBefore.data()+4*k,actual->target.header[k]);
+ for(unsigned k=0;k<bg::Side;++k)put16(c.sourceBefore.data()+16+2*k,actual->pixels[k]);
+ c.sourceAfter=c.sourceBefore;assert(nfs_texture_sha256(c.sourceBefore.data(),c.span,c.shaBefore.data()));c.shaAfter=c.shaBefore;
+ for(unsigned y=0;y<480;++y){auto&row=c.row[y];row.row.args[1]=c.pre.target.w[8]+16+y*1280;for(unsigned x=0;x<343;++x){const auto value=nfs_small_logo_live::expanded(actual->pixels[y*343+x],row.colorKey);put32(row.source.data()+4*x,value);c.post.pixels[y*640+x]=nfs_small_logo_live::pixel(c.pre.pixels[y*640+x],value,false);}}
+ assert(source->verifiesShowcaseCopy(c,f->workspace));
+ c.linkedGroup=1;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.linkedGroup=0;
+ c.thread++;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.thread--;
+ c.rows--;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.rows++;
+ c.row[31].row.args[1]++;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.row[31].row.args[1]--;
+ c.row[70].source[12]^=1;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.row[70].source[12]^=1;
+ c.row[42].converter++;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.row[42].converter--;
+ c.post.pixels[479*640+639]^=1;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.post.pixels[479*640+639]^=1;
+ c.sourceBefore[20]^=1;assert(!source->verifiesShowcaseCopy(c,f->workspace));c.sourceBefore[20]^=1;
+ assert(source->verifiesShowcaseCopy(c,f->workspace));
+ nfs_player_initial_sidebar::Store invalid;auto changed=actualCaptionPlane();changed->pixels[0]^=1;
+ assert(!invalid.acceptShowcaseReturn(caption,binding,*changed,catalog,123,dword_4D2E78));
+ assert(!invalid.acceptShowcaseReturn(caption,binding,*actual,catalog,320,dword_4D2E78));
+ assert(!invalid.acceptShowcaseReturn(caption,binding,*actual,catalog,123,dword_4D2E78+4));
+ auto wrong=binding;wrong.archive++;assert(!invalid.acceptShowcaseReturn(caption,wrong,*actual,catalog,123,dword_4D2E78));
+ store.clear();assert(!source->current()&&!source->verifiesShowcaseCopy(c,f->workspace)&&!intro->current()&&!intro->view().schema);
+}
+static void showcaseCaptionCases(){
+ if(testSelector!=2&&testSelector!=3)return;
+ for(const char*mode:{"normal","slot-one","wrong-previous","wrong-global","wrong-type","alias","same-handle","archive-during","post-pixel","post-global","retire"}){
+  prepare();Game g;g.eax=testOwner;g.esi=testOwner;g.ebp=dword_4D2E78;
+  const bool slot=!std::strcmp(mode,"slot-one");selected.ownerState[0]=slot?65536u:0u;
+  selected.ownerState[1]=slot?0x1c00:selected.owner;selected.ownerState[2]=slot?selected.owner:0x1c00;
+  std::memcpy(memory.data()+selected.owner,selected.ownerWords.data(),56);
+  put<uint32_t>(0x1c00+32,0xa0000);put<uint32_t>(dword_4D2314+2,selected.ownerState[0]);
+  put<uint32_t>(dword_4D231C,selected.ownerState[1]);put<uint32_t>(dword_4D2320,selected.ownerState[2]);
+  put<uint32_t>(dword_4D243C,dword_4D2E78);put<uint16_t>(dword_4D2E78+8,7);
+  if(!std::strcmp(mode,"wrong-previous")){g.ebp=dword_4D2E78+4;put<uint32_t>(dword_4D243C,uint32_t(g.ebp));}
+  if(!std::strcmp(mode,"wrong-global"))put<uint32_t>(dword_4D243C,testOwner);
+  if(!std::strcmp(mode,"wrong-type"))put<uint16_t>(dword_4D2E78+8,8);
+  if(!std::strcmp(mode,"alias"))put<uint32_t>(0x1c00+32,selected.w[8]);
+  if(!std::strcmp(mode,"same-handle")){selected.ownerState[2]=selected.owner;put<uint32_t>(dword_4D2320,selected.owner);}
+  std::shared_ptr<const nfs_compact_caption::Proof>escaped;
+  {cap::OwnerScope owner(g);
+   {cap::InitialCallerScope initial(g,{});
+    if(!std::strcmp(mode,"archive-during"))put<uint32_t>(dword_4D40B8,0x1235);
+    {cap::TailScope tail(g);trackedString(g,"normal");}
+    escaped=cap::lastProof(g);g.esi=testOwner;
+    if(!std::strcmp(mode,"post-pixel"))put<uint16_t>(selected.w[8]+16,1);
+    if(!std::strcmp(mode,"post-global"))put<uint32_t>(dword_4D243C,testOwner);
+   }
+   const bool okay=!std::strcmp(mode,"normal")||slot||!std::strcmp(mode,"retire");
+   const auto proof=cap::acquireCurrentProof(g);assert(bool(proof)==okay);
+   if(okay){if(!std::strcmp(mode,"normal"))showcaseSidebarCopyCases(proof,g);assert(escaped==proof&&proof->current()&&!proof->origin()&&proof->evidence().route==nfs_compact_caption::Route::PlayerShowcaseReturn);auto display=captionDisplayCases(proof,testSelector==2?0x4d3050:0x4d3100,0x1234);assert(display&&display->current());if(!std::strcmp(mode,"retire")){cap::beforeOwnerRetire(g,selected.owner);assert(!proof->current()&&!display->current());}}
+   else if(escaped)assert(!escaped->current());
+  }
+  if(escaped)assert(!escaped->current());
+  assert(!leaseDepth&&allocationsInLease==0);
+ }
+}
 static void descriptorRetirement(){
  for(const char*mode:{"shared-x","shared-y","shared-both","final-x","final-y","zero-x","zero-y","negative-x","negative-y","read-x","read-y","bitmap","owner","unrelated","rebind-x"}){
   prepare();Game g;g.eax=testOwner;g.ebp=testOwner;cap::OwnerScope owner(g);auto*s=cap::current(g);assert(s);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);const auto lifetime=s->lifetime,serial=s->serial;const auto originalTarget=selected;const auto currentIdentity=s->current.identity;
@@ -329,6 +394,6 @@ int main(){prepare();Game g;g.eax=testOwner;g.ebp=testOwner;{cap::OwnerScope nof
  }
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);g.eax=testOwner;{cap::OwnerScope nested(g);assert(!cap::current(g));}}assert(!cap::lastPacket(g));}
  prepare();g.eax=testOwner;{cap::OwnerScope owner(g);{cap::TailScope tail(g);stringBody(g,"normal");}auto packet=cap::lastPacket(g);assert(packet);put<uint32_t>(dword_4D243C,123);assert(cap::acquireCurrentPacket(g)==packet);put<uint32_t>(testRecord,((testResource+1)<<16)|2);assert(!cap::acquireCurrentPacket(g));assert(packet->original()[369*343+123]==0xffff);}
- descriptorRetirement();fixedOrdinaryBoundaryCases();sealedProofCases();compactCaptionCopiedProofCases();compactCaptionDisplayAndJoinCases();ordinarySidebarProofCases();initialCaptionCases();
+ descriptorRetirement();fixedOrdinaryBoundaryCases();sealedProofCases();compactCaptionCopiedProofCases();compactCaptionDisplayAndJoinCases();ordinarySidebarProofCases();initialCaptionCases();showcaseCaptionCases();
  assert(retained&&retained->pixels()==343*480&&retained->original()[369*343+123]==0xffff);assert(!leaseDepth&&allocationsInLease==0);std::puts("PASS cached menu caption (Options/Setup/Player1/Player2): compact343 full replay/ownership/current-plane rejection, exact owner/font gate, original words, palette/font/mode/LUT/selection/retirement/nesting fallback, shared-LUT descriptor refs/lifetime, immutable lifetime, zero allocations in guest leases");
 }

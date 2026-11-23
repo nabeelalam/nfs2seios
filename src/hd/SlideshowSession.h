@@ -3,6 +3,7 @@
 #include "SlideshowRuntimeImage.h"
 #include "SlideshowSourceIdentity.h"
 #include "SlideshowFooterCatalog.h"
+#include "SlideshowPanoramaProvider.h"
 #include <memory>
 namespace nfs_slideshow {
 struct ImageFrame {
@@ -13,17 +14,40 @@ struct ImageFrame {
     std::array<unsigned char,32> sourceSha,entrySha,rgbaSha;
     std::vector<unsigned char> rgba;
     nfs_slideshow_footer::ImagePtr footer;
+    // Optional CPU artwork only. Native source/pass authority remains separate.
+    std::shared_ptr<const nfs_slideshow_panorama::Panorama> panorama;
 };
 // Game-thread-owned session. Renderer borrows immutable frames, never guest memory.
 // Call changed() at actual archive retirement/change, close() on slideshow exit.
 class Session {
     uint64_t epoch_=1;
     std::shared_ptr<const ImageFrame> frame_;
+    std::shared_ptr<const ImageFrame> baseFrame_;
 public:
-    void changed() noexcept {frame_.reset();if(++epoch_==0)epoch_=1;}
+    void changed() noexcept {frame_.reset();baseFrame_.reset();if(++epoch_==0)epoch_=1;}
     void close() noexcept {changed();}
     uint64_t epoch() const noexcept {return epoch_;}
     std::shared_ptr<const ImageFrame> frame() const noexcept {return frame_;}
+    // Explicit opt-in after select, before collecting presentation controls.
+    // Keeping this separate leaves existing select callers link-independent of
+    // the optional provider. An integrating caller must link its implementation.
+    // Restore the selected center-only owner before attempting replacement:
+    // refusal (including allocation failure) cannot preserve an old panorama.
+    bool attachPanorama(const nfs_slideshow_panorama::Registry&registry)noexcept {
+        frame_=baseFrame_;
+        try {
+            if(!frame_)return false;
+            if(!frame_->footer)return false;
+            nfs_slideshow_panorama::Key key;
+            key.archiveSha=frame_->sourceSha;key.entrySha=frame_->entrySha;
+            key.centerRgbaSha=frame_->rgbaSha;key.footerRgbaSha=frame_->footer->sha();
+            auto panorama=registry.acquire(key,frame_->width,frame_->height,frame_->rgba);
+            if(!panorama)return false;
+            auto candidate=std::make_shared<ImageFrame>(*baseFrame_);
+            candidate->panorama=std::move(panorama);frame_=std::move(candidate);
+            return true;
+        }catch(...){return false;}
+    }
     bool select(const void* original,size_t bytes,const SourcePin* sources,size_t count,
                 const RuntimeImagePin* images,size_t imageCount,const char* path,
                 bool preview=false,std::shared_ptr<const nfs_slideshow_footer::Catalog> footers={}) noexcept {
@@ -55,6 +79,7 @@ public:
             if(!loadImage(path,*image,source->archiveSha,source->entrySha,candidate->rgba,preview))
                 return false;
             frame_=std::move(candidate);
+            baseFrame_=frame_;
             return true;
         } catch (...) {return false;}
     }

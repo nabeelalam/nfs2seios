@@ -1,0 +1,30 @@
+{
+  "scope": "Current desktop 512-slot executable in isolated WSL X11 with software GLES and copied game data.",
+  "binarySHA256": "2bd8e976322bbcbb7794da4fb4235ca9209444498a45d69e3b2a10ac92e7173f",
+  "route": "Location, Track Info, eight Next Track activations, and Escape back to Location at 800x450.",
+  "nativeFallbackStartFrames": [
+    460,
+    566,
+    672,
+    779,
+    886,
+    993,
+    1100,
+    1207
+  ],
+  "informationWideResumeFrames": [
+    484,
+    590,
+    696,
+    803,
+    910,
+    1017,
+    1124,
+    1231
+  ],
+  "nativeFallbackPresentationsPerActivation": 24,
+  "cleanAppShutdown": true,
+  "initialEntryAndReturn": "The 16:9 trace used wide presentation for initial entry and final return.",
+  "nextInvestigation": "Trace the consecutive presents in the translated Track Info change branch and identify which phase loses the current authenticated remastered image.",
+  "physicalIpadVerified": false
+}

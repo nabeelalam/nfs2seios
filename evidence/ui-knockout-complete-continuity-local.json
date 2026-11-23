@@ -1,0 +1,281 @@
+{
+  "scope": "Original saved Knockout Setup Done, Main, Player One entrance, Player One and Main return at both aspect ratios",
+  "binarySha256": "e922a93e6648ac247e03edbbfd0c9ed206ec8e61107bb8a77b2049b05b5288af",
+  "implementation": {
+    "source": "Exact original TKO5 converted5551 digest already introduced in ui-knockout-slot5-continuity-local.json",
+    "responsive": "Shared slot5 source ledger and exact 387..515 canvas; signed Main/Opponents pulse retains integer half-width and UV checks",
+    "returnAndPreview": "Own typed source view, current native descriptor and exact32768-byte TKO5 digest; no borrowed menu-owner authorization",
+    "initialBranding": "Own immutable slot5 source and current exact uploaded/selected TKO5 ledger; normal native shader, not an invented HD mark",
+    "playerEntranceTail": "Current selected exact TKO5 upload, actual native texture binding and disabled HD-mark shader flag; existing lifetime, target, arrays and triangle bounds remain"
+  },
+  "runs": [
+    {
+      "tag": "knockout-final-player-wide-v5",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "nonStartupNativeRoutes": [],
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 275975,
+          "logEnd": 341399,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "366",
+              "previousFrames": "70"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "486",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 341399,
+          "logEnd": 357820,
+          "routes": []
+        },
+        {
+          "action": "knockout-selected",
+          "logStart": 357820,
+          "logEnd": 382687,
+          "routes": []
+        },
+        {
+          "action": "tournament-committed-main",
+          "logStart": 417621,
+          "logEnd": 448692,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "601",
+              "previousFrames": "115"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "613",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "player-one-knockout",
+          "logStart": 454612,
+          "logEnd": 488760,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "689",
+              "previousFrames": "76"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "706",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "727",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "player-one-return-main",
+          "logStart": 488760,
+          "logEnd": 522939,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "740",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "800",
+              "height": "450",
+              "frame": "759",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ],
+      "childReturnFrames": 31
+    },
+    {
+      "tag": "knockout-final-player-ipad-v5",
+      "driverExitCode": 0,
+      "cleanShutdown": true,
+      "protectedFilesRestored": true,
+      "all21ResourcesUnchanged": true,
+      "nonStartupNativeRoutes": [],
+      "actions": [
+        {
+          "action": "setup-initial",
+          "logStart": 289833,
+          "logEnd": 355834,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "454",
+              "previousFrames": "72"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "574",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "race-type-selected",
+          "logStart": 355834,
+          "logEnd": 376075,
+          "routes": []
+        },
+        {
+          "action": "knockout-selected",
+          "logStart": 376075,
+          "logEnd": 400901,
+          "routes": []
+        },
+        {
+          "action": "tournament-committed-main",
+          "logStart": 435350,
+          "logEnd": 465763,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "688",
+              "previousFrames": "114"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "700",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "player-one-knockout",
+          "logStart": 471467,
+          "logEnd": 505178,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "773",
+              "previousFrames": "73"
+            },
+            {
+              "choice": "intro-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "790",
+              "previousFrames": "17"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "811",
+              "previousFrames": "21"
+            }
+          ]
+        },
+        {
+          "action": "player-one-return-main",
+          "logStart": 505178,
+          "logEnd": 538920,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "824",
+              "previousFrames": "13"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "843",
+              "previousFrames": "19"
+            }
+          ]
+        }
+      ],
+      "childReturnFrames": 31
+    }
+  ],
+  "freshMaintainedProductionRendererCompilation": {
+    "exitCode": 0,
+    "diagnosticCaptureRendererUsed": false,
+    "freshMaintainedRendererSource": true,
+    "currentHeaders": {
+      "MainOriginalBrandingSource.h": "1b9d7d855f2db00848ae11a0c60ade61ed36c0aad7d260b783680ad09674a79a",
+      "MenuOriginalBranding.inc": "6ca1da252d800dbb29a2012c943c53f16475a4eb7ddb9e47de7f878d27b40f59",
+      "MenuResponsiveRenderer.inc": "d906b2acb9faa8f90d3b3a7e12eef6317f6c0a52a9e8d99c4ba479ce49630ae8",
+      "ChildExitRenderer.inc": "537545417d1980bd7c0a4b46e5ce8645b25aec8586a4f084ba14e9a26d0538ec",
+      "WideTransitionBrandingRenderer.inc": "1e184eef68971bb12ada7205005adbb8ead2b89cd60ac4b9fbe2c4bb90b36947",
+      "ChildIntroWideBrandingRenderer.inc": "aafb0ee8dff217de4f5fa1e624640e79ff42dcb9a5e218a0d6b6e8fac42b81d8",
+      "PlayerIntroWideRenderer.inc": "29c379d778e4f40d5bb7f81287f9647579268b76ef7b58433c55839b0d4fce43"
+    }
+  },
+  "earlierDiagnostics": [
+    {
+      "tag": "knockout-committed-route-wide-v1",
+      "result": "Main fallback confirmed; protected files restored"
+    },
+    {
+      "tag": "knockout-shared-route-wide-v2",
+      "result": "Main fixed;12 return-animation native frames exposed. Driver then sought original disabled Location and failed; protected files restored"
+    },
+    {
+      "tag": "knockout-return-player-wide-v3",
+      "result": "Return fixed;38 Player entrance native frames exposed; clean shutdown and restoration"
+    },
+    {
+      "tag": "knockout-complete-player-wide-v4",
+      "result": "Initial branding fixed;21 Player entrance native frames still present; clean shutdown and restoration"
+    }
+  ],
+  "limitations": [
+    "Existing TKO5 artwork retained; this is continuity support, not its artwork remaster.",
+    "No race/gameplay, physical iPad, battery or performance claim.",
+    "Fresh production renderer compiled only; local runnable candidate reuses retained engine objects.",
+    "Other saved-Knockout routes and two-player ownership not newly exercised.",
+    "Legacy wrapper LoadSave/Credits counters and scope strings are unrelated to these route checks."
+  ],
+  "next": "Finish remaining current UI/art integration as a coherent batch before an Apple build."
+}

@@ -2,6 +2,8 @@
 #pragma once
 #include "HdSceneFixture.h"
 #include "hd/AudioSidebarPacket.h"
+#include "hd/OptionsSidebarOrigin.h"
+#include "hd/OptionsBitmapPrelude.h"
 #include <type_traits>
 // Included after the real source-hook fixture; private seals are produced only
 // by its actual Owner/Tail/Measure/String/Word observers.
@@ -37,6 +39,22 @@ static void nestedProofCases(){
  sidebar::Input input{cacheBinding,f->scene,f->group,packet,s->serial,s->lifetime,raw,raw,proof,binding};
  auto join=[&](){return sidebar::Packet::create(input,cacheBinding,actual,std::make_shared<const sidebar::Catalog>(f->catalog));};
  retained=join();assert(retained&&retained->captionWord()&&retained->captionWord()->view().word==3&&retained->caption()==packet&&retained->raw()==raw);
+ // The future Options owner may retain immutable source content, but cannot
+ // substitute a foreign game/thread/archive/epoch/catalog or changed bytes.
+ auto historical=nfs_options_sidebar_origin::Origin::createNested(reinterpret_cast<uintptr_t>(&g),cacheBinding.thread,cacheBinding.archive,cacheBinding.ownerEpoch,retained,retained->catalog());assert(historical&&historical->current()&&historical->frame->nestedCaptionWord&&!historical->frame->captionWord&&historical->frame->wordView().word==3&&historical->raw==raw);
+ for(unsigned k=0;k<5;++k){auto game=reinterpret_cast<uintptr_t>(&g),thread=uintptr_t(cacheBinding.thread);auto archive=cacheBinding.archive;auto epoch=cacheBinding.ownerEpoch;auto catalog=retained->catalog();if(k==0)++game;if(k==1)++thread;if(k==2)++archive;if(k==3)++epoch;if(k==4){auto changed=std::make_shared<sidebar::Catalog>(*catalog);changed->identities[0].sha[0]^=1;catalog=changed;}assert(!nfs_options_sidebar_origin::Origin::createNested(game,thread,archive,epoch,retained,catalog));}
+ // Independent bitmap source admits only the complete original transparent copy.
+ namespace bitmap=nfs_options_bitmap_cpu;auto whole=std::unique_ptr<nfs_background_scene_cpu::Plane>(new nfs_background_scene_cpu::Plane(f->copy.pre));
+ for(unsigned y=0;y<480;++y)for(unsigned x=0;x<343;++x){const auto pixel=nfs_background_scene_cpu::le16(raw.data()+16+2*(y*343+x));if(pixel)whole->pixels[y*640+x]=pixel;}
+ bitmap::Binding bitmapBinding;bitmapBinding.game=reinterpret_cast<uintptr_t>(&g);bitmapBinding.thread=cacheBinding.thread;bitmapBinding.epoch=11;bitmapBinding.baseSequence=2;bitmapBinding.sequence=3;bitmapBinding.form=0x8000;bitmapBinding.previous=0x9000;bitmapBinding.family=1;bitmapBinding.archive=cacheBinding.archive;bitmapBinding.phase=1001;
+ auto bitmapSource=bitmap::Prepared::create(bitmapBinding,f->copy.pre,*whole,historical,raw,raw,1);assert(bitmapSource&&bitmapSource->view(7).schema==1);
+ for(unsigned k=0;k<9;++k){auto bad=bitmapBinding;if(k==0)bad.game++;if(k==1)bad.thread++;if(k==2)bad.archive++;if(k==3)bad.epoch=0;if(k==4)bad.baseSequence=0;if(k==5)bad.family=4;if(k==6)bad.phase=1000;if(k==7)bad.phase=1552;if(k==8)bad.phase=1052;assert(!bitmap::Prepared::create(bad,f->copy.pre,*whole,historical,raw,raw,1));}
+ assert(!bitmap::Prepared::create(bitmapBinding,f->copy.pre,*whole,historical,raw,raw,0));assert(!bitmap::Prepared::create(bitmapBinding,f->copy.pre,*whole,historical,raw,raw,2));
+ whole->pixels[479*640+639]^=1;assert(!bitmap::Prepared::create(bitmapBinding,f->copy.pre,*whole,historical,raw,raw,1));whole->pixels[479*640+639]^=1;
+ auto repeat=raw;repeat[16]^=1;assert(!bitmap::Prepared::create(bitmapBinding,f->copy.pre,*whole,historical,raw,repeat,1));
+ auto bitmapOwner=std::make_shared<std::atomic<bool>>(true),bitmapFrame=std::make_shared<std::atomic<bool>>(true);auto bitmapLease=bitmap::Lease::create(bitmapSource,bitmapOwner,bitmapFrame);assert(bitmapLease);auto borrowed=bitmapLease->view(8);assert(borrowed.schema&&borrowed.current(borrowed.owner));borrowed.retain(borrowed.owner);bitmapLease.reset();assert(borrowed.current(borrowed.owner));bitmapFrame->store(false);assert(!borrowed.current(borrowed.owner));borrowed.release(borrowed.owner);
+ auto copiedCatalog=std::make_shared<const sidebar::Catalog>(*retained->catalog());assert(nfs_options_sidebar_origin::Origin::createNested(reinterpret_cast<uintptr_t>(&g),cacheBinding.thread,cacheBinding.archive,cacheBinding.ownerEpoch,retained,copiedCatalog));nfs_options_sidebar_origin::remember(historical);nfs_options_sidebar_origin::slot().reset();assert(nfs_options_sidebar_origin::acquire(reinterpret_cast<uintptr_t>(&g),cacheBinding.thread,cacheBinding.archive,raw.data(),raw.size())==historical);assert(historical->matches(reinterpret_cast<uintptr_t>(&g),cacheBinding.thread,cacheBinding.archive,raw.data(),raw.size()));raw[16]^=1;assert(!historical->matches(reinterpret_cast<uintptr_t>(&g),cacheBinding.thread,cacheBinding.archive,raw.data(),raw.size()));raw[16]^=1;
+
  input.captionProof.reset();assert(!join());input.captionProof=proof;
  input.captionBinding.policy=binding.policy==nested::Policy::Audio?nested::Policy::Graphics:nested::Policy::Audio;assert(!join());input.captionBinding=binding;
  ++input.captionBinding.form;assert(!join());input.captionBinding=binding;
@@ -44,7 +62,7 @@ static void nestedProofCases(){
  ++input.acceptedCaptionSerial;assert(!join());input.acceptedCaptionSerial=s->serial;
  raw[16]^=1;assert(!join());raw[16]^=1;
  input.captionProof.reset();input.captionBinding={};auto legacy=join();assert(legacy&&!legacy->captionWord());input.captionProof=proof;input.captionBinding=binding;assert(join());
- cap::beforeOwnerRetire(g,selected.owner);assert(!acquire()&&!cap::lastProof(g)&&display->current()&&retained->captionWord()->current());
+ cap::beforeOwnerRetire(g,selected.owner);assert(!acquire()&&!cap::lastProof(g)&&display->current()&&retained->captionWord()->current());assert(historical->current());nfs_main_sidebar_origin::retireGame(reinterpret_cast<uintptr_t>(&g));assert(!historical->current());assert(!nfs_options_sidebar_origin::acquire(reinterpret_cast<uintptr_t>(&g),cacheBinding.thread,cacheBinding.archive,raw.data(),raw.size()));
  }
  assert(retained&&retained->captionWord()->view().word==3&&retained->captionWord()->packet()==retained->caption());
 }

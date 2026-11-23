@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "scope": "Original Location full-refresh source and retained sidebar history; all eight track transitions accepted on scoped desktop route",
+  "binarySha256": "b57552a272fb6fed4afc221aa67aee9481e24208d77ce1a6f1232fb05d0dbc50",
+  "cloudBuild": false,
+  "sourcePair": {
+    "freshPreparationPassed": true,
+    "all15EngineUnitsCompared": true,
+    "onlyGeneratedDifference": "Among the15 compared generated method units: explicit Location refresh argument at original40C5C6 full-refresh-copy call",
+    "rendererEntryFilesComparedUnchanged": [
+      "Glide2x.c",
+      "Glide2x/OpenGL2.c"
+    ]
+  },
+  "sourceChecks": {
+    "exactRegisteredSelectedPane": true,
+    "freshPreviewBaseEpochArchive": true,
+    "sourceHeadersAndPixelsUnchangedAfterCopy": true,
+    "actualSourceRowsRequired": 480,
+    "fullCopyEqualityRequired": true,
+    "refreshedSidebarOwnedInProof": true,
+    "historySourceRecheckedBeforeAndAfterDescriptorObservation": true,
+    "strictUploadEventEqualityUnchanged": true,
+    "nativeUploadAnd300x600DrawChecksUnchanged": true
+  },
+  "route": {
+    "output": [
+      800,
+      450
+    ],
+    "trackUnlock": "Original Main menu keyboard code, verified against retained original parser; no forced guest state",
+    "tracks": [
+      {
+        "trackIndex": 0,
+        "photoSourceSerial": 2,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      },
+      {
+        "trackIndex": 1,
+        "photoSourceSerial": 3,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      },
+      {
+        "trackIndex": 2,
+        "photoSourceSerial": 4,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      },
+      {
+        "trackIndex": 3,
+        "photoSourceSerial": 5,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      },
+      {
+        "trackIndex": 4,
+        "photoSourceSerial": 6,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      },
+      {
+        "trackIndex": 5,
+        "photoSourceSerial": 7,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      },
+      {
+        "trackIndex": 6,
+        "photoSourceSerial": 8,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      },
+      {
+        "trackIndex": 7,
+        "photoSourceSerial": 9,
+        "wideMovingFrames": 21,
+        "followingPresentation": "transition-wide"
+      }
+    ],
+    "totalWideMovingFrames": 168,
+    "nativeFallbackEventsThroughoutEightTrackCycle": 0,
+    "locationReturnToMainObserved": true,
+    "playerOnePhotoChangeAndReturnObserved": true,
+    "opponentEntryClassChangeAndReturnObserved": true,
+    "optionsScreenVisuallyHdAndTypedNative300x600Observed": true,
+    "completeGroupedRoute": false,
+    "remainingDriverLimitation": "Options guard read bounded diagnostics as current state and stopped before its return; independent typed Options native finishes and HD screenshot retained privately."
+  },
+  "validation": {
+    "hookInsertionReversalFailClosedTests": 3,
+    "independentSourceReviewPassed": true,
+    "exitCode": 0,
+    "cleanShutdown": true,
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "binaryUnchanged": true
+  },
+  "limits": [
+    "708x492 Location regression pending",
+    "No physical iPad acceptance or performance/battery claim",
+    "Broader Showcase, post-race and gameplay aspect work remains separate"
+  ],
+  "physicalIpadVerified": false,
+  "wholeUiComplete": false,
+  "published": false
+}

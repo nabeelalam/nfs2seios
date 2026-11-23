@@ -33,13 +33,19 @@ inline void begin(Game&g,Intent&i){
  bool sourceOwner=false;try{nfs::GuestCopyTransaction tx;sourceOwner=tx.load<uint32_t>(dword_4D4D24)==s->binding.owner;}catch(...){trace(6,"native-owner-read",s);return;}if(!sourceOwner){trace(5,"native-source-owner",s);return;}
  nfs_logo_capture::Target target{},cacheTarget{};std::vector<uint16_t>post;
  if(!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(s->binding,s->acceptedTextSerial,post.data(),post.size())){trace(7,"current-full-plane",s);return;}
- auto sidebar=cache::acquireForSidebar(g,s->background.sidebar,&cacheTarget);if(!sidebar){trace(8,"current-sidebar",s);return;}
- const auto&word=sidebar->captionWord();if(!word||!word->current()||word->packet()!=sidebar->caption()||!word->proof()||word->proof()->evidence().policy!=nfs_nested_sidebar_caption::Policy::Audio){trace(16,"current-sidebar-word",s);return;}
+ auto sidebar=cache::acquireForSidebar(g,s->background.sidebar,&cacheTarget);
+ std::shared_ptr<const nfs_options_sidebar_origin::Origin>initial;
+ if(!sidebar&&s->binding.pass==1&&s->background.sidebar.complete&&!s->background.sidebar.error&&s->background.sidebar.sourceBefore==s->background.sidebar.sourceAfter)
+  initial=nfs_options_sidebar_origin::acquire(reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),s->binding.archive,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size());
+ if(initial&&initial->catalog!=nfs_background_scene_runtime::acquireCatalog())initial.reset();
+ if(!sidebar&&!initial){trace(8,"current-sidebar",s);return;}
+ if(sidebar){const auto&word=sidebar->captionWord();if(!word||!word->current()||word->packet()!=sidebar->caption()||!word->proof()||word->proof()->evidence().policy!=nfs_nested_sidebar_caption::Policy::Audio){trace(16,"current-sidebar-word",s);return;}}
  auto dialogProof=nfs_audio_text::acquireCurrentDialogProof(g);
  auto dialog=nfs_audio_dialog_display::Prepared::create(dialogProof,frame->text(),{s->binding.form,s->binding.archive,reinterpret_cast<uintptr_t>(&g),s->acceptedTextSerial,s->binding.lifetime});
  if(!dialog){trace(17,"current-dialog-words",s);return;}
  const auto binding=s->binding;const auto cacheBinding=c->binding;
- auto owned=Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size(),dialog);
+ auto owned=initial?Prepared::createInitial(frame,initial,binding,s->acceptedTextSerial,post.data(),post.size(),dialog,reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken()):Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size(),dialog);
+ if(initial)trace(19,"initial-options-sidebar",s);
  if(!owned){trace(9,"immutable-scene-join",s);return;}if(!live::bound(*s,g,true)||!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(binding,s->acceptedTextSerial,post.data(),post.size())){trace(10,"repeat-full-plane",s);return;}
  if(nfs_audio_text::acquireCurrentDialogProof(g)!=dialogProof){trace(18,"repeat-dialog-words",s);return;}
  auto lease=Lease::create(owned);if(!lease){trace(11,"lease-allocation",s);return;}const uint64_t serial=nfs_background_scene_live::nextRequest();if(!serial){trace(12,"serial-overflow",s);return;}i.owned=lease;i.serial=serial;traceDialog(serial,*dialogProof);

@@ -22,13 +22,32 @@ inline bool fullAcquired(Game&g,uint32_t source,const std::vector<uint8_t>&raw,c
 inline bool fullAcquired(Game&g,uint32_t source,const std::vector<uint8_t>&raw,const std::shared_ptr<const OpponentFullProof>&p){
  return nfs_opponent_initial_full_live::acquire(g,source,raw)==p;
 }
-inline const bg::Plane& historySidebar(const LocationFullProof&p){return p.child->post();}
+inline const bg::Plane& historySidebar(const LocationFullProof&p){return p.refresh||p.child->locationInfoReturn()?p.copiedSidebar:p.child->post();}
 inline const bg::Plane& historySidebar(const OpponentFullProof&p){return p.copiedSidebar;}
 
-inline bool sidebarMatches(const LocationFullProof&p,const std::vector<uint8_t>&raw){
- return p.child->sourceMatches(historySidebar(p).target.w[8],raw.data(),raw.size());
+inline bool sidebarMatches(Game&g,const LocationFullProof&p,const std::vector<uint8_t>&raw){
+ if(!p.refresh&&!p.child->locationInfoReturn())return p.child->sourceMatches(historySidebar(p).target.w[8],raw.data(),raw.size());
+ // Refresh and InfoReturn retain the343 pixels used by the completed copy;
+ // InfoReturn's full cache can select the opposite buffer from its fade.
+ // Recheck the actual selected pane on both sides of descriptor observation.
+ const auto&side=p.copiedSidebar;
+ if(!bg::plane(side,343)||raw.size()!=16+bg::Side*2)return false;
+ bg::Target target{};
+ if(p.refresh){
+  std::array<uint32_t,3>pane{};
+  if(!nfs_location_initial_full_live::readRefreshCopyTarget(p,side.target.w[8],target,pane)||pane!=p.refreshPane)return false;
+ }else if(side.target.w[8]==p.child->post().target.w[8]){
+  // Preserve the producer's direct-child branch, including its deliberately
+  // non-authoritative ambient ownerState[0]. Full-copy pixels stay exact.
+  if(nfs_location_initial_sidebar_live::acquire(g,side.target.w[8],raw)!=p.child)return false;
+  target=side.target;
+ }else if(!nfs_location_initial_full_live::readInfoReturnCopyTarget(p,side.target.w[8],target))return false;
+ if(!nfs_logo_capture::same(target,side.target))return false;
+ for(unsigned i=0;i<4;++i)if(bg::le32(raw.data()+4*i)!=side.target.header[i])return false;
+ for(unsigned i=0;i<bg::Side;++i)if(bg::le16(raw.data()+16+2*i)!=side.pixels[i])return false;
+ return true;
 }
-inline bool sidebarMatches(const OpponentFullProof&p,const std::vector<uint8_t>&raw){
+inline bool sidebarMatches(Game&,const OpponentFullProof&p,const std::vector<uint8_t>&raw){
  const auto&side=historySidebar(p);
  if(!p.refresh||!bg::plane(side,343)||raw.size()!=16+bg::Side*2)return false;
  bg::Plane current{};
@@ -86,14 +105,14 @@ inline bool rememberInitialFull(Game&g,const std::shared_ptr<const Proof>&proof,
  // These keys only identify actual uploaded tiles: renderer pixels/pass proofs
  // remain mandatory and are not replaced by this CPU snapshot.
  const auto&side=historySidebar(*proof);
- stage=4;std::vector<uint8_t>raw,after;if(!nfs_location_scene_live::readBytes(side.target.w[8],16+bg::Side*2,raw)||!sidebarMatches(*proof,raw))return false;
+ stage=4;std::vector<uint8_t>raw,after;if(!nfs_location_scene_live::readBytes(side.target.w[8],16+bg::Side*2,raw)||!sidebarMatches(g,*proof,raw))return false;
  stage=5;{nfs::GuestCopyTransaction tx;if(tx.load<uint32_t>(dword_4D40B8)!=proof->archive)return false;
   for(unsigned i=0;i<300;++i){const uint32_t d=tx.load<uint32_t>(dword_4EB74C+1200+i*4);std::array<uint32_t,7>w{};nfs_logo_publisher::descriptor(tx,d,w);
    if(!d||w[0]!=3||w[1]!=3||w[2]!=3||w[3]!=11||w[6]!=3||w[5]!=keys[i]||(w[5]&3)||w[5]>0x200000u-2048u)return false;
    for(unsigned j=0;j<i;++j)if(uint64_t(keys[j])<uint64_t(keys[i])+2048&&uint64_t(keys[i])<uint64_t(keys[j])+2048)return false;
   }
  }
- stage=6;if(!nfs_location_scene_live::readBytes(side.target.w[8],raw.size(),after)||after!=raw||!sidebarMatches(*proof,after)||!fullOwned(g,*proof)||event!=nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire))return false;
+ stage=6;if(!nfs_location_scene_live::readBytes(side.target.w[8],raw.size(),after)||after!=raw||!sidebarMatches(g,*proof,after)||!fullOwned(g,*proof)||event!=nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire))return false;
  // Full-copy proof and 300 actual upload observations authenticate replacing the
  // base snapshot's native comparison plane/keys. Base word/logo borrows remain
  // owned by origin through the retained proof chain.

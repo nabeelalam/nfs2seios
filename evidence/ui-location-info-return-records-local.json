@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "scope": "Normal local original-data800x450 TrackInfo to Location to Records and return; not all ratios or full UI acceptance",
+  "binarySha256": "14036b81baa3b170da71b8c54ca73fc6bd1331abc5c0adb5a6e255c0985f1c00",
+  "sourceChange": "Retain the actual sidebar from the sealed InfoReturn full copy; authenticate direct-child and opposite-buffer routes with their original producer predicates before and after retained-history observation",
+  "guardsRetained": [
+    "480row replay",
+    "source bytes unchanged after copy",
+    "complete full-copy replay",
+    "current archive, descriptor, owner and upload event",
+    "actual upload/300selection/600triangle renderer proofs"
+  ],
+  "before": {
+    "binarySha256": "98db4320d1dd2a9bb658ebf3a69e463c8ee9fda3089adeb7f85840cc7652c44c",
+    "nativeFirstFrame": 609,
+    "nativeFrames": 19,
+    "recordsWideFirstFrame": 628,
+    "sidebarHeaderEqual": true,
+    "sidebarPixelsEqual": false,
+    "firstByteMismatch": 26
+  },
+  "after": {
+    "output": [
+      800,
+      450
+    ],
+    "elapsedSeconds": 86.749591103,
+    "actions": 6,
+    "formerlyFailingInterval": {
+      "firstFrame": 606,
+      "frames": 19,
+      "choice": "child-return-wide",
+      "nextChoice": "records-wide",
+      "recordsFirstFrame": 625
+    },
+    "nativeFallbackAfterFirstWideMenu": 0,
+    "trackInfoEntryReturn": true,
+    "recordsEntryReturn": true,
+    "returnedLocationSelectionObserved": true,
+    "recordsAndReturnedLocationCapturesReviewed": true
+  },
+  "checks": {
+    "correctMappedEngineSyntaxAndNormalAppLink": true,
+    "privateInputReadbackProbesAbsent": true,
+    "genuineChildSourceFixtureAsanUbsanPassed": true,
+    "fixtureScope": "Existing origin/caption/child source predicate; ambient selector word allowed, pane-handle/pixel mutation rejected and revoked. Does not prove full-copy/history/native integration by itself.",
+    "fixtureCompilerFlag": "-fno-sized-deallocation matches its existing custom allocator, no sanitizer suppression"
+  },
+  "preservation": {
+    "copiedFixtureRestoredExactly": true,
+    "all22ResourcesUnchanged": true,
+    "binaryUnchanged": true,
+    "exitCode": 0,
+    "cleanShutdown": true
+  },
+  "limits": [
+    "708x492 attempt stopped before TrackInfo because one synchronized Return was unacknowledged; source-fix route not executed there",
+    "Earlier800observer attempts also stopped on input preconditions; preserved separately",
+    "Statistics, Opponents, other tracks and postrace Results not run in this successful narrow case",
+    "Not per-frame screenshot proof for every artwork pixel",
+    "No physical iPad, performance or battery acceptance"
+  ],
+  "cloudBuild": false
+}

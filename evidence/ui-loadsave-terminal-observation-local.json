@@ -1,0 +1,130 @@
+{
+  "scope": "Load/Save intermittent terminal-frame localization; local original-game diagnostic",
+  "physicalIpadVerified": false,
+  "binarySHA256": "f7b265ac2b4210f7019543d27297411d816762e8239282e879cd948426348ce9",
+  "verifiedRun": {
+    "scope": "Original Load/Save entry and parent-return continuity; copied fixture",
+    "durableBackupWritten": true,
+    "physicalIpadVerified": false,
+    "newArtworkActivated": true,
+    "driverExitCode": 0,
+    "statsUnchanged": true,
+    "protectedFilesRestored": true,
+    "all21ResourcesUnchanged": true,
+    "staticSourceRecords": [],
+    "loadsaveWidePresented": true,
+    "cacheSourcesReady": 0,
+    "nativePassesVerified": 0,
+    "cleanShutdown": true
+  },
+  "routes": [
+    {
+      "action": "options-parent",
+      "logStart": 201665,
+      "logEnd": 285342,
+      "routes": [
+        {
+          "choice": "transition-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "326",
+          "previousFrames": "16"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "446",
+          "previousFrames": "120"
+        }
+      ]
+    },
+    {
+      "action": "enter-loadsave",
+      "logStart": 338622,
+      "logEnd": 350049,
+      "routes": [
+        {
+          "choice": "child-return-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "479",
+          "previousFrames": "33"
+        },
+        {
+          "choice": "native",
+          "width": "708",
+          "height": "492",
+          "frame": "491",
+          "previousFrames": "12"
+        },
+        {
+          "choice": "loadsave-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "492",
+          "previousFrames": "1"
+        }
+      ]
+    },
+    {
+      "action": "return-loadsave",
+      "logStart": 353397,
+      "logEnd": 400894,
+      "routes": [
+        {
+          "choice": "nested-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "510",
+          "previousFrames": "18"
+        },
+        {
+          "choice": "transition-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "522",
+          "previousFrames": "12"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "625",
+          "previousFrames": "103"
+        }
+      ]
+    },
+    {
+      "action": "return-main",
+      "logStart": 406764,
+      "logEnd": 444865,
+      "routes": [
+        {
+          "choice": "child-return-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "648",
+          "previousFrames": "23"
+        },
+        {
+          "choice": "menu-wide",
+          "width": "708",
+          "height": "492",
+          "frame": "660",
+          "previousFrames": "12"
+        }
+      ]
+    }
+  ],
+  "readOnlyObservation": true,
+  "acceptanceRulesChanged": false,
+  "diagnosticExceptions": [],
+  "conclusion": "No terminal native fallback reproduced in this run. Original first-frame fallback persists. Earlier diagnostic localized a terminal rejection to Presentation construction, but did not identify a failed predicate. Do not relax selection, pixel, target or ownership comparisons based on this repeat.",
+  "nextImplementation": "First-frame inherited Options sidebar source: qualify exact original copied bytes against retained immutable OptionsSidebarOrigin, preserve absence of right badges, replay actual reset/copy and original native presentation. Verify initial-caption edits before choosing source variant.",
+  "limits": [
+    "One successful local repeat cannot close intermittent failure.",
+    "The previous detail run failed its final Main-highlight driver assertion; its earlier observed return route is diagnostic only.",
+    "Wrapper aggregate cache/native counts use outdated trace prefixes and report zero; actual native log has 300 uploads, 300 selections and 600 triangles."
+  ]
+}

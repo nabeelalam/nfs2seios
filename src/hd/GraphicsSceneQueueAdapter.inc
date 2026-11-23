@@ -35,12 +35,18 @@ inline void begin(Game&g,Intent&i){
  if(!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(s->binding,s->acceptedTextSerial,post.data(),post.size())){trace(7,"current-full-plane",s);return;}
  nfs_graphics_frame::SidebarBinding currentSidebar;
  if(!live::sidebarBinding(*s,currentSidebar)){trace(15,"current-sidebar-binding",s);return;}
- auto sidebar=cache::acquireForSidebar(g,s->background.sidebar,currentSidebar,&cacheTarget);if(!sidebar){trace(8,"current-sidebar",s);return;}
- const auto&word=sidebar->captionWord();if(!word||!word->current()||word->packet()!=sidebar->caption()||!word->proof()||word->proof()->evidence().policy!=nfs_nested_sidebar_caption::Policy::Graphics){trace(16,"current-sidebar-word",s);return;}
+ auto sidebar=cache::acquireForSidebar(g,s->background.sidebar,currentSidebar,&cacheTarget);
+ std::shared_ptr<const nfs_options_sidebar_origin::Origin>initial;
+ if(!sidebar&&s->binding.pass==1&&s->background.sidebar.complete&&!s->background.sidebar.error&&s->background.sidebar.sourceBefore==s->background.sidebar.sourceAfter)
+  initial=nfs_options_sidebar_origin::acquire(reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),s->binding.archive,currentSidebar.source.data(),currentSidebar.source.size());
+ if(initial&&initial->catalog!=nfs_background_scene_runtime::acquireCatalog())initial.reset();
+ if(!sidebar&&!initial){trace(8,"current-sidebar",s);return;}
+ if(sidebar){const auto&word=sidebar->captionWord();if(!word||!word->current()||word->packet()!=sidebar->caption()||!word->proof()||word->proof()->evidence().policy!=nfs_nested_sidebar_caption::Policy::Graphics){trace(16,"current-sidebar-word",s);return;}}
  auto dialogProof=nfs_graphics_text::acquireCurrentDialogProof(g);if(!dialogProof||dialogProof->packet()!=frame->text()){trace(17,"current-dialog-words",s);return;}
  auto dialog=nfs_graphics_dialog_display::Prepared::create(dialogProof,frame->text(),{s->binding.form,s->binding.archive,reinterpret_cast<uintptr_t>(&g),s->acceptedTextSerial,s->binding.lifetime});if(!dialog){trace(18,"immutable-dialog-words",s);return;}
  const auto binding=s->binding;const auto cacheBinding=c->binding;
- auto owned=Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),currentSidebar,cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size(),dialog);
+ auto owned=initial?Prepared::createInitial(frame,initial,binding,s->acceptedTextSerial,post.data(),post.size(),currentSidebar,dialog,reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),nfs_graphics_text::token()):Prepared::create(frame,sidebar,binding,s->acceptedTextSerial,post.data(),post.size(),currentSidebar,cacheBinding,cacheTarget,s->background.sidebar.sourceBefore.data(),s->background.sidebar.sourceBefore.size(),dialog);
+ if(initial)trace(19,"initial-options-sidebar",s);
  if(!owned){trace(9,"immutable-scene-join",s);return;}nfs_graphics_frame::SidebarBinding repeatSidebar;
  if(nfs_graphics_text::acquireCurrentDialogProof(g)!=dialogProof||!live::bound(*s,g,true)||!live::sidebarBinding(*s,repeatSidebar)||!(repeatSidebar==currentSidebar)||!live::plane(post,target)||!nfs_logo_capture::same(target,s->target)||!frame->matches(binding,s->acceptedTextSerial,post.data(),post.size())){trace(10,"repeat-full-plane",s);return;}
  auto lease=Lease::create(owned);if(!lease){trace(11,"lease-allocation",s);return;}const uint64_t serial=nfs_background_scene_live::nextRequest();if(!serial){trace(12,"serial-overflow",s);return;}i.owned=lease;i.serial=serial;traceDialog(serial,*dialogProof);

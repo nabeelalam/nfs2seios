@@ -17,6 +17,7 @@ static thread_local unsigned ownerReadCalls=0,ownerRefuseAt=0;
 namespace nfs {struct GuestCopyTransaction{GuestCopyTransaction(){++leaseDepth;}~GuestCopyTransaction(){--leaseDepth;}template<class T>T load(uint32_t at){++guestReads;if(at!=dword_4D4D24||sizeof(T)!=4)throw std::out_of_range("synthetic native owner only");++ownerReadCalls;const uint32_t v=ownerReadCalls==ownerRefuseAt?0:syntheticCurrentOwner;T out{};std::memcpy(&out,&v,sizeof out);return out;}};}
 static uintptr_t syntheticThread(){static thread_local unsigned char token;return reinterpret_cast<uintptr_t>(&token);}// SPDX-License-Identifier: MIT
 #include "AudioSidebarFixture.h"
+#include "hd/OptionsSidebarOrigin.h"
 #define main controlsSyntheticProofUnusedMain
 #undef CHECK
 #include "controls_dialog_word_proof_tests.cpp"
@@ -109,6 +110,9 @@ inline State*&slot(){static thread_local State*s=nullptr;return s;}
 inline State*current(Game&g){auto*s=slot();return s&&s->active&&s->game==reinterpret_cast<uintptr_t>(&g)&&s->thread==syntheticThread()?s:nullptr;}
 inline std::shared_ptr<const as::Packet>acquireForSidebar(Game&g,const gf::ScopedDraw&draw,const gf::SidebarBinding&actual,rec::Target*out){auto*s=current(g);if(!s||++s->calls==s->refuseAt||!s->published||!actual.valid()||!as::retainedTarget(actual.target,s->target)||actual.handle!=s->binding.sourceOwner||actual.source!=draw.sourceBefore||draw.sourceAfter!=draw.sourceBefore||!s->published->matches(s->binding,s->target,draw.sourceBefore.data(),draw.sourceBefore.size()))return {};if(out)*out=s->target;return s->published;}
 }
+// This existing-owner fixture does not publish an Options bootstrap origin.
+namespace nfs_logo_publisher {inline uintptr_t threadToken(){return syntheticThread();}}
+namespace nfs_background_scene_runtime {inline std::shared_ptr<const nfs_background_scene_cpu::SourceCatalog>acquireCatalog(){return {};}}
 #define NFS_CONTROLS_QUEUE_RUNTIME_TEST 1
 #include "hd/ControlsSceneQueueAdapter.inc"
 #undef NFS_CONTROLS_QUEUE_RUNTIME_TEST

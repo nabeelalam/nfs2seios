@@ -29,6 +29,8 @@ int nfs_audio_bar_prepare(NfsAudioBarGpu*,const NfsAudioArt*);
    Any late GL failure requires discarding the whole caller staging image.
    No backdrop, FBO allocation, depth write, original-target bind or present. */
 int nfs_audio_bar_draw_into_staging(NfsAudioBarGpu*,const NfsAudioBarStage*,const NfsAudioBarVertex*,size_t);
+/* Same source/owner checks, exact centred responsive sampling only. */
+int nfs_audio_bar_draw_into_nested_staging(NfsAudioBarGpu*,const NfsAudioBarStage*,const NfsAudioBarVertex*,size_t);
 #ifdef __cplusplus
 }
 #endif

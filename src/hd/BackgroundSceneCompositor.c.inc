@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 /* Private whole authored scene; source/current native authority belongs to owner adapter. */
 #include "BackgroundSceneCompositor.h"
+#include "NestedSceneLayout.h"
 #ifndef NFS_BACKGROUND_SCENE_EXTERNAL_LOGO_IMPLEMENTATION
 #ifdef NFS_BACKGROUND_SCENE_EXTERNAL_FRAME_IMPLEMENTATION
 #define NFS_SMALL_LOGO_EXTERNAL_FRAME_IMPLEMENTATION
@@ -13,9 +14,7 @@
 #define NFS_SOFTWARE_TEXT_EXTERNAL_FRAME_IMPLEMENTATION
 #include "SoftwareTextGpu.c.inc"
 #undef NFS_SOFTWARE_TEXT_EXTERNAL_FRAME_IMPLEMENTATION
-typedef struct NfsBgSaved {NfsFrameSaved common;GLint depthFunc,scissor[4];GLboolean depthMask;GLfloat depthClear;}NfsBgSaved;
-static void nfs_bg_save(NfsBgSaved*s){nfs_frame_save(&s->common);glGetIntegerv(GL_DEPTH_FUNC,&s->depthFunc);glGetIntegerv(GL_SCISSOR_BOX,s->scissor);glGetBooleanv(GL_DEPTH_WRITEMASK,&s->depthMask);glGetFloatv(GL_DEPTH_CLEAR_VALUE,&s->depthClear);}
-static void nfs_bg_restore(const NfsBgSaved*s){glDepthFunc(s->depthFunc);glDepthMask(s->depthMask);glClearDepthf(s->depthClear);glScissor(s->scissor[0],s->scissor[1],s->scissor[2],s->scissor[3]);nfs_frame_restore(&s->common);}
+#include "BackgroundSceneState.h"
 #include "LocationCaptionGpu.c.inc"
 static NfsBackgroundSceneStage nfs_bg_location_caption_guard(const NfsBackgroundSceneCompositor*s){NfsBackgroundSceneStage t;memset(&t,0,sizeof t);t.generation=s->generation;t.contextIdentity=s->locationCaptionContext;t.ownerCurrent=s->locationCaptionOwner;t.ownerUser=s->locationCaptionOwnerUser;return t;}
 static int nfs_bg_location_caption_alias(const NfsBackgroundSceneCompositor*s){GLuint texture=s->locationCaption.texture,program=s->locationCaption.program;unsigned i;if(program&&(program==s->program||program==s->copyProgram||program==s->logo.program||program==s->caption.program))return 1;if(!texture)return 0;if(texture==s->caption.texture||texture==s->previewTexture||texture==s->logo.texture||texture==s->color[0]||texture==s->color[1])return 1;for(i=0;i<5;++i)if(texture==s->textures[i])return 1;return 0;}
@@ -163,14 +162,21 @@ static void nfs_bg_draw_wide_art(const NfsBackgroundSceneCompositor*s,
 }
 /* Draw only the source-owned decoration. The caller chooses and draws the
    backdrop first and supplies its logical screen projection. */
+static int nfs_bg_stage_decoration_at(NfsBackgroundSceneCompositor*s,
+    const NfsBackgroundSceneStage*stage,const NfsBackgroundSceneLayers*v,
+    const NfsLogoVertex*logos,size_t count,const GLfloat*wordMatrix,
+    const GLfloat*logoMatrix){
+ glUseProgram(s->program);
+ glUniformMatrix4fv(s->matrix,1,GL_FALSE,wordMatrix);
+ for(unsigned i=0;i<v->wordCount;++i){const NfsBackgroundSceneWordLayer*w=v->words+i;const NfsBackgroundSceneWord*r=s->regions+w->sourceRole-1;if(!nfs_bg_stage_quad(s,stage,r->textureRole,(float)w->left,(float)w->top,(float)r->logicalWidth,(float)r->logicalHeight,r->x,r->y,r->width,r->height,w->clip,w->scalar256,1))return 0;}
+ if(count){glUseProgram(s->logo.program);glUniformMatrix4fv(s->logo.matrix,1,GL_FALSE,logoMatrix);glUniform1i(s->logo.sampler,0);glBindTexture(GL_TEXTURE_2D,s->logo.texture);glEnableVertexAttribArray(0);glEnableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),logos);glVertexAttribPointer(1,1,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),&logos[0].coefficient);glEnable(GL_BLEND);glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);glDrawArrays(GL_TRIANGLES,0,(GLsizei)count);if(!nfs_bg_stage_owner(stage))return 0;if(glGetError()!=GL_NO_ERROR)return 0;}
+ return 1;
+}
 static int nfs_bg_stage_decoration(NfsBackgroundSceneCompositor*s,
     const NfsBackgroundSceneStage*stage,const NfsBackgroundSceneLayers*v,
     const NfsLogoVertex*logos,size_t count){
- glUseProgram(s->program);
- glUniformMatrix4fv(s->matrix,1,GL_FALSE,stage->sampling.projection);
- for(unsigned i=0;i<v->wordCount;++i){const NfsBackgroundSceneWordLayer*w=v->words+i;const NfsBackgroundSceneWord*r=s->regions+w->sourceRole-1;if(!nfs_bg_stage_quad(s,stage,r->textureRole,(float)w->left,(float)w->top,(float)r->logicalWidth,(float)r->logicalHeight,r->x,r->y,r->width,r->height,w->clip,w->scalar256,1))return 0;}
- if(count){glUseProgram(s->logo.program);glUniformMatrix4fv(s->logo.matrix,1,GL_FALSE,stage->sampling.projection);glUniform1i(s->logo.sampler,0);glBindTexture(GL_TEXTURE_2D,s->logo.texture);glEnableVertexAttribArray(0);glEnableVertexAttribArray(1);glDisableVertexAttribArray(2);glDisableVertexAttribArray(3);glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),logos);glVertexAttribPointer(1,1,GL_FLOAT,GL_FALSE,sizeof(NfsLogoVertex),&logos[0].coefficient);glEnable(GL_BLEND);glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);glDrawArrays(GL_TRIANGLES,0,(GLsizei)count);if(!nfs_bg_stage_owner(stage))return 0;if(glGetError()!=GL_NO_ERROR)return 0;}
- return 1;
+ return nfs_bg_stage_decoration_at(s,stage,v,logos,count,
+                                 stage->sampling.projection,stage->sampling.projection);
 }
 static int nfs_bg_scene_draw_parts_into_staging(NfsBackgroundSceneCompositor*s,const NfsBackgroundSceneStage*stage,const NfsBackgroundSceneLayers*input,int withMap){
  NfsBackgroundSceneLayers v;NfsBgSaved saved;NfsLogoVertex logos[18];size_t count=0;float bounds[4];GLint type=0,name=0;int ok=0;static const int32_t full[4]={0,0,640,480};
@@ -187,3 +193,52 @@ static int nfs_bg_scene_draw_parts_into_staging(NfsBackgroundSceneCompositor*s,c
 }
 
 int nfs_bg_scene_draw_layers_into_staging(NfsBackgroundSceneCompositor*s,const NfsBackgroundSceneStage*t,const NfsBackgroundSceneLayers*v){return nfs_bg_scene_draw_parts_into_staging(s,t,v,1);}
+
+/* Separate responsive entry: never broaden the original 4:3 stage validator.
+   Prepared background/decorations are replayed from immutable source layers;
+   no native pixels are copied and no geometry is stretched or cropped. */
+int nfs_bg_scene_draw_nested_into_staging(NfsBackgroundSceneCompositor*s,
+ const NfsBackgroundSceneStage*t,const NfsBackgroundSceneLayers*v,
+ const NfsNestedBackdropTextures*art){
+ NfsNestedSceneLayout layout;NfsBgSaved saved;NfsLogoVertex logos[18];
+ size_t count=0;float bounds[4];GLint fbo=0,viewport[4],type=0,name=0,scissor[4];int ok=0;
+ if(!s||!t||!art||!nfs_bg_stage_owner(t)||s->generation!=t->generation||
+    art->generation!=t->generation||!nfs_bg_ready(s)||!nfs_bg_stage_layers(v)||
+    !nfs_nested_scene_layout(t->width,t->height,t->sampling.magFilter,&layout)||
+    !nfs_nested_scene_sidebar_sampling(t->width,t->height,&t->sampling)||
+    !nfs_frame_dimensions(t->width,t->height)||art->ratio!=nfs_wide_menu_ratio(layout.logicalWidth)||
+    !art->map||!art->panel||art->map==art->panel||
+    t->framebuffer==s->fbo[0]||t->framebuffer==s->fbo[1])return 0;
+ glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo);glGetIntegerv(GL_VIEWPORT,viewport);
+ if((GLuint)fbo!=t->framebuffer||memcmp(viewport,t->sampling.viewport,sizeof viewport)||
+    glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)return 0;
+ if(glIsEnabled(GL_SCISSOR_TEST)){
+  glGetIntegerv(GL_SCISSOR_BOX,scissor);
+  if(scissor[0]>0||scissor[1]>0||scissor[2]<0||scissor[3]<0||
+     (int64_t)scissor[0]+scissor[2]<t->width||
+     (int64_t)scissor[1]+scissor[3]<t->height)return 0;
+ }
+ glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,&type);
+ glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,&name);
+ if(type!=GL_TEXTURE||!name||(GLuint)name==art->map||(GLuint)name==art->panel||
+    (GLuint)name==s->logo.texture||!glIsTexture(art->map)||!glIsTexture(art->panel)||
+    glGetError()!=GL_NO_ERROR)return 0;
+ for(unsigned i=0;i<5;++i)if((GLuint)name==s->textures[i])return 0;
+ if(!nfs_logo_layers(v->logos,3,logos,&count,bounds)||!nfs_bg_stage_owner(t))return 0;
+ nfs_bg_save(&saved);if(!nfs_bg_stage_owner(t))return 0;
+ nfs_frame_draw_state();glDepthMask(GL_FALSE);
+ glUseProgram(s->program);glUniformMatrix4fv(s->matrix,1,GL_FALSE,layout.sidebar.projection);
+ nfs_bg_draw_wide_art(s,art->map,layout.logicalWidth,0);
+ if(!nfs_bg_stage_owner(t)||glGetError()!=GL_NO_ERROR)goto done;
+ nfs_bg_draw_wide_art(s,art->panel,layout.logicalWidth,1);
+ if(!nfs_bg_stage_owner(t)||glGetError()!=GL_NO_ERROR)goto done;
+ /* These source logos are clipped to the343-unit sidebar. Keep their source
+    anchor with the left sheet; moving them by the full extension lets them
+    spill into dialog content at16:9. Interactive text remains centred. */
+ ok=nfs_bg_stage_decoration_at(s,t,v,logos,count,
+                              layout.sidebar.projection,layout.sidebar.projection);
+ done:if(!nfs_bg_stage_owner(t)){nfs_bg_scene_context_retired(s,s->generation,0);return 0;}
+ nfs_bg_restore(&saved);
+ if(!nfs_bg_stage_owner(t)){nfs_bg_scene_context_retired(s,s->generation,0);return 0;}
+ return ok;
+}

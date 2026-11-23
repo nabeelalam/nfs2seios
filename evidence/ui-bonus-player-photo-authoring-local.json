@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "scope": "Private AI-authored bonus player-menu photograph candidates; no runtime activation",
+  "sourceArchiveSha256": "2beb04bdb2ffc05701279b74854a3a8e6643a89e5e95899c3457185fd7dcac81",
+  "sourceArchiveUnchanged": true,
+  "entries": [
+    {
+      "carIndex": 12,
+      "sourceName": "carf",
+      "displayName": "Bomber BFS",
+      "sourceArchiveOffset": 3029712,
+      "sourceSpan": 45732,
+      "sourceSha256": "469ef7e77e32f4afd6f4fbc3534d822dd2e56992935e429dea87f1a215782be0",
+      "sourceSize": [
+        306,
+        146
+      ],
+      "candidatePngSha256": "030530d574bfa0b75d580e4f60b97794c516836a11ff1763c977ca04f2895006",
+      "candidateSize": [
+        1815,
+        866
+      ],
+      "candidatePngColorType": 2,
+      "selectedVariant": 1
+    },
+    {
+      "carIndex": 13,
+      "sourceName": "care",
+      "displayName": "Tombstone",
+      "sourceArchiveOffset": 2983980,
+      "sourceSpan": 45732,
+      "sourceSha256": "e2d24cb922978fab17c328dd8cfa364424a3ada93604429923089bd15fcdc6df",
+      "sourceSize": [
+        306,
+        146
+      ],
+      "candidatePngSha256": "1fcdc3c3a203ade6e051c5e3b4c463c891dce24000aa995d42bebed2b83808c1",
+      "candidateSize": [
+        1808,
+        870
+      ],
+      "candidatePngColorType": 2,
+      "selectedVariant": 1
+    },
+    {
+      "carIndex": 14,
+      "sourceName": "card",
+      "displayName": "FZR 2000",
+      "sourceArchiveOffset": 2938248,
+      "sourceSpan": 45732,
+      "sourceSha256": "3b5391f766e0595c41ee1f6539cf60712a79edf29b2f651405e02702d900405b",
+      "sourceSize": [
+        306,
+        146
+      ],
+      "candidatePngSha256": "ebf2e094406dc3f5b298d5cc430caa681f368a19f30439d35ad024350046cf5b",
+      "candidateSize": [
+        1819,
+        865
+      ],
+      "candidatePngColorType": 2,
+      "selectedVariant": 2
+    }
+  ],
+  "tool": "built-in image_gen",
+  "privateAuthoringRecordSha256": "0416caf5d669afbb865a9d988793b2eadf426aff903a8c8dd34f544b00b68a9a",
+  "semanticDirection": "Preserve subject identity, pose, paint/livery, classic design and lighting; full rectangular scene rather than old UI cutout mask",
+  "fzrSecondVariantRemovesObsoleteBlackMask": true,
+  "oldRetainedThreeBonusPackIsBadgeArtworkNotThesePhotos": true,
+  "currentPlayerPhotoProviderCount": 12,
+  "originalNamedPlayerPhotoCount": 15,
+  "currentPreviewPacketAlreadyRecognizesAll15Names": true,
+  "normalizedForPhotoProvider": false,
+  "providerIntegrated": false,
+  "runtimeVerified": false,
+  "physicalDeviceVerified": false
+}

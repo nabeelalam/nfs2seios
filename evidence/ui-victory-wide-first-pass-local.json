@@ -1,0 +1,151 @@
+{
+  "scope": "Complete first widescreen Victory artwork authoring pass",
+  "widePlates": 16,
+  "wideCarVariants": 15,
+  "newCarVariantsThisBatch": 14,
+  "newCorrection": "Nazca C2 side lettering",
+  "baseAndMcf1PreviouslyRetained": true,
+  "images": [
+    {
+      "image": 0,
+      "masterSha256": "5cef6768191def4581fa571d42007caf3acac2576ed005e6c19b72571afb94e7",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1720717,
+      "exact16by9": false
+    },
+    {
+      "image": 1,
+      "masterSha256": "af8c139cda61ee8d763ddf9c310a29300beb7c7b4e13e02df9d33e4a365b9de2",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1628519,
+      "exact16by9": false
+    },
+    {
+      "image": 2,
+      "masterSha256": "9851f75f79bf200bd691593fa65ca5870fc6e0fa546b2ad032ad3f590ff81a5b",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1655205,
+      "exact16by9": false
+    },
+    {
+      "image": 3,
+      "masterSha256": "ca3ae48c4a22606fc5d9cf6ace76d93736175023aaa604a55fbfa7b20227d59c",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1671709,
+      "exact16by9": false
+    },
+    {
+      "image": 4,
+      "masterSha256": "cb4cfd02be43477a519364bcc3aa1dbf28864cdc192781e0f4f7b9ffbab6527c",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1666078,
+      "exact16by9": false
+    },
+    {
+      "image": 5,
+      "masterSha256": "a55fd8ee16b247bb99466abc82443fddb1e4922d8c0d1990024f56f6843244a7",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1688244,
+      "exact16by9": false
+    },
+    {
+      "image": 6,
+      "masterSha256": "eb1e3bf383ac8ee291e01ff09de1c87f06b28371692843feded3eed7ce08243b",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1696054,
+      "exact16by9": false
+    },
+    {
+      "image": 7,
+      "masterSha256": "983c1e537ffce9d53e0162c498835c9940d74aabcdfd37cd28fcbbbb97ed2936",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1696733,
+      "exact16by9": false
+    },
+    {
+      "image": 8,
+      "masterSha256": "ed26b6f327438c36160aaff008e6d34b2e2fa47e14389d8c9638521d8685acd8",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1713815,
+      "exact16by9": false
+    },
+    {
+      "image": 9,
+      "masterSha256": "b23689518e7c97a50ab4f587699b82986d0a02d966bf863635f2b9fdcd077436",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1729149,
+      "exact16by9": false
+    },
+    {
+      "image": 10,
+      "masterSha256": "f2c1f3faff6ffb3ec3feac34060348c4847b02b18d5a8486ce01328a2e6ca835",
+      "width": 1671,
+      "height": 941,
+      "bytes": 1579576,
+      "exact16by9": false
+    },
+    {
+      "image": 11,
+      "masterSha256": "3f13371a7effeb8d206166ee92cd0487f9df885c9d384e134fc39cb7d60472cf",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1670010,
+      "exact16by9": false
+    },
+    {
+      "image": 12,
+      "masterSha256": "b2aab4479154fb15a7d2291d17d2f0e26c6570ffca4cbf3a7f759cba6c97beb3",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1632516,
+      "exact16by9": false
+    },
+    {
+      "image": 13,
+      "masterSha256": "09345e83a6eb93e176db20703ecd2d0c2b65a961137aac9aeaef170e87286905",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1756843,
+      "exact16by9": false
+    },
+    {
+      "image": 14,
+      "masterSha256": "f50f54854fd3e42237df2192b5b1e05ed75be020c477a6b1fb652ca732a5671a",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1736653,
+      "exact16by9": false
+    },
+    {
+      "image": 15,
+      "masterSha256": "ab3d0846f1a24b6abba758e5fe5a9d4d20a21a5ce6ccdc492a59395cbd771740",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1661928,
+      "exact16by9": false
+    }
+  ],
+  "wideMasterBytes": 26903749,
+  "allMasterHashesDistinct": true,
+  "originalSourceAssociationRetained": true,
+  "full32ImageDraftManifestExists": true,
+  "artworkAndPromptsKeptPrivate": true,
+  "productionReviewComplete": false,
+  "productionPackGenerated": false,
+  "startupActivated": false,
+  "limits": [
+    "Native generation canvas1672x941is close to, not exact16:9; existing production pack bounds unchanged.",
+    "A complete first pass does not establish final proportion/alignment/model-detail acceptance.",
+    "No new compile, cloud build, upload or device test in this art batch."
+  ]
+}

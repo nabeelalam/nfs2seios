@@ -2,6 +2,8 @@
 /* Normal child4276F0 source channel. Immutable six-slot proof and actual
  * postconversion quads belong to this Prelude owner; no WTR phase/state is read. */
 #include "MenuTransitionBrandingAbi.h"
+#include "MainOriginalBrandingSource.h"
+static int nfs_menu_original_knockout_binding(unsigned,uint32_t,uint32_t,int);
 static struct{NfsMenuTransitionBrandingView view;NfsMenuTransitionBrandingQuad quad;unsigned active,completed,nextSlot,selectedSlot,ordinal,armed,triangles,pending,drawn;uint64_t uploads,clearEvent;GLuint nativeId;int mark;}nfs_piw_child_brand;
 static void nfs_piw_child_brand_reset(void){memset(&nfs_piw_child_brand,0,sizeof nfs_piw_child_brand);}
 static int nfs_piw_child_brand_current(void){const NfsMenuTransitionBrandingView*v=&nfs_piw_child_brand.view;return nfs_piw_current()&&nfs_piw.phase>=6&&nfs_piw.phase<=9&&(nfs_piw.view.family==6||nfs_piw.view.family==7)&&v->serial==nfs_piw.view.frame.requestSerial&&v->content==nfs_piw.view.content&&v->kind==nfs_piw.view.family&&v->form==nfs_piw.view.frame.form&&v->producerEpoch==nfs_piw.view.ownerEpoch&&v->sourceGame==nfs_piw.view.sourceGame&&v->sourceLife==nfs_piw.view.sourceLife&&v->sourceArchive==nfs_piw.view.sourceArchive&&v->sourceCatalog==nfs_piw.view.sourceCatalog&&nfs_logo_provenance.clearEvent==nfs_piw_child_brand.clearEvent&&nfs_logo_provenance.uploads==nfs_piw_child_brand.uploads;}
@@ -22,7 +24,7 @@ static int nfs_piw_child_brand_slot(unsigned slot,GLuint*id,int*mark){
  authenticated=nfs_hd_native_mark_art(NFS_NATIVE_MARK_SOURCE_RGBA5551_LE,128,sha,&expected);
  for(unsigned k=0;k<NFS_NATIVE_MARK_MAX_BINDINGS;++k){const NfsNativeMarkBinding*b=nfs_native_marks.bindings+k;
   if(b->valid&&b->address==address&&b->nativeId==ti->id&&b->encoding==NFS_NATIVE_MARK_SOURCE_RGBA5551_LE&&b->edge==128&&b->preparedBytes==32768&&b->generation==nfs_native_marks.generation&&b->revision&&b->texture<NFS_NATIVE_MARK_MAX_TEXTURES){const NfsNativeMarkTexture*t=nfs_native_marks.textures+b->texture;if(!authenticated||!nfs_piw_child_brand_art_same(&expected,&t->art)||!t->texture||t->generation!=nfs_native_marks.generation||t->texture==nfs_piw.slots[nfs_piw.index].color||t->texture==nfs_piw.scratch||t->texture==nfs_piw.art[0]||t->texture==nfs_piw.art[1])return 0;*id=ti->id;*mark=(int)k;return 1;}
- }return 0;
+ }if(nfs_main_original_knockout_digest(sha)&&nfs_menu_original_knockout_binding(slot,address,ti->id,0)){*id=ti->id;*mark=-1;return 1;}return 0;
 }
 static int nfs_piw_child_brand_ready(void){return nfs_piw_child_brand.completed&&!nfs_piw_child_brand.active&&!nfs_piw_child_brand.armed&&!nfs_piw_child_brand.pending&&nfs_piw_child_brand.nextSlot==6&&nfs_piw_child_brand_current();}
 int nfs_private_child_intro_branding_begin(const NfsMenuTransitionBrandingView*v){
@@ -66,7 +68,7 @@ static int nfs_piw_child_brand_batch(unsigned count){
  if(!nfs_frame_gpu_legacy_sampling((unsigned)g_framebufferHeight*4u/3u,(unsigned)g_framebufferHeight,linearFiltering?GL_LINEAR:GL_NEAREST,&sampling)||!nfs_graphics_scene_save(&saved,&guard))goto refused;savedReady=1;
  if(!nfs_piw_child_brand_array((unsigned)g_aPositionLoc,3,GL_FLOAT,GL_FALSE,g_vertices)||!nfs_piw_child_brand_array((unsigned)g_aTexCoordLoc,4,GL_FLOAT,GL_FALSE,g_textureCoord)||!nfs_piw_child_brand_array((unsigned)g_aColorLoc,4,GL_UNSIGNED_BYTE,GL_TRUE,g_colorValues))goto refused;
  NFS_CHILD_BRAND_GL(glGetIntegerv(GL_FRAMEBUFFER_BINDING,&fbo));NFS_CHILD_BRAND_GL(glGetIntegerv(GL_CURRENT_PROGRAM,&program));NFS_CHILD_BRAND_GL(glGetIntegerv(GL_ACTIVE_TEXTURE,&active));NFS_CHILD_BRAND_GL(glGetIntegerv(GL_TEXTURE_BINDING_2D,&binding));NFS_CHILD_BRAND_GL(glGetIntegerv(GL_VIEWPORT,vp));
- if((GLuint)fbo!=nfs_piw.slots[nfs_piw.index].nativeFbo||(GLuint)program!=g_shaderProgram||active!=GL_TEXTURE0||(GLuint)binding!=id||g_framebufferTexture!=nfs_piw.slots[nfs_piw.index].nativeColor||g_framebufferDepth!=nfs_piw.slots[nfs_piw.index].nativeDepth||memcmp(vp,sampling.viewport,sizeof vp)||memcmp(g_matrix,sampling.projection,sizeof g_matrix)||nfs_native_marks.selected!=mark||(mark<0||!nfs_native_marks.sent))goto refused;
+ if((GLuint)fbo!=nfs_piw.slots[nfs_piw.index].nativeFbo||(GLuint)program!=g_shaderProgram||active!=GL_TEXTURE0||(GLuint)binding!=id||g_framebufferTexture!=nfs_piw.slots[nfs_piw.index].nativeColor||g_framebufferDepth!=nfs_piw.slots[nfs_piw.index].nativeDepth||memcmp(vp,sampling.viewport,sizeof vp)||memcmp(g_matrix,sampling.projection,sizeof g_matrix)||nfs_native_marks.selected!=mark||(mark>=0?!nfs_native_marks.sent:!nfs_menu_original_knockout_binding(nfs_piw_child_brand.selectedSlot,nfs_piw_child_brand.view.slots[nfs_piw_child_brand.selectedSlot].descriptorWords[5],id,1)))goto refused;
  NFS_CHILD_BRAND_GL(glGetUniformfv(g_shaderProgram,g_uMatrixLoc,realMatrix));if(memcmp(realMatrix,g_matrix,sizeof realMatrix))goto refused;
  NFS_CHILD_BRAND_GL(glGetUniformfv(g_shaderProgram,g_uTextureEnabledLoc,&flag));if(flag!=1.f)goto refused;NFS_CHILD_BRAND_GL(glGetUniformfv(g_shaderProgram,g_uFogEnabledLoc,&flag));if(flag!=0.f)goto refused;NFS_CHILD_BRAND_GL(samplerLoc=glGetUniformLocation(g_shaderProgram,"uTextureSampler"));if(samplerLoc<0)goto refused;NFS_CHILD_BRAND_GL(glGetUniformiv(g_shaderProgram,samplerLoc,&unit));if(unit!=0)goto refused;
  NFS_CHILD_BRAND_GL(glGetUniformfv(g_shaderProgram,nfs_native_marks.enable,&flag));if(flag!=(mark>=0?1.f:0.f))goto refused;

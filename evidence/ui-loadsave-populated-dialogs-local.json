@@ -1,0 +1,296 @@
+{
+  "scope": "Original Load/Save populated chooser selection and delete-confirmation cancellation",
+  "binarySHA256": "48a3e158daff4734c698b615cce50d7f610a99c035a71619f74b2cc8ca3cf648",
+  "drawables": [
+    [
+      708,
+      492
+    ]
+  ],
+  "fixture": "Three uniquely named temporary .tou entries in copied save directory, removed after both runs. They were never loaded. Delete confirmation was cancelled.",
+  "existingSavesRestored": true,
+  "originalAssetsUntouched": true,
+  "runs": [
+    {
+      "tag": "chooser-files-ipad-v1",
+      "result": {
+        "scope": "Original Load/Save entry and parent-return continuity; copied fixture",
+        "durableBackupWritten": true,
+        "physicalIpadVerified": false,
+        "newArtworkActivated": true,
+        "driverExitCode": 0,
+        "statsUnchanged": true,
+        "temporaryFilesRemoved": true,
+        "protectedFilesRestored": true,
+        "all21ResourcesUnchanged": true,
+        "staticSourceRecords": [],
+        "loadsaveWidePresented": true,
+        "cacheSourcesReady": 0,
+        "nativePassesVerified": 0,
+        "cleanShutdown": true
+      },
+      "actions": [
+        {
+          "action": "options-parent",
+          "logStart": 197351,
+          "logEnd": 281026,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "314",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "434",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-loadsave",
+          "logStart": 331349,
+          "logEnd": 343308,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "467",
+              "previousFrames": "33"
+            },
+            {
+              "choice": "loadsave-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "479",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "chooser-open",
+          "logStart": 346656,
+          "logEnd": 351977,
+          "routes": []
+        },
+        {
+          "action": "chooser-cancel",
+          "logStart": 353905,
+          "logEnd": 366410,
+          "routes": []
+        },
+        {
+          "action": "return-loadsave",
+          "logStart": 366410,
+          "logEnd": 413929,
+          "routes": [
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "577",
+              "previousFrames": "98"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "589",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "692",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 419989,
+          "logEnd": 458966,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "715",
+              "previousFrames": "23"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "727",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "childDrawFrames": 58,
+      "maxHDTextVertices": 180,
+      "actualCapture": "012-chooser-next-file.png",
+      "captureSHA256": "470e7aa0f9bbd228863f77993e4d4ac708cf8bfe48bf58f1fcc52eb05ae04724",
+      "captureVisuallyReviewed": true
+    },
+    {
+      "tag": "delete-confirm-cancel-ipad-v1",
+      "result": {
+        "scope": "Original Load/Save entry and parent-return continuity; copied fixture",
+        "durableBackupWritten": true,
+        "physicalIpadVerified": false,
+        "newArtworkActivated": true,
+        "driverExitCode": 0,
+        "testEntriesUnchangedBeforeCleanup": true,
+        "statsUnchanged": true,
+        "temporaryFilesRemoved": true,
+        "protectedFilesRestored": true,
+        "all21ResourcesUnchanged": true,
+        "staticSourceRecords": [],
+        "loadsaveWidePresented": true,
+        "cacheSourcesReady": 0,
+        "nativePassesVerified": 0,
+        "cleanShutdown": true
+      },
+      "actions": [
+        {
+          "action": "options-parent",
+          "logStart": 196194,
+          "logEnd": 279869,
+          "routes": [
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "362",
+              "previousFrames": "16"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "482",
+              "previousFrames": "120"
+            }
+          ]
+        },
+        {
+          "action": "enter-loadsave",
+          "logStart": 333686,
+          "logEnd": 345985,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "521",
+              "previousFrames": "39"
+            },
+            {
+              "choice": "loadsave-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "533",
+              "previousFrames": "12"
+            }
+          ]
+        },
+        {
+          "action": "chooser-open",
+          "logStart": 351846,
+          "logEnd": 357022,
+          "routes": []
+        },
+        {
+          "action": "delete-confirm-open",
+          "logStart": 359095,
+          "logEnd": 362393,
+          "routes": []
+        },
+        {
+          "action": "delete-confirm-cancel",
+          "logStart": 362393,
+          "logEnd": 376846,
+          "routes": []
+        },
+        {
+          "action": "return-loadsave",
+          "logStart": 376846,
+          "logEnd": 424749,
+          "routes": [
+            {
+              "choice": "nested-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "648",
+              "previousFrames": "115"
+            },
+            {
+              "choice": "transition-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "660",
+              "previousFrames": "12"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "763",
+              "previousFrames": "103"
+            }
+          ]
+        },
+        {
+          "action": "return-main",
+          "logStart": 431372,
+          "logEnd": 473431,
+          "routes": [
+            {
+              "choice": "child-return-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "788",
+              "previousFrames": "25"
+            },
+            {
+              "choice": "menu-wide",
+              "width": "708",
+              "height": "492",
+              "frame": "800",
+              "previousFrames": "12"
+            }
+          ]
+        }
+      ],
+      "childDrawFrames": 61,
+      "maxHDTextVertices": 180,
+      "actualCapture": "013-delete-confirmation.png",
+      "captureSHA256": "8621101b73662caf58a3f9b704d1b008cc3f6dbf0608f54adf3216ad3071d36a",
+      "captureVisuallyReviewed": true
+    }
+  ],
+  "visualReview": [
+    "All three eight-character filenames and original vertical CANCEL label render in HD.",
+    "Down input selects UITEST02 with the original row highlight; cursor and authored parent remain visible.",
+    "Confirmation shows the authored SE badge, original delete question and Yes/No controls; Escape dismisses it without deleting a test entry."
+  ],
+  "supersedes": "The prior empty-list image does not establish missing text; populated-list text is now directly observed.",
+  "presentation": "No native route selections occurred in either observed entry, chooser/confirmation, cancellation or return interval. Earlier intermittent prelude remains open.",
+  "limits": [
+    "Local software-GLES original-game runs, not physical iPad acceptance.",
+    "Read/list/selection/cancel only; this is not saved-tournament loading or successful deletion verification.",
+    "Name/alert and other locales still require appropriate current-source coverage.",
+    "Legacy wrapper aggregate source/native counters use stale Credits prefixes; actual child draw log counts above are authoritative."
+  ],
+  "newBuild": false,
+  "cloudBuild": false,
+  "published": false
+}

@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "scope": "Complete98-scene private slideshow artwork/resource batch and production CPU-provider validation. No new application/GPU/device/battery acceptance.",
+  "images": 98,
+  "backing": [
+    1920,
+    1080
+  ],
+  "center": [
+    1440,
+    1080
+  ],
+  "screenPreviews": [
+    [
+      800,
+      450
+    ],
+    [
+      708,
+      492
+    ]
+  ],
+  "method": "Coherent photo-only scene; center and sides derived from same new master, exact separate native footer. Source-specific motion, parked states, cameras, intentional details and plates reviewed.",
+  "losslessPacking": true,
+  "photo": {
+    "count": 98,
+    "bytes": 159889342,
+    "sha256": "88181ca3ee9e148e3166dd18db082e490bc271a21cdb17d482c9076465f98904",
+    "headerSha256": "c8201f8abc7a3164aa84f25d9fc25be1e12272e59e42eab39978cf1844543619",
+    "encodedChunks": 98,
+    "reusedChunks": 0
+  },
+  "footer": {
+    "images": 15,
+    "bindings": 98,
+    "fileBytes": 5321403,
+    "decodedBytes": 188743680,
+    "packSha256": "bbd3016b6a3b21d36f84ae859a267cc70d653b5a7191585e9cdaea4428675c91",
+    "appIntegrated": false,
+    "physicalIpadVerified": false,
+    "headerSha256": "3c85a28d71241fbac2e5cfb673c86cfd65a2b57508df992222c79f126adcf2f4"
+  },
+  "panorama": {
+    "version": 1,
+    "images": 98,
+    "recordBytes": 216,
+    "fileBytes": 73331466,
+    "compressedSideBytes": 73310266,
+    "packSha256": "596110c0d0d7a0f33d889665cfceb48856c2b99fcee5599c26495ce8f5fcbf8f",
+    "centerPixelsStored": false,
+    "losslessVerified": true,
+    "appIntegrated": false
+  },
+  "combinedBytes": 238542211,
+  "previousPhotoAndFooterBytes": 225266081,
+  "netIncreaseIncludingWideSidesBytes": 13276130,
+  "photoBytesSaved": 59146977,
+  "footerBytesSaved": 908359,
+  "sourceBindings": {
+    "uniqueOriginalArchiveEntryPairs": 98,
+    "normalFooterKeysPreserved": 95,
+    "newPlainFooterKeys": 3,
+    "specialHandling": "Two body/livery corrections and one showroom-wall correction use retained authentic ink/vector shapes registered to the new photograph. Stale screen-position overlays are not reused. Manual registration uncertainty is retained privately; not a full authenticity claim for tiny generated sponsor/physical glyphs."
+  },
+  "review": {
+    "localBatchComplete": true,
+    "independentFourFamilyCases": 31,
+    "independentThreeFamilyCases": 24,
+    "rootReviewedOtherGroupsAndFocusedCorrections": true,
+    "knownScope": "Small original-layout brand-badge/nose contact remains in several Ferrari views; incidental Cala detail-mirror edge crop is recorded while its hero glass is complete. No user approval or every-pixel original identity claimed."
+  },
+  "productionCheck": {
+    "result": "PASS",
+    "exitCode": 0,
+    "sanitizers": [
+      "ASan detect_leaks=1",
+      "UBSan halt_on_error=1"
+    ],
+    "productionPhotoDecodes": 98,
+    "productionPanoramaAcquisitions": 98,
+    "fullComposedRgbaShaChecks": 98,
+    "productionFooterImagesLoaded": 15,
+    "actualSourceFooterRoutesChecked": 98,
+    "oldCenterKeyRejections": 98,
+    "oldCombinedFooterKeyRejections": 3
+  },
+  "preservation": {
+    "originalMasterSourceMetadataAndRollbackDigestsReverified": true,
+    "privatePixelAndInkPayloadsNotPublished": true,
+    "approvedCodeMetadataPairOnlyUpdated": true,
+    "singlePhotoEncodingNoDryDuplicate": true
+  },
+  "remaining": [
+    "Matched application build with new source-only release pins and optional panorama injection",
+    "Actual grouped GPU/application validation of final resources",
+    "Complete private IPA byte/privacy checks and physical iPad acceptance",
+    "Broader port/performance/Low Power Mode/battery goals remain active"
+  ],
+  "cloudBuild": false,
+  "published": false,
+  "goalComplete": false
+}

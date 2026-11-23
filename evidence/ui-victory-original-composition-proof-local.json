@@ -1,0 +1,40 @@
+{
+  "scope": "Opt-in original victory backdrop and winner-image composition collector",
+  "implementation": {
+    "sourceCatalog": "finite16 pinned RGB565 resources",
+    "imageReceipt": "immutable original byte snapshot, full source digest and exact span",
+    "compositionReceipt": "640x480 backdrop followed by optional one winner photo at original intrinsic bounds",
+    "liveScope": "existing405B30 entry/405B60 resolution, original4154C0 owner and archive-ready state",
+    "targetBinding": "same exact original target from backdrop through photo and final clean plane",
+    "publication": "receipt attaches only after original dynamic-text/finite-word reversal exactly reproduces scene",
+    "enabledByDefault": false,
+    "optIn": "NFS_PRIVATE_VICTORY_ART_PROOF=1",
+    "renderingBehaviorChanged": false,
+    "failureBehavior": "clear artwork proof independently; current text collector remains strict and unchanged"
+  },
+  "checks": {
+    "sourceImages": 16,
+    "winnerCompositions": 15,
+    "asanUbsan": "passed",
+    "sanitizerStderrBytes": 0,
+    "currentEngineCollectorSyntax": "passed",
+    "actualVictoryRoute": false
+  },
+  "negativeCoverage": [
+    "unknown or null resource name",
+    "changed or truncated original bytes",
+    "source-name/image mismatch",
+    "altered pixel inside winner rectangle",
+    "altered pixel outside winner rectangle",
+    "winner without background",
+    "background supplied as winner",
+    "second winner over an already-composed winner",
+    "invalid background plane"
+  ],
+  "evidenceLimits": [
+    "Fixture reference planes are independently assembled from original RGB565 resources; they are not captured original-game draws.",
+    "Source-model compatibility is verified; actual original copy-mode behavior must still be witnessed on the Victory route.",
+    "The collector compiles in an actual prepared engine translation unit; it has not yet been observed publishing a receipt during gameplay.",
+    "No remastered Victory renderer activation, app rebuild, cloud build, physical iPad performance or battery claim."
+  ]
+}

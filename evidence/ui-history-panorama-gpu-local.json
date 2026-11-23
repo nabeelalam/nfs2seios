@@ -1,0 +1,50 @@
+{
+  "scope": "Actual information-wide shader and production state helpers on real EGL/GLES using synthetic frame provenance and synthetic artwork. Not original-game panorama activation or physical iPad proof.",
+  "optimizedChecks": 45,
+  "asanUbsanChecks": 45,
+  "projectCtest": [
+    "history_wide_art_lifetime passed",
+    "history_panorama_actual_gles passed"
+  ],
+  "outputs": [
+    [
+      800,
+      450
+    ],
+    [
+      708,
+      492
+    ]
+  ],
+  "pixelEvidence": [
+    "Complete patterned interior central region equals reference render without panorama",
+    "Left and right outside regions sample the panorama",
+    "Top-down artwork orientation retained"
+  ],
+  "ownershipAndState": [
+    "Presentation retains and releases owner",
+    "Revoked optional art not sampled; original center preserved",
+    "Changed native clear rejects the frame",
+    "Context retirement releases retained owner",
+    "Foreign-context retirement performs no texture deletion",
+    "Production GL state, texture unit 1 and unpack alignment restored"
+  ],
+  "sharedStateHelperMatchesPreviousProductionBody": true,
+  "freshRendererGeneration": {
+    "typedGlideExports": 46,
+    "allFourCheckedHelpersMatchSource": true
+  },
+  "sourceSHA256": {
+    "src/hd/BackgroundSceneState.h": "5e33192320d679f0016d8be9f4bd29f284a7e7861a926503669f71ec01524f7f",
+    "src/hd/ClassicScreens/HistoryPanoramaAbi.h": "c0869209de67cc1e62732c764d38416fac06fc31fa63c22b8ccda5b822aa53d2",
+    "src/hd/ClassicScreens/InformationWideRenderer.inc": "48b0fc0381a18d01d7f67d8ae13b76b7dfcac9a36bfab984c1ee256d99a0206c",
+    "src/hd/ClassicScreens/HistoryRenderer.inc": "279f1ad3786d8992dd2dd03ccd00a69c3fb1311f967afbe0a53595c9cd76e032",
+    "tests/history_panorama_gpu_tests.cpp": "1ba6d4fe71a3434aea0b84c71acb7293196f3aaabefc34914b39dec2bad4f2b5"
+  },
+  "limits": [
+    "Synthetic provenance does not exercise the original History collector",
+    "Application artwork activation and authored resource producer are not connected",
+    "Draft seams are unfinished and no panorama is packaged",
+    "Apple compilation and physical iPad acceptance remain pending"
+  ]
+}

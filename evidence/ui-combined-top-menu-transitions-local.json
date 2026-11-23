@@ -1,0 +1,299 @@
+{
+  "scope": "Combined original-game top-level menu transitions on existing coherent History candidate; local software GLES only",
+  "candidateBinarySHA256": "7903105a29540ac21bf6ccb9d096390d3416552193c24d40da5f997f707c4e87",
+  "menus": [
+    "Setup",
+    "Location",
+    "Player One",
+    "Opponents",
+    "Options"
+  ],
+  "resourceCount": 20,
+  "newCompile": false,
+  "runs": [
+    {
+      "drawable": [
+        708,
+        492
+      ],
+      "actionSections": 13,
+      "recordedRouteChanges": 27,
+      "nativeFallbackRouteChanges": 0,
+      "actions": [
+        {
+          "action": "enter-setup",
+          "routeChoices": [
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-setup",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-location",
+          "routeChoices": [
+            "transition-wide",
+            "intro-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "change-location",
+          "routeChoices": [
+            "child-exit-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-location",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-p1",
+          "routeChoices": [
+            "transition-wide",
+            "intro-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "change-p1",
+          "routeChoices": [
+            "child-exit-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "return-p1",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-opponents",
+          "routeChoices": [
+            "transition-wide",
+            "intro-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "change-opponents",
+          "routeChoices": [
+            "child-exit-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-opponents",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-options",
+          "routeChoices": [
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-options",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        }
+      ],
+      "gameLogSHA256": "1ec1f61f6e762411af884ff721ebf8c79d97a90da334c0198bb951f29617f95a",
+      "actionsSHA256": "11bfe9bb9b26fa59fc4c35029578d04cb168e55dfbeac028dd15eefaa3561bf8",
+      "reviewedCaptures": [
+        {
+          "name": "003-enter-setup-middle.bmp",
+          "sha256": "2dfc8adcaefdeaff90cf484a0a0820cf65a354d7afed10f7c63ee6f1c0d92fa6"
+        },
+        {
+          "name": "010-enter-location-middle.bmp",
+          "sha256": "f45b7650d600b5c882b96837a3932665af6e25992d68b1aa63388c57ded6cd33"
+        },
+        {
+          "name": "024-change-p1-settled.bmp",
+          "sha256": "7b423f1eca3b4eac05d3488fa783a209bb4e3b1de4ad60bc646ec4791c4c135f"
+        },
+        {
+          "name": "034-change-opponents-settled.bmp",
+          "sha256": "787929829fa1950a09d31661f5271fd9f40241824a9e07f404ce1d09aac5ee2b"
+        },
+        {
+          "name": "041-enter-options-settled.bmp",
+          "sha256": "cbeb2588dec9af3125d717428c174850a212468e75b685a5b3fe180d6b163724"
+        },
+        {
+          "name": "045-final-main.bmp",
+          "sha256": "ea504844a371e2ef84754f055047229b32968fff98595993558c5c792cbc571b"
+        }
+      ],
+      "cleanShutdown": true,
+      "copiedConfigurationRestored": true,
+      "copiedStatsUnchanged": true,
+      "all20ResourcesUnchanged": true
+    },
+    {
+      "drawable": [
+        800,
+        450
+      ],
+      "actionSections": 13,
+      "recordedRouteChanges": 27,
+      "nativeFallbackRouteChanges": 0,
+      "actions": [
+        {
+          "action": "enter-setup",
+          "routeChoices": [
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-setup",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-location",
+          "routeChoices": [
+            "transition-wide",
+            "intro-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "change-location",
+          "routeChoices": [
+            "child-exit-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-location",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-p1",
+          "routeChoices": [
+            "transition-wide",
+            "intro-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "change-p1",
+          "routeChoices": [
+            "child-exit-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "return-p1",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-opponents",
+          "routeChoices": [
+            "transition-wide",
+            "intro-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "change-opponents",
+          "routeChoices": [
+            "child-exit-wide",
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-opponents",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        },
+        {
+          "action": "enter-options",
+          "routeChoices": [
+            "transition-wide"
+          ]
+        },
+        {
+          "action": "return-options",
+          "routeChoices": [
+            "child-return-wide",
+            "menu-wide"
+          ]
+        }
+      ],
+      "gameLogSHA256": "fa95e5ee9585fd7f46d666a5bac3ca71b4775238966fa63791f2c9103cd95c62",
+      "actionsSHA256": "d6821c323405448ac81cf368568306ed19e4f7764c4c9ac814d2a3cacc448471",
+      "reviewedCaptures": [
+        {
+          "name": "003-enter-setup-middle.bmp",
+          "sha256": "025b09d801c7c6c67c0e482784d201ba337006279b139832534d1c6fb8fc1101"
+        },
+        {
+          "name": "010-enter-location-middle.bmp",
+          "sha256": "3ab904dec14102987cf1c00fc3d7aba6979133a8542539cb515b35f65457f288"
+        },
+        {
+          "name": "024-change-p1-settled.bmp",
+          "sha256": "3375dafee47fa4242fd145a581a69ab91928b3b9894a70b427265e11bad0d704"
+        },
+        {
+          "name": "034-change-opponents-settled.bmp",
+          "sha256": "de13321efee9abf5ec3641de94aa242ce4eceab803729057989965c5cfcfbaa1"
+        },
+        {
+          "name": "041-enter-options-settled.bmp",
+          "sha256": "0d527fef0c1748cfb31f38d91aebe4e1fc5bad8794adb82790f7b89fd6232cce"
+        },
+        {
+          "name": "045-final-main.bmp",
+          "sha256": "0e4a86e5a7d754273a01d9b9132946fed5cf82646d933f4fb247f5af1c32be06"
+        }
+      ],
+      "cleanShutdown": true,
+      "copiedConfigurationRestored": true,
+      "copiedStatsUnchanged": true,
+      "all20ResourcesUnchanged": true
+    }
+  ],
+  "visualReview": "Reviewed intermediate/settled samples retain authored background, logo, type, photos and badges across the swipes; final Main fills both drawable ratios",
+  "firstActualVisibleFrameProven": false,
+  "allAnimationFramesVisuallyReviewed": false,
+  "nestedOptionsScreensVerified": false,
+  "allUIComplete": false,
+  "physicalIpadVerified": false,
+  "cloudBuild": false,
+  "harnessLimitations": {
+    "initialPathError": "Wrong copied-game location detected before app launch; corrected without a build",
+    "first16x9Pass": "Stopped in Player One after short Escape produced no Main return; white child sidebar caption could mimic selected Main row",
+    "guardedPass": "Require dark glyphs in at least four Main rows, a dominant white highlight and focused500ms Escape pulse before further navigation",
+    "shortInputLossCauseProven": false,
+    "gameInputCodeChanged": false
+  }
+}

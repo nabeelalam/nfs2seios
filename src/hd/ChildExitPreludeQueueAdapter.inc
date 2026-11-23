@@ -21,16 +21,17 @@ struct Life{std::atomic<bool>alive{true};};
 struct Owner{
  std::shared_ptr<const void>typed;std::shared_ptr<const bg::Prepared>full;
  std::shared_ptr<const std::vector<uint8_t>>authenticatedSidebar;
- std::shared_ptr<const nfs_child_static_scene::Record>history;std::array<uint16_t,bg::Full>historySidebar{};
+ std::shared_ptr<const nfs_child_static_scene::Record>history;std::shared_ptr<const nfs_child_static_scene::SidebarRecord>historySidebarSource;bool historicalNativeRevalidation=false;std::array<uint16_t,bg::Full>historySidebar{};
  std::shared_ptr<const mt::Packet>sidebar;std::shared_ptr<const bg::SourceCatalog>catalog;
  std::shared_ptr<const nfs_main_sidebar_origin::GameLife>gameLife;std::shared_ptr<Life>life;
  std::shared_ptr<const nfs_player_native::Proof>playerNative;nfs_player_native::CurrentBinding playerBinding{};
  std::shared_ptr<const nfs_child_photo_live::Proof>childPhoto;std::shared_ptr<const nfs_player_photo_live::Proof>playerPhoto;
  bool playerPhotoReceipt=false;uint32_t photoStack=0,photoOldCar=0,photoNewCar=0;
  unsigned captureStage=0;uint32_t formGuest=0;NfsChildExitPreludeView view{};std::atomic<unsigned>refs{1};
+ static void rejectLease(void*p){auto*o=static_cast<Owner*>(p);if(o&&o->historicalNativeRevalidation&&o->life)o->life->alive.store(false,std::memory_order_release);}
  static void retain(void*p){if(p)static_cast<Owner*>(p)->refs.fetch_add(1,std::memory_order_relaxed);}
  static void release(void*p){if(p&&static_cast<Owner*>(p)->refs.fetch_sub(1,std::memory_order_acq_rel)==1)delete static_cast<Owner*>(p);}
- static int current(void*p){const auto*o=static_cast<const Owner*>(p);return o&&o->life&&o->life->alive.load(std::memory_order_acquire)&&o->full&&o->full->valid&&((o->history&&o->authenticatedSidebar&&o->history->gameLife==o->gameLife)||(!o->history&&o->sidebar&&o->sidebar->life&&o->sidebar->life->current()))&&o->gameLife&&o->gameLife->current()&&o->catalog&&nfs_background_scene_runtime::acquireCatalog()==o->catalog&&o->view.uploadEvent&&nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire)==o->view.uploadEvent&&(!o->playerNative||o->playerNative->current(o->playerBinding))&&(!o->childPhoto||nfs_child_photo_live::ownedCurrent(*o->childPhoto))&&(!o->playerPhoto||(o->playerPhoto->art&&o->playerPhoto->art->current()));}
+ static int current(void*p){const auto*o=static_cast<const Owner*>(p);return o&&o->life&&o->life->alive.load(std::memory_order_acquire)&&o->full&&o->full->valid&&((o->history&&o->authenticatedSidebar&&o->history->gameLife==o->gameLife&&o->history->token&&o->history->token->alive.load(std::memory_order_acquire)&&(!o->historySidebarSource||(o->historySidebarSource->alive.load(std::memory_order_acquire)&&o->historySidebarSource->token==o->history->token)))||(!o->history&&o->sidebar&&o->sidebar->life&&o->sidebar->life->current()))&&o->gameLife&&o->gameLife->current()&&o->catalog&&nfs_background_scene_runtime::acquireCatalog()==o->catalog&&o->view.uploadEvent&&nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire)==o->view.uploadEvent&&(!o->playerNative||o->playerNative->current(o->playerBinding))&&(!o->childPhoto||nfs_child_photo_live::ownedCurrent(*o->childPhoto))&&(!o->playerPhoto||(o->playerPhoto->art&&o->playerPhoto->art->current()));}
 };
 inline std::shared_ptr<Owner>adopt(Owner*p){return std::shared_ptr<Owner>(p,[](Owner*q){Owner::release(q);});}
 inline void note(unsigned reason,const Owner*o=nullptr)noexcept{Errno e;static thread_local unsigned n;const char*p=std::getenv("NFS_PRIVATE_BACKGROUND_SCENE_TRACE");if(p&&p[0]=='1'&&!p[1]&&n++<64)std::fprintf(stderr,"CHILD EXIT source reason=%u family=%u session=%llu upload=%llu stage=%u\n",reason,o?o->view.family:0,(unsigned long long)(o?o->view.session:0),(unsigned long long)(o?o->view.uploadEvent:0),o?o->captureStage:0);}
@@ -73,23 +74,35 @@ inline bool actualSidebarKeys(Owner&o,bool mint)noexcept{try{nfs::GuestCopyTrans
  }return true;}catch(...){return false;}}
 inline std::shared_ptr<Owner>captureHistory(Game&g,uint32_t form,uint64_t session,const std::shared_ptr<Life>&life)noexcept{Errno e;try{
  const uint64_t event=nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire);
- auto r=nfs_child_static_scene::acquire(reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),form,event);if(!r){note(6);return {};}
- if(!r->sidebarRaw||r->sidebarRaw->size()!=16+bg::Side*2||!r->full||!r->full->valid||nfs_background_scene_runtime::acquireCatalog()!=r->domain.catalog){note(7);return {};}
- auto o=adopt(new Owner);o->history=r;o->typed=r->typed;o->full=r->full;o->catalog=r->domain.catalog;o->gameLife=r->gameLife;o->life=life;o->formGuest=form;o->view=r->view;o->view.session=session;o->authenticatedSidebar=r->sidebarRaw;
- for(unsigned y=0;y<480;++y)for(unsigned x=0;x<343;++x)o->historySidebar[y*640+x]=bg::le16(r->sidebarRaw->data()+16+2*(y*343+x));
- o->view.sidebar565=o->historySidebar.data();o->view.sidebarWords=bg::Full;o->view.sidebarContent=r->domain.copySerial;
- if(!actualSidebarKeys(*o,true)){note(8,o.get());return {};}
- o->view.owner=o.get();o->view.retain=Owner::retain;o->view.release=Owner::release;o->view.current=Owner::current;o->captureStage=6;
+ auto r=nfs_child_static_scene::acquire(reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),form,event);std::shared_ptr<const nfs_child_static_scene::SidebarRecord>side=r?r->sidebarOrigin:nullptr;bool revalidate=false;
+ if(!r){auto*l=nfs_player_scene_live::current(g);const auto canonical=nfs_player_scene_live::canonicalForm(form);if(l&&!l->invalid&&l->on&&l->mainDepth==1&&canonical&&l->form==canonical&&l->formGuest==form&&nfs_player_scene_live::archiveCurrent(*l)){
+  const nfs_child_static_scene::Domain live{l->game,l->thread,l->formGuest,l->ownerEpoch,l->archive,event,0,0,l->catalogue};r=nfs_child_static_scene::acquirePlayerHistoryForNativeRevalidation(live,canonical,side);revalidate=bool(r);
+ }}if(!r){note(6);return {};}
+ const auto sidebarRaw=side?side->raw:r->sidebarRaw;
+ if(!sidebarRaw||sidebarRaw->size()!=16+bg::Side*2||!r->full||!r->full->valid||nfs_background_scene_runtime::acquireCatalog()!=r->domain.catalog){note(7);return {};}
+ auto o=adopt(new Owner);o->history=r;o->historySidebarSource=side;o->historicalNativeRevalidation=revalidate;o->typed=r->typed;o->full=r->full;o->catalog=r->domain.catalog;o->gameLife=r->gameLife;o->life=life;o->formGuest=form;o->view=r->view;o->view.session=session;o->view.uploadEvent=event;o->authenticatedSidebar=sidebarRaw;
+ for(unsigned y=0;y<480;++y)for(unsigned x=0;x<343;++x)o->historySidebar[y*640+x]=bg::le16(sidebarRaw->data()+16+2*(y*343+x));
+ o->view.sidebar565=o->historySidebar.data();o->view.sidebarWords=bg::Full;o->view.sidebarContent=side?side->content:r->domain.copySerial;
+ if(!actualSidebarKeys(*o,true)){note(8,o.get());return {};}if(side&&!std::equal(side->keys.begin(),side->keys.end(),o->view.sidebarKeys)){note(8,o.get());return {};}if(revalidate)nfs_child_static_scene::diagnostic(14,r->domain.uploadEvent,event);
+ o->view.owner=o.get();o->view.retain=Owner::retain;o->view.release=Owner::release;o->view.current=Owner::current;o->view.rejectLease=revalidate?Owner::rejectLease:nullptr;o->captureStage=6;
  if(!Owner::current(o.get())){note(9,o.get());return {};}note(0,o.get());return o;
  }catch(...){note(10);return {};}}
+inline bool historyLeaseCurrent(Game&g,const Owner&o)noexcept{
+ if(!o.history)return false;
+ if(!o.historicalNativeRevalidation)return nfs_child_static_scene::current(*o.history,reinterpret_cast<uintptr_t>(&g),nfs_logo_publisher::threadToken(),o.formGuest,o.view.uploadEvent);
+ auto*l=nfs_player_scene_live::current(g);if(!l||l->invalid||!l->on||l->mainDepth!=1||l->formGuest!=o.formGuest||!nfs_player_scene_live::archiveCurrent(*l))return false;
+ const nfs_child_static_scene::Domain live{l->game,l->thread,l->formGuest,l->ownerEpoch,l->archive,o.view.uploadEvent,0,0,l->catalogue};std::shared_ptr<const nfs_child_static_scene::SidebarRecord>side;
+ return nfs_child_static_scene::acquirePlayerHistoryForNativeRevalidation(live,l->form,side)==o.history&&side==o.historySidebarSource&&Owner::current(const_cast<Owner*>(&o));
+}
 // Original40D1B0 temporarily restores the outgoing Player selection while
 // animating incoming photo tiles. This receipt is minted ONLY immediately after
 // its427ED0 return, when the ordinary current-photo proof still matches new car.
 inline bool playerPreviewPhotoCurrent(Game&g,const Owner&o,bool restored)noexcept{try{
  const auto q=o.playerPhoto;auto*l=nfs_player_scene_live::current(g);
- if(!o.playerPhotoReceipt||!q||!l||l->invalid||q!=nfs_player_photo_live::published()||q->game!=o.view.sourceGame||q->game!=reinterpret_cast<uintptr_t>(&g)||q->thread!=nfs_logo_publisher::threadToken()||q->epoch!=o.view.ownerEpoch||q->epoch!=l->ownerEpoch||q->form!=o.view.form||q->form!=l->form||l->formGuest!=o.formGuest||l->catalogue!=o.catalog||q->archive!=o.view.sourceArchive||q->car!=o.photoNewCar||q->car>=12||!q->art||!q->art->current()||uint32_t(g.esi)!=o.formGuest||uint32_t(g.esp)!=o.photoStack||uint64_t(o.photoStack)+8>UINT64_C(0x100000000)){note(22,&o);return false;}
+ if(!o.playerPhotoReceipt||!q||!l||l->invalid||q!=nfs_player_photo_live::published()||q->game!=o.view.sourceGame||q->game!=reinterpret_cast<uintptr_t>(&g)||q->thread!=nfs_logo_publisher::threadToken()||q->epoch!=o.view.ownerEpoch||q->epoch!=l->ownerEpoch||q->form!=o.view.form||q->form!=l->form||l->formGuest!=o.formGuest||l->catalogue!=o.catalog||q->archive!=o.view.sourceArchive||q->car!=o.photoNewCar||q->car>=NFS_PLAYER_PHOTO_SOURCE_COUNT||!q->art||!q->art->current()||uint32_t(g.esi)!=o.formGuest||uint32_t(g.esp)!=o.photoStack||uint64_t(o.photoStack)+8>UINT64_C(0x100000000)){note(22,&o);return false;}
  nfs::GuestCopyTransaction tx;const uint32_t selected=q->form==nfs_player_preview::Player1Form?uint32_t(guest_address(byte_512DBF)):uint32_t(guest_address(byte_512DDA));
- if(tx.load<uint32_t>(dword_4D40B8)!=q->archive||tx.load<uint8_t>(byte_512DD1)||tx.load<uint8_t>(o.photoStack)!=o.photoOldCar||tx.load<uint32_t>(o.photoStack+4)!=o.photoNewCar||tx.load<uint8_t>(selected)!=(restored?o.photoOldCar:o.photoNewCar)){note(23,&o);return false;}
+ if(tx.load<uint32_t>(dword_4D40B8)!=q->archive||(!q->graph&&q->car<NFS_PLAYER_PHOTO_STANDARD_COUNT&&tx.load<uint8_t>(byte_512DD1))||tx.load<uint8_t>(o.photoStack)!=o.photoOldCar||tx.load<uint32_t>(o.photoStack+4)!=o.photoNewCar||tx.load<uint8_t>(selected)!=(restored?o.photoOldCar:o.photoNewCar)){note(23,&o);return false;}
+ if(q->graph){const bool sourceOkay=nfs_player_photo_live::graphSourceCurrent(tx,*q);if(!sourceOkay)note(24,&o);return sourceOkay;}
  const auto&source=nfs_player_photo_sources[q->car];if(uint64_t(q->archive)+source.offset+source.span>UINT64_C(0x100000000)){note(24,&o);return false;}
  const bool sourceOkay=q->source.size()==source.span&&!std::memcmp(q->source.data(),nfs_host_address(q->archive+source.offset,source.span),source.span);if(!sourceOkay)note(24,&o);return sourceOkay;
  }catch(...){return false;}}
@@ -97,7 +110,7 @@ inline bool capturePlayerPreviewPhoto(Game&g,Owner&o)noexcept{try{
  if(o.view.family!=NFS_CHILD_EXIT_PLAYER1&&o.view.family!=NFS_CHILD_EXIT_PLAYER2)return true;
  auto q=nfs_player_photo_live::published();if(!q||!nfs_player_photo_live::current(g,*q)){note(16,&o);return false;}
  uint32_t oldCar=0,newCar=0;{nfs::GuestCopyTransaction tx;const uint32_t sp=uint32_t(g.esp);if(uint64_t(sp)+8>UINT64_C(0x100000000))return false;oldCar=tx.load<uint8_t>(sp);newCar=tx.load<uint32_t>(sp+4);}
- if(oldCar>=12||newCar>=12||q->car!=newCar||q->form!=o.view.form||q->epoch!=o.view.ownerEpoch||q->game!=o.view.sourceGame||q->archive!=o.view.sourceArchive){note(17,&o);return false;}
+ if(oldCar>=NFS_PLAYER_PHOTO_SOURCE_COUNT||newCar>=NFS_PLAYER_PHOTO_SOURCE_COUNT||q->car!=newCar||q->form!=o.view.form||q->epoch!=o.view.ownerEpoch||q->game!=o.view.sourceGame||q->archive!=o.view.sourceArchive){note(17,&o);return false;}
  o.playerPhoto=q;o.view.photoFamily=1;o.view.photoSerial=q->serial;o.view.photoEpoch=q->epoch;o.photoStack=uint32_t(g.esp);o.photoOldCar=oldCar;o.photoNewCar=newCar;o.playerPhotoReceipt=true;
  if(!playerPreviewPhotoCurrent(g,o,false)||!Owner::current(&o)){note(18,&o);o.playerPhotoReceipt=false;return false;}note(19,&o);return true;
  }catch(...){note(20,&o);return false;}}
@@ -118,11 +131,11 @@ public:explicit SessionScope(Game&g):g_(g){Errno e;try{life_=std::make_shared<Li
   if(!owner_&&life_&&serial_&&(entryForm_==uint32_t(guest_address(off_4D2790))||entryForm_==uint32_t(guest_address(off_4D3A88))||entryForm_==uint32_t(guest_address(off_4D3204)))&&uint32_t(g_.esi)==entryForm_)owner_=capture(g_,serial_,life_,entryForm_);
   if(!owner_)return;
   if(nfs_logo_publisher::uploadEvents().load(std::memory_order_acquire)!=owner_->view.uploadEvent){note(12,owner_.get());owner_.reset();return;}
-  if(owner_->history&&!nfs_child_static_scene::current(*owner_->history,reinterpret_cast<uintptr_t>(&g_),nfs_logo_publisher::threadToken(),owner_->formGuest,owner_->view.uploadEvent)){note(13,owner_.get());owner_.reset();return;}
-  if(owner_->history&&!actualSidebarKeys(*owner_,true)){note(15,owner_.get());owner_.reset();return;}
+  if(owner_->history&&!historyLeaseCurrent(g_,*owner_)){note(13,owner_.get());owner_.reset();return;}
+  if(owner_->history&&!actualSidebarKeys(*owner_,!owner_->historySidebarSource)){note(15,owner_.get());owner_.reset();return;}
   if(!refreshPhoto(g_,*owner_)){note(14,owner_.get());owner_.reset();}
  }
- std::shared_ptr<Owner>frame(int32_t motion,bool cleared){Errno e;if(!armed_||!owner_||!Owner::current(owner_.get())||((owner_->view.family==NFS_CHILD_EXIT_PLAYER1||owner_->view.family==NFS_CHILD_EXIT_PLAYER2)&&!playerPreviewPhotoCurrent(g_,*owner_,true))||motion!=-29+int32_t(frames_)*12||frames_>=21||cleared!=(frames_<2)||(owner_->history?(!nfs_child_static_scene::current(*owner_->history,reinterpret_cast<uintptr_t>(&g_),nfs_logo_publisher::threadToken(),owner_->formGuest,owner_->view.uploadEvent)||!actualSidebarKeys(*owner_,false)):(mt::state().slots[0]!=owner_->sidebar||!mt::unchanged(*owner_->sidebar)))||uint32_t(g_.esi)!=owner_->formGuest){note(2,owner_.get());return {};}++frames_;return owner_;}
+ std::shared_ptr<Owner>frame(int32_t motion,bool cleared){Errno e;if(!armed_||!owner_||!Owner::current(owner_.get())||((owner_->view.family==NFS_CHILD_EXIT_PLAYER1||owner_->view.family==NFS_CHILD_EXIT_PLAYER2)&&!playerPreviewPhotoCurrent(g_,*owner_,true))||motion!=-29+int32_t(frames_)*12||frames_>=21||cleared!=(frames_<2)||(owner_->history?(!historyLeaseCurrent(g_,*owner_)||!actualSidebarKeys(*owner_,false)):(mt::state().slots[0]!=owner_->sidebar||!mt::unchanged(*owner_->sidebar)))||uint32_t(g_.esi)!=owner_->formGuest){Owner::rejectLease(owner_.get());note(2,owner_.get());return {};}++frames_;return owner_;}
  ~SessionScope(){Errno e;if(!life_)return;auto life=life_;try{nfs::ScopedWorkerStopDeferral d;(void)nfs::enqueue_owned_renderer([life]{life->alive.store(false,std::memory_order_release);return int32_t(1);});}catch(...){life->alive.store(false,std::memory_order_release);}}
 };
 class FrameScope final{
