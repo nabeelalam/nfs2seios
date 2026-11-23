@@ -321,6 +321,7 @@ else()
       target_sources(renderer_pixel_tests PRIVATE
         src/MenuTransitionSourceLife.cpp
         src/hd/ClassicScreens/IntroArtProvider.cpp
+        src/hd/ClassicScreens/CreditsArtProvider.cpp
         src/hd/ClassicScreens/TrackInfoArtProvider.cpp
         src/hd/ClassicScreens/CarInfoArtProvider.cpp
         src/hd/ClassicScreens/HistoryArtProvider.cpp

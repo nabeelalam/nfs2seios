@@ -1,0 +1,423 @@
+{
+  "schema": 1,
+  "scope": "Real renderer pixel-test dependency repair and complete local pixel-target/post-link rehearsal. Not physical iPad or final-art resource acceptance.",
+  "failedRun": 45138928693,
+  "appleJobStarted": false,
+  "failure": "Renderer pixel test referenced Victory and Credits provider APIs but its target did not link their real implementations.",
+  "repair": [
+    "Add CreditsArtProvider.cpp to the classic renderer test sources.",
+    "Link the test to the existing real Victory provider library, preserving transitive compression/thread dependencies."
+  ],
+  "stubbedProviderAdded": false,
+  "rendererGuardsRelaxed": false,
+  "productionGameSourceChanged": false,
+  "localRehearsal": {
+    "configuration": "Debug with boundary sanitizers",
+    "retainedPreparedPairVersion": "v30",
+    "note": "Uses retained paired engine/renderer sources; this is local link/renderer/startup rehearsal, not an exact fresh CI-source or final98-image game acceptance claim.",
+    "build": {
+      "steps": [
+        {
+          "step": "configure",
+          "exitCode": 0,
+          "seconds": 117.21
+        },
+        {
+          "step": "build",
+          "exitCode": 0,
+          "seconds": 351.605
+        }
+      ],
+      "completed": true,
+      "cloud": false,
+      "gameRun": false
+    },
+    "hiddenPixelTest": {
+      "exitCode": 0,
+      "elapsedSeconds": 1.339557463999995,
+      "binarySha256": "851a8d6c64bb36532d3a69b3cd6e4d3ab56d47986b6647b6e6f7dab99663a21e",
+      "binaryUnchanged": true,
+      "hidden": true,
+      "tcpDisabled": true,
+      "virtualScreen": [
+        2732,
+        2048
+      ],
+      "originalGameDataUsed": false
+    },
+    "postLinkProgramInvocations": 44,
+    "postLinkAllPassed": true,
+    "postLink": {
+      "completed": true,
+      "tests": [
+        {
+          "step": "engine_link_check",
+          "program": "engine_link_check",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 2.173
+        },
+        {
+          "step": "menu_input_tests",
+          "program": "menu_input_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.069
+        },
+        {
+          "step": "hd_atlas_tests",
+          "program": "hd_atlas_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.268
+        },
+        {
+          "step": "texture_digest_tests",
+          "program": "texture_digest_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.12
+        },
+        {
+          "step": "builtin_timing_tests",
+          "program": "builtin_timing_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.169
+        },
+        {
+          "step": "hd_glyph_select_tests",
+          "program": "hd_glyph_select_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.036
+        },
+        {
+          "step": "shared_memory_tests",
+          "program": "shared_memory_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.035
+        },
+        {
+          "step": "engine_thread_metrics_tests",
+          "program": "engine_thread_metrics_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.068
+        },
+        {
+          "step": "engine_thread_clock_tests",
+          "program": "engine_thread_clock_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.119
+        },
+        {
+          "step": "system_cpu_load_tests",
+          "program": "system_cpu_load_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.069
+        },
+        {
+          "step": "car_info_owned_tests",
+          "program": "car_info_owned_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.069
+        },
+        {
+          "step": "frame_timing_capture_tests",
+          "program": "frame_timing_capture_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.068
+        },
+        {
+          "step": "desktop_diagnostic_recorder_tests",
+          "program": "desktop_diagnostic_recorder_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.068
+        },
+        {
+          "step": "diagnostic_session_tests",
+          "program": "diagnostic_session_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.069
+        },
+        {
+          "step": "small_font_tests",
+          "program": "small_font_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.219
+        },
+        {
+          "step": "small_font_select_tests",
+          "program": "small_font_select_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.069
+        },
+        {
+          "step": "record_font_tests",
+          "program": "record_font_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.169
+        },
+        {
+          "step": "hud_label_layout_tests",
+          "program": "hud_label_layout_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.119
+        },
+        {
+          "step": "hud_punctuation_tests",
+          "program": "hud_punctuation_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.119
+        },
+        {
+          "step": "hud_start_light_tests",
+          "program": "hud_start_light_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.169
+        },
+        {
+          "step": "frontend_font_tests",
+          "program": "frontend_font_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 1.171
+        },
+        {
+          "step": "frontend_font_capacity_tests",
+          "program": "frontend_font_capacity_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.036
+        },
+        {
+          "step": "frontend_word_tests",
+          "program": "frontend_word_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.067
+        },
+        {
+          "step": "frontend_text_context_tests",
+          "program": "frontend_text_context_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.069
+        },
+        {
+          "step": "glide_tests",
+          "program": "glide_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.068
+        },
+        {
+          "step": "pause_font_runtime_tests",
+          "program": "pause_font_runtime_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.371
+        },
+        {
+          "step": "pause_header_pixels_tests",
+          "program": "pause_header_pixels_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.169
+        },
+        {
+          "step": "volume_bar_pixels_tests",
+          "program": "volume_bar_pixels_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.118
+        },
+        {
+          "step": "warning_word_pixels_tests",
+          "program": "warning_word_pixels_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.168
+        },
+        {
+          "step": "audio_sdl_tests",
+          "program": "audio_sdl_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.369
+        },
+        {
+          "step": "input_sdl_tests",
+          "program": "input_sdl_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.418
+        },
+        {
+          "step": "frame_pacer_tests",
+          "program": "frame_pacer_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.037
+        },
+        {
+          "step": "frame_pacing_sdl_tests",
+          "program": "frame_pacing_sdl_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 1.171
+        },
+        {
+          "step": "game_trace_tests",
+          "program": "game_trace_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.12
+        },
+        {
+          "step": "keyboard_input_tests",
+          "program": "keyboard_input_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.068
+        },
+        {
+          "step": "desktop_pointer_tests",
+          "program": "desktop_pointer_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.068
+        },
+        {
+          "step": "touch_pointer_tests",
+          "program": "touch_pointer_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.07
+        },
+        {
+          "step": "touch_sdl_tests",
+          "program": "touch_sdl_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.068
+        },
+        {
+          "step": "pointer_buffer_tests",
+          "program": "pointer_buffer_tests",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 0.069
+        },
+        {
+          "step": "startup-empty",
+          "program": "engine_startup_check",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 2.825
+        },
+        {
+          "step": "startup-config",
+          "program": "engine_startup_check",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 2.674
+        },
+        {
+          "step": "startup-language",
+          "program": "engine_startup_check",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 2.975
+        },
+        {
+          "step": "startup-suspended",
+          "program": "engine_startup_check",
+          "exitCode": 0,
+          "expected": 0,
+          "passed": true,
+          "seconds": 3.025
+        },
+        {
+          "step": "shared-app-entry",
+          "program": "nfs_game_app",
+          "exitCode": 1,
+          "expected": 1,
+          "passed": true,
+          "seconds": 2.975
+        }
+      ],
+      "sourceInputsUnchanged": true,
+      "hidden": true,
+      "tcpDisabled": true,
+      "actualGameDataNotUsedAsRuntime": true
+    },
+    "graphicsScope": [
+      "Context destroy/recreate",
+      "480/720/960/native-height targets",
+      "Both-buffer reallocation and RGB565 readback",
+      "Texture identity, explicit updates and CPU immutability",
+      "Palette snapshots and guest mutation",
+      "Presentation and context suspension/restoration"
+    ]
+  },
+  "cloudCorrectedRevisionRequired": true,
+  "privateArtworkPublished": false,
+  "goalComplete": false
+}
