@@ -23,10 +23,11 @@ class Delivery(unittest.TestCase):
    d=Path(tmp);data={'template':b'OWNZ0001'+bytes(24),'photo':b'photo-fixture','footer':b'footer-fixture','panorama':b'NFSSPAN\0'+bytes(range(80))}
    for n,b in data.items():(d/n).write_bytes(b)
    pin=dict(schema=1,filename=m.SLIDESHOW_PANORAMA_RESOURCE,fileBytes=len(data['panorama']),sha256=H(data['panorama']),imageCount=98)
+   catalogs={'slideshow:'+str(i):bytes([i+51])*200 for i in range(4)}
    owner='42'*32
    pins={m.SLIDESHOW_RESOURCE:H(data['photo']),m.SLIDESHOW_FOOTER_RESOURCE:H(data['footer']),m.SLIDESHOW_PANORAMA_RESOURCE:pin['sha256']}
    marker=('NFS-SLIDESHOW-PANORAMA:'+pin['sha256']+':'+str(pin['fileBytes'])).encode()
-   native=struct.pack('<IiiIIIII6I',0xfeedfacf,0x0100000c,0,2,1,24,0,0,0x32,24,2,0,0,0)+bytes.fromhex(owner)+b''.join(bytes.fromhex(v)for v in pins.values())+marker
+   native=struct.pack('<IiiIIIII6I',0xfeedfacf,0x0100000c,0,2,1,24,0,0,0x32,24,2,0,0,0)+bytes.fromhex(owner)+b''.join(bytes.fromhex(v)for v in pins.values())+marker+b''.join(catalogs.values())
    members={'Payload/Test.app/Info.plist':plistlib.dumps({'CFBundleExecutable':'Test'}),'Payload/Test.app/Test':native,'Payload/Test.app/notice.txt':b'unchanged'}
    def base(name,edit=None,extra=None):
     p=d/name
@@ -37,12 +38,15 @@ class Delivery(unittest.TestCase):
    b=base('base.ipa')
    def inject(b,out='out.ipa',**kw):
     return m.inject(b,H(b.read_bytes()),d/'template',d/out,slideshow=d/'photo',slideshow_footer=d/'footer',slideshow_panorama=d/'panorama',**kw)
-   with patch.multiple(m,TEMPLATE_BYTES=len(data['template']),TEMPLATE_SHA256=H(data['template']),OUTPUT_PACK_SHA256=owner,SLIDESHOW_BYTES=len(data['photo']),SLIDESHOW_SHA256=pins[m.SLIDESHOW_RESOURCE],SLIDESHOW_FOOTER_BYTES=len(data['footer']),SLIDESHOW_FOOTER_SHA256=pins[m.SLIDESHOW_FOOTER_RESOURCE],_SLIDESHOW_PANORAMA_RELEASE=pin):
+   with patch.multiple(m,TEMPLATE_BYTES=len(data['template']),TEMPLATE_SHA256=H(data['template']),OUTPUT_PACK_SHA256=owner,SLIDESHOW_BYTES=len(data['photo']),SLIDESHOW_SHA256=pins[m.SLIDESHOW_RESOURCE],SLIDESHOW_FOOTER_BYTES=len(data['footer']),SLIDESHOW_FOOTER_SHA256=pins[m.SLIDESHOW_FOOTER_RESOURCE],_SLIDESHOW_PANORAMA_RELEASE=pin,compiled_catalogs=lambda root:catalogs):
     result=inject(b);self.assertEqual(result['addedMembers'],4);self.assertTrue(result['slideshowPanoramaReleasePinsVerified']);self.assertTrue(result['allExistingCompressedStorageIdentical'])
+    self.assertTrue(result['slideshowCompiledCatalogsVerified'])
+    self.assertEqual(result['compiledCatalogs'],{name:dict(bytes=len(raw),sha256=H(raw))for name,raw in catalogs.items()})
+    self.assertEqual(len(result['compiledCatalogs']),4)
     with zipfile.ZipFile(d/'out.ipa')as z:
      self.assertEqual(z.read('Payload/Test.app/slideshow-panorama.ownedz'),data['panorama'])
      for n,v in members.items():self.assertEqual(z.read(n),v)
-    for label,edit in [('digest',lambda v:v.replace(bytes.fromhex(pin['sha256']),bytes(32)).replace(pin['sha256'].encode(),b'0'*64)),('size',lambda v:v.replace(marker,marker[:-1]+b'9')),('photo',lambda v:v.replace(bytes.fromhex(pins[m.SLIDESHOW_RESOURCE]),bytes(32)))]:
+    for label,edit in [('digest',lambda v:v.replace(bytes.fromhex(pin['sha256']),bytes(32)).replace(pin['sha256'].encode(),b'0'*64)),('size',lambda v:v.replace(marker,marker[:-1]+b'9')),('catalog',lambda v:v.replace(catalogs['slideshow:0'],bytes(200)))]:
      bad=base(label+'.ipa',edit)
      with self.assertRaisesRegex(ValueError,'required artwork release pin'):inject(bad,label+'-out.ipa')
     for bad in (data['panorama'][:-1],data['panorama'][:-1]+b'x'):
@@ -102,10 +106,62 @@ class Metadata(unittest.TestCase):
    (assets/'SlideshowCatalogData.h').write_bytes(c);(assets/'SlideshowFooterData.h').write_bytes(f)
    manifest=dict(schema=1,kind='slideshow-compatibility-metadata',pairRequired=True,imagePayloads=False,metadataApproved=True,headers={name:dict(sha256=H(raw),kind=prep.SLIDESHOW_HEADERS[name],license='MIT',notice=prep.SLIDESHOW_NOTICE.as_posix())for name,raw in [('SlideshowCatalogData.h',c),('SlideshowFooterData.h',f)]},counts=n)
    p=d/prep.SLIDESHOW_METADATA;p.write_text(json.dumps(manifest));(d/prep.SLIDESHOW_NOTICE).write_text('fixture MIT')
+   import slideshow_metadata as metadata
+   self.assertEqual(metadata.approved_metadata(d)[2],n)
+   for key,value in [('schema',True),('metadataApproved',False),('imagePayloads',True),('extra',1)]:
+    p.write_text(json.dumps({**manifest,key:value}))
+    with self.assertRaises(ValueError):metadata.approved_metadata(d)
+   for key,value in [('license','CC0-1.0'),('notice','other.md'),('sha256','0'*64)]:
+    bad=copy.deepcopy(manifest);bad['headers']['SlideshowCatalogData.h'][key]=value
+    p.write_text(json.dumps(bad))
+    with self.assertRaises(ValueError):metadata.approved_metadata(d)
+   for bad in (None,[],42,{**manifest,'headers':None},{**manifest,'counts':[]},{**manifest,'headers':{name:None for name in manifest['headers']}}):
+    p.write_text(json.dumps(bad))
+    with self.assertRaises(ValueError):metadata.approved_metadata(d)
+   p.write_text(json.dumps(manifest))
    with patch.object(prep,'ROOT',d),patch.object(prep,'tracked',lambda relative:d/relative):
     prep.metadata_approval()
     manifest['counts']['resourcePins']=17;p.write_text(json.dumps(manifest))
     with self.assertRaises(ValueError):prep.metadata_approval()
     manifest['counts']['resourcePins']=15;p.write_text(json.dumps(manifest));(assets/'SlideshowFooterData.h').write_bytes(f+b' ')
     with self.assertRaisesRegex(ValueError,'SHA mismatch'):prep.metadata_approval()
+class CompiledCatalogs(unittest.TestCase):
+ def catalogs(self):
+  import slideshow_metadata as metadata
+  c,f,n=Metadata().fixture()
+  with patch.object(metadata,'approved_metadata',return_value=('',{'SlideshowCatalogData.h':c,'SlideshowFooterData.h':f},n)):
+   return metadata.compiled_catalogs(ROOT)
+ def test_complete_tables_and_stream_boundaries(self):
+  tables=self.catalogs()
+  self.assertEqual([len(v) for v in tables.values()],[98*88,98*168,15*88,98*68])
+  payload=b'prefix'+b''.join(tables.values())+b'suffix'
+  for chunk in (1,63,4096,16384):
+   matcher=m.ReleasePinMatcher({},catalogs=tables)
+   for i in range(0,len(payload),chunk):matcher.feed(payload[i:i+chunk])
+   self.assertFalse(matcher.missing)
+   self.assertLessEqual(len(matcher.tail),max(map(len,tables.values()))-1)
+ def test_wrong_offsets_order_bindings_hashes_and_missing_tables(self):
+  tables=self.catalogs()
+  for name,width,offset in [('slideshow:sources',88,4),('slideshow:runtime-images',168,8),('slideshow:footer-resources',88,0),('slideshow:bindings',68,64)]:
+   for kind in ('offset','order','hash','missing'):
+    changed=dict(tables);raw=bytearray(changed[name])
+    if kind=='offset':raw[offset]^=1
+    elif kind=='order':raw[:2*width]=raw[width:2*width]+raw[:width]
+    elif kind=='hash':raw[24 if width==88 else 20 if width==168 else 0]^=1
+    else:raw=bytearray()
+    changed[name]=bytes(raw)
+    matcher=m.ReleasePinMatcher({},catalogs=tables);matcher.feed(b''.join(changed.values()))
+    self.assertIn(name,matcher.missing,(name,kind))
+ def test_whole_file_hashes_do_not_prove_catalogs(self):
+  tables=self.catalogs()
+  matcher=m.ReleasePinMatcher({},catalogs=tables)
+  matcher.feed(bytes.fromhex(m.SLIDESHOW_SHA256)+bytes.fromhex(m.SLIDESHOW_FOOTER_SHA256))
+  self.assertEqual(matcher.missing,set(tables))
+ def test_long_panorama_marker_crosses_boundary(self):
+  pin='12'*32;marker=('NFS-SLIDESHOW-PANORAMA:'+pin+':123456789').encode()
+  for split in range(1,len(marker)):
+   matcher=m.ReleasePinMatcher({'panorama':pin},{'panorama':123456789})
+   matcher.feed(marker[:split]);matcher.feed(marker[split:])
+   self.assertFalse(matcher.missing)
+
 if __name__=='__main__':unittest.main()

@@ -57,7 +57,7 @@ artifacts, Packages and Git LFS.
 The public Actions artifact stays capped at 64 MiB and contains the unsigned
 base without personal artwork. Authenticated artwork is appended locally and
 can make the finished personal package larger than that public artifact. Use a
-separate 512 MiB bound for a finished personal ZIP uploaded to the original
+separate 768 MiB bound for a finished personal ZIP uploaded to the original
 private repository's Release. Verify private visibility before and after upload,
 verify the uploaded digest, and keep original game data and signing material
 out. This does not raise an Actions quota, enable billing, permit private builds
@@ -309,8 +309,8 @@ because its primary classic-UI pin still matches.
 The current local injector bounds a finished personal IPA to 768 MiB, its base
 to 512 MiB, individual decompressed members to 512 MiB, total decompressed
 members to 1 GiB and member count to 10,000. These are local package guards,
-not Apple or SideStore acceptance guarantees. The separate 512 MiB private
-Release ZIP policy above is unchanged: measure the actual ZIP before upload;
+not Apple or SideStore acceptance guarantees. The private Release ZIP cap is
+768 MiB following the measured-package review below: measure the actual ZIP before upload;
 a locally valid IPA does not automatically qualify for remote delivery. Public
 Actions transfers remain base-only and capped at 64 MiB.
 
@@ -326,5 +326,28 @@ compatibility metadata belongs in reviewed public source.
 The Linux integration binary and resource checks do not establish a matching
 Apple base, finished IPA size, signing, installation or physical-device
 acceptance. Produce and measure that matched private package before claiming
-delivery readiness. No package-size limit, account setting, billing policy or
-repository visibility is changed by this documentation update.
+delivery readiness. Local injector limits, account settings, billing policy and repository
+visibility are unchanged.
+
+
+## 23 November: measured private package upload bound
+
+The complete lossless personal ZIP is 571,357,169 bytes (about 545 MiB), above
+the earlier 512 MiB project upload bound. Its IPA is 573,687,323 bytes; the
+executable and all 12 Apple-base members retain their exact original bytes and
+compressed storage. The 23 private artwork resources retain their exact pins.
+
+The private finished Release ZIP cap is explicitly raised to 768 MiB, matching
+the existing local injector envelope. This applies only to authenticated
+transfer through the original private repository. Public source remains free
+of private artwork and original game data; public base-only transfers remain
+limited to 64 MiB, with no personal Actions artifact upload.
+
+GitHub's official release quotas were rechecked on 23 November 2026: each
+Release file must stay below 2 GiB, and no aggregate release-size or bandwidth
+quota is specified. The measured package is below both the new project cap and
+that per-file limit. This review changes no billing, runner, Actions storage,
+repository-visibility or signing setting. Verify private visibility before and
+after upload and compare the server digest with the measured local ZIP digest.
+
+Source: [GitHub release storage and bandwidth quotas](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases#storage-and-bandwidth-quotas).

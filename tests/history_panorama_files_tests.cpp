@@ -2,6 +2,27 @@
 #include "hd/ClassicScreens/HistoryWideFiles.h"
 #include <cassert>
 #include <iterator>
+// Match the complete-table serializer in scripts/slideshow_metadata.py.
+#include <cstddef>
+#include <type_traits>
+#include "hd/SlideshowSourceIdentity.h"
+#include "hd/SlideshowRuntimeImage.h"
+#include "hd/SlideshowFooterResource.h"
+static_assert(sizeof(void*)==8,"64-bit host ABI required");
+static_assert(sizeof(nfs_slideshow::SourcePin)==88,"SourcePin serializer ABI");
+static_assert(offsetof(nfs_slideshow::SourcePin,archiveSha)==24,"SourcePin digest offset");
+static_assert(sizeof(nfs_slideshow::PixelPin)==44,"PixelPin serializer ABI");
+static_assert(sizeof(nfs_slideshow::RuntimeImagePin)==168,"RuntimeImagePin serializer ABI");
+static_assert(offsetof(nfs_slideshow::RuntimeImagePin,sourceSha)==20,"RuntimeImagePin source offset");
+static_assert(offsetof(nfs_slideshow::RuntimeImagePin,pixels)==116,"RuntimeImagePin pixel offset");
+static_assert(offsetof(nfs_slideshow::RuntimeImagePin,accepted)==160,"RuntimeImagePin bool offset");
+static_assert(offsetof(nfs_slideshow::RuntimeImagePin,version)==164,"RuntimeImagePin version offset");
+static_assert(sizeof(nfs_slideshow_footer::ResourcePin)==88,"ResourcePin serializer ABI");
+static_assert(offsetof(nfs_slideshow_footer::ResourcePin,compressedSha)==20,"ResourcePin compressed offset");
+static_assert(offsetof(nfs_slideshow_footer::ResourcePin,rgbaSha)==52,"ResourcePin pixel offset");
+static_assert(sizeof(nfs_slideshow_footer::Binding)==68,"Binding serializer ABI");
+static_assert(offsetof(nfs_slideshow_footer::Binding,footerIndex)==64,"Binding index offset");
+static_assert(std::is_standard_layout<nfs_slideshow::RuntimeImagePin>::value,"POD layout required");
 static uint64_t base=0;
 static uint64_t generation(){return base;}
 static std::array<unsigned char,32>pin(const char*text){std::string s(text);assert(s.size()==64);std::array<unsigned char,32>out{};auto hex=[](char c)->unsigned{if(c>='0'&&c<='9')return unsigned(c-'0');if(c>='a'&&c<='f')return unsigned(c-'a'+10);if(c>='A'&&c<='F')return unsigned(c-'A'+10);assert(false);return 0;};for(unsigned k=0;k<32;++k)out[k]=static_cast<unsigned char>((hex(s[2*k])<<4)|hex(s[2*k+1]));return out;}

@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "scope": "Local compatibility guard corrected to the real native loader contract; no native binary or artwork mutation.",
+  "successfulAppleRun": 45146351757,
+  "compiledSource": "a4ca290f4f5d65821aae25bd252fd9b06445137c",
+  "trustedBaseIpaSha256": "ffe8147958f1f0212ed3603e177eb1ba8bdb1e4c4ac8e1de018de39879af19ef",
+  "originalMismatch": "Photo/footer whole-file SHA strings were required in MachO, but those loaders compile per-image and routing tables instead.",
+  "replacement": "Authenticate the exact approved metadata pair, then require four complete ordered ARM64 little-endian POD tables before and after injection.",
+  "tables": {
+    "slideshow:sources": {
+      "bytes": 8624,
+      "sha256": "85e73e729b85c982ffee283f20e3e20ee12e4062b386d7f1aa9b02f5731921f6"
+    },
+    "slideshow:runtime-images": {
+      "bytes": 16464,
+      "sha256": "ea9c27bc542be50a99d4dd73bade3b6eb7180ee5fb983240b4d35b6a561b97ea"
+    },
+    "slideshow:footer-resources": {
+      "bytes": 1320,
+      "sha256": "b7c0c67b49cca823f3d3f690b698d82d844d08fb4b0a2919294d6feb3467fe45"
+    },
+    "slideshow:bindings": {
+      "bytes": 6664,
+      "sha256": "5b71561d88ec229c9bd45d3f4762f43876ff9625f589a29dcb45d9acf890c2b5"
+    }
+  },
+  "wholeFileResourceShaAndSizeChecksPreserved": 23,
+  "panoramaShaAndSizeMarkerPreserved": true,
+  "historyVictoryAndOwnerChecksPreserved": true,
+  "nativeAndExistingCompressedStoragePreserved": true,
+  "noGitNeededForStandaloneMetadataApproval": true,
+  "longPatternStreamingOverlapCorrected": true,
+  "tests": {
+    "delivery": 10,
+    "historyCmake": 3,
+    "historyDelivery": 8,
+    "workflowPreflightPrograms": 19,
+    "allPassedOnWsl": true,
+    "realHeaderAbiAssertions": 15,
+    "existingCiAbiTarget": "history_panorama_files_tests",
+    "integrationCtestPassed": true
+  },
+  "independentReview": "Trusted base digest, all four ordered byte patterns, layout and source bindings independently verified. Data presence alone is not arbitrary executable/runtime attestation; authenticated base identity remains mandatory.",
+  "allCurrentMetadataBytesEqualBuiltSource": true,
+  "newAppleBuildNeeded": false,
+  "physicalIpadVerified": false
+}

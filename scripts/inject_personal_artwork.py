@@ -18,6 +18,10 @@ import struct
 import tempfile
 import unicodedata
 import zipfile
+_metadata_spec = importlib.util.spec_from_file_location("slideshow_metadata", Path(__file__).with_name("slideshow_metadata.py"))
+_metadata_module = importlib.util.module_from_spec(_metadata_spec)
+_metadata_spec.loader.exec_module(_metadata_module)
+compiled_catalogs = _metadata_module.compiled_catalogs
 
 TEMPLATE_BYTES = 16227314
 TEMPLATE_SHA256 = "09745bbf4577925f0426d11cbfab932dd9d6e1c096e55e16beadf4a3b5fa4ae7"
@@ -186,7 +190,7 @@ def require(value, message):
 
 class ReleasePinMatcher:
     """Match raw or hexadecimal loader pins, including chunk-boundary matches."""
-    def __init__(self, pins, sizes=None):
+    def __init__(self, pins, sizes=None, catalogs=None):
         self.patterns = {}
         for name, pin in pins.items():
             require(isinstance(pin, str) and re.fullmatch("[0-9a-fA-F]{64}", pin),
@@ -200,6 +204,12 @@ class ReleasePinMatcher:
             require(pin is not None, "Required artwork size lacks its digest")
             self.patterns[name + ':bytes'] = (
                 ('NFS-SLIDESHOW-PANORAMA:' + pin.lower() + ':' + str(size)).encode('ascii'),)
+        for name, pattern in (catalogs or {}).items():
+            require(isinstance(pattern, bytes) and 0 < len(pattern) <= 131072,
+                    "Invalid required compiled catalog")
+            require(name not in self.patterns, "Duplicate compiled catalog name")
+            self.patterns[name] = (pattern,)
+        self.overlap = max((len(p) for ps in self.patterns.values() for p in ps), default=1) - 1
         self.missing = set(self.patterns)
         self.tail = b""
 
@@ -210,7 +220,7 @@ class ReleasePinMatcher:
         for name in tuple(self.missing):
             if any(pattern in window for pattern in self.patterns[name]):
                 self.missing.remove(name)
-        self.tail = window[-63:] if self.missing else b""
+        self.tail = window[-self.overlap:] if self.missing and self.overlap else b""
 
 
 def digest_file(path, limit=MAX_IPA):
@@ -326,7 +336,7 @@ def raw_storage(path, info):
     return (info.header_offset, count, h.hexdigest())
 
 
-def inspect(path, allow_resource=False, required_artwork_sha256=None, required_release_pins=None, required_release_sizes=None):
+def inspect(path, allow_resource=False, required_artwork_sha256=None, required_release_pins=None, required_release_sizes=None, required_catalogs=None):
     # Complete stream reads also validate ZIP CRCs; no member is extracted to disk.
     result = {}
     storage = {}
@@ -392,7 +402,8 @@ def inspect(path, allow_resource=False, required_artwork_sha256=None, required_r
                     release = dict(required_release_pins or {}) if name == main_name else {}
                     if required_artwork_sha256 and name == main_name:
                         release[RESOURCE] = required_artwork_sha256
-                    matcher = ReleasePinMatcher(release, required_release_sizes if name == main_name else None)
+                    matcher = ReleasePinMatcher(release, required_release_sizes if name == main_name else None,
+                                                required_catalogs if name == main_name else None)
                     matcher.feed(first)
                     while True:
                         b = f.read(CHUNK)
@@ -564,12 +575,15 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
     if victory is not None:
         release_pins[VICTORY_RESOURCE] = _VICTORY_RELEASE["metadataSha256"]
     release_sizes = {}
+    catalogs = {}
     if slideshow_panorama is not None:
-        for name in (SLIDESHOW_RESOURCE, SLIDESHOW_FOOTER_RESOURCE, SLIDESHOW_PANORAMA_RESOURCE):
+        for name in (SLIDESHOW_PANORAMA_RESOURCE,):
             release_pins[name] = resource_pins()[name][1]
+        catalogs = compiled_catalogs(Path(__file__).resolve().parents[1])
         release_sizes[SLIDESHOW_PANORAMA_RESOURCE] = _SLIDESHOW_PANORAMA_RELEASE['fileBytes']
     before = inspect(base, required_artwork_sha256=OUTPUT_PACK_SHA256,
-                     required_release_pins=release_pins, required_release_sizes=release_sizes)
+                     required_release_pins=release_pins, required_release_sizes=release_sizes,
+                     required_catalogs=catalogs)
     require(before["unpackedBytes"] + added_bytes <= MAX_UNPACKED,
             "Combined unpacked size limit")
     resource = before["app"] + "/" + RESOURCE
@@ -601,7 +615,9 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                 member.compress_type = zipfile.ZIP_STORED
                 z.writestr(member, data)
         require(temporary.stat().st_size <= MAX_IPA, "Finished IPA size limit")
-        after = inspect(temporary, allow_resource=True)
+        after = inspect(temporary, allow_resource=True, required_artwork_sha256=OUTPUT_PACK_SHA256,
+                        required_release_pins=release_pins,
+                        required_release_sizes=release_sizes, required_catalogs=catalogs)
         require(after["app"] == before["app"] and after["comment"] == before["comment"],
                 "App identity or ZIP comment changed")
         require(set(after["members"]) == set(before["members"]) | set(additions),
@@ -635,6 +651,11 @@ def inject(base_ipa, base_sha256, template, output, intro=None, track_info=None,
                       originalInputsUnchanged=True,
                       historyReleasePinsVerified=history is not None)
         result['slideshowPanoramaReleasePinsVerified'] = slideshow_panorama is not None
+        result['slideshowCompiledCatalogsVerified'] = slideshow_panorama is not None
+        if slideshow_panorama is not None:
+            result['compiledCatalogs'] = {
+                name: dict(bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+                for name, data in catalogs.items()}
         if credits is not None or intro is not None or track_info is not None or car_info is not None or player_photo is not None or track_badge is not None or wide_menu is not None or results_backdrop is not None or slideshow is not None or history is not None or class_picture is not None or location_photo is not None or victory is not None:
             result["additionalResources"] = {
                 name: dict(sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
