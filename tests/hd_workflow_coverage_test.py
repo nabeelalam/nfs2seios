@@ -35,6 +35,16 @@ class HdWorkflowCoverage(unittest.TestCase):
             self.assertNotIn('frontend_font_upload_tests',build.split())
 
 
+    def test_registered_resource_checks_have_host_executables(self):
+        workflow=(ROOT/'.github/workflows/ipados.yml').read_text()
+        host=workflow.split('- name: Generic host regression suite (Linux, once)',1)[1].split('- name:',1)[0]
+        builds=re.findall(r'cmake --build \.build/host --target ([^\n]+) -j ',host)
+        built=set(' '.join(builds).split())
+        required={'credits_whole_prepare_tests','credits_art_provider_tests',
+                  'history_panorama_files_tests','history_wide_art_tests','history_panorama_gpu_tests'}
+        self.assertFalse(required-built)
+        self.assertLess(host.index('history_wide_art_tests'),host.index('ctest --test-dir'))
+
     def test_linux_gate_builds_and_executes_ui_checks(self):
         workflow=(ROOT/'.github/workflows/ipados.yml').read_text()
         build=re.search(r'cmake --build \.build/pixels --target ([^\n]+) -j ',workflow)

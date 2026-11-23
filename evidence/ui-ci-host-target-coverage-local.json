@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "scope": "Repair explicit Linux host build/test coverage after a real pre-Apple gate failure. Production game/artwork unchanged.",
+  "failedRun": 45124108837,
+  "appleJobStarted": false,
+  "cause": "CTest registered five resource tests whose executables were omitted from the explicit host build target list.",
+  "missingTargets": [
+    "credits_whole_prepare_tests",
+    "credits_art_provider_tests",
+    "history_panorama_files_tests",
+    "history_wide_art_tests",
+    "history_panorama_gpu_tests"
+  ],
+  "repair": "Build the history GLES fixture in the Linux host gate and the four ZLIB/classic resource targets when classic UI is enabled, before invoking unchanged CTest.",
+  "workflowCoverageTests": {
+    "passed": 6,
+    "newRegressionCoversFiveMissingExecutables": true
+  },
+  "localFreshHost": {
+    "configuration": "Debug",
+    "compiler": "clang/clang++",
+    "boundarySanitizers": true,
+    "guestThreadSanitizer": true,
+    "reusedDependencySourcesOnly": true,
+    "steps": [
+      {
+        "step": "configure",
+        "exitCode": 0,
+        "seconds": 14.398
+      },
+      {
+        "step": "build-0",
+        "exitCode": 0,
+        "seconds": 76.889
+      },
+      {
+        "step": "build-1",
+        "exitCode": 0,
+        "seconds": 0.669
+      },
+      {
+        "step": "build-2",
+        "exitCode": 0,
+        "seconds": 11.345
+      },
+      {
+        "step": "ctest",
+        "exitCode": 0,
+        "seconds": 17.996
+      }
+    ],
+    "registeredTests": 72,
+    "passed": 71,
+    "failed": 0,
+    "expectedSkipped": [
+      "system_cpu_native_provider"
+    ],
+    "actualSurfacelessGlesPassed": true,
+    "gameWindowOpened": false
+  },
+  "productionGameOrArtworkChanged": false,
+  "newDesktopGameplayBuildNeeded": false,
+  "cloudUnchangedRevisionRetry": false,
+  "goalComplete": false
+}

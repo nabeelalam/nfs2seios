@@ -2517,3 +2517,10 @@ Three preserved earlier observer failures were harness preconditions, not game d
 ### 23 November: matched Apple base preflight fixture repaired
 
 Source-only public snapshot d0a927f passed full local history/independent secret checks and preserves the existing public history with exactly the audited source tree. Manual run45123443379 stopped in the Linux preflight before any Apple job: its isolated History CMake fixture omitted the new panorama provider/pack sources. The fixture now copies those two real public source files; all19 preflight test programs from the actual workflow pass locally on WSL, including the three formerly failing configuration cases. Production game code/resources are unchanged, so no desktop rebuild is justified. A corrected public source revision, not an unchanged retry, is required for the matched ARM64 base. No private artwork upload or finished package exists. Evidence: evidence/ui-apple-base-preflight-repair-local.json.
+
+
+### 23 November: full Linux host target coverage repaired and rehearsed
+
+Corrected source run45124108837 passed the privacy/preparation stages, then CTest reported five missing executables in the explicit host build list. No Apple job started. The Linux host gate now builds the actual History GLES fixture plus four classic resource targets before unchanged CTest; a coverage regression guards those registered executables. Production game and artwork code are unchanged.
+
+A new project-only Debug/clang host directory, using existing dependency sources and the same sanitizer settings, compiled every target from the corrected workflow. All72 registered tests complete with71passes, zero failures and the expected Apple-only system CPU provider skip. The History GLES test passes on a surfaceless software context; no game window is opened. All six workflow-coverage tests also pass. A corrected public revision is required, not an unchanged rerun. Evidence: evidence/ui-ci-host-target-coverage-local.json.
