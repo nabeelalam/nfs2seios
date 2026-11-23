@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "scope": "Pre-integration cached TLS address lifetime and two-TU correctness review; production unchanged",
+  "handwrittenAudit": {
+    "localDeclarations": 705,
+    "files": 97,
+    "synchronousReferenceHelperDefinitions": 13,
+    "crossThreadOrRetainedTransactionFound": false,
+    "caveat": "Some handwritten scopes allocate, hash or log; arithmetic-only generator rules are not asserted for all manual callers."
+  },
+  "preparedEngineAudit": {
+    "localDeclarations": 9426,
+    "checkedAccessSites": 42319,
+    "generatedArithmeticScopes": 9408,
+    "repScopes": 12,
+    "completeHelpers": 2,
+    "manualScopes": 4,
+    "escapingTransactionsOrUnexpectedCallsFound": false,
+    "transitiveInstructionHelpers": 65
+  },
+  "lifecycleChecks": [
+    {
+      "variant": "old",
+      "sanitizers": false,
+      "exitCode": 0
+    },
+    {
+      "variant": "old",
+      "sanitizers": true,
+      "exitCode": 0
+    },
+    {
+      "variant": "candidate",
+      "sanitizers": false,
+      "exitCode": 0
+    },
+    {
+      "variant": "candidate",
+      "sanitizers": true,
+      "exitCode": 0
+    }
+  ],
+  "covered": [
+    "Separate translation unit TLS slot and mutex identity",
+    "Live transaction worker-control rebinding",
+    "Stop exception before resolver invocation",
+    "Four simultaneously live isolated workers",
+    "Nested stop deferrals",
+    "Optimized and ASan/UBSan Linux builds"
+  ],
+  "requiredNext": [
+    "Coherent rebuild of all GuestCopyTransaction consumers; old/new class definitions must never mix",
+    "Whole-game paired comparison with two moving split-screen players on hidden display",
+    "Apple app and physical iPad normal/Low Power Mode and energy acceptance"
+  ],
+  "productionHeaderChanged": false,
+  "appBuilt": false,
+  "deviceGainEstablished": false,
+  "transactionHeaderSha256": {
+    "old": "72fb419cfed6acbcdfd0d1018820143c6081f1a1a9c0fc2dfd38811b30f2c76b",
+    "candidate": "18f923b852e21c5869dc392964fa4dbd79d318269eb5fc67b7e61b6b657638ca"
+  },
+  "canonicalWorkerControlSha256": "b07d47a99feff9c1df1964807e5b920f4b8a278fb5ed60be9eb183bd932daa76",
+  "otherClosurePins": "Same pinned canonical closure verified by the native probe source; complete local receipt retained."
+}

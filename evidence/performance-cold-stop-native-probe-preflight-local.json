@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "scope": "Pre-dispatch source-only cold stop-path helper review; no Apple cold-path proof or cloud run yet",
+  "workflow": "lock-benchmark.yml",
+  "registeredWorkflowId": 385901675,
+  "repository": "nabeelalam/nfs2seios",
+  "ref": "codex/hd-ui",
+  "inputs": {
+    "experiment": "cold-stop"
+  },
+  "localValidation": {
+    "unitTests": 42,
+    "allFourUnitSuitesPassed": true,
+    "asanUbsanOldColdSafetyPassed": true,
+    "oracleChecksEach": 126,
+    "resolverCallsEach": 583,
+    "sameExactMemoryChecksum": 5252414852042320239,
+    "normalCriticalAndDeferralWarmupsPassed": true,
+    "stopAfterDeferralClearBeforeResolverVerified": true,
+    "realExistingIosSymbolMetadataParserSmokePassed": true,
+    "metadataSmokeIsNotColdCfgProof": true,
+    "independentReviewFindingsResolvedIncludingOutlinedTailBranch": true
+  },
+  "nativeConditions": {
+    "standardRunner": "macos-15",
+    "architecture": "arm64",
+    "xcode": "16.4",
+    "queueAcquisitionBudgetSeconds": 300,
+    "jobTimeoutMinutes": 8,
+    "compileBudgetSeconds": 360,
+    "nativeExecutionBudgetSeconds": 90,
+    "perInvocationTimeoutSeconds": 10,
+    "rounds": 12,
+    "variants": [
+      "old",
+      "cold"
+    ],
+    "states": [
+      "normal",
+      "critical",
+      "deferrals"
+    ]
+  },
+  "nativeGate": {
+    "minimumNormalAccessorCpuImprovementPercent": 10,
+    "maximumNormalTransformRepCpuRegressionPercent": 5,
+    "rareStopCostReportedSeparately": true,
+    "iosPreLtoAndThinLtoLinkedTinyAccessorCfgRequired": true,
+    "unknownCompilerShapeStaysUnproven": true
+  },
+  "noAppOrArtifacts": true,
+  "noPrivateGameData": true,
+  "noBillingOrSettingsChange": true,
+  "normalAppBuildRouteUnchanged": true,
+  "sourceHashes": {
+    ".github/workflows/lock-benchmark.yml": "86a2ef00f32fdbe234f25241308a20f9fe7f3506acbf9416484d1e2c54efdb45",
+    "scripts/apple_cold_stop_probe.py": "a4d578083ea7f7b314e0cf41c341bd3e7c4ab26cb7739dd751ecf92984662304",
+    "tests/apple_cold_stop_probe_test.py": "debe971d0f51a2a738126902a107e8e524900d0bc6739dd574d0fa843372821c",
+    "tests/apple_cold_workflow_test.py": "36cb66f340a148a17424c4ae6b02a07c42eccdd31481e7222f9cdf44d7d6a202",
+    "tests/apple_stop_slot_runtime_probe.cpp": "75b035495af7d5deeb21e6c3fde721373fc4cdb2dfb1669f11a4c5053f43c9b9",
+    "tests/fixtures/cold_stop_path/WorkerControl.h": "087cf104b49896b6e4f7f66d990bd067b8c60d763e668cb69005549bc81c9e7f"
+  },
+  "productionWorkerControlUnchanged": true
+}

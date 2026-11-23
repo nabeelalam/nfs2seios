@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "scope": "Preflight for distinct cold stop/deferral helper; not production or Apple performance proof",
+  "candidateHeaderSha256": "087cf104b49896b6e4f7f66d990bd067b8c60d763e668cb69005549bc81c9e7f",
+  "canonicalWorkerControlUnchanged": true,
+  "canonicalTransactionHeaderUnchanged": true,
+  "originalTlsGetterAndStorageIdentitiesRetained": true,
+  "defaultAtomicStopOrderingRetained": true,
+  "normalControlFlowIntent": "Read current control and live atomic stop flag; call noinline cold helper only if stop is true; helper reads critical then deferral depth",
+  "localChecks": [
+    {
+      "suite": "oracle",
+      "sanitizers": false,
+      "exitCode": 0
+    },
+    {
+      "suite": "lifecycle",
+      "sanitizers": false,
+      "exitCode": 0
+    },
+    {
+      "suite": "oracle",
+      "sanitizers": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "lifecycle",
+      "sanitizers": true,
+      "exitCode": 0
+    }
+  ],
+  "oracleChecks": 126,
+  "resolverCalls": 583,
+  "sameExactMemoryChecksum": 5252414852042320239,
+  "linuxAssemblyReview": {
+    "accessorStopFalseBypassesColdHelper": true,
+    "accessorContainsNoDepthOrDeferralTlsAccess": true,
+    "coldHelperRetainsLiveReads": true,
+    "scope": "Inspected optimized x86 Linux code only; no Apple inference"
+  },
+  "reviewRisks": [
+    "noinline/cold are compiler instructions, not native proof; inspect actual Apple CFG including ThinLTO",
+    "Stop-true deferred work gets extra calls; retain critical recursion and bounded shutdown checks",
+    "Rebuild all inline consumers coherently despite unchanged object layout",
+    "Both storage candidates remain unpromoted under their original host gates"
+  ],
+  "requiredBeforeFullAppTrial": [
+    "Native ARM correctness equivalence",
+    "Actual optimized Apple normal-path CFG excludes critical/deferral TLS and cold-helper work",
+    "Bounded balanced native component comparison and deferred-stop cost report"
+  ],
+  "appBuilt": false,
+  "cloudJobStarted": false,
+  "sourcePromoted": false,
+  "deviceOrEnergyGainEstablished": false
+}

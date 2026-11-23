@@ -89,8 +89,9 @@ void verify(){
 }
 uint64_t clock_ns(clockid_t id){timespec t{};if(clock_gettime(id,&t)||t.tv_sec<0||t.tv_nsec<0)throw std::runtime_error("Probe clock unavailable");return uint64_t(t.tv_sec)*1000000000ull+uint64_t(t.tv_nsec);}
 volatile uint64_t final_sink=0;
-void measure(unsigned kernel){
+void measure(unsigned kernel,unsigned deferred_mode=0){
  nfs::WorkerControl control;reset_stop(control);reset();count_resolutions=false;
+ if(deferred_mode){control.stop=true;if(deferred_mode==1)nfs::owned_critical_depth()=1;else nfs::worker_stop_deferrals()=1;}
  constexpr unsigned AccessorIterations=2000000,CopyIterations=100000;
  const unsigned iterations=kernel==0?AccessorIterations:CopyIterations;
  uint64_t checksum=0;const uint64_t wall_start=clock_ns(CLOCK_MONOTONIC),cpu_start=clock_ns(CLOCK_THREAD_CPUTIME_ID);
@@ -101,9 +102,17 @@ void measure(unsigned kernel){
  if(cpu_end<=cpu_start||wall_end<=wall_start)throw std::runtime_error("Probe clock did not advance");
  if(kernel==0){uint64_t expected=0;for(unsigned a=0;a<4;++a)expected+=uint32_t(read32(64+a));expected*=iterations/4;if(checksum!=expected)throw std::runtime_error("Accessor checksum mismatch");}
  else {for(unsigned k=0;k<(kernel==1?9u:8u);++k)if(read32(513+4*k)!=read32(65+4*k))throw std::runtime_error("Copy bytes mismatch");if(kernel==2&&checksum!=uint64_t(iterations)*(Base+65+32+Base+513+32))throw std::runtime_error("REP cursor mismatch");}
+ if(deferred_mode){
+  nfs::owned_critical_depth()=0;nfs::worker_stop_deferrals()=0;
+  count_resolutions=true;const auto prior=resolutions;
+  expect<nfs::WorkerStopped>([]{nfs_probe_transform(0,0);});require(resolutions==prior);
+  count_resolutions=false;control.stop=false;
+ }
  checksum^=hash_bytes(memory.data(),Bytes);final_sink^=checksum;nfs::current_worker_control()=nullptr;
  const char*names[]={"accessor","transform9","rep8"};
- std::printf("{\"type\":\"measurement\",\"kernel\":\"%s\",\"iterations\":%u,\"cpu_ns\":%llu,\"wall_ns\":%llu,\"checksum\":%llu}\n",names[kernel],iterations,(unsigned long long)(cpu_end-cpu_start),(unsigned long long)(wall_end-wall_start),(unsigned long long)checksum);
+ std::printf("{\"type\":\"measurement\",\"kernel\":\"%s\",\"iterations\":%u,\"cpu_ns\":%llu,\"wall_ns\":%llu,\"checksum\":%llu",names[kernel],iterations,(unsigned long long)(cpu_end-cpu_start),(unsigned long long)(wall_end-wall_start),(unsigned long long)checksum);
+ if(deferred_mode)std::printf(",\"deferred_mode\":\"%s\",\"stop_after_clear_verified\":true",deferred_mode==1?"critical":"deferrals");
+ std::puts("}");
 }
 }
 // This resolver TU is separate from the existing noinline accessor/transform/REP
@@ -122,5 +131,9 @@ int main(int argc,char**argv){try{
  if(argc==3&&!std::strcmp(argv[1],"--measure")&&std::strlen(argv[2])==1&&argv[2][0]>='0'&&argv[2][0]<='2'){
   const unsigned order=unsigned(argv[2][0]-'0');for(unsigned k=0;k<3;++k)measure((order+k)%3);return 0;
  }
- std::fputs("Expected --verify or --measure0..2\n",stderr);return 2;
+ if(argc==3&&(!std::strcmp(argv[1],"--measure-critical")||!std::strcmp(argv[1],"--measure-deferrals"))&&std::strlen(argv[2])==1&&argv[2][0]>='0'&&argv[2][0]<='2'){
+  const unsigned mode=!std::strcmp(argv[1],"--measure-critical")?1u:2u;
+  const unsigned order=unsigned(argv[2][0]-'0');for(unsigned k=0;k<3;++k)measure((order+k)%3,mode);return 0;
+ }
+ std::fputs("Expected --verify or --measure/--measure-critical/--measure-deferrals0..2\n",stderr);return 2;
  }catch(...){std::fputs("Stop-slot runtime oracle failed\n",stderr);return 1;}}

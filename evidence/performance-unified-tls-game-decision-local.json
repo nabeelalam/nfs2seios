@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "decision": "Do not promote unified TLS after failed reverse-order host nonregression gate",
+  "scope": "WSL software GLES,708window, current desktop race layout, dummy audio, knownNorthCountry/Indigo/Nazca/manual/fullopponents resetprofile with ordinarySplit setting. Not iPad/LPM/battery evidence.",
+  "order": [
+    "baseline",
+    "candidate",
+    "candidate",
+    "baseline"
+  ],
+  "hostGate": {
+    "maximumOwnerCpuRegressionPercent": 5,
+    "maximumSwapSpacingRegressionPercent": 5,
+    "bothPairingsMustPass": true,
+    "fixedBeforeExecution": true
+  },
+  "caseMetrics": [
+    {
+      "variant": "baseline",
+      "ownerCpuMsMedian": 23.92,
+      "swapMsMedian": 46.7955335,
+      "allRaceSamples": 30,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0
+    },
+    {
+      "variant": "candidate",
+      "ownerCpuMsMedian": 13.1887,
+      "swapMsMedian": 27.404532,
+      "allRaceSamples": 30,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0
+    },
+    {
+      "variant": "candidate",
+      "ownerCpuMsMedian": 13.869900000000001,
+      "swapMsMedian": 27.324936,
+      "allRaceSamples": 30,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0
+    },
+    {
+      "variant": "baseline",
+      "ownerCpuMsMedian": 13.0394,
+      "swapMsMedian": 27.0507265,
+      "allRaceSamples": 29,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0
+    }
+  ],
+  "pairings": [
+    {
+      "ownerCpuImprovementPercent": 44.86329431438127,
+      "swapSpacingRegressionPercent": -41.43771862329553,
+      "passed": true
+    },
+    {
+      "ownerCpuImprovementPercent": -6.369158090096175,
+      "swapSpacingRegressionPercent": 1.013686268278234,
+      "passed": false
+    }
+  ],
+  "passed": false,
+  "coherentConsumersRebuilt": 51,
+  "unaffectedObjectsReused": 48,
+  "virtualMainRecompiledAgainstUnifiedStorage": true,
+  "oldStorageAbsentAndOneUnifiedStorageDefinitionVerifiedInCandidate": true,
+  "rawComparisonSha256": "d9113930eafe0055c2c2f829965a1dde58b48730a8dda8458e8b3924745e2b0e",
+  "sourceFixtureUnchanged": true,
+  "copiedFixtureRestoredAfterEachCase": true,
+  "bothNativeVirtualPlayersDriving": true,
+  "hiddenDisplayTcpDisabled": true,
+  "productionChanged": false,
+  "cloudAppBuild": false,
+  "deviceOrBatteryGainEstablished": false,
+  "interpretation": [
+    "First baseline engine CPU time23.92ms differs substantially from final baseline13.0394ms; the first-pair44.86percent gain is not reliable as a candidate benefit.",
+    "Reverse-order6.37percent CPU regression exceeds the fixed5percent limit; all four complete cases are retained, with no unchanged timing rerun.",
+    "Component ARM improvements and clean lifecycle checks do not override the failed full-game gate.",
+    "Next investigate separating rare stop/deferral work from the normal path, preserving old TLS storage identities and transaction layout; require code generation and correctness evidence before any further app trial.",
+    "Build23 remains delivered; physical iPad UI, Low Power Mode and battery acceptance stay open."
+  ]
+}

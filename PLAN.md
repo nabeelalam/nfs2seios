@@ -2596,3 +2596,55 @@ unaligned, boundary, alias, partialfault, stop-precedence and realthread cases.
 The native timing plan fixes12balanced rounds,10% accessorCPU improvement and
 at most5% transform/REP regression before inspection. Canonicalheaders remain
 unchanged. NativeMac results remain separate from iPadacceptance/LPM60/energy.
+
+### 23 November: native ARM helper comparison passed
+
+Public source2c54c8436ee557fbaae33f22560f64cecd3e1775 passed the Linux privacy/sanitizer gate and one standard macos-15 ARM job in run45172726180. Queue acquisition took53seconds; the native job took26seconds and produced zero artifacts. Original repository privacy was verified afterward. Xcode16.4/Appleclang17 compiled separate non-LTO units and iOS assembly, without an app rebuild.
+
+All three variants pass126checks/583resolver calls with the exact matching memory checksum5252414852042320239. Twelve balanced rounds find cached-address accessor/transform/REP CPU improvements55.59%/22.60%/23.18%; unified TLS improves19.60%/15.40%/7.76%. Both pass the predeclared component gate. The iOS accessor has3/0/1 indirect TLS calls for old/cached/unified while retaining its atomic stop load; constructor TLS work remains. These component results do not establish game FPS, iPad performance or energy savings.
+
+The cached-address fixture is the next integration candidate. Keep canonical headers unchanged until handwritten and generated transaction lifetimes are audited and every affected consumer can be rebuilt consistently; transaction layout changes forbid mixed old/new objects. No user action is needed for this local gate. Evidence: evidence/performance-native-stop-probe-result-local.json.
+
+### 23 November: cached-address lifetime and lifecycle gate passed
+
+Read-only audits cover705handwritten local transactions across97files and9426prepared engine scopes/42319checkedaccess sites. No concrete cross-thread transaction, escaped reference or callback inside generated lifetimes was found;13manual reference helpers are synchronous. Some manual scopes allocate/hash/log, so they are not described as arithmetic-only. Separate-TU optimized and ASan/UBSan old/candidate tests all pass: shared TLS/mutex identity, live control rebinding, stop-before-resolution, four live isolated workers and nested deferrals. Canonical code remains unchanged. Coherent complete-consumer rebuild and paired hidden-display whole-game comparison are the next gates; no app/device gain is claimed. Evidence: evidence/performance-cached-tls-lifetime-local.json.
+
+### 23 November: full-game cached-address candidate rejected
+
+A coherent15Methods rebuild retained84other objects, the original renderer and23exact resources. Four fresh NorthCountry split-screen races used two moving nativevirtualplayers, full opponents and identical controller main, hidden TCP-disabled display, exact30SDLsecond windows, alternating ABBA order. All4exit0/SDLshutdown0 with zero recorder drops/errors; the1020file copiedfixture was restored after each case and sourcefixture/binaries/resources stayed exact.
+
+The Apple-TLV-specific pre-run host gate allowed at most5%CPU/swap regression in BOTH pairings, rather than requiring Linux speedup; Linux TLS differs from Apple TLV and the native ARM component gate remains separate. This was fixed before any gameplay timings. AB CPU worsens7.23% and swap spacing8.52%; BA CPU worsens5.70% while spacing improves4.11%. Both pairings fail. Reject the global cached-address candidate, keep canonical production code unchanged and do not spend an app build on it. No unchanged timing rerun is planned. The initial startup-only single-skip miss is retained separately; a bounded exact-movie-frame retry corrected the observer without changing timing gates or discarding successful measurements.
+
+The next separate candidate is unified TLS, which preserves the16byte transaction layout and already passed native ARM component/correctness checks. Its broader TLS identity change requires a coherent rebuild of all stop-check consumers, not just transaction users. Whole-game and later physical iPad acceptance remain required. Evidence: evidence/performance-cached-tls-game-decision-local.json.
+
+### 23 November: separate unified TLS desktop candidate built coherently
+
+The exact unifiedPODTLS fixture passed a separate local build of all51WorkerControl consumers, reusing48unaffected objects, canonical oldGuestCopyTransaction and the original renderer. All125protected inputs (including117baseline pins), the baseline executable and23resources remain exact. The238second build produced a63,736,368byte candidate. Linked-symbol inspection finds the baseline has each of3old TLS slots and no unified slot; the candidate has exactly1unified slot and none of the3old slots. This checks against mixed inline storage definitions, not performance.
+
+The existing nativeARM unified helper and Linux optimized/sanitizer two-TU lifecycle evidence remain component/correctness gates only. A new virtual-controller main must also use unified TLS before full-game testing; the original baseline main cannot be reused inside this candidate. Fresh paired hidden-display split-screen runs and physical Apple/device acceptance remain required. No source promotion or cloud app build. Evidence: evidence/performance-unified-tls-coherent-local.json.
+
+### 23 November: unified TLS trial fails reverse-order host gate
+
+All four fresh hidden-display NorthCountry split-screen cases completed with both controllers driving, zero recorder drops/errors, clean SDLshutdown0,1020file copiedfixture restoration and exact23resources/binaries/sourcefixture. The unified virtual-controller main was recompiled coherently; linked-symbol inspection confirms no old TLS storage remains in this isolated candidate.
+
+Keep the predeclared5%CPU/swap nonregression limit in BOTH pairings. AB appears44.86%better CPU, but its first baseline23.92ms is substantially slower than the final baseline13.0394ms, so do not attribute that large change to unified TLS. BA candidate13.8699ms is6.37%worse than baseline, exceeding the gate; swap spacing is1.01%worse. Do not promote the unified candidate, dispatch an app build, change the threshold or rerun unchanged timings. Preserve all evidence and production headers.
+
+Next investigate a smaller normal-path stop-check split: retain old TLS identities and16byte transaction layout; put critical/deferral checks behind a noinline cold helper reached only after the live atomic stopflag is true. This is a hypothesis only: actual Apple codegen must show the extra TLV work stays off the false path, with unchanged cancellation/alias/fault semantics, before another full-app trial. Evidence: evidence/performance-unified-tls-game-decision-local.json.
+
+### 23 November: smaller cold-stop-path correctness preflight
+
+A distinct candidate retains the3old TLS objects/getters and canonical16byte transaction. Only after the current control and default atomic stopflag are true does worker_stop_ready call a noinline cold helper that checks critical then deferral depth. No snapshots, weaker atomics, callbacks or removed checkpoints. Independent source review finds the original short-circuit semantics retained.
+
+The existing126check/583resolution oracle matches exact checksum5252414852042320239 in optimized and ASan/UBSan Linux builds; the separate-TU live-rebinding/four-worker/deferral suite also passes both builds. Inspected Linux accessor assembly branches around the helper on stop-false and has no critical/deferral TLS access in that function. These are not Apple codegen or performance claims. Preserve the candidate as a test fixture only; canonical code remains unchanged. Before another app trial, require actual Apple CFG/ThinLTO evidence, native correctness and balanced component timing including the rare deferred-stop cost. Evidence: evidence/performance-cold-stop-preflight-local.json.
+
+### 23 November: owner wake/input constraints audited before battery changes
+
+The actual game entrypoint is app/main.cpp with AppleMainThread, not the platform Probe. Rendering barriers use dispatch_sync_f on the main queue and execute their actual drain there. That real wake does not cover all work: SDL UIKit has no native queued-event wait/wake backend; MFI values are polled; gesture pulses, completion and worker-failure consumption still depend on returning to outer polls. The app4ms snapshot cache does not throttle SDL joystick backend work performed earlier in PumpEvents.
+
+Keep current1ms/unlocked and4ms/30lock wait policy. Configured timeout is not measured wakeup count or battery attribution, and no physical new foreground-pump readings exist. The next battery experiment should measure CFRunLoop return reasons/elapsed waits, owner/backend CPU and input/render dispatch age under the unchanged policy, separating renderer work executed during nested run-loop servicing. No speculative longer-sleep optimization or device energy claim. Evidence: evidence/performance-owner-wake-audit-local.json.
+
+### 23 November: bounded cold-stop Apple probe ready for source review
+
+The separate manual cold-stop route retains existing experiments and app builds. Its complete local gate passes42unit checks plus actual OLD/cold ASan/UBSan126check/583resolution oracles, exact checksum5252414852042320239 and normal/critical/deferral warmups with cancellation after clearing deferral. A private metadata-only vector from authenticated build23 verifies all3real TLS descriptor mappings without changing or executing that binary. Independent review found and corrected false-green CFG cases, including outlined tail branches; unfamiliar actual compiler forms remain UNPROVEN, not accepted by call counts.
+
+The proposed single standardARM helper job remains behind Linux privacy/safety and exactsource gates, with5minute unacquired-queue,8minute job,360second compile and90second execution bounds. Twelve balanced OLD/cold rounds use the predeclared normal10%accessor/5%transform-REP gate and separately report rare stop cost. It also inspects source-only iOS preLTO and tiny ThinLTO-linked Mach-O code, never executes iOS output and produces no app/artifact/release. Canonical worker/transaction headers remain unchanged; no dispatch yet. Evidence: evidence/performance-cold-stop-native-probe-preflight-local.json.

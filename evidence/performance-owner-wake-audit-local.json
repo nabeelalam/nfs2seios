@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "scope": "Source-only iOS owner wake audit; no timing, battery attribution or wait-policy change",
+  "verifiedEntry": [
+    "app/main.cpp",
+    "src/AppleMainThread.mm"
+  ],
+  "currentWaitSeconds": {
+    "unlocked": 0.001,
+    "fps30Lock": 0.004
+  },
+  "realWakeForRendering": "Worker renderer barriers schedule main-queue work with dispatch_sync_f; actual drain occurs in that scheduled owner task. Plain command append intentionally batches.",
+  "pollDependentWork": [
+    "SDL UIKit has no native WaitEventTimeout/SendWakeupEvent backend",
+    "MFI controller axes and buttons are sampled by backend update polling",
+    "SDL event queue consumption, gesture pulse deadlines, worker failure mailbox and completion checks need outer polls"
+  ],
+  "snapshotCacheLimit": "The app four-ms controller snapshot cache does not throttle the earlier SDL pump/joystick backend update.",
+  "limits": [
+    "Configured maximum wait does not measure actual timeout count, wakeup rate or CPU cost.",
+    "No physical foreground-pump readings were provided; build23 predates the added foreground-pump diagnostic field.",
+    "No claim that polling causes the observed battery drain, and no justification for indefinite/longer blocking."
+  ],
+  "nextMeasurement": [
+    "Keep current wait policy unchanged",
+    "Count CFRunLoop return reasons and actual wait elapsed time",
+    "Measure owner-poll/backend CPU and input/render dispatch age with scoped diagnostic capture",
+    "Separate renderer work performed during nested run-loop servicing from input polling cost"
+  ],
+  "sources": [
+    "src/AppleMainThread.mm:8",
+    "app/main.cpp:132",
+    "src/SDLInput.cpp:23",
+    "src/MainThreadBridge.cpp:36",
+    "src/GameSession.cpp:234",
+    "SDL_uikitvideo.m",
+    "SDL_events.c",
+    "SDL_mfijoystick.m"
+  ],
+  "productionChanged": false,
+  "deviceOrEnergyGainEstablished": false
+}

@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "decision": "Reject global cached TLS address candidate; do not integrate or dispatch app build",
+  "scope": "WSL software GLES,708window, current desktop race layout, dummy audio, knownNorthCountry/Indigo/Nazca/manual/fullopponents resetprofile with ordinarySplit setting. Not iPad/LPM/battery evidence.",
+  "order": [
+    "baseline",
+    "candidate",
+    "candidate",
+    "baseline"
+  ],
+  "hostGate": {
+    "schema": 1,
+    "beforeAnyGameExecution": true,
+    "changeFromCopiedRendererTrial": "Use host nonregression rather than requiring Linux speedup for an Apple TLV candidate",
+    "maximumOwnerCpuRegressionPercent": 5,
+    "maximumSwapSpacingRegressionPercent": 5,
+    "bothPairingsMustPass": true,
+    "nativeArmGateAlreadyPassed": true,
+    "noPhysicalDeviceClaim": true,
+    "noRerunOnAmbiguousOrFailingResults": true
+  },
+  "caseMetrics": [
+    {
+      "variant": "baseline",
+      "ownerCpuMsMedian": 19.4345,
+      "swapMsMedian": 36.319314000000006,
+      "allRaceSamples": 30,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0,
+      "recordingWriterFailed": false
+    },
+    {
+      "variant": "candidate",
+      "ownerCpuMsMedian": 20.8387,
+      "swapMsMedian": 39.412569500000004,
+      "allRaceSamples": 30,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0,
+      "recordingWriterFailed": false
+    },
+    {
+      "variant": "candidate",
+      "ownerCpuMsMedian": 21.489150000000002,
+      "swapMsMedian": 38.182516,
+      "allRaceSamples": 30,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0,
+      "recordingWriterFailed": false
+    },
+    {
+      "variant": "baseline",
+      "ownerCpuMsMedian": 20.3311,
+      "swapMsMedian": 39.819246,
+      "allRaceSamples": 30,
+      "fixedWindowSeconds": 30,
+      "exitCode": 0,
+      "sdlShutdownStatusZero": true,
+      "copiedFixtureRestored": true,
+      "binaryAnd23ResourcesUnchanged": true,
+      "recordingDrops": 0,
+      "recordingWriterFailed": false
+    }
+  ],
+  "pairings": [
+    {
+      "ownerCpuImprovementPercent": -7.225295222413747,
+      "swapSpacingRegressionPercent": 8.51683349525819,
+      "passed": false
+    },
+    {
+      "ownerCpuImprovementPercent": -5.695953489973504,
+      "swapSpacingRegressionPercent": -4.11039927777638,
+      "passed": false
+    }
+  ],
+  "passed": false,
+  "actualRecompiledConsumers": 15,
+  "reusedObjects": 84,
+  "transactionBytes": {
+    "old": 16,
+    "cached": 40
+  },
+  "rawComparisonSha256": "192d9f0338188141f1cc37726471aa17f67a075618fdaa15b4b2e6e5a29869c0",
+  "sourceFixtureUnchanged": true,
+  "copiedFixtureRestoredAfterEachCase": true,
+  "bothNativeVirtualPlayersDriving": true,
+  "hiddenDisplayTcpDisabled": true,
+  "startupObserver": {
+    "initialMissBeforeTiming": true,
+    "failedCasePreserved": true,
+    "boundedExactMovieFrameRetryCorrected": true,
+    "performanceThresholdsUnchanged": true,
+    "noSuccessfulTimingDiscarded": true
+  },
+  "productionChanged": false,
+  "cloudAppBuild": false,
+  "deviceOrBatteryGainEstablished": false,
+  "interpretation": [
+    "Passing native ARM component timing did not establish whole-game performance.",
+    "The cached-address class increases per-transaction storage and constructor work; actual hot functions can hoist TLS addresses across scopes. These are reviewed cost hypotheses, not measured attribution.",
+    "Do not reinterpret this failed global host gate as passing by leaving Linux unchanged.",
+    "Investigate unified TLS separately: it preserves the transaction layout but requires all stop-check consumers to be rebuilt consistently.",
+    "Build23 remains the delivered app and physical iPad acceptance remains open."
+  ]
+}

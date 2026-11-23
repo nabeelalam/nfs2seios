@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "scope": "Coherent isolated unified TLS desktop build and linked storage inspection; no runtime/device performance result",
+  "recompiledHeaderConsumers": 51,
+  "reusedObjects": 48,
+  "baselineProtectedInputs": 117,
+  "allProtectedInputsUnchanged": true,
+  "baselineExecutableUnchanged": true,
+  "artworkResourcesUnchanged": 23,
+  "candidateExecutable": {
+    "bytes": 63736368,
+    "sha256": "efb175afe2e5f69b336bbc437974591bde8aabf498b699c1028b5cccfd69885f"
+  },
+  "buildElapsedSeconds": 238.061,
+  "transactionHeaderUnchanged": true,
+  "linkedTlsStorage": {
+    "baseline": {
+      "oldSlotDefinitions": {
+        "current_worker_control()::value": 1,
+        "owned_critical_depth()::value": 1,
+        "worker_stop_deferrals()::value": 1
+      },
+      "unifiedSlotDefinitions": 0,
+      "binarySha256": "eb7c31381dea6bca285facc1fce5c98ee62729e7e023b1931271262d7904c7d0"
+    },
+    "unified": {
+      "oldSlotDefinitions": {
+        "current_worker_control()::value": 0,
+        "owned_critical_depth()::value": 0,
+        "worker_stop_deferrals()::value": 0
+      },
+      "unifiedSlotDefinitions": 1,
+      "binarySha256": "efb175afe2e5f69b336bbc437974591bde8aabf498b699c1028b5cccfd69885f"
+    }
+  },
+  "priorEvidence": {
+    "nativeArmHelperRun": 45172726180,
+    "unifiedComponentGatePassed": true,
+    "linuxOptimizedAndSanitizerTwoTuLifecyclePassed": true,
+    "fourSimultaneousWorkers": true,
+    "liveControlRebinding": true
+  },
+  "nextGate": "Fresh matched ABBA split-screen runs with newly unified virtual-controller main, fixed30SDLsecond windows, <=5%CPU/swap regression in BOTH pairings, all cleanup/correctness checks",
+  "productionIntegrated": false,
+  "cloudAppBuild": false,
+  "gameLaunchedByBuild": false,
+  "deviceOrBatteryGainEstablished": false
+}

@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "scope": "Completed native ARM helper comparison; not whole-game, iPad, FPS or energy proof",
+  "run": {
+    "runId": 45172726180,
+    "jobId": 137686410867,
+    "sourceCommit": "2c54c8436ee557fbaae33f22560f64cecd3e1775",
+    "url": "https://github.com/nabeelalam/nfs2seios/actions/runs/45172726180",
+    "conclusion": "success",
+    "queueAcquisitionSeconds": 53.0,
+    "nativeJobSeconds": 26.0,
+    "linuxGatePassed": true,
+    "standardArmLabels": [
+      "macos-15"
+    ],
+    "artifacts": 0,
+    "publicRepositoryVerifiedAfter": true,
+    "originalRepositoryStillPrivate": true,
+    "proofChecksumExact": 5252414852042320239,
+    "nativeReportSha256": "389f522a638847d7ca98ef01501ba77f9353f4bcc771ab5b03bb75664c2b5544",
+    "assemblyReportSha256": "f4c012046d944917ebbaaa39d98c2572522529e429c912aa8e9c1e974288db55",
+    "decisions": {
+      "candidate": {
+        "component_gate_passed": true,
+        "cpu_improvement_percent": {
+          "accessor": 55.5875290040465,
+          "rep8": 23.182720653559457,
+          "transform9": 22.60169693186917
+        },
+        "scope": "component decision only; no app promotion, FPS or energy claim"
+      },
+      "unified": {
+        "component_gate_passed": true,
+        "cpu_improvement_percent": {
+          "accessor": 19.597534040255752,
+          "rep8": 7.758512091132331,
+          "transform9": 15.40176714973962
+        },
+        "scope": "component decision only; no app promotion, FPS or energy claim"
+      }
+    }
+  },
+  "configuration": {
+    "apple_performance_evidence": "native macOS component only; not iOS app or device",
+    "architecture": "arm64",
+    "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)",
+    "platform": "macos",
+    "sdk": "macosx",
+    "sdk_version": "15.5",
+    "xcode": "Xcode 16.4\nBuild version 16F6"
+  },
+  "buildOptions": {
+    "language": "c++14",
+    "native_target": "arm64-apple-macos11.0",
+    "optimization": "O3",
+    "separate_compile_and_link": true,
+    "strict_aliasing": false,
+    "translation_units": 2,
+    "wrap_signed_overflow": true
+  },
+  "rounds": 12,
+  "discardedWarmups": 3,
+  "proofChecksPerVariant": 126,
+  "resolverCallsPerVariant": 583,
+  "sameExactMemoryChecksum": 5252414852042320239,
+  "predeclaredGate": {
+    "minimumAccessorCpuImprovementPercent": 10,
+    "maximumTransformRepRegressionPercent": 5
+  },
+  "iosAccessorCodegen": {
+    "candidate": {
+      "indirectCalls": 0,
+      "liveAtomicLoads": 1
+    },
+    "old": {
+      "indirectCalls": 3,
+      "liveAtomicLoads": 1
+    },
+    "unified": {
+      "indirectCalls": 1,
+      "liveAtomicLoads": 1
+    }
+  },
+  "interpretation": [
+    "Both candidates pass the component gate; cached TLS addresses are stronger in these measured kernels.",
+    "Address caching retains live TLS values and every atomic stop check and checked address resolution.",
+    "Constructor TLS work remains; no claim of globally zero TLS lookups.",
+    "Canonical production headers remain unchanged pending lifetime audit and coherent consumer rebuild.",
+    "No app, game data, cache, artifact, release, paid runner or billing change.",
+    "Build23 remains the delivered app; physical acceptance and Low Power Mode 60 FPS remain open."
+  ]
+}

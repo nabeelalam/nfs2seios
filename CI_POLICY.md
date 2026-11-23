@@ -383,3 +383,33 @@ dispatch, verify sourcecommit, publicvisibility and no active workflow. Observe
 the ARM acquisition queue in this chat; cancel the single attempt if it remains
 unacquired for5minutes. Do not fall back to paid machines or repeat the same
 queue attempt. No new reminder/automation is used to monitor this job.
+
+
+### Cold stop-path helper comparison
+
+The registered manual lock-benchmark route also accepts cold-stop, exclusively
+on the public codex/hd-ui branch. It compares the original TLS implementation
+with the cold-deferral test fixture; both rejected storage variants stay out of
+production. Existing copy-lock/thread-local routes are unchanged.
+
+One standard Ubuntu24.04 job must pass the history/worktree privacy checks,
+independent pinned secret scanner, harness policy tests and Linux sanitizer
+oracle before one standard macos-15 ARM job may start. Limits remain5minutes
+for review,8minutes for Apple,5minutes for unacquired ARM queue capacity,
+90seconds for native execution and10seconds per invocation. Shared concurrency
+prevents overlap; no unchanged retry or paid/larger fallback is allowed.
+
+The Apple job uses pinned Xcode16.4. It compiles only small OLD/cold component
+helpers, including an iOS ThinLTO-linked inspection executable. The iOS helper
+is never executed, packaged as an app or uploaded; it is solely for final
+control-flow inspection. No game data, private artwork, cache, signing material,
+artifact or release is used. Native Mac component timing is separate from
+M3 iPad gameplay and energy acceptance.
+
+Before a full-app trial, require matching correctness plus actual iOS control
+flow proving that a false atomic stop flag bypasses the cold helper and both
+depth/deferral TLS lookups, including linked ThinLTO output. Twelve balanced
+OLD/cold rounds use the existing normal-path gate: at least10%accessor CPU gain
+and at most5%transform/REP regression. Measure critical/deferred true-stop cost
+separately and retain shutdown/recursive-critical acceptance; a normal-path
+component pass alone never promotes source or establishes device FPS/battery.
