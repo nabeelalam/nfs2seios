@@ -193,6 +193,19 @@ class CfgTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.proof(assembly_text().replace(' cbz x8, Lnormal', ' b Lunguarded\n cbz x8, Lnormal\nLunguarded:'))
 
+    def test_exact_unwind_resume_is_exception_terminal_not_general_whitelist(self):
+        text = assembly_text().replace(' bl ___cxa_throw', ' bl __Unwind_Resume')
+        self.assertTrue(self.proof(text)['proven'])
+        fn = dict(code=[dict(op='bl', args='0x100007000', address=0x100001000,
+                           resolved_call_target='__Unwind_Resume'),
+                        dict(op='ret', args='', address=0x100001004)], labels={})
+        self.assertEqual(cold.graph(fn, {0x100007000:'__Unwind_Resume'})[0], [])
+        self.assertEqual(cold.graph(fn, {0x100007000:'_unrecognized_alias'})[0], [1])
+        with self.assertRaises(ValueError):cold.graph(fn)
+        for name in ('__Unwind_Resume_or_Rethrow', '_Unwind_Resume', '__Unwind_ResumeAlias'):
+            with self.assertRaises(ValueError):
+                self.proof(assembly_text().replace(' bl ___cxa_throw', ' bl ' + name))
+
     def test_numeric_otool_adrp_displacement_is_pc_relative_and_identity_checked(self):
         fn = dict(code=[
             dict(op='adrp', args='x0, 10', address=0x1000031fc),

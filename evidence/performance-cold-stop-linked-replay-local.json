@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "scope": "Actual recorded iOS tiny-helper linked code verified offline after exact exception-continuation modeling; no native timing result",
+  "runId": 45195432206,
+  "sourceCommit": "c0701c702981ee4e8d37a358fa2037ee08a9b260",
+  "url": "https://github.com/nabeelalam/nfs2seios/actions/runs/45195432206",
+  "originalJobConclusion": "failure",
+  "linuxGatePassed": true,
+  "standardArmLabels": [
+    "macos-15"
+  ],
+  "queueAcquisitionSeconds": 3.0,
+  "nativeJobSeconds": 24.0,
+  "artifactsVerified": 0,
+  "originalRepositoryStillPrivateVerifiedAfter": true,
+  "originalFailureReason": "Unparsed internal or unknown direct callee",
+  "identifiedExceptionCallee": "__Unwind_Resume",
+  "correction": "Resolve the exact standard exception continuation as a no-return exit, preserving rejection of returning or unknown similarly named callees. Recorded symbol claims alone never authorize an edge.",
+  "primaryReference": "https://raw.githubusercontent.com/llvm/llvm-project/main/libunwind/src/UnwindLevel1.c",
+  "actualLinkedCodeOfflineProof": {
+    "proven": true,
+    "format": "linked",
+    "accessor_tls_lookups": 1,
+    "live_atomic_loads": 1,
+    "helper_tls_lookups": 2,
+    "atomic_index": 9,
+    "stop_decision_index": 10,
+    "helper_call_sites": [
+      30
+    ],
+    "false_path_bypasses_helper": true,
+    "nonnull_control_guard": true,
+    "tls_descriptor_provenance": true,
+    "scope": "Pinned tiny accessor only; not final app code generation"
+  },
+  "reportSha256": "7dc8e6970d2ff5c9b05ee50c2da9b60dbffae4ac8d729ea29211ff233f981be1",
+  "checkerSha256": "857bd8812a439ecbe9b2549496ab6b5347b8781443cf20efc48f689dc939a8be",
+  "focusedUnitTestsPassed": 25,
+  "candidateFixtureAndCppUnchanged": true,
+  "nativeCorrectnessExecuted": false,
+  "nativeTimingRows": 0,
+  "productionIntegrated": false,
+  "appOrIpaBuilt": false,
+  "deviceOrEnergyGainEstablished": false,
+  "sourceHashes": {
+    "scripts/apple_cold_stop_probe.py": "857bd8812a439ecbe9b2549496ab6b5347b8781443cf20efc48f689dc939a8be",
+    "tests/apple_cold_stop_probe_test.py": "44cf065e2e4b67dfa9958544248bca4646267bd56af564edf3f46d7c58d78f98"
+  }
+}

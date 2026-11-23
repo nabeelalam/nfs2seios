@@ -174,7 +174,10 @@ def call_target(instruction, addresses):
     return value
 
 
-def graph(function):
+EXCEPTION_TERMINALS = frozenset(('___cxa_throw', '__cxa_throw', '__Unwind_Resume'))
+
+
+def graph(function, symbol_addresses=None):
     code, labels = function['code'], function['labels']
     addresses = {row['address']: i for i, row in enumerate(code) if row['address'] is not None}
     def target(value):
@@ -198,8 +201,11 @@ def graph(function):
             edges[i] = [target(args)]
         elif op in ('cbz', 'cbnz', 'tbz', 'tbnz') or op.startswith('b.'):
             edges[i] = [target(args.split(',')[-1]), *fall]
-        elif op == 'bl' and '__cxa_throw' in args:
-            edges[i] = []
+        elif op == 'bl':
+            # Resolve the actual operand through the supplied symbol table.
+            # Recorded resolved_call_target fields never authorize an edge.
+            callee = call_target(row, symbol_addresses or {})
+            edges[i] = [] if callee in EXCEPTION_TERMINALS else fall
         elif op in ('br', 'braa', 'brab', 'blraa', 'blrab', 'svc', 'hlt', 'eret'):
             raise ValueError('Unsupported indirect control flow')
         else:
@@ -407,7 +413,7 @@ def prove_cfg(functions, *, linked=False, symbol_addresses=None, tls_addresses=N
         raise ValueError('Helper does not retain both exact depth slots')
     if sum(row['op'].startswith('ldar') for row in code) != 1 or any(row['op'].startswith('ldar') for row in helper['code']):
         raise ValueError('Atomic checkpoint count changed')
-    edges = graph(fn);dom, pred = dominators(edges)
+    edges = graph(fn, addresses);dom, pred = dominators(edges)
     # Bind each value to definitions which dominate EVERY use. Linear scanning
     # alone would accept unreachable guards or path-dependent clobbers.
     regs, atomic, checks, decision = {}, None, [], None
@@ -468,10 +474,10 @@ def prove_cfg(functions, *, linked=False, symbol_addresses=None, tls_addresses=N
         if name not in functions:
             # Only pinned C resolver and standard C++ exception/runtime callees
             # are permitted opaque. Unknown local fragments are not benign.
-            if name == '_nfs_host_address' or name.startswith(('___cxa_','__cxa_','__ZNSt','__ZSt','___stack_chk_fail','_memcpy','_memset')):return False
+            if name in EXCEPTION_TERMINALS or name == '_nfs_host_address' or name.startswith(('___cxa_','__cxa_','__ZNSt','__ZSt','___stack_chk_fail','_memcpy','_memset')):return False
             raise ValueError('Unparsed internal or unknown direct callee')
         f = functions[name]
-        graph(f)  # External tail branches are unsupported, never assumed benign.
+        graph(f, addresses)  # External tail branches are unsupported, never assumed benign.
         for at, row in enumerate(f['code']):
             instruction_destinations(row)
             if row['op'] == 'blr' and tls_lookup(f, at, linked, tls_addresses) in ('critical','deferrals'):return True
@@ -482,7 +488,7 @@ def prove_cfg(functions, *, linked=False, symbol_addresses=None, tls_addresses=N
     if not sites or sites & (before - {decision[0]}) or sites & false or not sites & true:
         raise ValueError('False stop can enter cold work or helper is unguarded')
     # The helper's two exact TLS lookups must feed live integer value loads.
-    helper_edges = graph(helper);helper_dom,_ = dominators(helper_edges)
+    helper_edges = graph(helper, addresses);helper_dom,_ = dominators(helper_edges)
     for at in helper_sites:
         loaded = False
         for j in range(at + 1, len(helper['code'])):
