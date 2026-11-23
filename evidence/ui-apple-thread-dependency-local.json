@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "scope": "Explicit thread dependency for classic artwork provider libraries, including iOS cross configuration. Local metadata validation only; actual Apple success remains unproven.",
+  "failedRun": 45142560236,
+  "linuxGatePassed": true,
+  "appleFailureStage": "Configure native iPadOS targets",
+  "failure": "Provider libraries linked Threads::Threads, but that imported target was only declared by the host-only CMake branch.",
+  "repair": "The classic artwork module calls find_package(Threads REQUIRED) when Threads::Threads is not already present.",
+  "fixtureRepair": "Remove the synthetic predeclared Threads::Threads target, so metadata fixtures exercise the actual dependency lookup.",
+  "localChecks": {
+    "historyReleaseCmake": 3,
+    "slideshowPanoramaDelivery": 6,
+    "passed": 9,
+    "platform": "WSL Ubuntu",
+    "newAppleSdkValidation": false
+  },
+  "productionCppOrArtworkChanged": false,
+  "nativeArm64BaseProduced": false,
+  "unchangedCloudRetry": false,
+  "goalComplete": false
+}

@@ -7,6 +7,9 @@ endif()
 # Prepared classic slideshow units need compression even when artwork is supplied
 # separately instead of bundled. Apple continues to use its existing SDK library.
 if(NFS_CLASSIC_UI)
+  if(NOT TARGET Threads::Threads)
+    find_package(Threads REQUIRED)
+  endif()
   find_package(ZLIB QUIET)
   if(NOT ZLIB_FOUND)
     if(CMAKE_SYSTEM_NAME STREQUAL "iOS")

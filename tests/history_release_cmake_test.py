@@ -36,7 +36,6 @@ class HistoryReleaseConfiguration(unittest.TestCase):
             (source / "CMakeLists.txt").write_text(
                 'cmake_minimum_required(VERSION 3.24)\n'
                 'project(HistoryReleaseMetadata LANGUAGES CXX)\n'
-                'add_library(Threads::Threads INTERFACE IMPORTED)\n'
                 'set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/modules")\n'
                 'set(NFS_CLASSIC_UI ON)\n'
                 'set(NFS_CLASSIC_BUNDLE_OWNED_ARTWORK ON)\n'
