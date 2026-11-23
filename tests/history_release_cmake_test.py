@@ -28,6 +28,8 @@ class HistoryReleaseConfiguration(unittest.TestCase):
                             metadata / "HistoryPanoramaConfiguration.template.h")
             shutil.copyfile(CATALOG.parent / "VictoryArtProvider.cpp",
                             metadata / "VictoryArtProvider.cpp")
+            for name in ("SlideshowPanoramaProvider.cpp", "SlideshowPanoramaPack.cpp"):
+                shutil.copyfile(ROOT / "src/hd" / name, source / "src/hd" / name)
             (source / "modules").mkdir()
             (source / "modules/FindZLIB.cmake").write_text(
                 "set(ZLIB_FOUND TRUE)\nadd_library(ZLIB::ZLIB INTERFACE IMPORTED)\n")

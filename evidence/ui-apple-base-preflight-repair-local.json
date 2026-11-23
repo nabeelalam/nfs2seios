@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "scope": "Repair of isolated CMake metadata test fixture after a real Linux gate failure; no production game code or private artwork changed.",
+  "failedRun": 45123443379,
+  "failedPublicSource": "d0a927f1f696de60b15946eecd924b8adbbef00a",
+  "appleJobStarted": false,
+  "failure": "History configuration fixture omitted the two new slideshow panorama provider sources, so CMake could not generate the fixture target.",
+  "repair": "Copy the actual public provider and pack source files into the temporary fixture alongside the existing Victory source.",
+  "localSameLinuxPreflight": {
+    "tests": [
+      {
+        "test": "tests/publication_audit_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.196
+      },
+      {
+        "test": "tests/diagnostic_session_summary_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.143
+      },
+      {
+        "test": "tests/artifact_budget_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.091
+      },
+      {
+        "test": "tests/release_download_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.27
+      },
+      {
+        "test": "tests/classic_base_draft_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.199
+      },
+      {
+        "test": "tests/history_delivery_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.141
+      },
+      {
+        "test": "tests/slideshow_panorama_delivery_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.513
+      },
+      {
+        "test": "tests/history_release_cmake_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 7.002
+      },
+      {
+        "test": "tests/mapped_operand_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.11
+      },
+      {
+        "test": "tests/guest_copy_batching_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.111
+      },
+      {
+        "test": "tests/rep_word_batching_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.593
+      },
+      {
+        "test": "tests/complete_helper_batching_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.301
+      },
+      {
+        "test": "tests/frontend_word_hooks_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.097
+      },
+      {
+        "test": "tests/frontend_asset_review_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 1.434
+      },
+      {
+        "test": "tests/frontend_main_word_art_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 1.685
+      },
+      {
+        "test": "tests/frontend_font_inspection_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.096
+      },
+      {
+        "test": "tests/hd_workflow_coverage_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.103
+      },
+      {
+        "test": "tests/artwork_workflow_input_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.405
+      },
+      {
+        "test": "tests/assemble_hd_artwork_test.py",
+        "exitCode": 0,
+        "elapsedSeconds": 0.377
+      }
+    ],
+    "passed": true
+  },
+  "productionRuntimeCodeChanged": false,
+  "newDesktopBuildNeeded": false,
+  "sameRevisionCloudRetry": false,
+  "correctedRevisionRequired": true,
+  "privateArtworkUploaded": false,
+  "goalComplete": false
+}
