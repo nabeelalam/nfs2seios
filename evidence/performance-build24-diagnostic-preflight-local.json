@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "targetRepository": "nabeelalam/nfs2seios",
+  "targetBranch": "codex/hd-ui",
+  "workflow": "ipados.yml",
+  "buildVersion": "24",
+  "purpose": "Compile and deliver recording-only diagnostics for foreground polls and inclusive run-loop waits; no gameplay optimization claim",
+  "previousSuccessfulRun": 45146351757,
+  "nativeOwnerValidationRun": 45206031644,
+  "nativeOwnerValidationPassed": true,
+  "productionWorkerTransactionRendererUnchanged": true,
+  "cloudPayload": "Reviewed source and metadata only; no private artwork or game assets",
+  "privateResourceCount": 23,
+  "dispatched": false,
+  "physicalAcceptance": false,
+  "preconditions": [
+    "Exact source publication privacy and independent secret gates",
+    "No other active workflow",
+    "Linux guards before standard Intel Apple build",
+    "Release/ThinLTO and original authenticated artwork metadata",
+    "Base-only unpublished transfer below64MiB; private finishing below768MiB"
+  ],
+  "productionHashes": {
+    "src/WorkerControl.h": "b07d47a99feff9c1df1964807e5b920f4b8a278fb5ed60be9eb183bd932daa76",
+    "src/GuestCopyTransaction.h": "72fb419cfed6acbcdfd0d1018820143c6081f1a1a9c0fc2dfd38811b30f2c76b",
+    "src/MainThreadBridge.cpp": "880c4fd1a30fa5f95ac5c78f014d7869f0cea15bd8a2ff9b27a066a6919104ad"
+  },
+  "all23PrivateResourcesRehashedUnchanged": true,
+  "privateResourceBytes": 559536064,
+  "classicAdaptiveReleaseCheckOnlyPassed": true
+}

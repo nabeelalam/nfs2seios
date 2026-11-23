@@ -32,8 +32,10 @@ Production renderer and worker headers remain unchanged: prior candidates failed
 whole-game gates, and the cold-helper native timing attempt never acquired a
 runner. Recording-only owner-wait telemetry and its log summary pass local
 sanitizer/27-Python checks but are not in build23. The existing Apple main-queue
-test now includes real run-loop recording, reentrant sample invalidation and
-capture-off checks; Apple execution remains pending. Do not redispatch the
+test includes real run-loop recording, reentrant sample invalidation and
+capture-off checks; these passed on Intel Apple in run45206031644, alongside
+ARM64 iOS owner-source syntax. Full recording-controller SDK compilation and
+physical device execution remain pending. Do not redispatch the
 unchanged canceled helper run or build an app merely to repeat artwork checks.
 
 ## Historical UI checkpoints
@@ -2708,3 +2710,13 @@ Session-summary integration now reports matched-duration wait rates, mean/max in
 ### 23 November: small owner-wait Apple validation route ready
 
 The registered helper workflow has a distinct manual owner-wait route: Linux privacy/summary/sanitizer gates precede one standard Intel Apple job. Actual main-queue recording and reentrant sampling run under sanitizers; ARM64 iOS owner-source compilation is syntax-only. This answers correctness, not ARM timing or energy, and does not retry the canceled cold experiment. Local route and44policy/summary tests pass. Driver240seconds, compile120, executable30, Apple job6minutes and unacquired queue300seconds are bounded. No app/game/assets/cache/upload. Native execution remains pending. Evidence: evidence/performance-owner-wait-native-preflight-local.json.
+
+### 23 November: actual Apple owner-recording validation passed
+
+Sourcec9b183871811c5086755741fab083e5a55850f22 passed full-history publication/privacy gates and run45206031644 passes Linux plus the standard Intel Apple job. Runner acquisition4seconds, job44seconds. Both actual-main-queue and diagnostic-session executables pass ASan/UBSan, including reentrant sample invalidation, capture-off and the retained100nested borrowed operations. ARM64 iOS owner-source syntax also passes; every reported source hash matches published and local bytes. No app/IPA, workflow artifacts or cache; original repository remains private.
+
+This is Intel host correctness plus iOS syntax, not ARM timing, recording-controller SDK compilation, iOS execution or energy. Build23 remains unchanged. Cold-helper performance gate remains pending and its canceled experiment was not retried. Evidence: evidence/performance-owner-wait-native-validation-local.json.
+
+### 23 November: recording-only build24 preparation
+
+The small Apple owner-loop validation passed. Prepare one coherent Release/ThinLTO diagnostic app to compile the complete recording controller against the actual iOS SDK and deliver the new foreground-poll/wait fields for physical power comparisons. Version24 preserves build23 game/renderer/worker/transaction behavior and all23 existing private art resources. No rejected allocation/TLS candidate is integrated. Linux/privacy gates precede the standard Intel Apple job; cloud receives only the unsigned base and approved metadata, with private artwork appended locally after trusted-source/hash verification. Preflight only, not dispatched or physically tested. Evidence: evidence/performance-build24-diagnostic-preflight-local.json.
