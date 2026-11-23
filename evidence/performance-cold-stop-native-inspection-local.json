@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "scope": "One source-only cold-stop Apple helper attempt; final linked CFG unproven, no performance measurements",
+  "runId": 45192557790,
+  "url": "https://github.com/nabeelalam/nfs2seios/actions/runs/45192557790",
+  "sourceCommit": "2c76806f364967de632b82f03fd55d64127a3bc8",
+  "runAttempt": 1,
+  "conclusion": "failure",
+  "linuxGatePassed": true,
+  "standardArmLabels": [
+    "macos-15"
+  ],
+  "queueAcquisitionSeconds": 2.0,
+  "nativeJobSeconds": 27.0,
+  "sourceOnly": true,
+  "artifactsVerified": 0,
+  "originalRepositoryStillPrivateVerifiedAfter": true,
+  "preLtoTinyAccessor": {
+    "accessor_tls_lookups": 1,
+    "atomic_index": 9,
+    "false_path_bypasses_helper": true,
+    "format": "source-assembly",
+    "helper_call_sites": [
+      19
+    ],
+    "helper_tls_lookups": 2,
+    "live_atomic_loads": 1,
+    "nonnull_control_guard": true,
+    "proven": true,
+    "scope": "Pinned tiny accessor only; not final app code generation",
+    "stop_decision_index": 10,
+    "tls_descriptor_provenance": true
+  },
+  "iosBothVariantsCompiledAndThinLtoLinked": true,
+  "linkedColdCfg": "unproven",
+  "reasonLimitation": "Initial report omits the exact linked-check failure reason and label/PC mappings; numeric ADRP operands appear in its sanitized preview. Do not infer a specific cause or a linked-path proof.",
+  "nativeCorrectnessExecuted": false,
+  "nativeMeasurementRows": 0,
+  "rawReportSha256": "bfb6644fae2c32cc3a0feef153fc5de91664c820b15a073afeba579566ef96f2",
+  "productionHeadersUnchanged": true,
+  "appOrIpaBuilt": false,
+  "deviceOrEnergyGainEstablished": false,
+  "nextStep": "Improve bounded diagnostics and supported observed instruction decoding locally; no unchanged rerun or source promotion."
+}

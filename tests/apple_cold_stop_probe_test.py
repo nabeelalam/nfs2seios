@@ -172,6 +172,16 @@ class CfgTests(unittest.TestCase):
         functions = cold.parse_functions(text, True, addresses)
         proof = cold.prove_cfg(functions, linked=True, symbol_addresses=addresses, tls_addresses={'direct': {}, 'indirect': slots})
         self.assertTrue(proof['proven'])
+        for fn in functions.values():
+            for row in fn['code']:
+                if row['op'] == 'adrp':
+                    delta = (0x100005000 - (row['address'] & ~4095)) >> 12
+                    row['args'] = 'x0, ' + str(delta)
+        self.assertTrue(cold.prove_cfg(functions, linked=True, symbol_addresses=addresses, tls_addresses={'direct': {}, 'indirect': slots})['proven'])
+        replay = cold.replay_metadata(functions, addresses, {'direct': {}, 'indirect': slots})
+        self.assertTrue(cold.prove_cfg(replay['functions'], linked=True,
+            symbol_addresses={int(k,16):v for k,v in replay['call_target_symbols'].items()},
+            tls_addresses={kind:{int(k,16):v for k,v in table.items()} for kind,table in replay['tls_symbols'].items()})['proven'])
         self.assertNotIn('temporary', json.dumps(cold.preview(functions)))
         with self.assertRaises(ValueError):
             cold.prove_cfg(functions, linked=True, symbol_addresses={})
@@ -182,6 +192,37 @@ class CfgTests(unittest.TestCase):
                 self.proof(assembly_text().replace(' tbz w8', ' ' + insertion + '\n tbz w8'))
         with self.assertRaises(ValueError):
             self.proof(assembly_text().replace(' cbz x8, Lnormal', ' b Lunguarded\n cbz x8, Lnormal\nLunguarded:'))
+
+    def test_numeric_otool_adrp_displacement_is_pc_relative_and_identity_checked(self):
+        fn = dict(code=[
+            dict(op='adrp', args='x0, 10', address=0x1000031fc),
+            dict(op='add', args='x0, x0, #0x80', address=0x100003200),
+            dict(op='ldr', args='x8, [x0]', address=0x100003204),
+            dict(op='blr', args='x8', address=0x100003208)])
+        tls = dict(direct={0x10000d080:cold.SLOT_SYMBOLS['current']}, indirect={})
+        self.assertEqual(cold.tls_lookup(fn, 3, True, tls), 'current')
+        fn['code'][0]['args'] = 'x0, -2'
+        tls['direct'] = {0x100001080:cold.SLOT_SYMBOLS['critical']}
+        self.assertEqual(cold.tls_lookup(fn, 3, True, tls), 'critical')
+        for operand in ('x0, 1048576', 'x0, -1048577', 'x0, nonsense'):
+            fn['code'][0]['args'] = operand
+            with self.assertRaises(ValueError):cold.tls_lookup(fn, 3, True, tls)
+        fn['code'][0]['args'] = 'x0, 10'
+        with self.assertRaises(ValueError):cold.tls_lookup(fn, 3, True, tls)
+        fn['code'][0]['args'] = 'x0, 10 ; 0x10000d000'
+        tls['direct'] = {0x10000d080:cold.SLOT_SYMBOLS['current']}
+        self.assertEqual(cold.tls_lookup(fn, 3, True, tls), 'current')
+        fn['code'][2]['args'] = 'x8, [x9]'
+        with self.assertRaises(ValueError):cold.tls_lookup(fn, 3, True, tls)
+
+    def test_replay_preserves_labels_pcs_and_sanitizes_failure_reason(self):
+        functions = cold.parse_functions(assembly_text())
+        replay = cold.replay_metadata(functions)
+        self.assertTrue(cold.prove_cfg(replay['functions'])['proven'])
+        self.assertIn('Lnormal', replay['functions']['_nfs_probe_accessor']['labels'])
+        self.assertIn('address', replay['functions']['_nfs_probe_accessor']['code'][0])
+        self.assertEqual(cold.proof_failure_reason(ValueError('/private/compiler/path')), 'Unrecognized proof failure')
+        self.assertEqual(cold.proof_failure_reason(ValueError('Unknown linked TLS descriptor identity')), 'Unknown linked TLS descriptor identity')
 
     def test_function_bounds_never_accept_truncated_proof(self):
         text = assembly_text().replace(' tbz w8', ' nop\n' * 769 + ' tbz w8')

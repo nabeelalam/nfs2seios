@@ -359,8 +359,21 @@ def tls_lookup(fn, at, linked, tls):
     # otool's decoded ADRP comment carries the absolute page. Its GOT slot is
     # independently matched against LC_DYSYMTAB, not inferred from a code label.
     absolute = re.findall(r'(?:;\s*|,\s*)(0x[0-9a-fA-F]+)', page['args'])
-    if not absolute:raise ValueError('Unresolved linked ADRP page')
-    address = int(absolute[-1], 16)
+    if absolute:
+        address = int(absolute[-1], 16)
+    else:
+        # Apple's otool prints the signed decoded A64 page displacement in
+        # decimal when no absolute-page comment is present. ADRP's PC is its
+        # own instruction page; the immediate has a signed 21-bit range.
+        relative = re.fullmatch(r'x0,\s*#?(-?[0-9]+)', operand(page['args']))
+        pc = page.get('address')
+        if not relative or type(pc) is not int or not 0 <= pc < 1 << 64:
+            raise ValueError('Unresolved linked ADRP page')
+        delta = int(relative[1])
+        if not -(1 << 20) <= delta < 1 << 20:
+            raise ValueError('ADRP displacement exceeds encoding range')
+        address = (pc & ~4095) + (delta << 12)
+        if not 0 <= address < 1 << 64:raise ValueError('ADRP address outside range')
     if address & 4095:raise ValueError('ADRP page not aligned')
     if pointer['op'] == 'ldr':
         offset = re.fullmatch(r'x0,\s*\[x0(?:,\s*#(0x[0-9a-fA-F]+|[0-9]+))?\]', operand(pointer['args']))
@@ -490,6 +503,45 @@ def preview(functions):
             for name, fn in functions.items() if name in PROBES or 'worker_stop_not_deferred' in name or 'OUTLINED_FUNCTION_' in name}
 
 
+def replay_metadata(functions, addresses=None, tls=None):
+    """Bounded selected PCs/labels and resolved symbols, never tool path headers."""
+    addresses = addresses or {}
+    selected, referenced = {}, {}
+    for name, fn in functions.items():
+        if name not in PROBES and 'worker_stop_not_deferred' not in name and 'OUTLINED_FUNCTION_' not in name:
+            continue
+        code = []
+        for row in fn['code']:
+            clean = dict(op=row['op'], args=operand(row['args']), address=row.get('address'))
+            if row['op'] == 'adrp':
+                absolute = re.findall(r'(?:;\s*|,\s*)(0x[0-9a-fA-F]+)', row['args'])
+                if absolute:clean['args'] += ' ; ' + absolute[-1]
+            if row['op'] == 'bl':
+                try:
+                    target = call_target(row, addresses)
+                    clean['resolved_call_target'] = target
+                    arg = operand(row['args'])
+                    if re.fullmatch(r'(?:0x)?[0-9a-fA-F]{8,16}', arg):
+                        referenced[hex(int(arg.removeprefix('0x'), 16))] = target
+                except ValueError:
+                    clean['call_target_unresolved'] = True
+            code.append(clean)
+        selected[name] = dict(name=name, labels=dict(fn['labels']), code=code)
+    result = dict(functions=selected, call_target_symbols=referenced)
+    if tls is not None:
+        result['tls_symbols'] = {kind: {hex(k): value for k,value in table.items()}
+                                 for kind,table in tls.items()}
+    return result
+
+
+PROOF_FAILURE_REASONS = frozenset(('ADRP address outside range', 'ADRP displacement exceeds encoding range', 'ADRP page not aligned', 'Accessor does not use exactly the current-control TLS slot', 'Additional checkpoint page materialization is unproven', 'Ambiguous TLS symbol', 'Atomic address lost current-control provenance', 'Atomic checkpoint count changed', 'Atomic decision was outlined or unrecognized', 'Atomic does not dominate decision', 'Atomic value clobbered before decision', 'Branch leaves recognized function', 'Cold correctness differs from frozen OLD oracle', 'Cold fixture identity changed', 'Compile budget exhausted', 'Deferred state was not verified', 'Depth TLS lookup has no live integer read', 'Disassembly exceeds bound', 'Disassembly line exceeds bound', 'False stop can enter cold work or helper is unguarded', 'Helper does not retain both exact depth slots', 'Incomplete balanced cold timing', 'Invalid Mach-O command bounds', 'Invalid Mach-O command length', 'Invalid Mach-O symbol command bounds', 'Invalid Mach-O symbol storage', 'Invalid SDK version', 'Invalid build tools', 'Invalid indirect section index', 'Invalid indirect symbol index', 'Invalid indirect symbol table', 'Invalid pointer section', 'Invalid section bounds', 'Invalid source identity', 'Invalid symbol command', 'Invalid symbol table', 'Linked TLS provenance unavailable', 'Mach-O exceeds bound', 'Measured mode checksum differs', 'Missing exact source TLS relocation', 'Missing full probe body', 'Missing or ambiguous cold helper', 'Missing symbol metadata', 'Mode or variant warmup checksum differs', 'No recognized normal return', 'Nonlinear atomic reaching definition', 'Nonnull guard does not dominate atomic stop', 'Normal output protocol changed', 'Recursive stop fragment', 'Required linked probe symbols were eliminated', 'Selected body exceeds bound; no truncated proof', 'Source TLS descriptor register changed', 'Symbol output exceeds bound', 'TLS descriptor function load missing', 'TLS indirect call target changed', 'TLS materialization does not dominate lookup', 'TLS page materialization missing', 'Truncated Mach-O command', 'Truncated platform command', 'Truncated segment', 'Truncated symbol command', 'Unbounded Mach-O symbol table', 'Unexpected accessor TLS materialization', 'Unexpected cold closure difference', 'Unknown assembly instruction format', 'Unknown branch condition', 'Unknown direct call target', 'Unknown linked TLS descriptor identity', 'Unknown linked instruction format', 'Unparsed internal or unknown direct callee', 'Unrecognized TLS lookup', 'Unrecognized linked TLVP load', 'Unrecognized linked descriptor materialization', 'Unrecognized relaxed TLS address', 'Unresolved direct call target', 'Unresolved linked ADRP page', 'Unsupported indirect control flow', 'Unsupported instruction semantics', 'Unsupported measurement mode/order', 'Unsupported non-stack load writeback', 'Unsupported nonlinear checkpoint prefix', 'Unsupported store writeback', 'Wrong Mach-O SDK version', 'Wrong Mach-O platform or deployment target', 'Wrong atomic test bit'))
+
+
+def proof_failure_reason(error):
+    reason = str(error)
+    return reason if reason in PROOF_FAILURE_REASONS else 'Unrecognized proof failure'
+
+
 def ios_flags(clang, sdk, folder, variant):
     return [clang, '-target', 'arm64-apple-ios16.0', '-std=c++14', '-O3', '-DNDEBUG',
             '-fwrapv', '-fno-strict-aliasing', '-isysroot', sdk,
@@ -530,13 +582,18 @@ def ios_codegen(config, folder, deadline):
         linked = parse_functions(runtime.checked(['xcrun', 'otool', '-tvV', str(binary)], timeout=remaining(deadline)), True, address_names)
         linked_tls = macho_tls_symbols(binary)
         row = dict(platform=platform, thin_lto=True, backend_workers=2,
-                   pre_lto_selected=preview(pre), linked_selected=preview(linked))
+                   pre_lto_selected=preview(pre), linked_selected=preview(linked),
+                   pre_lto_replay=replay_metadata(pre),
+                   linked_replay=replay_metadata(linked, address_names, linked_tls))
         if variant == 'cold':
-            try:
-                row['pre_lto_cfg'] = prove_cfg(pre)
-                row['linked_cfg'] = prove_cfg(linked, linked=True, symbol_addresses=address_names, tls_addresses=linked_tls)
-            except ValueError:
-                row['cfg_unproven'] = True
+            for stage, functions, options in (
+                    ('pre_lto', pre, {}),
+                    ('linked', linked, dict(linked=True, symbol_addresses=address_names, tls_addresses=linked_tls))):
+                try:
+                    row[stage + '_cfg'] = prove_cfg(functions, **options)
+                except ValueError as error:
+                    row['cfg_unproven'] = True
+                    row[stage + '_cfg_failure_reason'] = proof_failure_reason(error)
         else:
             for functions in (pre, linked):
                 accessor = functions['_nfs_probe_accessor']['code']

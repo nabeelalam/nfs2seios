@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "scope": "Changed-source diagnostic follow-up preparation, not an unchanged retry or candidate promotion",
+  "priorRun": 45192557790,
+  "priorResult": "ios-cfg-unproven; zero native correctness/timing execution",
+  "candidateFixtureUnchanged": true,
+  "cppOracleAndProbeSourcesUnchanged": true,
+  "changes": [
+    "Recognize bounded signed numeric ADRP page displacements using the actual instruction PC and exact binary TLS identity",
+    "Retain selected instruction PCs/local labels, direct-call resolutions and TLS descriptor maps for bounded offline replay",
+    "Report pre-link and linked proof outcomes separately, with whitelisted static failure reasons"
+  ],
+  "focusedUnitTestsPassed": 24,
+  "priorSanitizerCppAndHeaderInputsStillExact": true,
+  "nativeGateUnchanged": true,
+  "workflowResourceLimitsUnchanged": true,
+  "noAppOrAssets": true,
+  "noCloudFollowupStarted": true,
+  "linkedNativeProofStillRequired": true,
+  "sourceHashes": {
+    "scripts/apple_cold_stop_probe.py": "1ee31ea93331c562e3a112cfa97fbda11852bbb6a7a1594f3cab141d14bf36da",
+    "tests/apple_cold_stop_probe_test.py": "a98c409ece9c3dec0832c28c37b5577f78b88638e647f422250e14879acd261c"
+  }
+}
