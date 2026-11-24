@@ -11,6 +11,7 @@ on:
           - cold-stop
           - owner-wait
           - owned-chunk
+          - native-span
         default: copy-lock
 permissions:
   contents: read
@@ -181,3 +182,34 @@ jobs:
           persist-credentials: false
       - name: Validate native ARM spans and compile iOS objects
         run: python3 scripts/apple_owned_chunk_probe.py
+  review-native-span:
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/hd-ui' && inputs.experiment == 'native-span'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check publication and synthetic span safety
+        run: |
+          python3 scripts/setup_secret_scanner.py
+          python3 scripts/publication_gate.py --mode history
+          python3 scripts/publication_audit.py --mode worktree
+          python3 tests/apple_native_span_probe_test.py
+          python3 scripts/apple_native_span_probe.py --local-safety-check
+  native-span:
+    needs: review-native-span
+    if: success() && github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/hd-ui' && inputs.experiment == 'native-span'
+    runs-on: macos-15
+    timeout-minutes: 8
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Validate native ARM spans and compile iOS objects
+        run: python3 scripts/apple_native_span_probe.py

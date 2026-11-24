@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "sources": [
+    {
+      "file": "EngineMemory.cpp",
+      "control_sha256": "b80abada34d804dcbaccd1676a5991e8485329221096ce2e8917743c3a97ebae",
+      "candidate_sha256": "e1190392697273d8aa81e287fc172725ab60a115651b4d4510ff56857cae303e"
+    },
+    {
+      "file": "EngineMemory.h",
+      "control_sha256": "1332837fc67999f18a08b03043e4251fbd3666fc6991abf28c671b24798b2c4c",
+      "candidate_sha256": "1b3b1c5d88e9626fe80d633805667ceaa12acc060446b11e9445d8fc5f367cc3"
+    },
+    {
+      "file": "GuestRuntimeC.h",
+      "control_sha256": "7cd3eb3960dc15ef393c6e9feaff5bc5c96e7f07731ae395b7a221bc11f3c1e4",
+      "candidate_sha256": "3abfc4255ade24f144f511d37fdbb59db69fc45871de4bf25f949b0c0cea7030"
+    },
+    {
+      "file": "GuestAccess.h",
+      "control_sha256": "9b96ebf525bae7c484d34b82248965a1a091aed5e4d6b3c1e367603c423c2413",
+      "candidate_sha256": "e43b9cde37c27e59646d7713ebb50798e506c8925e55b6e53f9b9c046e6e327d"
+    },
+    {
+      "file": "GuestCopyTransaction.h",
+      "control_sha256": "72fb419cfed6acbcdfd0d1018820143c6081f1a1a9c0fc2dfd38811b30f2c76b",
+      "candidate_sha256": "3974df5c92d1a6154e78c913d8d4dfa0cfb879ecc834907224b42be09388d893"
+    }
+  ]
+}
