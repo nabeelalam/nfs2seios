@@ -429,3 +429,8 @@ acceptance. This is distinct from, and never retries, the canceled cold-stop
 ARM performance experiment. No game, assets, signing, app/IPA, upload or cache
 is used. Shared workflow concurrency remains sequential. Cancel an unacquired
 runner after300seconds; no unchanged retry or paid/larger fallback.
+
+
+## Owned-chunk synthetic Apple check
+
+The manual owned-chunk helper choice is a distinct source-only correctness question, not a retry of cold-stop timing. Linux publication and sanitizer review precedes a standard public macos-15 ARM job with pinned Xcode16.4/iOS18.5. Limits: Linux5minutes, Apple8minutes, driver240seconds, individual compile90seconds and executable30seconds. Cancel a single unacquired ARM queue at300seconds; no unchanged retry, paid fallback, cache, artifact upload, signing or game inputs. Production resolver stays unchanged. This check establishes native correctness and SDK compilation only, never game performance or energy.
