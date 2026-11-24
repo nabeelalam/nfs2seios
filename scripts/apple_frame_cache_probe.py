@@ -15,6 +15,16 @@ ROOT=Path(__file__).resolve().parents[1]
 FIXTURE=ROOT/'tests/fixtures/frame_span_cache'
 EXPECTED={*('tests/fixtures/frame_span_cache/'+n for n in ['EngineMemory.cpp','HeapArena.h','CachedFrameTransaction.h','FrameSpanCacheAbi.h']),*('tests/'+n for n in ['frame_span_cache_oracle.cpp','owned_chunk_oracle.cpp','native_span_oracle.cpp']),*('src/'+n for n in ['EngineMemory.h','GuestCopyTransaction.h','GuestAccess.h','GuestRuntimeC.h','WorkerControl.h','GameMemory.h','GameTrace.cpp','GameTrace.h','CodecOperations.h']),*('tests/fixtures/owned_chunk/synthetic/'+n for n in ['DATA.h','BSS.h'])}
 
+CURRENT_PHASE='initialization'
+def phase(name):
+    global CURRENT_PHASE
+    CURRENT_PHASE=name
+    print(json.dumps(dict(type='probe_phase',phase=name)),flush=True)
+def safe_detail(value):
+    text=value.decode(errors='replace')if isinstance(value,bytes)else str(value)
+    for path,label in [(str(ROOT),'<source>'),(tempfile.gettempdir(),'<temporary>')]:
+        text=text.replace(path,label).replace(path.replace('\\','/'),label)
+    return text[:4096]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def sources():
     rows=json.loads((FIXTURE/'source-provenance.json').read_text())['sources']
@@ -30,7 +40,8 @@ def checked(args,deadline,timeout=60):
     remaining=deadline-time.monotonic()
     if remaining<=0:raise ValueError('Probe deadline exhausted')
     p=subprocess.run(args,capture_output=True,timeout=min(timeout,remaining))
-    if p.returncode or max(len(p.stdout),len(p.stderr))>1048576:raise ValueError('Probe command failed or exceeded output bound')
+    if max(len(p.stdout),len(p.stderr))>1048576:raise ValueError('Probe command exceeded output bound')
+    if p.returncode:raise ValueError('Command '+Path(args[0]).name+' exited '+str(p.returncode)+': '+safe_detail(p.stderr))
     return p.stdout
 
 def macho(path,kind,platform_id=None,minimum=None,sdk=None):
@@ -52,7 +63,9 @@ def macho(path,kind,platform_id=None,minimum=None,sdk=None):
                 if tools>32 or length!=24+8*tools:raise ValueError('Build tools outside bound')
                 builds.append((target,version,sdk_version))
             cursor+=length
-        if cursor!=limit or builds!=[(platform_id,minimum,sdk)]:raise ValueError('Mach-O platform or SDK mismatch')
+        allowed=sdk if isinstance(sdk,tuple)else(sdk,)
+        if cursor!=limit or len(builds)!=1 or builds[0][:2]!=(platform_id,minimum)or builds[0][2]not in allowed:raise ValueError('Mach-O platform or SDK mismatch: '+str(builds))
+        sdk=builds[0][2]
     return dict(architecture='arm64',filetype=filetype,sha256=sha(path),platform=platform_id,minimum=minimum,sdk=sdk)
 
 def verify_results(results,heap_bytes=49256):
@@ -67,7 +80,7 @@ def verify_results(results,heap_bytes=49256):
     return results
 
 def execute(local=False):
-    deadline=time.monotonic()+240;rows=sources()
+    deadline=time.monotonic()+240;phase('source_review');rows=sources();phase('compiler_discovery')
     flags=['-std=c++14','-O1','-g','-pthread','-fwrapv','-fno-strict-aliasing','-frounding-math','-fsanitize=address,undefined','-fno-sanitize-recover=all','-fno-omit-frame-pointer','-DNFS_NATIVE_SPAN_CANDIDATE=1']
     if local:
         if sys.platform!='linux':raise ValueError('Linux required for local safety check')
@@ -84,24 +97,25 @@ def execute(local=False):
         includes=['-I'+str(folder)];results={}
         for name,oracle in [('edges','frame_span_cache_oracle.cpp'),('integer','owned_chunk_oracle.cpp'),('native','native_span_oracle.cpp')]:
             obj=folder/(name+'-memory.o');defines=['-Dnfs_host_address=nfs_raw_host_address','-Dnfs_host_native_span=nfs_raw_host_native_span']if name=='edges'else[]
-            checked([compiler,*flags,*includes,*defines,'-c',str(folder/'EngineMemory.cpp'),'-o',str(obj)],deadline)
+            phase(name+'_memory_compile');checked([compiler,*flags,*includes,*defines,'-c',str(folder/'EngineMemory.cpp'),'-o',str(obj)],deadline)
             binary=folder/name
-            checked([compiler,*flags,*includes,str(folder/oracle),str(obj),str(folder/'GameTrace.cpp'),'-o',str(binary)],deadline)
+            phase(name+'_oracle_compile');checked([compiler,*flags,*includes,str(folder/oracle),str(obj),str(folder/'GameTrace.cpp'),'-o',str(binary)],deadline)
             if not local:macho(binary,2)
-            results[name]=json.loads(checked([str(binary)],deadline,30))
-        report['sanitizedResults']=verify_results(results,49256 if local else 49280)
+            phase(name+'_oracle_run');results[name]=json.loads(checked([str(binary)],deadline,30))
+        phase('oracle_result_verification');report['sanitizedResults']=verify_results(results,49256 if local else 49280)
         if not local:
+            phase('ios_sdk_verification')
             if checked(['xcrun','--sdk','iphoneos','--show-sdk-version'],deadline).strip()!=b'18.5':raise ValueError('Pinned iOS SDK required')
             sdk=checked(['xcrun','--sdk','iphoneos','--show-sdk-path'],deadline).decode().strip()
             access=folder/'access.cpp';access.write_text('#include "CachedFrameTransaction.h"\n#include "EngineMemory.h"\nextern "C" __attribute__((noinline)) uint32_t nfs_frame_probe_kernel(uint32_t a){nfs::CachedFrameTransaction tx{a};auto first=tx.load<uint32_t>(a);tx.store<uint32_t>(a+4,first);return tx.load<uint32_t>(a+4);}\nint main(){nfs::EngineMemory memory(65536);auto*p=memory.allocate(128);return int(nfs_frame_probe_kernel(memory.encode(p)));}\n')
             iosflags=['-std=c++14','-O3','-fwrapv','-fno-strict-aliasing','-frounding-math','-target','arm64-apple-ios16.0','-isysroot',sdk,*includes]
             objects=[]
             for name in ['EngineMemory.cpp','GameTrace.cpp','access.cpp']:
-                obj=folder/(name+'.o');checked([compiler,*iosflags,'-c',str(folder/name),'-o',str(obj)],deadline);objects.append(obj);macho(obj,1,2,16<<16,(18<<16)|(5<<8))
-            binary=folder/'ios-frame-probe';checked([compiler,*iosflags,*map(str,objects),'-o',str(binary)],deadline)
-            report['iosLinkedProbe']=macho(binary,2,2,16<<16,(18<<16)|(5<<8))
+                obj=folder/(name+'.o');phase('ios_'+name+'_compile');checked([compiler,*iosflags,'-c',str(folder/name),'-o',str(obj)],deadline);objects.append(obj);macho(obj,1,2,16<<16,(0,(18<<16)|(5<<8)))
+            binary=folder/'ios-frame-probe';phase('ios_link');checked([compiler,*iosflags,*map(str,objects),'-o',str(binary)],deadline)
+            phase('ios_linked_metadata');report['iosLinkedProbe']=macho(binary,2,2,16<<16,(18<<16)|(5<<8))
             # Collect the actual linked kernel, rather than inferring code shape from source.
-            assembly=checked(['xcrun','otool','-tvV',str(binary)],deadline).decode();start=assembly.find('_nfs_frame_probe_kernel:')
+            phase('ios_linked_kernel');assembly=checked(['xcrun','otool','-tvV',str(binary)],deadline).decode();start=assembly.find('_nfs_frame_probe_kernel:')
             if start<0:raise ValueError('Linked kernel missing')
             body=assembly[start:];end=body.find('\n_',1)
             if end>=0:body=body[:end]
@@ -113,5 +127,7 @@ def execute(local=False):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--local-safety-check',action='store_true');args=parser.parse_args()
     try:print(json.dumps(execute(args.local_safety_check),sort_keys=True,indent=2))
-    except (OSError,ValueError,KeyError,struct.error,subprocess.SubprocessError):parser.exit(1,'Frame-cache probe failed platform, source, coverage, compile, runtime or deadline checks.\n')
+    except (OSError,ValueError,KeyError,struct.error,subprocess.SubprocessError)as error:
+        print(json.dumps(dict(type='probe_failure',phase=CURRENT_PHASE,reason=safe_detail(error))),flush=True)
+        parser.exit(1,'Frame-cache probe failed; inspect the bounded phase diagnostic.\n')
 if __name__=='__main__':main()
