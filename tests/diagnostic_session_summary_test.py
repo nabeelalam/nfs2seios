@@ -20,6 +20,42 @@ def sample(time, power=False, identity=1, fps=60):
 
 class SummaryTests(unittest.TestCase):
 
+    def test_trial_comparison_excludes_power_transitions_and_gaps(self):
+        def row(t, power):
+            return dict(sample(t, power=power, identity=t+1), transform_trial_requested="cache",
+                        transform_trial_generation=2, transform_trial_interval_stable=t>0)
+        rows = [row(0, False), row(1, False), row(2, True), row(3, True), row(8, True)]
+        result = summary.summarize(fixture(rows))["transform_trial_comparison"]
+        self.assertEqual(result["off"]["cache"]["stable_samples"], 1)
+        self.assertEqual(result["on"]["cache"]["stable_samples"], 1)
+
+    def test_transform_trial_generation_and_transition_grouping(self):
+        def row(t, mode, generation, stable):
+            return dict(sample(t, identity=t+1), transform_trial_requested=mode,
+                        transform_trial_generation=generation,
+                        transform_trial_interval_stable=stable)
+        rows = [row(0, "baseline", 1, False), row(1, "baseline", 1, True),
+                row(2, "cache", 2, False), row(3, "cache", 2, True),
+                row(4, "cache", 4, False), row(5, "cache", 4, True)]
+        result = summary.summarize(fixture(rows))["transform_trial_comparison"]["off"]
+        self.assertEqual(result["baseline"]["stable_samples"], 1)
+        self.assertEqual(result["cache"]["stable_samples"], 2)
+        invalid = [dict(rows[1], **change) for change in (
+            {"transform_trial_generation": True}, {"transform_trial_requested": "other"},
+            {"transform_trial_requested": "unavailable"}, {"transform_trial_generation": 0},
+            {"transform_trial_interval_stable": 1})]
+        for bad in invalid:
+            with self.assertRaises(ValueError):
+                summary.summarize(fixture([rows[0], bad]))
+        with self.assertRaises(ValueError):
+            summary.summarize(fixture([rows[0], dict(rows[2], transform_trial_interval_stable=True)]))
+        with self.assertRaises(ValueError):
+            summary.summarize(fixture([rows[2], row(3, "baseline", 1, False)]))
+        with self.assertRaises(ValueError):
+            summary.summarize(fixture([dict(sample(0), transform_trial_requested="baseline")]))
+
+
+
     def test_main_wait_metrics_use_matched_durations_and_reason_counts(self):
         def row(time, duration, count, total, maximum):
             return dict(sample(time), interval_s=duration, main_wait_calls=count,

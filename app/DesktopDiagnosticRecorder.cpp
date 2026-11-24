@@ -120,6 +120,7 @@ struct DesktopDiagnosticRecorder::Impl {
  }
  NfsFrameContentTotals frame_content{};
  DiagnosticSwapIntervals swap_intervals;
+ TransformTrialInterval transform_trial;
  uint64_t swap_epoch=0,swap_drops=0;
  bool drain(uint64_t through,bool final=false){NfsFrameTiming rows[128];for(unsigned batch=0;batch<8;++batch){const auto count=nfs_frame_timing_drain_v2(rows,128);if(!count)break;
    if(frames_closed){discarded_frames+=count;if(!final)return false;continue;}
@@ -131,6 +132,7 @@ struct DesktopDiagnosticRecorder::Impl {
  void poll(){if(stopped)return;const auto now=SDL_GetTicksNS();if(write_error.load()){stop("write_error");return;}if(!drain(now)){stop(reason.c_str());return;}if(now<origin||now-origin>=3600000000000ull){stop("time_limit");return;}if(now<next)return;if(sample_rows>=limits.samples){stop("sample_limit");return;}
   DiagnosticSample s;s.elapsed=double(now-origin)/1e9;s.interval=double(now-last)/1e9;const auto snapshot=nfs_frame_timing_snapshot();
   record_fps_snapshot(s,snapshot,now);
+  record_transform_trial(s,transform_trial_control().snapshot(),transform_trial);
   if(sample_rows && snapshot.window_epoch==swap_epoch && snapshot.dropped_total==swap_drops){
    s.swap_intervals=swap_intervals.count;
    s.swap_over_18ms=swap_intervals.over_18ms;

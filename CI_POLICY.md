@@ -446,3 +446,20 @@ The manual current-accessor option is a distinct single-slot plus cold-helper st
 The manual frame-cache option checks the isolated revision/binding-guarded span cache with an exact18-file closure and synthetic zero-filled layouts. Linux publication and sanitizer review precedes one standard public macos-15 ARM job with Xcode16.4/iOS18.5: Linux5minutes, Apple8minutes, internal240seconds, compile60seconds, executable30seconds. It verifies90 lifetime/error cases and the full integer/native memory oracles, compiles and links a non-app iOS helper, and logs its linked kernel. No performance measurement, full game, original game data, private evidence, artwork, signing, cache or artifact upload. Native compatibility does not authorize promotion or establish FPS/energy. Cancel an unacquired ARM queue at300seconds; no unchanged retry or paid fallback.
 
 The manual frame-cache-timing choice compares synthetic8/16word frame, mixed-global and outside-window scopes in one process and allocation. It uses the unchanged previously verified cache closure plus a frozen runtime/reference model. Ubuntu privacy, protocol and sanitizer/optimized correctness review precedes one standard public macos-15 ARM job with Xcode16.4/iOS18.5. Linux5minutes, Apple8minutes, driver240seconds, native timing90seconds; no app, game data, artwork, signing, cache or artifact uploads. At most two ThinLTO backend jobs. Calibration targets200to220ms with at most5refinements so the nominal74.4CPU-second timing/warm-up plan fits the cap. All48identical-function rows must meet2percent identity,5percent within/pooled control spread and declared clock quality before72normal and32deferred candidate rows may run. Primary frame/mixed cells require10percent median CPU gain in both orders; any normal or deferred median CPU/wall regression above5percent fails. Retain every row; no outlier removal or unchanged retry. Complete linked iOS text is collected with temporary paths redacted; external library bodies remain outside that text. Native component success alone never authorizes promotion or establishes iPad FPS/battery. Cancel an unacquired ARM queue after300observed seconds, no paid fallback.
+
+## Explicit transform comparison build
+
+The optional transform_trial input defaults false and adds no jobs. It requires
+the widescreen classic Release build with bounded ThinLTO. Preparation clones the selected
+engine after any adaptive-race preparation, recreates the pinned tested method
+body, and emits a separately verified engine/runtime pair. CMake rejects an
+instrumented engine without its exact runtime and rejects edited prepared files.
+Only that runtime registers the baseline/cache diagnostics action; baseline is
+the default. Normal preparation and production memory sources stay unchanged.
+No device speed or energy benefit is implied by selecting the trial.
+
+The manual workflow has 12 inputs, below GitHub.com's documented 25-input maximum:
+https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow
+Existing runner choices, job timeouts, two-job compilation limits, artifact/cache
+policies and private-resource publication rules are unchanged. Do not dispatch
+until local source, provenance, policy and package checks are complete.

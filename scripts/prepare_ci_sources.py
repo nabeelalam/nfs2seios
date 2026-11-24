@@ -55,6 +55,16 @@ def main():
     value=os.environ.get('NFS_CLASSIC_UI_REQUESTED','false')
     if value not in {'false','true'}:raise ValueError('Classic UI input must be boolean')
     classic=value=='true';fingerprint='';metadata_fingerprint='';panorama=None
+    trial = os.environ.get('NFS_TRANSFORM_TRIAL_REQUESTED', 'false')
+    if trial not in {'false', 'true'}:
+        raise ValueError('Transform trial input must be boolean')
+    if trial == 'true' and (not classic or os.environ.get('NFS_BUILD_CONFIGURATION') != 'Release'
+                            or os.environ.get('NFS_THIN_LTO') != 'ON'
+                            or os.environ.get('NFS_ADAPTIVE_RACE_REQUESTED') != 'true'):
+        raise ValueError('Transform trial requires widescreen classic Release with bounded ThinLTO')
+    if trial == 'true':
+        from prepare_transform_trial import dependencies
+        dependencies()
     adaptive = os.environ.get('NFS_ADAPTIVE_RACE_REQUESTED', 'false')
     if adaptive not in {'false', 'true'}:
         raise ValueError('Adaptive race input must be boolean')
@@ -85,7 +95,15 @@ def main():
         prepare(ROOT / engine, ROOT / renderer, ROOT / pair)
         engine = (pair / 'engine').as_posix()
         renderer = (pair / 'renderer').as_posix()
+    trial_runtime = ''
+    if trial == 'true':
+        from prepare_transform_trial import prepare as prepare_trial
+        pair = Path('.build/transform-trial')
+        prepare_trial(ROOT / engine, ROOT / pair)
+        engine = (pair / 'engine').as_posix()
+        trial_runtime = (pair / 'runtime').as_posix()
     values={'NFS_CLASSIC_UI':'ON'if classic else'OFF','NFS_CLASSIC_DEFER_OWNER_TEMPLATE':'ON'if classic else'OFF','NFS_CI_ENGINE_SOURCE':engine,'NFS_CI_RENDERER_SOURCE':renderer,'NFS_CLASSIC_ASSET_MANIFEST_SHA256':fingerprint,'NFS_CLASSIC_SLIDESHOW_METADATA_SHA256':metadata_fingerprint}
+    values['NFS_TRANSFORM_TRIAL_DIR'] = trial_runtime
     values.update(NFS_CLASSIC_SLIDESHOW_PANORAMA_SHA256=panorama['sha256']if panorama else'',
                   NFS_CLASSIC_SLIDESHOW_PANORAMA_BYTES=str(panorama['fileBytes'])if panorama else'0')
     target=os.environ.get('GITHUB_ENV')

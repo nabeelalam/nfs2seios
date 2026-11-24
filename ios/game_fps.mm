@@ -8,6 +8,7 @@
 #include "SystemCpuLoad.h"
 #include "GameTrace.h"
 #include "HdAtlas.h"
+#include "TransformTrial.h"
 #include <atomic>
 #include <thread>
 #include <mutex>
@@ -167,6 +168,14 @@ NSString *system_core_text(){
         }
     }];
     timing.enabled=hdMode>=0;[sheet addAction:timing];
+    const auto transformTrial=nfs::transform_trial_control().snapshot();
+    if(transformTrial.mode()>=0){
+        [sheet addAction:[UIAlertAction actionWithTitle:transformTrial.mode()==1?@"Performance trial: Cache — switch to Baseline":@"Performance trial: Baseline — switch to Cache" style:UIAlertActionStyleDefault handler:^(UIAlertAction *){
+            if(nfs::transform_trial_control().set_cached(transformTrial.mode()!=1)){
+                nfs_reset_engine_metrics();nfs_reset_frame_rate();
+            }
+        }]];
+    }
     __weak UIAlertController *weakSheet=sheet;
     if(nfs_recording_finishing()){
         UIAlertAction *saving=[UIAlertAction actionWithTitle:@"Saving recording…" style:UIAlertActionStyleDefault handler:nil];saving.enabled=NO;[sheet addAction:saving];

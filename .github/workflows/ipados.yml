@@ -10,6 +10,10 @@ on:
         description: Classic public base only (Release, approved art, personal artwork still required; no public release)
         type: boolean
         default: false
+      transform_trial:
+        description: Enable baseline/cache comparison (widescreen classic Release and ThinLTO required)
+        type: boolean
+        default: false
       adaptive_race:
         description: Enable the experimental widescreen race renderer for the classic UI build
         type: boolean
@@ -62,6 +66,7 @@ jobs:
     env:
       NFS_HD_ARTWORK_SHA256: ${{ inputs.artwork_sha256 }}
       NFS_BUILD_CONFIGURATION: ${{ inputs.configuration }}
+      NFS_TRANSFORM_TRIAL_REQUESTED: ${{ inputs.transform_trial && 'true' || 'false' }}
       NFS_ADAPTIVE_RACE_REQUESTED: ${{ inputs.adaptive_race && 'true' || 'false' }}
       NFS_CLASSIC_UI_REQUESTED: ${{ inputs.classic_ui && 'true' || 'false' }}
       NFS_PUBLISH_RELEASE_REQUESTED: ${{ inputs.publish_release && 'true' || 'false' }}
@@ -80,6 +85,7 @@ jobs:
           python3 scripts/prepare_ci_sources.py --check-only
           python3 tests/publication_audit_test.py
           python3 tests/diagnostic_session_summary_test.py
+          python3 tests/transform_trial_prepare_test.py
           python3 tests/artifact_budget_test.py
           python3 tests/release_download_test.py
           python3 tests/classic_base_draft_test.py
@@ -112,8 +118,8 @@ jobs:
           python3 tests/frontend_font_upload_source_test.py
           python3 tests/guest_copy_semantics_test.py
           if [ "$NFS_THIN_LTO" = ON ]; then python3 tests/guest_copy_semantics_test.py --thin-lto; fi
-          cmake -S . -B .build/host -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256" -DNFS_CLASSIC_UI="$NFS_CLASSIC_UI" -DNFS_CLASSIC_DEFER_OWNER_TEMPLATE="$NFS_CLASSIC_DEFER_OWNER_TEMPLATE" -DNFS_FULL_MAPPED_ENGINE_DIR="$NFS_CI_ENGINE_SOURCE" -DNFS_RENDERER_SOURCE_DIR="$NFS_CI_RENDERER_SOURCE"
-          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests owned_renderer_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests car_info_owned_tests frame_timing_capture_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_font_capacity_tests frontend_word_tests frontend_text_context_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
+          cmake -S . -B .build/host -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DBOUNDARY_SANITIZERS=ON -DGUEST_THREAD_SANITIZER=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256" -DNFS_CLASSIC_UI="$NFS_CLASSIC_UI" -DNFS_CLASSIC_DEFER_OWNER_TEMPLATE="$NFS_CLASSIC_DEFER_OWNER_TEMPLATE" -DNFS_TRANSFORM_TRIAL_DIR="$NFS_TRANSFORM_TRIAL_DIR" -DNFS_FULL_MAPPED_ENGINE_DIR="$NFS_CI_ENGINE_SOURCE" -DNFS_RENDERER_SOURCE_DIR="$NFS_CI_RENDERER_SOURCE"
+          cmake --build .build/host --target game_trace_tests core_tests mapped_engine_tests heap_tests file_tests glide_tests format_tests event_tests critical_section_tests thread_tests clock_tests shared_memory_tests timer_tests window_tests main_thread_tests owned_renderer_tests surface_tests exit_tests audio_tests mapping_tests directory_tests overlapped_tests input_axes_tests input_devices_tests runtime_services_tests track_records_tests asset_import_tests menu_input_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests transform_trial_backend_tests car_info_owned_tests frame_timing_capture_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_font_capacity_tests frontend_word_tests frontend_text_context_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
           cmake --build .build/host --target history_panorama_gpu_tests -j 2
           if [ "$NFS_CLASSIC_UI" = ON ]; then
             cmake --build .build/host --target credits_whole_prepare_tests credits_art_provider_tests history_panorama_files_tests history_wide_art_tests -j 2
@@ -122,8 +128,8 @@ jobs:
       - name: Build actual GLES pixel tests
         run: |
           python3 scripts/check_runner_space.py
-          cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256" -DNFS_CLASSIC_UI="$NFS_CLASSIC_UI" -DNFS_CLASSIC_DEFER_OWNER_TEMPLATE="$NFS_CLASSIC_DEFER_OWNER_TEMPLATE" -DNFS_FULL_MAPPED_ENGINE_DIR="$NFS_CI_ENGINE_SOURCE" -DNFS_RENDERER_SOURCE_DIR="$NFS_CI_RENDERER_SOURCE"
-          cmake --build .build/pixels --target desktop_diagnostic_recorder_tests frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests desktop_pointer_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests car_info_owned_tests frame_timing_capture_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_font_capacity_tests frontend_word_tests frontend_text_context_tests glide_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
+          cmake -S . -B .build/pixels -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DNFS_RENDERER_PIXELS=ON -DBOUNDARY_SANITIZERS=ON -DNFS_HD_ARTWORK_SHA256="$NFS_HD_ARTWORK_SHA256" -DNFS_CLASSIC_UI="$NFS_CLASSIC_UI" -DNFS_CLASSIC_DEFER_OWNER_TEMPLATE="$NFS_CLASSIC_DEFER_OWNER_TEMPLATE" -DNFS_TRANSFORM_TRIAL_DIR="$NFS_TRANSFORM_TRIAL_DIR" -DNFS_FULL_MAPPED_ENGINE_DIR="$NFS_CI_ENGINE_SOURCE" -DNFS_RENDERER_SOURCE_DIR="$NFS_CI_RENDERER_SOURCE"
+          cmake --build .build/pixels --target desktop_diagnostic_recorder_tests frame_pacer_tests frame_pacing_sdl_tests game_trace_tests renderer_pixel_tests audio_sdl_tests input_sdl_tests keyboard_input_tests desktop_pointer_tests touch_pointer_tests touch_sdl_tests pointer_buffer_tests engine_link_check engine_startup_check nfs_game_app menu_input_tests shared_memory_tests engine_thread_metrics_tests engine_thread_clock_tests system_cpu_load_tests system_cpu_provider_tests diagnostic_session_tests transform_trial_backend_tests car_info_owned_tests frame_timing_capture_tests hd_atlas_tests texture_digest_tests builtin_timing_tests hd_glyph_select_tests small_font_tests small_font_select_tests record_font_tests hud_label_layout_tests hud_punctuation_tests hud_start_light_tests frontend_font_tests frontend_font_capacity_tests frontend_word_tests frontend_text_context_tests glide_tests pause_font_runtime_tests pause_header_pixels_tests volume_bar_pixels_tests warning_word_pixels_tests -j 2
       - name: Validate full native engine linkage and memory ownership
         run: |
           set -o pipefail
@@ -144,6 +150,7 @@ jobs:
           timeout 10s .build/pixels/frame_timing_capture_tests
           timeout 15s .build/pixels/desktop_diagnostic_recorder_tests
           timeout 10s .build/pixels/diagnostic_session_tests
+          timeout 10s .build/pixels/transform_trial_backend_tests
       - name: Execute original startup with a missing-assets sandbox
         run: |
           set -o pipefail
@@ -203,6 +210,7 @@ jobs:
     uses: ./.github/workflows/apple-device.yml
     with:
       classic_ui: ${{ inputs.classic_ui }}
+      transform_trial: ${{ inputs.transform_trial }}
       adaptive_race: ${{ inputs.adaptive_race }}
       linux_gate_passed: ${{ needs.renderer-pixels.result == 'success' }}
       artwork_sha256: ${{ inputs.artwork_sha256 }}
@@ -218,6 +226,7 @@ jobs:
     uses: ./.github/workflows/apple-device.yml
     with:
       classic_ui: ${{ inputs.classic_ui }}
+      transform_trial: ${{ inputs.transform_trial }}
       adaptive_race: ${{ inputs.adaptive_race }}
       linux_gate_passed: ${{ needs.renderer-pixels.result == 'success' }}
       artwork_sha256: ${{ inputs.artwork_sha256 }}
@@ -226,7 +235,7 @@ jobs:
       publish_base_draft: ${{ inputs.publish_base_draft }}
       thin_lto: ${{ inputs.thin_lto }}
   stop-slot-assembly:
-    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/lpm-performance' && inputs.stop_slot_probe && !inputs.build_ios && !inputs.classic_ui && !inputs.adaptive_race && !inputs.include_probe && !inputs.thin_lto && !inputs.publish_ipa && !inputs.publish_base_draft && !inputs.publish_release && inputs.artwork_sha256 == ''
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/lpm-performance' && inputs.stop_slot_probe && !inputs.transform_trial && !inputs.build_ios && !inputs.classic_ui && !inputs.adaptive_race && !inputs.include_probe && !inputs.thin_lto && !inputs.publish_ipa && !inputs.publish_base_draft && !inputs.publish_release && inputs.artwork_sha256 == ''
     runs-on: macos-15-intel
     timeout-minutes: 10
     permissions:

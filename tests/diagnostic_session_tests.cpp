@@ -4,7 +4,35 @@
 #include <limits>
 #define CHECK(x) do{if(!(x)){std::fprintf(stderr,"FAIL session line%d\n",__LINE__);return 1;}}while(0)
 struct CommaDecimal : std::numpunct<char>{char do_decimal_point()const override{return ',';}};
+extern "C" uint64_t nfs_test_trial_peer_token();
+extern "C" void nfs_test_trial_peer_register();
+extern "C" bool nfs_test_trial_peer_set(bool);
 int main(){
+    auto &trial=nfs::transform_trial_control();
+    CHECK(trial.snapshot().mode()==-1 && !trial.set_cached(true));
+    CHECK(nfs_test_trial_peer_token()==0);
+    nfs_test_trial_peer_register();const auto baseline=trial.snapshot();
+    CHECK(baseline.mode()==0 && baseline.generation()==1);
+    trial.register_backend();CHECK(trial.snapshot().token==baseline.token);
+    nfs::TransformTrialInterval trial_interval;nfs::DiagnosticSample trial_sample;
+    nfs::record_transform_trial(trial_sample,baseline,trial_interval);
+    CHECK(!trial_sample.transform_trial_interval_stable);
+    nfs::record_transform_trial(trial_sample,baseline,trial_interval);
+    CHECK(trial_sample.transform_trial_interval_stable);
+    CHECK(nfs_test_trial_peer_set(true));const auto cached=trial.snapshot();
+    CHECK(cached.mode()==1 && cached.generation()==2 && nfs_test_trial_peer_token()==cached.token);
+    CHECK(trial.set_cached(true) && trial.snapshot().token==cached.token);
+    nfs::record_transform_trial(trial_sample,cached,trial_interval);
+    CHECK(!trial_sample.transform_trial_interval_stable);
+    CHECK(nfs::diagnostic_sample_json(trial_sample).find("\"transform_trial_requested\":\"cache\"")!=std::string::npos);
+    CHECK(nfs_test_trial_peer_set(false));CHECK(trial.set_cached(true));
+    CHECK(trial.snapshot().mode()==1 && trial.snapshot().generation()==4);
+    nfs::record_transform_trial(trial_sample,trial.snapshot(),trial_interval);
+    CHECK(!trial_sample.transform_trial_interval_stable); // Detect cache->baseline->cache between samples.
+    nfs::record_transform_trial(trial_sample,trial.snapshot(),trial_interval);
+    CHECK(trial_sample.transform_trial_interval_stable);
+    CHECK(trial.set_cached(false));
+
     nfs::MainWaitCapture waits;
     CHECK(waits.begin()==0);
     waits.enable(true);const auto token=waits.begin();CHECK(token!=0);

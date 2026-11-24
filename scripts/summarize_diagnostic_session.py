@@ -36,6 +36,7 @@ def render_conditions(samples):
         "timing_art_modes": [label for mode, label in
                              ((False, "original"), (True, "hd_requested"), (None, "unavailable"))
                              if any(r.get("hd_timing_requested") is mode for r in samples)],
+        "transform_trial_modes": sorted({r.get("transform_trial_requested", "legacy_unlabelled") for r in samples}),
         "complete_render_conditions": all(
             type(r.get("frame_limit")) is int
             and all(type(r.get(k)) is int and 0 < r[k] <= 16384
@@ -242,6 +243,8 @@ def summarize(data, *, desktop=False):
     previous_power = None
     previous_limit = None
     previous_render_size = None
+    previous_trial = None
+    trial_rows = []
     stable_intervals = {power: [] for power, _ in modes}
     for index, row in enumerate(rows[1:], start=1):
         if row.get("type") == "end":
@@ -266,6 +269,28 @@ def summarize(data, *, desktop=False):
             raise ValueError("Invalid sample time or power mode")
         if type(identity) is not int or not 0 <= identity < 2**64:
             raise ValueError("Invalid CPU window identity")
+        trial_fields = ("transform_trial_requested", "transform_trial_generation", "transform_trial_interval_stable")
+        present = [key in row for key in trial_fields]
+        if any(present) and not all(present):
+            raise ValueError("Incomplete transform trial provenance")
+        trial = None
+        if all(present):
+            trial_mode, generation, stable = (row[key] for key in trial_fields)
+            if (trial_mode not in ("unavailable", "baseline", "cache")
+                    or type(generation) is not int or not 0 <= generation < 2**62
+                    or type(stable) is not bool
+                    or (trial_mode == "unavailable" and (generation != 0 or stable))
+                    or (trial_mode != "unavailable" and generation == 0)
+                    or (trial_mode == "baseline" and generation % 2 != 1)
+                    or (trial_mode == "cache" and generation % 2 != 0)):
+                raise ValueError("Invalid transform trial provenance")
+            trial = (trial_mode, generation)
+            if stable and (previous_trial is None or trial != previous_trial):
+                raise ValueError("Invalid stable transform trial interval")
+            if previous_trial is not None and generation < previous_trial[1]:
+                raise ValueError("Transform trial generation went backwards")
+            trial_rows.append((power, trial_mode, row, stable and previous >= 0
+                               and elapsed - previous <= 2.5 and power == previous_power))
         timing = row.get("hd_timing_requested")
         if timing is not None and type(timing) is not bool:
             raise ValueError("Invalid HD timing mode")
@@ -276,8 +301,10 @@ def summarize(data, *, desktop=False):
         render_size = (row.get("render_width"), row.get("render_height"))
         if (previous >= 0 and elapsed - previous <= 2.5
                 and power == previous_power and timing == previous_timing and limit == previous_limit
-                and render_size == previous_render_size):
+                and render_size == previous_render_size and trial == previous_trial
+                and (trial is None or row["transform_trial_interval_stable"] or trial[0] == "unavailable")):
             stable_intervals[power].append(row)
+        previous_trial = trial
         previous_timing = timing
         previous_power = power
         previous_limit = limit
@@ -398,6 +425,14 @@ def summarize(data, *, desktop=False):
                 "fps_observations": distribution([r["presentation_fps"] for r in selected if number(r.get("presentation_fps"), 10000)]),
                 "game_cpu_ms_per_frame_unique_windows": distribution(cpu)}
         result["timing_art_comparison"][power_label if desktop else "low_power_" + power_label] = timing_modes
+    result["transform_trial_comparison"] = {
+        label: {mode: {
+            "stable_samples": len(selected := [row for p, m, row, stable in trial_rows if p == power and m == mode and stable]),
+            "presentation_fps": distribution([row["presentation_fps"] for row in selected if number(row.get("presentation_fps"), 10000)]),
+            **stable_interval_metrics(selected),
+        } for mode in ("baseline", "cache")} for power, label in modes
+    }
+    result["transform_trial_caution"] = "Requested configuration only. Mode-change intervals excluded, including changes back between samples. Rolling FPS/CPU windows can overlap changes. Not a randomized performance or energy result."
     result["timing_art_caution"] = "Requested timing art only; unknown atlases fall back. First sample after mode changes excluded. Partial FPS/CPU windows are not energy measurements."
     return result
 
@@ -421,6 +456,10 @@ def compare_power_sessions(normal, low_power):
         conditions.append(mode)
     if conditions[0]["render_sizes"] != conditions[1]["render_sizes"]:
         raise ValueError("Comparison requires matching render sizes")
+
+    trial_modes = conditions[0]["transform_trial_modes"]
+    if len(trial_modes) != 1 or trial_modes != conditions[1]["transform_trial_modes"]:
+        raise ValueError("Comparison requires matching, steady transform trial settings")
 
     timing_art = conditions[0]["timing_art_modes"]
     if len(timing_art) != 1 or timing_art != conditions[1]["timing_art_modes"]:

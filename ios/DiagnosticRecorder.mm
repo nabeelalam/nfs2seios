@@ -22,6 +22,7 @@ extern "C" uint64_t nfs_monitor_foreground_pumps();
     std::atomic<bool> _failed;
     nfs::DiagnosticSessionLimit _limit;
     nfs::SystemCpuLoadWindow _cores;
+    nfs::TransformTrialInterval _transformTrial;
     uint64_t _start,_previous,_frameEpoch,_frameDrops,_foregroundPumps;
     NfsFrameContentTotals _frameContent;
     double _processCPU;
@@ -99,7 +100,7 @@ static NSURL *recording_folder(){
     const int fd=open(url.fileSystemRepresentation,O_WRONLY|O_CREAT|O_EXCL,0600);
     if(fd<0){[self message:@"Recording unavailable" body:@"Could not open a new log. Check available storage." share:NO];return;}
     _file=fdopen(fd,"w");if(!_file){close(fd);[self message:@"Recording unavailable" body:@"Could not open a new log." share:NO];return;}
-    _failed.store(false);_pending.store(0);_limit=nfs::DiagnosticSessionLimit{};_cores.reset();_powerKnown=NO;
+    _failed.store(false);_pending.store(0);_limit=nfs::DiagnosticSessionLimit{};_cores.reset();_powerKnown=NO;_transformTrial={};
     _start=SDL_GetTicksNS();_previous=0;_mainCPU=-1;_processCPU=-1;
     self.lastURL=url;[NSUserDefaults.standardUserDefaults setObject:name forKey:@"NFSLastDiagnosticLog"];
     nfs::take_renderer_timing();
@@ -201,6 +202,7 @@ static NSURL *recording_folder(){
     sample.thermal=int(NSProcessInfo.processInfo.thermalState);sample.app_state=int(UIApplication.sharedApplication.applicationState);
     sample.width=nfs_render_width();sample.height=nfs_render_height();sample.frame_limit=nfs_frame_limit();
     sample.hd_timing=nfs_glide_hd_timing_mode();
+    nfs::record_transform_trial(sample,nfs::transform_trial_control().snapshot(),_transformTrial);
     nfs::CpuLoadSnapshot ticks;if(nfs::read_system_cpu_ticks(ticks))sample.cores=_cores.observe(ticks);else _cores.reset();
     if(![self append:nfs::diagnostic_sample_json(sample)])[self stop:_failed.load()?@"write_error":@"writer_backlog" notify:YES];
 }

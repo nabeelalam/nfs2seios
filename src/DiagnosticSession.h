@@ -3,6 +3,7 @@
 #include "SystemCpuLoad.h"
 #include "MainWaitTiming.h"
 #include "FramePresentation.h"
+#include "TransformTrial.h"
 #include <cmath>
 #include <cstdint>
 #include <iomanip>
@@ -61,8 +62,16 @@ struct DiagnosticSample {
     int width=0,height=0,frame_limit=0,thermal=-1,battery_state=0,app_state=0;
     bool low_power=false;
     int hd_timing=-1;
+    int transform_trial_requested=-1;uint64_t transform_trial_generation=0;
+    bool transform_trial_interval_stable=false;
     CpuLoadReading cores{};
 };
+inline void record_transform_trial(DiagnosticSample &sample,TransformTrialSnapshot current,
+                                   TransformTrialInterval &interval){
+    sample.transform_trial_requested=current.mode();
+    sample.transform_trial_generation=current.generation();
+    sample.transform_trial_interval_stable=interval.observe(current);
+}
 inline void record_fps_snapshot(DiagnosticSample &sample,const NfsFrameTimingSnapshot &snapshot,uint64_t now){
     if(!snapshot.fps_timestamp_ns || now<snapshot.fps_timestamp_ns)return;
     sample.fps_age=double(now-snapshot.fps_timestamp_ns)/1e9;
@@ -98,6 +107,7 @@ inline std::string diagnostic_header(unsigned build,const std::string &source={}
        "\"renderer_scope\":\"timed main-thread renderer operations since prior sample, host elapsed time, no GPU timestamps\","
        "\"event_pump_scope\":\"foreground GameSession polls,not kernel wakeups or idle timeout counts\","
        "\"main_wait_scope\":\"iOS owner run-loop calls wholly within sample;elapsed includes nested callbacks/rendering,not idle CPU or kernel wakeups\","
+       "\"transform_trial_scope\":\"requested dispatch configuration only;stable means unchanged generation since prior sample,not per-call accounting;rolling CPU/FPS windows may overlap a change\","
        "\"core_scope\":\"whole system,not per-core app usage\","
        "\"battery_scope\":\"OS percentage,not watts or measured energy\","
        "\"battery_states\":\"0 unknown,1 unplugged,2 charging,3 full\","
@@ -157,6 +167,9 @@ inline std::string diagnostic_sample_json(const DiagnosticSample &s){
     out<<",\"brightness\":";diagnostic_number(out,s.brightness,1);
     out<<",\"thermal_state\":"<<s.thermal<<",\"app_state\":"<<s.app_state;
     out<<",\"low_power_mode\":"<<(s.low_power?"true":"false");
+    out<<",\"transform_trial_requested\":\""<<(s.transform_trial_requested==0?"baseline":s.transform_trial_requested==1?"cache":"unavailable")<<"\"";
+    out<<",\"transform_trial_generation\":"<<s.transform_trial_generation;
+    out<<",\"transform_trial_interval_stable\":"<<(s.transform_trial_interval_stable?"true":"false");
     out<<",\"hd_timing_requested\":"<<(s.hd_timing==0?"false":s.hd_timing==1?"true":"null");
     out<<",\"render_width\":"<<s.width<<",\"render_height\":"<<s.height;
     out<<",\"frame_limit\":"<<s.frame_limit<<",\"system_core_percent\":[";

@@ -3,6 +3,7 @@
 #include "DesktopDiagnosticRecorder.h"
 #include "FramePresentation.h"
 #include "MainThreadBridge.h"
+#include "TransformTrial.h"
 #include <SDL3/SDL.h>
 #include <cassert>
 #include <cstdio>
@@ -75,5 +76,22 @@ int main(){
  assert(read(dir+"/backlog.jsonl").find("writer_backlog")!=std::string::npos);
  {nfs::DesktopDiagnosticRecorder r(dir+"/time.jsonl");now_ns+=3600000000000ull;r.poll();r.stop();}meta=read(dir+"/time.metadata.json");assert(meta.find("time_limit")!=std::string::npos);assert(read(dir+"/time.jsonl").find("time_limit")!=std::string::npos);
  {nfs::DesktopDiagnosticRecorder::Limits limits;limits.bytes=8192;nfs::DesktopDiagnosticRecorder r(dir+"/bytes.jsonl",limits);for(unsigned i=0;i<128;++i)pending.push_back({100000000000000ull+i,now_ns+i,1000000000,3});r.poll();r.stop();}meta=read(dir+"/bytes.metadata.json");assert(meta.find("byte_limit")!=std::string::npos);
+ {
+  auto &trial=nfs::transform_trial_control();trial.register_backend();
+  nfs::DesktopDiagnosticRecorder r(dir+"/trial.jsonl");
+  now_ns+=1000000000;r.poll();
+  assert(trial.set_cached(true));now_ns+=1000000000;r.poll();
+  now_ns+=1000000000;r.poll();
+  assert(trial.set_cached(false));assert(trial.set_cached(true));now_ns+=1000000000;r.poll();
+  r.stop();std::ifstream log(dir+"/trial.jsonl");std::string row;std::getline(log,row);
+  std::getline(log,row);assert(row.find("\"transform_trial_requested\":\"baseline\"")!=std::string::npos);
+  assert(row.find("\"transform_trial_interval_stable\":false")!=std::string::npos);
+  std::getline(log,row);assert(row.find("\"transform_trial_requested\":\"cache\"")!=std::string::npos);
+  assert(row.find("\"transform_trial_generation\":2")!=std::string::npos);
+  assert(row.find("\"transform_trial_interval_stable\":false")!=std::string::npos);
+  std::getline(log,row);assert(row.find("\"transform_trial_interval_stable\":true")!=std::string::npos);
+  std::getline(log,row);assert(row.find("\"transform_trial_generation\":4")!=std::string::npos);
+  assert(row.find("\"transform_trial_interval_stable\":false")!=std::string::npos);
+ }
  std::printf("PASS: mocked-clock recorder limits, default-off, exclusivity, unsupported fields, IDs and backlog; artifacts %s\n",folder);
 }
