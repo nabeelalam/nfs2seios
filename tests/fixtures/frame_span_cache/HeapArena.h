@@ -1,0 +1,193 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+#include "GameMemory.h"
+#include <algorithm>
+#include <mutex>
+#include <cstring>
+#include <atomic>
+#include <memory>
+#include <new>
+
+namespace nfs {
+// One stable guest mapping, many native allocations. Metadata contains native
+// sizes and never enters game memory. Caller owns the arena buffer and must
+// stop all users before teardown. GameMemory mappings stay fixed during play.
+class HeapArena {
+    struct Block { size_t offset, size; bool used; } blocks[2048]{};
+    size_t count = 0;
+    uint8_t *storage = nullptr;
+    size_t capacity = 0;
+    uint32_t base = 0;
+    GameMemory *memory = nullptr;
+    mutable std::mutex mutex;
+    // Logical heap metadata chunks, independent of operating-system pages.
+    static constexpr size_t chunk_size=4096;
+    std::unique_ptr<std::atomic<unsigned char>[]> owned_chunks;
+    static_assert(ATOMIC_CHAR_LOCK_FREE==2,"Chunk flags require lock-free bytes");
+    void mark_owned_chunks(size_t offset,size_t bytes,unsigned char value){
+        const size_t first=(offset+chunk_size-1)/chunk_size,last=(offset+bytes)/chunk_size;
+        for(size_t i=first;i<last;++i)owned_chunks[i].store(value,std::memory_order_release);
+    }
+
+    static uint64_t next_identity(){static std::atomic<uint64_t> next{1};return next.fetch_add(1,std::memory_order_relaxed);}
+    const uint64_t identity=next_identity();
+    std::atomic<uint64_t> revision{1};
+
+    void *allocate_locked(size_t size) {
+        if (!storage || size > SIZE_MAX - 15) return nullptr;
+        size = (size ? size : 1) + 15;
+        size &= ~size_t(15);
+        for (size_t i = 0; i < count; ++i) {
+            Block &b = blocks[i];
+            if (b.used || b.size < size) continue;
+            if (b.size != size) {
+                if (count == 2048) continue;
+                for (size_t j = count; j > i+1; --j) blocks[j] = blocks[j-1];
+                blocks[i+1] = {b.offset + size, b.size - size, false};
+                ++count;
+            }
+            b.size = size;
+            b.used = true;
+            mark_owned_chunks(b.offset,b.size,1);
+            revision.fetch_add(1,std::memory_order_release);
+            return storage + b.offset;
+        }
+        return nullptr;
+    }
+    size_t find(const void *p) const {
+        const uintptr_t value = reinterpret_cast<uintptr_t>(p);
+        const uintptr_t begin = reinterpret_cast<uintptr_t>(storage);
+        if (!storage || value < begin || value - begin >= capacity) return count;
+        const size_t offset = value - begin;
+        // The first live block often follows the coalesced free prefix.
+        if (count > 0 && blocks[0].used && blocks[0].offset == offset) return 0;
+        if (count > 1 && blocks[1].used && blocks[1].offset == offset) return 1;
+        const auto *end = blocks + count;
+        const auto *block = std::lower_bound(blocks + std::min(count, size_t{2}), end, offset,
+            [](const Block &candidate, size_t wanted) { return candidate.offset < wanted; });
+        if (block == end || !block->used || block->offset != offset) return count;
+        return static_cast<size_t>(block - blocks);
+    }
+    bool release_locked(void *p) {
+        if (!p) return true;
+        size_t i = find(p);
+        if (i == count) return false;
+        mark_owned_chunks(blocks[i].offset,blocks[i].size,0);
+        blocks[i].used = false;
+        // Existing free blocks were already coalesced. Only the neighbors
+        // of the newly freed block can become adjacent free blocks.
+        const size_t first = i && !blocks[i - 1].used ? i - 1 : i;
+        const size_t last = i + 1 < count && !blocks[i + 1].used ? i + 1 : i;
+        if (first != last) {
+            blocks[first].size = blocks[last].offset + blocks[last].size - blocks[first].offset;
+            std::memmove(blocks + first + 1, blocks + last + 1,
+                         (count - last - 1) * sizeof(Block));
+            count -= last - first;
+        }
+        revision.fetch_add(1,std::memory_order_release);
+        return true;
+    }
+public:
+    HeapArena() = default;
+    HeapArena(const HeapArena &) = delete;
+    HeapArena &operator=(const HeapArena &) = delete;
+    ~HeapArena() { if (memory) memory->unmap(base); }
+    bool initialize(GameMemory &space, uint32_t guest_base, uint8_t *buffer, size_t size) {
+        std::lock_guard<std::mutex> lock(mutex);
+        if (storage || !size || size % 16 || guest_base % 16 ||
+            reinterpret_cast<uintptr_t>(buffer) % 16) return false;
+        // Validate/register the mapping before allocating metadata. This bounds
+        // chunk count by the 32-bit guest region and preserves invalid-map rejection.
+        // Registration precedes all users; roll back the new mapping on OOM.
+        if(!space.map(guest_base,buffer,size))return false;
+        const size_t chunks=(size+chunk_size-1)/chunk_size;
+        std::unique_ptr<std::atomic<unsigned char>[]> flags(new(std::nothrow) std::atomic<unsigned char>[chunks]);
+        if(!flags){space.unmap(guest_base);return false;}
+        for(size_t i=0;i<chunks;++i)flags[i].store(0,std::memory_order_relaxed);
+        owned_chunks=std::move(flags);
+        memory = &space; storage = buffer; capacity = size; base = guest_base;
+        blocks[0] = {0, size, false}; count = 1;
+        return true;
+    }
+    void *allocate(size_t size) {
+        std::lock_guard<std::mutex> lock(mutex);
+        return allocate_locked(size);
+    }
+    void *allocate_zeroed(size_t elements, size_t size) {
+        if (elements && size > SIZE_MAX / elements) return nullptr;
+        std::lock_guard<std::mutex> lock(mutex);
+        const size_t total = elements * size;
+        void *p = allocate_locked(total);
+        if (p) std::memset(p, 0, total);
+        return p;
+    }
+    bool release(void *p) {
+        std::lock_guard<std::mutex> lock(mutex);
+        return release_locked(p);
+    }
+    void *resize(void *p, size_t size) {
+        std::lock_guard<std::mutex> lock(mutex);
+        if (!p) return allocate_locked(size);
+        size_t i = find(p);
+        if (i == count) return nullptr;
+        if (!size) { release_locked(p); return nullptr; }
+        if (size <= blocks[i].size) return p;
+        const size_t old_size = blocks[i].size;
+        void *next = allocate_locked(size);
+        if (!next) return nullptr; // Original allocation/data remain intact.
+        std::memcpy(next, p, old_size);
+        release_locked(p);
+        return next;
+    }
+    // This is exactly the fully-owned-chunk proof used by contains(), with
+    // an explicit remaining-capacity bound. A miss must use full validation.
+    uint8_t *resolve_owned_chunk(uint32_t address,size_t length) const noexcept {
+        if(!storage || address<base || !length)return nullptr;
+        const size_t offset=address-base;
+        if(offset>=capacity || length>capacity-offset ||
+           length>chunk_size-(offset%chunk_size))return nullptr;
+        return owned_chunks[offset/chunk_size].load(std::memory_order_acquire)
+            ? storage+offset : nullptr;
+    }
+    bool contains(uint32_t address, size_t length) const {
+        if (!storage || address < base || !length) return false;
+        const size_t offset = address - base;
+        // A true flag proves this whole chunk belongs to one live allocation.
+        // Cross-chunk and partial-chunk queries retain existing ownership checks.
+        if(offset<capacity && length<=chunk_size-(offset%chunk_size) && owned_chunks[offset/chunk_size].load(std::memory_order_acquire))return true;
+
+        // Cache only a copied allocation span, never mutable table pointers.
+        // Every allocation/free invalidates all cached spans. Distinct lifetime
+        // identities also prevent reuse of a destroyed arena's native address.
+        struct Span {size_t offset=0,size=0;uint64_t revision=0;};
+        struct Cache {const HeapArena *owner=nullptr;uint64_t identity=0;unsigned next=0;Span spans[4];};
+        static thread_local Cache cache;
+        if(cache.owner!=this || cache.identity!=identity){cache=Cache{};cache.owner=this;cache.identity=identity;}
+        const auto observed=revision.load(std::memory_order_acquire);
+        for(const auto &span:cache.spans)
+            if(span.revision==observed && offset>=span.offset && offset-span.offset<span.size && length<=span.size-(offset-span.offset))return true;
+        std::lock_guard<std::mutex> lock(mutex);
+        // Splits and coalescing preserve ascending offsets. Every guest load
+        // checks this table; locate its block without scanning all allocations.
+        size_t low = 0, high = count;
+        while (low < high) {
+            const size_t middle = low + (high - low) / 2;
+            if (blocks[middle].offset <= offset) low = middle + 1;
+            else high = middle;
+        }
+        if (!low) return false;
+        const Block &b = blocks[low - 1];
+        const bool valid=b.used && offset-b.offset<b.size && length<=b.size-(offset-b.offset);
+        if(valid){cache.spans[cache.next]={b.offset,b.size,revision.load(std::memory_order_relaxed)};cache.next=(cache.next+1)%4;}
+        return valid;
+    }
+    const std::atomic<uint64_t>&revision_counter()const noexcept{return revision;}
+    size_t total_bytes() const { std::lock_guard<std::mutex> lock(mutex); return capacity; }
+    size_t available_bytes() const {
+        std::lock_guard<std::mutex> lock(mutex);
+        size_t available=0;
+        for (size_t i=0;i<count;++i) if (!blocks[i].used) available+=blocks[i].size;
+        return available;
+    }
+};
+}

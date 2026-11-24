@@ -1,0 +1,77 @@
+{
+  "scope": "Synthetic-only cache helper closure",
+  "sources": [
+    {
+      "file": "tests/fixtures/frame_span_cache/EngineMemory.cpp",
+      "sha256": "ea78a41a7881bdbed7ccfc11370cc74b960d0e096d0c2ece7cd0f5f71c0456ab"
+    },
+    {
+      "file": "tests/fixtures/frame_span_cache/HeapArena.h",
+      "sha256": "296b84651f0875d0b0c55da450d9cf93c69d432cc4cb924871577e1f1b41cd05"
+    },
+    {
+      "file": "tests/fixtures/frame_span_cache/CachedFrameTransaction.h",
+      "sha256": "8bb3601b5aaef037453f275331aceedb9d79720a930057e840fe224599f1c374"
+    },
+    {
+      "file": "tests/fixtures/frame_span_cache/FrameSpanCacheAbi.h",
+      "sha256": "2b8f5b3e7d1bfdd74db3df13eaa125b0c68daeecc81742bcffb688365ffb2ce0"
+    },
+    {
+      "file": "tests/frame_span_cache_oracle.cpp",
+      "sha256": "2f6762846472c4df332025261d20d18775cfd6f3fb2f9c9c2a143a9e59379cc1"
+    },
+    {
+      "file": "tests/owned_chunk_oracle.cpp",
+      "sha256": "d9b9effe1f7b4acb28ae0827101314ae4079dcdb41e1980361ceb8087bf06ed4"
+    },
+    {
+      "file": "tests/native_span_oracle.cpp",
+      "sha256": "6eee630b64e7c4383706ab007f95e779117c86669379eb37a89178e06e6e3386"
+    },
+    {
+      "file": "src/EngineMemory.h",
+      "sha256": "ef5e19c71f4d6cc2f072b756266bf46074e6966bdaf0d14d60f751854d870b24"
+    },
+    {
+      "file": "src/GuestCopyTransaction.h",
+      "sha256": "683b2218a271cf94c57c57828111ac053e84de146a10e65f4140aa157f8fabf9"
+    },
+    {
+      "file": "src/GuestAccess.h",
+      "sha256": "7c0d8187c1ac03bb7e1b8d949c011bcf9a21457a264baca0f5f8ff5184b1cf80"
+    },
+    {
+      "file": "src/GuestRuntimeC.h",
+      "sha256": "af46fe860d1dfa02f9df7fe0f65bd3e1b852eb9d835c6be40734c16aa4fa108a"
+    },
+    {
+      "file": "src/WorkerControl.h",
+      "sha256": "b07d47a99feff9c1df1964807e5b920f4b8a278fb5ed60be9eb183bd932daa76"
+    },
+    {
+      "file": "src/GameMemory.h",
+      "sha256": "26d8edfdcbe5dd4ee406665ec5b1ae162661b717f6069c4c5aa27f8007fc6049"
+    },
+    {
+      "file": "src/GameTrace.cpp",
+      "sha256": "90567b773806222316245a4d3210e15b70359a12dbcd76063e96c6c5d6482cce"
+    },
+    {
+      "file": "src/GameTrace.h",
+      "sha256": "2b1d9c486dbc66157ed725cddd741b2f211c467e0a542df0d671cb340c77593f"
+    },
+    {
+      "file": "src/CodecOperations.h",
+      "sha256": "543338a84bb42f00fadae72aacec5f99d193f170f759d529175720e573b8c6c3"
+    },
+    {
+      "file": "tests/fixtures/owned_chunk/synthetic/DATA.h",
+      "sha256": "6db7b3613559b9f22595c122f0d7925d837212089b8e0d787d81ba263708645c"
+    },
+    {
+      "file": "tests/fixtures/owned_chunk/synthetic/BSS.h",
+      "sha256": "421c5b59276447ad929633fdeb0adb08e023906a0734405c2cf308ad256c3c76"
+    }
+  ]
+}
