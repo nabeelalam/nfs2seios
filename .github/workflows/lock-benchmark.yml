@@ -16,6 +16,7 @@ on:
           - copy-mutex
           - current-accessor
           - frame-cache
+          - frame-cache-timing
         default: copy-lock
 permissions:
   contents: read
@@ -341,3 +342,34 @@ jobs:
           persist-credentials: false
       - name: Check native cache correctness and linked iOS ARM helper
         run: python3 scripts/apple_frame_cache_probe.py
+  review-frame-cache-timing:
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/hd-ui' && inputs.experiment == 'frame-cache-timing'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Review frozen cache timing closure and local correctness
+        run: |
+          python3 scripts/setup_secret_scanner.py
+          python3 scripts/publication_gate.py --mode history
+          python3 scripts/publication_audit.py --mode worktree
+          python3 tests/apple_frame_cache_timing_test.py
+          python3 scripts/apple_frame_cache_timing.py --local-safety-check
+  frame-cache-timing:
+    needs: review-frame-cache-timing
+    if: success() && github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/hd-ui' && inputs.experiment == 'frame-cache-timing'
+    runs-on: macos-15
+    timeout-minutes: 8
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Compare finite cache scopes in one native process
+        run: python3 scripts/apple_frame_cache_timing.py
