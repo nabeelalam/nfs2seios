@@ -52,23 +52,23 @@ def execute(local=False):
                ROOT / "src/EngineMemory.h", ROOT / "src/GameMemory.h",
                ROOT / "src/GameTrace.cpp", ROOT / "src/GameTrace.h",
                ROOT / "src/CodecOperations.h", ROOT / "tests/owned_chunk_oracle.cpp",
-               *sorted(FIXTURE.rglob("*.h")), *sorted(FIXTURE.glob("*.cpp"))]
+               *sorted(FIXTURE.rglob("*.h")), *sorted(FIXTURE.rglob("*.cpp"))]
     report = {"schema": 1, "scope": "synthetic span correctness and compilation only",
               "local_safety_only": local, "architecture": arch,
               "ios_executed": False, "app_built": False, "performance_measured": False,
               "source_sha256": {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}}
     with tempfile.TemporaryDirectory(prefix="nfs-owned-chunk-") as folder:
         results = {}
-        for variant in ("baseline", "candidate", "boundaries"):
-            candidate = variant != "baseline"
-            includes = [FIXTURE, ROOT / "src"] if candidate else [ROOT / "src", FIXTURE]
+        for variant in ("baseline", "candidate", "production", "boundaries"):
+            candidate = variant in ("candidate", "boundaries")
+            includes = [FIXTURE, ROOT / "src"] if candidate else [FIXTURE / "control", ROOT / "src"] if variant == "baseline" else [ROOT / "src", FIXTURE]
             includes += [FIXTURE / "synthetic"]
             inc = ["-I" + str(p) for p in includes]
             if variant == "boundaries":
                 units = [FIXTURE / "boundaries.cpp"]
             else:
                 units = [ROOT / "tests/owned_chunk_oracle.cpp",
-                         FIXTURE / "EngineMemory.cpp" if candidate else ROOT / "src/EngineMemory.cpp",
+                         FIXTURE / "EngineMemory.cpp" if candidate else FIXTURE / "control/EngineMemory.cpp" if variant == "baseline" else ROOT / "src/EngineMemory.cpp",
                          ROOT / "src/GameTrace.cpp"]
             binary = Path(folder) / variant
             checked([compiler, *flags, *inc, *map(str, units), "-o", str(binary)], deadline)
@@ -77,7 +77,7 @@ def execute(local=False):
                 if (magic, cpu, kind) != (0xfeedfacf, 0x0100000c, 2):
                     raise ValueError("Native ARM executable identity mismatch")
             results[variant] = json.loads(checked([str(binary)], deadline, timeout=30))
-        if results["baseline"] != results["candidate"]:
+        if not results["baseline"] == results["candidate"] == results["production"]:
             raise ValueError("Control/candidate oracle mismatch")
         oracle = results["candidate"]
         if (oracle["checks"], oracle["dataBytes"], oracle["bssBytes"],
@@ -92,7 +92,7 @@ def execute(local=False):
             if checked(["xcrun", "--sdk", "iphoneos", "--show-sdk-version"], deadline).strip() != b"18.5":
                 raise ValueError("Pinned iOS SDK required")
             ios_sdk = checked(["xcrun", "--sdk", "iphoneos", "--show-sdk-path"], deadline).decode().strip()
-            for variant, source in (("baseline", ROOT / "src/EngineMemory.cpp"), ("candidate", FIXTURE / "EngineMemory.cpp")):
+            for variant, source in (("baseline", FIXTURE / "control/EngineMemory.cpp"), ("candidate", FIXTURE / "EngineMemory.cpp"), ("production", ROOT / "src/EngineMemory.cpp")):
                 obj = Path(folder) / (variant + "-ios.o")
                 checked([compiler, "-std=c++14", "-O2", "-target", "arm64-apple-ios16.0",
                          "-isysroot", ios_sdk, "-I" + str(FIXTURE / "synthetic"),

@@ -139,6 +139,16 @@ public:
         release_locked(p);
         return next;
     }
+    // This is exactly the fully-owned-chunk proof used by contains(), with
+    // an explicit remaining-capacity bound. A miss must use full validation.
+    uint8_t *resolve_owned_chunk(uint32_t address,size_t length) const noexcept {
+        if(!storage || address<base || !length)return nullptr;
+        const size_t offset=address-base;
+        if(offset>=capacity || length>capacity-offset ||
+           length>chunk_size-(offset%chunk_size))return nullptr;
+        return owned_chunks[offset/chunk_size].load(std::memory_order_acquire)
+            ? storage+offset : nullptr;
+    }
     bool contains(uint32_t address, size_t length) const {
         if (!storage || address < base || !length) return false;
         const size_t offset = address - base;

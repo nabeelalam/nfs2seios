@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+import hashlib
 import importlib.util
 from pathlib import Path
 from unittest.mock import patch
@@ -11,6 +12,15 @@ probe = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(probe)
 
 class OwnedChunkProbeChecks(unittest.TestCase):
+    def test_frozen_control_is_original_and_production_matches_validated_candidate(self):
+        expected = {"EngineMemory.cpp": "f5fb4d20071484eb7c6f467196cc17819899ff37d4f4ef47f183ab817138275a",
+                    "HeapArena.h": "6a9de84b902ac227bd5db8bb97f45a3bf0b566e775f9030f6ef81cc26cf38902"}
+        for name, digest in expected.items():
+            original = (probe.FIXTURE / "control" / name).read_bytes()
+            self.assertEqual(hashlib.sha256(original).hexdigest(), digest)
+            self.assertNotEqual(original, (ROOT / "src" / name).read_bytes())
+            self.assertEqual((probe.FIXTURE / name).read_bytes(), (ROOT / "src" / name).read_bytes())
+
     def test_native_mode_refuses_linux_and_intel_mac_before_commands(self):
         for system, arch in (("linux", "aarch64"), ("darwin", "x86_64")):
             with patch.object(probe.sys, "platform", system), patch.object(probe.platform, "machine", return_value=arch), patch.object(probe, "checked") as command:

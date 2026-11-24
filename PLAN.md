@@ -2720,3 +2720,8 @@ This is Intel host correctness plus iOS syntax, not ARM timing, recording-contro
 ### 23 November: recording-only build24 preparation
 
 The small Apple owner-loop validation passed. Prepare one coherent Release/ThinLTO diagnostic app to compile the complete recording controller against the actual iOS SDK and deliver the new foreground-poll/wait fields for physical power comparisons. Version24 preserves build23 game/renderer/worker/transaction behavior and all23 existing private art resources. No rejected allocation/TLS candidate is integrated. Linux/privacy gates precede the standard Intel Apple job; cloud receives only the unsigned base and approved metadata, with private artwork appended locally after trusted-source/hash verification. Preflight only, not dispatched or physically tested. Evidence: evidence/performance-build24-diagnostic-preflight-local.json.
+
+
+## Device build25: validated owned-chunk return
+
+The resolver now returns an already-validated live owned-chunk span directly; all misses retain original bounds/allocation validation and rejection messages. Data members and public ABI are unchanged. Independent frozen original, candidate and production sanitizer comparisons agree;40000mixed integer/FPU/overlap cases pass. The exact candidate completed an original two-lap split-screen Proving Grounds race with all opponents and both native controllers. Native ARM sanitized correctness and iOS18.5 SDK object compilation passed before integration. Paired desktop CPU screening improved owner CPU per race second by about4percent in both orders; this is not an iPad FPS or battery result. Renderer, worker, copy transaction, art and controls remain unchanged. Build25 is a device-performance candidate; physical acceptance is pending.

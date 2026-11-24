@@ -17,7 +17,7 @@
 #include <unistd.h>
 #endif
 namespace nfs {
-struct EngineMemory::Impl {GameMemory addresses;Functions functions;HeapArena heap;std::vector<uint8_t> storage;std::recursive_mutex codec_operations[16];uint32_t codec_base=0;explicit Impl(size_t size):storage(size){}};
+struct EngineMemory::Impl {GameMemory addresses;Functions functions;HeapArena heap;std::vector<uint8_t> storage;std::recursive_mutex codec_operations[16];uint32_t codec_base=0;explicit Impl(size_t size):storage(size){} void *resolve_checked(uint32_t,size_t);};
 static EngineMemory *active=nullptr;
 static EngineMemory &current(){if(!active)throw std::logic_error("Original engine memory unbound");return *active;}
 EngineMemory::EngineMemory(size_t size){
@@ -31,15 +31,26 @@ EngineMemory::EngineMemory(size_t size){
     active=this;
 }
 EngineMemory::~EngineMemory(){if(active==this)active=nullptr;}
-void *EngineMemory::resolve(uint32_t address,size_t length){
-    if(address>=0x10000000 && uint64_t(address)<uint64_t(0x10000000)+capacity()){
-        if(!impl->heap.contains(address,length)){std::ostringstream text;text<<"Unallocated original engine heap span address=0x"<<std::hex<<address<<" bytes=0x"<<length;throw std::out_of_range(text.str());}
+#if defined(__GNUC__) || defined(__clang__)
+__attribute__((noinline))
+#endif
+void *EngineMemory::Impl::resolve_checked(uint32_t address,size_t length){
+    if(address>=0x10000000 && uint64_t(address)<uint64_t(0x10000000)+storage.size()){
+        if(!heap.contains(address,length)){std::ostringstream text;text<<"Unallocated original engine heap span address=0x"<<std::hex<<address<<" bytes=0x"<<length;throw std::out_of_range(text.str());}
         // contains() proves the entire nonempty span is in a live allocation
         // inside the fixed heap region. Avoid resolving the same region again.
-        return impl->storage.data()+size_t(address-0x10000000);
+        return storage.data()+size_t(address-0x10000000);
     }
-    auto pointer=impl->addresses.resolve(address,length);if(!pointer){std::ostringstream text;text<<"Unmapped original engine span address=0x"<<std::hex<<address<<" bytes=0x"<<length;throw std::out_of_range(text.str());}return pointer;
+    auto pointer=addresses.resolve(address,length);if(!pointer){std::ostringstream text;text<<"Unmapped original engine span address=0x"<<std::hex<<address<<" bytes=0x"<<length;throw std::out_of_range(text.str());}return pointer;
 }
+#if defined(__GNUC__) || defined(__clang__)
+__attribute__((noinline,flatten))
+#endif
+void *EngineMemory::resolve(uint32_t address,size_t length){
+    if(auto *pointer=impl->heap.resolve_owned_chunk(address,length))return pointer;
+    return impl->resolve_checked(address,length);
+}
+
 uint32_t EngineMemory::encode(const void *pointer){uint32_t address=0;if(!impl->addresses.encode(pointer,address))throw std::out_of_range("Unmapped original engine native pointer");return address;}
 void *EngineMemory::allocate(size_t size){return impl->heap.allocate(size);}
 void EngineMemory::release(void *pointer){if(!impl->heap.release(pointer))throw std::out_of_range("Invalid original engine allocation release");}
