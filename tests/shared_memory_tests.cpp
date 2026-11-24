@@ -58,3 +58,8 @@ int main(){
     check_release.join();if(!released)return 1;
     std::puts("PASS: concurrent unaligned values, 50000 paired transactions, span failure and cancellation release");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

@@ -103,3 +103,8 @@ int main() {
     CHECK(rejected);
     std::puts("PASS: original Glide layouts, unaligned high-address vertices, nested guest texture pointer, palette/fog spans, framebuffer output/canaries, bounds");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

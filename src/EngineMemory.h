@@ -13,6 +13,7 @@ public:
     explicit EngineMemory(size_t heap_bytes);
     ~EngineMemory();
     void *resolve(uint32_t,size_t);
+    void *resolve_native(const void *,size_t);
     uint32_t encode(const void *);
     void *allocate(size_t);
     void release(void *);

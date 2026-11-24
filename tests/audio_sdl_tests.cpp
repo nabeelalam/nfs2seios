@@ -54,3 +54,8 @@ int main(){
     SDL_Quit();if(!passed){std::fprintf(stderr,"FAIL: SDL callback consumption or retirement\n");return 1;}
     std::printf("PASS: actual SDL dummy output consumed %u mapped stereo frames, suspended startup, nonblocking controls while callback holds device lock, retained-context pause/resume, paused shutdown and callback/buffer retirement; no physical audio claim\n",stopped_frames);
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

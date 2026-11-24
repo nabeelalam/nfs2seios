@@ -35,3 +35,8 @@ int main(int argc,char **argv){
     nfs::bind_directory_bridge(nullptr);nfs::bind_file_bridge(nullptr);
     std::puts("PASS: virtual cwd/absolute paths, shared file namespace, 320-byte unaligned find records/canaries, wildcard discovery, metadata/stale handles, traversal/symlink rejection and file deletion");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

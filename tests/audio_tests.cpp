@@ -84,3 +84,8 @@ int main(){
     nfs::bind_audio_bridge(nullptr);
     std::puts("PASS: stereo PCM byte continuity, 256-frame mapped sample ABI, service/resume, immediate/stale callbacks, failed open, mixer errors, self-drain rejection and context retirement after in-flight stop");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

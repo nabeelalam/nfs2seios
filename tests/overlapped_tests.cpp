@@ -34,3 +34,8 @@ int main(int argc,char **argv){
     CHECK(CloseHandle_wrap(h));nfs::bind_event_bridge(nullptr);nfs::bind_file_bridge(nullptr);
     std::puts("PASS: file truncate/extend, 20-byte unaligned overlapped records, positioned read/write without cursor changes, completion/event signalling, EOF, unknown records, high words and bounds");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

@@ -44,3 +44,8 @@ int main(int argc,char **argv){
     nfs::bind_file_mappings(nullptr);nfs::bind_file_bridge(nullptr);
     std::puts("PASS: high-address file views, retained file/mapping lifetime, offset/length and cursor preservation, alias references, writable persistence/extension, private copies, stale views and heap cleanup");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

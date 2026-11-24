@@ -45,3 +45,8 @@ int main() {
     CHECK(bytes[2045]==0xcc && bytes[2046]==0xcc && bytes[2047]==0xcc);
     std::puts("PASS: 32-bit guest varargs, nested string pointers above 4GB, dynamic width/precision, unaligned double, integer lengths, percent/count, bounds");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

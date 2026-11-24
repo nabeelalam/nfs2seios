@@ -32,3 +32,8 @@ int main(){
     CHECK(GetCommState_wrap(0,int32_t(0x80000100))==0 && nfs::platform_error()==50 && bytes[256]==0);
     nfs::bind_runtime_services(nullptr);std::puts("PASS: once-only app initialization, bounded guest error text, managed original exit/status notification and explicit unavailable Windows services");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

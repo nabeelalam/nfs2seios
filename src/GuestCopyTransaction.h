@@ -15,12 +15,12 @@ public:
     template<class T,class A> T load(A address){
         check_worker_stop();
         static_assert(!std::is_pointer<T>::value && std::is_trivially_copyable<T>::value,"Checked packed values only");
-        T value;__builtin_memcpy(&value,nfs_host_address(guest_address(address),sizeof(T)),sizeof(T));return value;
+        T value;__builtin_memcpy(&value,guest_host_span(address,sizeof(T)),sizeof(T));return value;
     }
     template<class T,class A> void store(A address,T value){
         check_worker_stop();
         static_assert(!std::is_pointer<T>::value && std::is_trivially_copyable<T>::value,"Checked packed values only");
-        __builtin_memcpy(nfs_host_address(guest_address(address),sizeof(T)),&value,sizeof(T));
+        __builtin_memcpy(guest_host_span(address,sizeof(T)),&value,sizeof(T));
     }
 };
 }

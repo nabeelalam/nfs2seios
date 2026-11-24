@@ -591,3 +591,8 @@ int main(int argc,char **argv){
     operations.destroy(sdlWin);sdlWin=nullptr;nfs::bind_main_thread_bridge(nullptr);SDL_Quit();
     std::puts("PASS: actual GLES pixels, RGB565 partial writes/stride, row origins, front/back buffers, presentation, context suspend/restore with preserved pixels, guest canaries and cleanup");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

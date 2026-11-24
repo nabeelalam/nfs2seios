@@ -75,3 +75,8 @@ int main(int argc,char **argv) {
     CHECK(rejected);
     std::puts("PASS: native file-handle IDs, stale/exhausted handles, sandbox path normalization, guest read/write buffers and unaligned outputs, EOF, bounds");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

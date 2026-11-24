@@ -18,7 +18,7 @@ class NativeSpanProbeChecks(unittest.TestCase):
                 content=(probe.FIXTURE/variant/e['file']).read_bytes()
                 self.assertEqual(hashlib.sha256(content).hexdigest(),e[variant+'_sha256'])
             self.assertNotEqual(e['control_sha256'],e['candidate_sha256'])
-        matching=[variant for variant in ['control','candidate']if all((probe.FIXTURE/variant/e['file']).read_bytes()==(ROOT/'src'/e['file']).read_bytes()for e in manifest)]
+        matching=[variant for variant in ['control','candidate']if all((probe.FIXTURE/variant/e['file']).read_bytes().replace(b'\r\n',b'\n')==(ROOT/'src'/e['file']).read_bytes().replace(b'\r\n',b'\n')for e in manifest)]
         self.assertEqual(len(matching),1)
     def test_public_manual_route_is_sequential_and_has_no_payload_upload(self):
         workflow=(ROOT/'.github/workflows/lock-benchmark.yml').read_text()

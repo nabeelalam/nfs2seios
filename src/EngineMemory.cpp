@@ -51,6 +51,25 @@ void *EngineMemory::resolve(uint32_t address,size_t length){
     return impl->resolve_checked(address,length);
 }
 
+// These global mappings are registered once by the constructor and cannot be
+// remapped through the public engine API. All other/invalid spans retain the
+// exact original encode-then-resolve path and its error precedence.
+void *EngineMemory::resolve_native(const void *pointer,size_t length){
+    if(length){
+        const uintptr_t value=reinterpret_cast<uintptr_t>(pointer);
+        const uintptr_t data=reinterpret_cast<uintptr_t>(&_data);
+        if(value>=data){
+            const uintptr_t offset=value-data;
+            if(offset<sizeof(_data) && length<=sizeof(_data)-offset)return const_cast<void *>(pointer);
+        }
+        const uintptr_t bss=reinterpret_cast<uintptr_t>(&_bss);
+        if(value>=bss){
+            const uintptr_t offset=value-bss;
+            if(offset<sizeof(_bss) && length<=sizeof(_bss)-offset)return const_cast<void *>(pointer);
+        }
+    }
+    return resolve(encode(pointer),length);
+}
 uint32_t EngineMemory::encode(const void *pointer){uint32_t address=0;if(!impl->addresses.encode(pointer,address))throw std::out_of_range("Unmapped original engine native pointer");return address;}
 void *EngineMemory::allocate(size_t size){return impl->heap.allocate(size);}
 void EngineMemory::release(void *pointer){if(!impl->heap.release(pointer))throw std::out_of_range("Invalid original engine allocation release");}
@@ -87,6 +106,7 @@ std::recursive_mutex *EngineMemory::codec_mutex(uint32_t header){
 std::recursive_mutex *codec_operation_mutex(uint32_t header){return active?active->codec_mutex(header):nullptr;}
 }
 extern "C" void *nfs_host_address(uint32_t address,size_t length){return nfs::current().resolve(address,length);}
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){return nfs::current().resolve_native(pointer,length);}
 extern "C" uint32_t nfs_guest_address(const void *pointer){return nfs::current().encode(pointer);}
 extern "C" void *malloc32(size_t size){return nfs::current().allocate(size);}
 extern "C" void free32(void *pointer){if(pointer)nfs::current().release(pointer);}

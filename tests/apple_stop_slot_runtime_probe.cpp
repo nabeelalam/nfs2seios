@@ -137,3 +137,8 @@ int main(int argc,char**argv){try{
  }
  std::fputs("Expected --verify or --measure/--measure-critical/--measure-deferrals0..2\n",stderr);return 2;
  }catch(...){std::fputs("Stop-slot runtime oracle failed\n",stderr);return 1;}}
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

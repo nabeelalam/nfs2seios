@@ -38,3 +38,8 @@ int main(){
     bool rejected=false;try{nfs::read_calibrated_axis(0x98b2,1,false);}catch(const std::out_of_range &){rejected=true;}CHECK(rejected);
     std::puts("PASS: original axis calibration endpoints, dead zones, reversed ranges, all 65536 values, bounded unaligned guest reads");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

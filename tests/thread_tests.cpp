@@ -179,3 +179,8 @@ int main(){
     std::puts("PASS: first worker-failure handoff,closed/reaped handles,post-destruction publication,one-shot concurrent errors,independent bridges,cooperative cancellation and healthy polling");
     std::puts("PASS: worker context/start frame, handle lifetime, failure reporting, stop during events/guest loads/delay, self stop deferred until recursive locks release");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

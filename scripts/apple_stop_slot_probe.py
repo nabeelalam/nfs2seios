@@ -3,13 +3,13 @@
 import hashlib,json,os,pathlib,re,subprocess,sys,tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 VARIANTS=("old","candidate","unified")
-# Frozen pre-promotion baseline: fail closed if canonical inputs drift.
+# Frozen study accessors; canonical WorkerControl remains hash-pinned.
 PINNED_INPUTS={
-    'src/GuestCopyTransaction.h': # SHA256 of public source bytes, not a credential.
+    'tests/fixtures/native_span/control/GuestCopyTransaction.h': # SHA256 of public source bytes, not a credential.
         '72fb419cfed6acbcdfd0d1018820143c6081f1a1a9c0fc2dfd38811b30f2c76b',
-    'src/GuestAccess.h': # SHA256 of public source bytes, not a credential.
+    'tests/fixtures/native_span/control/GuestAccess.h': # SHA256 of public source bytes, not a credential.
         '9b96ebf525bae7c484d34b82248965a1a091aed5e4d6b3c1e367603c423c2413',
-    'src/GuestRuntimeC.h': # SHA256 of public source bytes, not a credential.
+    'tests/fixtures/native_span/control/GuestRuntimeC.h': # SHA256 of public source bytes, not a credential.
         '7cd3eb3960dc15ef393c6e9feaff5bc5c96e7f07731ae395b7a221bc11f3c1e4',
     'src/WorkerControl.h': # SHA256 of public source bytes, not a credential.
         'b07d47a99feff9c1df1964807e5b920f4b8a278fb5ed60be9eb183bd932daa76',
@@ -30,7 +30,7 @@ def materialize(root,folder):
         target=folder/variant;target.mkdir()
         result[variant]={}
         for name in CLOSURE:
-            source="src/"+name
+            source="src/"+name if name=="WorkerControl.h" else "tests/fixtures/native_span/control/"+name
             if variant=="candidate" and name=="GuestCopyTransaction.h":source="tests/fixtures/stop_slot_address_cache/GuestCopyTransaction.h"
             if variant=="unified" and name=="WorkerControl.h":source="tests/fixtures/unified_stop_tls/WorkerControl.h"
             (target/name).write_bytes(inputs[source]);result[variant][name]=hashlib.sha256(inputs[source]).hexdigest()

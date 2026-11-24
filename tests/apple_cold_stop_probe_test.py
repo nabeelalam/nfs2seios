@@ -253,7 +253,7 @@ class InputAndProtocolTests(unittest.TestCase):
             report = cold.materialize(root, stage)
             self.assertEqual(set(report), {'old', 'cold'})
             self.assertEqual([n for n in cold.assembly.CLOSURE if report['old'][n] != report['cold'][n]], ['WorkerControl.h'])
-            self.assertEqual((stage / 'cold/GuestCopyTransaction.h').read_bytes(), (ROOT / 'src/GuestCopyTransaction.h').read_bytes())
+            self.assertEqual((stage / 'cold/GuestCopyTransaction.h').read_bytes(), (ROOT / 'tests/fixtures/native_span/control/GuestCopyTransaction.h').read_bytes())
             (root / cold.COLD_FILE).write_text('changed')
             other = base / 'other'; other.mkdir()
             with self.assertRaises(ValueError):

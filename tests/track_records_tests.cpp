@@ -33,3 +33,8 @@ int main(int argc,char **argv){
     CHECK(nfs::convert_track_records(files,"missing-record.ssf","records-native.stf",false));
     std::puts("PASS: original SSF to exact 620-byte STF records, CRLF/signed fields, clear/missing behavior, malformed input preserves existing records, mapped path callback and heap retirement");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

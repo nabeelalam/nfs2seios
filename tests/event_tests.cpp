@@ -71,3 +71,8 @@ int main() {
     CHECK((next&255)==1 && !generations.signal(oldest) && !generations.signal(latest));
     std::puts("PASS: event guest ABI, auto/manual reset, wait-any/all, coalescing, timeout, concurrent wakeups, stale handles, close/shutdown, thread-local errors");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

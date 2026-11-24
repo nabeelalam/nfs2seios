@@ -30,6 +30,15 @@ class ProbeTests(unittest.TestCase):
      for included in re.findall(r'#include "([^\"]+)"',(dest/variant/name).read_text()):self.assertTrue((dest/variant/included).is_file())
    (root/"src/WorkerControl.h").write_text("drift")
    with self.assertRaises(ValueError):probe.materialize(root,base/"refused")
+ def test_frozen_accessors_ignore_production_drift_but_refuse_fixture_drift(self):
+  with tempfile.TemporaryDirectory() as folder:
+   base=pathlib.Path(folder);root=base/"source";dest=base/"headers";dest.mkdir()
+   for name in probe.PINNED_INPUTS:
+    target=root/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((ROOT/name).read_bytes())
+   (root/"src/GuestAccess.h").write_text("new production accessor outside this frozen study")
+   probe.materialize(root,dest)
+   (root/"tests/fixtures/native_span/control/GuestAccess.h").write_text("drift")
+   with self.assertRaises(ValueError):probe.materialize(root,base/"refused")
  def test_unified_parser_symbol_and_fixture_POD(self):
   text="\n".join("_nfs_probe_"+n+":\n ldarb w8, [x9]\n .cfi_endproc\n" for n in ["accessor","transform","rep8"])+"\nworker_stop_thread_state@TLVPPAGE\n"
   self.assertEqual(probe.inspect(text)["whole_translation_unit"]["unified_slot_symbols"],1)

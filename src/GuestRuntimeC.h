@@ -6,6 +6,7 @@
 extern "C" {
 #endif
 void *nfs_host_address(uint32_t address, size_t length);
+void *nfs_host_native_span(const void *pointer, size_t length);
 uint32_t nfs_guest_address(const void *pointer);
 #ifdef __cplusplus
 }

@@ -26,3 +26,8 @@ int main(){
     bool bounds=false;try{time_wrap(int32_t(0x8000003fu));}catch(const std::out_of_range &){bounds=true;}CHECK(bounds);
     std::puts("PASS: 32-bit game ticks/calendar outputs, unaligned canaries, native delay marshalling and paired period leases");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

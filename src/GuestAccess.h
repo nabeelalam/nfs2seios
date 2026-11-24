@@ -15,6 +15,11 @@ extern "C" NativeGameFunction nfs_lookup_guest_function(uint32_t function_id);
 template<class T> typename std::enable_if<std::is_integral<T>::value, uint32_t>::type
 guest_address(T value) { return static_cast<uint32_t>(value); }
 template<class T> uint32_t guest_address(T *pointer) { return nfs_guest_address(pointer); }
+// Native-pointer operands keep the active-engine guard and full-span checks,
+// while avoiding an encode/decode round trip for immutable global mappings.
+template<class A> typename std::enable_if<std::is_integral<A>::value, void *>::type
+guest_host_span(A address,size_t length){return nfs_host_address(static_cast<uint32_t>(address),length);}
+template<class T> void *guest_host_span(T *pointer,size_t length){return nfs_host_native_span(pointer,length);}
 // Timer and game workers share packed fields. Serialize value copies, including
 // unaligned values; a native atomic_ref would require alignment these fields lack.
 inline std::mutex &guest_copy_mutex() {static std::mutex mutex;return mutex;}
@@ -24,7 +29,7 @@ template<class T, class A> T guest_load(A address) {
         "Guest values must be trivially copyable; native pointers require explicit encoding");
     T value;
     std::lock_guard<std::mutex> lock(guest_copy_mutex());
-    __builtin_memcpy(&value, nfs_host_address(guest_address(address), sizeof(T)), sizeof(T));
+    __builtin_memcpy(&value, guest_host_span(address, sizeof(T)), sizeof(T));
     return value;
 }
 template<class T, class A> void guest_store(A address, T value) {
@@ -32,5 +37,5 @@ template<class T, class A> void guest_store(A address, T value) {
     static_assert(!std::is_pointer<T>::value && std::is_trivially_copyable<T>::value,
         "Guest values must be trivially copyable; native pointers require explicit encoding");
     std::lock_guard<std::mutex> lock(guest_copy_mutex());
-    __builtin_memcpy(nfs_host_address(guest_address(address), sizeof(T)), &value, sizeof(T));
+    __builtin_memcpy(guest_host_span(address, sizeof(T)), &value, sizeof(T));
 }

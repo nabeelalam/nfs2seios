@@ -67,3 +67,8 @@ int main(){
     CHECK(heap.available_bytes()==available);
     std::puts("PASS: mapped input facades/function IDs, enumeration/callback stop, 80-byte snapshots, reconnect neutral state, references, native lifetime and concurrent publication");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

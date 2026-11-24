@@ -36,3 +36,8 @@ int main(){
     CHECK(nfs_glide_lfb_lock(1,1,0,0,0,&info,ops));nfs_glide_lfb_reset();CHECK(heap.available_bytes()==available);
     std::puts("PASS: Glide capabilities, exact RGB565 metadata, preserved partial writes, lock ownership, read/write errors, unsupported modes and heap retirement");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

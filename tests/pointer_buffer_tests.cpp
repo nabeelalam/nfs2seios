@@ -41,3 +41,8 @@ int main(){try{
  }
  CHECK(heap.available_bytes()==available);std::puts("PASS: legacy16-byte mouse ABI, coalesced relative axes, ordered click/release, partial reads, peek, flush, overflow neutral recovery, range checks and lifetime");return 0;
  }catch(const std::exception &error){std::fprintf(stderr,"FAIL: %s\n",error.what());return 1;}}
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

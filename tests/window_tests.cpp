@@ -61,3 +61,8 @@ int main(){
     nfs::bind_window_bridge(nullptr);
     std::puts("PASS: 28-byte unaligned game messages/canaries, native window IDs, callback fields, queued destroy, stale IDs, FIFO capacity, quit and cancellable shutdown");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

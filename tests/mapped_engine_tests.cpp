@@ -313,3 +313,8 @@ int main() {
     CHECK(rejected && game.esp == initial_stack);
     std::printf("PASS: 1783 DATA relocations, function-ID dispatch, real DATA write, 768 memset cases, unaligned strings, FPU stack, original page-rounded allocation, formatter conventions and original event/critical-section routines and native Game worker lifetime and original synchronization startup, timer event fanout, graphics capability startup, original exit callback and sound callback registration/mapped stereo PCM; native data %p >4GB\n", static_cast<void *>(a));
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}

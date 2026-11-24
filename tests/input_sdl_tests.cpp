@@ -305,3 +305,8 @@ int main(){
     CHECK(heap.available_bytes()==heap.total_bytes());SDL_Quit();
     std::puts("PASS: actual SDL gamepad axes/pedals/buttons/POV, neutral disconnect and stable two-slot reconnect into guest DIJOYSTATE");
 }
+
+// Synthetic runtime: preserve full-span checks through its encoder/resolver.
+extern "C" void *nfs_host_native_span(const void *pointer,size_t length){
+    return nfs_host_address(nfs_guest_address(pointer),length);
+}
