@@ -14,6 +14,7 @@ on:
           - native-span
           - cold-fallback
           - copy-mutex
+          - current-accessor
         default: copy-lock
 permissions:
   contents: read
@@ -277,3 +278,34 @@ jobs:
           persist-credentials: false
       - name: Compare native ARM lock costs and compile public iOS APIs
         run: python3 scripts/apple_copy_mutex_probe.py
+  review-current-accessor:
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/hd-ui' && inputs.experiment == 'current-accessor'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check publication and actual-resolver safety
+        run: |
+          python3 scripts/setup_secret_scanner.py
+          python3 scripts/publication_gate.py --mode history
+          python3 scripts/publication_audit.py --mode worktree
+          python3 tests/apple_current_accessor_probe_test.py
+          python3 scripts/apple_current_accessor_probe.py --local-safety-check
+  current-accessor:
+    needs: review-current-accessor
+    if: success() && github.event_name == 'workflow_dispatch' && github.repository == 'nabeelalam/nfs2seios' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/hd-ui' && inputs.experiment == 'current-accessor'
+    runs-on: macos-15
+    timeout-minutes: 8
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Measure finite ARM accessors and inspect linked iOS code
+        run: python3 scripts/apple_current_accessor_probe.py
