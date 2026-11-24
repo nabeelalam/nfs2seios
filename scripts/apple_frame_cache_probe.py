@@ -79,6 +79,9 @@ def verify_results(results,heap_bytes=49256):
     if native!=expected or any(type(native[k])is not type(v)for k,v in expected.items()):raise ValueError('Native coverage mismatch')
     return results
 
+def access_source():
+    return '#include "CachedFrameTransaction.h"\n#include "EngineMemory.h"\n#include "DATA.h"\n#include "BSS.h"\nalignas(4) DataLayout _data{};alignas(4) BssLayout _bss{};\nextern "C" __attribute__((noinline)) uint32_t nfs_frame_probe_kernel(uint32_t a){nfs::CachedFrameTransaction tx{a};auto first=tx.load<uint32_t>(a);tx.store<uint32_t>(a+4,first);return tx.load<uint32_t>(a+4);}\nint main(){nfs::EngineMemory memory(65536);auto*p=memory.allocate(128);if(!p)return 2;uint32_t expected=0x13579bdfu;__builtin_memcpy(p,&expected,4);const auto result=nfs_frame_probe_kernel(memory.encode(p));memory.release(p);return result==expected?0:3;}\n'
+
 def execute(local=False):
     deadline=time.monotonic()+240;phase('source_review');rows=sources();phase('compiler_discovery')
     flags=['-std=c++14','-O1','-g','-pthread','-fwrapv','-fno-strict-aliasing','-frounding-math','-fsanitize=address,undefined','-fno-sanitize-recover=all','-fno-omit-frame-pointer','-DNFS_NATIVE_SPAN_CANDIDATE=1']
@@ -103,11 +106,16 @@ def execute(local=False):
             if not local:macho(binary,2)
             phase(name+'_oracle_run');results[name]=json.loads(checked([str(binary)],deadline,30))
         phase('oracle_result_verification');report['sanitizedResults']=verify_results(results,49256 if local else 49280)
+        access=folder/'access.cpp';access.write_text(access_source());host=folder/'host-link-probe';hostflags=['-std=c++14','-O3','-pthread','-fwrapv','-fno-strict-aliasing','-frounding-math',*includes]
+        if not local:hostflags+=['-arch','arm64','-isysroot',checked(['xcrun','--sdk','macosx','--show-sdk-path'],deadline).decode().strip()]
+        phase('host_synthetic_link');checked([compiler,*hostflags,str(folder/'EngineMemory.cpp'),str(folder/'GameTrace.cpp'),str(access),'-o',str(host)],deadline)
+        phase('host_synthetic_run');checked([str(host)],deadline,30);report['hostSyntheticLinkedKernelPassed']=True
         if not local:
             phase('ios_sdk_verification')
             if checked(['xcrun','--sdk','iphoneos','--show-sdk-version'],deadline).strip()!=b'18.5':raise ValueError('Pinned iOS SDK required')
             sdk=checked(['xcrun','--sdk','iphoneos','--show-sdk-path'],deadline).decode().strip()
-            access=folder/'access.cpp';access.write_text('#include "CachedFrameTransaction.h"\n#include "EngineMemory.h"\nextern "C" __attribute__((noinline)) uint32_t nfs_frame_probe_kernel(uint32_t a){nfs::CachedFrameTransaction tx{a};auto first=tx.load<uint32_t>(a);tx.store<uint32_t>(a+4,first);return tx.load<uint32_t>(a+4);}\nint main(){nfs::EngineMemory memory(65536);auto*p=memory.allocate(128);return int(nfs_frame_probe_kernel(memory.encode(p)));}\n')
+            # Reuse the host-checked synthetic access source.
+
             iosflags=['-std=c++14','-O3','-fwrapv','-fno-strict-aliasing','-frounding-math','-target','arm64-apple-ios16.0','-isysroot',sdk,*includes]
             objects=[]
             for name in ['EngineMemory.cpp','GameTrace.cpp','access.cpp']:
